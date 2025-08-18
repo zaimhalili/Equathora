@@ -19,10 +19,10 @@
     --mid-main-secondary: #8d99aeff;/*Mid Main & Secondary*/
     --french-gray: #bdc6d1ff;
     --main-color: #edf2f4ff; /*Main Color*/
-    --salmon-pink: #ee8b98ff;/*Really Light Accent Color*/
-    --red-pantone: #ef233cff;/*Light Accent Color*/
+    --really-light-accent: #ee8b98ff;/*Really Light Accent Color*/
+    --light-accent-color: #ef233cff;/*Light Accent Color*/
     --accent-color: #d90429ff; /*Accent Color*/
-    --madder: #a3142cff;/*Dark Accent Color*/
+    --dark-accent-color: #a3142cff;/*Dark Accent Color*/
   }
 }
 

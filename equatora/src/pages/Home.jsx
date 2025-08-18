@@ -30,16 +30,24 @@ const Home = () => {
             <section id='hero'>
                 <div id='hero-left'>
                     <h1 id='hero-title'>
-                        Master Logic Step By Step, with <span style={{ color: 'var(--accent-color)' }}>Equatora</span>
+                        Master Logic <br />Step By Step,<br /> with <span style={{ color: 'var(--accent-color)'}}>Equatora
+                        </span>
                     </h1>
                     <h3 id='hero-description'>
                         Practice logic and math through engaging problems, step-by-step learning, and gamified challenges designed to make steady progress both fun and rewarding.
                     </h3>
                     <div id='features-container'>
-                        <h4 className='feature'><span style={{ color: 'var(--accent-color)' }}>50+ <br />Problems</span>
+                        <h4 className='feature'>
+                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight:'600' }}>50+ <br /></span>
+                            Problems
                         </h4>
-                        <h4 className='feature'><span style={{ color: 'var(--accent-color)' }}>30+ <br /> Achievements</span></h4>
-                        <h4 className='feature'><span style={{ color: 'var(--accent-color)' }}>20+ <br /> Topics</span></h4>
+                        <h4 className='feature'>
+                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '600' }}>30+ <br /></span>Achievements
+                        </h4>
+                        <h4 className='feature'>
+                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '600' }}>20+ <br />
+                            </span>Topics
+                        </h4>
                     </div>
                 </div>
                 <div id="hero-right"><img src={Studying} alt="studying" id='studyingIMG' /></div>
