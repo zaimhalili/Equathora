@@ -1,7 +1,10 @@
 #home-body {
     background-color: white;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 #navbar {
@@ -9,7 +12,7 @@
     align-items: flex-start;
     justify-content: space-between;
     background-color: transparent;
-    width: 100vw;
+    width: 100%;
     height: 140px;
 }
 
@@ -43,7 +46,7 @@
     justify-content: flex-end;
     width: 60%;
     height: 100%;
-    padding-right: calc((50% - 670px) / 2);
+    padding-right: calc((50vw - 670px) / 2);
 }
 
 .btnLanding {
@@ -61,6 +64,11 @@
     background-color: white;
     margin-right: 1rem;
     width: 115px;
+    transition: all 0.2s ease-out;
+}
+
+#learnMore:hover {
+    color: var(--accent-color);
 }
 
 #exploreProblems {
@@ -68,12 +76,23 @@
     color: var(--accent-color);
     margin-right: 1rem;
     width: 207px;
+    transition: all 0.2s ease-out;
+}
+
+#exploreProblems:hover {
+    background-color: var(--accent-color);
+    color: var(--main-color);
 }
 
 #enrollNow {
     background-color: var(--mid-main-secondary);
     color: var(--secondary-color);
     width: 140px;
+    transition: 0.3s ease-out;
+}
+
+#enrollNow:hover {
+    background-color: var(--french-gray);
 }
 
 #hero {
@@ -88,7 +107,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%;
+    width: 50vw;
     height: 100%;
     margin-left: 50px;
     flex-direction: column;
@@ -137,13 +156,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%;
-    height: 100%;
+    width: 50vw;
+    height: calc(100vh - 140px);
+    overflow: hidden;
 }
 
 #studyingIMG {
     width: 649px;
-    height: 640px;
-    padding-right: calc((50% - 670px) / 2);
+    height: auto;
+    padding-right: calc((50vw - 670px) / 2);
     margin-bottom: 30px;
 }

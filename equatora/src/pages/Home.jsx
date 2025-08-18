@@ -5,6 +5,12 @@ import Studying from '../assets/images/studying.png'
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+    [...document.querySelectorAll('*')].forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.right > window.innerWidth || rect.bottom > window.innerHeight) {
+            console.log('Overflowing:', el, rect);
+        }
+    });
     return (
         <main id='home-body'>
             <header id='navbar'>
@@ -17,7 +23,7 @@ const Home = () => {
                     <Link to="/more" className="btnLanding" id='learnMore'>
                         Learn More
                     </Link>
-                    <Link to="/problemgroup" className="btnLanding" id='exploreProblems'>
+                    <Link to="/dashboard" className="btnLanding" id='exploreProblems'>
                         Explore Problems
                     </Link>
 
@@ -30,7 +36,7 @@ const Home = () => {
             <section id='hero'>
                 <div id='hero-left'>
                     <h1 id='hero-title'>
-                        Master Logic <br />Step By Step,<br /> with <span style={{ color: 'var(--accent-color)'}}>Equatora
+                        Master Logic <br />Step By Step,<br /> with <span style={{ color: 'var(--accent-color)' }}>Equatora
                         </span>
                     </h1>
                     <h3 id='hero-description'>
@@ -38,7 +44,7 @@ const Home = () => {
                     </h3>
                     <div id='features-container'>
                         <h4 className='feature'>
-                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight:'600' }}>50+ <br /></span>
+                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '600' }}>50+ <br /></span>
                             Problems
                         </h4>
                         <h4 className='feature'>
