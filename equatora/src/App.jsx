@@ -1,17 +1,17 @@
 // routes/AppRoutes.jsx
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Signup from "../pages/Signup";
-import Dashboard from "../pages/Dashboard";
-import ProblemGroup from "../pages/ProblemGroup";
-import Problem from "../pages/Problem";
-import More from "../pages/More";
-import Learn from "../pages/Learn";
-import Discover from "../pages/Discover";
-import Notifications from "../pages/Notifications";
-import Achievements from "../pages/Achievements";
-import Profile from "../pages/Profile";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
+import ProblemGroup from "./pages/ProblemGroup";
+import Problem from "./pages/Problem";
+import More from "./pages/More";
+import Learn from "./pages/Learn";
+import Discover from "./pages/Discover";
+import Notifications from "./pages/Notifications";
+import Achievements from "./pages/Achievements";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
