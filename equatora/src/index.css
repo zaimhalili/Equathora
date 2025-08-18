@@ -1,3 +1,6 @@
+/* index.css or App.css */
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -12,13 +15,13 @@
 @layer colors {
   :root {
     --raisin-black: #202231ff;
-    --space-cadet: #2b2d42ff; /*Secondary Color*/
-    --cool-gray: #8d99aeff;/*Mid Main & Secondary*/
+    --secondary-color: #2b2d42ff; /*Secondary Color*/
+    --mid-main-secondary: #8d99aeff;/*Mid Main & Secondary*/
     --french-gray: #bdc6d1ff;
-    --antiflash-white: #edf2f4ff; /*Main Color*/
+    --main-color: #edf2f4ff; /*Main Color*/
     --salmon-pink: #ee8b98ff;/*Really Light Accent Color*/
     --red-pantone: #ef233cff;/*Light Accent Color*/
-    --fire-engine-red: #d90429ff; /*Accent Color*/
+    --accent-color: #d90429ff; /*Accent Color*/
     --madder: #a3142cff;/*Dark Accent Color*/
   }
 }
