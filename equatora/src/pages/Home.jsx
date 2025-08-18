@@ -44,14 +44,14 @@ const Home = () => {
                     </h3>
                     <div id='features-container'>
                         <h4 className='feature'>
-                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '600' }}>50+ <br /></span>
+                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '700' }}>50+ <br /></span>
                             Problems
                         </h4>
                         <h4 className='feature'>
-                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '600' }}>30+ <br /></span>Achievements
+                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '700' }}>30+ <br /></span>Achievements
                         </h4>
                         <h4 className='feature'>
-                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '600' }}>20+ <br />
+                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '700' }}>20+ <br />
                             </span>Topics
                         </h4>
                     </div>
