@@ -145,4 +145,5 @@
     width: 649px;
     height: 640px;
     padding-right: calc((50% - 670px) / 2);
+    margin-bottom: 30px;
 }
