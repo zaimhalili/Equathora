@@ -12,8 +12,8 @@ const Home = () => {
                     <img src={Logo} alt="Logo" id='logoIMG' />
                     <h3 id='name'>equatora</h3>
                 </div>
-                
-                <div id="home-buttons">
+
+                <div id="home-buttons-container">
                     <Link to="/more" className="btnLanding" id='learnMore'>
                         Learn More
                     </Link>
@@ -42,7 +42,8 @@ const Home = () => {
                         <h4 className='feature'><span style={{ color: 'var(--accent-color)' }}>20+ <br /> Topics</span></h4>
                     </div>
                 </div>
-                <img src={Studying} alt="studying" id='studyingIMG' />
+                <div id="hero-right"><img src={Studying} alt="studying" id='studyingIMG' /></div>
+
             </section>
         </main>
     );
