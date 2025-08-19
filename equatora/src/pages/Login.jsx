@@ -33,30 +33,34 @@ const Login = () => {
 
             <h5 className='typeOfInput'>Password</h5>
             <input type="password" className='inputAuth' id="passwordInput" placeholder='Enter your password' minLength="6" maxLength="128" required></input>
+
             <Link to="/password" className="btnForgotPass" id='forgotPass'>
               Forgot your password?
             </Link>
-          </div>
-          <button type="submit" id="login-btn">
-            Log In
-          </button>
-          <div id='auth-other-options'>
-            <p className='auth-other-options-text'>
-              Don't have an account yet?{' '}
-              <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
-                Sign up for free.
-              </Link>
-            </p>
-            
 
-            <p className='auth-other-options-text'>
-              Didn't receive your confirmation email?{' '}
-              <Link to="/password" className="other-option-link" style={{ textDecoration: 'underline' }}>
-                Resend it.
-              </Link>
-            </p>
-            
+            <button type="submit" id="login-btn">
+              Log In
+            </button>
+            <div id='auth-other-options'>
+              <p className='auth-other-options-text'>
+                Don't have an account yet?{' '}
+                <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                  Sign up for free.
+                </Link>
+              </p>
+
+              <p className='auth-other-options-text'>
+                Didn't receive your confirmation email?{' '}
+                <Link to="/password" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                  Resend it.
+                </Link>
+              </p>
+
+            </div>
           </div>
+
+
+
         </section>
 
         <aside id="background-container"><BackgroundPolygons /></aside>
