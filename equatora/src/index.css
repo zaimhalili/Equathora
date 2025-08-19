@@ -14,21 +14,21 @@
 
 @layer colors {
   :root {
-    --raisin-black: #202231ff;
+    --raisin-black: rgb(32, 34, 49);
     --secondary-color: rgb(43, 45, 66);
     /*Secondary Color*/
     --mid-main-secondary: #8d99aeff;
     /*Mid Main & Secondary*/
     --french-gray: #bdc6d1ff;
-    --main-color: #edf2f4ff;
+    --main-color: rgb(237, 242, 244);
     /*Main Color*/
     --really-light-accent: #ee8b98ff;
     /*Really Light Accent Color*/
     --light-accent-color: #ef233cff;
     /*Light Accent Color*/
-    --accent-color: #d90429ff;
+    --accent-color: rgb(217, 4, 41);
     /*Accent Color*/
-    --dark-accent-color: #a3142cff;
+    --dark-accent-color: rgb(163, 20, 44);
     /*Dark Accent Color*/
   }
 }

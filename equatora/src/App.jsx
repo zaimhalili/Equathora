@@ -13,6 +13,7 @@ import Notifications from "./pages/Notifications";
 import Achievements from "./pages/Achievements";
 import Profile from "./pages/Profile";
 import OverflowChecker from "./pages/OverflowChecker";
+import Password from "./pages/Password";
 
 export default function App() {
   return (
@@ -20,7 +21,7 @@ export default function App() {
       <OverflowChecker/>
       <Routes>
         {/* Static pages */}
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/problems/:groupId" element={<ProblemGroup />} />
         <Route path="/problems/:groupId/:problemId" element={<Problem />} />
         <Route path="/profile/:profile" element={<Profile />} />
+        <Route path="/password/:password" element={<Password />} />
       </Routes>
     </>
 
