@@ -1,5 +1,62 @@
-#body-login{
+#body-login {
     height: 100vh;
     min-height: 100vh;
     background-color: white;
+    width: 100vw;
+    display: flex;
+}
+
+#login-container {
+    width: 40%;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+#login-logo-name {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#login-name {
+    display: flex;
+    align-items: center;
+    font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: var(--secondary-color);
+    margin: 0;
+    height: 100%;
+    width: 200px;
+    font-size: 36px;
+}
+
+.straightLine {
+    height: 1px;
+    width: 100px;
+    display: flex;
+    background-color: black;
+}
+
+#strLine1 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#strLine2 {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#background-container {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

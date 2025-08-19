@@ -116,7 +116,7 @@
     flex-direction: row;
     color: black;
     font-family: 'Inter', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    height: 285px;
+    height: 205px;
     width: 637px;
     font-size: 75px;
     font-weight: 850;
@@ -126,14 +126,15 @@
 
 #hero-description {
     width: 637px;
-    height: 124px;
+    height: 70px;
     color: var(--secondary-color);
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-size: 24px;
     margin: 0;
-    margin: 20px 0 10px 0;
+    margin: 10px 0 30px 0;
     font-weight: 400;
     word-break: keep-all;
+    line-height: 1.2;
 }
 
 #features-container {
@@ -141,14 +142,14 @@
     justify-content: space-between;
     align-items: flex-start;
     width: 637px;
-    height: 110px;
+    height: 120px;
     text-align: center;
 }
 
 .feature {
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     color: black;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 500;
 }
 

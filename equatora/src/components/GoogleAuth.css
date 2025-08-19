@@ -1,0 +1,33 @@
+.google-auth-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#google-btn {
+    width: 400px;
+    height: 50px;
+    background-color: white;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--secondary-color);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px;
+    box-shadow: 0 5px 5px 0 rgba(43, 45, 66, 0.5);
+    transition: 0.2s ease-out;
+}
+
+#google-btn:hover {
+    background-color: #f8f9fa;
+    box-shadow: 0 5px 8px 0 rgba(43, 45, 66, 0.8);
+}
+
+#google-icon{
+    height: 25px;
+    width: 25px;
+}

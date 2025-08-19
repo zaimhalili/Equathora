@@ -24,11 +24,11 @@ const Home = () => {
                         Learn More
                     </Link>
                     <Link to="/dashboard" className="btnLanding" id='exploreProblems'>
-                        Explore Problems
+                        Start Solving
                     </Link>
 
                     <Link to="/login" className="btnLanding" id='enrollNow'>
-                        Enroll Now
+                        Join Today
                     </Link>
                 </div>
             </header>
@@ -36,23 +36,23 @@ const Home = () => {
             <section id='hero'>
                 <div id='hero-left'>
                     <h1 id='hero-title'>
-                        Master Logic <br />Step By Step,<br /> with <span style={{ color: 'var(--accent-color)' }}>Equatora
+                        Turn Logic into Your <span style={{ color: 'var(--accent-color)' }}>Superpower
                         </span>
                     </h1>
                     <h3 id='hero-description'>
-                        Practice logic and math through engaging problems, step-by-step learning, and gamified challenges designed to make steady progress both fun and rewarding.
+                        Solve step-by-step problems with built-in guidance, unlock achievements, and watch your logic skills grow
                     </h3>
                     <div id='features-container'>
                         <h4 className='feature'>
                             <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '700' }}>50+ <br /></span>
-                            Problems
+                            Brain-teasing <br />problems to <br />solve
                         </h4>
                         <h4 className='feature'>
-                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '700' }}>30+ <br /></span>Achievements
+                            <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '700' }}>30+ <br /></span>Achievements <br />to keep you <br /> motivated.
                         </h4>
                         <h4 className='feature'>
                             <span style={{ color: 'var(--accent-color)', fontSize: '48px', fontWeight: '700' }}>20+ <br />
-                            </span>Topics
+                            </span>Topics to <br />master <br />step by step
                         </h4>
                     </div>
                 </div>

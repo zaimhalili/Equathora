@@ -1,6 +1,6 @@
 #polygon-container {
     height: 100vh;
-    width: 60%;
+    width: 100%;
     background-image: url('../assets/images/polygonsBG.png');
     background-size: cover;
     background-position: center;
@@ -38,21 +38,21 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-bottom: 130px;
+    margin-bottom: 100px;
 }
 
 #polygon-text-big {
     font-size: 40px;
     font-weight: 800;
     line-height: 1.2;
-    padding: 0 70px 0 70px;
+    padding: 0 100px 0 100px;
 }
 
 #polygon-text-small {
     font-size: 25px;
     font-weight: 500;
     line-height: 1.4;
-    padding: 0 100px 0 100px;
+    padding: 0 150px 0 150px;
     width: 100%;
 }
 

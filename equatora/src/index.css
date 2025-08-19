@@ -15,7 +15,7 @@
 @layer colors {
   :root {
     --raisin-black: #202231ff;
-    --secondary-color: #2b2d42ff;
+    --secondary-color: rgb(43, 45, 66);
     /*Secondary Color*/
     --mid-main-secondary: #8d99aeff;
     /*Mid Main & Secondary*/
