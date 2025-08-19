@@ -33,7 +33,7 @@ export default function App() {
         {/* Dynamic pages */}
         <Route path="/problems/:groupId" element={<ProblemGroup />} />
         <Route path="/problems/:groupId/:problemId" element={<Problem />} />
-        <Route path="/profile/:username" element={<Profile />} />
+        <Route path="/profile/:profile" element={<Profile />} />
       </Routes>
     </>
 

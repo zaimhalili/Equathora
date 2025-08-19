@@ -1,8 +1,15 @@
 import React from 'react';
+import './Login.css';
+import PolygonsBackground from '../components/BackgroundPolygons.jsx'
 
 const Login = () => {
   return (
-    <div></div>
+    <>
+      <main id='body-login'>
+        <PolygonsBackground />
+      </main>
+
+    </>
   );
 };
 

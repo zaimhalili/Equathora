@@ -1,0 +1,72 @@
+#polygon-container {
+    height: 100vh;
+    width: 60%;
+    background-image: url('../assets/images/polygonsBG.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    color: white;
+    font-family: 'Public Sans', sans-serif;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+}
+
+#polygon-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    filter: brightness(0.8) blur(5px) contrast(1.05);
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#polygon-content {
+    z-index: 1;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 130px;
+}
+
+#polygon-text-big {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.2;
+    padding: 0 70px 0 70px;
+}
+
+#polygon-text-small {
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 0 100px 0 100px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    #polygon-text-big {
+        font-size: 32px;
+    }
+
+    #polygon-text-small {
+        font-size: 18px;
+    }
+
+    #polygon-content {
+        margin-bottom: 100px;
+        gap: 12px;
+    }
+}

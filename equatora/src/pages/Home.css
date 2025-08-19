@@ -32,7 +32,7 @@
 #name {
     display: flex;
     align-items: center;
-    font-family: DynaPuff, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: var(--secondary-color);
     margin: 0;
     height: 100%;
@@ -46,11 +46,11 @@
     justify-content: flex-end;
     width: 60%;
     height: 100%;
-    padding-right: calc((50vw - 670px) / 2);
+    padding-right: 2vw;
 }
 
 .btnLanding {
-    font-family: Public Sans, cursive;
+    font-family: 'Public Sans', cursive;
     font-size: 18px;
     font-weight: 700;
     height: 50px;
@@ -115,7 +115,7 @@
 #hero-title {
     flex-direction: row;
     color: black;
-    font-family: Inter, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: 'Inter', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     height: 285px;
     width: 637px;
     font-size: 75px;
@@ -128,10 +128,10 @@
     width: 637px;
     height: 124px;
     color: var(--secondary-color);
-    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-size: 24px;
     margin: 0;
-    margin: 20px 0 20px 0;
+    margin: 20px 0 10px 0;
     font-weight: 400;
     word-break: keep-all;
 }
@@ -139,14 +139,14 @@
 #features-container {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
     width: 637px;
     height: 110px;
     text-align: center;
 }
 
 .feature {
-    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     color: black;
     font-size: 20px;
     font-weight: 500;
@@ -158,12 +158,10 @@
     align-items: center;
     width: 50vw;
     height: calc(100vh - 140px);
-    overflow: hidden;
 }
 
 #studyingIMG {
-    width: 649px;
-    height: auto;
-    padding-right: calc((50vw - 670px) / 2);
-    margin-bottom: 30px;
+    width: auto;
+    height: 100%;
+    padding: 2vw;
 }
