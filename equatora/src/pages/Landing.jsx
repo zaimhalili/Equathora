@@ -1,10 +1,10 @@
 import React from 'react';
-import './Home.css';
+import './Landing.css';
 import Logo from '../assets/images/logo.png';
 import Studying from '../assets/images/studying.png'
 import { Link } from 'react-router-dom';
 
-const Home = () => {
+const Landing = () => {
     [...document.querySelectorAll('*')].forEach(el => {
         const rect = el.getBoundingClientRect();
         if (rect.right > window.innerWidth || rect.bottom > window.innerHeight) {
@@ -27,7 +27,7 @@ const Home = () => {
                         Start Solving
                     </Link>
 
-                    <Link to="/login" className="btnLanding" id='enrollNow'>
+                    <Link to="/signup" className="btnLanding" id='enrollNow'>
                         Join Today
                     </Link>
                 </div>
@@ -63,4 +63,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Landing;

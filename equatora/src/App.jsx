@@ -1,6 +1,6 @@
 // routes/AppRoutes.jsx
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
