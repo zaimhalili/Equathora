@@ -40,19 +40,22 @@ const Login = () => {
           <button type="submit" id="login-btn">
             Log In
           </button>
-          <div className='auth-other-options'>
-            <p>
-              Don't have an account yet?
+          <div id='auth-other-options'>
+            <p className='auth-other-options-text'>
+              Don't have an account yet?{' '}
+              <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                Sign up for free.
+              </Link>
             </p>
-            <Link to="/signup" className="btnForgotPass" id='forgotPass' style={{ textDecoration: 'underline' }}>
-              Sign up for free.
-            </Link>
-          </div>
-          <div className='auth-other-options'>
-            <p>Didn't receive your confirmation email?</p>
-            <Link to="/password" className="btnForgotPass" id='forgotPass' style={{ textDecoration: 'underline' }}>
-              Resend it.
-            </Link>
+            
+
+            <p className='auth-other-options-text'>
+              Didn't receive your confirmation email?{' '}
+              <Link to="/password" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                Resend it.
+              </Link>
+            </p>
+            
           </div>
         </section>
 

@@ -130,9 +130,28 @@
     text-align: center;
     border-radius: 8px;
     border: 1px solid var(--secondary-color);
+    transition: 0.2s ease-out;
     box-shadow: 0 5px 5px 0 rgba(43, 45, 66, 0.5);
 }
 
-#login-btn:hover{
+#login-btn:hover {
     background-color: rgb(128, 16, 35);
 }
+
+#auth-other-options {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+.auth-other-options-text {
+    color: black;
+}
+
+.other-option-link{
+    color: var(--dark-accent-color);
+    text-decoration: none;
+}
+
