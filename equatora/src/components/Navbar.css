@@ -1,12 +1,17 @@
 #navbar {
     min-width: 100%;
     background-color: white;
+    height: 15vh;
+    display: flex ;
+    align-items: center;
+    padding: 0 30px;
 }
 
 #navbar-left {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    gap: 20px;
 }
 
 #navbar-logo {
@@ -19,12 +24,26 @@
     font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
+#navbar-dashboard {
+    color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
 .navbar-pages {
     color: var(--secondary-color);
+    font-family: 'Public Sans', sans-serif;
 }
 
 #navbar-right {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+}
+
+#avatarIMG{
+    height: 60px;
+    width: 60px;
 }
