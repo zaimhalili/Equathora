@@ -1,0 +1,30 @@
+#navbar {
+    min-width: 100%;
+    background-color: white;
+}
+
+#navbar-left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#navbar-logo {
+    height: 80px;
+    width: 80px;
+}
+
+#navbar-name {
+    color: var(--secondary-color);
+    font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.navbar-pages {
+    color: var(--secondary-color);
+}
+
+#navbar-right {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
