@@ -2,7 +2,7 @@
     min-width: 100%;
     background-color: white;
     height: 12vh;
-    display: flex ;
+    display: flex;
     align-items: center;
     padding: 0 30px;
     position: sticky;
@@ -46,7 +46,7 @@
     padding-left: 40px;
 }
 
-#navbar-left a:hover{
+#navbar-left a:hover {
     color: var(--accent-color);
 }
 
@@ -56,7 +56,7 @@
     align-items: center;
 }
 
-#avatarIMG{
+#avatarIMG {
     height: 40px;
     width: 40px;
     border-radius: 50%;
