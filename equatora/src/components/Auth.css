@@ -1,9 +1,10 @@
 .typeOfInput {
     color: var(--secondary-color);
-    font-size: 20px;
+    font-size: 18px;
     font-family: 'Inter', sans-serif;
     align-items: flex-start;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    margin-top: -5px;
 }
 
 .inputAuth {

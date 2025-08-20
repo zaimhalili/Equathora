@@ -1,31 +1,40 @@
 import React from 'react';
-import GoogleAuth from '../components/GoogleAuth';
+import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
+import Logo from '../assets/images/logo.png';
+import GoogleAuth from '../components/GoogleAuth.jsx';
+import Auth from '../components/Auth.jsx';
+import { Link } from 'react-router-dom';
 import './Signup.css';
 
 const Signup = () => {
+  function GoogleSignup() {
+    
+  }
+
   return (
     <main id='body-signup'>
-      <section id='login-container'>
-        <div id='login-logo-name'>
-          <img src={Logo} alt="Logo" id='login-logoIMG' />
-          <h3 id='login-name'>equatora</h3>
+      <section id='signup-container'>
+        <div id='signup-logo-name'>
+          <img src={Logo} alt="Logo" id='signup-logoIMG' />
+          <h3 id='signup-name'>equatora</h3>
         </div>
-        <div style={{ width: '100%' }}><GoogleAuth onClick={googleLogin} /></div>
+        <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleSignup} /></div>
 
         <div id='auth'>
+          <h5 className='typeOfInput'>Username</h5>
+          <input type="text" className='inputAuth' id="usernameInput" placeholder='Choose a unique username' maxLength="20" required></input>
           <Auth />
-          <Link to="/password" className="btnForgotPass" id='forgotPass'>
-            Forgot your password?
-          </Link>
+          <h5 className='typeOfInput'>Password Confirmation</h5>
+          <input type="text" className='inputAuth' id="passwordConfirmInput" placeholder='Confirm your password' maxLength="128" required></input>
 
-          <button type="submit" id="login-btn">
-            Log In
+          <button type="submit" id="signup-btn">
+            Sign Up
           </button>
           <div id='auth-other-options'>
             <p className='auth-other-options-text'>
-              Already got an account?{' '}
-              <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
-                Log in.
+              Already have an account?{' '}
+              <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                Log In
               </Link>
             </p>
 
@@ -39,6 +48,8 @@ const Signup = () => {
           </div>
         </div>
       </section>
+
+      <aside id="background-container"><BackgroundPolygons /></aside>
     </main>
   );
 };

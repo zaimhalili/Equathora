@@ -35,14 +35,6 @@
     font-size: 36px;
 }
 
-.straightLine {
-    height: 1px;
-    width: 100px;
-    display: flex;
-    background-color: black;
-}
-
-
 #background-container {
     width: 60%;
     height: 100%;

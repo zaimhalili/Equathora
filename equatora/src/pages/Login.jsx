@@ -7,7 +7,7 @@ import Auth from '../components/Auth.jsx';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
-  function googleLogin() {
+  function GoogleLogin() {
     alert("yeah buddy like this is gonna work");
   }
 
@@ -19,7 +19,7 @@ const Login = () => {
             <img src={Logo} alt="Logo" id='login-logoIMG' />
             <h3 id='login-name'>equatora</h3>
           </div>
-          <div style={{ width: '100%' }}><GoogleAuth onClick={googleLogin} /></div>
+          <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleLogin} /></div>
 
           <div id='auth'>
             <Auth />

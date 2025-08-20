@@ -1,0 +1,117 @@
+#body-signup {
+    height: 100vh;
+    min-height: 100vh;
+    background-color: white;
+    width: 100vw;
+    display: flex;
+}
+
+#body-signup {
+    height: 100vh;
+    min-height: 100vh;
+    background-color: white;
+    width: 100vw;
+    display: flex;
+}
+
+#signup-container {
+    width: 40%;
+    height: auto;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 0 80px;
+}
+
+#signup-logo-name {
+    width: 100%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#signup-name {
+    display: flex;
+    align-items: center;
+    font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: var(--secondary-color);
+    margin: 0;
+    height: 100%;
+    width: 200px;
+    font-size: 36px;
+}
+
+#background-container {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+#auth {
+    width: 100%;
+    height: 500px;
+    margin-top: 20px;
+}
+
+#forgotPass {
+    color: var(--dark-accent-color);
+    font-size: 15px;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    width: 100%;
+    height: auto;
+    text-align: left;
+}
+
+#forgotPass:hover {
+    text-decoration: underline;
+}
+
+#signup-btn {
+    width: 100%;
+    height: 50px;
+    background-color: var(--dark-accent-color);
+    color: white;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    margin: 10px 0 10px 0;
+    border: 1px solid var(--secondary-color);
+    transition: 0.2s ease-out;
+    box-shadow: 0 5px 5px 0 rgba(43, 45, 66, 0.5);
+}
+
+#signup-btn:hover {
+    background-color: rgb(128, 16, 35);
+}
+
+#auth-other-options {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    gap: 5px;
+}
+
+.auth-other-options-text {
+    color: black;
+}
+
+.other-option-link {
+    color: var(--dark-accent-color);
+}
