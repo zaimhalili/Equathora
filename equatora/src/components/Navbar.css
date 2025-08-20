@@ -5,13 +5,14 @@
     display: flex ;
     align-items: center;
     padding: 0 30px;
+    position: sticky;
 }
 
 #navbar-left {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 20px;
+    list-style: none;
 }
 
 #navbar-logo {
@@ -22,6 +23,7 @@
 #navbar-name {
     color: var(--secondary-color);
     font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 20px;
 }
 
 #navbar-dashboard {
@@ -30,11 +32,22 @@
     justify-content: center;
     align-items: center;
     list-style: none;
+    font-weight: 700;
 }
 
 .navbar-pages {
     color: var(--secondary-color);
     font-family: 'Public Sans', sans-serif;
+    height: 100%;
+    width: auto;
+    list-style: none;
+    font-weight: 500;
+    font-size: 18px;
+    padding-left: 40px;
+}
+
+#navbar-left a:hover{
+    color: var(--accent-color);
 }
 
 #navbar-right {
@@ -44,6 +57,7 @@
 }
 
 #avatarIMG{
-    height: 60px;
-    width: 60px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
 }
