@@ -83,7 +83,15 @@
 }
 
 
-@media only screen and (max-width: 600px) {}
+@media only screen and (max-width: 600px) {
+    .navbar-pages{
+        display: none;
+    }
+
+    #navbar-right{
+        display: none;
+    }
+}
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {}

@@ -20,7 +20,7 @@ const Navbar = () => {
               <img src={Logo} alt="Logo" id="navbar-logo" />
             </Link>
           </li>
-          <li><Link to="/"><h3 id="navbar-name">equatora</h3></Link></li>
+          <li><Link to="/dashboard"><h3 id="navbar-name">equatora</h3></Link></li>
           <li><Link to="/learn" className='navbar-pages'>Learn</Link></li>
           <li><Link to="/discover" className='navbar-pages'>Discover</Link></li>
           <li><Link to="/more" className='navbar-pages'>More</Link></li>
@@ -29,15 +29,18 @@ const Navbar = () => {
         <ul id="navbar-right">
           <li><Link to="/notifications"><img src={Notifications} alt="notifications" /></Link></li>
           <li><Link to="/achievements"><img src={Achievements} alt="achievements" /></Link></li>
-          <li><Link to="/profile"><img src={GuestAvatar} alt="avatar" id='avatarIMG'/></Link></li>
+          <li><Link to="/profile"><img src={GuestAvatar} alt="avatar" id='avatarIMG' /></Link></li>
 
-          <li id="sidebar-icon" onClick={() => setSidebarOpen(true)}>
-            <div className="sidebar-icon-line" />
-            <div className="sidebar-icon-line" />
-            <div className="sidebar-icon-line" />
-          </li>
+
         </ul>
+        <aside id="sidebar-icon" onClick={() => setSidebarOpen(true)}>
+          <div className="sidebar-icon-line" />
+          <div className="sidebar-icon-line" />
+          <div className="sidebar-icon-line" />
+        </aside>
+
       </header>
+
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
     </>
   );
