@@ -52,12 +52,32 @@
 
 #navbar-right {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     align-items: center;
+    list-style: none;
+    width: 30%;
 }
 
 #avatarIMG {
     height: 40px;
     width: 40px;
     border-radius: 50%;
+}
+
+#sidebar-icon {
+    height: 12vh;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1vh;
+}
+
+.sidebar-icon-line {
+    border: 2px solid black;
+    width: 20px;
+    height: 2px;
+    border-radius: 100px;
+    background-color: var(--secondary-color);
 }

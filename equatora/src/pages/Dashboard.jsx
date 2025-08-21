@@ -6,7 +6,7 @@ import Footer from '../components/Footer.jsx';
 const Dashboard = () => {
   return (
     <>
-      <main>
+      <main id='body-dashboard'>
         <header>
           <Navbar />
         </header>

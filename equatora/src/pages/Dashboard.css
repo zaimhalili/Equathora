@@ -1,0 +1,5 @@
+#body-dashboard{
+    width: 100%;
+    background-color: var(--french-gray);
+    min-height: 100vh;
+}
