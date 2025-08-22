@@ -49,10 +49,7 @@ const Dashboard = () => {
 
         <article>
           <YourTrack />
-        </article>
-        <figure>
-          <img src="" alt="" />
-        </figure>        
+        </article>      
 
         <footer>
           <Footer />
