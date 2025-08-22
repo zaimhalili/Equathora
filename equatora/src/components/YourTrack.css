@@ -1,13 +1,14 @@
-#your-track-container{
+#your-track-container {
     margin-top: 5rem;
     height: auto;
     width: 100%;
-    color:var(--secondary-color);
+    color: var(--secondary-color);
     padding: 5vh 4vw;
     display: flex;
+    align-items: center;
 }
 
-#your-track-container h3{
+#your-track-container h3 {
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     color: var(--secondary-color);
     font-size: 2.5rem;
@@ -18,17 +19,20 @@
 #your-track-container h4 {
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     color: var(--secondary-color);
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 700;
     width: 100%;
+    padding-left: 2vw;
 }
 
-.prg-bar-arrow{
+.prg-bar-arrow {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-left: 2vw;
 }
-#progressBar-container{
+
+#progressBar-container {
     width: 80%;
     height: 2rem;
     background-color: var(--french-gray);
@@ -38,7 +42,7 @@
     justify-content: space-between;
 }
 
-#arrowProblems{
+#arrowProblems {
     width: 20%;
     height: 2rem;
     display: flex;
@@ -47,7 +51,7 @@
     transition: 0.3s ease-in;
 }
 
-#arrowProblemsIMG{
+#arrowProblemsIMG {
     height: 100%;
     width: 3rem;
 }
@@ -56,13 +60,14 @@
     transform: translateX(15px);
 }
 
-#measure-progressBar{
+#measure-progressBar {
     background-color: var(--dark-accent-color);
     width: 50%;
     height: 100%;
     border-radius: 1rem;
 }
-#progress-bar-track{
+
+#progress-bar-track {
     display: flex;
     flex-direction: column;
     gap: 2vh;
@@ -70,15 +75,15 @@
     height: auto;
 }
 
-#noProblemsSolved{
+#noProblemsSolved {
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-size: 1rem;
+    padding-left: 2vw;
 }
 
-#your-track-container figure{
+#your-track-container figure {
     width: 50%;
     height: 100%;
     display: flex;
     justify-content: center;
 }
-
