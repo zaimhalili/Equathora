@@ -7,7 +7,7 @@ import Notifications from '../assets/images/notifications.png';
 import Achievements from '../assets/images/achievements.png';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
-
+import Menu from '../assets/images/menu.svg';
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -28,18 +28,16 @@ const Navbar = () => {
 
         <div id='nb-sb'>
           <ul id="navbar-right">
-            <li className='hide-navbar'><Link to="/notifications"><img src={Notifications} alt="notifications" /></Link></li>
-            <li className='hide-navbar'><Link to="/achievements"><img src={Achievements} alt="achievements" /></Link></li>
+            <li className='hide-navbar'><Link to="/notifications"><img src={Notifications} alt="notifications" id='notifications'/></Link></li>
+            <li className='hide-navbar'><Link to="/achievements"><img src={Achievements} alt="achievements" id='achievements'/></Link></li>
             <li className='hide-navbar'><Link to="/profile"><img src={GuestAvatar} alt="avatar" id='avatarIMG' /></Link></li>
             <li><aside id="sidebar-icon" onClick={() => setSidebarOpen(true)}>
-              <div className="sidebar-icon-line" />
-              <div className="sidebar-icon-line" />
-              <div className="sidebar-icon-line" />
+              <img src={Menu} alt="sidebar" id='menu-icon' />
             </aside></li>
           </ul>
-          
+
         </div>
-        
+
 
       </header>
 

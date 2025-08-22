@@ -6,6 +6,9 @@ import GuestAvatar from '../assets/images/guestAvatar.png';
 import X from '../assets/images/x.svg';
 
 const Sidebar = ({ isOpen, onClose }) => {
+    function LogOut() {
+        alert("Logged out successfully");
+    }
     return (
         <>
             {/* Overlay click closes sidebar */}
@@ -55,12 +58,15 @@ const Sidebar = ({ isOpen, onClose }) => {
                         </Link>
                     </li>
                     <li>
+                        <button type="submit" onClick={LogOut} className="navbar-pages" id='logout'>
+                            Logout
+                        </button>
+                    </li>
+                    <li>
                         <Link to="/profile" id='sidebar-avatar'>
-                            <img src={GuestAvatar} alt="avatar" id="avatarIMG" />
+                            <img src={GuestAvatar} alt="avatar" id="sidebar-avatarIMG" />
                         </Link>
                     </li>
-
-                    {/* Close button */}
                     
                 </ul>
             </aside>

@@ -57,8 +57,8 @@
 }
 
 #avatarIMG {
-    height: 40px;
-    width: 40px;
+    height:30px;
+    width: 30px;
     border-radius: 50%;
 }
 
@@ -79,16 +79,14 @@
     gap: 1vh;
 }
 
-.sidebar-icon-line {
-    border: 2px solid black;
-    width: 20px;
-    height: 2px;
-    border-radius: 100px;
-    background-color: var(--secondary-color);
-}
 
 #navbar-right li {
     padding-left: 20px;
+}
+
+#menu-icon{
+    height: 30px;
+    width: 30px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -98,25 +96,13 @@
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-    .hide-navbar {
-        display: none;
-    }
-}
+@media only screen and (min-width: 600px) {}
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-    .hide-navbar {
-        display: flex;
-    }
-}
+@media only screen and (min-width: 768px) {}
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-    .hide-navbar {
-        display: flex;
-    }
-}
+@media only screen and (min-width: 992px) {}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {}
