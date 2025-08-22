@@ -54,7 +54,7 @@
 #whereToStart-options {
     margin-top: 2.5rem;
     aspect-ratio: 16/9;
-    height: 18rem;
+    height: 16rem;
     width: auto;
     gap: 5vw;
     display: flex;
@@ -63,8 +63,8 @@
 
 .whereToStart-block {
     aspect-ratio: 1;
-    height: 18rem;
-    width: 18rem;
+    height: 16rem;
+    width: 17rem;
     background-color: var(--main-color);
     border: 1px solid var(--secondary-color);
     box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.8);
@@ -85,7 +85,7 @@
 .whereToStart-block h6{
     color: var(--secondary-color);
     font-family: 'Public Sans', Arial, Helvetica, sans-serif;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 400;
     width: 80%;
     height: 8rem;

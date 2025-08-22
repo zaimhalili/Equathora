@@ -1,11 +1,31 @@
 #your-track-container{
     margin-top: 5rem;
-    height: 50rem;
+    height: auto;
+    width: 100%;
     background-color: bisque;
+    color:var(--secondary-color);
+    padding: 5vh 4vw;
+    display: flex;
 }
 
 #your-track-container h3{
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     color: var(--secondary-color);
-
+    font-size: 2.5rem;
+    font-weight: 700;
 }
+
+#progressBar-container{
+    width: 20rem;
+    height: 2rem;
+    background-color: black;
+}
+#progress-bar-track{
+    width: 50%;
+    height: auto;
+}
+
+#your-track-container figure{
+    width: 50%;
+}
+

@@ -1,6 +1,7 @@
 import React from 'react';
 import './YourTrack.css';
 import QuestionMark from '../assets/images/questionMark.svg';
+import LilArrow from '../assets/images/lilArrow.svg';
 
 
 const YourTrack = () => {
@@ -13,13 +14,13 @@ const YourTrack = () => {
                     <div id='progressBar-container'>
                         <div id='measure-progressBar'></div>
                     </div>
-                    <img src="" alt="" />
+                    <img src={LilArrow} alt="arrow" />
                     <div id='noProblemsSolved'>
                         <span id='countProblemsSolved'>25</span>/50 Problems Solved
                     </div>
                 </div>
                 <figure>
-                    <img src="" alt="" />
+                    <img src={QuestionMark} alt="question mark" />
                 </figure>
             </article>
         </>
