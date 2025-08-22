@@ -1,8 +1,103 @@
-#body-dashboard{
+#body-dashboard {
     width: 100%;
-    background-color: var(--french-gray);
+    background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color));
     min-height: 100vh;
 }
+
+#hero-dashboard {
+    width: 100vw;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 5vh 4vw 0 4vw;
+}
+
+#welcome-dashboard {
+    color: var(--secondary-color);
+    font-family: 'Inter', sans-serif;
+    width: 50%;
+    padding-right: 1vw;
+    height: 100%;
+    padding-top: 10vh;
+}
+
+#hero-dashboard h1 {
+    font-size: 4.5rem;
+    margin-bottom: 2vh;
+}
+
+#hero-dashboard h4 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    width: 80%;
+}
+
+#teacher-container {
+    padding-left: 1vw;
+    height: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+#whereToStart-container {
+    padding-left: 4vw;
+}
+
+#whereToStart-container h3 {
+    color: var(--secondary-color);
+    font-family: 'Inter', sans-serif;
+    font-size: 2.5rem;
+}
+
+#whereToStart-options {
+    margin-top: 2.5rem;
+    aspect-ratio: 16/9;
+    height: 18rem;
+    width: auto;
+    gap: 5vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.whereToStart-block {
+    aspect-ratio: 1;
+    height: 18rem;
+    width: 18rem;
+    background-color: var(--main-color);
+    border: 1px solid var(--secondary-color);
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.8);
+    transition: 0.3s ease-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    gap: 1rem;
+}
+
+.whereToStart-block img{
+    height: 8rem;
+    width: 8rem;
+}
+
+.whereToStart-block h6{
+    color: var(--secondary-color);
+    font-family: 'Public Sans', Arial, Helvetica, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    width: 80%;
+    height: 8rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.whereToStart-block:hover{
+    zoom: 1.1;
+}
+
 
 @media only screen and (max-width: 600px) {}
 
