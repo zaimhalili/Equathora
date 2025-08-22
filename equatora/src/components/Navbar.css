@@ -62,13 +62,13 @@
     border-radius: 50%;
 }
 
-#nb-sb{
+#nb-sb {
     width: 40%;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
     align-items: center;
-    gap: 20px;
 }
+
 #sidebar-icon {
     height: 12vh;
     width: auto;
@@ -89,7 +89,7 @@
 
 
 @media only screen and (max-width: 600px) {
-    .hide-navbar{
+    .hide-navbar {
         display: none;
     }
 }
