@@ -75,6 +75,7 @@
     flex-direction: column;
     padding: 2rem 1rem;
     gap: 1rem;
+    cursor: pointer;
 }
 
 .whereToStart-block img{
