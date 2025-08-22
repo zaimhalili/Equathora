@@ -1,6 +1,6 @@
 #body-dashboard {
     width: 100%;
-    background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color));
+    background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color) 30%);
     min-height: 100vh;
 }
 
