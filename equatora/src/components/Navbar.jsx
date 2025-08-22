@@ -21,24 +21,23 @@ const Navbar = () => {
             </Link>
           </li>
           <li><Link to="/dashboard"><h3 id="navbar-name">equatora</h3></Link></li>
-          <li><Link to="/learn" className='navbar-pages'>Learn</Link></li>
-          <li><Link to="/discover" className='navbar-pages'>Discover</Link></li>
-          <li><Link to="/more" className='navbar-pages'>More</Link></li>
+          <li className='hide-navbar'><Link to="/learn" className='navbar-pages'>Learn</Link></li>
+          <li className='hide-navbar'><Link to="/discover" className='navbar-pages'>Discover</Link></li>
+          <li className='hide-navbar'><Link to="/more" className='navbar-pages'>More</Link></li>
         </ul>
 
         <div id='nb-sb'>
           <ul id="navbar-right">
-            <li><Link to="/notifications"><img src={Notifications} alt="notifications" /></Link></li>
-            <li><Link to="/achievements"><img src={Achievements} alt="achievements" /></Link></li>
-            <li><Link to="/profile"><img src={GuestAvatar} alt="avatar" id='avatarIMG' /></Link></li>
-
-
+            <li className='hide-navbar'><Link to="/notifications"><img src={Notifications} alt="notifications" /></Link></li>
+            <li className='hide-navbar'><Link to="/achievements"><img src={Achievements} alt="achievements" /></Link></li>
+            <li className='hide-navbar'><Link to="/profile"><img src={GuestAvatar} alt="avatar" id='avatarIMG' /></Link></li>
+            <li><aside id="sidebar-icon" onClick={() => setSidebarOpen(true)}>
+              <div className="sidebar-icon-line" />
+              <div className="sidebar-icon-line" />
+              <div className="sidebar-icon-line" />
+            </aside></li>
           </ul>
-          <aside id="sidebar-icon" onClick={() => setSidebarOpen(true)}>
-            <div className="sidebar-icon-line" />
-            <div className="sidebar-icon-line" />
-            <div className="sidebar-icon-line" />
-          </aside>
+          
         </div>
         
 
