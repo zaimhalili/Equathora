@@ -1,5 +1,6 @@
 import React from 'react';
 import './YourTrack.css';
+import QuestionMark from '../assets/images/questionMark.svg';
 
 
 const YourTrack = () => {
@@ -17,6 +18,9 @@ const YourTrack = () => {
                         <span id='countProblemsSolved'>25</span>/50 Problems Solved
                     </div>
                 </div>
+                <figure>
+                    <img src="" alt="" />
+                </figure>
             </article>
         </>
     );

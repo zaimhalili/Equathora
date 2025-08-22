@@ -1,7 +1,7 @@
 import React from 'react';
 import './Landing.css';
 import Logo from '../assets/images/logo.png';
-import Studying from '../assets/images/studying.png'
+import Studying from '../assets/images/studying.svg'
 import { Link } from 'react-router-dom';
 
 const Landing = () => {

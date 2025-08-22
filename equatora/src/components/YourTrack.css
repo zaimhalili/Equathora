@@ -1,0 +1,11 @@
+#your-track-container{
+    margin-top: 5rem;
+    height: 50rem;
+    background-color: bisque;
+}
+
+#your-track-container h3{
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    color: var(--secondary-color);
+
+}

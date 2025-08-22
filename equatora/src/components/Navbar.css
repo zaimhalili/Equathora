@@ -23,7 +23,7 @@
 #navbar-name {
     color: var(--secondary-color);
     font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 20px;
+    font-size: 1.5rem;
 }
 
 #navbar-dashboard {
@@ -81,7 +81,7 @@
 
 
 #navbar-right li {
-    padding-left: 20px;
+    padding-left: 2rem;
 }
 
 #menu-icon{
