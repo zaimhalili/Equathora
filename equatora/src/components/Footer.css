@@ -88,8 +88,8 @@
 
 .links a:hover{
     color: var(--main-color);
-    zoom: 1.2;
-    /* text-decoration: underline; */
+    /* zoom: 1.2; */
+    text-decoration: underline;
 }
 
 .rotated-bg {
