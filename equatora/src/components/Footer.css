@@ -7,3 +7,48 @@
     justify-content: center;
 }
 
+#footer-container #left{
+    width: 20%;
+    height: 60vh;
+    flex-direction: column;
+}
+
+#footer-container #center{
+    width: 60%;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+#socialMedia-container{
+    padding-top: 3rem;
+}
+
+
+
+.socialMedia:focus {
+    outline: 3px solid #0077b5;
+    outline-offset: 4px;
+    border-radius: 50%;
+    /* Looks nice with icons */
+}
+
+.socialMedia{
+    height: 4rem;
+    width: 4rem;
+    background-color: yellow;
+    border-radius: 50%;
+    font-size: 40px;
+}
+
+#center h1{
+    font-family: 'Inter', serif;
+    font-size: 2.4rem;
+}
+#footer-container #right{
+    width: 20%;
+    height: 60vh;
+    flex-direction: column;
+}

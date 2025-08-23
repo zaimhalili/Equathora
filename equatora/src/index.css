@@ -45,6 +45,11 @@ a {
   text-decoration: inherit;
 }
 
+:focus {
+  outline: 2px solid #007cba;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 124, 178, 0.3);
+}
 
 
 /* @media (prefers-color-scheme: light) {
