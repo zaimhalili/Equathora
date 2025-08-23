@@ -7,6 +7,7 @@ import YourTrack from '../components/YourTrack.jsx';
 import Books from '../assets/images/learningBooks.svg';
 import Mentoring from '../assets/images/mentoring.svg';
 import Donate from '../assets/images/donate.svg';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   return (
@@ -32,18 +33,18 @@ const Dashboard = () => {
             Where To Start...
           </h3>
           <div id='whereToStart-options'>
-            <div className="whereToStart-block">
+            <Link to="/learn" className="whereToStart-block">
               <img src={Books} alt="books" />
               <h6>Continue Learning</h6>
-            </div>
-            <div className="whereToStart-block">
+            </Link>
+            <Link to="/" className="whereToStart-block">
               <img src={Mentoring} alt="mentoring" />
               <h6>Try Mentoring</h6>
-            </div>
-            <div className="whereToStart-block">
+            </Link>
+            <Link to="/" className="whereToStart-block">
               <img src={Donate} alt="donating" />
               <h6>Donate to help us grow</h6>
-            </div>
+            </Link>
           </div>
         </article>
 

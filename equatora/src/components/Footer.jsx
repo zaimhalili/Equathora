@@ -11,16 +11,16 @@ const Footer = () => {
   return (
     <>
       <footer id='footer-container'>
-        <div id="left">
-          <Link to="/learn" className='footer-links'>Learn</Link>
-          <Link to="/discover" className='footer-links'>Discover</Link>
-          <Link to="/achievements" className='footer-links'>Achievements</Link>
-          <Link to="/notifications" className='footer-links'>Notifications</Link>
-          <Link to="/profile" className='footer-links'>My Profile</Link>
-        </div>
+        <ul className="links">
+          <li><Link to="/learn" className='footer-links'>Learn</Link></li>
+          <li><Link to="/discover" className='footer-links'>Discover</Link></li>
+          <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
+          <li><Link to="/notifications" className='footer-links'>Notifications</Link></li>
+          <li><Link to="/profile" className='footer-links'>My Profile</Link></li>
+        </ul>
         <div id="center">
           <h1>
-            Your contribution helps us keep this learning platform available for <span style={{ color: 'var(--dark-accent-color)' }}>students worldwide</span>
+            Your contribution helps us keep this learning platform available for <span className='rotated-bg'>students worldwide</span>
           </h1>
           <div id="socialMedia-container">
             <a
@@ -54,13 +54,13 @@ const Footer = () => {
           </div>
           <h2>Equatora</h2>
         </div>
-        <div id="right">
-          <Link to="/" className='footer-links'>About Us</Link>
-          <Link to="/" className='footer-links'>Legal & Policies</Link>
-          <Link to="/" className='footer-links'>Cookie Policy</Link>
-          <Link to="/" className='footer-links'>FAQS</Link>
-          <Link to="/" className='footer-links'>Report</Link>
-        </div>
+        <ul className="links">
+            <li><Link to="/" className='footer-links'>About Us</Link></li>
+            <li><Link to="/" className='footer-links'>Legal & Policies</Link></li>
+            <li><Link to="/" className='footer-links'>Cookie Policy</Link></li>
+            <li><Link to="/" className='footer-links'>FAQS</Link></li>
+            <li><Link to="/" className='footer-links'>Report</Link></li>
+        </ul>
       </footer>
     </>
   );
