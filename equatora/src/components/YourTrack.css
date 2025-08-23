@@ -1,9 +1,9 @@
 #your-track-container {
-    margin-top: 5rem;
+    margin-top: 1rem;
     height: auto;
     width: 100%;
     color: var(--secondary-color);
-    padding: 5vh 4vw;
+    padding: 6vh 4vw;
     display: flex;
     align-items: center;
 }
@@ -42,8 +42,8 @@
     justify-content: space-between;
 }
 
-#progressBar-container:hover #arrowProblems{
-    
+#progressBar-container:hover + #arrowProblems{
+    transform: translateX(15px);
 }
 
 #arrowProblems {
