@@ -13,9 +13,9 @@ const YourTrack = () => {
                     <h3>Your Track</h3>
                     <h4>Problems</h4>
                     <div className="prg-bar-arrow">
-                        <div id='progressBar-container'>
+                        <Link to="/problems" id='progressBar-container'>
                             <div id='measure-progressBar' />
-                        </div>
+                        </Link>
                         <Link to="/problems" className="arrowProblems" id='arrowProblems'>
                             <img src={LilArrow} alt="arrow" id='arrowProblemsIMG' />
                         </Link>

@@ -42,6 +42,10 @@
     justify-content: space-between;
 }
 
+#progressBar-container:hover #arrowProblems{
+    
+}
+
 #arrowProblems {
     width: 20%;
     height: 2rem;
