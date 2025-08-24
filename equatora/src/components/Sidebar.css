@@ -16,6 +16,17 @@
     color: var(--secondary-color);
 }
 
+.sidebar-pages {
+    color: var(--secondary-color);
+    font-family: 'Public Sans', sans-serif;
+    height: 100%;
+    width: auto;
+    list-style: none;
+    font-weight: 500;
+    font-size: 18px;
+    padding-left: 40px;
+}
+
 #sidebar ul {
     list-style: none;
     width: 100%;

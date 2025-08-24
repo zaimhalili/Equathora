@@ -24,41 +24,41 @@ const Sidebar = ({ isOpen, onClose }) => {
                 style={{ right: isOpen ? '0' : '-300px' }}
             >
                 <ul>
-                    <li onClick={onClose} className="navbar-pages" id='close-sidebar'>
+                    <li onClick={onClose} className="sidebar-pages" id='close-sidebar'>
                         <img src={X} alt="Close icon X" id='x-icon'/>
                     </li>
                     <li>
-                        <Link to="/dashboard" className="navbar-pages">
+                        <Link to="/dashboard" className="sidebar-pages">
                             Dashboard
                         </Link>
                     </li>
                     <li>
-                        <Link to="/learn" className="navbar-pages">
+                        <Link to="/learn" className="sidebar-pages">
                             Learn
                         </Link>
                     </li>
                     <li>
-                        <Link to="/discover" className="navbar-pages">
+                        <Link to="/discover" className="sidebar-pages">
                             Discover
                         </Link>
                     </li>
                     <li>
-                        <Link to="/more" className="navbar-pages">
+                        <Link to="/more" className="sidebar-pages">
                             More
                         </Link>
                     </li>
                     <li>
-                        <Link to="/notifications" className="navbar-pages">
+                        <Link to="/notifications" className="sidebar-pages">
                             Notifications
                         </Link>
                     </li>
                     <li>
-                        <Link to="/achievements" className="navbar-pages">
+                        <Link to="/achievements" className="sidebar-pages">
                             Achievements
                         </Link>
                     </li>
                     <li>
-                        <button type="submit" onClick={LogOut} className="navbar-pages" id='logout'>
+                        <button type="submit" onClick={LogOut} className="sidebar-pages" id='logout'>
                             Logout
                         </button>
                     </li>

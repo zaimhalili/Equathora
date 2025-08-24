@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import './Navbar.css';
 import Logo from '../assets/images/logo.png';
 import { Link } from 'react-router-dom';
-import Notifications from '../assets/images/Notifications.svg';
-import Achievements from '../assets/images/Star.svg';
+import { FaBell, FaTrophy } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
 import Menu from '../assets/images/menu.svg';
@@ -28,8 +27,16 @@ const Navbar = () => {
 
         <div id='nb-sb'>
           <ul id="navbar-right">
-            <li className='hide-navbar'><Link to="/notifications"><img src={Notifications} alt="notifications" id='notifications'/></Link></li>
-            <li className='hide-navbar'><Link to="/achievements"><img src={Achievements} alt="achievements" id='achievements'/></Link></li>
+            <li className='hide-navbar'>
+              <Link to="/notifications" id='notifications' className='navbar-icon-link'>
+                <FaBell size={24} />
+              </Link>
+            </li>
+            <li className='hide-navbar'>
+              <Link to="/achievements" id='achievements' className='navbar-icon-link'>
+                <FaTrophy size={24} />
+              </Link>
+            </li>
             <li className='hide-navbar'><Link to="/profile"><img src={GuestAvatar} alt="avatar" id='avatarIMG' /></Link></li>
             <li><aside id="sidebar-icon" onClick={() => setSidebarOpen(true)}>
               <img src={Menu} alt="sidebar" id='menu-icon' />
