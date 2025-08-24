@@ -12,10 +12,10 @@ const YourTrack = () => {
                 <div id='progress-bar-track'>
                     <h3>Your Track</h3>
                     <h4>Problems</h4>
+                    <Link to="/problems" id='progressBar-container'>
+                        <progress value={50} max={100} id='progressBar'></progress>
+                    </Link>
                     <div className="prg-bar-arrow">
-                        <Link to="/problems" id='progressBar-container'>
-                            <div id='measure-progressBar' />
-                        </Link>
                         <Link to="/problems" className="arrowProblems" id='arrowProblems'>
                             <img src={LilArrow} alt="arrow" id='arrowProblemsIMG' />
                         </Link>
