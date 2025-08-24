@@ -23,7 +23,7 @@ const YourTrack = () => {
 
 
                     <div id='noProblemsSolved'>
-                        <span id='countProblemsSolved'>25</span>/50 Problems Solved
+                        <span id='completed-problems'>25</span>/<span className='problems-count'>50</span> Problems Solved
                     </div>
                 </div>
                 <figure>
