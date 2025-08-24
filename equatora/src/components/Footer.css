@@ -61,8 +61,10 @@
 
 #center h2{
     font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    color: var(--light-accent-color);
+    color: var(--really-light-accent);
     font-size: 2.4rem;
+    letter-spacing: 1px;
+
 }
 
 .links{
@@ -93,16 +95,12 @@
 }
 
 .rotated-bg {
-    /* This keeps the text in place */
     display: inline-block;
     position: relative;
     padding: 8px 12px;
     z-index: 1;
-    /* Keeps text above the background */
     color: inherit;
-    /* Ensures text color stays normal */
     font-weight: inherit;
-    /* Keeps bold if in h1 */
 }
 
 .rotated-bg::before {
