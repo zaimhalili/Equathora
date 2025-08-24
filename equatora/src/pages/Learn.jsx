@@ -5,19 +5,28 @@ import Footer from '../components/Footer.jsx';
 import './Learn.css';
 import Idea from '../assets/images/idea.svg';
 import { FaSearch } from 'react-icons/fa';
+import ProblemCard from '../components/ProblemCard.jsx';
+import { useParams } from 'react-router-dom';
 
-const Learn = (problems) => {
+const Learn = () => {
 
-  const [searchTerm, setSearchTerm] = useState('');
+  // const [searchTerm, setSearchTerm] = useState('');
+  // const filteredProblems = useMemo(() => {
+  //   if (!searchTerm.trim() || !problems) return problems || [];
 
-  // ✅ Memoize filtered results
-  const filteredProblems = useMemo(() => {
-    if (!searchTerm.trim() || !problems) return problems || [];
+  //   return problems.filter(problem =>
+  //     problem.title.toLowerCase().includes(searchTerm.toLowerCase().trim())
+  //   );
+  // }, [searchTerm, problems]);
 
-    return problems.filter(problem =>
-      problem.title.toLowerCase().includes(searchTerm.toLowerCase().trim())
-    );
-  }, [searchTerm, problems]);
+  const { groupId } = useParams();
+
+  // Mock data (will become API call later)
+  const problems = [
+    { id: 1, title: "Two Sum", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", solved: true },
+    { id: 2, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", solved: false },
+    { id: 3, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", solved: false }
+  ];
 
   return (
     <>
@@ -54,7 +63,9 @@ const Learn = (problems) => {
             </div>
           </article>
           <article id='problems-container'>
-
+            {problems.map(problem => (
+              <ProblemCard key={problem.id} problem={problem} />
+            ))}
           </article>
         </section>
 

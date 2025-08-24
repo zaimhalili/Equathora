@@ -59,6 +59,10 @@
     margin-bottom: 2rem;
 }
 
+#problem-searchbar:focus{
+    outline: 2px solid var(--accent-color);
+    box-shadow: 0 0 5px 0 var(--accent-color);
+}
 #problem-searchbar {
     height: 100%;
     width: 100%;
@@ -106,19 +110,29 @@
     color: var(--secondary-color);
     font-family: 'Public Sans', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 1rem;
+    font-weight: 500;
     border: 1px solid var(--secondary-color);
     border-radius: 20px;
     transition: 0.2s ease-in-out;
+    cursor: pointer;
 }
 
 .filtering:hover{
-    background-color: var(--mid-main-secondary);
+    background-color: var(--really-light-accent);
     color: var(--main-color);
 }
 
+.filtering:focus{
+    outline: 2px solid var(--accent-color);
+    box-shadow: 0 0 5px 0 var(--accent-color);
+}
+
 #problems-container{
-    height: auto;
+    height: 100%;
     width: 100%;
     display: flex;
+    align-items: flex-start;
     justify-content: center;
+    gap: 1rem;
+    margin-top: 7rem;
 }
