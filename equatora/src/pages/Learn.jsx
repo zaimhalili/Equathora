@@ -23,14 +23,12 @@ const Learn = (problems) => {
         <header>
           <Navbar></Navbar>
         </header>
-        <section>
-          <article>
+        <section id='hero-learn'>
             <figure><img src={Idea} alt="idea image" /></figure>
             <div id="learn-explore">
               <h1>Explore the Math exercises on Equatora</h1>
               <h4>Unlock more exercises as you progress. They're great practise and fun to do!</h4>
             </div>
-          </article>
           <article id='search-filtering'>
             <div id="searchbar-container">
               <input type="search" name="problem-searchbar" id="problem-searchbar" placeholder='Search by title' value={searchTerm}
@@ -43,6 +41,8 @@ const Learn = (problems) => {
               <button type="button" className='filtering'>In Progress <span className='inprogress-problems'>0</span></button>
               <button type="button" className='filtering'>Premium <span className='premium-problems'>0</span></button>
             </div>
+          </article>
+          <article id='problems-container'>
 
           </article>
         </section>

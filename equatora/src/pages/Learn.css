@@ -2,3 +2,18 @@
     background-color: thistle;
     min-height: 100vh;
 }
+
+#learn-hero{
+    width: 100%;
+    height: auto;
+}
+
+#learn-hero figure{
+    width: 40%;
+    height: 100%;
+}
+
+#learn-explore{
+    font-family: 'Public Sans', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: var(--secondary-color);
+}
