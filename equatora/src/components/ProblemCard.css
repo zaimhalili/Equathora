@@ -1,36 +1,42 @@
-.problem-card{
-    width:50%;
+.problem-card {
+    width: 50%;
     height: 8rem;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    gap: 3rem;
+    flex: 0 0 calc(50% - 0.5rem);
+    box-sizing: border-box;
     border-radius: 20px;
-    background-color: var(--really-light-accent);
+    background-color: white;
     border: 1px solid var(--secondary-color);
+    transition: 0.2s ease-out;
+    padding: 1rem;
 }
 
-.problem-card a{
-    flex: 1 1 300px;
+.problem-card:hover{
+    transform: scale(1.02);
+}
+
+.problem-card a {
     color: var(--secondary-color);
     font-family: 'Public Sans';
-    min-width: 50%;
 }
-.problem-card-content{
+
+.problem-card-content {
     display: flex;
     flex-direction: column;
 }
 
-.problem-card-content h3{
+.problem-card-content h3 {
     font-family: 'Public Sans', Arial, Helvetica, sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     text-align: center;
 }
 
-.problem-meta{
+.problem-meta {
     font-family: "Public Sans", Arial, Helvetica, sans-serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     flex-direction: column;
