@@ -37,12 +37,46 @@
     height: 2rem;
     background-color: var(--french-gray);
     border-radius: 1rem;
-    flex-direction: row;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
-#progressBar-container:hover + #arrowProblems{
+/* For custom bar */
+#measure-progressBar {
+    background-color: var(--dark-accent-color);
+    height: 100%;
+    border-radius: 1rem;
+    transition: width 0.3s ease;
+}
+
+/* For real progress element */
+.track-progress {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    border: none;
+    background-color: var(--french-gray);
+}
+
+.track-progress::-webkit-progress-bar {
+    background-color: var(--french-gray);
+    border-radius: 1rem;
+}
+
+.track-progress::-webkit-progress-value {
+    background-color: var(--dark-accent-color);
+    border-radius: 1rem;
+}
+
+.track-progress::-moz-progress-bar {
+    background-color: var(--dark-accent-color);
+    border-radius: 1rem;
+}
+
+
+#progressBar-container:hover+#arrowProblems {
     transform: translateX(15px);
 }
 
@@ -52,7 +86,8 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    transition: 0.3s ease-in;
+    transition: transform 0.3s ease-in;
+    margin-left: 1rem;
 }
 
 #arrowProblemsIMG {
@@ -62,13 +97,6 @@
 
 #arrowProblems:hover {
     transform: translateX(15px);
-}
-
-#measure-progressBar {
-    background-color: var(--dark-accent-color);
-    width: 50%;
-    height: 100%;
-    border-radius: 1rem;
 }
 
 #progress-bar-track {
@@ -92,16 +120,30 @@
     justify-content: center;
 }
 
-@media only screen and (max-width: 600px) {}
+/* Responsive */
+@media (max-width: 768px) {
+    #your-track-container {
+        flex-direction: column;
+        text-align: center;
+    }
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {}
+    #progress-bar-track,
+    #your-track-container figure {
+        width: 100%;
+    }
 
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {}
+    .prg-bar-arrow {
+        padding-left: 0;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {}
+    #progressBar-container {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
 
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {}
+    #arrowProblems {
+        margin-left: 0;
+    }
+}
