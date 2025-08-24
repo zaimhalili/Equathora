@@ -41,8 +41,10 @@
 }
 
 #learn-explore h4 {
+    padding-top: 1rem;
     font-weight: 550;
     font-size: 1.75rem;
+    width: 90%;
 }
 
 #search-filtering {
