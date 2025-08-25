@@ -9,31 +9,32 @@ import ProblemCard from '../components/ProblemCard.jsx';
 import { useParams } from 'react-router-dom';
 
 const Learn = () => {
-
-  // const [searchTerm, setSearchTerm] = useState('');
-  // const filteredProblems = useMemo(() => {
-  //   if (!searchTerm.trim() || !problems) return problems || [];
-
-  //   return problems.filter(problem =>
-  //     problem.title.toLowerCase().includes(searchTerm.toLowerCase().trim())
-  //   );
-  // }, [searchTerm, problems]);
-
   const { groupId } = useParams();
 
-  // Mock data (will become API call later)
+  // Mock data
   const problems = [
-    { id: 1, title: "Two Sum", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: true },
-    { id: 2, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false },
-    { id: 3, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false },
-    { id: 4, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false },
-    { id: 5, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false }
+    { id: 1, title: "Two Sum", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: true, premium: false, inProgress: false },
+    { id: 2, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false },
+    { id: 3, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false },
+    { id: 4, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: true, premium: false, inProgress: false },
+    { id: 5, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false }
   ];
+  const [filter, setFilter] = useState('all');
 
-  const Filter = () => {
-    const [showResults, setShowResults] = useState(false);
-    
-  }
+  const filteredProblems = useMemo(() => {
+    switch (filter) {
+      case 'completed':
+        return problems.filter(p => p.completed);
+      case 'incomplete':
+        return problems.filter(p => !p.completed);
+      case 'premium':
+        return problems.filter(p => p.premium);
+      case 'in-progress':
+        return problems.filter(p => p.inProgress);
+      default:
+        return problems; 
+    }
+  }, [filter, problems]);
 
   return (
     <>
@@ -52,7 +53,10 @@ const Learn = () => {
 
           <article id='search-filtering'>
             <div id="searchbar-and-icon">
-              <FaSearch id='search-icon' onClick={() => {alert("works")}} />
+              <FaSearch
+                id='search-icon'
+                onClick={() => document.getElementById('problem-searchbar').focus()}
+              />
               <input
                 type="search"
                 name="problem-searchbar"
@@ -61,21 +65,56 @@ const Learn = () => {
                 aria-label='searchbar'
               />
             </div>
-
             <div id="filters-container">
-              <button type="button" onClick={() => { alert("works") }}  className='filtering'>All Exercises <span id='problems-count'>50</span></button>
-              <button type="button" onClick={() => { alert("works") }}  className='filtering'>Completed <span className='completed-problems'>0</span></button>
-              <button type="button" onClick={() => { alert("works") }}  className='filtering'>In Progress <span className='inprogress-problems'>0</span></button>
-              <button type="button" onClick={() => { alert("works") }}  className='filtering'>Premium <span className='premium-problems'>0</span></button>
+              <button
+                type="button"
+                onClick={() => setFilter('all')}
+                className={`filtering ${filter === 'all' ? 'active' : ''}`}
+              >
+                All Exercises <span id='problems-count'>{problems.length}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFilter('completed')}
+                className={`filtering ${filter === 'completed' ? 'active' : ''}`}
+              >
+                Completed <span className='completed-problems'>
+                  {problems.filter(p => p.completed).length}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFilter('in-progress')}
+                className={`filtering ${filter === 'in-progress' ? 'active' : ''}`}
+              >
+                In Progress <span className='inprogress-problems'>
+                  {problems.filter(p => p.inProgress).length}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFilter('premium')}
+                className={`filtering ${filter === 'premium' ? 'active' : ''}`}
+              >
+                Premium <span className='premium-problems'>
+                  {problems.filter(p => p.premium).length}
+                </span>
+              </button>
             </div>
+
+            {/* ✅ Fixed render - use filteredProblems */}
+            
           </article>
           <article id='problems-container'>
-            {problems.map(problem => (
+            {filteredProblems.map(problem => (
               <ProblemCard key={problem.id} problem={problem} />
             ))}
           </article>
         </section>
-
+        
         <footer>
           <Footer></Footer>
         </footer>

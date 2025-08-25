@@ -19,7 +19,7 @@ const ProblemCard = ({ problem }) => {
                             {problem.description}
                         </span>
                         <span className="solved-status">
-                            {problem.solved ? '✅ Solved' : '❌ Unsolved'}
+                            {problem.completed ? '✅ Solved' : '❌ Unsolved'}
                         </span>
                     </div>
                 </div>
