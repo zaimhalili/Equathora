@@ -4,7 +4,7 @@
     color: var(--secondary-color);
 }
 
-#body-problem header{
+#body-problem header {
     display: flex;
     align-items: center;
     font-family: 'Public Sans', serif;
@@ -15,7 +15,7 @@
     padding: 1.5rem;
 }
 
-#backToExercises-link{
+#backToExercises-link {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -23,16 +23,23 @@
     color: var(--secondary-color);
     font-weight: lighter;
 }
-#backToExercises-link #arrowProblemsIMG{
+
+#backToExercises-link #arrowProblemsIMG {
     width: 1.8rem;
     transform: rotate(180deg);
 }
 
-#body-problem h1{
+#body-problem h1 {
     font-family: 'Public Sans', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
-.problem-header{
+.description-yourSolution {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.problem-header {
     width: 100%;
     height: auto;
     display: flex;
@@ -43,17 +50,38 @@
     gap: 0.2rem;
 }
 
-.problem-description{
-    width: 100%;
-    background-color: thistle;
+.problem-description {
+    width: 50%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 2rem;
+    padding: 2rem 3rem;
     gap: 0.5rem;
     font-family: 'Inter', sans-serif;
+    border-right: 5px solid black;
 }
 
-.problem-description h2{
-    
+.problem-description h2 {
+    font-size: 1.5rem;
+}
+
+.problem-description p {
+    font-size: 1rem;
+}
+
+.solution-section {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+}
+
+.solution-section textarea {
+    background-color: transparent;
+    height: 40vh;
+    width: 100%;
+}
+
+.solution-section textarea::placeholder {
+    color: var(--mid-main-secondary);
+    font-size: 1.5rem;
 }
