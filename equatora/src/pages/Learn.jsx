@@ -104,8 +104,6 @@ const Learn = () => {
                 </span>
               </button>
             </div>
-
-            {/* ✅ Fixed render - use filteredProblems */}
             
           </article>
           <article id='problems-container'>

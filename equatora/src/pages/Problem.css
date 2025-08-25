@@ -1,0 +1,59 @@
+#body-problem {
+    background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color) 50%);
+    min-height: 100vh;
+    color: var(--secondary-color);
+}
+
+#body-problem header{
+    display: flex;
+    align-items: center;
+    font-family: 'Public Sans', serif;
+    font-weight: lighter;
+    background-color: var(--main-color);
+    width: 100%;
+    border-bottom: 2px solid var(--secondary-color);
+    padding: 1.5rem;
+}
+
+#backToExercises-link{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    font-weight: lighter;
+}
+#backToExercises-link #arrowProblemsIMG{
+    width: 1.8rem;
+    transform: rotate(180deg);
+}
+
+#body-problem h1{
+    font-family: 'Public Sans', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.problem-header{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--main-color);
+    align-items: center;
+    padding: 0.8rem;
+    gap: 0.2rem;
+}
+
+.problem-description{
+    width: 100%;
+    background-color: thistle;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.problem-description h2{
+    
+}
