@@ -5,9 +5,10 @@ import LilArrow from '../assets/images/lilArrow.svg';
 import { Link } from 'react-router-dom';
 
 const YourTrack = () => {
-    const solved = 25;
+    const solved = 10;
     const total = 50;
     const percentage = (solved / total) * 100;
+
 
     return (
         <>
@@ -17,9 +18,11 @@ const YourTrack = () => {
                     <h4>Problems</h4>
                     <div className="prg-bar-arrow">
                         <Link to="/problems" id='progressBar-container'>
-                            <div
+                            <progress
                                 id='measure-progressBar'
-                                style={{ width: `${percentage}%` }} // ✅ Dynamic width
+                                style={{
+                                    width: `${percentage}%`, opacity: `${percentage}`
+                                }}
                             />
                         </Link>
                         <Link to="/problems" className="arrowProblems" id='arrowProblems'>

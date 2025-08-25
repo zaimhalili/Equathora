@@ -23,12 +23,17 @@ const Learn = () => {
 
   // Mock data (will become API call later)
   const problems = [
-    { id: 1, title: "Two Sum", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", solved: true },
-    { id: 2, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", solved: false },
-    { id: 3, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", solved: false },
-    { id: 4, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", solved: false },
-    { id: 5, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", solved: false }
+    { id: 1, title: "Two Sum", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: true },
+    { id: 2, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false },
+    { id: 3, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false },
+    { id: 4, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false },
+    { id: 5, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false }
   ];
+
+  const Filter = () => {
+    const [showResults, setShowResults] = useState(false);
+    
+  }
 
   return (
     <>
