@@ -50,7 +50,7 @@ export default function MathLiveEditor() {
                     virtualkeyboardmode="onfocus"
                     smartfence="true"
                     lettershapestyle="text"
-                    placeholder="Type here or use the on-screen math keyboard…"
+                    placeholder="Typehere or use the on-screen math keyboard…"
                 ></math-field>
 
                 <div className="ml-toolbar">
