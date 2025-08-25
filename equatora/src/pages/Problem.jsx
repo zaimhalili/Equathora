@@ -67,15 +67,7 @@ const Problem = () => {
           </article>
 
           <article className="solution-section">
-            <h2>Your Solution</h2>
             <MathLiveExample></MathLiveExample>
-            <input type="number" name="solution" className="solution-input" value={solution}
-              onChange={(e) => setSolution(e.target.value)}
-              placeholder="Write your solution here..." />
-            <button type="" onClick={handleSubmit} className="submit-button">
-              Submit Solution
-            </button>
-
           </article>
         </section>
       </main>

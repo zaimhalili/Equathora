@@ -49,7 +49,7 @@ export default function MathLiveEditor() {
                     id="answer-field"
                     virtualkeyboardmode="onfocus"
                     smartfence="true"
-                    lettershapestyle="tex"
+                    lettershapestyle="text"
                     placeholder="Type here or use the on-screen math keyboard…"
                 ></math-field>
 
