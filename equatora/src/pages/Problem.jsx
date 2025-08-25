@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
 import './Problem.css';
 import LilArrow from '../assets/images/lilArrow.svg';
+import MathLiveExample from '../components/MathLiveExample';
 
 const Problem = () => {
   const { groupId, problemId } = useParams();
@@ -45,14 +46,16 @@ const Problem = () => {
             </span>
             {problem.premium && <span className="tag premium">Premium</span>}
             {problem.completed && <span className="tag completed">Completed</span>}
+            {!problem.premium && <span className="tag basic">Basic</span>}
+            {!problem.completed && <span className="tag completed">Incomplete</span>}
           </div>
         </article>
         <section className="description-yourSolution">
           <article className="problem-description">
-            <h2>Problem Description</h2>
+            <h2>Problem Description:</h2>
             <p>{problem.description}</p>
 
-            <h3>Examples</h3>
+            <h2>Examples</h2>
             {problem.examples.map((example, index) => (
               <pre key={index} className="example-code">
                 {example}
@@ -65,13 +68,11 @@ const Problem = () => {
 
           <article className="solution-section">
             <h2>Your Solution</h2>
-            <textarea
-              value={solution}
+            <MathLiveExample></MathLiveExample>
+            <input type="number" name="solution" className="solution-input" value={solution}
               onChange={(e) => setSolution(e.target.value)}
-              placeholder="Write your solution here..."
-              className="solution-textarea"
-            />
-            <button onClick={handleSubmit} className="submit-button">
+              placeholder="Write your solution here..." />
+            <button type="" onClick={handleSubmit} className="submit-button">
               Submit Solution
             </button>
 

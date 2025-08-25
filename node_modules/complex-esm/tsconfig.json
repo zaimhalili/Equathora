@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "lib": ["es2020", "dom", "dom.iterable", "scripthost"],
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "outDir": "dist",
+    "inlineSources": true,
+    "rootDir": "./",
+    "declaration": true,
+    "incremental": true,
+    "emitDecoratorMetadata": false,
+    "noImplicitAny": false,
+    "noLib": false,
+    "removeComments": false,
+    "sourceMap": true,
+    "strictNullChecks": true,
+  },
+  "include": ["**/*.ts"]
+}
