@@ -65,7 +65,8 @@ const Problem = () => {
 
             <h2>Constraints</h2>
             <p>{problem.constraints}</p>
-
+            
+            <Timer></Timer>
           </article>
 
           <article className="solution-section">
