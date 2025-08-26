@@ -1,11 +1,8 @@
-
-
 .ml-wrapper {
     width: 100%;
     height: 100%;
-    padding: 20px;
     border: 1px solid #e5e7eb;
-    background: #ffffff;
+    background: white;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
@@ -13,18 +10,21 @@
 .ml-title {
     font-size: 18px;
     font-weight: 700;
-    margin: 0 0 12px;
     letter-spacing: 0.2px;
+    display: flex;
+    justify-content: center;
 }
 
-.ml-subtle {
-    color: #6b7280;
+.ml-status {
+    color: var(--accent-color);
     font-size: 13px;
     margin-top: 2px;
+    margin: 0 0 1rem 1rem;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Problem card */
 .ml-card {
+    width: 100%;
     border: 1px solid #eef0f3;
     border-radius: 14px;
     padding: 16px;
@@ -42,23 +42,15 @@
     margin-top: 4px;
 }
 
-/* Container */
-/* Style math-field via CSS variables */
 math-field {
     --caret-color: #2563eb;
-    /* cursor color */
     --selection-background-color: #dbeafe;
-    /* selection highlight */
-    --placeholder-color: gray;
-    /* placeholder color */
+    --placeholder-color: var(--mid-main-secondary);
     --contains-highlight-background-color: #f3f4f6;
-    /* subtle bg when active */
 
     font-size: 16px;
     color: black;
-    /* text color */
     background: white;
-    /* field background */
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 8px 10px;
@@ -66,13 +58,11 @@ math-field {
     min-height: 50px;
 }
 
-/* Optional: style when focused */
 math-field:focus-within {
     border-color: #2563eb;
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
 }
 
-/* Controls */
 .ml-controls {
     display: flex;
     gap: 8px;
@@ -100,32 +90,46 @@ math-field:focus-within {
     transform: translateY(1px);
 }
 
-.ml-btn.primary {
-    background: #2563eb;
-    border-color: #2563eb;
+.ml-btn.submit {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
     color: #fff;
 }
 
-.ml-btn.primary:hover {
-    background: #1d4ed8;
-    border-color: #1d4ed8;
+.ml-btn.submit:hover {
+    background: var(--dark-accent-color);
+    border-color: var(--dark-accent-color);
 }
 
-.ml-btn.ghost {
-    background: #f9fafb;
+.ml-btn.clear {
+    background: white;
     color: black;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Status & output */
-.ml-status {
-    font-size: 12px;
-    color: #6b7280;
-    margin-top: 8px;
+.ml-btn.clear:hover {
+    background: rgb(229, 229, 229);
+}
+
+.ml-btn.addStep {
+    background: var(--mid-main-secondary);
+    border-color: var(--mid-main-secondary);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    color: #fff;
+}
+
+.ml-btn.addStep:hover {
+    background: rgb(110, 120, 139);
+    border-color: rgb(110, 120, 139);
 }
 
 .ml-output {
     margin-top: 14px;
-    padding: 12px;
+    padding: 0.5rem 2rem;
     border: 1px dashed #d1d5db;
     border-radius: 12px;
     background: #fdfdfd;
@@ -156,7 +160,6 @@ math-field:focus-within {
     height: 16px;
 }
 
-/* Responsive */
 @media (max-width: 520px) {
     .ml-wrapper {
         padding: 14px;

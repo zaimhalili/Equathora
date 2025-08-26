@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import '../components/MathLiveExample.css';
+import React, { useEffect, useState } from "react";
+import "../components/MathLiveExample.css";
 
 export default function MathLiveEditor() {
-    const mathfieldRef = useRef(null);
-    const [latex, setLatex] = useState("");
-    const [status, setStatus] = useState("Ready");
+    const [status, setStatus] = useState("Loading...");
+    const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
+
+    // Dynamically load MathLive once
     useEffect(() => {
         let cancelled = false;
         (async () => {
@@ -21,73 +22,69 @@ export default function MathLiveEditor() {
         };
     }, []);
 
-    useEffect(() => {
-        if (mathfieldRef.current) {
-            const mf = mathfieldRef.current;
-
-            mf.addEventListener("input", () => {
-                setLatex(mf.getValue("latex"));
-            });
-        }
-    }, [status]); 
-
-    const handleSubmit = () => {
-        const mf = mathfieldRef.current;
-        if (!mf) return;
-        const value = mf.getValue("latex");
-        setLatex(value);
+    const updateLatex = (id, latex) => {
+        setFields(prev =>
+            prev.map(f => (f.id === id ? { ...f, latex } : f))
+        );
     };
 
-    const handleClear = () => {
-        const mf = mathfieldRef.current;
-        if (!mf) return;
-        mf.setValue("");
-        setLatex("");
+    const addField = () => {
+        setFields(prev => [...prev, { id: Date.now(), latex: "" }]);
+    };
+
+    const clearAll = () => {
+        setFields([{ id: Date.now(), latex: "" }]);
+    };
+
+    const handleSubmit = () => {
+        console.log("All steps:", fields);
+        alert(fields.map((f, i) => `Step ${i + 1}: ${f.latex}`).join("\n"));
     };
 
     return (
         <div className="ml-wrapper">
             <h2 className="ml-title">Your Solution</h2>
-            <div className="ml-subtle">Status: {status}</div>
+            <div className="ml-status">Status: {status}</div>
 
             <div className="ml-card" aria-live="polite">
-                <math-field
-                    ref={mathfieldRef}
-                    className="ml-field"
-                    id="answer-field"
-                    virtualkeyboardmode="onfocus"
-                    smartfence="true"
-                    lettershapestyle="text"
-                    placeholder="Type here or use the on-screen math keyboard…"
-                ></math-field>
-
-                <div className="ml-toolbar">
-                    <div className="ml-switch">
-                        <input
-                            id="vkToggle"
-                            type="checkbox"
-                            className="ml-checkbox"
-                            onChange={(e) => {
-                                const mf = mathfieldRef.current;
-                                if (!mf) return;
-                                mf.setOptions({ virtualKeyboardMode: e.target.checked ? "onfocus" : "off" });
+                <div className="ml-steps-container">
+                    {fields.map((field, index) => (
+                        <math-field
+                            key={field.id}
+                            class="ml-field"
+                            virtualkeyboardmode="onfocus"
+                            smartfence="true"
+                            value={field.latex}
+                            onInput={(evt) =>
+                                updateLatex(field.id, evt.target.getValue("latex"))
+                            }
+                            placeholder={`Step ${index + 1}…`}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" && !e.shiftKey) {
+                                    e.preventDefault();
+                                    addField();
+                                }
                             }}
-                            defaultChecked
-                        />
-                        <label htmlFor="vkToggle">On-screen keyboard</label>
-                    </div>
-
-                    <div className="ml-controls">
-                        <button className="ml-btn ghost" onClick={handleClear}>Clear</button>
-                        <button className="ml-btn primary" onClick={handleSubmit}>Submit</button>
-                    </div>
+                        ></math-field>
+                    ))}
                 </div>
 
-                {latex && (
-                    <div className="ml-output" role="status">
-                        <strong>LaTeX:</strong> {latex}
-                    </div>
-                )}
+                <div className="ml-toolbar">
+                    <button className="ml-btn clear" onClick={clearAll}>Clear</button>
+                    <button className="ml-btn addStep" onClick={addField}>Add Step or Press Enter</button>
+                    <button className="ml-btn submit" onClick={handleSubmit}>Submit</button>
+                </div>
+
+                <div className="ml-output">
+                    <strong>Preview:</strong>
+                    <ul className="steps-list">
+                        {fields.map((f, i) => (
+                            <li key={f.id}>
+                                Step {i + 1}: {f.latex}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
         </div>
     );

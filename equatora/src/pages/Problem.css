@@ -46,7 +46,7 @@
 .description-yourSolution {
     display: flex;
     width: 100%;
-    height: 85vh;
+    height: 90vh;
 }
 
 .problem-header {
@@ -85,6 +85,8 @@
     align-items: center;
     flex-direction: column;
     width: 50%;
+    max-height: 90vh;
+    overflow-y: scroll;
 }
 
 .solution-section h2{
