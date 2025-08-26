@@ -43,30 +43,33 @@
 }
 
 /* Container */
-.ml-field {
-    display: block;
-    width: 100%;
-    min-height: 48px;
-    padding: 10px 12px;
-    margin-top: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 12px;
-    outline: none;
-    transition: box-shadow 160ms ease, border-color 160ms ease;
-
-    /* MathLive specific */
-    --text-color: #000000;
-    /* typed text */
-    --placeholder-color: #9ca3af;
-    /* placeholder text */
+/* Style math-field via CSS variables */
+math-field {
     --caret-color: #2563eb;
     /* cursor color */
-    --selection-background: #dbeafe;
-    /* selected text background */
+    --selection-background-color: #dbeafe;
+    /* selection highlight */
+    --placeholder-color: gray;
+    /* placeholder color */
+    --contains-highlight-background-color: #f3f4f6;
+    /* subtle bg when active */
+
+    font-size: 16px;
+    color: black;
+    /* text color */
+    background: white;
+    /* field background */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: block;
+    min-height: 50px;
 }
-.ml-field:focus-within {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+
+/* Optional: style when focused */
+math-field:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
 }
 
 /* Controls */
@@ -110,6 +113,7 @@
 
 .ml-btn.ghost {
     background: #f9fafb;
+    color: black;
 }
 
 /* Status & output */

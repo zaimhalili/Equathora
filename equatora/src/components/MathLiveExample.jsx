@@ -5,7 +5,6 @@ export default function MathLiveEditor() {
     const mathfieldRef = useRef(null);
     const [latex, setLatex] = useState("");
     const [status, setStatus] = useState("Ready");
-
     useEffect(() => {
         let cancelled = false;
         (async () => {
@@ -21,6 +20,16 @@ export default function MathLiveEditor() {
             cancelled = true;
         };
     }, []);
+
+    useEffect(() => {
+        if (mathfieldRef.current) {
+            const mf = mathfieldRef.current;
+
+            mf.addEventListener("input", () => {
+                setLatex(mf.getValue("latex"));
+            });
+        }
+    }, [status]); 
 
     const handleSubmit = () => {
         const mf = mathfieldRef.current;
@@ -38,7 +47,6 @@ export default function MathLiveEditor() {
 
     return (
         <div className="ml-wrapper">
-
             <h2 className="ml-title">Your Solution</h2>
             <div className="ml-subtle">Status: {status}</div>
 
@@ -50,7 +58,7 @@ export default function MathLiveEditor() {
                     virtualkeyboardmode="onfocus"
                     smartfence="true"
                     lettershapestyle="text"
-                    placeholder="Typehere or use the on-screen math keyboard…"
+                    placeholder="Type here or use the on-screen math keyboard…"
                 ></math-field>
 
                 <div className="ml-toolbar">
