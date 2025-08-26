@@ -5,6 +5,7 @@ import Footer from '../components/Footer.jsx';
 import './Problem.css';
 import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
+import Timer from '../components/Timer.jsx';
 
 const Problem = () => {
   const { groupId, problemId } = useParams();
@@ -20,8 +21,8 @@ const Problem = () => {
       "Input: nums = [3,2,4], target = 6\nOutput: [1,2]"
     ],
     constraints: "2 <= nums.length <= 10^4",
-    completed: true,
-    premium: false
+    completed: false,
+    premium: true
   };
 
   const [solution, setSolution] = useState('');
@@ -45,8 +46,8 @@ const Problem = () => {
               {problem.difficulty}
             </span>
             {problem.premium && <span className="tag premium">Premium</span>}
-            {problem.completed && <span className="tag completed">Completed</span>}
             {!problem.premium && <span className="tag basic">Basic</span>}
+            {problem.completed && <span className="tag completed">Completed</span>}
             {!problem.completed && <span className="tag completed">Incomplete</span>}
           </div>
         </article>
@@ -57,13 +58,14 @@ const Problem = () => {
 
             <h2>Examples</h2>
             {problem.examples.map((example, index) => (
-              <pre key={index} className="example-code">
+              <p key={index} className="example-code">
                 {example}
-              </pre>
+              </p>
             ))}
 
-            <h3>Constraints</h3>
+            <h2>Constraints</h2>
             <p>{problem.constraints}</p>
+
           </article>
 
           <article className="solution-section">
