@@ -55,6 +55,7 @@
     display: flex;
     flex-direction: column;
     background-color: var(--main-color);
+    border-bottom: 4px solid var(--secondary-color);
     align-items: center;
     padding: 0.8rem;
     gap: 0.2rem;
@@ -63,12 +64,12 @@
 .problem-description {
     width: 50%;
     display: flex;
-    background: linear-gradient(0deg, white, var(--mid-main-secondary));
+    background: var(--main-color);
     flex-direction: column;
     padding: 2rem 3rem;
     gap: 0.5rem;
     font-family: 'Inter', sans-serif;
-    border-right: 5px solid black;
+    border-right: 2px dashed var(--secondary-color);
 }
 
 .problem-description h2 {

@@ -20,7 +20,7 @@ const Problem = () => {
       "Input: nums = [3,2,4], target = 6\nOutput: [1,2]"
     ],
     constraints: "2 <= nums.length <= 10^4",
-    completed: false,
+    completed: true,
     premium: false
   };
 
