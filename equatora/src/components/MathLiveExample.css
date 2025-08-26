@@ -153,11 +153,6 @@ math-field:focus-within {
     color: #374151;
 }
 
-.ml-checkbox {
-    width: 16px;
-    height: 16px;
-}
-
 @media (max-width: 520px) {
     .ml-wrapper {
         padding: 14px;
