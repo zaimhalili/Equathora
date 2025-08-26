@@ -11,51 +11,43 @@
     font-weight: 600;
     margin-bottom: 2rem;
     border-bottom-left-radius: 1rem;
-    animation: changeColor 10s ease-in-out;
+    animation: changeColor 300s ease-in-out forwards;
 }
 
 @keyframes changeColor {
     0% {
-        background-color: var(--accent-color);
-    }
-
-    10% {
-        background-color: orange;
+        background-color: black;
+        color: white;
+        border: none;
     }
 
     20% {
-        background-color: yellow;
-    }
-
-    30% {
-        background-color: green;
+        background-color: rgb(56, 4, 13);
+        color: white;
+        border: none;
     }
 
     40% {
-        background-color: rgb(0, 170, 255);
-    }
-
-    50% {
-        background-color: blue;
+        background-color: rgb(83, 6, 18);
+        color: white;
+        border: none;
     }
 
     60% {
-        background-color: darkblue;
-    }
-
-    70% {
-        background-color: rgb(39, 0, 56);
+        background-color: rgb(159, 9, 34);
+        color: white;
+        border: none;
     }
 
     80% {
-        background-color: black;
-    }
-
-    90% {
-        background-color: black;
+        background-color: rgb(217, 4, 41);
+        color: white;
+        border: none;
     }
 
     100% {
-        background-color: black;
+        background-color: white;
+        color: var(--secondary-color);
+        border: 2px solid #dddddd;
     }
 }
