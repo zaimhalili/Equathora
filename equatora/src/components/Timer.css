@@ -1,4 +1,61 @@
-.stopwatch{
-    width: 100%;
-    background-color: red;
+.stopwatch {
+    width: 20%;
+    height: 2rem;
+    background-color: var(--dark-accent-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    border-bottom-left-radius: 1rem;
+    animation: changeColor 10s ease-in-out;
+}
+
+@keyframes changeColor {
+    0% {
+        background-color: var(--accent-color);
+    }
+
+    10% {
+        background-color: orange;
+    }
+
+    20% {
+        background-color: yellow;
+    }
+
+    30% {
+        background-color: green;
+    }
+
+    40% {
+        background-color: rgb(0, 170, 255);
+    }
+
+    50% {
+        background-color: blue;
+    }
+
+    60% {
+        background-color: darkblue;
+    }
+
+    70% {
+        background-color: rgb(39, 0, 56);
+    }
+
+    80% {
+        background-color: black;
+    }
+
+    90% {
+        background-color: black;
+    }
+
+    100% {
+        background-color: black;
+    }
 }

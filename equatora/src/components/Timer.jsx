@@ -31,13 +31,13 @@ const Timer = () => {
         <div className='stopwatch'>
             <p className="timer">{format(time)}</p>
             <div className="actions">
-                <button onClick={() => setTime(0)}>Restart</button>
+                {/* <button onClick={() => setTime(0)}>Restart</button>
                 <button onClick={() => {
                     if (running) clearInterval(timer.current);
                     setRunning(!running);
                 }}>
                     {running ? 'Stop' : 'Resume'}
-                </button>
+                </button> */}
             </div>
         </div>
     );

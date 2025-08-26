@@ -63,17 +63,24 @@
     gap: 0.2rem;
 }
 
-.problem-description {
+.problem-description-timer {
     width: 50%;
     display: flex;
     background: var(--main-color);
     flex-direction: column;
-    padding: 1rem 10rem;
-    gap: 0.5rem;
+    padding: 0rem 00rem 1rem 0;
     font-family: 'Inter', sans-serif;
     border-right: 2px dashed var(--secondary-color);
     color: var(--secondary-color);
     word-break: keep-all;
+}
+
+.problem-description{
+    width: 100%;
+    padding: 1rem 10rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
 }
 
 .problem-description h2 {
@@ -85,6 +92,12 @@
 .problem-description p {
     font-size: 1.4rem;
     line-height: 1.5;
+}
+
+#timer-container{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
 }
 
 .solution-section {

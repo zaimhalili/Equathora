@@ -40,6 +40,7 @@ const Problem = () => {
           </Link>
         </header>
         <article className="problem-header">
+
           <h1>{problem.title}</h1>
           <div className="problem-tags">
             <span className={`tag difficulty ${problem.difficulty.toLowerCase()}`}>
@@ -52,21 +53,25 @@ const Problem = () => {
           </div>
         </article>
         <section className="description-yourSolution">
-          <article className="problem-description">
-            <h2>Problem Description:</h2>
-            <p>{problem.description}</p>
+          
+          <article className="problem-description-timer">
+            <div id="timer-container">
+              <Timer></Timer>
+            </div>
+            <div className='problem-description'>
+              <h2>Problem Description:</h2>
+              <p>{problem.description}</p>
 
-            <h2>Examples</h2>
-            {problem.examples.map((example, index) => (
-              <p key={index} className="example-code">
-                {example}
-              </p>
-            ))}
+              <h2>Examples</h2>
+              {problem.examples.map((example, index) => (
+                <p key={index} className="example-code">
+                  {example}
+                </p>
+              ))}
 
-            <h2>Constraints</h2>
-            <p>{problem.constraints}</p>
-            
-            <Timer></Timer>
+              <h2>Constraints</h2>
+              <p>{problem.constraints}</p>
+            </div>
           </article>
 
           <article className="solution-section">
