@@ -40,7 +40,7 @@ const Login = () => {
 
               <p className='auth-other-options-text'>
                 Didn't receive your confirmation email?{' '}
-                <Link to="/password" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                <Link to="/resend" className="other-option-link" style={{ textDecoration: 'underline' }}>
                   Resend it.
                 </Link>
               </p>

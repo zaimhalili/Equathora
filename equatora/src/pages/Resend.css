@@ -1,4 +1,4 @@
-#body-login {
+#body-resend {
     height: 100vh;
     min-height: 100vh;
     background-color: white;
@@ -6,7 +6,7 @@
     display: flex;
 }
 
-#login-container {
+#resend-container {
     width: 40%;
     height: 100%;
     background-color: transparent;
@@ -17,22 +17,12 @@
     padding: 0 80px;
 }
 
-#login-logo-name {
+#resend-logo-name {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-#login-name {
-    display: flex;
-    align-items: center;
-    font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    color: var(--secondary-color);
-    margin: 0;
-    height: 100%;
-    width: 200px;
-    font-size: 36px;
+    padding-bottom: 7rem;
 }
 
 #background-container {
@@ -43,26 +33,7 @@
     justify-content: center;
 }
 
-#auth {
-    width: 100%;
-    height: 500px;
-    margin-top: 20px;
-}
-
-#forgotPass {
-    color: var(--dark-accent-color);
-    font-size: 15px;
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
-    width: 100%;
-    height: auto;
-    text-align: left;
-}
-
-#forgotPass:hover{
-    text-decoration: underline;
-}
-
-#login-btn {
+.resend-btn {
     width: 100%;
     height: 50px;
     background-color: var(--dark-accent-color);
@@ -82,9 +53,10 @@
     cursor: pointer;
 }
 
-#login-btn:hover {
+.resend-btn:hover {
     background-color: rgb(128, 16, 35);
 }
+
 
 #auth-other-options {
     width: 100%;
@@ -101,7 +73,7 @@
     color: black;
 }
 
-.other-option-link{
+.other-option-link {
     color: var(--dark-accent-color);
 }
 

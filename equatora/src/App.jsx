@@ -13,7 +13,7 @@ import Notifications from "./pages/Notifications";
 import Achievements from "./pages/Achievements";
 import Profile from "./pages/Profile";
 import OverflowChecker from "./pages/OverflowChecker";
-import Password from "./pages/Password";
+import Resend from "./pages/Resend";
 
 export default function App() {
   return (
@@ -30,12 +30,12 @@ export default function App() {
         <Route path="/discover" element={<Discover />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/achievements" element={<Achievements />} />
+        <Route path="/resend" element={<Resend />} />
 
         {/* Dynamic pages */}
         <Route path="/problems/:groupId" element={<ProblemGroup />} />
         <Route path="/problems/:groupId/:problemId" element={<Problem />} />
         <Route path="/profile/:profile" element={<Profile />} />
-        <Route path="/password/:password" element={<Password />} />
       </Routes>
     </>
 
