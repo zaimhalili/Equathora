@@ -21,11 +21,11 @@ const Signup = () => {
         <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleSignup} /></div>
 
         <div id='auth'>
-          <h5 className='typeOfInput'>Username</h5>
+          <h5 className='typeOfInput'>USERNAME</h5>
           <input type="text" className='inputAuth' id="usernameInput" placeholder='Choose a unique username' maxLength="20" required></input>
           <Auth />
-          <h5 className='typeOfInput'>Password Confirmation</h5>
-          <input type="text" className='inputAuth' id="passwordConfirmInput" placeholder='Confirm your password' maxLength="128" required></input>
+          <h5 className='typeOfInput'>PASSWORD CONFIRMATION</h5>
+          <input type="password" className='inputAuth' id="passwordConfirmInput" placeholder='Confirm your password' maxLength="128" required></input>
 
           <button type="submit" id="signup-btn">
             Sign Up

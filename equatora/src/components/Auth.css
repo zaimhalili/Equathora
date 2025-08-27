@@ -1,10 +1,11 @@
 .typeOfInput {
     color: var(--secondary-color);
-    font-size: 18px;
+    font-size: 0.8rem;
     font-family: 'Inter', sans-serif;
     align-items: flex-start;
-    margin-bottom: 7px;
+    margin-bottom: 0.6rem;
     margin-top: -5px;
+    font-weight: 600;
 }
 
 .inputAuth {
@@ -13,13 +14,11 @@
     width: 100%;
     height: 50px;
     border-radius: 8px;
-    overflow-x: auto;
-    overflow-y: hidden;
     resize: none;
-    padding: 14px 16px;
+    padding: 10px 16px;
     color: black;
-    font-size: 20px;
-    margin-bottom: 15px;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
     transition: 0.2s ease-out;
     box-shadow: 0 0 5px 0 var(--dark-accent-color);
 }
@@ -31,7 +30,7 @@
 .inputAuth::placeholder {
     color: var(--mid-main-secondary);
     font-family: 'Inter', sans-serif;
-    font-size: 18px;
+    font-size: 1rem;
 }
 
 @media only screen and (max-width: 600px) {}
