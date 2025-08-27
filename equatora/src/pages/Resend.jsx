@@ -8,40 +8,47 @@ const Resend = () => {
   return (
     <main id='body-resend'>
       <section id='resend-container'>
-        <div id='resend-logo-name'>  {/* Changed to match CSS */}
-          <img src={Logo} alt="Logo" id='login-logoIMG' />
+        <article id='resend-logo-name'>  {/* Changed to match CSS */}
+          <img src={Logo} alt="Logo" />
           <h3 id='login-name'>equatora</h3>  {/* Changed to match CSS */}
-        </div>
+        </article>
+        <article id='resend-text-container'>
+          <h3>Resend confirmation instructions</h3>
+          
+          <h6><br />Not received a confirmation email? Use the form below and we'll send you another.</h6>
+        </article>
+        <article style={{width: '100%', height:'calc(100vh - 90px)', display:'flex', flexDirection:'column', marginTop: '30px'}}>
+          <h5 className='typeOfInput resend'>EMAIL</h5>
+          <input
+            type="email"
+            className='inputAuth'
+            id="emailInput"
+            placeholder='Enter your email address'
+            maxLength="254"
+            required
+          />
 
-        <h5 className='typeOfInput resend'>Email</h5>
-        <input
-          type="email"
-          className='inputAuth'
-          id="emailInput"
-          placeholder='Enter your email address'
-          maxLength="254"
-          required
-        />
+          <button type="submit" className="resend-btn">
+            Resend Email
+          </button>
 
-        <button type="submit" className="resend-btn">
-          Resend Email
-        </button>
+          <div id='auth-other-options'>
+            <p className='auth-other-options-text'>
+              Already have an account?{' '}
+              <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                Log In
+              </Link>
+            </p>
 
-        <div id='auth-other-options'>
-          <p className='auth-other-options-text'>
-            Already have an account?{' '}
-            <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
-              Log In
-            </Link>
-          </p>
+            <p className='auth-other-options-text'>
+              Don't have an account yet?{' '}
+              <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                Sign up for free.
+              </Link>
+            </p>
+          </div>
+        </article>
 
-          <p className='auth-other-options-text'>
-            Don't have an account yet?{' '}
-            <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
-              Sign up for free.
-            </Link>
-          </p>
-        </div>
       </section>
 
       <aside id="background-container"><BackgroundPolygons /></aside>

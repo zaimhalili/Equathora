@@ -15,7 +15,7 @@ const Landing = () => {
         <main id='home-body'>
             <header id='navbar'>
                 <div id='logoName'>
-                    <img src={Logo} alt="Logo" id='logoIMG' />
+                    <img src={Logo} alt="Logo" id='logoIMG' loading='lazy'/>
                     <h3 id='name'>equatora</h3>
                 </div>
 
@@ -56,7 +56,7 @@ const Landing = () => {
                         </h4>
                     </div>
                 </div>
-                <div id="hero-right"><img src={Studying} alt="studying" id='studyingIMG' /></div>
+                <div id="hero-right"><img src={Studying} alt="studying" id='studyingIMG' loading='lazy'/></div>
 
             </section>
         </main>

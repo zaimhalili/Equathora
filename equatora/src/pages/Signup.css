@@ -7,14 +7,14 @@
 }
 
 #signup-container {
-    width: 40%;
+    width: 45%;
     height: auto;
     background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    padding: 0 40px;
+    padding: 0 70px;
     max-height: 100vh;
     overflow-y: scroll;
 }
@@ -36,15 +36,16 @@
     margin: 0;
     height: 100%;
     width: 200px;
-    font-size: 36px;
+    font-size: 2rem;
 }
 
 #background-container {
-    width: 60%;
+    width: 55%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: none;
 }
 
 #auth {

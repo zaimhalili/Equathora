@@ -7,26 +7,47 @@
 }
 
 #resend-container {
-    width: 40%;
+    width: 45%;
     height: 100%;
     background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    padding: 0 80px;
+    padding: 0 70px;
 }
 
 #resend-logo-name {
     width: 100%;
+    height: 90px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-bottom: 7rem;
+    margin-top: 50px;
+}
+
+#resend-text-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+}
+
+#resend-text-container h3 {
+    font-family: 'Inter', sans-serif;
+    color: var(--secondary-color);
+    font-size: 1.6rem;
+}
+
+#resend-text-container h6 {
+    font-family: 'Inter', sans-serif;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    font-weight: 300;
 }
 
 #background-container {
-    width: 60%;
+    width: 55%;
     height: 100%;
     display: flex;
     align-items: center;

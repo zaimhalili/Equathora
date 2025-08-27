@@ -19,11 +19,11 @@
     font-weight: 700;
     border-radius: 8px;
     box-shadow: 0 5px 5px 0 rgba(43, 45, 66, 0.5);
-    transition: 0.2s ease-out;
+    transition: 0.1s ease-out;
 }
 
 #google-btn:hover {
-    background-color: #e1e1e1;
+    background-color: #f3f3f3;
     box-shadow: 0 5px 8px 0 rgba(43, 45, 66, 0.8);
 }
 
