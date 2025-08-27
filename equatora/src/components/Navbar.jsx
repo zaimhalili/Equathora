@@ -7,6 +7,8 @@ import { FaBell, FaTrophy } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
 import Menu from '../assets/images/menu.svg';
+import Dropdown from './Dropdown';
+
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -20,9 +22,26 @@ const Navbar = () => {
             </Link>
           </li>
           <li><Link to="/dashboard"><h3 id="navbar-name">equatora</h3></Link></li>
-          <li className='hide-navbar'><Link to="/learn" className='navbar-pages'>Learn</Link></li>
-          <li className='hide-navbar'><Link to="/discover" className='navbar-pages'>Discover</Link></li>
-          <li className='hide-navbar'><Link to="/more" className='navbar-pages'>More</Link></li>
+          <li className='hide-navbar'><Dropdown
+            label="Learn"
+            items={[
+              { to: '/learn', text:"Your Track" },
+              { to: "/", text: "Home" }
+            ]} /></li>
+          <li className='hide-navbar'>
+            <Dropdown
+              label="Discover"
+              items={[
+                { text: "Your Track", to: "/discover" },
+                { text: "Web Dev", to: "/discover" }
+              ]}
+            /></li>
+          <li className='hide-navbar'><Dropdown
+            label="More"
+            items={[
+              { text: "Web Dev", to: "/discover" },
+              { text: "Web Dev", to: "/discover" }
+            ]} /></li>
         </ul>
 
         <div id='nb-sb'>

@@ -2,15 +2,15 @@ import React from 'react';
 import './Resend.css';
 import BackgroundPolygons from '../components/BackgroundPolygons';
 import { Link } from 'react-router-dom';
-import Logo from '../assets/images/logo.png'; // Adjust the path based on your project structure
+import Logo from '../assets/images/logo.png';
 
 const Resend = () => {
   return (
     <main id='body-resend'>
       <section id='resend-container'>
-        <article id='resend-logo-name'>  {/* Changed to match CSS */}
+        <article id='resend-logo-name'>  =
           <img src={Logo} alt="Logo" />
-          <h3 id='login-name'>equatora</h3>  {/* Changed to match CSS */}
+          <h3 id='login-name'>equatora</h3> 
         </article>
         <article id='resend-text-container'>
           <h3>Resend confirmation instructions</h3>
