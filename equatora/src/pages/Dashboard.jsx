@@ -24,7 +24,7 @@ const Dashboard = () => {
           </article>
 
           <figure id='teacher-container'>
-            <img src={Teacher} alt="teacher" />
+            <img src={Teacher} alt="teacher" loading='lazy'/>
           </figure>
         </section>
 

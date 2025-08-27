@@ -70,7 +70,7 @@ export default function MathLiveEditor() {
                             virtualkeyboardmode="onfocus"
                             smartfence="true"
                             value={field.latex}
-                            placeholder={`Step ${index + 1}…`}
+                            placeholder={`Step-${index + 1}-or-answer-here…`}
                             onInput={(evt) =>
                                 updateLatex(field.id, evt.target.getValue("latex"))
                             }
