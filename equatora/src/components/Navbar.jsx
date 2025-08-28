@@ -12,17 +12,80 @@ import Dropdown from './Dropdown';
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const learnItems = [
+    {
+      to: '/learn',
+      text: "Your Track",
+      description: "Track topics and problems solved.",
+      image: GuestAvatar
+    },
+    {
+      to: "/",
+      text: "Daily Problem",
+      description: "Solve a fresh daily challenge.",
+      image: GuestAvatar
+    },
+    {
+      to: "/",
+      text: "Saved Problems",
+      description: "Quickly revisit starred problems.",
+      image: GuestAvatar
+    }
+  ]
+
+  const discoverItems = [
+    {
+      to: '/learn',
+      text: "Recommended for You",
+      description: "Personalized problem suggestions.",
+      image: GuestAvatar
+    },
+    {
+      to: '/learn',
+      text: "Leaderboards",
+      description: "Join competitions and leaderboards.",
+      image: GuestAvatar
+    },
+    {
+      to: "/",
+      text: "Learning Paths",
+      description: "Curated sequences of related problems.",
+      image: GuestAvatar
+    }
+  ]
+
+  const moreItems = [
+    {
+      to: '/learn',
+      text: "Teacher/Tutor Mode",
+      description: "Monitor students or children's progress.",
+      image: GuestAvatar
+    },
+    {
+      to: '/learn',
+      text: "Help Center",
+      description: "FAQs and platform support.",
+      image: GuestAvatar
+    },
+    {
+      to: "/",
+      text: "About Equatora",
+      description: "Learn about mission and vision.",
+      image: GuestAvatar
+    }
+  ]
+
   const notificationItems = [
     {
       to: '/notifications',
-      text: "New Achievement",
-      description: "You've completed 5 problems!",
+      text: "All Notifications",
+      description: "View everything at once.",
       image: GuestAvatar
     },
     {
       to: '/notifications',
-      text: "Daily Reminder",
-      description: "Don't forget your daily problem",
+      text: "From Teachers/Mentors",
+      description: "Messages or assignments from mentors.",
       image: GuestAvatar
     },
     {
@@ -36,8 +99,8 @@ const Navbar = () => {
   const achievementItems = [
     {
       to: '/achievements/recent',
-      text: "Recent Achievements",
-      description: "View your latest accomplishments",
+      text: "All Achievements & Badges",
+      description: "See all unlocked badges.",
       image: GuestAvatar
     },
     {
@@ -48,8 +111,8 @@ const Navbar = () => {
     },
     {
       to: '/achievements/badges',
-      text: "Badges",
-      description: "Collection of earned badges",
+      text: "Special Events",
+      description: "Seasonal or limited-time achievements.",
       image: GuestAvatar
     }
   ];
@@ -87,72 +150,15 @@ const Navbar = () => {
           <li><Link to="/dashboard"><h3 id="navbar-name">equatora</h3></Link></li>
           <li className='hide-navbar'><Dropdown
             label="Learn"
-            items={[
-              {
-                to: '/learn',
-                text: "Your Track",
-                description: "Track topics and problems solved.",
-                image: GuestAvatar
-              },
-              {
-                to: "/",
-                text: "Daily Problem",
-                description: "Solve a fresh daily challenge.",
-                image: GuestAvatar
-              },
-              {
-                to: "/",
-                text: "Saved Problems",
-                description: "Quickly revisit starred problems.",
-                image: GuestAvatar
-              }
-            ]} /></li>
+            items={learnItems} /></li>
           <li className='hide-navbar'>
             <Dropdown
               label="Discover"
-              items={[
-                {
-                  to: '/learn',
-                  text: "Recommended for You",
-                  description: "Personalized problem suggestions.",
-                  image: GuestAvatar
-                },
-                {
-                  to: '/learn',
-                  text: "Leaderboards",
-                  description: "Join competitions and leaderboards.",
-                  image: GuestAvatar
-                },
-                {
-                  to: "/",
-                  text: "Learning Paths",
-                  description: "Curated sequences of related problems.",
-                  image: GuestAvatar
-                }
-              ]}
+              items={discoverItems}
             /></li>
           <li className='hide-navbar'><Dropdown
             label="More"
-            items={[
-              {
-                to: '/learn',
-                text: "Teacher/Tutor Mode",
-                description: "Monitor students or children's progress.",
-                image: GuestAvatar
-              },
-              {
-                to: '/learn',
-                text: "Help Center",
-                description: "FAQs and platform support.",
-                image: GuestAvatar
-              },
-              {
-                to: "/",
-                text: "About Equatora",
-                description: "Learn about mission and vision.",
-                image: GuestAvatar
-              }
-            ]} /></li>
+            items={moreItems} /></li>
         </ul>
 
         <div id='nb-sb'>
