@@ -42,15 +42,35 @@ const Navbar = () => {
             <Dropdown
               label="Discover"
               items={[
-                { text: "Your Track", to: "/discover" },
-                { text: "Web Dev", to: "/discover" }
+                {
+                  to: '/learn',
+                  text: "Your Track",
+                  description: "well this is the description",
+                  image: GuestAvatar
+                },
+                {
+                  to: "/",
+                  text: "Home",
+                  description: "well this is the description",
+                  image: GuestAvatar
+                }
               ]}
             /></li>
           <li className='hide-navbar'><Dropdown
             label="More"
             items={[
-              { text: "Web Dev", to: "/discover" },
-              { text: "Web Dev", to: "/discover" }
+              {
+                to: '/learn',
+                text: "Your Track",
+                description: "well this is the description",
+                image: GuestAvatar
+              },
+              {
+                to: "/",
+                text: "Home",
+                description: "well this is the description",
+                image: GuestAvatar
+              }
             ]} /></li>
         </ul>
 
