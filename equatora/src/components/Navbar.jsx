@@ -135,6 +135,12 @@ const Navbar = () => {
       text: "Sign Out",
       description: "Securely log out of your account",
       image: GuestAvatar
+    },
+    {
+      to: '/logout',
+      text: "Upgrade to Premium",
+      description: "Access unlimited mentor guidance and exam-mode practice.",
+      image: GuestAvatar
     }
   ];
 
