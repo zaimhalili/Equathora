@@ -83,6 +83,11 @@
     align-items: center;
     justify-content: center;
     gap: 1vh;
+    transition: 0.2s ease;
+}
+
+#sidebar-icon:hover{
+    transform: scaleY(1.5);
 }
 
 .navbar-icon-link svg {
