@@ -71,7 +71,7 @@
     align-items: center;
     text-align: center;
     border-radius: 8px;
-    margin: 10px 0 20px 0;
+    margin: 10px 0 30px 0;
     border: 1px solid var(--secondary-color);
     transition: 0.1s ease-out;
     box-shadow: 0 5px 5px 0 rgba(43, 45, 66, 0.5);
@@ -90,7 +90,7 @@
     flex-direction: column;
     align-items: center;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: 1rem;
     gap: 10px;
 }
 

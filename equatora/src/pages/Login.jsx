@@ -23,7 +23,7 @@ const Login = () => {
 
           <div id='auth'>
             <Auth />
-            <Link to="/password" className="btnForgotPass" id='forgotPass'>
+            <Link to="/forgotPassword" className="btnForgotPass" id='forgotPass'>
               Forgot your password?
             </Link>
 

@@ -14,6 +14,7 @@ import Achievements from "./pages/Achievements";
 import Profile from "./pages/Profile";
 import OverflowChecker from "./pages/OverflowChecker";
 import Resend from "./pages/Resend";
+import ForgotPassword from "./pages/ForgotPassword";
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/achievements" element={<Achievements />} />
         <Route path="/resend" element={<Resend />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
 
         {/* Dynamic pages */}
         <Route path="/problems/:groupId" element={<ProblemGroup />} />

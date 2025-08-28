@@ -7,18 +7,18 @@
     overflow-y: auto;
     scrollbar-color: var(--dark-accent-color) var(--main-color);
     scrollbar-width: thin;
+    overflow-x: hidden;
 }
 
 #signup-container {
     width: 45%;
-    height: auto;
+    min-height: 100vh;
     background-color: transparent;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    padding: 0 70px;
-    max-height: 100vh;
+    padding: 0 70px 20px 70px;
 }
 
 #signup-logo-name {
@@ -54,8 +54,9 @@
 
 #auth {
     width: 100%;
-    height: 500px;
+    height: auto;
     margin-top: 40px;
+    gap: 10px;
 }
 
 #forgotPass {
@@ -84,7 +85,7 @@
     align-items: center;
     text-align: center;
     border-radius: 8px;
-    margin: 20px 0 25px 0;
+    margin: 20px 0 30px 0;
     border: 1px solid var(--secondary-color);
     transition: 0.1s ease-out;
     box-shadow: 0 5px 5px 0 rgba(43, 45, 66, 0.5);
@@ -97,12 +98,12 @@
 
 #auth-other-options {
     width: 100%;
-    height: 40px;
+    height: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: 1rem;
     gap: 5px;
 }
 
