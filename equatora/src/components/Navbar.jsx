@@ -28,13 +28,19 @@ const Navbar = () => {
               {
                 to: '/learn',
                 text: "Your Track",
-                description: "well this is the description",
+                description: "Track topics and problems solved.",
                 image: GuestAvatar
               },
               {
                 to: "/",
-                text: "Home",
-                description: "well this is the description",
+                text: "Daily Problem",
+                description: "Solve a fresh daily challenge.",
+                image: GuestAvatar
+              },
+              {
+                to: "/",
+                text: "Saved Problems",
+                description: "Quickly revisit starred problems.",
                 image: GuestAvatar
               }
             ]} /></li>
@@ -44,14 +50,20 @@ const Navbar = () => {
               items={[
                 {
                   to: '/learn',
-                  text: "Your Track",
-                  description: "well this is the description",
+                  text: "Recommended for You",
+                  description: "Personalized problem suggestions.",
+                  image: GuestAvatar
+                },
+                {
+                  to: '/learn',
+                  text: "Leaderboards",
+                  description: "Join competitions and leaderboards.",
                   image: GuestAvatar
                 },
                 {
                   to: "/",
-                  text: "Home",
-                  description: "well this is the description",
+                  text: "Learning Paths",
+                  description: "Curated sequences of related problems.",
                   image: GuestAvatar
                 }
               ]}
@@ -61,14 +73,20 @@ const Navbar = () => {
             items={[
               {
                 to: '/learn',
-                text: "Your Track",
-                description: "well this is the description",
+                text: "Teacher/Tutor Mode",
+                description: "Monitor students or children's progress.",
+                image: GuestAvatar
+              },
+              {
+                to: '/learn',
+                text: "Help Center",
+                description: "FAQs and platform support.",
                 image: GuestAvatar
               },
               {
                 to: "/",
-                text: "Home",
-                description: "well this is the description",
+                text: "About Equatora",
+                description: "Learn about mission and vision.",
                 image: GuestAvatar
               }
             ]} /></li>
