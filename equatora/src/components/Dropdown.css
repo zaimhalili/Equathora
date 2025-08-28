@@ -56,7 +56,7 @@
     gap: 5px;
 }
 
-.dropdown-link:hover{
+.dropdown-link:hover {
     background-color: white;
     border-radius: 0 0 10px 10px;
 }
@@ -76,7 +76,79 @@
     font-size: 0.8rem;
     font-weight: 400;
 }
-.dropdown-image{
+
+.dropdown-image {
     height: 50px;
     width: 50px;
+}
+
+/* Add styles for icon dropdown */
+.dropdown-icon {
+    color: var(--secondary-color);
+    transition: color 0.2s ease;
+}
+
+.dropbtn:hover .dropdown-icon {
+    color: var(--accent-color);
+}
+
+/* Adjust dropdown position for notification menu */
+#navbar-right .dropdown .dropdown-content {
+    left: auto;
+    right: 0;
+    top: 84px;
+    min-width: 300px;
+}
+
+/* Optional: Style notification items differently */
+#navbar-right .dropdown-link {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#navbar-right .dropdown-link:last-child {
+    border-bottom: none;
+}
+
+/* Profile dropdown specific styles */
+.dropdown button img#avatarIMG {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    transition: border 0.2s ease;
+}
+
+.dropdown button:hover img#avatarIMG {
+    border: 2px solid var(--accent-color);
+}
+
+/* Achievement dropdown specific styles */
+#navbar-right .dropdown:nth-child(2) .dropdown-content {
+    right: -120px;  /* Adjust position for achievement dropdown */
+}
+
+/* Profile dropdown specific styles */
+#navbar-right .dropdown:nth-child(3) .dropdown-content {
+    right: -240px;  /* Adjust position for profile dropdown */
+}
+
+/* Make dropdowns more compact for icons */
+#navbar-right .dropdown {
+    margin-left: 20px;
+}
+
+#navbar-right .dropdown-link {
+    padding: 8px 10px;
+}
+
+#navbar-right .dropdown-text h4 {
+    font-size: 1rem;
+}
+
+#navbar-right .dropdown-text h6 {
+    font-size: 0.75rem;
+}
+
+#navbar-right .dropdown-image {
+    height: 40px;
+    width: 40px;
 }

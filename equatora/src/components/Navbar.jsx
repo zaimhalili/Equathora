@@ -12,6 +12,69 @@ import Dropdown from './Dropdown';
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const notificationItems = [
+    {
+      to: '/notifications',
+      text: "New Achievement",
+      description: "You've completed 5 problems!",
+      image: GuestAvatar
+    },
+    {
+      to: '/notifications',
+      text: "Daily Reminder",
+      description: "Don't forget your daily problem",
+      image: GuestAvatar
+    },
+    {
+      to: '/notifications',
+      text: "System Update",
+      description: "Check out our new features",
+      image: GuestAvatar
+    }
+  ];
+
+  const achievementItems = [
+    {
+      to: '/achievements/recent',
+      text: "Recent Achievements",
+      description: "View your latest accomplishments",
+      image: GuestAvatar
+    },
+    {
+      to: '/achievements/stats',
+      text: "Statistics",
+      description: "Your learning progress overview",
+      image: GuestAvatar
+    },
+    {
+      to: '/achievements/badges',
+      text: "Badges",
+      description: "Collection of earned badges",
+      image: GuestAvatar
+    }
+  ];
+
+  const profileItems = [
+    {
+      to: '/profile',
+      text: "My Profile",
+      description: "View and edit your profile",
+      image: GuestAvatar
+    },
+    {
+      to: '/settings',
+      text: "Settings",
+      description: "Manage your preferences",
+      image: GuestAvatar
+    },
+    {
+      to: '/logout',
+      text: "Sign Out",
+      description: "Securely log out of your account",
+      image: GuestAvatar
+    }
+  ];
+
   return (
     <>
       <header id="navbar">
@@ -95,21 +158,29 @@ const Navbar = () => {
         <div id='nb-sb'>
           <ul id="navbar-right">
             <li className='hide-navbar'>
-              <Link to="/notifications" id='notifications' className='navbar-icon-link'>
-                <FaBell size={24} />
-              </Link>
+              <Dropdown
+                label={<FaBell size={24} />}
+                items={notificationItems}
+              />
             </li>
             <li className='hide-navbar'>
-              <Link to="/achievements" id='achievements' className='navbar-icon-link'>
-                <FaTrophy size={24} />
-              </Link>
+              <Dropdown
+                label={<FaTrophy size={24} />}
+                items={achievementItems}
+              />
             </li>
-            <li className='hide-navbar'><Link to="/profile"><img src={GuestAvatar} alt="avatar" id='avatarIMG' /></Link></li>
-            <li><aside id="sidebar-icon" onClick={() => setSidebarOpen(true)}>
-              <img src={Menu} alt="sidebar" id='menu-icon' />
-            </aside></li>
+            <li className='hide-navbar'>
+              <Dropdown
+                label={<img src={GuestAvatar} alt="avatar" id='avatarIMG' />}
+                items={profileItems}
+              />
+            </li>
+            <li>
+              <aside id="sidebar-icon" onClick={() => setSidebarOpen(true)}>
+                <img src={Menu} alt="sidebar" id='menu-icon' />
+              </aside>
+            </li>
           </ul>
-
         </div>
 
 

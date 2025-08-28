@@ -1,12 +1,15 @@
 import React from 'react';
 import './Dropdown.css';
 import { Link } from 'react-router-dom';
-import Books from '../assets/images/learningBooks.svg'
 
 const Dropdown = ({ label, items }) => {
     return (
         <div className='dropdown'>
-            <button className='dropbtn'>{label}</button>
+            <button className='dropbtn'>
+                {typeof label === 'string' ? label : React.cloneElement(label, {
+                    className: 'dropdown-icon'
+                })}
+            </button>
             <div className="dropdown-content">
                 {items.map((item, i) => (
                     <Link key={i} to={item.to} className='dropdown-link'>
