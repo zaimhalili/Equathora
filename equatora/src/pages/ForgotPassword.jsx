@@ -29,7 +29,7 @@ const ForgotPassword = () => {
           />
 
           <button type="submit" className="resend-btn">
-            Resend Email
+            Send Instructions
           </button>
 
           <div id='auth-other-options'>

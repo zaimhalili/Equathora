@@ -25,8 +25,18 @@ const Navbar = () => {
           <li className='hide-navbar'><Dropdown
             label="Learn"
             items={[
-              { to: '/learn', text:"Your Track" },
-              { to: "/", text: "Home" }
+              {
+                to: '/learn',
+                text: "Your Track",
+                description: "well this is the description",
+                image: GuestAvatar
+              },
+              {
+                to: "/",
+                text: "Home",
+                description: "well this is the description",
+                image: GuestAvatar
+              }
             ]} /></li>
           <li className='hide-navbar'>
             <Dropdown
