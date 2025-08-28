@@ -9,20 +9,22 @@ import Sidebar from './Sidebar';
 import Menu from '../assets/images/menu.svg';
 import Dropdown from './Dropdown';
 
+import Premium from '../assets/images/donate.svg';
+
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const learnItems = [
     {
-      to: '/learn',
-      text: "Your Track",
-      description: "Track topics and problems solved.",
-      image: GuestAvatar
-    },
-    {
       to: "/",
       text: "Daily Problem",
       description: "Solve a fresh daily challenge.",
+      image: GuestAvatar
+    },
+    {
+      to: '/learn',
+      text: "Your Track",
+      description: "Track topics and problems solved.",
       image: GuestAvatar
     },
     {
@@ -140,7 +142,7 @@ const Navbar = () => {
       to: '/logout',
       text: "Upgrade to Premium",
       description: "Access unlimited mentor guidance and exam-mode practice.",
-      image: GuestAvatar
+      image: Premium
     }
   ];
 
