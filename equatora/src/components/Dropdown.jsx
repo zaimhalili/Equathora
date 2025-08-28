@@ -15,12 +15,25 @@ const Dropdown = ({ label, items }) => {
                     <Link key={i} to={item.to} className='dropdown-link'>
                         <img
                             src={item.image}
-                            alt={item.image} className='dropdown-image'
+                            alt={item.text} // Changed to item.text for better accessibility
+                            className='dropdown-image'
                         />
                         <div className="dropdown-text">
                             <h4>{item.text}</h4>
                             <h6>{item.description}</h6>
                         </div>
+                        {item.notificationsNo && (
+                            <div className="ntfc-no">
+                                <h4 style={{
+                                    color: "goldenrod",
+                                    display: "flex",
+                                    height: "100%",
+                                    alignItems: "center"
+                                }}>
+                                    {item.notificationsNo}
+                                </h4>
+                            </div>
+                        )}
                     </Link>
                 ))}
             </div>

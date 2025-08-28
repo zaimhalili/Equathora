@@ -24,7 +24,6 @@
     color: var(--secondary-color);
 }
 
-
 .dropdown-content {
     opacity: 0;
     visibility: hidden;
@@ -50,12 +49,21 @@
     color: var(--accent-color);
 }
 
+.ntfc-no {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
 .dropdown-link {
     display: flex;
     width: 100%;
-    padding: 10px 10px;
-    gap: 5px;
+    padding: 10px;
+    gap: 10px;
     border-top: 1px solid var(--french-gray);
+    align-items: center;
+    /* Add this to vertically center items */
 }
 
 .dropdown-link:hover {
@@ -109,4 +117,3 @@
     top: 84px;
     min-width: 360px;
 }
-

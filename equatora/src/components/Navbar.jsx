@@ -76,7 +76,7 @@ const Navbar = () => {
   const moreItems = [
     {
       to: '/learn',
-      text: "Teacher/Tutor Mode",
+      text: "Teacher/Mentor Mode",
       description: "Monitor students or children's progress.",
       image: Mentoring
     },
@@ -99,19 +99,22 @@ const Navbar = () => {
       to: '/notifications',
       text: "All Notifications",
       description: "View everything at once.",
-      image: Notifications
+      image: Notifications,
+      notificationsNo: "4"
     },
     {
       to: '/notifications',
       text: "From Teachers/Mentors",
       description: "Messages or assignments from mentors.",
-      image: Teacher
+      image: Teacher,
+      notificationsNo: "1"
     },
     {
       to: '/notifications',
       text: "System Update",
       description: "Check out our new features",
-      image: Updates
+      image: Updates,
+      notificationsNo: "3"
     }
   ];
 
