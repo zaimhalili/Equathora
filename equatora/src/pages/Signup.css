@@ -4,6 +4,9 @@
     background-color: white;
     width: 100vw;
     display: flex;
+    overflow-y: auto;
+    scrollbar-color: var(--dark-accent-color) var(--main-color);
+    scrollbar-width: thin;
 }
 
 #signup-container {
@@ -16,7 +19,6 @@
     flex-direction: column;
     padding: 0 70px;
     max-height: 100vh;
-    overflow-y: scroll;
 }
 
 #signup-logo-name {
@@ -46,6 +48,8 @@
     align-items: center;
     justify-content: center;
     box-shadow: none;
+    position: sticky;
+    top: 0;
 }
 
 #auth {

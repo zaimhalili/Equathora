@@ -19,12 +19,10 @@
     color: black;
     font-size: 1.1rem;
     margin-bottom: 1.5rem;
-    transition: 0.2s ease-out;
-    box-shadow: 0 0 5px 0 var(--dark-accent-color);
 }
 
-.inputAuth:hover {
-    box-shadow: 0 0 10px 0 var(--dark-accent-color);
+.inputAuth:focus {
+    outline: 2px solid var(--accent-color);
 }
 
 .inputAuth::placeholder {
