@@ -3,7 +3,7 @@
     height: auto;
     width: 100%;
     color: var(--secondary-color);
-    padding: 6vh 4vw;
+    padding: 0 4vw 6vh 4vw;
     display: flex;
     align-items: center;
 }
@@ -152,6 +152,6 @@ progress {
 
 @media only screen and (min-width: 1600px) {
     #your-track-container {
-        padding: 6vh 12vw;
+        padding: 0 12vw 6vh 12vw;
     }
 }

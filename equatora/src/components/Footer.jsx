@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <>
       <footer id='footer-container'>
-        <ul className="links">
+        <ul className="links" id='links-left'>
           <li><Link to="/learn" className='footer-links'>Learn</Link></li>
           <li><Link to="/discover" className='footer-links'>Discover</Link></li>
           <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
@@ -54,7 +54,7 @@ const Footer = () => {
           </div>
           <h2>Equatora</h2>
         </div>
-        <ul className="links">
+        <ul className="links" id='links-right'>
             <li><Link to="/" className='footer-links'>About Us</Link></li>
             <li><Link to="/" className='footer-links'>Legal & Policies</Link></li>
             <li><Link to="/" className='footer-links'>Cookie Policy</Link></li>
