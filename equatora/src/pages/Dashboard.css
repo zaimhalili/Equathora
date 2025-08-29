@@ -42,7 +42,7 @@
 }
 
 #whereToStart-container {
-    padding-left: 4vw;
+    padding: 0 4vw;
 }
 
 #whereToStart-container h3 {
@@ -77,12 +77,12 @@
     border-radius: 2px;
 }
 
-.whereToStart-block img{
+.whereToStart-block img {
     height: 8rem;
     width: 8rem;
 }
 
-.whereToStart-block h6{
+.whereToStart-block h6 {
     color: var(--secondary-color);
     font-family: 'Public Sans', Arial, Helvetica, sans-serif;
     font-size: 1.6rem;
@@ -92,9 +92,10 @@
     text-align: center;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
-.whereToStart-block:hover{
+.whereToStart-block:hover {
     /* zoom: 1.1; */
     transform: scale(1.05);
     box-shadow: 0 0 25px rgba(141, 153, 174, 0.5);
@@ -113,18 +114,34 @@
 @media only screen and (min-width: 992px) {}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {}
+@media only screen and (min-width: 1200px) {
+    #welcome-dashboard{
+        padding-top: 5vh;
+    }
+    #hero-dashboard h1 {
+        font-size: 4rem;
+    }
+
+    #hero-dashboard h4 {
+        font-size: 1.5rem;
+    }
+
+    #teacher-container img {
+        height: 90%;
+        width: 90%;
+    }
+}
 
 @media only screen and (min-width: 1600px) {
-    #hero-dashboard{
+    #hero-dashboard {
         padding: 5vh 12vw 0 12vw;
     }
 
-    #whereToStart-container{
+    #whereToStart-container {
         padding: 0vw 12vw;
     }
 
-    #your-track-container{
+    #your-track-container {
         padding: 0 12vw;
     }
 }
