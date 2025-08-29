@@ -157,14 +157,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50vw;
+    width: 50%;
     height: calc(100vh - 140px);
 }
 
 #studyingIMG {
     width: auto;
     height: 100%;
-    padding: 2vw;
+    padding: 30px;
+    aspect-ratio: 1;
 }
 
 @media only screen and (max-width: 600px) {}
@@ -179,4 +180,7 @@
 @media only screen and (min-width: 992px) {}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {}
+@media only screen and (min-width: 1200px) {
+}
+
+@media only screen and (max-width: 1700px) {}
