@@ -1,4 +1,4 @@
-// Navbar.jsx
+//Imports
 import React, { useState } from 'react';
 import './Navbar.css';
 import Logo from '../assets/images/logo.png';
@@ -8,7 +8,7 @@ import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
 import Menu from '../assets/images/menu.svg';
 import Dropdown from './Dropdown';
-
+//Dropdown svgs
 import Daily from '../assets/images/questionMark.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
 import Favourite from '../assets/images/favourite.svg';

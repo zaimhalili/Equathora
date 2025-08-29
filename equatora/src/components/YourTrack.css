@@ -6,6 +6,7 @@
     padding: 0 4vw 6vh 4vw;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 #your-track-container h3 {
@@ -108,8 +109,7 @@ progress {
     justify-content: center;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+@media only screen and (max-width: 600px) {
     #your-track-container {
         flex-direction: column;
         text-align: center;
@@ -136,16 +136,44 @@ progress {
     }
 }
 
-@media only screen and (max-width: 600px) {}
-
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {}
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    #your-track-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #progress-bar-track,
+    #your-track-container figure {
+        width: 100%;
+    }
+
+    .prg-bar-arrow {
+        padding-left: 0;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #progressBar-container {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    #arrowProblems {
+        margin-left: 0;
+    }
+}
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {}
+@media only screen and (min-width: 768px) and (max-width: 992px) {}
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {}
+@media only screen and (min-width: 992px)and (max-width: 1199px) {
+    #your-track-container figure {
+        width: 50%;
+        height: 300px;
+    }
+}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {}
