@@ -59,7 +59,7 @@
     z-index: 1;
 }
 
-#center h2{
+#center h2 {
     font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: var(--really-light-accent);
     font-size: 2.4rem;
@@ -67,7 +67,7 @@
 
 }
 
-.links{
+.links {
     width: 20%;
     height: 70vh;
     flex-direction: column;
@@ -75,8 +75,8 @@
     justify-content: flex-end;
     font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 1.2rem;
-    padding: 3rem 4rem 3rem 4rem;
     gap: 0.8rem;
+    padding: 0;
 }
 
 .links a {
@@ -84,11 +84,11 @@
     transition: 0.2s ease-out;
 }
 
-.links li{
+.links li {
     list-style: none;
 }
 
-.links a:hover{
+.links a:hover {
     color: var(--main-color);
     /* zoom: 1.2; */
     text-decoration: underline;
@@ -117,6 +117,11 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+#links-right,
+#links-left {
+    padding: 0;
+}
+
 @media only screen and (max-width: 600px) {}
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -126,13 +131,10 @@
 @media only screen and (min-width: 768px) {}
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {}
+@media only screen and (max-width: 1100px) {}
 
 @media only screen and (min-width: 1600px) {
-    #links-left{
+    #links-left {
         align-items: flex-end;
     }
 }
