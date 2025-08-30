@@ -17,28 +17,36 @@
     color: var(--secondary-color);
     font-family: 'Inter', sans-serif;
     width: 50%;
-    padding-right: 1vw;
+    max-width: 92%;
     height: 100%;
     padding-top: 10vh;
+    padding-bottom: 2vh;
 }
 
 #hero-dashboard h1 {
-    font-size: 4.5rem;
+    font-size: clamp(0.9rem, 4rem, 4.5rem);
     margin-bottom: 2vh;
 }
 
 #hero-dashboard h4 {
-    font-size: 1.5rem;
+    font-size: clamp(0.7rem, 1.5rem, 2rem);
     font-weight: 400;
-    width: 80%;
+    line-height: 1.2;
+    width: 90%;
 }
 
 #teacher-container {
-    padding-left: 1vw;
+    padding-left: 5%;
+    padding-bottom: 2vh;
     height: 100%;
     width: 50%;
     display: flex;
     justify-content: center;
+}
+
+#teacher-container img {
+    max-width: 95%;
+    max-height: 95%;
 }
 
 #whereToStart-container {
@@ -108,20 +116,14 @@
 @media only screen and (min-width: 600px) and (max-width: 768px) {}
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) and (max-width: 992px) {
+@media only screen and (min-width: 768px) and (max-width: 991px) {
     #welcome-dashboard {
         width: 100%;
-        padding: 10vh 4vw 5vh 4vw;
         height: 100%;
         text-align: center;
         display: flex;
         justify-content: center;
         flex-direction: column;
-    }
-
-    #hero-dashboard h4 {
-        line-height: 1.4;
-        width: 100%;
     }
 
     #teacher-container {
@@ -168,20 +170,7 @@
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px)and (max-width: 1199px) {
     #welcome-dashboard {
-        padding-top: 5vh;
-    }
-
-    #hero-dashboard h1 {
-        font-size: 3rem;
-    }
-
-    #hero-dashboard h4 {
-        font-size: 1.2rem;
-    }
-
-    #teacher-container img {
-        height: 90%;
-        width: 90%;
+        padding-top: 2vh;
     }
 
     .whereToStart-block {
@@ -208,19 +197,6 @@
 @media only screen and (min-width: 1200px) and (max-width: 1599px) {
     #welcome-dashboard {
         padding-top: 5vh;
-    }
-
-    #hero-dashboard h1 {
-        font-size: 4rem;
-    }
-
-    #hero-dashboard h4 {
-        font-size: 1.5rem;
-    }
-
-    #teacher-container img {
-        height: 90%;
-        width: 90%;
     }
 }
 
