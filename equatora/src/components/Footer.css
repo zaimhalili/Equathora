@@ -68,7 +68,7 @@
 }
 
 .links {
-    width: 100%;
+    width: 20%;
     
     height: 70vh;
     flex-direction: column;
@@ -84,6 +84,7 @@
     color: var(--mid-main-secondary);
     transition: 0.2s ease-out;
     min-width: 200px;
+    width: 100%;
 }
 
 .links li {
