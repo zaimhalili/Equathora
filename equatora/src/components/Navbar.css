@@ -97,11 +97,12 @@
     color: var(--accent-color);
 }
 
-.hide-navbar{
+.hide-navbar {
     padding-left: 1rem;
 }
 
 #menu-icon {
+    display: none;
     height: 30px;
     width: 30px;
 }
@@ -110,6 +111,10 @@
     .hide-navbar {
         display: none;
     }
+
+    #menu-icon {
+        display: block;
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -117,12 +122,20 @@
     .hide-navbar {
         display: none;
     }
+
+    #menu-icon {
+        display: block;
+    }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) and (max-width: 992px) {
     .hide-navbar {
         display: none;
+    }
+
+    #menu-icon {
+        display: block;
     }
 }
 
