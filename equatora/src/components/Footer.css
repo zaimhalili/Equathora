@@ -68,20 +68,22 @@
 }
 
 .links {
-    width: 20%;
+    width: 100%;
+    
     height: 70vh;
     flex-direction: column;
     display: flex;
     justify-content: flex-end;
     font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 1.2rem;
+    font-size: clamp(0.6rem, 1rem, 1.2rem);
     gap: 0.8rem;
-    padding: 0;
+    padding: 4rem 3rem;
 }
 
 .links a {
     color: var(--mid-main-secondary);
     transition: 0.2s ease-out;
+    min-width: 200px;
 }
 
 .links li {
@@ -117,10 +119,6 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-#links-right,
-#links-left {
-    padding: 0;
-}
 
 @media only screen and (max-width: 600px) {}
 
@@ -128,10 +126,14 @@
 @media only screen and (min-width: 600px) {}
 
 /* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {}
+@media only screen and (max-width: 768px) {}
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (max-width: 1100px) {}
+@media only screen and (max-width: 1180px) {
+    .links {
+        padding: 4rem 1.5rem;
+    }
+}
 
 @media only screen and (min-width: 1600px) {
     #links-left {
