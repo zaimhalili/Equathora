@@ -171,7 +171,6 @@ progress {
         height: 3rem;
     }
 }
-
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) and (max-width: 992px) {
     #your-track-container figure img {
@@ -179,8 +178,6 @@ progress {
         height: 300px;
         aspect-ratio: 1;
     }
-
-
 }
 
 /* Large devices (laptops/desktops, 992px and up) */

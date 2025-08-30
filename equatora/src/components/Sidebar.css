@@ -87,7 +87,6 @@
     list-style: none;
     display: flex;
     justify-content: center;
-    margin-top: 40vh;
 }
 
 #sidebar-avatarIMG {
@@ -110,18 +109,23 @@
     align-items: center;
 }
 
-#logout:hover{
+#logout:hover {
     color: var(--accent-color);
     background-color: rgb(217, 217, 217);
 }
 
-@media only screen and (max-width: 600px) {}
+@media only screen and (max-width: 768px) {
+    #logout,
+    .sidebar-pages{
+        display: flex;
+        justify-content: center;
+        padding: 0;
+    }
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {}
+    #sidebar{
+        right: -100vw;
+    }
+}
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {}
