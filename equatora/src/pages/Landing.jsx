@@ -36,7 +36,9 @@ const Landing = () => {
             <section id='hero'>
                 <div id='hero-left'>
                     <h1 id='hero-title'>
-                        Turn Logic into Your <span style={{ color: 'var(--accent-color)' }}>Superpower
+                        Turn Logic into Your 
+                        <span style={{ color: 'var(--accent-color)' }}>
+                            Superpower
                         </span>
                     </h1>
                     <h3 id='hero-description'>
