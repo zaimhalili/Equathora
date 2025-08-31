@@ -65,14 +65,14 @@
 
 #center h1 {
     font-family: 'Inter', serif;
-    font-size: clamp(1rem, 5vw, 2.4rem);
+    font-size: clamp(1.2rem, 5vw, 2.4rem);
     z-index: 1;
 }
 
 #center h2 {
     font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: var(--really-light-accent);
-    font-size: clamp(1rem, 5vw, 2.4rem);
+    font-size: clamp(1.2rem, 5vw, 2.4rem);
     letter-spacing: 1px;
     padding: 0 20px;
 }

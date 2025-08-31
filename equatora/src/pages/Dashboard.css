@@ -25,13 +25,13 @@
 }
 
 #hero-dashboard h1 {
-    font-size: clamp(0.9rem, 4rem, 4.5rem);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
     margin-bottom: 2vh;
     cursor: default;
 }
 
 #hero-dashboard h4 {
-    font-size: clamp(0.7rem, 1.5rem, 2rem);
+    font-size: clamp(1.5rem, 5vw, 2rem);
     font-weight: 400;
     line-height: 1.2;
     width: 90%;
@@ -96,7 +96,7 @@
 .whereToStart-block h6 {
     color: var(--secondary-color);
     font-family: 'Public Sans', Arial, Helvetica, sans-serif;
-    font-size: clamp(0.7rem, 1.5rem, 1.6rem);
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
     font-weight: 400;
     width: 80%;
     height: 8rem;
@@ -121,6 +121,10 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
+    }
+
+    #hero-dashboard h4 {
+        width: 100%;
     }
 
     #teacher-container {
@@ -171,6 +175,10 @@
         text-align: center;
     }
 
+    #hero-dashboard h4 {
+        width: 100%;
+    }
+
     .whereToStart-block {
         width: 50%;
         padding: 1rem;
@@ -207,6 +215,10 @@
 
     #whereToStart-container {
         padding: 10vh 4vw 5vh 4vw;
+    }
+
+    #hero-dashboard h4 {
+        width: 100%;
     }
 
     .whereToStart-block {
