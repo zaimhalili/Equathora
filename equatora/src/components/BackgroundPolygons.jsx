@@ -1,6 +1,7 @@
 // src/components/BackgroundPolygons.jsx
 import React from 'react';// Import your local image
 import './BackgroundPolygons.css';
+import '../pages/Signup.css';
 
 const BackgroundPolygons = () => {
     return (

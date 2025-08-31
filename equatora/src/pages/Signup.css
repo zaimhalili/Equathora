@@ -30,7 +30,7 @@
     margin-top: 50px;
 }
 
-#signup-logoIMG{
+#signup-logoIMG {
     height: 100%;
 }
 
@@ -118,14 +118,32 @@
 .other-option-link {
     color: var(--dark-accent-color);
 }
-@media only screen and (max-width: 600px) {}
 
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (max-width: 768px) {}
+@media only screen and (max-width: 970px) {
+    #polygon-container{
+        display:none;
+    }
+}
+
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (max-width: 970px) {
-    #background-container {
-        display: none;
+@media only screen and (max-width: 992px) {
+    #polygon-text-big {
+        padding: 0 30px;
+    }
+
+    #polygon-text-small {
+        padding: 0 80px;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (max-width: 1200px) {
+    #polygon-text-big {
+        padding: 0 50px;
+    }
+
+    #polygon-text-small {
+        padding: 0 100px;
     }
 }
