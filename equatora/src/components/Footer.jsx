@@ -11,13 +11,7 @@ const Footer = () => {
   return (
     <>
       <footer id='footer-container'>
-        <ul className="links" id='links-left'>
-          <li><Link to="/learn" className='footer-links'>Learn</Link></li>
-          <li><Link to="/discover" className='footer-links'>Discover</Link></li>
-          <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
-          <li><Link to="/notifications" className='footer-links'>Notifications</Link></li>
-          <li><Link to="/profile" className='footer-links'>My Profile</Link></li>
-        </ul>
+
         <div id="center">
           <h1>
             Your contribution helps us keep this learning platform available for <span className='rotated-bg'>students worldwide</span>
@@ -53,14 +47,27 @@ const Footer = () => {
             </a>
           </div>
           <h2>Equatora</h2>
+          <p style={{
+            fontFamily: "'Times New Roman', serif, sans-serif"
+          }}>&#169;2025 Equatora. All rights reserved.</p>
         </div>
-        <ul className="links" id='links-right'>
+        <div className="links-wrapper">
+          <ul className="links" id='links-left'>
+            <li><Link to="/learn" className='footer-links'>Learn</Link></li>
+            <li><Link to="/discover" className='footer-links'>Discover</Link></li>
+            <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
+            <li><Link to="/notifications" className='footer-links'>Notifications</Link></li>
+            <li><Link to="/profile" className='footer-links'>My Profile</Link></li>
+          </ul>
+          <ul className="links" id='links-right'>
             <li><Link to="/" className='footer-links'>About Us</Link></li>
             <li><Link to="/" className='footer-links'>Legal & Policies</Link></li>
             <li><Link to="/" className='footer-links'>Cookie Policy</Link></li>
             <li><Link to="/" className='footer-links'>FAQS</Link></li>
             <li><Link to="/" className='footer-links'>Report</Link></li>
-        </ul>
+          </ul> 
+        </div>
+
       </footer>
     </>
   );
