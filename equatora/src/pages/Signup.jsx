@@ -8,7 +8,7 @@ import './Signup.css';
 
 const Signup = () => {
   function GoogleSignup() {
-    
+
   }
 
   return (

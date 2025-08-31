@@ -90,9 +90,10 @@
 }
 
 #sidebar-avatarIMG {
-    height: 70px;
-    width: 70px;
+    height: 30px;
+    width: 30px;
     border-radius: 50%;
+    border: 2px solid black;
 }
 
 #logout {
@@ -115,15 +116,19 @@
 }
 
 @media only screen and (max-width: 768px) {
+    #sidebar {
+        right: -100vw;
+    }
+/* 
+    #sidebar.open {
+        right: 0;
+    } */
+
     #logout,
-    .sidebar-pages{
+    .sidebar-pages {
         display: flex;
         justify-content: center;
         padding: 0;
-    }
-
-    #sidebar{
-        right: -100vw;
     }
 }
 
