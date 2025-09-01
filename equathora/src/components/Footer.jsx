@@ -48,8 +48,13 @@ const Footer = () => {
           </div>
           <h2>equathora</h2>
           <p style={{
-            fontFamily: "'Times New Roman', serif, sans-serif"
+            fontFamily: "'Times New Roman', serif, sans-serif", marginTop: "10px"
           }}>&#169;2025 equathora. All rights reserved.</p>
+          <p style={{
+            fontFamily: "'Times New Roman', serif, sans-serif", marginTop: "10px"
+          }}>Page design inspired by <br /> <a href="https://exercism.org" style={{ textDecoration: "underline" }} target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Exercism">Exercism</a> - free coding platform</p>
         </div>
         <div className="links-wrapper">
           <ul className="links" id='links-left'>

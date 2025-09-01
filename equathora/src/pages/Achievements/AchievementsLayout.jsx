@@ -23,7 +23,9 @@ const AchievementsLayout = () => {
       </main>
       <footer>
         <Footer></Footer>
-        <a href="http://www.freepik.com" id='freepik-link'>Designed by upklyak / Freepik</a>
+        <a href="http://www.freepik.com" id='freepik-link' target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Freepik">Designed by upklyak / Freepik</a>
       </footer>
     </>
   );
