@@ -1,0 +1,16 @@
+
+
+.achievements-image-body {
+    min-height: 100vh;
+    background-color: var(--main-color);
+    background: url('../../assets/images/journey.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+}
+
+.achievements-filter{
+    width: 100%;
+    background-color: var(--raisin-black);
+    padding: 1rem;
+    height: 10vh;
+}

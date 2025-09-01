@@ -1,5 +1,6 @@
 import React from 'react';
-import Navbar from 'equathora\src\components\Navbar.jsx';
+import Navbar from '../../components/Navbar.jsx';
+import './AchievementsLayout.css';
 
 const AchievementsLayout = () => {
   return (
@@ -7,6 +8,15 @@ const AchievementsLayout = () => {
       <header>
         <Navbar></Navbar>
       </header>
+      <main className='achievements-body'>
+        <div className="achievements-image-body"></div>
+        <div className="achievements-filter">
+
+        </div>
+      </main>
+      <footer>
+        <a href="http://www.freepik.com">Designed by upklyak / Freepik</a>
+      </footer>
     </>
   );
 };
