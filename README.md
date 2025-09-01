@@ -1,6 +1,6 @@
 <div align="center">
 
-# 📐 Equatora
+# 📐 equathora
 
 [![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.0.0-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
@@ -9,9 +9,9 @@
 
 🧮 An interactive mathematics learning platform that makes education engaging and accessible.
 
-[Explore Demo](https://equatora.dev) • [Report Bug](https://github.com/username/equatora/issues) • [Request Feature](https://github.com/username/equatora/issues)
+[Explore Demo](https://equathora.dev) • [Report Bug](https://github.com/username/equathora/issues) • [Request Feature](https://github.com/username/equathora/issues)
 
-![Equatora Preview](src/assets/images/preview.png)
+![equathora Preview](src/assets/images/preview.png)
 
 </div>
 
@@ -69,7 +69,7 @@
 
 ## 📁 Project Structure
 ```bash
-equatora/
+equathora/
 ├── 📂 src/
 │   ├── 🎨 assets/      # Images and SVGs
 │   ├── 🧩 components/  # Reusable UI components
@@ -85,10 +85,10 @@ equatora/
 ### Quick Start
 ```bash
 # Clone repository
-git clone https://github.com/username/equatora.git
+git clone https://github.com/username/equathora.git
 
 # Install dependencies
-cd equatora && npm install
+cd equathora && npm install
 
 # Start development server
 npm run dev
@@ -123,6 +123,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
   
 ### ⭐ Star us on GitHub — it helps!
 
-[equatora.dev](https://equatora.dev) • [@equatora](https://twitter.com/equatora)
+[equathora.dev](https://equathora.dev) • [@equathora](https://twitter.com/equathora)
 
 </div>

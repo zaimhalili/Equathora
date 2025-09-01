@@ -10,7 +10,7 @@ const ForgotPassword = () => {
       <section id='resend-container'>
         <article id='resend-logo-name'>  =
           <img src={Logo} alt="Logo" />
-          <h3 id='login-name'>equatora</h3>
+          <h3 id='login-name'>equathora</h3>
         </article>
         <article id='resend-text-container'>
           <h3>Forgot your password?</h3>

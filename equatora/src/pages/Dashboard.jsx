@@ -21,7 +21,7 @@ const Dashboard = () => {
         <section id='hero-dashboard'>
           <article id='welcome-dashboard'>
             <h1>Welcome Back, <br /> <span id='user-name'>User</span>!</h1>
-            <h4>Tackle fun math and logic challenges with guided support to master your topics. <span style={{ fontWeight: 600 }}>Equatora is open, student-centered, and built to grow with you.</span> </h4>
+            <h4>Tackle fun math and logic challenges with guided support to master your topics. <span style={{ fontWeight: 600 }}>equathora is open, student-centered, and built to grow with you.</span> </h4>
           </article>
 
           <figure id='teacher-container'>
@@ -33,7 +33,7 @@ const Dashboard = () => {
           <h3>
             Where To Start...
           </h3>
-          
+
           <div id='whereToStart-options'>
             <Link to="/" className="whereToStart-block">
               <img src={QuestionMark} alt="daily-challenge" />

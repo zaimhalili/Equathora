@@ -46,10 +46,10 @@ const Footer = () => {
               <FaFacebook />
             </a>
           </div>
-          <h2>Equatora</h2>
+          <h2>equathora</h2>
           <p style={{
             fontFamily: "'Times New Roman', serif, sans-serif"
-          }}>&#169;2025 Equatora. All rights reserved.</p>
+          }}>&#169;2025 equathora. All rights reserved.</p>
         </div>
         <div className="links-wrapper">
           <ul className="links" id='links-left'>
@@ -65,7 +65,7 @@ const Footer = () => {
             <li><Link to="/" className='footer-links'>Cookie Policy</Link></li>
             <li><Link to="/" className='footer-links'>FAQS</Link></li>
             <li><Link to="/" className='footer-links'>Report</Link></li>
-          </ul> 
+          </ul>
         </div>
 
       </footer>

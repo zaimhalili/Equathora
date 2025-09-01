@@ -16,7 +16,7 @@ const Signup = () => {
       <section id='signup-container'>
         <div id='signup-logo-name'>
           <img src={Logo} alt="Logo" id='signup-logoIMG' />
-          <h3 id='signup-name'>equatora</h3>
+          <h3 id='signup-name'>equathora</h3>
         </div>
         <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleSignup} /></div>
 

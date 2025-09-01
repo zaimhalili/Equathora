@@ -32,7 +32,7 @@ const Learn = () => {
       case 'in-progress':
         return problems.filter(p => p.inProgress);
       default:
-        return problems; 
+        return problems;
     }
   }, [filter, problems]);
 
@@ -46,7 +46,7 @@ const Learn = () => {
           <article id='welcome-learn'>
             <figure><img src={Idea} alt="idea image" /></figure>
             <div id="learn-explore">
-              <h1>Explore the Math exercises on Equatora</h1>
+              <h1>Explore the Math exercises on equathora</h1>
               <h4>Unlock more exercises as you progress. They're great practise and fun to do!</h4>
             </div>
           </article>
@@ -104,7 +104,7 @@ const Learn = () => {
                 </span>
               </button>
             </div>
-            
+
           </article>
           <article id='problems-container'>
             {filteredProblems.map(problem => (
@@ -112,7 +112,7 @@ const Learn = () => {
             ))}
           </article>
         </section>
-        
+
         <footer>
           <Footer></Footer>
         </footer>

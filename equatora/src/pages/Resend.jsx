@@ -10,14 +10,14 @@ const Resend = () => {
       <section id='resend-container'>
         <article id='resend-logo-name'>  =
           <img src={Logo} alt="Logo" />
-          <h3 id='login-name'>equatora</h3> 
+          <h3 id='login-name'>equathora</h3>
         </article>
         <article id='resend-text-container'>
           <h3>Resend confirmation instructions</h3>
-          
+
           <h6><br />Not received a confirmation email? Use the form below and we'll send you another.</h6>
         </article>
-        <article style={{width: '100%', height:'calc(100vh - 90px)', display:'flex', flexDirection:'column', marginTop: '30px'}}>
+        <article style={{ width: '100%', height: 'calc(100vh - 90px)', display: 'flex', flexDirection: 'column', marginTop: '30px' }}>
           <h5 className='typeOfInput resend'>EMAIL</h5>
           <input
             type="email"

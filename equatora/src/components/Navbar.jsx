@@ -88,7 +88,7 @@ const Navbar = () => {
     },
     {
       to: "/",
-      text: "About Equatora",
+      text: "About equathora",
       description: "Learn about its mission and vision.",
       image: AboutUs
     }
@@ -175,7 +175,7 @@ const Navbar = () => {
               <img src={Logo} alt="Logo" id="navbar-logo" />
             </Link>
           </li>
-          <li><Link to="/dashboard"><h3 id="navbar-name">equatora</h3></Link></li>
+          <li><Link to="/dashboard"><h3 id="navbar-name">equathora</h3></Link></li>
           <li className='hide-navbar'><Dropdown
             label="Learn"
             items={learnItems} /></li>

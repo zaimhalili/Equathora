@@ -16,7 +16,7 @@ const Landing = () => {
             <header id='navbar'>
                 <div id='logoName'>
                     <img src={Logo} alt="Logo" id='logoIMG' loading='lazy'/>
-                    <h3 id='name'>equatora</h3>
+                    <h3 id='name'>equathora</h3>
                 </div>
 
                 <div id="home-buttons-container">

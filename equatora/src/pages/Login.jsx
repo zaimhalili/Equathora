@@ -17,7 +17,7 @@ const Login = () => {
         <section id='login-container'>
           <div id='login-logo-name'>
             <img src={Logo} alt="Logo" id='login-logoIMG' />
-            <h3 id='login-name'>equatora</h3>
+            <h3 id='login-name'>equathora</h3>
           </div>
           <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleLogin} /></div>
 
