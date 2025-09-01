@@ -20,7 +20,7 @@ const Landing = () => {
                 </div>
 
                 <div id="home-buttons-container">
-                    <Link to="/more" className="btnLanding" id='learnMore'>
+                    <Link to="/dashboard" className="btnLanding" id='learnMore'>
                         Learn More
                     </Link>
                     <Link to="/dashboard" className="btnLanding" id='exploreProblems'>

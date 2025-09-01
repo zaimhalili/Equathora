@@ -17,7 +17,6 @@ import Profile from "./pages/Profile";
 import OverflowChecker from "./pages/OverflowChecker";
 import Resend from "./pages/Resend";
 import ForgotPassword from "./pages/ForgotPassword";
-import ProtectedRoute from './components/ProtectedRoute';
 
 export default function App() {
   return (
@@ -31,25 +30,15 @@ export default function App() {
         <Route path="/resend" element={<Resend />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
 
-        {/* Protected Routes */}
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
+        {/* Unprotected Routes */}
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/more" element={<More />} />
+        <Route path="/learn" element={<Learn />} />
+        <Route path="/discover" element={<Discover />} />
+        <Route path="/notifications" element={<Notifications />} />
 
-        {/* Protected Feature Routes */}
-        <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
-        <Route path="/learn" element={<ProtectedRoute><Learn /></ProtectedRoute>} />
-        <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} />
-        <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-
-        {/* Protected Nested Routes */}
-        <Route path="/achievements" element={
-          <ProtectedRoute>
-            <AchievementsLayout />
-          </ProtectedRoute>
-        }>
+        {/* Unprotected Nested Routes */}
+        <Route path="/achievements" element={<AchievementsLayout />}>
           <Route index element={<RecentAchievements />} />
           <Route path="recent" element={<RecentAchievements />} />
           <Route path="stats" element={<Statistics />} />
@@ -57,21 +46,9 @@ export default function App() {
         </Route>
 
         {/* Dynamic Routes */}
-        <Route path="/problems/:groupId" element={
-          <ProtectedRoute>
-            <ProblemGroup />
-          </ProtectedRoute>
-        } />
-        <Route path="/problems/:groupId/:problemId" element={
-          <ProtectedRoute>
-            <Problem />
-          </ProtectedRoute>
-        } />
-        <Route path="/profile/:profile" element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        } />
+        <Route path="/problems/:groupId" element={<ProblemGroup />} />
+        <Route path="/problems/:groupId/:problemId" element={<Problem />} />
+        <Route path="/profile/:profile" element={<Profile />} />
 
         {/* 404 Route */}
         <Route path="*" element={<Navigate to="/" replace />} />
