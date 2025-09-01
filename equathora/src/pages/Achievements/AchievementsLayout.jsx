@@ -1,8 +1,13 @@
 import React from 'react';
+import Navbar from 'equathora\src\components\Navbar.jsx';
 
 const AchievementsLayout = () => {
   return (
-    <div></div>
+    <>
+      <header>
+        <Navbar></Navbar>
+      </header>
+    </>
   );
 };
 
