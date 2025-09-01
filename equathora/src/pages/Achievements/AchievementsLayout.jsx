@@ -11,7 +11,7 @@ const AchievementsLayout = () => {
       </header>
       <main className='achievements-body'>
         <div className="achievements-image-body">
-          <h1>Your Learning Progress</h1>
+          <h1>Your Learning <span id='prg-hover'>Progress</span></h1>
           <h3>Exploring your time on Equathora</h3>
         </div>
         <div className="achievements-filter">

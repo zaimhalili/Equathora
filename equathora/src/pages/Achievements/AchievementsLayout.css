@@ -31,6 +31,13 @@
     color: white;
     font-size: 4rem;
     font-weight: 800;
+    cursor: default;
+}
+
+#prg-hover:hover{
+    transition: 0.4s ease-out;
+    color: goldenrod;
+    transform: translateY(-20px);
 }
 
 .achievements-image-body h3 {
@@ -38,6 +45,7 @@
     font-size: 2rem;
     font-weight: 400;
     padding: 0.8rem;
+    cursor: default;
 }
 
 .achievements-filter {
