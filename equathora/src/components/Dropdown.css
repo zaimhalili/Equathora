@@ -28,7 +28,7 @@
     opacity: 0;
     visibility: hidden;
     left: -60px;
-    top: 84px;
+    top: 80px;
     position: absolute;
     background-color: var(--main-color);
     min-width: 360px;
@@ -36,11 +36,12 @@
     font-family: 'Public Sans', sans-serif;
     border-radius: 0 0 10px 10px;
     z-index: 900;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
 }
 
 .dropbtn:hover+.dropdown-content,
 .dropdown-content:hover {
+    transform: translateY(8px);
     opacity: 1;
     visibility: visible;
 }
@@ -114,7 +115,7 @@
 #navbar-right .dropdown .dropdown-content {
     left: auto;
     right: -60px;
-    top: 84px;
+    top: 80px;
     min-width: 360px;
 }
 
