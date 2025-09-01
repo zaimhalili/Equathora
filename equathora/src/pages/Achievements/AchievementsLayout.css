@@ -10,6 +10,7 @@
     z-index: 0;
     align-items: center;
     padding: 15vh 0;
+    text-align: center;
 }
 
 .achievements-image-body::before {
@@ -29,7 +30,7 @@
 
 .achievements-image-body h1 {
     color: white;
-    font-size: 4rem;
+    font-size: clamp(1.4rem, 5vw, 4rem);
     font-weight: 800;
     cursor: default;
 }
@@ -42,7 +43,7 @@
 
 .achievements-image-body h3 {
     color: white;
-    font-size: 2rem;
+    font-size: clamp(1rem, 3vw, 2rem);
     font-weight: 400;
     padding: 0.8rem;
     cursor: default;
