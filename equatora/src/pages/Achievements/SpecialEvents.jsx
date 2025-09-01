@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Achievements = () => {
+const SpecialEvents = () => {
   return (
     <div></div>
   );
 };
 
-export default Achievements;
+export default SpecialEvents;
