@@ -64,7 +64,7 @@
     padding-bottom: 30px;
 }
 
-.achievements-link img{
+.achievements-link img {
     height: 100%;
     width: auto;
     padding: 10px;
@@ -89,7 +89,7 @@
 }
 
 .achievements-link:hover img,
-.achievements-link:hover{
+.achievements-link:hover {
     transition: 0.2s ease-out;
     background-color: var(--dark-accent-color);
     color: var(--main-color);
@@ -99,12 +99,13 @@
 .achievements-content {
     width: 100%;
     background-color: var(--raisin-black);
-    padding: 1rem;
+    padding: 3rem 5rem;
     height: auto;
     min-height: 20vh;
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
-    justify-content: space-between;
 }
 
 #freepik-link {
@@ -117,4 +118,63 @@
     text-decoration: underline;
     background-color: var(--secondary-color);
     font-family: 'Inter', sans-serif;
+}
+
+@layer recAchievements {
+    .rec-achievements h2 {
+        font-family: 'Public Sans', sans-serif;
+        font-size: clamp(1.7rem, 5vw, 3.2rem);
+        padding: 2vh 0;
+        text-align: center;
+    }
+
+    .rec-achievements p{
+        font-family: 'Public Sans', sans-serif;
+        font-size: clamp(1.1rem, 3vw, 1.6rem);
+        padding: 1rem 0;
+        text-align: center;
+        height: 80px;
+    }
+
+    .rec-achievements .block-container {
+        padding: 2vh 0;
+        display: flex;
+        gap: 100px;
+        height: auto;
+        width: 100%;
+    }
+
+    .rec-achievements .block {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: 'Public Sans', sans-serif;
+        font-size: clamp(1.2rem, 3vw, 1.4rem);
+        background-color: var(--secondary-color);
+        padding: 0 2vh;
+        height: 130px;
+        width: 250px;
+        box-shadow: 0 0 30px black;
+        border-radius: 12px;
+    }
+
+    .achievements-list {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        margin-top: 5vh;
+    }
+
+    .a-list-component{
+        width: 100%;
+        min-height: 100px;
+        font-size: clamp(1.2rem, 3vw, 1.4rem);
+        box-shadow: 0 0 30px black;
+        display: flex;
+        align-items: center;
+        padding: 10px 40px;
+    }
 }

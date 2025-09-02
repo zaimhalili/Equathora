@@ -2,7 +2,9 @@ import React from 'react';
 
 const Statistics = () => {
   return (
-    <div></div>
+    <div>
+      <h2>Statistics</h2>
+    </div>
   );
 };
 

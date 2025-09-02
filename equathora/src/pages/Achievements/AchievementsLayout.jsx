@@ -36,7 +36,7 @@ const AchievementsLayout = () => {
           </div>
         </div>
         <div className='achievements-content'>
-
+          <Outlet></Outlet>
         </div>
 
       </main>

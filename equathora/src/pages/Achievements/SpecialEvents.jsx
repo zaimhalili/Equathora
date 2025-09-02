@@ -2,7 +2,9 @@ import React from 'react';
 
 const SpecialEvents = () => {
   return (
-    <div></div>
+    <div>
+      <h3>Special Events</h3>
+    </div>
   );
 };
 
