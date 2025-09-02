@@ -80,7 +80,7 @@
     height: 50px;
     width: auto;
     font-size: 1.4rem;
-    font-weight: 600;
+    font-weight: 400;
     font-family: 'Inter', sans-serif;
     padding: 0px 20px;
     border-radius: 50px;
@@ -88,10 +88,12 @@
     margin: 0;
 }
 
+.achievements-link:hover img,
 .achievements-link:hover{
-    transition: 0.4s ease-out;
+    transition: 0.2s ease-out;
     background-color: var(--dark-accent-color);
     color: var(--main-color);
+    filter: saturate(1);
 }
 
 .achievements-content {
