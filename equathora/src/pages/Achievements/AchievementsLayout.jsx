@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom'; // Change Link to NavLink
 import Navbar from '../../components/Navbar.jsx';
 import Footer from '../../components/Footer.jsx';
 import './AchievementsLayout.css';
@@ -10,35 +11,49 @@ import Events from '../../assets/images/specialEvents.svg';
 const AchievementsLayout = () => {
   return (
     <>
-      <header>
-        <Navbar></Navbar>
-      </header>
+      <header><Navbar /></header>
 
       <main className='achievements-body'>
         <div className="achievements-image-body">
           <h1>Your Learning <span id='prg-hover'>Progress</span></h1>
           <h3>Exploring your time on Equathora</h3>
+
           <div className="achievements-filter">
-            <Link to="recent" className='achievements-link'>
+            <NavLink
+              to="recent"
+              className={({ isActive }) =>
+                isActive ? 'achievements-link active' : 'achievements-link'
+              }
+            >
               <img src={AchievementsDD} alt="achievements" />
               All Achievements
-            </Link>
+            </NavLink>
 
-            <Link to="stats" className='achievements-link'>
+            <NavLink
+              to="stats"
+              className={({ isActive }) =>
+                isActive ? 'achievements-link active' : 'achievements-link'
+              }
+            >
               <img src={Statistics} alt="statistics" />
               Statistics
-            </Link>
+            </NavLink>
 
-            <Link to="events" className='achievements-link'>
+            <NavLink
+              to="events"
+              className={({ isActive }) =>
+                isActive ? 'achievements-link active' : 'achievements-link'
+              }
+            >
               <img src={Events} alt="achievements" />
               Special Events
-            </Link>
+            </NavLink>
           </div>
         </div>
+
         <div className='achievements-content'>
           <Outlet></Outlet>
         </div>
-
       </main>
 
       <footer>

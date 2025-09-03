@@ -51,7 +51,8 @@ const Learn = () => {
             </div>
           </article>
 
-          <article id='search-filtering'>
+          <article id='search-filtering'> 
+
             <div id="searchbar-and-icon">
               <FaSearch
                 id='search-icon'
@@ -65,6 +66,8 @@ const Learn = () => {
                 aria-label='searchbar'
               />
             </div>
+
+            
             <div id="filters-container">
               <button
                 type="button"
