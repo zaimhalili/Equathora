@@ -228,7 +228,7 @@
     display: flex;
     align-items: center;
     cursor: default;
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 0 50px;
     transition: 0.3s ease-in-out;
 }
