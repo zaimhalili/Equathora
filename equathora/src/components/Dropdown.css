@@ -28,13 +28,13 @@
     opacity: 0;
     visibility: hidden;
     left: -60px;
-    top: 80px;
+    top: 65px;
     position: absolute;
     background-color: var(--main-color);
     min-width: 360px;
     box-shadow: 0 10px 12px rgba(0, 0, 0, 0.2);
     font-family: 'Public Sans', sans-serif;
-    border-radius: 0 0 10px 10px;
+    border-radius: 5px 5px 10px 10px;
     z-index: 900;
     transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
 }
@@ -69,7 +69,7 @@
 
 .dropdown-link:hover {
     background-color: white;
-    border-radius: 0 0 10px 10px;
+    border-radius: 5px 5px 10px 10px;
 }
 
 .dropdown-link:hover .dropdown-text h4,
@@ -115,7 +115,7 @@
 #navbar-right .dropdown .dropdown-content {
     left: auto;
     right: -60px;
-    top: 80px;
+    top: 65px;
     min-width: 360px;
 }
 
