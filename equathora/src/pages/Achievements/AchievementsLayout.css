@@ -38,8 +38,11 @@
     cursor: default;
 }
 
-#prg-hover:hover {
+#prg-hover {
     transition: 0.4s ease-out;
+}
+
+#prg-hover:hover {
     color: gold;
     transform: translateY(-20px);
 }
@@ -183,7 +186,36 @@
     cursor: default;
 }
 
-.rec-achievements .block:hover{
+.block-container .block {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.block-container .block:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.block-container .block:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.block-container .block:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes pulse {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.1);
+    }
+}
+
+.rec-achievements .block:hover {
     transition: 0.5s ease-out;
     color: var(--accent-color);
     box-shadow: 0px 10px 15px black;
@@ -206,6 +238,7 @@
     cursor: default;
     border-radius: 15px;
     padding: 0 50px;
+    transition: 0.3s ease-in-out;
 }
 
 .a-list-component h3 {
@@ -219,7 +252,5 @@
 }
 
 .a-list-component:hover {
-    transform: scale(1.01);
-    transition: 0.3s ease-in-out;
-
+    transform: scale(1.01)
 }
