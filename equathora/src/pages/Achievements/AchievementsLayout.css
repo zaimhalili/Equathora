@@ -176,18 +176,17 @@
     font-size: clamp(1rem, 3vw, 1rem);
     font-weight: 500;
     background-color: var(--secondary-color);
-    padding: 2vh 2vw;
-    gap: 10px;
     height: 130px;
     width: 170px;
     max-width: 250px;
     box-shadow: 0 10px 15px black;
     border-radius: 12px;
     cursor: default;
+    border: 4px solid var(--raisin-black);
 }
 
 .block-container .block {
-    animation: pulse 2s ease-in-out infinite;
+    animation: subtleGlow 3s ease-in-out infinite;
 }
 
 .block-container .block:nth-child(1) {
@@ -195,30 +194,23 @@
 }
 
 .block-container .block:nth-child(2) {
-    animation-delay: 0.5s;
-}
-
-.block-container .block:nth-child(3) {
     animation-delay: 1s;
 }
 
-@keyframes pulse {
-
-    0%,
-    80%,
-    100% {
-        transform: scale(1);
-    }
-
-    40% {
-        transform: scale(1.1);
-    }
+.block-container .block:nth-child(3) {
+    animation-delay: 2s;
 }
 
-.rec-achievements .block:hover {
-    transition: 0.5s ease-out;
-    color: var(--accent-color);
-    box-shadow: 0px 10px 15px black;
+@keyframes subtleGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 10px 15px black;
+    }
+
+    50% {
+        box-shadow: 0 10px 25px rgba(217, 4, 41, 0.3);
+    }
 }
 
 .achievements-list {
