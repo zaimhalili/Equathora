@@ -265,7 +265,9 @@
     align-items: center;
     justify-content: center;
     padding: 3rem;
-    background: linear-gradient(135deg, var(--mid-main-secondary), var(--dark-accent-color));
+    background: linear-gradient(135deg,
+            var(--mid-main-secondary) 20%,
+            var(--dark-accent-color));
     border-radius: 12px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     color: white;
@@ -281,7 +283,7 @@
     margin-bottom: 2rem;
 }
 
-.stats-header h2{
+.stats-header h2 {
     font-size: clamp(1.7rem, 5vw, 3.2rem);
 }
 
@@ -299,19 +301,31 @@
     padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        opacity 0.6s ease-out,
+        transform 0.6s ease-out,
+        box-shadow 0.3s ease;
+    transition-delay: 0s;
     text-align: center;
     flex: 1 1 200px;
     min-width: 200px;
     max-width: 300px;
     opacity: 0;
     transform: translateY(20px);
-    animation: slideIn 0.6s ease-out forwards;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.stat-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .stat-card:hover {
-    transform: scale(1.1);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px) scale(1.08);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 }
 
 .stat-number {
@@ -353,7 +367,7 @@ progress.progress-bar {
 }
 
 progress.progress-bar::-webkit-progress-bar {
-    background-color: var(--french-gray);
+    background-color: var(--accent-color);
     border-radius: 10px;
 }
 
@@ -408,13 +422,6 @@ progress.progress-bar::-moz-progress-bar {
 .topic-tag:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes slideIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 @media (max-width: 768px) {

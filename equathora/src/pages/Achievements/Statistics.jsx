@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './AchievementsLayout.css';
 
 const Statistics = () => {
@@ -24,6 +24,11 @@ const Statistics = () => {
   const accuracyRate = Math.round((stats.correctAnswers / stats.totalAttempts) * 100);
   const completionRate = Math.round((stats.solvedProblems / stats.totalProblems) * 100);
 
+  const [isAnimated, setIsAnimated] = useState(false);
+  useEffect(() => {
+    setIsAnimated(true);
+  }, []);
+
   return (
     <div className="statistics-container">
       <div className="stats-header">
@@ -33,25 +38,25 @@ const Statistics = () => {
 
       {/* Overview Cards */}
       <div className="stats-overview">
-        <div className="stat-card primary">
+        <div className={`stat-card ${isAnimated ? 'animate-in' : ''} primary`}>
           <div className="stat-number">{stats.solvedProblems}</div>
           <div className="stat-label">Problems Solved</div>
           <div className="stat-sublabel">out of {stats.totalProblems}</div>
         </div>
 
-        <div className="stat-card">
+        <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
           <div className="stat-number">{accuracyRate}%</div>
           <div className="stat-label">Accuracy Rate</div>
           <div className="stat-sublabel">{stats.correctAnswers}/{stats.totalAttempts} correct</div>
         </div>
 
-        <div className="stat-card">
+        <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
           <div className="stat-number">{stats.streakDays}</div>
           <div className="stat-label">Day Streak</div>
           <div className="stat-sublabel">Keep it up!</div>
         </div>
 
-        <div className="stat-card">
+        <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
           <div className="stat-number">{stats.totalTimeSpent}</div>
           <div className="stat-label">Time Spent</div>
           <div className="stat-sublabel">Avg: {stats.averageTime}</div>
