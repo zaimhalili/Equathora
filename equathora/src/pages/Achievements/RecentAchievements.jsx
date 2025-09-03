@@ -4,22 +4,25 @@ import './AchievementsLayout.css';
 const RecentAchievements = () => {
   const achievements = 5;
   return (
-    <div className='rec-achievements'>
-      <h2>Your Achievements</h2>
-      <p>You have come a long way</p>
-      <div className="block-container">
-        <div className="block">{achievements} <br />
-          Achievements Completed
+    <section className='rec-achievements'>
+      <article className="a-top">
+        <h2>Your Achievements</h2>
+        <p>You have come a long way</p>
+        <div className="block-container">
+          <div className="block"><span style={{fontSize: "clamp(3rem, 4vw, 4rem)"}}>{achievements}</span> <br />
+            Achievements Earned
+          </div>
+          <div className="block"><span style={{ fontSize: "clamp(3rem, 4vw, 4rem)" }}>{achievements}</span> <br />
+            Days Streak
+          </div>
+          <div className="block"><span style={{ fontSize: "clamp(3rem, 4vw, 4rem)" }}>{achievements}</span> <br />
+            Concept Learned
+          </div>
         </div>
-        <div className="block">{achievements} <br />
-          Achievements Completed
-        </div>
-        <div className="block">{achievements} <br />
-          Achievements Completed
-        </div>
-      </div>
+      </article>
 
-      <div className="achievements-list">
+
+      <article className="achievements-list">
         <div className="a-list-component">
           <h3>You have completed 5 problems</h3>
         </div>
@@ -29,9 +32,9 @@ const RecentAchievements = () => {
         <div className="a-list-component">
           <h3>You have completed 5 problems</h3>
         </div>
-      </div>
-      
-    </div>
+      </article>
+
+    </section>
   );
 };
 

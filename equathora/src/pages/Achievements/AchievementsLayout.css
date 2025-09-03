@@ -60,8 +60,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 50px;
+    gap: 20px;
     padding-bottom: 30px;
+    flex-wrap: wrap;
 }
 
 .achievements-link img {
@@ -120,61 +121,105 @@
     font-family: 'Inter', sans-serif;
 }
 
-@layer recAchievements {
-    .rec-achievements h2 {
-        font-family: 'Public Sans', sans-serif;
-        font-size: clamp(1.7rem, 5vw, 3.2rem);
-        padding: 2vh 0;
-        text-align: center;
-    }
+/* Achievements Content */
+.a-top {
+    display: flex;
+    flex-direction: column;
+}
 
-    .rec-achievements p{
-        font-family: 'Public Sans', sans-serif;
-        font-size: clamp(1.1rem, 3vw, 1.6rem);
-        padding: 1rem 0;
-        text-align: center;
-        height: 80px;
-    }
+.rec-achievements {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    cursor: default;
+}
 
-    .rec-achievements .block-container {
-        padding: 2vh 0;
-        display: flex;
-        gap: 100px;
-        height: auto;
-        width: 100%;
-    }
+.rec-achievements h2 {
+    font-family: 'Public Sans', sans-serif;
+    font-size: clamp(1.7rem, 5vw, 3.2rem);
+    padding: 2vh 0;
+    text-align: center;
+}
 
-    .rec-achievements .block {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        font-family: 'Public Sans', sans-serif;
-        font-size: clamp(1.2rem, 3vw, 1.4rem);
-        background-color: var(--secondary-color);
-        padding: 0 2vh;
-        height: 130px;
-        width: 250px;
-        box-shadow: 0 0 30px black;
-        border-radius: 12px;
-    }
+.rec-achievements p {
+    font-family: 'Public Sans', sans-serif;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    padding: 1rem 0;
+    text-align: center;
+    height: 80px;
+}
 
-    .achievements-list {
-        width: 100%;
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 50px;
-        margin-top: 5vh;
-    }
+.rec-achievements .block-container {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    height: auto;
+    flex-wrap: wrap;
+    width: 100%;
+    min-width: 120px;
+}
 
-    .a-list-component{
-        width: 100%;
-        min-height: 100px;
-        font-size: clamp(1.2rem, 3vw, 1.4rem);
-        box-shadow: 0 0 30px black;
-        display: flex;
-        align-items: center;
-        padding: 10px 40px;
-    }
+.rec-achievements .block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Public Sans', sans-serif;
+    font-size: clamp(1rem, 3vw, 1rem);
+    font-weight: 500;
+    background-color: var(--secondary-color);
+    padding: 2vh 2vw;
+    gap: 10px;
+    height: 130px;
+    width: 170px;
+    max-width: 250px;
+    box-shadow: 0 10px 15px black;
+    border-radius: 12px;
+    cursor: default;
+}
+
+.rec-achievements .block:hover{
+    transition: 0.5s ease-out;
+    color: var(--accent-color);
+    box-shadow: 0px 10px 15px black;
+}
+
+.achievements-list {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.a-list-component {
+    width: 100%;
+    min-height: 70px;
+    box-shadow: 0 0 30px black;
+    display: flex;
+    align-items: center;
+    cursor: default;
+    border-radius: 15px;
+    padding: 0 50px;
+}
+
+.a-list-component h3 {
+    color: var(--mid-main-secondary);
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+}
+
+.a-list-component:hover {
+    transform: scale(1.01);
+    transition: 0.3s ease-in-out;
+
 }
