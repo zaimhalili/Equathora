@@ -133,6 +133,8 @@
     font-family: 'Inter', sans-serif;
 }
 
+
+
 /* Achievements Content */
 .a-top {
     display: flex;
@@ -148,9 +150,13 @@
     justify-content: space-between;
     gap: 120px;
     cursor: default;
-    /* background: linear-gradient(135deg,
-                var(--mid-main-secondary) 25%,
-                var(--secondary-color)); */
+    border-radius: 12px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    padding: 3rem;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .rec-achievements h2 {
@@ -172,7 +178,6 @@
 .rec-achievements .block-container {
     display: flex;
     justify-content: space-evenly;
-    gap: 120px;
     height: auto;
     flex-wrap: wrap;
     width: 100%;
@@ -261,6 +266,8 @@
     transform: scale(1.01)
 }
 
+
+
 /* Statistics */
 .statistics-container {
     display: flex;
@@ -318,7 +325,7 @@
     cursor: default;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .stat-card.animate-in {
@@ -351,7 +358,7 @@
     align-items: flex-start;
     gap: 30px;
     border-radius: 15px;
-    padding: 2vh 1vw;
+    padding: 2vh 2vw;
     font-family: 'Inter', sans-serif;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
 }
@@ -386,7 +393,7 @@
 
 .activity-section {
     background-color: var(--secondary-color);
-    padding: 2vh 1vw;
+    padding: 2vh 2vw;
     border-radius: 15px;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
 }
