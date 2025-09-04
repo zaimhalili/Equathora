@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SpecialEvents.css';
 
 const SpecialEvents = () => {
@@ -6,19 +6,19 @@ const SpecialEvents = () => {
     {
       id: 1,
       title: "Math Marathon",
-      date: "2025-11-15",
+      date: "15/11/2025",
       description: "Join us for a day-long math challenge and win exciting prizes!",
     },
     {
       id: 2,
       title: "Pi Day Celebration",
-      date: "2026-03-14",
+      date: "14/03/2026",
       description: "Celebrate Pi Day with fun activities and competitions.",
     },
     {
       id: 3,
       title: "Algebra Workshop",
-      date: "2026-12-05",
+      date: "5/12/2025",
       description: "Enhance your algebra skills with our expert-led workshop.",
     },
   ];
@@ -35,6 +35,11 @@ const SpecialEvents = () => {
     }));
   };
 
+  const [isAnimated, setIsAnimated] = useState(false);
+  useEffect(() => {
+    setIsAnimated(true);
+  }, []);
+
   return (
     <section className="special-events">
 
@@ -45,7 +50,7 @@ const SpecialEvents = () => {
 
       <ul className="events-list">
         {events.map((event, index) => (
-          <li key={index} className="event-item">
+          <li key={index} className={`event-item ${ isAnimated ? 'animate-in' : ''}`}>
             <h3>{event.title}</h3>
             <time dateTime={event.date}>{event.date}</time>
             <p>{event.description}</p>

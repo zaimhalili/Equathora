@@ -33,13 +33,23 @@
     margin-bottom: 1rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: default;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: 
+        opacity 0.6s ease-out,
+        transform 0.6s ease-out,
+        box-shadow 0.3s ease;
+}
+
+.event-item.animate-in{
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .event-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .event-item h3 {
@@ -49,10 +59,10 @@
 }
 
 .event-item time {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--text-muted-color);
+    font-size: 2rem;
+    color: gold;
     margin-bottom: 0.5rem;
+    font-weight: 700;
 }
 
 .event-item p {
