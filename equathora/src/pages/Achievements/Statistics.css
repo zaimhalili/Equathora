@@ -139,6 +139,7 @@
 }
 
 .activity-day {
+    min-width: 20px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -185,7 +186,7 @@ progress.progress-bar::-moz-progress-bar {
 
 .activity-bar {
     height: 80%;
-    width: 30px;
+    min-width: 20px;
     background-color: var(--dark-accent-color);
     border-radius: 4px;
     transition: height 0.3s ease;
