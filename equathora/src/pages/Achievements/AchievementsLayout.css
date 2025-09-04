@@ -193,13 +193,13 @@
 	justify-content: center;
 	text-align: center;
 	font-family: 'Inter', sans-serif;
-	font-size: clamp(1rem, 3vw, 1rem);
+	font-size: clamp(1rem, 3vw, 1.2rem);
 	font-weight: 500;
 	background-color: var(--secondary-color);
 	flex: 1 1 200px;
 	min-width: 200px;
 	max-width: 300px;
-	padding: 1.5rem;
+	padding: 1.75rem 1.5rem;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
 	cursor: default;
