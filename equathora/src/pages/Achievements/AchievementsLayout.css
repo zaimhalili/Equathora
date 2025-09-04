@@ -164,6 +164,7 @@
 	font-size: clamp(1.7rem, 5vw, 3.2rem);
 	padding: 2vh 0;
 	text-align: center;
+	color: white;
 }
 
 .rec-achievements p {
