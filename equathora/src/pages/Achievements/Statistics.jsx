@@ -108,7 +108,7 @@ const Statistics = () => {
           {stats.weeklyProgress.map((problems, index) => {
             const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
             const maxHeight = Math.max(...stats.weeklyProgress);
-            const height = (problems / maxHeight) * 100;
+            const height = (problems / maxHeight) * 50;
 
             return (
               <div key={index} className="activity-day">
@@ -117,8 +117,12 @@ const Statistics = () => {
                   style={{ height: `${height}%` }}
                   title={`${problems} problems on ${days[index]}`}
                 ></div>
-                <div className="activity-label">{days[index]}</div>
-                <div className="activity-count">{problems}</div>
+
+                <div className="day">
+                  <div className="activity-label">{days[index]}</div>
+                  <div className="activity-count">{problems}</div>
+                </div>
+                
               </div>
             );
           })}

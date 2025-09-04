@@ -148,6 +148,9 @@
     justify-content: space-between;
     gap: 120px;
     cursor: default;
+    /* background: linear-gradient(135deg,
+                var(--mid-main-secondary) 25%,
+                var(--secondary-color)); */
 }
 
 .rec-achievements h2 {
@@ -265,9 +268,9 @@
     align-items: center;
     justify-content: center;
     padding: 3rem;
-    background: linear-gradient(135deg,
+    /* background: linear-gradient(135deg,
             var(--mid-main-secondary) 25%,
-            var(--secondary-color));
+            var(--secondary-color)); */
     border-radius: 12px;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
     color: white;
@@ -342,7 +345,7 @@
     margin-top: 0.5rem;
 }
 
-.difficulty-section{
+.difficulty-section {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -353,12 +356,12 @@
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
-.difficulty-section h3{
+.difficulty-section h3 {
     font-size: clamp(1rem, 3vw, 1.8rem);
     font-weight: 600;
 }
 
-.difficulty-grid{
+.difficulty-grid {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -381,29 +384,31 @@
     cursor: default;
 }
 
-.activity-section{
+.activity-section {
     background-color: var(--secondary-color);
     padding: 2vh 1vw;
     border-radius: 15px;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
-.activity-section h3{
+.activity-section h3 {
     font-size: clamp(1rem, 3vw, 1.8rem);
     font-weight: 600;
 }
 
 .progress-item,
-.difficulty-item,
-.activity-day {
+.difficulty-item {
     margin-bottom: 1rem;
 }
 
 .activity-day {
-    height: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
-.progress-header{
+.progress-header {
     font-size: 1.2rem;
     font-weight: 500;
     margin-bottom: 0.8rem;
@@ -442,6 +447,7 @@ progress.progress-bar::-moz-progress-bar {
 }
 
 .activity-bar {
+    height: 80%;
     width: 30px;
     background-color: var(--dark-accent-color);
     border-radius: 4px;
@@ -456,7 +462,7 @@ progress.progress-bar::-moz-progress-bar {
     font-size: 0.9rem;
 }
 
-.topics-section h3{
+.topics-section h3 {
     text-align: center;
     font-weight: 600;
     font-family: 'Inter', sans-serif;
@@ -485,9 +491,10 @@ progress.progress-bar::-moz-progress-bar {
 }
 
 @media (max-width: 768px) {
-    .achievements-content{
+    .achievements-content {
         padding: 15vh 5vw;
     }
+
     .statistics-container {
         padding: 2rem 1.5rem;
     }
