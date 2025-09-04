@@ -1,10 +1,9 @@
 .special-events {
     padding: 2rem;
-    background-color: var(--background-color);
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    font-family: 'Inter', sans-serif;
 }
 
 .special-events header {
@@ -14,7 +13,7 @@
 
 .special-events h2 {
     font-size: 2rem;
-    color: var(--primary-color);
+    color: var(--dark-accent-color);
 }
 
 .special-events p {
@@ -29,12 +28,13 @@
 }
 
 .event-item {
-    background-color: var(--light-background-color);
+    background-color: var(--mid-main-secondary);
     padding: 1.5rem;
     margin-bottom: 1rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
 }
 
 .event-item:hover {
@@ -62,15 +62,16 @@
 }
 
 .register-button {
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     color: white;
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-family: 'Inter', sans-serif;
 }
 
 .register-button:hover {
-    background-color: var(--dark-primary-color);
+    background-color: var(--raisin-black);
 }
