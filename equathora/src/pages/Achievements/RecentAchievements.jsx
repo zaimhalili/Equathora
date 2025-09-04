@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './AchievementsLayout.css';
 
 const RecentAchievements = () => {
   const achievements = 120;
+
+  const [isAnimated, setIsAnimated] = useState(false);
+    useEffect(() => {
+      setIsAnimated(true);
+    }, []);
+  
+  
   return (
     <section className='rec-achievements'>
       <article className="a-top">
         <h2>Your Achievements</h2>
         <p>You have come a long way</p>
         <div className="block-container">
-          <div className="block"><span style={{ fontSize: "clamp(3rem, 4vw, 4rem)", fontFamily: "'DynaPuff', serif", color: "white" }}>{51}</span> <br />
+          <div className={`block ${isAnimated ? "animate-in" : ''}`}><span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{51}</span> <br />
             Achievements Earned
           </div>
-          <div className="block"><span style={{ fontSize: "clamp(3rem, 4vw, 4rem)", fontFamily: "'DynaPuff', serif", color: "white" }}>{achievements}</span> <br />
+          <div className={`block ${isAnimated ? "animate-in" : ''}`}><span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{achievements}</span> <br />
             Days Streak
           </div>
-          <div className="block"><span style={{ fontSize: "clamp(3rem, 4vw, 4rem)", fontFamily: "'DynaPuff', serif", color: "white" }}>{3}</span> <br />
+          <div className={`block ${isAnimated ? "animate-in" : ''}`}><span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{3}</span> <br />
             Concept Learned
           </div>
         </div>
