@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './AchievementsLayout.css';
+import './RecentAchievements.css';
 
 const RecentAchievements = () => {
   const achievements = 120;

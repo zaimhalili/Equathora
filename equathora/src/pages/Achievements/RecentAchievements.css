@@ -1,0 +1,118 @@
+.a-top {
+    display: flex;
+    flex-direction: column;
+}
+
+.rec-achievements {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    cursor: default;
+    border-radius: 12px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    padding: 3rem;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.rec-achievements h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.7rem, 5vw, 3.2rem);
+    text-align: center;
+    color: white;
+}
+
+.rec-achievements p {
+    padding: 1rem 0;
+    text-align: center;
+    height: 80px;
+}
+
+.rec-achievements .block-container {
+    display: flex;
+    height: auto;
+    flex-wrap: wrap;
+    width: 100%;
+    min-width: 120px;
+    justify-content: space-around;
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.block-container .block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-weight: 500;
+    background-color: var(--secondary-color);
+    flex: 1 1 200px;
+    min-width: 200px;
+    max-width: 300px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    cursor: default;
+    color: var(--mid-main-secondary);
+    transition:
+        opacity 0.6s ease-out,
+        transform 0.6s ease-out,
+        box-shadow 0.3s ease;
+    transition-delay: 0s;
+    opacity: 0;
+    transform: translateY(20px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.block.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.block-container .block:hover {
+    transform: translateY(-5px) scale(1.08);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+}
+
+.achievements-list {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.a-list-component {
+    width: 100%;
+    min-height: 50px;
+    box-shadow: 0 0 30px black;
+    display: flex;
+    align-items: center;
+    cursor: default;
+    border-radius: 10px;
+    padding: 0 50px;
+    transition: 0.3s ease-in-out;
+}
+
+.a-list-component h3 {
+    color: var(--mid-main-secondary);
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+}
+
+.a-list-component:hover {
+    transform: scale(1.01)
+}

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import './AchievementsLayout.css';
+import './Statistics.css';
 
 const Statistics = () => {
   // Mock data - replace with real data from your backend
