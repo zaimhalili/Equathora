@@ -30,7 +30,10 @@ import Achievements from '../assets/images/achievementsDD.svg';
 import Events from '../assets/images/specialEvents.svg';
 
 const Navbar = () => {
+  
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Later to be implemented with real-time data and user authentication in the backend
   let numberOfProblems = 5;
   let randomId = Math.floor(Math.random() * numberOfProblems) + 1;
 

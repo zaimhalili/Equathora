@@ -11,6 +11,9 @@ import Leaderboards from '../assets/images/leaderboards.svg'
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
+  // Later to be implemented with real-time data and user authentication in the backend
+  let numberOfProblems = 5;
+  let randomProblemId = Math.floor(Math.random() * numberOfProblems) + 1;
   return (
     <>
       <main id='body-dashboard'>
@@ -35,7 +38,7 @@ const Dashboard = () => {
           </h3>
 
           <div id='whereToStart-options'>
-            <Link to="/" className="whereToStart-block">
+            <Link to={`/problems/1/${randomProblemId}`} className="whereToStart-block">
               <img src={QuestionMark} alt="daily-challenge" />
               <h6>Solve a Fresh Daily Challenge</h6>
             </Link>
