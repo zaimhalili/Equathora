@@ -162,7 +162,7 @@ progress.progress-bar {
 }
 
 progress.progress-bar::-webkit-progress-bar {
-    background-color: var(--dark-accent-color);
+    background-color: white;
     border-radius: 10px;
 }
 
