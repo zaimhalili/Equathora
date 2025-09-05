@@ -13,12 +13,11 @@ const Problem = () => {
   const problem = {
     id: parseInt(problemId),
     groupId: parseInt(groupId),
-    title: "Two Sum",
+    title: "Find the 44th element of the sequence",
     difficulty: "Easy",
-    description: "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
+    description: "Given a sequence: 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, ... Find the 44th element of the sequence.",
     examples: [
-      "Input: nums = [2,7,11,15], target = 9\nOutput: [0,1]",
-      "Input: nums = [3,2,4], target = 6\nOutput: [1,2]"
+      "No"
     ],
     constraints: "2 <= nums.length <= 10^4",
     completed: false,
