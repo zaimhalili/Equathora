@@ -52,7 +52,7 @@ const Learn = () => {
           <article id='welcome-learn'>
             <figure><img src={Idea} alt="idea image" /></figure>
             <div id="learn-explore">
-              <h1>Explore the Math exercises on equathora</h1>
+              <h1>Explore the Math <br />exercises on <span style={{ color: 'var(--dark-accent-color)' }}>Equathora</span></h1>
               <h4>Unlock more exercises as you progress. They're great practise and fun to do!</h4>
             </div>
           </article>

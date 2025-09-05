@@ -31,10 +31,12 @@ import Events from '../assets/images/specialEvents.svg';
 
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  let numberOfProblems = 5;
+  let randomId = Math.floor(Math.random() * numberOfProblems) + 1;
 
   const learnItems = [
     {
-      to: "/",
+      to: `/problems/1/${randomId}`,
       text: "Daily Problem",
       description: "Solve a fresh daily challenge.",
       image: Daily
