@@ -56,7 +56,7 @@ progress::-moz-progress-bar {
     background: var(--dark-accent-color);
 }
 
-progress::-webkit-progress-value {
+progress::-webkit-progress-bar {
     background: var(--dark-accent-color);
 }
 
