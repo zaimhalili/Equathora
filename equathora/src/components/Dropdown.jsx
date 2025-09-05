@@ -12,7 +12,7 @@ const Dropdown = ({ label, items }) => {
             </button>
             <div className="dropdown-content">
                 {items.map((item, i) => (
-                    <Link key={i} to={item.to} className='dropdown-link'>
+                    <Link key={i} to={item.to} state={item.state}  className='dropdown-link'>
                         <img
                             src={item.image}
                             alt={item.text} // Changed to item.text for better accessibility

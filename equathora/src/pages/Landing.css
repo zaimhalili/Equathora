@@ -99,7 +99,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
 }
 
 #hero-left {
@@ -157,14 +156,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%;
     height: calc(100vh - 140px);
 }
 
 #studyingIMG {
-    width: auto;
+    object-fit: scale-down;
     height: 100%;
-    padding: 30px;
     aspect-ratio: 1;
 }
 

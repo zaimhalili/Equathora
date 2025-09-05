@@ -46,10 +46,11 @@ const Navbar = () => {
       image: Journey
     },
     {
-      to: "/",
+      to: "/learn",
       text: "Favourite Problems",
       description: "Quickly revisit starred problems.",
-      image: Favourite
+      image: Favourite,
+      state: { filter: 'favourite' }
     }
   ]
 

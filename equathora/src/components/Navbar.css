@@ -77,14 +77,19 @@
 }
 
 #sidebar-icon {
-    height: 12vh;
-    width: auto;
+    height: 9vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 1vh;
     transition: 0.2s ease;
+}
+
+#menu-icon {
+    display: none;
+    height: 30px;
+    width: 30px;
 }
 
 #sidebar-icon:hover {
@@ -101,12 +106,6 @@
 
 .hide-navbar {
     padding-left: 1rem;
-}
-
-#menu-icon {
-    display: none;
-    height: 30px;
-    width: 30px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -142,8 +141,7 @@
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px)and (max-width: 1199px) {
-}
+@media only screen and (min-width: 992px)and (max-width: 1199px) {}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) and (max-width: 1599px) {}

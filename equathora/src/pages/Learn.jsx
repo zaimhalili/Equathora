@@ -7,19 +7,22 @@ import Idea from '../assets/images/idea.svg';
 import { FaSearch } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 
 const Learn = () => {
   const { groupId } = useParams();
 
   // Mock data
   const problems = [
-    { id: 1, title: "Two Sum", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: true, premium: false, inProgress: false },
-    { id: 2, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false },
-    { id: 3, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false },
-    { id: 4, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: true, premium: false, inProgress: false },
-    { id: 5, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false }
+    { id: 1, title: "Two Sum", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: true, premium: false, inProgress: false, favourite: false },
+    { id: 2, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false, favourite: false },
+    { id: 3, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false, favourite: false },
+    { id: 4, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: true, premium: false, inProgress: false, favourite: true },
+    { id: 5, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false, favourite: true },
   ];
-  const [filter, setFilter] = useState('all');
+  const location = useLocation();
+  const [filter, setFilter] = useState(location.state?.filter || 'all');
 
   const filteredProblems = useMemo(() => {
     switch (filter) {
@@ -31,6 +34,9 @@ const Learn = () => {
         return problems.filter(p => p.premium);
       case 'in-progress':
         return problems.filter(p => p.inProgress);
+      case 'favourite':
+        return problems.filter(p => p.favourite);
+      
       default:
         return problems;
     }
@@ -104,6 +110,15 @@ const Learn = () => {
               >
                 Premium <span className='premium-problems'>
                   {problems.filter(p => p.premium).length}
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setFilter('favourite')}
+                className={`filtering ${filter === 'favourite' ? 'active' : ''}`}
+              >
+                Favourite <span className='favourite-problems'>
+                  {problems.filter(p => p.favourite).length}
                 </span>
               </button>
             </div>
