@@ -51,7 +51,7 @@ export default function App() {
         <Route path="/profile/:profile" element={<Profile />} />
 
         {/* 404 Route */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/achievements" replace />} />
       </Routes>
     </>
   );

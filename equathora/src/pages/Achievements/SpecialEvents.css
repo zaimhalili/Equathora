@@ -4,6 +4,7 @@
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
     width: 100%;
     font-family: 'Inter', sans-serif;
+
 }
 
 .special-events header {
@@ -12,13 +13,12 @@
 }
 
 .special-events h2 {
-    font-size: 2rem;
-    color: var(--dark-accent-color);
+    font-size: clamp(1.7rem, 5vw, 3.2rem);
+    padding: 0 0 1rem 0;
 }
 
 .special-events p {
     font-size: 1rem;
-    color: var(--text-muted-color);
 }
 
 .events-list {
@@ -28,7 +28,7 @@
 }
 
 .event-item {
-    background-color: var(--mid-main-secondary);
+    color: white;
     padding: 1.5rem;
     margin-bottom: 1rem;
     border-radius: 8px;
@@ -36,13 +36,13 @@
     cursor: default;
     opacity: 0;
     transform: translateY(20px);
-    transition: 
+    transition:
         opacity 0.6s ease-out,
         transform 0.6s ease-out,
         box-shadow 0.3s ease;
 }
 
-.event-item.animate-in{
+.event-item.animate-in {
     opacity: 1;
     transform: translateY(0);
 }
@@ -55,7 +55,7 @@
 .event-item h3 {
     margin: 0 0 0.5rem;
     font-size: 1.5rem;
-    color: var(--secondary-color);
+    color: var(--dark-accent-color);
 }
 
 .event-item time {

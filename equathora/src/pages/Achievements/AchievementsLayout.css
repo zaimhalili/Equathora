@@ -1,11 +1,9 @@
 .achievements-image-body {
 	position: relative;
 	min-height: 100vh;
-	background: url('../../assets/images/journey.jpg') no-repeat center center
-		/*fixed*/
-	;
+	width: 100%;
+	background: url('../../assets/images/journey.jpg') no-repeat center center fixed;
 	background-size: cover;
-	object-fit: scale-down;
 	display: flex;
 	flex-direction: column;
 	font-family: 'Public Sans', serif;
@@ -14,6 +12,7 @@
 	justify-content: flex-end;
 	padding-top: 15vh;
 	text-align: center;
+	box-sizing: border-box;
 }
 
 .achievements-image-body::before {
@@ -125,6 +124,7 @@
 
 #freepik-link {
 	display: flex;
+	width: 100vw;
 	align-items: center;
 	justify-content: center;
 	font-size: 1rem;
