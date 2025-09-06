@@ -47,7 +47,7 @@ export default function App() {
         <Route path="/leaderboards" element={<LeaderboardsLayout />}>
           <Route path="global" element={<GlobalLeaderboard />} />
           <Route path="friends" element={<FriendsLeaderboard />} />
-          <Route path="topsolvers" element={<TopSolversLeaderboard />} />
+          <Route path="top-solvers" element={<TopSolversLeaderboard />} />
         </Route>
 
 

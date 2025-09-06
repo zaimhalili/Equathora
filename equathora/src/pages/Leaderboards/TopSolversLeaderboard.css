@@ -1,0 +1,42 @@
+.top-solvers-leaderboard {
+    padding: 20px;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.top-solvers-leaderboard h2 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.top-solvers-leaderboard ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.top-solvers-leaderboard li {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: var(--secondary-background-color);
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.top-solvers-leaderboard li:hover {
+    background-color: var(--hover-color);
+}
+
+.top-solvers-leaderboard a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.motivational-message {
+    margin-top: 20px;
+    text-align: center;
+    font-style: italic;
+    color: var(--accent-color);
+}

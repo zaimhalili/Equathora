@@ -67,7 +67,7 @@ const Navbar = () => {
       image: Choice
     },
     {
-      to: '/learn',
+      to: '/leaderboards',
       text: "Leaderboards",
       description: "Join competitions and leaderboards.",
       image: Leaderboards

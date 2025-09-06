@@ -33,7 +33,7 @@ const FriendsLeaderboard = () => {
                 ))}
             </ul>
             <div className="motivational-message">
-                Keep solving problems to reach the next tier!
+                Compete with your friends and climb the ranks!
             </div>
         </div>
     );
