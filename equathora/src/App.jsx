@@ -8,6 +8,12 @@ import Problem from "./pages/Problem";
 import More from "./pages/More";
 import Learn from "./pages/Learn";
 import Discover from "./pages/Discover";
+
+import LeaderboardsLayout from "./pages/Leaderboards/LeaderboardsLayout";
+import GlobalLeaderboard from "./pages/Leaderboards/GlobalLeaderboard";
+import FriendsLeaderboard from "./pages/Leaderboards/FriendsLeaderboard";
+import TopSolversLeaderboard from "./pages/Leaderboards/TopSolversLeaderboard";
+
 import Notifications from "./pages/Notifications";
 import AchievementsLayout from "./pages/Achievements/AchievementsLayout";
 import RecentAchievements from "./pages/Achievements/RecentAchievements";
@@ -38,6 +44,13 @@ export default function App() {
         <Route path="/notifications" element={<Notifications />} />
 
         {/* Unprotected Nested Routes */}
+        <Route path="/leaderboards" element={<LeaderboardsLayout />}>
+          <Route path="global" element={<GlobalLeaderboard />} />
+          <Route path="friends" element={<FriendsLeaderboard />} />
+          <Route path="topsolvers" element={<TopSolversLeaderboard />} />
+        </Route>
+
+
         <Route path="/achievements" element={<AchievementsLayout />}>
           <Route index element={<RecentAchievements />} />
           <Route path="recent" element={<RecentAchievements />} />

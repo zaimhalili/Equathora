@@ -1,0 +1,40 @@
+.friends-leaderboard {
+    padding: 20px;
+}
+
+.friends-leaderboard ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.friends-leaderboard li {
+    margin: 10px 0;
+}
+
+.tier-badge {
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+}
+
+.tier-bronze {
+    background-color: #cd7f32;
+}
+
+.tier-silver {
+    background-color: #c0c0c0;
+}
+
+.tier-gold {
+    background-color: #ffd700;
+}
+
+.tier-diamond {
+    background-color: #b9f2ff;
+}
+
+.motivational-message {
+    margin-top: 20px;
+    font-style: italic;
+}

@@ -1,0 +1,33 @@
+.leaderboards-layout {
+    padding: 20px;
+}
+
+.leaderboards-nav {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.leaderboards-nav a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.leaderboards-nav a.active {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.leaderboards-nav a:hover {
+    background-color: var(--hover-color);
+}
+
+.leaderboards-content {
+    padding: 20px;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
