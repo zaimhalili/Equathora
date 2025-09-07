@@ -1,41 +1,57 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// OpenAPI remains
 builder.Services.AddOpenApi();
+
+// ✅ Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactDev", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // React dev server
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Enable CORS
+app.UseCors("AllowReactDev");
+
+// Optional: comment out HTTPS redirect for dev
+// app.UseHttpsRedirection();
+
+// OpenAPI mapping
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
+// Example: Generate random math problems
+app.MapGet("/mathproblem", () =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var random = new Random();
+    int a = random.Next(1, 100);
+    int b = random.Next(1, 100);
+    string[] ops = { "+", "-", "*", "/" };
+    string op = ops[random.Next(ops.Length)];
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    // Avoid division by zero
+    if (op == "/") b = random.Next(1, 20);
+
+    string question = $"{a} {op} {b}";
+    double answer = op switch
+    {
+        "+" => a + b,
+        "-" => a - b,
+        "*" => a * b,
+        "/" => Math.Round((double)a / b, 2),
+        _ => 0
+    };
+
+    return Results.Ok(new { question, answer });
 })
-.WithName("GetWeatherForecast");
+.WithName("GetMathProblem");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

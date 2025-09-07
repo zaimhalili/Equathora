@@ -29,9 +29,9 @@ import ForgotPassword from "./pages/ForgotPassword";
 
 export default function App() {
   useEffect(() => {
-    axios.get("/weatherforecast")  // lowercase!
-      .then(res => console.log("Backend response:", res.data))
-      .catch(err => console.error("Error calling backend:", err));
+    axios.get("/mathproblem")
+      .then(res => console.log("Math problem:", res.data))
+      .catch(err => console.error(err));
   }, []);
 
 
