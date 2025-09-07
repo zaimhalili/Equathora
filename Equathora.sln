@@ -1,0 +1,32 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "equathora", "equathora", "{A08742B4-699F-7BC9-CE44-D24B28A69987}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{21FECC1F-D2A2-4359-9CA3-DEB2756407FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EquathoraBackend", "equathora\backend\EquathoraBackend\EquathoraBackend.csproj", "{3B1D0F15-ADAF-E386-581E-D096B96BF504}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B1D0F15-ADAF-E386-581E-D096B96BF504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B1D0F15-ADAF-E386-581E-D096B96BF504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B1D0F15-ADAF-E386-581E-D096B96BF504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B1D0F15-ADAF-E386-581E-D096B96BF504}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{21FECC1F-D2A2-4359-9CA3-DEB2756407FA} = {A08742B4-699F-7BC9-CE44-D24B28A69987}
+		{3B1D0F15-ADAF-E386-581E-D096B96BF504} = {21FECC1F-D2A2-4359-9CA3-DEB2756407FA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E69D5D96-E89B-4A45-9EFB-B930C67CA31B}
+	EndGlobalSection
+EndGlobal

@@ -1,3 +1,6 @@
+import axios from "axios";
+import { useEffect } from "react";
+
 import { Routes, Route, Navigate } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -25,6 +28,14 @@ import Resend from "./pages/Resend";
 import ForgotPassword from "./pages/ForgotPassword";
 
 export default function App() {
+  useEffect(() => {
+    axios.get("/weatherforecast")  // lowercase!
+      .then(res => console.log("Backend response:", res.data))
+      .catch(err => console.error("Error calling backend:", err));
+  }, []);
+
+
+
   return (
     <>
       <OverflowChecker />
