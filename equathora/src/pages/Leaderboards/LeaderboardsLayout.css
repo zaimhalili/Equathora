@@ -1,17 +1,40 @@
-.leaderboard-opt-container{
+.leaderboards-layout {
+    background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color) 50%);
+    min-height: 100vh;
+}
+
+.leaderboard-opt-container {
     width: 100%;
     height: 60px;
     display: flex;
-    background-color: antiquewhite;
     gap: 5rem;
     justify-content: space-around;
     align-items: center;
+    padding: 4rem 0;
 }
 
-.lb-option{
-    color: var(--accent-color);
+.lb-option {
+    color: var(--secondary-color);
     font-family: 'Public Sans', Arial, Helvetica, sans-serif;
     font-size: clamp(1.2rem, 3vw, 1.2rem);
-    border: 3px solid white;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: 700;
+    text-align: center;
+    transition: 0.2s ease-out;
+}
+
+.lb-option.active {
+    color: white;
+    background-color: var(--accent-color);
+}
+
+.lb-option:hover {
+    color: white;
+    background-color: var(--accent-color);
+}
+
+.leaderboards-content{
+    padding: 0 4rem;
+    
 }
