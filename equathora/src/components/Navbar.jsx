@@ -139,7 +139,7 @@ const Navbar = () => {
       image: Statistics
     },
     {
-      to: '/achievements/badges',
+      to: '/achievements/events',
       text: "Special Events",
       description: "Seasonal or limited-time achievements.",
       image: Events

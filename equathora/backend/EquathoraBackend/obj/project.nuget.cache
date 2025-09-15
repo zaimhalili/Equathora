@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "TRE74YaQhmY=",
+  "dgSpecHash": "2aEqh6Zh1oQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\halil\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.8\\microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
-    "C:\\Users\\halil\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+    "C:\\Users\\halil\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512",
+    "C:\\Users\\halil\\.nuget\\packages\\microsoft.netcore.app.ref\\9.0.9\\microsoft.netcore.app.ref.9.0.9.nupkg.sha512",
+    "C:\\Users\\halil\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\9.0.9\\microsoft.windowsdesktop.app.ref.9.0.9.nupkg.sha512",
+    "C:\\Users\\halil\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\9.0.9\\microsoft.aspnetcore.app.ref.9.0.9.nupkg.sha512",
+    "C:\\Users\\halil\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\9.0.9\\microsoft.netcore.app.host.win-x64.9.0.9.nupkg.sha512"
   ],
   "logs": []
 }
