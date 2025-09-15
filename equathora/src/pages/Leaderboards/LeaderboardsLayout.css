@@ -34,7 +34,16 @@
     background-color: var(--accent-color);
 }
 
-.leaderboards-content{
+.leaderboards-content {
     padding: 0 4rem;
-    
+    width: 100%;
+    background-color: var(--raisin-black);
+    padding: 3rem 20vw;
+    height: auto;
+    min-height: 20vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+
 }
