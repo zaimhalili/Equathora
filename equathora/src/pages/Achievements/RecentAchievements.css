@@ -106,11 +106,6 @@
 .a-list-component h3 {
     color: var(--mid-main-secondary);
     font-size: clamp(1rem, 3vw, 1.2rem);
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
-    margin: 0;
-    width: 100%;
-    padding: 0;
 }
 
 .a-list-component:hover {

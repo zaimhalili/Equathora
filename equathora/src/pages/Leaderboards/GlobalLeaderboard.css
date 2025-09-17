@@ -17,17 +17,30 @@
 }
 
 .global-leaderboard h2 {
-    font-family: 'Public Sans', cursive;
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.7rem, 5vw, 3.2rem);
+    text-align: center;
     color: white;
 }
 
 .global-leaderboard ul {
     list-style-type: none;
-    padding: 0;
 }
 
 .global-leaderboard li {
     margin: 10px 0;
+    padding: 1rem 3rem;
+    border-radius: 10px;
+}
+
+.global-leaderboard li a {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+    color: var(--main-color);
 }
 
 .tier-badge {
@@ -46,11 +59,11 @@
 }
 
 .tier-gold {
-    background-color: #ffd700;
+    background-color: #ff0000;
 }
 
 .tier-diamond {
-    background-color: #b9f2ff;
+    background-color: #003844;
 }
 
 .motivational-message {
