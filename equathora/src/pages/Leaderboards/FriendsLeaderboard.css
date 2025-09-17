@@ -18,22 +18,6 @@
     color: white;
 }
 
-.tier-bronze {
-    background-color: #cd7f32;
-}
-
-.tier-silver {
-    background-color: #c0c0c0;
-}
-
-.tier-gold {
-    background-color: #ffd700;
-}
-
-.tier-diamond {
-    background-color: #b9f2ff;
-}
-
 .motivational-message {
     margin-top: 20px;
     font-style: italic;

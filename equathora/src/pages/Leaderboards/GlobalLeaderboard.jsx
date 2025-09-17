@@ -3,11 +3,20 @@ import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 
 const GlobalLeaderboard = () => {
+    //     Extra Ideas
+
+    // Add ranking numbers before each user(1st, 2nd, 3rd).
+
+    // Add XP / progress bars to visualize growth.
+
+    // Highlight the current logged -in user with a subtle background glow.
+
+
     // Mock data - replace with real data from your backend
     const users = [
-        { id: 1, name: 'Alice', problemsSolved: 120, xp: 1500 },
+        { id: 1, name: 'Alice', problemsSolved: 120, xp: 1500, },
         { id: 2, name: 'Bob', problemsSolved: 95, xp: 1200 },
-        { id: 3, name: 'Charlie', problemsSolved: 80, xp: 1100 },
+        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 1100 },
         // Add more users as needed
     ];
 
@@ -28,7 +37,7 @@ const GlobalLeaderboard = () => {
                         <Link to={`/profile/${user.id}`}>
                             {user.name} - {user.problemsSolved} Problems Solved - {user.xp} XP
                         </Link>
-                        <span className="tier-badge">{getTier(user.problemsSolved)}</span>
+                        <span className="tier-badge" style={{fontWeight:"bold"}}>{getTier(user.problemsSolved)}</span>
                     </li>
                 ))}
             </ul>

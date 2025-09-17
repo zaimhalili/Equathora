@@ -31,6 +31,8 @@
     margin: 10px 0;
     padding: 1rem 3rem;
     border-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .global-leaderboard li a {
@@ -51,19 +53,19 @@
 }
 
 .tier-bronze {
-    background-color: #cd7f32;
+    background-color: #8C4A2F;
 }
 
 .tier-silver {
-    background-color: #c0c0c0;
+    background-color: #6E6E6E;
 }
 
 .tier-gold {
-    background-color: #ff0000;
+    background-color: #B8860B;
 }
 
 .tier-diamond {
-    background-color: #003844;
+    background-color: #1565C0;
 }
 
 .motivational-message {
