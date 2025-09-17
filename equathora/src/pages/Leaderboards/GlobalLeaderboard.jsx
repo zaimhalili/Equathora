@@ -15,7 +15,7 @@ const GlobalLeaderboard = () => {
     // Mock data - replace with real data from your backend
     const users = [
         { id: 1, name: 'Alice', problemsSolved: 120, xp: 1500, },
-        { id: 2, name: 'Bob', problemsSolved: 95, xp: 1200 },
+        { id: 2, name: 'Bob', problemsSolved: 195, xp: 1200 },
         { id: 3, name: 'Charlie', problemsSolved: 20, xp: 1100 },
         // Add more users as needed
     ];
