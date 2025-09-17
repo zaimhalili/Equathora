@@ -40,10 +40,9 @@
     background-color: var(--raisin-black);
     padding: 3rem 20vw;
     height: auto;
-    min-height: 20vh;
+    min-height: 100vh;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     flex-wrap: wrap;
-
 }
