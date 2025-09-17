@@ -28,6 +28,15 @@ const GlobalLeaderboard = () => {
         return 'Bronze';
     };
 
+    let sortable = [];
+    for (var rank in users) {
+        sortable.push([rank, users[rank]]);
+    }
+
+    sortable.sort(function (a, b) {
+        return a[1] - b[1];
+    })
+
     return (
         <div className="global-leaderboard">
             <h2>Global Leaderboard</h2>
