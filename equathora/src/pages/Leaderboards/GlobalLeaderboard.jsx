@@ -14,9 +14,9 @@ const GlobalLeaderboard = () => {
 
     // Mock data - replace with real data from your backend
     const users = [
-        { id: 1, name: 'Alice', problemsSolved: 120, xp: 1500, },
-        { id: 2, name: 'Bob', problemsSolved: 195, xp: 1200 },
-        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 1100 },
+        { id: 1, name: 'Alice', problemsSolved: 80, xp: 1500, },
+        { id: 2, name: 'Bob', problemsSolved: 195, xp: 1900 },
+        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
         // Add more users as needed
     ];
 
@@ -28,20 +28,27 @@ const GlobalLeaderboard = () => {
         return 'Bronze';
     };
 
-    let sortable = [];
-    for (var rank in users) {
-        sortable.push([rank, users[rank]]);
-    }
 
-    sortable.sort(function (a, b) {
-        return a[1] - b[1];
-    })
+    //Sort by no of problems solved
+    let problemsSolved = [];
+    problemsSolved = users.toSorted((a, b) => a.problemsSolved - b.problemsSolved);
+    problemsSolved.reverse();
+
+    //Sort by xp
+    let problemsXp = [];
+    problemsXp = users.toSorted((a, b) => a.xp - b.xp);
+    problemsXp.reverse();
+
+    
 
     return (
         <div className="global-leaderboard">
             <h2>Global Leaderboard</h2>
+            <select name="filter-rankings" id="filter-rankings">
+                
+            </select>
             <ul>
-                {users.map(user => (
+                {problemsSolved.map(user => (
                     <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
                         <Link to={`/profile/${user.id}`}>
                             {user.name} - {user.problemsSolved} Problems Solved - {user.xp} XP
