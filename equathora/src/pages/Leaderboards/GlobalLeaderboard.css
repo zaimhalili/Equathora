@@ -81,14 +81,12 @@
     font-size: 1.3rem;
     border-radius: 5px;
     cursor: pointer;
+    margin-bottom: 30px;
 }
 
-#filter-rankings option:hover {
-    background-color: var(--secondary-color);
+#filter-rankings option {
     font-family: 'Inter', sans-serif;
     color: var(--main-color);
-    font-size: 1.7rem;
-    background-color: red;
     cursor: pointer;
 }
 

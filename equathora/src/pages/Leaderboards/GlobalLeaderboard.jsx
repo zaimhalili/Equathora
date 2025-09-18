@@ -17,6 +17,11 @@ const GlobalLeaderboard = () => {
         { id: 1, name: 'Alice', problemsSolved: 80, xp: 1500, },
         { id: 2, name: 'Bob', problemsSolved: 195, xp: 1900 },
         { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
         // Add more users as needed
     ];
 
@@ -48,12 +53,12 @@ const GlobalLeaderboard = () => {
             <div className='flex flex-col'>
                 <div className='w-full flex justify-end'>
                     <select name="filter-rankings" id="filter-rankings">
-                        <option value="Problems Solved">Problems Solved</option>
+                        <option value="Problems Solved" selected>Problems Solved</option>
                         <option value="Xp">Xp</option>
                     </select>
                 </div>
 
-                <ul className='w-full'>
+                <ul className='w-full overflow-y-scroll max-h-[300px]'>
                     {problemsSolved.map(user => (
                         <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
                             <Link to={`/profile/${user.id}`}>
