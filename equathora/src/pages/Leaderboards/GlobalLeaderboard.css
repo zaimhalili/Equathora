@@ -84,9 +84,10 @@
     margin-bottom: 30px;
 }
 
-#filter-rankings option {
-    font-family: 'Inter', sans-serif;
-    color: var(--main-color);
-    cursor: pointer;
+.leaderboard{
+    width: 100%;
+    overflow-y: auto;
+    max-height: 400px;
+    padding: 0 2rem;
 }
 

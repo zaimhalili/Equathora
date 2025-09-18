@@ -58,7 +58,7 @@ const GlobalLeaderboard = () => {
                     </select>
                 </div>
 
-                <ul className='w-full overflow-y-scroll max-h-[300px]'>
+                <ul className='leaderboard'>
                     {problemsSolved.map(user => (
                         <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
                             <Link to={`/profile/${user.id}`}>
