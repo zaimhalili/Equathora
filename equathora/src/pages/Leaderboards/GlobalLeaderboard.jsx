@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 
@@ -35,16 +35,25 @@ const GlobalLeaderboard = () => {
 
 
     //Sort by no of problems solved
-    let problemsSolved = [];
-    problemsSolved = players.toSorted((a, b) => a.problemsSolved - b.problemsSolved);
-    problemsSolved.reverse();
+    let ProblemsSolved = [];
+    ProblemsSolved = players.toSorted((a, b) => a.problemsSolved - b.problemsSolved);
+    ProblemsSolved.reverse();
 
     //Sort by xp
-    let problemsXp = [];
-    problemsXp = players.toSorted((a, b) => a.xp - b.xp);
-    problemsXp.reverse();
+    let Xp = [];
+    Xp = players.toSorted((a, b) => a.xp - b.xp);
+    Xp.reverse();
 
+    const getInitialState = () => {
+        const value = "Problems Solved";
+        return value;
+    };
 
+    const [value, setValue] = useState(getInitialState);
+
+    const handleChange = (e) => {
+        setValue(e.target.value);
+    };
 
     return (
         <article className="global-leaderboard">
@@ -52,14 +61,14 @@ const GlobalLeaderboard = () => {
 
             <div className='flex flex-col'>
                 <div className='w-full flex justify-end'>
-                    <select name="filter-rankings" id="filter-rankings">
-                        <option value="Problems Solved" selected>Problems Solved</option>
+                    <select value={value} onChange={handleChange} name="filter-rankings" id="filter-rankings">
+                        <option value="ProblemsSolved" selected>Problems Solved</option>
                         <option value="Xp">Xp</option>
                     </select>
                 </div>
 
                 <ul className='leaderboard'>
-                    {problemsSolved.map(user => (
+                    {(value === "ProblemsSolved" ? ProblemsSolved : Xp).map(user => (
                         <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
                             <Link to={`/profile/${user.id}`}>
                                 {user.name} - {user.problemsSolved} Problems Solved - {user.xp} XP
@@ -71,13 +80,11 @@ const GlobalLeaderboard = () => {
             </div>
 
             <ul>
-                <li>
-                    <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
-                        <Link to={`/profile/${user.id}`}>
-                            {user.name} - {user.problemsSolved} Problems Solved - {user.xp} XP
-                        </Link>
-                        <span className="tier-badge" style={{ fontWeight: "bold" }}>{getTier(user.problemsSolved)}</span>
-                    </li>
+                <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
+                    <Link to={`/profile/${user.id}`}>
+                        {user.name} - {user.problemsSolved} Problems Solved - {user.xp} XP
+                    </Link>
+                    <span className="tier-badge" style={{ fontWeight: "bold" }}>{getTier(user.problemsSolved)}</span>
                 </li>
             </ul>
             <div className="motivational-message">
