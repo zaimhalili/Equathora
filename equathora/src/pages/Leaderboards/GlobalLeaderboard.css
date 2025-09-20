@@ -84,10 +84,19 @@
     margin-bottom: 30px;
 }
 
-.leaderboard{
+.leaderboard {
     width: 100%;
     overflow-y: auto;
     max-height: 400px;
     padding: 0 2rem;
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    background-color: #6E6E6E;
+    border-radius: 10px;    
 }
 
+.leaderboard::-webkit-scrollbar {
+    display: none;
+    /* Older Safari and Chromium */
+}

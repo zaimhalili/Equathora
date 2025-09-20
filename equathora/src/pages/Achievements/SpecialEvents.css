@@ -40,6 +40,7 @@
         opacity 0.6s ease-out,
         transform 0.6s ease-out,
         box-shadow 0.3s ease;
+        border: 2px solid #161722;
 }
 
 .event-item.animate-in {
