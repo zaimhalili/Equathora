@@ -12,7 +12,6 @@
     padding: 3rem;
     font-family: 'Inter', sans-serif;
     margin-bottom: 2rem;
-    width: 100%;
     max-width: 1200px;
 }
 
@@ -38,34 +37,27 @@
 .global-leaderboard li a {
     font-size: clamp(1rem, 3vw, 1.2rem);
     font-family: 'Inter', sans-serif;
-    font-weight: 400;
+    font-weight: 600;
     margin: 0;
     width: 100%;
     padding: 0;
-    color: var(--main-color);
-}
-
-.tier-badge {
-    margin-left: 10px;
-    padding: 5px;
-    border-radius: 5px;
-    color: white;
+    color: black;
 }
 
 .tier-bronze {
-    background-color: #8C4A2F;
+    background: linear-gradient(135deg, #d7a46c, #b87333);
 }
 
 .tier-silver {
-    background-color: #6E6E6E;
+    background: linear-gradient(135deg, #e0e0e0, #b0b0b0);
 }
 
 .tier-gold {
-    background-color: #B8860B;
+    background: linear-gradient(135deg, #ffd700, #f6c90e);
 }
 
 .tier-diamond {
-    background-color: #1565C0;
+    background: linear-gradient(135deg, #a6f0ff, #4ac1e0);
 }
 
 .motivational-message {
@@ -74,10 +66,10 @@
 }
 
 #filter-rankings {
-    background-color: var(--secondary-color);
+    background-color: var(--main-color);
     font-family: 'Inter', sans-serif;
     padding: 0.5rem 1.4rem;
-    color: white;
+    color: black;
     font-size: 1.3rem;
     border-radius: 5px;
     cursor: pointer;
@@ -85,18 +77,15 @@
 }
 
 .leaderboard {
-    width: 100%;
     overflow-y: auto;
     max-height: 400px;
     padding: 0 2rem;
     -ms-overflow-style: none;
-    /* Internet Explorer 10+ */
     scrollbar-width: none;
-    background-color: #6E6E6E;
-    border-radius: 10px;    
+    background-color: rgba(255, 255, 255, 0.808);
+    border-radius: 10px;
 }
 
 .leaderboard::-webkit-scrollbar {
     display: none;
-    /* Older Safari and Chromium */
 }

@@ -35,9 +35,9 @@
 }
 
 .leaderboards-content {
+    background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color) 50%);
     padding: 0 4rem;
     width: 100%;
-    background-color: var(--raisin-black);
     padding: 3rem 20vw;
     height: auto;
     min-height: 100vh;
