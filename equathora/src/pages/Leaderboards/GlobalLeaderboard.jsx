@@ -17,11 +17,11 @@ const GlobalLeaderboard = () => {
         { id: 1, name: 'Alice', problemsSolved: 80, xp: 1500, },
         { id: 2, name: 'Bob', problemsSolved: 195, xp: 1900 },
         { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
-        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
-        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
-        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
-        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
-        { id: 3, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 4, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 5, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 6, name: 'Charlie', problemsSolved: 100, xp: 3244 },
+        { id: 7, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 8, name: 'Charlie', problemsSolved: 20, xp: 2100 },
         // Add more users as needed
     ];
 
@@ -36,13 +36,11 @@ const GlobalLeaderboard = () => {
 
     //Sort by no of problems solved
     let ProblemsSolved = [];
-    ProblemsSolved = players.toSorted((a, b) => a.problemsSolved - b.problemsSolved);
-    ProblemsSolved.reverse();
+    ProblemsSolved = players.slice().sort((a, b) => b.problemsSolved - a.problemsSolved);
 
     //Sort by xp
     let Xp = [];
-    Xp = players.toSorted((a, b) => a.xp - b.xp);
-    Xp.reverse();
+    Xp = players.slice().sort((a, b) => b.xp - a.xp);
 
     const getInitialState = () => {
         const value = "Problems Solved";
@@ -62,7 +60,7 @@ const GlobalLeaderboard = () => {
             <div className='flex flex-col'>
                 <div className='w-full flex justify-end'>
                     <select value={value} onChange={handleChange} name="filter-rankings" id="filter-rankings">
-                        <option value="ProblemsSolved" selected>Problems Solved</option>
+                        <option value="ProblemsSolved">Problems Solved</option>
                         <option value="Xp">Xp</option>
                     </select>
                 </div>
