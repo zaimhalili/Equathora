@@ -4,6 +4,65 @@ import './TopSolversLeaderboard.css';
 
 const TopSolversLeaderboard = () => {
     // Mock data - replace with real data from your backend
+    //     1. Filters / Dropdowns
+
+    //     Problem / Problem Set → lets users select a specific problem or set of problems.
+
+    //         Difficulty → Easy / Medium / Hard / Expert.
+
+    //             Timeframe → Today / This Week / This Month / All - Time.
+
+    //                 Category / Topic → Algebra, Logic, Geometry, etc.
+
+    // Leaderboard Type → Fastest, Most Efficient, Most Accurate.
+
+    // UI idea: a row of dropdowns at the top.Example:
+
+    //     [Problem Set ▼][Difficulty ▼][Timeframe ▼][Metric ▼]
+
+    //     2. Table / List
+
+    // Columns you could have:
+
+    //     Rank → 1, 2, 3…
+
+    //     Username / Avatar → clickable to profile
+
+    //     Metric / Score → depends on selected leaderboard type(time, efficiency, points)
+
+    //     Date / Time Solved → when they solved it(optional)
+
+    //     Attempts → optional, shows how many tries it took
+
+    // Example Table:
+
+    // Rank	User	Time	Attempts	Date
+    //     1	ZaimHalili	2: 15	1	25 /09 / 2025
+    //     2	Alice	2: 50	2	25 /09 / 2025
+    //     3	Bob	3:00	1	25 /09 / 2025
+    //     3. Search / Quick Filter
+
+    // Search by username to see friends or top solvers specifically.
+
+    //         Optional: a toggle to “Only show friends” for context.
+
+    // 4. Highlight / Badges
+
+    // Show a small “Top Solver” badge for users currently in top 3 for that problem.
+
+    //         Optional: show historical bests, like “Fastest Ever” or “Most Efficient Ever.”
+
+    //     5. Pagination / Infinite Scroll
+
+    // If your problem has lots of solvers, paginate(10–20 per page) or allow infinite scroll.
+
+    // 6. Extra Features(optional but engaging)
+
+    //     Export / Share button → let users share leaderboard snapshots.
+
+    //         Filter by your own attempts → “Where do I rank ?”
+
+    //     Weekly / Monthly “Top Solvers Hall of Fame” → encourages returning users.
     const user = { id: 4, name: 'Zaim', problemsSolved: 80, xp: 1500, }
     // Mock data - replace with real data from your backend
     const players = [
