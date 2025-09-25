@@ -1,24 +1,91 @@
-.friends-leaderboard {
-    padding: 20px;
+.global-leaderboard {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    cursor: default;
+    border-radius: 12px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    padding: 3rem;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 2rem;
+    max-width: 1200px;
 }
 
-.friends-leaderboard ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.friends-leaderboard li {
-    margin: 10px 0;
-}
-
-.tier-badge {
-    margin-left: 10px;
-    padding: 5px;
-    border-radius: 5px;
+.global-leaderboard h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1.7rem, 5vw, 3.2rem);
+    text-align: center;
     color: white;
+}
+
+.global-leaderboard ul {
+    list-style-type: none;
+}
+
+.global-leaderboard li {
+    margin: 10px 0;
+    padding: 1rem 3rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.global-leaderboard li a {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+    color: black;
+}
+
+.tier-bronze {
+    background: linear-gradient(135deg, #d7a46c, #b87333);
+}
+
+.tier-silver {
+    background: linear-gradient(135deg, #e0e0e0, #b0b0b0);
+}
+
+.tier-gold {
+    background: linear-gradient(135deg, #ffd700, #f6c90e);
+}
+
+.tier-diamond {
+    background: linear-gradient(135deg, #a6f0ff, #4ac1e0);
 }
 
 .motivational-message {
     margin-top: 20px;
     font-style: italic;
+}
+
+#filter-rankings {
+    background-color: var(--main-color);
+    font-family: 'Inter', sans-serif;
+    padding: 0.5rem 1.4rem;
+    color: black;
+    font-size: 1.3rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.leaderboard {
+    overflow-y: auto;
+    max-height: 400px;
+    padding: 0 2rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    background-color: rgba(255, 255, 255, 0.808);
+    border-radius: 10px;
+}
+
+.leaderboard::-webkit-scrollbar {
+    display: none;
 }
