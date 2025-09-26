@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './FriendsLeaderboard.css';
+import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 
 const FriendsLeaderboard = () => {
