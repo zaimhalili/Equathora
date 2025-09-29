@@ -2,11 +2,11 @@ import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import './LeaderboardsLayout.css';
 import Navbar from '../../components/Navbar.jsx';
-import Autumn from '../../assets/images/autumn.jpg';
+import Race from '../../assets/images/race.svg';
 
 const LeaderboardsLayout = () => {
     return (
-        <div className="leaderboards-layout" style={{ backgroundImage: `url(${Autumn})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="leaderboards-layout">
             <header>
                 <Navbar></Navbar>
             </header>
@@ -27,7 +27,7 @@ const LeaderboardsLayout = () => {
                     Top Solvers
                 </NavLink>
             </nav>
-            <div className="leaderboards-content" style={{ backgroundImage: `url(${Autumn})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+            <div className="leaderboards-content" style={{ backgroundImage: `url(${Race})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                 <Outlet />
             </div>
         </div>

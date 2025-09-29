@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
+import Smily from "../../assets/images/smily.svg"
 
 const GlobalLeaderboard = () => {
     //     Extra Ideas
@@ -22,6 +23,8 @@ const GlobalLeaderboard = () => {
         { id: 6, name: 'Charlie', problemsSolved: 100, xp: 3244 },
         { id: 7, name: 'Charlie', problemsSolved: 20, xp: 2100 },
         { id: 8, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 9, name: 'Charlie', problemsSolved: 20, xp: 2100 },
+        { id: 10, name: 'John', problemsSolved: 20, xp: 3452 },
         // Add more users as needed
     ];
 
@@ -55,15 +58,16 @@ const GlobalLeaderboard = () => {
 
     return (
         <article className="global-leaderboard">
+            <img src={Smily} alt="smily face" className='smily' />
             <h2>Global Leaderboard</h2>
 
             <div className='flex flex-col'>
-                <div className='w-full flex justify-end'>
+                {/* <div className='w-full flex justify-end'>
                     <select value={value} onChange={handleChange} name="filter-rankings" id="filter-rankings">
                         <option value="ProblemsSolved">Problems Solved</option>
                         <option value="Xp">Xp</option>
                     </select>
-                </div>
+                </div> */}
 
                 <ul className='leaderboard'>
                     {(value === "ProblemsSolved" ? ProblemsSolved : Xp).map(user => (

@@ -12,8 +12,16 @@
     padding: 3rem;
     font-family: 'Inter', sans-serif;
     margin-bottom: 2rem;
-    max-width: 1200px;
+    max-width: 1400px;
     backdrop-filter: blur(15px) brightness(0.8);
+    position: relative;
+}
+
+.global-leaderboard .smily {
+    position: absolute;
+    left: 45px;
+    top: 45px;
+    z-index: -1;
 }
 
 .global-leaderboard h2 {
@@ -27,12 +35,21 @@
     list-style-type: none;
 }
 
-.global-leaderboard li {
-    margin: 10px 0;
-    padding: 1rem 3rem;
+.leaderboard {
+    width: 100%;
+    overflow-y: auto;
+    max-height: 600px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
+}
+
+.global-leaderboard li {
+    border: 1px solid black;
+    margin: 5px 0;
+    padding: 1rem 3rem;
     display: flex;
-    justify-content: space-between;
 }
 
 .global-leaderboard li a {
@@ -45,7 +62,7 @@
     color: black;
 }
 
-.tier-bronze {
+/* .tier-bronze {
     background: linear-gradient(135deg, #d7a46c, #b87333);
 }
 
@@ -59,7 +76,7 @@
 
 .tier-diamond {
     background: linear-gradient(135deg, #a6f0ff, #4ac1e0);
-}
+} */
 
 .motivational-message {
     margin-top: 20px;
@@ -75,16 +92,6 @@
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 30px;
-}
-
-.leaderboard {
-    overflow-y: auto;
-    max-height: 400px;
-    padding: 0 2rem;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
 }
 
 .leaderboard::-webkit-scrollbar {

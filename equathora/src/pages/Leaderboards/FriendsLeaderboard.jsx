@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
+import Smily from "../../assets/images/smily.svg";
 
 const FriendsLeaderboard = () => {
     // Mock data - replace with real data from your backend
@@ -48,6 +49,7 @@ const FriendsLeaderboard = () => {
 
     return (
         <article className="global-leaderboard">
+            <img src={Smily} alt="smily face" className='smily' />
             <h2>Friends Leaderboard</h2>
 
             <div className='flex flex-col'>

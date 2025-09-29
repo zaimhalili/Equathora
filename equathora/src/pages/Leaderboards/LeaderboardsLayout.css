@@ -1,6 +1,6 @@
 .leaderboards-layout {
     min-height: 100vh;
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.32);
 }
 
 .leaderboard-opt-container {
@@ -11,7 +11,7 @@
     justify-content: space-around;
     align-items: center;
     padding: 4rem 0;
-    backdrop-filter: blur(5px);
+    background-color: transparent;
 }
 
 .lb-option {
