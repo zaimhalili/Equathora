@@ -13,7 +13,7 @@
     font-family: 'Inter', sans-serif;
     margin-bottom: 2rem;
     max-width: 1200px;
-    background-color: var(--secondary-color);
+    backdrop-filter: blur(15px) brightness(0.8);
 }
 
 .global-leaderboard h2 {

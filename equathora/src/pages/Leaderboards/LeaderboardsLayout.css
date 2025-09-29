@@ -1,6 +1,6 @@
 .leaderboards-layout {
-    background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color) 50%);
     min-height: 100vh;
+    background-color: transparent;
 }
 
 .leaderboard-opt-container {
@@ -11,10 +11,11 @@
     justify-content: space-around;
     align-items: center;
     padding: 4rem 0;
+    backdrop-filter: blur(5px);
 }
 
 .lb-option {
-    color: var(--secondary-color);
+    color: white;
     font-family: 'Public Sans', Arial, Helvetica, sans-serif;
     font-size: clamp(1.2rem, 3vw, 1.2rem);
     padding: 0.5rem 1rem;
@@ -22,6 +23,7 @@
     font-weight: 700;
     text-align: center;
     transition: 0.2s ease-out;
+    border: 1px solid var(--secondary-color);
 }
 
 .lb-option.active {
@@ -35,7 +37,6 @@
 }
 
 .leaderboards-content {
-    background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color) 50%);
     padding: 0 4rem;
     width: 100%;
     padding: 3rem 20vw;
