@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Smily from "../../assets/images/smily.svg";
 
 const FriendsLeaderboard = () => {
-    // Mock data - replace with real data from your backend
     const user = { id: 4, name: 'Zaim', problemsSolved: 80, xp: 1500, }
     // Mock data - replace with real data from your backend
     const players = [
@@ -19,67 +18,33 @@ const FriendsLeaderboard = () => {
         // Add more users as needed
     ];
 
-    // Function to determine tier based on problems solved
-    const getTier = (problemsSolved) => {
-        if (problemsSolved >= 100) return 'Diamond';
-        if (problemsSolved >= 75) return 'Gold';
-        if (problemsSolved >= 50) return 'Silver';
-        return 'Bronze';
-    };
-
-
-    //Sort by no of problems solved
-    let ProblemsSolved = [];
-    ProblemsSolved = players.slice().sort((a, b) => b.problemsSolved - a.problemsSolved);
-
-    //Sort by xp
-    let Xp = [];
-    Xp = players.slice().sort((a, b) => b.xp - a.xp);
-
-    const getInitialState = () => {
-        const value = "Problems Solved";
-        return value;
-    };
-
-    const [value, setValue] = useState(getInitialState);
-
-    const handleChange = (e) => {
-        setValue(e.target.value);
-    };
+    const sortedPlayers = players.sort((a, b) => b.xp - a.xp);
 
     return (
         <article className="global-leaderboard">
             <img src={Smily} alt="smily face" className='smily' />
             <h2>Friends Leaderboard</h2>
 
-            <div className='flex flex-col'>
-                <div className='w-full flex justify-end'>
-                    <select value={value} onChange={handleChange} name="filter-rankings" id="filter-rankings">
-                        <option value="ProblemsSolved">Problems Solved</option>
-                        <option value="Xp">Xp</option>
-                    </select>
-                </div>
-
+            <div className="leaderboard-container">
                 <ul className='leaderboard'>
-                    {(value === "ProblemsSolved" ? ProblemsSolved : Xp).map(user => (
-                        <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
-                            <Link to={`/profile/${user.id}`}>
-                                {user.name} - {user.problemsSolved} Problems Solved - {user.xp} XP
+                    {sortedPlayers.map(player => (
+                        <li key={player.id} className="leaderboard-item">
+                            <Link to={`/profile/${player.id}`}>
+                                {player.name} - {player.problemsSolved} Problems Solved - {player.xp} XP
                             </Link>
-                            <span className="tier-badge" style={{ fontWeight: "bold" }}>{getTier(user.problemsSolved)}</span>
                         </li>
                     ))}
                 </ul>
             </div>
 
-            <ul>
-                <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
+            <div className="user-stats">
+                <div className="leaderboard-item">
                     <Link to={`/profile/${user.id}`}>
                         {user.name} - {user.problemsSolved} Problems Solved - {user.xp} XP
                     </Link>
-                    <span className="tier-badge" style={{ fontWeight: "bold" }}>{getTier(user.problemsSolved)}</span>
-                </li>
-            </ul>
+                </div>
+            </div>
+
             <div className="motivational-message">
                 Aim for the top and become a global leader!
             </div>

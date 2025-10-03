@@ -120,26 +120,28 @@ const TopSolversLeaderboard = () => {
                     </select>
                 </div>
 
-                <ul className='leaderboard'>
-                    {(value === "ProblemsSolved" ? ProblemsSolved : Xp).map(user => (
-                        <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
-                            <Link to={`/profile/${user.id}`}>
-                                {user.name} - {user.problemsSolved} Problems Solved - {user.xp} XP
-                            </Link>
-                            <span className="tier-badge" style={{ fontWeight: "bold" }}>{getTier(user.problemsSolved)}</span>
-                        </li>
-                    ))}
-                </ul>
+                <div className="leaderboard-container">
+                    <ul className='leaderboard'>
+                        {(value === "ProblemsSolved" ? ProblemsSolved : Xp).map(user => (
+                            <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
+                                <Link to={`/profile/${user.id}`}>
+                                    {user.name} - {user.problemsSolved} Problems Solved - {user.xp} XP
+                                </Link>
+                                <span className="tier-badge" style={{ fontWeight: "bold" }}>{getTier(user.problemsSolved)}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
 
-            <ul>
-                <li key={user.id} className={`tier-${getTier(user.problemsSolved).toLowerCase()}`}>
+            <div className="user-stats">
+                <div className="leaderboard-item">
                     <Link to={`/profile/${user.id}`}>
                         {user.name} - {user.problemsSolved} Problems Solved - {user.xp} XP
                     </Link>
-                    <span className="tier-badge" style={{ fontWeight: "bold" }}>{getTier(user.problemsSolved)}</span>
-                </li>
-            </ul>
+                </div>
+            </div>
+
             <div className="motivational-message">
                 Aim for the top and become a global leader!
             </div>
