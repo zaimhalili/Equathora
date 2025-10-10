@@ -82,7 +82,7 @@ const Navbar = () => {
 
   const moreItems = [
     {
-      to: '/learn',
+      to: '/applymentor',
       text: "Teacher/Mentor Mode",
       description: "Monitor students or children's progress.",
       image: Mentoring
