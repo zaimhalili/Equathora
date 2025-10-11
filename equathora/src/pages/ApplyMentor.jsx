@@ -9,22 +9,22 @@ const ApplyMentor = () => {
   return (
     <div className='bg-white text-black font-[Inter]'>
       <header><Navbar></Navbar></header>
-      <section className='flex justify-center flex-col'>
-        <h1 className='text-[clamp(2.4rem,5vw,4rem)] font-medium'>Apply To Be a <span className='font-bold text-[var(--dark-accent-color)]'>Mentor</span></h1>
-        <h2>Guide, support, and inspire students in logic and mathematics</h2>
+      <section className='flex justify-center flex-col px-20 py-10 min-h-[50vh] w-full'>
+        <h1 className='text-[clamp(2.4rem,5vw,4rem)] font-medium text-center'>Apply To Be a <span className='font-bold text-[var(--dark-accent-color)]'>Mentor</span></h1>
+        <h2 className='text-center'>Guide, support, and inspire students in logic and mathematics</h2>
 
-        <article className='flex'>
-          <img src={applyMen} alt="mentors" />
-          <div>
+        <article className='flex flex-col'>
+          <img src={applyMen} alt="mentors" className='w-full' />
+          <div className='flex flex-col'>
             <p>Join us in building the future of math and logic education. <br />
               Your guidance could be a reason a student falls in love with problem-solving.
             </p>
-            <button type="submit" className='bg-[var(--accent-color)] rounded-2xl'>Apply Now</button>
+            <button type="submit" className='bg-[var(--accent-color)] rounded-2xl w-full text-white px-5 py-3'>Apply Now</button>
           </div>
         </article>
       </section>
       <hr />
-      <section>
+      <section className='flex flex-col w-ful'>
         <h3>Who can <span>apply?</span></h3>
         <article>
           <div>
