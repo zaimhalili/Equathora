@@ -8,7 +8,7 @@ import teachers from '../assets/images/teachers.svg';
 
 const ApplyMentor = () => {
   return (
-    <div className='bg-white text-black font-[Inter] w-full'>
+    <div className='text-black font-[Inter] w-full' style={{ background:'linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)'}}>
       <header><Navbar></Navbar></header>
       <section className='flex justify-center flex-col px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] w-full'>
         <h1 className='text-[clamp(2.4rem,5vw,4rem)] font-medium text-center'>Apply To Be a <span className='font-bold text-[var(--dark-accent-color)]'>Mentor</span></h1>
@@ -33,20 +33,20 @@ const ApplyMentor = () => {
         </h3><br />
 
         <article className='flex flex-col gap-10 lg:flex-row'>
-          <div className='rounded-2xl shadow-lg bg-[var(--main-color)] flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around'>
+          <div className='rounded-2xl shadow-lg bg-white flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around'>
             <h5 className='text-center font-medium text-[clamp(1.3rem,3vw,1.4rem)]'>Community Mentors</h5>
             <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Do you enjoy helping others understand logic and math?
               As a community mentor, you’ll guide students publicly, answer questions, and share solutions that inspire everyone on the platform.</p>
             <img src={skate} alt="community" />
           </div>
 
-          <div className='rounded-2xl shadow-lg  bg-[var(--main-color)] flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around'>
+          <div className='rounded-2xl shadow-lg  bg-white flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around'>
             <h5 className='text-center font-medium text-[clamp(1.3rem,3vw,1.4rem)]'>Teachers</h5>
             <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Equathora was built with classrooms in mind. Teachers can directly track their students’ progress, assign problem sets, and provide personalized feedback to help them grow.</p>
             <img src={teachers} alt="community" />
           </div>
 
-          <div className='rounded-2xl shadow-lg  bg-[var(--main-color)] flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around'>
+          <div className='rounded-2xl shadow-lg  bg-white flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around'>
             <h5 className='text-center font-medium text-[clamp(1.3rem,3vw,1.4rem)]'>Parents</h5>
             <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Parents can join as mentors too but with a focus on support and oversight. You’ll be able to see how much time your child spends solving problems, how many exercises they’ve completed, and where they might need encouragement.</p>
             <img src={parents} alt="community" />
