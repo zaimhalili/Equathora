@@ -7,29 +7,31 @@ import teachers from '../assets/images/teachers.svg';
 
 const ApplyMentor = () => {
   return (
-    <div className='bg-white text-black font-[Inter]'>
+    <div className='bg-white text-black font-[Inter] w-full'>
       <header><Navbar></Navbar></header>
-      <section className='flex justify-center flex-col px-20 py-10 min-h-[50vh] w-full'>
+      <section className='flex justify-center flex-col px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] w-full'>
         <h1 className='text-[clamp(2.4rem,5vw,4rem)] font-medium text-center'>Apply To Be a <span className='font-bold text-[var(--dark-accent-color)]'>Mentor</span></h1>
-        <h2 className='text-center'>Guide, support, and inspire students in logic and mathematics</h2>
+        <h2 className='text-center font-light text-[clamp(1rem,3vw,1.4rem)]'>Guide, support, and inspire students in logic and mathematics</h2>
 
-        <article className='flex flex-col'>
-          <img src={applyMen} alt="mentors" className='w-full' />
-          <div className='flex flex-col'>
-            <p>Join us in building the future of math and logic education. <br />
+        <article className='flex flex-col md:flex-row justify-center md:items-center gap-10 sm:gap-0'>
+          <img src={applyMen} alt="mentors" className='w-full md:w-1/2' />
+          <div className='flex flex-col md:w-1/2 lg:px-20 gap-7'>
+            <p className='text-[clamp(1.2rem,3vw,1.7rem)] w-full text-center md:text-left'>
+              Join us in building the future of math and logic education. <br />
               Your guidance could be a reason a student falls in love with problem-solving.
             </p>
-            <button type="submit" className='bg-[var(--accent-color)] rounded-2xl w-full text-white px-5 py-3'>Apply Now</button>
+            <button type="submit" className='bg-[var(--accent-color)] rounded-2xl w-full text-white py-3 cursor-pointer hover:bg-[var(--dark-accent-color)] transition-colors'>Apply Now</button>
           </div>
         </article>
       </section>
       <hr />
-      <section className='flex flex-col w-ful'>
-        <h3>Who can <span>apply?</span></h3>
-        <article>
-          <div>
-            <h5>Community Mentors</h5>
-            <p>Do you enjoy helping others understand logic and math?
+      <section className='flex flex-col w-full px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh]'>
+        <br />
+        <h3 className='text-[clamp(1.5rem,3vw,2.5rem)] text-center'>Who can <span className='text-[var(--dark-accent-color)]'>apply?</span></h3><br />
+        <article className='flex flex-col gap-10'>
+          <div className='rounded-2xl shadow-lg bg-gray-100 flex flex-col items-center px-3 py-8 gap-5'>
+            <h5 className='text-center font-semibold text-[clamp(1.3rem,3vw,1.4rem)]'>Community Mentors</h5>
+            <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Do you enjoy helping others understand logic and math?
               As a community mentor, you’ll guide students publicly, answer questions, and share solutions that inspire everyone on the platform.</p>
             <img src={skate} alt="community" />
           </div>
