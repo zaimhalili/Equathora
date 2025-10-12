@@ -12,13 +12,13 @@ const ApplyMentor = () => {
       <header><Navbar></Navbar></header>
       <section className='flex justify-center flex-col px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] w-full'>
         <h1 className='text-[clamp(2.4rem,5vw,4rem)] font-medium text-center'>Apply To Be a <span className='font-bold text-[var(--dark-accent-color)]'>Mentor</span></h1>
-        <h2 className='text-center font-light text-[clamp(1rem,3vw,1.4rem)]'>Guide, support, and inspire students in logic and mathematics</h2>
+        <h2 className='text-center font-light text-[clamp(1rem,3vw,1.4rem)] md:pb-7'>Guide, support, and inspire students in logic and mathematics</h2>
 
-        <article className='flex flex-col md:flex-row justify-center md:items-center gap-10 sm:gap-0'>
-          <img src={applyMen} alt="mentors" className='w-full md:w-1/2' />
-          <div className='flex flex-col md:w-1/2 lg:px-20 gap-7'>
-            <p className='text-[clamp(1.2rem,3vw,1.7rem)] w-full text-center md:text-left'>
-              Join us in building the future of math and logic education. <br />
+        <article className='flex flex-col md:flex-row justify-center md:items-center gap-10 md:gap-6'>
+          <img src={applyMen} alt="mentors" className='w-full md:w-1/2 lg:w-3/5' />
+          <div className='flex flex-col md:w-1/2 lg:w-2/5 lg:px-[50px] xl:px-[120px] gap-7 h-full justify-between'>
+            <p className='text-[clamp(1.2rem,3vw,1.65rem)] w-full text-center md:text-left'>
+              Join us in building the future of math and logic education.
               Your guidance could be a reason a student falls in love with problem-solving.
             </p>
             <button type="submit" className='bg-[var(--accent-color)] rounded-2xl w-full text-white py-3 cursor-pointer hover:bg-[var(--dark-accent-color)] transition-colors'>Apply Now</button>
