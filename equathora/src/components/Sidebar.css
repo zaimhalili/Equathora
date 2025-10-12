@@ -3,7 +3,7 @@
     top: 0;
     width: 300px;
     height: 100vh;
-    background-color: var(--main-color);
+    background-color: #edf2f4ca;
     backdrop-filter: blur(10px);
     box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
     z-index: 999;
@@ -63,8 +63,7 @@
 }
 
 #sidebar a:hover {
-    color: var(--accent-color);
-    background-color: rgb(217, 217, 217);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 #close-sidebar {
@@ -111,15 +110,15 @@
 }
 
 #logout:hover {
-    color: var(--accent-color);
-    background-color: rgb(217, 217, 217);
+    background-color: rgb(255, 255, 255, .9);
 }
 
 @media only screen and (max-width: 768px) {
     #sidebar {
         right: -100vw;
     }
-/* 
+
+    /* 
     #sidebar.open {
         right: 0;
     } */

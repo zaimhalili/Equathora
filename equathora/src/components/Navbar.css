@@ -19,6 +19,7 @@
 #navbar-logo {
     height: 80px;
     width: 80px;
+    object-fit: scale-down;
 }
 
 #navbar-name {

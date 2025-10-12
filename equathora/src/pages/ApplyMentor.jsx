@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import applyMen from '../assets/images/applyMentor.svg';
 import skate from '../assets/images/skate.svg';
 import parents from '../assets/images/parents.svg';
@@ -27,28 +28,32 @@ const ApplyMentor = () => {
       <hr />
       <section className='flex flex-col w-full px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh]'>
         <br />
-        <h3 className='text-[clamp(1.5rem,3vw,2.5rem)] text-center'>Who can <span className='text-[var(--dark-accent-color)]'>apply?</span></h3><br />
+        <h3 className='text-[clamp(1.7rem,3vw,2.5rem)] text-center font-semibold'>
+          Who can <span className='text-[var(--dark-accent-color)]'>apply?</span>
+        </h3><br />
         <article className='flex flex-col gap-10'>
-          <div className='rounded-2xl shadow-lg bg-gray-100 flex flex-col items-center px-3 py-8 gap-5'>
-            <h5 className='text-center font-semibold text-[clamp(1.3rem,3vw,1.4rem)]'>Community Mentors</h5>
+          <div className='rounded-2xl shadow-lg bg-[var(--main-color)] flex flex-col items-center px-3 py-8 gap-4'>
+            <h5 className='text-center font-medium text-[clamp(1.3rem,3vw,1.4rem)]'>Community Mentors</h5>
             <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Do you enjoy helping others understand logic and math?
               As a community mentor, you’ll guide students publicly, answer questions, and share solutions that inspire everyone on the platform.</p>
             <img src={skate} alt="community" />
           </div>
-          <div>
-            <h5>Teachers</h5>
-            <p>Equathora was built with classrooms in mind. Teachers can directly track their students’ progress, assign problem sets, and provide personalized feedback to help them grow.</p>
+
+          <div className='rounded-2xl shadow-lg  bg-[var(--main-color)] flex flex-col items-center px-3 py-8 gap-4'>
+            <h5 className='text-center font-medium text-[clamp(1.3rem,3vw,1.4rem)]'>Teachers</h5>
+            <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Equathora was built with classrooms in mind. Teachers can directly track their students’ progress, assign problem sets, and provide personalized feedback to help them grow.</p>
             <img src={teachers} alt="community" />
           </div>
-          <div>
-            <h5>Parents</h5>
-            <p>Parents can join as mentors too but with a focus on support and oversight. You’ll be able to see how much time your child spends solving problems, how many exercises they’ve completed, and where they might need encouragement.</p>
+
+          <div className='rounded-2xl shadow-lg  bg-[var(--main-color)] flex flex-col items-center px-3 py-8 gap-4'>
+            <h5 className='text-center font-medium text-[clamp(1.3rem,3vw,1.4rem)]'>Parents</h5>
+            <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Parents can join as mentors too but with a focus on support and oversight. You’ll be able to see how much time your child spends solving problems, how many exercises they’ve completed, and where they might need encouragement.</p>
             <img src={parents} alt="community" />
           </div>
         </article>
       </section>
       <hr />
-      <hr />
+      <footer><Footer></Footer></footer>
     </div>
   );
 };
