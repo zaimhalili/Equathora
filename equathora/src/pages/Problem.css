@@ -4,45 +4,133 @@
     color: var(--secondary-color);
 }
 
-#body-problem header {
+/* Navigation Header */
+.problem-nav-header {
     display: flex;
     align-items: center;
-    font-family: 'Public Sans', serif;
-    font-weight: lighter;
+    justify-content: space-between;
+    font-family: 'Public Sans', sans-serif;
     background-color: var(--main-color);
     width: 100%;
-    border-bottom: 2px solid var(--secondary-color);
-    padding: 0.6rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    padding: 0.8rem 1.5rem;
 }
 
-#backToExercises-link {
+.back-link {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-size: 1.2rem;
+    gap: 0.5rem;
+    font-size: 1rem;
     color: var(--secondary-color);
-    font-weight: lighter;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
 }
 
-#backToExercises-link #arrowProblemsIMG {
-    width: 1.8rem;
+.back-link:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--accent-color);
+}
+
+.arrow-icon {
+    width: 1.2rem;
+    height: 1.2rem;
     transform: rotate(180deg);
+    transition: transform 0.2s ease;
+}
+
+.back-link:hover .arrow-icon {
+    transform: rotate(180deg) translateX(4px);
+}
+
+.problem-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    background: transparent;
+    border: 2px solid var(--french-gray);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: all 0.2s ease;
+    color: var(--french-gray);
+}
+
+.action-btn:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: scale(1.05);
+}
+
+.action-btn.favorite.active {
+    color: #FFD700;
+    border-color: #FFD700;
+    background: rgba(255, 215, 0, 0.1);
 }
 
 #body-problem h1 {
-    font-family: 'Public Sans', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 1.5rem;
+    font-family: 'Public Sans', sans-serif;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
     color: var(--secondary-color);
+    font-weight: 700;
 }
 
 .problem-tags {
-    width: 100%;
     display: flex;
-    justify-content: space-between;
-    font-family: 'Public Sans', Arial, Helvetica, sans-serif;
-    font-size: 1.2rem;
-    padding-left: 3rem;
-    color: var(--dark-accent-color);
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.85rem;
+    justify-content: center;
+}
+
+.tag {
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.tag.difficulty.easy {
+    background: #10b981;
+    color: white;
+}
+
+.tag.difficulty.medium {
+    background: #f59e0b;
+    color: white;
+}
+
+.tag.difficulty.hard {
+    background: #ef4444;
+    color: white;
+}
+
+.tag.premium {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: var(--secondary-color);
+}
+
+.tag.basic {
+    background: var(--mid-main-secondary);
+    color: white;
+}
+
+.tag.completed {
+    background: #10b981;
+    color: white;
+}
+
+.tag.incomplete {
+    background: var(--french-gray);
+    color: var(--secondary-color);
 }
 
 .description-yourSolution {
@@ -75,26 +163,148 @@
     word-break: keep-all;
 }
 
-.problem-description{
+.problem-description {
     width: 100%;
-    padding: 1rem 10rem;
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    overflow-y: auto;
+    max-height: 75vh;
+}
+
+.problem-description::-webkit-scrollbar {
+    width: 6px;
+}
+
+.problem-description::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.problem-description::-webkit-scrollbar-thumb {
+    background: var(--french-gray);
+    border-radius: 10px;
+}
+
+.problem-description::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
+.description-section {
+    background: white;
+    padding: 1.2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.description-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    color: var(--secondary-color);
+    font-weight: 700;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.description-section p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--secondary-color);
+}
+
+.example-box {
+    background: #f8f9fa;
+    border-left: 4px solid var(--accent-color);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.8rem;
+}
+
+.example-item {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+.example-item code {
+    background: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: var(--accent-color);
+    border: 1px solid var(--french-gray);
+}
+
+.example-item.explanation {
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed var(--french-gray);
+    font-style: italic;
+    color: #666;
+}
+
+.constraints {
+    font-family: 'Courier New', monospace;
+    background: #f8f9fa;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--french-gray);
+}
+
+/* Hints Section */
+.hints-section {
+    background: linear-gradient(135deg, #fff5e6, #fff);
+    border: 2px dashed #ffa500;
+}
+
+.hint-toggle {
+    width: 100%;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Public Sans', sans-serif;
+}
+
+.hint-toggle:hover {
+    background: var(--dark-accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(217, 4, 41, 0.3);
+}
+
+.hints-container {
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
 }
 
-.problem-description h2 {
-    font-size: 1.4rem;
-    display: flex;
-    justify-content: center;
+.hint-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid #ffa500;
 }
 
-.problem-description p {
-    font-size: 1.4rem;
-    line-height: 1.5;
+.hint-number {
+    font-weight: 700;
+    color: var(--accent-color);
+    display: block;
+    margin-bottom: 0.4rem;
 }
 
-#timer-container{
+.hint-item p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+#timer-container {
     display: flex;
     width: 100%;
     justify-content: flex-end;
@@ -108,7 +318,7 @@
     width: 50%;
     max-height: 90vh;
     overflow-y: scroll;
-}   
+}
 
 .solution-section h2 {
     font-size: 2rem;
@@ -158,6 +368,90 @@
     color: gray;
 }
 
-/* .solution-input::{
-    color: red;
-} */
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .description-yourSolution {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .problem-description-timer,
+    .solution-section {
+        width: 100%;
+        border-right: none;
+    }
+
+    .problem-description {
+        padding: 1rem;
+        max-height: none;
+    }
+
+    .solution-section {
+        max-height: none;
+        min-height: 60vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .problem-nav-header {
+        padding: 0.6rem 1rem;
+    }
+
+    .back-link span {
+        display: none;
+    }
+
+    .problem-header {
+        padding: 1rem 0.5rem;
+    }
+
+    #body-problem h1 {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .problem-tags {
+        font-size: 0.7rem;
+    }
+
+    .tag {
+        padding: 0.3rem 0.7rem;
+        font-size: 0.65rem;
+    }
+
+    .description-section {
+        padding: 1rem;
+    }
+
+    .description-section h2 {
+        font-size: 1.1rem;
+    }
+
+    .description-section p {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .problem-description {
+        padding: 0.8rem;
+    }
+
+    .description-section {
+        padding: 0.8rem;
+    }
+
+    .example-box {
+        padding: 0.8rem;
+    }
+
+    .hint-toggle {
+        font-size: 0.9rem;
+        padding: 0.6rem;
+    }
+
+    .action-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 1.2rem;
+    }
+}
