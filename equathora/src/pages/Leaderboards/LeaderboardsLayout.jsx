@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import './LeaderboardsLayout.css';
 import Navbar from '../../components/Navbar.jsx';
 import Race from '../../assets/images/race.svg';
+import Footer from '../../components/Footer.jsx';
 
 const LeaderboardsLayout = () => {
     return (
@@ -30,6 +31,7 @@ const LeaderboardsLayout = () => {
                     <Outlet />
                 </div>
             </main>
+            <footer><Footer /></footer>
         </div>
     );
 };
