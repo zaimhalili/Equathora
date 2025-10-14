@@ -1,5 +1,5 @@
 // Sidebar.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import './Sidebar.css';
 import { Link } from 'react-router-dom';
 import GuestAvatar from '../assets/images/guestAvatar.png';
@@ -12,8 +12,15 @@ import Leaderboards from '../assets/images/leaderboards.svg';
 import Notifications from '../assets/images/notificationsDD.svg';
 import Achievements from '../assets/images/achievementsDD.svg';
 import LogoutIMG from '../assets/images/logout.svg';
+import Mentoring from '../assets/images/mentoring.svg';
+import Faq from '../assets/images/faq.svg';
+import AboutUs from '../assets/images/about.svg';
+import Premium from '../assets/images/Premium.svg';
+import Settings from '../assets/images/settings.svg';
 
 const Sidebar = ({ isOpen, onClose }) => {
+    const [moreExpanded, setMoreExpanded] = useState(false);
+
     function LogOut() {
         alert("Logged out successfully");
     }
@@ -54,6 +61,39 @@ const Sidebar = ({ isOpen, onClose }) => {
             text: 'Achievements',
             description: 'Track your progress',
             image: Achievements
+        }
+    ];
+
+    const moreItems = [
+        {
+            to: '/applymentor',
+            text: 'Become a Mentor',
+            description: 'Guide students',
+            image: Mentoring
+        },
+        {
+            to: '/settings',
+            text: 'Settings',
+            description: 'Manage preferences',
+            image: Settings
+        },
+        {
+            to: '/premium',
+            text: 'Upgrade to Premium',
+            description: 'Unlock all features',
+            image: Premium
+        },
+        {
+            to: '/help',
+            text: 'Help Center',
+            description: 'FAQs and support',
+            image: Faq
+        },
+        {
+            to: '/about',
+            text: 'About Equathora',
+            description: 'Our mission',
+            image: AboutUs
         }
     ];
 
@@ -103,6 +143,53 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 </div>
                             </Link>
                         ))}
+
+                        {/* More Section - Expandable */}
+                        <div className="sidebar-more-section">
+                            <button
+                                className={`sidebar-more-toggle ${moreExpanded ? 'expanded' : ''}`}
+                                onClick={() => setMoreExpanded(!moreExpanded)}
+                            >
+                                <div className="sidebar-more-header">
+                                    <div className="sidebar-item-text">
+                                        <h4>More</h4>
+                                        <p>Additional options</p>
+                                    </div>
+                                    <svg
+                                        className="sidebar-arrow"
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 20 20"
+                                        fill="none"
+                                    >
+                                        <path
+                                            d="M5 7.5L10 12.5L15 7.5"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                </div>
+                            </button>
+
+                            <div className={`sidebar-more-content ${moreExpanded ? 'expanded' : ''}`}>
+                                {moreItems.map((item, index) => (
+                                    <Link
+                                        key={index}
+                                        to={item.to}
+                                        className="sidebar-item sidebar-sub-item"
+                                        onClick={onClose}
+                                    >
+                                        <img src={item.image} alt={item.text} className="sidebar-item-icon" />
+                                        <div className="sidebar-item-text">
+                                            <h4>{item.text}</h4>
+                                            <p>{item.description}</p>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
                     </nav>
 
                     <div className="sidebar-footer">
