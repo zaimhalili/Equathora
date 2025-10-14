@@ -87,7 +87,6 @@ const Problem = () => {
 
   return (
     <>
-      <Navbar />
       <main id="body-problem">
         <header className="problem-nav-header">
           <Link to="/learn" className="back-link">
@@ -212,69 +211,3 @@ const Problem = () => {
 };
 
 export default Problem;
-
-/*
-══════════════════════════════════════════════════════════════════
-📖 COMPLETE EXAMPLE - Problem with Images
-══════════════════════════════════════════════════════════════════
-
-// Step 1: Import your images at the top
-import TreeDiagram from '../assets/images/tree-structure.png';
-import Example1Viz from '../assets/images/example1-visual.png';
-import Example2Viz from '../assets/images/example2-visual.png';
-
-// Step 2: Use them in your problem object
-const problem = {
-  title: "Binary Tree Maximum Path Sum",
-  difficulty: "Hard",
-  description: "Find the maximum path sum in a binary tree where a path can start and end at any node.",
-  
-  // Main visual aid for the problem
-  descriptionImage: TreeDiagram,
-  imageCaption: "Example binary tree structure",
-  
-  examples: [
-    {
-      input: "root = [1,2,3]",
-      output: "6",
-      explanation: "The path 2 -> 1 -> 3 has the maximum sum of 6",
-      image: Example1Viz  // Visual representation of this specific example
-    },
-    {
-      input: "root = [-10,9,20,null,null,15,7]",
-      output: "42",
-      explanation: "The path 15 -> 20 -> 7 has the maximum sum of 42",
-      image: Example2Viz
-    }
-  ],
-  
-  constraints: "-1000 ≤ Node.val ≤ 1000",
-  hints: [
-    "Think about depth-first search",
-    "Consider both left and right subtrees"
-  ],
-  completed: false,
-  premium: true
-};
-
-══════════════════════════════════════════════════════════════════
-🎨 IMAGE FEATURES:
-══════════════════════════════════════════════════════════════════
-✅ Automatic responsive scaling
-✅ Hover zoom effect (1.02x for main images, 1.05x for examples)
-✅ Rounded corners with shadows
-✅ Optional captions
-✅ Click to zoom cursor on example images
-✅ Maintains aspect ratio
-✅ Mobile-optimized
-
-══════════════════════════════════════════════════════════════════
-📁 RECOMMENDED IMAGE LOCATIONS:
-══════════════════════════════════════════════════════════════════
-src/assets/images/problems/           - General problem diagrams
-src/assets/images/problems/geometry/  - Geometry-specific images
-src/assets/images/problems/graphs/    - Graph problem visualizations
-src/assets/images/problems/trees/     - Tree structure diagrams
-src/assets/images/problems/arrays/    - Array/sequence visualizations
-
-*/

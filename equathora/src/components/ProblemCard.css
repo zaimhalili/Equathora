@@ -1,63 +1,169 @@
 .problem-card {
-    width: 50%;
-    height: 8rem;
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    flex: 0 0 calc(50% - 0.5rem);
-    box-sizing: border-box;
-    border-radius: 20px;
+    flex-direction: column;
     background-color: var(--main-color);
-    border: 1px solid var(--secondary-color);
-    transition: 0.2s ease-out;
-    padding: 1rem;
-}
-
-.problem-card:hover{
-    transform: scale(1.02);
-    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
-}
-
-.problem-card{
+    border: 2px solid rgba(43, 45, 66, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
     color: var(--secondary-color);
-    font-family: 'Public Sans';
+    font-family: 'Public Sans', sans-serif;
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
 }
 
-.problem-card-content {
+.problem-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--dark-accent-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.problem-card:hover::before {
+    transform: scaleX(1);
+}
+
+.problem-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(217, 4, 41, 0.15);
+    border-color: rgba(217, 4, 41, 0.3);
+}
+
+.problem-card.completed {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(237, 242, 244, 1));
+}
+
+.problem-card.completed::before {
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.problem-card-header {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
 }
 
-.problem-card-content h3 {
-    font-family: 'Public Sans', Arial, Helvetica, sans-serif;
-    font-size: 1.3rem;
-    text-align: center;
+.problem-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin: 0;
+    line-height: 1.3;
+    flex: 1;
 }
 
-.problem-meta {
-    font-family: "Public Sans", Arial, Helvetica, sans-serif;
-    font-size: 1rem;
+.problem-icons {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.favourite-icon {
+    color: #f59e0b;
+    font-size: 1.1rem;
+    filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.3));
+}
+
+.premium-icon {
+    color: #a855f7;
+    font-size: 1.1rem;
+    filter: drop-shadow(0 2px 4px rgba(168, 85, 247, 0.3));
+}
+
+.problem-description {
+    font-size: 0.95rem;
+    color: rgba(43, 45, 66, 0.7);
+    line-height: 1.5;
+    margin: 0 0 1.5rem 0;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.problem-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.difficulty-badge {
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.status-badge {
     display: flex;
     align-items: center;
-    flex-direction: column;
 }
 
-@media only screen and (max-width: 600px) {
-    .problem-card{
-        width: 100%;
-        flex: 0 0 calc(100%);
+.status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+}
+
+.completed-status {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #16a34a;
+}
+
+.progress-status {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+}
+
+.unsolved-status {
+    background-color: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 480px) {
+    .problem-card {
+        padding: 1.25rem;
+        min-height: 160px;
+    }
+
+    .problem-title {
+        font-size: 1.1rem;
+    }
+
+    .problem-description {
+        font-size: 0.9rem;
+    }
+
+    .problem-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .difficulty-badge,
+    .status {
+        font-size: 0.8rem;
     }
 }
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {}
