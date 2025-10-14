@@ -304,6 +304,60 @@
     font-size: 0.95rem;
 }
 
+/* Image Styles */
+.problem-image-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.problem-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--french-gray);
+    transition: all 0.3s ease;
+}
+
+.problem-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.image-caption {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    margin: 0;
+}
+
+.example-image-container {
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed var(--french-gray);
+    display: flex;
+    justify-content: center;
+}
+
+.example-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--french-gray);
+    transition: all 0.3s ease;
+}
+
+.example-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    cursor: zoom-in;
+}
+
 #timer-container {
     display: flex;
     width: 100%;
@@ -453,5 +507,20 @@
     .action-btn {
         padding: 0.4rem 0.8rem;
         font-size: 1.2rem;
+    }
+
+    .problem-image,
+    .example-image {
+        max-width: 100%;
+        border-radius: 8px;
+    }
+
+    .problem-image:hover,
+    .example-image:hover {
+        transform: scale(1.01);
+    }
+
+    .image-caption {
+        font-size: 0.8rem;
     }
 }
