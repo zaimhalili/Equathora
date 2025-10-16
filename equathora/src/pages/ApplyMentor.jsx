@@ -5,12 +5,13 @@ import mathTeacher from '../assets/images/oldTeacher.png';
 import skate from '../assets/images/skate.svg';
 import parents from '../assets/images/parents.svg';
 import teachers from '../assets/images/teachers.svg';
+import { Link } from 'react-router-dom';
 
 const ApplyMentor = () => {
   return (
-    <div className='text-black font-[Inter] w-full' style={{ background: 'linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)' }}>
+    <div className='text-black font-[Inter] w-full bg-[var(--french-gray)]'>
       <header><Navbar></Navbar></header>
-      <section className='flex justify-center flex-col px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] w-full'>
+      <section className='bg-white flex justify-center flex-col px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] w-full shadow-gray-500 shadow-xl'>
         <h1 className='text-[clamp(2.4rem,5vw,4rem)] font-medium text-center'>Apply To Be a <span className='font-bold text-[var(--dark-accent-color)]'>Mentor</span></h1>
         <h2 className='text-center font-light text-[clamp(1rem,3vw,1.4rem)] md:pb-7'>Guide, support, and inspire students in logic and mathematics</h2>
 
@@ -23,11 +24,14 @@ const ApplyMentor = () => {
               Join us in building the future of math and logic education.
               Your guidance could be a reason a student falls in love with problem-solving.
             </p>
-            <button type="submit" className='bg-[var(--accent-color)] rounded-2xl w-full text-white py-3 cursor-pointer hover:bg-[var(--dark-accent-color)] transition-colors'>Apply Now</button>
+            <div className='flex gap-5'>
+              <button type="submit" className='bg-[var(--accent-color)] rounded-sm text-white py-3 cursor-pointer hover:bg-[var(--dark-accent-color)] transition-colors w-2/3 shadow-lg font-bold'>Sign up to apply</button>
+              <button type="submit" className='rounded-sm text-white py-3 cursor-pointer
+              border-2 border-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] transition-colors w-1/3 shadow-lg font-bold'>Log In</button>
+            </div>
           </div>
         </article>
       </section>
-      <hr />
       {/* Who can apply Section */}
       <section className='flex flex-col w-full px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] xl:gap-4'>
         <br />
@@ -35,23 +39,23 @@ const ApplyMentor = () => {
           Who can <span className='text-[var(--dark-accent-color)]'>apply?</span>
         </h3><br />
 
-        
+
         <article className='flex flex-col gap-10 lg:flex-row'>
           {/* Community Mentor */}
-          <div className='group rounded-2xl shadow-lg bg-white flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl'>
+          <div className='group rounded-sm shadow-gray-500 shadow-lg flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl'>
             <h5 className='text-center font-medium text-[clamp(1.3rem,3vw,1.4rem)]'>Community Mentors</h5>
             <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Do you enjoy helping others understand logic and math?
               As a community mentor, you’ll guide students publicly, answer questions, and share solutions that inspire everyone on the platform.</p>
             <img src={skate} alt="community" className='group-hover:scale-105 transition-transform duration-300 w-full max-w-xs' />
           </div>
           {/* Teachers */}
-          <div className='group rounded-2xl shadow-lg  bg-white flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl'>
+          <div className='group rounded-sm shadow-gray-500 shadow-lg flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl'>
             <h5 className='text-center font-medium text-[clamp(1.3rem,3vw,1.4rem)]'>Teachers</h5>
             <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Equathora was built with classrooms in mind. Teachers can directly track their students’ progress, assign problem sets, and provide personalized feedback to help them grow.</p>
             <img src={teachers} alt="community" className='group-hover:scale-105 transition-transform duration-300 w-full max-w-xs' />
           </div>
           {/* Parents */}
-          <div className='group rounded-2xl shadow-lg  bg-white flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl'>
+          <div className='group rounded-sm shadow-lg shadow-gray-500 flex flex-col items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl'>
             <h5 className='text-center font-medium text-[clamp(1.3rem,3vw,1.4rem)]'>Parents</h5>
             <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Parents can join as mentors too but with a focus on support and oversight. You’ll be able to see how much time your child spends solving problems, how many exercises they’ve completed, and where they might need encouragement.</p>
             <img src={parents} alt="community" className='group-hover:scale-105 transition-transform duration-300 w-full max-w-xs' />
