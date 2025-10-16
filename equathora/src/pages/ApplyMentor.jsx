@@ -29,17 +29,25 @@ const ApplyMentor = () => {
               Your guidance could be a reason a student falls in love with problem-solving.
             </p>
             <div className='flex gap-5'>
-              <button type="submit" className='bg-[var(--accent-color)] rounded-sm shadow-gray-500 hover:shadow-gray-600
-              text-white py-3 cursor-pointer hover:bg-[var(--dark-accent-color)]  transition-colors w-2/3
-              shadow-lg font-bold'>
+              <Link
+                to='/signup'
+                className='bg-[var(--accent-color)] rounded-sm shadow-gray-500 hover:shadow-gray-600
+                text-white py-3 cursor-pointer hover:bg-[var(--dark-accent-color)] transition-colors w-2/3
+                shadow-lg font-bold text-center no-underline'
+                style={{ color: 'white', textDecoration: 'none' }}
+              >
                 Sign up to apply
-              </button>
-              <button type="submit" className='rounded-sm shadow-gray-500 hover:shadow-gray-600 
-              text-[var(--accent-color)] py-3 cursor-pointer
-              border-2 border-[var(--accent-color)] hover:bg-gray-200
-              transition-colors w-1/3 shadow-lg font-bold'>
+              </Link>
+              <Link
+                to='/login'
+                className='rounded-sm shadow-gray-500 hover:shadow-gray-600 
+                text-[var(--accent-color)] py-3 cursor-pointer
+                border-2 border-[var(--accent-color)] hover:bg-gray-200
+                transition-colors w-1/3 shadow-lg font-bold text-center no-underline'
+                style={{ color: 'var(--accent-color)', textDecoration: 'none' }}
+              >
                 Log In
-              </button>
+              </Link>
             </div>
           </div>
         </article>

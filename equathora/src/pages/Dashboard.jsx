@@ -46,11 +46,11 @@ const Dashboard = () => {
               <img src={Books} alt="books" />
               <h6>Continue Where You Left</h6>
             </Link>
-            <Link to="/" className="whereToStart-block">
+            <Link to="/applyMentor" className="whereToStart-block">
               <img src={Mentoring} alt="mentoring" />
               <h6>Try Mentoring</h6>
             </Link>
-            <Link to="/leaderboards" className="whereToStart-block">
+            <Link to="/leaderboards/global" className="whereToStart-block">
               <img src={Leaderboards} alt="leaderboards" />
               <h6>Join the Race</h6>
             </Link>
