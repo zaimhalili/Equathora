@@ -88,7 +88,7 @@ const Navbar = () => {
       image: Mentoring
     },
     {
-      to: '/learn',
+      to: '/helpCenter',
       text: "Help Center",
       description: "FAQs and platform support.",
       image: Faq

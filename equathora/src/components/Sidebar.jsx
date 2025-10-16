@@ -84,7 +84,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             image: Premium
         },
         {
-            to: '/help',
+            to: '/helpCenter',
             text: 'Help Center',
             description: 'FAQs and support',
             image: Faq
