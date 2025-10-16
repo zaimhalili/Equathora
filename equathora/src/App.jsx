@@ -12,6 +12,7 @@ import More from "./pages/More";
 import Learn from "./pages/Learn";
 import Discover from "./pages/Discover";
 import ApplyMentor from "./pages/ApplyMentor";
+import HelpCenter from "./pages/HelpCenter";
 
 import LeaderboardsLayout from "./pages/Leaderboards/LeaderboardsLayout";
 import GlobalLeaderboard from "./pages/Leaderboards/GlobalLeaderboard";
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="/discover" element={<Discover />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/applymentor" element={<ApplyMentor />} />
+        <Route path="/helpCenter" element={<HelpCenter />} />
 
 
         {/* Unprotected Nested Routes */}
