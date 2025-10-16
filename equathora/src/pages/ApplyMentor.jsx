@@ -9,9 +9,10 @@ import { Link } from 'react-router-dom';
 
 const ApplyMentor = () => {
   return (
-    <div className='text-black font-[Inter] w-full bg-[var(--french-gray)]'>
+    <div className='text-black font-[Inter] w-full bg-[var(--main-color)]'>
       <header><Navbar></Navbar></header>
-      <section className='bg-white flex justify-center flex-col px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] w-full shadow-gray-400 shadow-xl'>
+      <section className='bg-white flex justify-center flex-col px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] w-full
+      shadow-gray-300 shadow-xl'>
         <h1 className='text-[clamp(2.4rem,5vw,3.4rem)] font-bold text-center'>
           Apply To Be a <span className='text-[var(--dark-accent-color)]'>Mentor</span>
         </h1>
@@ -31,19 +32,19 @@ const ApplyMentor = () => {
             <div className='flex gap-5'>
               <Link
                 to='/signup'
-                className='bg-[var(--accent-color)] rounded-sm shadow-gray-500 hover:shadow-gray-600
-                text-white py-3 cursor-pointer hover:bg-[var(--dark-accent-color)] transition-colors w-2/3
-                shadow-lg font-bold text-center no-underline'
+                className='bg-[var(--accent-color)] rounded-lg shadow-gray-400 hover:shadow-gray-500
+                text-white py-3 cursor-pointer hover:bg-[var(--dark-accent-color)] transition-all duration-300 w-2/3
+                shadow-lg font-bold text-center no-underline hover:-translate-y-1'
                 style={{ color: 'white', textDecoration: 'none' }}
               >
                 Sign up to apply
               </Link>
               <Link
                 to='/login'
-                className='rounded-sm shadow-gray-500 hover:shadow-gray-600 
+                className='rounded-lg shadow-gray-400 hover:shadow-gray-500 
                 text-[var(--accent-color)] py-3 cursor-pointer
-                border-2 border-[var(--accent-color)] hover:bg-gray-200
-                transition-colors w-1/3 shadow-lg font-bold text-center no-underline'
+                border-2 border-[var(--accent-color)] hover:bg-gray-100
+                transition-all duration-300 w-1/3 shadow-lg font-bold text-center no-underline hover:-translate-y-1'
                 style={{ color: 'var(--accent-color)', textDecoration: 'none' }}
               >
                 Log In

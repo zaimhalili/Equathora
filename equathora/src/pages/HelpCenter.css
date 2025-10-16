@@ -266,7 +266,7 @@
 .contact-card {
     background: linear-gradient(135deg, var(--accent-color), var(--dark-accent-color));
     padding: 3rem 2rem;
-    border-radius: 20px;
+    border-radius: 10px;
     text-align: center;
     color: white;
     box-shadow: 0 12px 32px rgba(217, 4, 41, 0.3);
