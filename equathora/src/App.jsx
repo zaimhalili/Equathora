@@ -13,6 +13,7 @@ import Learn from "./pages/Learn";
 import Discover from "./pages/Discover";
 import ApplyMentor from "./pages/ApplyMentor";
 import HelpCenter from "./pages/HelpCenter";
+import PageNotFound from "./pages/PageNotFound";
 
 import LeaderboardsLayout from "./pages/Leaderboards/LeaderboardsLayout";
 import GlobalLeaderboard from "./pages/Leaderboards/GlobalLeaderboard";
@@ -57,6 +58,7 @@ export default function App() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/applymentor" element={<ApplyMentor />} />
         <Route path="/helpCenter" element={<HelpCenter />} />
+        <Route path="/pageNotFound" element={<PageNotFound />} />
 
 
         {/* Unprotected Nested Routes */}
@@ -80,7 +82,7 @@ export default function App() {
         <Route path="/profile/:profile" element={<Profile />} />
 
         {/* 404 Route */}
-        <Route path="*" element={<Navigate to="/achievements" replace />} />
+        <Route path="*" element={<Navigate to="/pageNotFound" replace />} />
       </Routes>
     </>
   );
