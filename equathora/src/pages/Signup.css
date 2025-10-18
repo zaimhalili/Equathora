@@ -119,9 +119,119 @@
     color: var(--dark-accent-color);
 }
 
+/* Responsive Design */
+/* Mobile - Extra Small Devices */
+@media only screen and (max-width: 480px) {
+    #body-signup {
+        overflow-x: hidden;
+    }
+
+    #signup-container {
+        width: 100%;
+        padding: 0 1.5rem 2rem 1.5rem;
+        min-height: auto;
+    }
+
+    #background-container {
+        display: none !important;
+        width: 0 !important;
+    }
+
+    #signup-logo-name {
+        margin-top: 2rem;
+        height: 70px;
+    }
+
+    #signup-name {
+        font-size: 1.5rem;
+        width: auto;
+    }
+
+    #auth {
+        margin-top: 1.5rem;
+    }
+
+    #signup-btn {
+        height: 45px;
+        font-size: 16px;
+        margin: 15px 0 20px 0;
+    }
+
+    #auth-other-options {
+        font-size: 0.9rem;
+        height: auto;
+    }
+}
+
+/* Mobile - Small Devices */
+@media only screen and (min-width: 481px) and (max-width: 767px) {
+    #signup-container {
+        width: 100%;
+        padding: 0 2rem 2rem 2rem;
+    }
+
+    #background-container {
+        display: none !important;
+        width: 0 !important;
+    }
+
+    #signup-logo-name {
+        margin-top: 2.5rem;
+    }
+
+    #auth {
+        margin-top: 2rem;
+    }
+}
+
+/* Tablet - Small to Medium (hide background) */
+@media only screen and (min-width: 768px) and (max-width: 969px) {
+    #signup-container {
+        width: 100%;
+        padding: 0 3rem 2rem 3rem;
+    }
+
+    #background-container {
+        display: none !important;
+        width: 0 !important;
+    }
+}
+
+/* Tablet - Medium Devices */
+@media only screen and (min-width: 970px) and (max-width: 1023px) {
+    #signup-container {
+        width: 55%;
+        padding: 0 3rem 2rem 3rem;
+    }
+
+    #background-container {
+        width: 45%;
+    }
+}
+
+/* Desktop - Large Devices */
+@media only screen and (min-width: 1024px) and (max-width: 1279px) {
+    #signup-container {
+        width: 50%;
+        padding: 0 4rem 2rem 4rem;
+    }
+
+    #background-container {
+        width: 50%;
+    }
+}
+
+/* Desktop - Extra Large Devices */
+@media only screen and (min-width: 1280px) {
+    #signup-container {
+        padding: 0 5rem 2rem 5rem;
+    }
+}
+
+/* Legacy media queries - keeping for backward compatibility */
 @media only screen and (max-width: 970px) {
-    #polygon-container{
-        display:none;
+    #polygon-container {
+        display: none;
     }
 }
 

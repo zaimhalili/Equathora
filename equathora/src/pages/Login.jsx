@@ -51,7 +51,7 @@ const Login = () => {
 
 
         </section>
-
+        {/* Polygon Illustration */}
         <aside id="background-container"><BackgroundPolygons /></aside>
       </main>
 

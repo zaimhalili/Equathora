@@ -56,3 +56,41 @@
     width: 100%;
 }
 
+/* Responsive styles for BackgroundPolygons */
+@media only screen and (max-width: 969px) {
+    #polygon-container {
+        display: none !important;
+    }
+}
+
+@media only screen and (min-width: 970px) and (max-width: 1023px) {
+    #polygon-text-big {
+        font-size: 1.8rem;
+        padding: 0 40px;
+    }
+
+    #polygon-text-small {
+        font-size: 1.2rem;
+        padding: 0 60px;
+    }
+
+    #polygon-content {
+        margin-bottom: 60px;
+    }
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1279px) {
+    #polygon-text-big {
+        font-size: 2rem;
+        padding: 0 60px;
+    }
+
+    #polygon-text-small {
+        font-size: 1.3rem;
+        padding: 0 100px;
+    }
+
+    #polygon-content {
+        margin-bottom: 80px;
+    }
+}
