@@ -2,7 +2,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: rgba(0, 0, 0, 0.32);
+    background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color) 50%);
 }
 
 .leaderboards-main {
@@ -17,12 +17,13 @@
     align-items: center;
     gap: 0.5rem;
     padding: 1.5rem 1rem;
-    background-color: transparent;
+    background-color: var(--main-color);
     height: auto;
+    border-bottom: 1px solid white;
 }
 
 .lb-option {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgb(0, 0, 0);
     font-family: 'Public Sans', Arial, Helvetica, sans-serif;
     font-size: clamp(0.85rem, 2vw, 0.95rem);
     padding: 0.6rem 1.2rem;
@@ -31,11 +32,11 @@
     text-align: center;
     transition: all 0.3s ease;
     background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .lb-option.active {
-    color: white;
+    color: rgb(255, 255, 255);
     background-color: var(--accent-color);
     border-color: var(--accent-color);
     transform: translateY(-2px);
@@ -43,8 +44,7 @@
 }
 
 .lb-option:hover {
-    color: white;
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(0, 0, 0, 0.15);
     border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-1px);
 }

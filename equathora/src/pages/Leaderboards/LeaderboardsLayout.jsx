@@ -27,7 +27,8 @@ const LeaderboardsLayout = () => {
                         Top Solvers
                     </NavLink>
                 </nav>
-                <div className="leaderboards-content" style={{ backgroundImage: `url(${Race})`, backgroundSize: 'cover', backgroundPosition: 'center', backdropFilter: 'blur(8px)' }}>
+                {/* <div className="leaderboards-content" style={{ backgroundImage: `url(${Race})`, backgroundSize: 'cover', backgroundPosition: 'center', backdropFilter: 'blur(8px)' }}> */}
+                <div className="leaderboards-content">
                     <Outlet />
                 </div>
             </main>
