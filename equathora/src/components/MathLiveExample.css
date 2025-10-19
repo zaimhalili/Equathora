@@ -6,6 +6,7 @@
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .ml-title {
@@ -37,6 +38,25 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    min-height: 0;
+}
+
+.ml-card::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ml-card::-webkit-scrollbar-track {
+    background: #e5e7eb;
+    border-radius: 10px;
+}
+
+.ml-card::-webkit-scrollbar-thumb {
+    background: #9ca3af;
+    border-radius: 10px;
+}
+
+.ml-card::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
 }
 
 .ml-steps-container {
@@ -44,7 +64,6 @@
     flex-direction: column;
     gap: 0.8rem;
     margin-bottom: 1rem;
-    flex: 1;
 }
 
 math-field {
@@ -78,10 +97,10 @@ math-field:focus-within {
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
-    margin-top: auto;
     padding-top: 1rem;
     border-top: 2px dashed #e5e7eb;
     flex-wrap: wrap;
+    flex-shrink: 0;
 }
 
 .ml-btn {
@@ -158,8 +177,27 @@ math-field:focus-within {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 13px;
     word-break: break-word;
-    max-height: 200px;
+    max-height: 180px;
     overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.ml-output::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ml-output::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 10px;
+}
+
+.ml-output::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+}
+
+.ml-output::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
 }
 
 .ml-output strong {

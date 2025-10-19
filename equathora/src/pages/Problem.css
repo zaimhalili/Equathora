@@ -161,7 +161,7 @@
 .description-yourSolution {
     display: flex;
     width: 100%;
-    min-height: calc(100vh - 180px);
+    height: calc(100vh - 180px);
 }
 
 .problem-description-timer {
@@ -173,6 +173,8 @@
     font-family: 'Inter', sans-serif;
     border-right: 3px solid var(--secondary-color);
     color: var(--secondary-color);
+    height: 100%;
+    overflow: hidden;
 }
 
 #timer-container {
@@ -190,7 +192,7 @@
     flex-direction: column;
     gap: 1.5rem;
     overflow-y: auto;
-    max-height: calc(100vh - 250px);
+    flex: 1;
 }
 
 .problem-description::-webkit-scrollbar {
@@ -358,6 +360,7 @@
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -429,12 +432,12 @@
 /* ========== SOLUTION SECTION ========== */
 .solution-section {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: stretch;
     flex-direction: column;
     width: 50%;
-    max-height: 90vh;
-    overflow-y: scroll;
+    height: 100%;
+    overflow: hidden;
 }
 
 .solution-section h2 {
@@ -489,22 +492,24 @@
 @media (max-width: 1024px) {
     .description-yourSolution {
         flex-direction: column;
+        height: auto;
     }
 
     .problem-description-timer,
     .solution-section {
         width: 100%;
         border-right: none;
+        height: auto;
     }
 
     .problem-description {
         padding: 1.5rem;
-        max-height: none;
+        height: auto;
+        max-height: 60vh;
     }
 
     .solution-section {
-        max-height: none;
-        min-height: 60vh;
+        min-height: 70vh;
     }
 }
 
