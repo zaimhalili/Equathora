@@ -87,6 +87,7 @@
     padding: 2rem 1rem;
     gap: 1rem;
     cursor: pointer;
+    overflow: hidden;
     border-radius: 2px;
 }
 
@@ -98,7 +99,7 @@
 .whereToStart-block h6 {
     color: var(--secondary-color);
     font-family: 'Public Sans', Arial, Helvetica, sans-serif;
-    font-size: clamp(1.2rem, 5vw, 1.6rem);
+    font-size: clamp(1rem, 3vw, 1.4rem);
     font-weight: 400;
     width: 80%;
     height: 8rem;
@@ -141,10 +142,10 @@
     .whereToStart-block {
         width: 50%;
         padding: 1rem;
-        gap: 0.8rem;
         flex: 1 0 calc(50% - 0.5rem);
         box-sizing: border-box;
         aspect-ratio: 1;
+        height: 90%;
     }
 
     #whereToStart-options {
@@ -246,7 +247,7 @@
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px)and (max-width: 1199px) {
     #welcome-dashboard {
-        padding-top: 2vh;
+        align-self: flex-start;
     }
 
     .whereToStart-block {
@@ -263,14 +264,18 @@
         justify-content: center;
     }
 
+    .whereToStart-block img {
+        height: 40%;
+    }
+
+    .whereToStart-block h6 {
+        width: 100%;
+    }
+
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) and (max-width: 1599px) {
-    #welcome-dashboard {
-        padding: 5vh;
-    }
-}
+@media only screen and (min-width: 1200px) and (max-width: 1599px) {}
 
 @media only screen and (min-width: 1600px) {
     #hero-dashboard {

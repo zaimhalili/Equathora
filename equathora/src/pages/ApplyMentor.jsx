@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 const ApplyMentor = () => {
   return (
-    <div className='text-black font-[Inter] w-full bg-[var(--main-color)]'>
+    <div className='text-[var(--secondary-color)] font-[Inter] w-full bg-[var(--main-color)]'>
       <header><Navbar></Navbar></header>
       <section className='bg-white flex justify-center flex-col px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] w-full
       shadow-gray-300 shadow-xl'>

@@ -41,7 +41,7 @@ const Dashboard = () => {
           <div id='whereToStart-options'>
             <Link to={`/problems/1/${randomProblemId}`} className="whereToStart-block">
               <img src={QuestionMark} alt="daily-challenge" />
-              <h6>Solve a Fresh Daily Challenge</h6>
+              <h6>Solve the Daily Challenge</h6>
             </Link>
             <Link to="/learn" className="whereToStart-block">
               <img src={Books} alt="books" />
