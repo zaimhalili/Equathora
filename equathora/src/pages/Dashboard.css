@@ -14,18 +14,20 @@
 #welcome-dashboard {
     color: var(--secondary-color);
     font-family: 'Inter', sans-serif;
-    width: 50%;
+    width: 60%;
     max-width: 92%;
     height: 100%;
-    padding-top: 10vh;
-    padding-bottom: 2vh;
     cursor: default;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
 }
 
 #hero-dashboard h1 {
-    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-size: clamp(2.8rem, 5vw, 3.7rem);
     margin-bottom: 2vh;
     cursor: default;
+    font-weight: 700;
 }
 
 #hero-dashboard h4 {
@@ -41,7 +43,7 @@
     padding-left: 5%;
     padding-bottom: 2vh;
     height: 100%;
-    width: 50%;
+    width: 40%;
     display: flex;
     justify-content: center;
 }
@@ -59,10 +61,11 @@
     color: var(--secondary-color);
     font-family: 'Inter', sans-serif;
     font-size: 2.5rem;
+    font-weight: 700;
 }
 
 #whereToStart-options {
-    margin-top: 2.5rem;
+    margin-top: .5rem;
     aspect-ratio: 16/9;
     height: 16rem;
     width: auto;

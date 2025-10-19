@@ -14,6 +14,7 @@ const Dashboard = () => {
   // Later to be implemented with real-time data and user authentication in the backend
   let numberOfProblems = 5;
   let randomProblemId = Math.floor(Math.random() * numberOfProblems) + 1;
+  let username = "Friend";
   return (
     <>
       <main id='body-dashboard'>
@@ -23,7 +24,7 @@ const Dashboard = () => {
 
         <section id='hero-dashboard'>
           <article id='welcome-dashboard'>
-            <h1>Welcome Back, <br /> <span id='user-name'>User</span>!</h1>
+            <h1>Welcome Back, <span id='user-name'>{username}</span>!</h1>
             <h4>Tackle fun math and logic challenges with guided support to master your topics. <span style={{ fontWeight: 600 }}>Equathora is open, student-centered, and built to grow with you.</span> </h4>
           </article>
 
