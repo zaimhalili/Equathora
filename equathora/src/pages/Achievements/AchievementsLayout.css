@@ -54,7 +54,64 @@
 	font-weight: 400;
 	padding: 0.6rem;
 	cursor: default;
-	padding-bottom: 45vh;
+	padding-bottom: 40vh;
+}
+
+.scroll-indicator {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 2rem;
+	animation: fadeInUp 1s ease-out;
+}
+
+.scroll-text {
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 0.95rem;
+	font-weight: 500;
+	font-family: 'Inter', sans-serif;
+	text-transform: uppercase;
+	letter-spacing: 1.5px;
+}
+
+.scroll-arrow {
+	width: 32px;
+	height: 32px;
+	color: white;
+	animation: bounceArrow 2s ease-in-out infinite;
+}
+
+.scroll-arrow svg {
+	width: 100%;
+	height: 100%;
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes bounceArrow {
+
+	0%,
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	50% {
+		transform: translateY(10px);
+		opacity: 0.7;
+	}
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 .achievements-filter {
@@ -154,5 +211,18 @@
 
 	.activity-chart {
 		height: 120px;
+	}
+
+	.scroll-indicator {
+		margin-bottom: 1.5rem;
+	}
+
+	.scroll-text {
+		font-size: 0.85rem;
+	}
+
+	.scroll-arrow {
+		width: 28px;
+		height: 28px;
 	}
 }

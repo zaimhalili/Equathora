@@ -18,6 +18,15 @@ const AchievementsLayout = () => {
           <h1>Your Learning <span id='prg-hover'>Progress</span></h1>
           <h3>Exploring your time on Equathora</h3>
 
+          <div className="scroll-indicator">
+            <span className="scroll-text">Scroll to explore</span>
+            <div className="scroll-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+
           <div className="achievements-filter">
             <NavLink
               to="recent"
