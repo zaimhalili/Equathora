@@ -2,6 +2,7 @@ import React from 'react';
 import './YourTrack.css';
 import QuestionMark from '../assets/images/questionMark.svg';
 import LilArrow from '../assets/images/lilArrow.svg';
+import Mentor from '../assets/images/mentoring.svg';
 import { Link } from 'react-router-dom';
 
 const YourTrack = () => {
@@ -35,9 +36,20 @@ const YourTrack = () => {
                         <span className='problems-count'>{total}</span> Problems Solved
                     </div>
                 </div>
-                <figure>
+                {/* <figure>
                     <img src={QuestionMark} alt="question mark" />
-                </figure>
+                </figure> */}
+                <div className='try-your-hand'>
+                    <div className='try-mentoring'>
+                        <img src={Mentor} alt="Mentoring icon" />
+                        <p>Become a mentor</p>
+                        <p>Mentoring is a great way to reinforce your own learning, and help students learn and discover the things they don't know.</p>
+                        <div className='flex'>
+                            <Link to='/applymentor'>Try mentoring now</Link>
+                            <Link to='/applymentor'>Learn more</Link>
+                        </div>
+                    </div>
+                </div>
             </article>
         </>
     );

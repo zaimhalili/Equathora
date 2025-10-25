@@ -23,8 +23,8 @@
     align-self: center;
 }
 
-#hero-dashboard h1 {
-    font-size: clamp(2.8rem, 5vw, 3.7rem);
+#welcome-dashboard h1 {
+    font-size: clamp(2.8rem, 5vw, 3.2rem);
     margin-bottom: 2vh;
     cursor: default;
     font-weight: 700;
@@ -88,7 +88,7 @@
     gap: 1rem;
     cursor: pointer;
     overflow: hidden;
-    border-radius: 2px;
+    border-radius: 3px;
 }
 
 .whereToStart-block img {

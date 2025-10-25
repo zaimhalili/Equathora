@@ -91,7 +91,7 @@ progress {
     display: flex;
     flex-direction: column;
     gap: 2vh;
-    width: 50%;
+    width: 70%;
     height: auto;
 }
 
@@ -101,11 +101,91 @@ progress {
     padding-left: 2vw;
 }
 
-#your-track-container figure {
-    width: 50%;
+.try-your-hand {
+    width: 30%;
     height: 100%;
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.try-mentoring {
+    max-width: 500px;
+    width: 100%;
+    display: flex;
     justify-content: center;
+    flex-direction: column;
+    background-color: rgb(246, 246, 246);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    text-align: center;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.try-mentoring img {
+    width: 100px;
+    height: 100px;
+}
+
+.try-mentoring p:first-of-type {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+.try-mentoring p:last-of-type {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--mid-main-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.try-mentoring .flex {
+    display: flex;
+    gap: 0.75rem;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.try-mentoring .flex a {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.try-mentoring .flex a:first-child {
+    background: var(--accent-color);
+    color: white;
+    border-color: black;
+}
+
+.try-mentoring .flex a:first-child:hover {
+    background: var(--dark-accent-color);
+    border-color: var(--dark-accent-color);
+    transform: translateY(-2px);
+}
+
+.try-mentoring .flex a:last-child {
+    background: transparent;
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.try-mentoring .flex a:last-child:hover {
+    background: var(--french-gray);
+    transform: translateY(-2px);
 }
 
 @media only screen and (max-width: 600px) {
@@ -115,14 +195,36 @@ progress {
     }
 
     #progress-bar-track,
-    #your-track-container figure {
+    #your-track-container .try-your-hand {
         width: 100%;
-        padding: 0 2vw;
+        padding: 1rem 2vw;
     }
 
-    #your-track-container figure img {
-        width: 90%; 
-        object-fit: fill;
+    .try-mentoring {
+        max-width: 100%;
+        padding: 1.5rem;
+    }
+
+    .try-mentoring img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .try-mentoring p:first-of-type {
+        font-size: 1.3rem;
+    }
+
+    .try-mentoring p:last-of-type {
+        font-size: 0.9rem;
+    }
+
+    .try-mentoring .flex {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .try-mentoring .flex a {
+        width: 100%;
     }
 
     .prg-bar-arrow {
@@ -149,8 +251,12 @@ progress {
     }
 
     #progress-bar-track,
-    #your-track-container figure {
+    #your-track-container .try-your-hand {
         width: 100%;
+    }
+
+    .try-mentoring {
+        max-width: 500px;
     }
 
     .prg-bar-arrow {
@@ -169,21 +275,34 @@ progress {
         width: 30%;
         height: 3rem;
     }
+
+    .try-your-hand{
+        margin-top: 20px;
+        justify-content: center;
+    }
 }
+
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) and (max-width: 992px) {
-    #your-track-container figure img {
-        width: 100%;
-        height: 300px;
-        aspect-ratio: 1;
+    #your-track-container .try-your-hand {
+        width: 50%;
+        padding: 2rem 1rem;
+    }
+
+    #progress-bar-track {
+        width: 50%;
     }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px)and (max-width: 1199px) {
-    #your-track-container figure {
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    #your-track-container .try-your-hand {
         width: 50%;
-        height: 300px;
+        padding: 2rem 1rem;
+    }
+
+    #progress-bar-track {
+        width: 50%;
     }
 }
 

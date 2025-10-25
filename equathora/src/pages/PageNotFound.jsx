@@ -9,7 +9,7 @@ const PageNotFound = () => {
                 <div className='error-code'>404</div>
                 <h1 className='error-title'>Page Not Found</h1>
                 <p className='error-message'>
-                    Oops! The page you're looking for doesn't exist. 
+                    Oops! The page you're looking for doesn't exist.
                     It might have been moved or deleted.
                 </p>
                 <div className='error-actions'>
