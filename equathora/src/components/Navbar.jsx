@@ -94,7 +94,7 @@ const Navbar = () => {
       image: Faq
     },
     {
-      to: "/",
+      to: "/about",
       text: "About equathora",
       description: "Learn about its mission and vision.",
       image: AboutUs

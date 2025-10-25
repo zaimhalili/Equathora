@@ -14,6 +14,7 @@ import Discover from "./pages/Discover";
 import ApplyMentor from "./pages/ApplyMentor";
 import HelpCenter from "./pages/HelpCenter";
 import PageNotFound from "./pages/PageNotFound";
+import About from "./pages/About";
 
 import LeaderboardsLayout from "./pages/Leaderboards/LeaderboardsLayout";
 import GlobalLeaderboard from "./pages/Leaderboards/GlobalLeaderboard";
@@ -53,6 +54,7 @@ export default function App() {
         {/* Unprotected Routes */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/more" element={<More />} />
+        <Route path="/about" element={<About />} />
         <Route path="/learn" element={<Learn />} />
         <Route path="/discover" element={<Discover />} />
         <Route path="/notifications" element={<Notifications />} />
