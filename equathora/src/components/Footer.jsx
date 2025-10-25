@@ -47,30 +47,36 @@ const Footer = () => {
             </a>
           </div>
           <h2>equathora</h2>
-          <p style={{
-            fontFamily: "'Times New Roman', serif, sans-serif", marginTop: "10px"
-          }}>&#169;2025 equathora. All rights reserved.</p>
-          <p style={{
-            fontFamily: "'Times New Roman', serif, sans-serif", marginTop: "10px"
-          }}>Page design inspired by <br /> <a href="https://exercism.org" style={{ textDecoration: "underline" }} target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Exercism">Exercism</a> - free coding platform</p>
         </div>
+
         <div className="links-wrapper">
-          <ul className="links" id='links-left'>
-            <li><Link to="/learn" className='footer-links'>Learn</Link></li>
-            <li><Link to="/discover" className='footer-links'>Discover</Link></li>
-            <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
-            <li><Link to="/notifications" className='footer-links'>Notifications</Link></li>
-            <li><Link to="/profile" className='footer-links'>My Profile</Link></li>
-          </ul>
-          <ul className="links" id='links-right'>
-            <li><Link to="/" className='footer-links'>About Us</Link></li>
-            <li><Link to="/" className='footer-links'>Legal & Policies</Link></li>
-            <li><Link to="/" className='footer-links'>Cookie Policy</Link></li>
-            <li><Link to="/" className='footer-links'>FAQS</Link></li>
-            <li><Link to="/" className='footer-links'>Report</Link></li>
-          </ul>
+          <div className="links-column">
+            <h3 className="footer-column-title">Platform</h3>
+            <ul className="links">
+              <li><Link to="/learn" className='footer-links'>Learn</Link></li>
+              <li><Link to="/discover" className='footer-links'>Discover</Link></li>
+              <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
+              <li><Link to="/notifications" className='footer-links'>Notifications</Link></li>
+              <li><Link to="/profile" className='footer-links'>My Profile</Link></li>
+            </ul>
+          </div>
+          <div className="links-column">
+            <h3 className="footer-column-title">Company</h3>
+            <ul className="links">
+              <li><Link to="/about" className='footer-links'>About Us</Link></li>
+              <li><Link to="/" className='footer-links'>Legal & Policies</Link></li>
+              <li><Link to="/" className='footer-links'>Cookie Policy</Link></li>
+              <li><Link to="/" className='footer-links'>FAQs</Link></li>
+              <li><Link to="/" className='footer-links'>Report</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <p className="footer-copyright">© 2025 equathora. All rights reserved.</p>
+          <p className="footer-credit">
+            Page design inspired by <a href="https://exercism.org" target="_blank" rel="noopener noreferrer" aria-label="Exercism">Exercism</a> - free coding platform
+          </p>
         </div>
 
       </footer>

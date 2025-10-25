@@ -55,7 +55,7 @@ const Notifications = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-[var(--main-color)] sm:px-10 lg:px-18 xl:px-36">
+      <div className=" bg-[var(--main-color)] sm:px-10 lg:px-18 xl:px-36">
 
         {/* Header + Filters on same line (md+) */}
         <div className="px-6 md:px-16 lg:px-24 pt-6">
