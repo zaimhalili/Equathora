@@ -1,0 +1,158 @@
+/* 404 Page Styles */
+
+.page-not-found {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--secondary-color) 0%, #1a1b2e 100%);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-not-found::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(217, 4, 41, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(217, 4, 41, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.not-found-content {
+    text-align: center;
+    max-width: 600px;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error-code {
+    font-family: 'Public Sans', sans-serif;
+    font-size: clamp(6rem, 15vw, 10rem);
+    font-weight: 800;
+    color: var(--accent-color);
+    line-height: 1;
+    margin-bottom: 1rem;
+    text-shadow: 0 4px 20px rgba(217, 4, 41, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.error-title {
+    font-family: 'Public Sans', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--main-color);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.error-message {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--french-gray);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.875rem 2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: white;
+    box-shadow: 0 4px 15px rgba(217, 4, 41, 0.3);
+}
+
+.btn-primary:hover {
+    background: var(--dark-accent-color);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(217, 4, 41, 0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--main-color);
+    border-color: var(--main-color);
+}
+
+.btn-secondary:hover {
+    background: var(--main-color);
+    color: var(--secondary-color);
+    transform: translateY(-3px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-not-found {
+        padding: 1.5rem;
+    }
+
+    .error-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-code {
+        margin-bottom: 0.5rem;
+    }
+
+    .error-message {
+        margin-bottom: 2rem;
+    }
+}
