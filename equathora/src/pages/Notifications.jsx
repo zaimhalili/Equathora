@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 // Images removed per design update (compact, text-only notifications)
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([
-    { id: 1, title: 'New Achievement Unlocked!', message: 'You solved 10 problems in a row. Keep it up!', read: false, time: '2 hours ago' },
-    { id: 2, title: 'Mentor replied to your question', message: 'Sarah Johnson has answered your question about calculus derivatives.', read: false, time: '5 hours ago' },
-    { id: 3, title: 'New problem available', message: 'A new advanced algebra problem has been added to your track.', read: true, time: '1 day ago' },
-    { id: 4, title: 'You climbed the leaderboard!', message: 'You are now #15 on the global leaderboard. Amazing progress!', read: true, time: '2 days ago' },
-    { id: 5, title: 'Streak milestone reached', message: "You have maintained a 7-day solving streak. Don't break it!", read: false, time: '3 days ago' },
-    { id: 6, title: 'Friend request accepted', message: 'Alex Chen accepted your friend request and wants to compete!', read: true, time: '4 days ago' },
+    { id: 1, title: 'New Achievement Unlocked!', message: 'You solved 10 problems in a row. Keep it up!', read: false, time: '2 hours ago', to: '/achievements' },
+    { id: 2, title: 'Mentor replied to your question', message: 'Sarah Johnson has answered your question about calculus derivatives.', read: false, time: '5 hours ago', to: '/helpCenter' },
+    { id: 3, title: 'New problem available', message: 'A new advanced algebra problem has been added to your track.', read: true, time: '1 day ago', to: '/learn' },
+    { id: 4, title: 'You climbed the leaderboard!', message: 'You are now #15 on the global leaderboard. Amazing progress!', read: true, time: '2 days ago', to: '/leaderboards/global' },
+    { id: 5, title: 'Streak milestone reached', message: "You have maintained a 7-day solving streak. Don't break it!", read: false, time: '3 days ago', to: '/achievements/stats' },
+    { id: 6, title: 'Friend request accepted', message: 'Alex Chen accepted your friend request and wants to compete!', read: true, time: '4 days ago', to: '/leaderboards/friends' },
   ]);
 
   const [selectAll, setSelectAll] = useState(false);
@@ -120,12 +121,14 @@ const Notifications = () => {
                   />
 
                   <div className="flex-1 min-w-0">
-                    <p className="text-[var(--secondary-color)] font-['Inter'] mb-1 leading-snug text-xs md:text-sm">
-                      {notification.message}
-                    </p>
-                    <span className="text-xs text-[var(--french-gray)] font-['Inter']">
-                      {notification.time}
-                    </span>
+                    <Link to={notification.to} className="block">
+                      <p className="text-[var(--secondary-color)] font-['Inter'] mb-1 leading-snug text-xs md:text-sm">
+                        {notification.message}
+                      </p>
+                      <span className="text-xs text-[var(--french-gray)] font-['Inter']">
+                        {notification.time}
+                      </span>
+                    </Link>
                   </div>
                 </div>
               ))
