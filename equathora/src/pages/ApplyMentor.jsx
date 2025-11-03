@@ -5,16 +5,25 @@ import mathTeacher from '../assets/images/oldTeacher.png';
 import skate from '../assets/images/skate.svg';
 import parents from '../assets/images/parents.svg';
 import teachers from '../assets/images/teachers.svg';
+import GradientText from '../components/ui/GradientText';
 import { Link } from 'react-router-dom';
 
 const ApplyMentor = () => {
   return (
-    <div className='text-[var(--secondary-color)] font-[Inter] w-full bg-[var(--main-color)]'>
+    <div className='text-[var(--secondary-color)] font-[Inter] w-full'>
       <header><Navbar></Navbar></header>
+
       <section className='bg-white flex justify-center flex-col px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] w-full
       shadow-gray-300 shadow-xl'>
         <h1 className='text-[clamp(2.4rem,5vw,3.4rem)] font-bold text-center'>
-          Apply To Be a <span className='text-[var(--dark-accent-color)]'>Mentor</span>
+          Apply To Be a <GradientText
+            colors={['#a3142c', '#d90429', '#d90429', '#ee8b98ff',  '#a3142c']}
+            animationSpeed={4}
+            showBorder={false}
+            inline={true}
+          >
+            Mentor
+          </GradientText>
         </h1>
         <h2 className='text-center font-light text-[clamp(1rem,3vw,1.25rem)] md:pb-7'>
           Guide, support, and inspire students in logic and mathematics
@@ -32,7 +41,7 @@ const ApplyMentor = () => {
             <div className='flex gap-5'>
               <Link
                 to='/signup'
-                className='bg-[var(--accent-color)] rounded-lg shadow-gray-400 hover:shadow-gray-500
+                className='bg-[var(--accent-color)] rounded-sm shadow-gray-400 hover:shadow-gray-500
                 text-white py-3 cursor-pointer hover:bg-[var(--dark-accent-color)] transition-all duration-300 w-2/3
                 shadow-lg font-bold text-center no-underline hover:-translate-y-1'
                 style={{ color: 'white', textDecoration: 'none' }}
@@ -41,10 +50,9 @@ const ApplyMentor = () => {
               </Link>
               <Link
                 to='/login'
-                className='rounded-lg shadow-gray-400 hover:shadow-gray-500 
-                text-[var(--accent-color)] py-3 cursor-pointer
-                border-2 border-[var(--accent-color)] hover:bg-gray-100
-                transition-all duration-300 w-1/3 shadow-lg font-bold text-center no-underline hover:-translate-y-1'
+                className='rounded-sm shadow-inner shadow-gray-400 hover:shadow-gray-500 
+                text-[var(--accent-color)] py-3 cursor-pointer hover:bg-gray-100
+                transition-all duration-300 w-1/3 font-bold text-center no-underline hover:-translate-y-1'
                 style={{ color: 'var(--accent-color)', textDecoration: 'none' }}
               >
                 Log In
@@ -54,16 +62,16 @@ const ApplyMentor = () => {
         </article>
       </section>
       {/* Who can apply Section */}
-      <section className='flex flex-col w-full px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] xl:gap-4'>
+      <section className='flex flex-col w-full px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] xl:gap-4  bg-gradient-to-b from-[var(--mid-main-secondary)] to-[var(--main-color)] to-50%'>
         <br />
         <h3 className='text-[clamp(1.7rem,3vw,2.5rem)] text-center font-bold'>
-          Who can <span className='text-[var(--dark-accent-color)]'>apply?</span>
+          Who can <span className='text-[var(--dark-accent-color)]'><span className='underline'>apply</span>?</span>
         </h3><br />
 
 
         <article className='flex flex-col gap-10 lg:flex-row'>
           {/* Community Mentor */}
-          <div className='group rounded-sm shadow-gray-500 shadow-lg flex flex-col items-center 
+          <div className='group rounded-bl-4xl rounded-tr-4xl shadow-gray-500 shadow-lg flex flex-col items-center 
           px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around hover:-translate-y-2
           transition-all duration-300 hover:shadow-2xl'>
             <h5 className='text-center font-bold text-[clamp(1.3rem,3vw,1.4rem)]'>Community Mentors</h5>
@@ -72,7 +80,7 @@ const ApplyMentor = () => {
             <img src={skate} alt="community" className='group-hover:scale-105 transition-transform duration-300 w-full max-w-xs' />
           </div>
           {/* Teachers */}
-          <div className='group rounded-sm shadow-gray-500 shadow-lg flex flex-col 
+          <div className='group rounded-bl-4xl rounded-tr-4xl shadow-gray-500 shadow-lg flex flex-col 
           items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl'>
             <h5 className='text-center font-bold text-[clamp(1.3rem,3vw,1.4rem)]'>Teachers</h5>
             <p className='text-center text-[clamp(1.1rem,3vw,1.3rem)]'>Equathora was built with classrooms in mind. Teachers can directly track their students’ progress, assign problem sets, and provide personalized feedback to help them grow.</p>
@@ -80,7 +88,7 @@ const ApplyMentor = () => {
             transition-transform duration-300 w-full max-w-xs' />
           </div>
           {/* Parents */}
-          <div className='group rounded-sm shadow-lg shadow-gray-500 flex flex-col 
+          <div className='group rounded-bl-4xl rounded-tr-4xl shadow-lg shadow-gray-500 flex flex-col 
           items-center px-3 py-8 gap-4 sm:px-5 lg:px-8 flex-1 justify-around hover:-translate-y-2
           transition-all duration-300 hover:shadow-2xl'>
             <h5 className='text-center font-bold text-[clamp(1.3rem,3vw,1.4rem)]'>Parents</h5>
