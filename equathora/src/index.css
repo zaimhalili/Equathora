@@ -15,6 +15,7 @@
 
 @layer colors {
   :root {
+    /* My palette */
     --raisin-black: rgb(32, 34, 49);
     --secondary-color: #2b2d42;
     /*Secondary Color*/

@@ -148,7 +148,7 @@ const Navbar = () => {
 
   const profileItems = [
     {
-      to: '/profile',
+      to: '/profile/myprofile',
       text: "My Profile",
       description: "View and edit your profile",
       image: GuestAvatar

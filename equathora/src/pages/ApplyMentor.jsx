@@ -16,13 +16,13 @@ const ApplyMentor = () => {
       <section className='bg-white flex justify-center flex-col px-8 py-5 sm:px-20 sm:py-10 min-h-[50vh] w-full
       shadow-gray-300 shadow-xl'>
         <h1 className='text-[clamp(2.4rem,5vw,3.4rem)] font-bold text-center'>
-          Apply To Be a <GradientText
-            colors={['#a3142c', '#d90429', '#d90429', '#ee8b98ff',  '#a3142c']}
+          <GradientText
+            colors={['#a3142c', '#d90429', '#2b2d42', '#a3142c']}
             animationSpeed={4}
             showBorder={false}
             inline={true}
           >
-            Mentor
+            Apply To Be a Mentor
           </GradientText>
         </h1>
         <h2 className='text-center font-light text-[clamp(1rem,3vw,1.25rem)] md:pb-7'>
