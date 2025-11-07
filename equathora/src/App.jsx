@@ -27,6 +27,7 @@ import RecentAchievements from "./pages/Achievements/RecentAchievements";
 import Statistics from "./pages/Achievements/Statistics";
 import SpecialEvents from "./pages/Achievements/SpecialEvents";
 import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 import OverflowChecker from "./pages/OverflowChecker";
 import Resend from "./pages/Resend";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -61,6 +62,7 @@ export default function App() {
         <Route path="/applymentor" element={<ApplyMentor />} />
         <Route path="/helpCenter" element={<HelpCenter />} />
         <Route path="/pageNotFound" element={<PageNotFound />} />
+        <Route path="/settings" element={<Settings />} />
 
 
         {/* Unprotected Nested Routes */}
