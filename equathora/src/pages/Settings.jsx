@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 
 const Settings = () => {
     return (
-        <div className=''>
+        <div className='h-screen flex flex-col'>
             <Navbar />
-            <h1>Settings</h1>
+            <h1 className='font-[Inter]'>Settings</h1>
             <Link to="/dashboard">Go to Dashboard</Link>
             <Footer />
         </div>
