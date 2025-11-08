@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Autumn from '../assets/images/autumn.jpg';
+import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 
 const Profile = () => {
   const { profile } = useParams();
@@ -18,7 +19,7 @@ const Profile = () => {
       accuracy: 89,
       currentStreak: 15,
       reputation: 2450,
-      gloabalRank: 3573765,
+      globalRank: 3573765,
     },
     mathTopics: ['Algebra', 'Geometry', 'Calculus I', 'Number Theory', 'Probability', 'Graphs', 'Calculus II'],
     problemsSolved: ['I loved her', 'Pretty Eyes', 'Just once more', 'Where are you?', 'Smile please', 'Unreal situation', 'Obvious choice', 'Tough Decisions', 'First time', 'I make my choices']
@@ -53,28 +54,32 @@ const Profile = () => {
             <h5 className='font-bold text-xl'>Community Stats</h5>
 
             <div className='flex gap-2 align-center'>
-              <div className='w-1/6'><img src={Autumn} alt="icon" /></div>
+              {/* Streak Icon */}
+              <div className=' text-orange-500 text-2xl'><FaFire /></div>
               <div className='w-5/6 flex flex-col '>
                 <p>Streak <span className='font-bold'>{userData.stats.currentStreak}</span></p>
               </div>
             </div>
 
             <div className='flex gap-2 align-center'>
-              <div className='w-1/6'><img src={Autumn} alt="icon" /></div>
+              {/* Solution Icon */}
+              <div className=' text-green-500 text-2xl'><FaCheckCircle /></div>
               <div className='w-5/6 flex flex-col '>
                 <p>Solved <span className='font-bold'>{userData.stats.problemsSolved}</span></p>
               </div>
             </div>
 
             <div className='flex gap-2 align-center'>
-              <div className='w-1/6'><img src={Autumn} alt="icon" /></div>
+              {/* Reputation Icon */}
+              <div className=' text-yellow-500 text-2xl'><FaTrophy /></div>
               <div className='w-5/6 flex flex-col '>
                 <p>Reputation <span className='font-bold'>{userData.stats.reputation}</span></p>
               </div>
             </div>
 
             <div className='flex gap-2 align-center'>
-              <div className='w-1/6'><img src={Autumn} alt="icon" /></div>
+              {/* Accuracy Icon */}
+              <div className=' text-blue-500 text-2xl'><FaChartLine /></div>
               <div className='w-5/6 flex flex-col '>
                 <p>Accuracy <span className='font-bold'>{userData.stats.accuracy}%</span></p>
               </div>
@@ -101,8 +106,8 @@ const Profile = () => {
             <div className='flex justify-between'>
               <div className='flex flex-col w-4/5 justify-center align-center font-medium text-center cursor-default'>
                 <p className='text-xl'><span className='text-4xl font-bold'>21</span>/376</p>
-                <div className='flex justify-center gap-1'>
-                  {/* Green Tick Icon */}
+                <div className='flex justify-center gap-1 items-center'>
+                  <FaCheckCircle className='text-green-500' />
                   <p>Solved</p>
                 </div>
               </div>
