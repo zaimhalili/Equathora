@@ -105,10 +105,9 @@ body {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: inherit;
   text-decoration: inherit;
 }
-
 /* 
 :focus {
   outline: 2px solid #007cba;
