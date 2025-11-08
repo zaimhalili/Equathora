@@ -26,7 +26,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className='bg-[var(--french-gray)] h-screen px-3 py-3'>
+      <main className='bg-[var(--french-gray)] px-3 py-3'>
         {/* <h1 className="text-3xl font-bold mt-4">{userData.name}</h1> */}
         <section className='bg-[var(--main-color)] min-h-screen rounded-xl shadow-2xl px-5 py-4 flex flex-col gap-3'>
           {/* First Section: profile picture, name, username, rank, 'edit profile' button */}
@@ -44,13 +44,13 @@ const Profile = () => {
 
 
             <button type="button" className='w-full py-2 bg-[rgba(94,235,0,0.28)] font-bold text-green-700 rounded-md cursor-pointer hover:bg-[rgba(94,235,0,0.42)] transition-all duration-300'>Edit Profile</button>
-            <hr className='border-t-2 border-[var(--french-gray)]'/>
+            <hr className='border-t-2 border-[var(--french-gray)]' />
           </div>
 
           {/* Community Stats */}
           <div className='text-[var(--secondary-color)] flex flex-col gap-4'>
             <h5 className='font-bold text-xl'>Community Stats</h5>
-            
+
             <div className='flex gap-2 align-center'>
               <div className='w-1/6'><img src={Autumn} alt="icon" /></div>
               <div className='w-5/6 flex flex-col '>
@@ -84,40 +84,54 @@ const Profile = () => {
           {/* Topics */}
           <div className='text-[var(--secondary-color)] flex flex-col gap-4'>
             <h5 className='font-bold text-xl'>Topics</h5>
-            <div className='flex gap-2 overflow-hidden flex-wrap'>
+            <div className='flex gap-2 flex-wrap'>
               {userData.mathTopics.map((topic, i) => (
-                <p key={i} className='rounded-2xl bg-[var(--french-gray)] px-3 py-1 max-h-8'>{topic}</p>
+                <p key={i} className='rounded-2xl bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all'>{topic}</p>
               )
               )}
             </div>
-            
+
             <hr className='border-t-2 border-[var(--french-gray)]' />
           </div>
 
           {/* Stats */}
           <div className='text-[var(--secondary-color)] flex flex-col gap-4'>
             <h5 className='font-bold text-xl'>Statistics</h5>
-            <div className='flex'>
-              <div className='flex flex-col w-3/5'>
-                <p>21/376</p>
-                {/* Tick Icon */}
-                <p>Solved</p>
+            <div className='flex gap-5'>
+              <div className='flex flex-col w-4/5 justify-center align-center font-medium text-center cursor-default'>
+                  <p className='text-xl'><span className='text-4xl font-bold'>21</span>/376</p>
+                  <div className='flex justify-center gap-1'>
+                    {/* Green Tick Icon */}
+                    <p>Solved</p>
+                  </div>
               </div>
 
-              <div className='w-2/5'>
-                <div className='bg-[]'>
-                  <p>Easy:</p>
+              <div className='w-1/5 min-w-25 flex flex-col gap-3'>
+                <div className='bg-[var(--french-gray)] rounded-lg text-center flex flex-col font-bold py-1'>
+                  <p className='text-teal-700'>Easy:</p>
+                  <p>6/1943</p>
+                </div>
+
+                <div className='bg-[var(--french-gray)] rounded-lg text-center flex flex-col font-bold py-1'>
+                  <p className='text-yellow-700'>Medium:</p>
+                  <p>6/1943</p>
+                </div>
+
+                <div className='bg-[var(--french-gray)] rounded-lg text-center flex flex-col font-bold py-1'>
+                  <p className='text-[var(--dark-accent-color)]'>Hard:</p>
                   <p>6/1943</p>
                 </div>
               </div>
 
+
+
             </div>
-            
+
             <hr className='border-t-2 border-[var(--french-gray)]' />
           </div>
         </section>
 
-        
+
       </main>
       <Footer />
     </div>
