@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EquathoraBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c4e7fe9e56fbd3d6c97a842b8d83ebb5639378d4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2352b9753fea4d9e639873318de5dddcd0c98203")]
 [assembly: System.Reflection.AssemblyProductAttribute("EquathoraBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EquathoraBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
