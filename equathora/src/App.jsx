@@ -31,6 +31,7 @@ import Settings from "./pages/Settings";
 import OverflowChecker from "./pages/OverflowChecker";
 import Resend from "./pages/Resend";
 import ForgotPassword from "./pages/ForgotPassword";
+import Premium from "./pages/Premium";
 
 export default function App() {
   useEffect(() => {
@@ -63,6 +64,8 @@ export default function App() {
         <Route path="/helpCenter" element={<HelpCenter />} />
         <Route path="/pageNotFound" element={<PageNotFound />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/premium" element={<Premium />} />
+
 
 
         {/* Unprotected Nested Routes */}

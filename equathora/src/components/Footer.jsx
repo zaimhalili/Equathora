@@ -57,7 +57,7 @@ const Footer = () => {
               <li><Link to="/discover" className='footer-links'>Discover</Link></li>
               <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
               <li><Link to="/notifications" className='footer-links'>Notifications</Link></li>
-              <li><Link to="/profile" className='footer-links'>My Profile</Link></li>
+              <li><Link to="/profile/myprofile" className='footer-links'>My Profile</Link></li>
             </ul>
           </div>
           <div className="links-column">

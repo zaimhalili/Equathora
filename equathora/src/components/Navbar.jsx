@@ -166,7 +166,7 @@ const Navbar = () => {
       image: LogoutIMG
     },
     {
-      to: '/logout',
+      to: '/premium',
       text: "Upgrade to Premium",
       description: "Access unlimited mentor guidance and exam-mode practice.",
       image: Premium
