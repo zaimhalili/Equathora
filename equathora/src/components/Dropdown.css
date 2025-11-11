@@ -113,10 +113,10 @@
 }
 
 #navbar-right .dropdown .dropdown-content {
-    left: auto;
+    left: -300px;
     right: -60px;
     top: 65px;
-    min-width: 360px;
+    max-width: 360px;
 }
 
 @media only screen and (min-width: 992px)and (max-width: 1199px) {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj": {}
+    "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25-26\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj": {
+    "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25-26\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
+        "projectUniqueName": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25-26\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
         "projectName": "EquathoraBackend",
-        "projectPath": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
+        "projectPath": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25-26\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
         "packagesPath": "C:\\Users\\halil\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\obj\\",
+        "outputPath": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25-26\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -66,6 +66,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.10, 9.0.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[9.0.10, 9.0.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[9.0.10, 9.0.10]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[9.0.10, 9.0.10]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -74,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.1.25451.107/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.2.25502.107/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
