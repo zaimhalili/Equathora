@@ -23,9 +23,25 @@ const Settings = () => {
                     </div>
                     <div>
                         <div>
+                            <p>BIO</p>
                             <textarea name="" id=""></textarea>
+                            <p>Tell the world who you are!</p>
                         </div>
                     </div>
+                    <div>
+                        <div className='w-full'>
+                            <p>Seniority</p>
+                            <select name="" id="">
+                                <option value="Pro"></option>
+                                <option value="Boss"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                    <button type="submit">Save Profile Data</button>
+                </section>
+                <section>
+                    
                 </section>
             </main>
             <Footer />
