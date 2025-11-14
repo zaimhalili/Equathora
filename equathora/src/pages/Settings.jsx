@@ -12,7 +12,7 @@ const Settings = () => {
             <Navbar />
             <main className='min-h-screen flex flex-col bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] items-center text-[var(--secondary-color)] px-8'>
                 <h1 className='font-[Public Sans,cursive] font-bold text-[var(--secondary-color)] text-2xl pt-5 pb-5'>Settings & Customization</h1>
-                <section className='bg-white shadow-black shadow-2xl rounded-xl w-full px-5 pt-3 pb-5'>
+                <section className='bg-white shadow-gray-500 shadow-2xl rounded-xl w-full px-5 pt-3 pb-5'>
                     <h2 className='font-bold text-xl text-[var(--secondary-color)] pb-3'>Profile</h2>
                     <div>
                         <div className='flex flex-col gap-2 pb-3'>
@@ -32,18 +32,18 @@ const Settings = () => {
                         </div>
                     </div>
                     <div>
-                        <div className='w-full'>
-                            <p>Seniority</p>
-                            <select name="" id="" className='cursor-pointer'>
-                                <option value="absBeginner" className='cursor-pointer bg-red-500'>Absolute Beginner</option>
-                                <option value="beginner">Beginner</option>
-                                <option value="highschool">High School Studente</option>
-                                <option value="phd">PHD</option>
+                        <div className='w-full flex flex-col gap-2 pb-3'>
+                            <p className='text-xs font-medium'>Seniority</p>
+                            <select name="" id="" className='cursor-pointer py-2 border rounded-lg border-[var(--french-gray)]'>
+                                <option value="absBeginner" className='py-2 border border-[var(--french-gray)]'>Absolute Beginner</option>
+                                <option value="beginner" className='py-2'>Beginner</option>
+                                <option value="highschool" className='py-2'>High School Student</option>
+                                <option value="phd" className='py-2'>PHD</option>
                             </select>
                         </div>
                     </div>
-                    <hr />
-                    <button type="submit" className='cursor-pointer'>Save Profile Data</button>
+                    <hr className='pb-3'/>
+                    <button type="submit" className='cursor-pointer py-2 px-4 bg-[var(--accent-color)] text-white font-bold text-md rounded-lg shadow-md shadow-gray-400 border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-150 max-w-[180px]'>Save profile data</button>
                 </section>
                 <section>
                     <h2>Change Your handle</h2>
@@ -72,7 +72,7 @@ const Settings = () => {
                 </section>
             </main>
             <Footer />
-        </div>
+        </div >
     );
 };
 
