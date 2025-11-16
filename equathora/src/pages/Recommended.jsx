@@ -2,9 +2,16 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
-import { FaStar, FaClock, FaCheckCircle } from 'react-icons/fa';
+import { FaStar, FaClock, FaCheckCircle, FaFire, FaLightbulb, FaRocket, FaTrophy, FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
 const Recommended = () => {
+    const [bookmarked, setBookmarked] = useState({});
+
+    const toggleBookmark = (e, id) => {
+        e.preventDefault();
+        setBookmarked(prev => ({ ...prev, [id]: !prev[id] }));
+    };
+
     const [recommendations] = useState([
         {
             id: 1,
@@ -116,126 +123,157 @@ const Recommended = () => {
     return (
         <>
             <Navbar />
-            <div className="bg-gradient-to-br from-[var(--main-color)] via-white to-[var(--main-color)] min-h-screen">
+            <div className="bg-gradient-to-b from-[var(--mid-main-secondary)] via-[var(--main-color)] to-[var(--main-color)] min-h-screen pt-24">
                 {/* Hero Header */}
-                <div className="relative px-6 md:px-16 lg:px-32 xl:px-48 pt-16 pb-12">
-                    <div className="absolute top-0 left-0 w-full h-full opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnoiIHN0cm9rZT0iIzAwMCIgb3BhY2l0eT0iLjEiLz48L2c+PC9zdmc+')]" />
-                    <div className="relative max-w-4xl">
-                        <div className="inline-block px-4 py-2 mb-5 bg-[var(--accent-color)] bg-opacity-10 rounded-full border-2 border-[var(--accent-color)]">
-                            <span className="text-[var(--accent-color)] font-bold text-sm uppercase tracking-wider font-['Public_Sans']">
+                <div className="px-6 md:px-16 lg:px-32 xl:px-48 pb-12">
+                    <div className="text-center">
+                        <div className="inline-flex items-center gap-2 mb-4 px-5 py-2.5 bg-gradient-to-r from-[var(--accent-color)] to-[var(--light-accent-color)] text-white rounded-full shadow-lg animate-pulse">
+                            <FaRocket className="text-sm" />
+                            <span className="text-xs font-bold uppercase tracking-wider">
                                 Curated For You
                             </span>
+                            <FaLightbulb className="text-sm" />
                         </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[var(--secondary-color)] font-['Public_Sans'] mb-6 leading-tight">
-                            Your Learning<br />Path Awaits
+                        <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-[var(--secondary-color)] via-[var(--mid-main-secondary)] to-[var(--secondary-color)] bg-clip-text text-transparent leading-tight">
+                            Your Learning Path
                         </h1>
                         <p className="text-[var(--mid-main-secondary)] font-['Inter'] text-lg md:text-xl leading-relaxed max-w-2xl">
                             Discover mathematics topics handpicked based on your progress, strengths, and learning style. Each recommendation brings you one step closer to mastery.
                         </p>
+
+                        {/* Stats Bar */}
+                        <div className="mt-8 flex items-center justify-center gap-8 flex-wrap">
+                            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200">
+                                <FaFire className="text-orange-500 text-lg" />
+                                <div className="text-left">
+                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium">Streak</p>
+                                    <p className="text-sm font-bold text-[var(--secondary-color)]">12 Days</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200">
+                                <FaTrophy className="text-yellow-500 text-lg" />
+                                <div className="text-left">
+                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium">Achievements</p>
+                                    <p className="text-sm font-bold text-[var(--secondary-color)]">24 Earned</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200">
+                                <FaStar className="text-[var(--accent-color)] text-lg" />
+                                <div className="text-left">
+                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium">XP Points</p>
+                                    <p className="text-sm font-bold text-[var(--secondary-color)]">1,250</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 {/* Recommendations Grid */}
                 <div className="px-6 md:px-16 lg:px-32 xl:px-48 pb-20">
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                        {recommendations.map((rec) => (
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {recommendations.map((rec, index) => (
                             <Link
                                 key={rec.id}
                                 to={rec.path}
-                                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-[var(--accent-color)] hover:scale-105 flex flex-col"
+                                className="group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[var(--accent-color)] flex flex-col animate-in fade-in slide-in-from-bottom-4"
+                                style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'backwards' }}
                             >
-                                {/* Card Header with Gradient */}
-                                <div className="relative p-6 pb-4 bg-gradient-to-br from-[var(--secondary-color)] to-[var(--mid-main-secondary)]">
-                                    <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16" />
-                                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 rounded-full -ml-12 -mb-12" />
+                                {/* Shimmer Effect */}
+                                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-                                    <div className="relative flex items-start justify-between">
-                                        <h3 className="text-2xl font-bold text-white font-['Public_Sans'] flex-1 leading-snug">
+                                {/* Card Header */}
+                                <div className="relative p-5 bg-gradient-to-br from-[var(--secondary-color)] to-[var(--mid-main-secondary)] overflow-hidden">
+                                    {/* Decorative Elements */}
+                                    <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -mr-10 -mt-10" />
+                                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full -ml-8 -mb-8" />
+
+                                    <div className="relative flex items-start justify-between gap-3 mb-3">
+                                        <h3 className="text-xl font-bold text-white font-['Public_Sans'] leading-tight flex-1">
                                             {rec.topic}
                                         </h3>
-                                        {rec.completed > 0 && (
-                                            <div className="flex-shrink-0 ml-3">
-                                                <div className="bg-yellow-400 p-2 rounded-lg">
-                                                    <FaStar className="text-[var(--secondary-color)] text-base" />
+                                        <div className="flex items-center gap-2">
+                                            {rec.completed > 0 && (
+                                                <div className="bg-yellow-400 p-1.5 rounded-md shadow-sm">
+                                                    <FaStar className="text-[var(--secondary-color)] text-sm" />
                                                 </div>
-                                            </div>
-                                        )}
+                                            )}
+                                            <button
+                                                onClick={(e) => toggleBookmark(e, rec.id)}
+                                                className="bg-white/20 hover:bg-white/30 p-1.5 rounded-md transition-colors duration-200"
+                                            >
+                                                {bookmarked[rec.id] ? (
+                                                    <FaBookmark className="text-white text-sm" />
+                                                ) : (
+                                                    <FaRegBookmark className="text-white text-sm" />
+                                                )}
+                                            </button>
+                                        </div>
                                     </div>
 
-                                    {/* Difficulty Badge */}
-                                    <div className="mt-4">
-                                        <span className={`inline-block px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide border-2 ${getDifficultyColor(rec.difficulty)}`}>
-                                            {rec.difficulty}
-                                        </span>
-                                    </div>
+                                    <span className={`inline-block px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${getDifficultyColor(rec.difficulty)}`}>
+                                        {rec.difficulty}
+                                    </span>
                                 </div>
 
                                 {/* Card Body */}
-                                <div className="p-6 flex-1 flex flex-col">
-                                    {/* Description */}
-                                    <p className="text-[var(--secondary-color)] font-['Inter'] text-sm leading-relaxed mb-5 flex-1">
+                                <div className="p-5 flex-1 flex flex-col gap-4">
+                                    <p className="text-[var(--secondary-color)] font-['Inter'] text-sm leading-relaxed">
                                         {rec.description}
                                     </p>
 
-                                    {/* Reason Badge */}
-                                    <div className="mb-5 px-4 py-3 bg-gradient-to-r from-[var(--main-color)] to-blue-50 rounded-xl border-l-4 border-[var(--accent-color)]">
-                                        <p className="text-[var(--secondary-color)] font-['Inter'] text-xs font-semibold">
+                                    <div className="px-3 py-2 bg-[var(--main-color)] rounded-lg border-l-3 border-[var(--accent-color)]">
+                                        <p className="text-[var(--secondary-color)] font-['Inter'] text-xs font-medium">
                                             {rec.reason}
                                         </p>
                                     </div>
 
-                                    {/* Progress Bar */}
                                     {rec.completed > 0 ? (
-                                        <div className="mb-5">
-                                            <div className="flex items-center justify-between mb-3">
-                                                <span className="text-xs font-bold text-[var(--secondary-color)] font-['Public_Sans'] uppercase tracking-wide">
-                                                    Your Progress
+                                        <div>
+                                            <div className="flex items-center justify-between mb-2">
+                                                <span className="text-xs font-semibold text-[var(--secondary-color)] font-['Inter']">
+                                                    Progress
                                                 </span>
-                                                <span className="text-xs font-bold text-[var(--accent-color)] font-['Inter']">
-                                                    {getProgressPercentage(rec.completed, rec.problems)}%
+                                                <span className="text-xs font-semibold text-[var(--accent-color)] font-['Inter']">
+                                                    {rec.completed}/{rec.problems}
                                                 </span>
                                             </div>
-                                            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                            <div className="relative w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                                                 <div
-                                                    className="bg-gradient-to-r from-[var(--accent-color)] to-[var(--light-accent-color)] h-3 rounded-full transition-all duration-500 shadow-sm"
+                                                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--light-accent-color)] rounded-full transition-all duration-700 ease-out"
                                                     style={{ width: `${getProgressPercentage(rec.completed, rec.problems)}%` }}
                                                 />
                                             </div>
-                                            <div className="mt-2 text-xs text-[var(--mid-main-secondary)] font-['Inter']">
-                                                {rec.completed} of {rec.problems} problems solved
-                                            </div>
                                         </div>
                                     ) : (
-                                        <div className="mb-5 p-4 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                                            <p className="text-center text-xs font-semibold text-[var(--mid-main-secondary)] font-['Inter']">
-                                                Start your journey
+                                        <div className="py-2 px-3 bg-gray-50 rounded-md border border-dashed border-gray-300">
+                                            <p className="text-center text-xs font-medium text-[var(--mid-main-secondary)] font-['Inter']">
+                                                Not Started
                                             </p>
                                         </div>
                                     )}
 
-                                    {/* Footer Info */}
-                                    <div className="grid grid-cols-2 gap-4 pt-5 border-t-2 border-gray-100">
-                                        <div className="flex flex-col items-center p-3 bg-blue-50 rounded-lg">
-                                            <FaClock className="text-blue-600 text-lg mb-2" />
-                                            <span className="text-xs font-bold text-[var(--secondary-color)] font-['Inter']">
+                                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                                        <div className="flex items-center gap-1.5">
+                                            <FaClock className="text-[var(--mid-main-secondary)] text-xs" />
+                                            <span className="text-xs text-[var(--secondary-color)] font-['Inter'] font-medium">
                                                 {rec.estimatedTime}
                                             </span>
                                         </div>
-                                        <div className="flex flex-col items-center p-3 bg-green-50 rounded-lg">
-                                            <FaCheckCircle className="text-green-600 text-lg mb-2" />
-                                            <span className="text-xs font-bold text-[var(--secondary-color)] font-['Inter']">
+                                        <div className="flex items-center gap-1.5">
+                                            <FaCheckCircle className="text-[var(--mid-main-secondary)] text-xs" />
+                                            <span className="text-xs text-[var(--secondary-color)] font-['Inter'] font-medium">
                                                 {rec.problems} problems
                                             </span>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Hover Effect Arrow */}
-                                <div className="px-6 pb-6">
-                                    <div className="flex items-center justify-center py-3 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-lg transition-all duration-300">
-                                        <span className="text-white font-bold text-sm font-['Public_Sans'] mr-2">Explore Topic</span>
-                                        <svg className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                {/* Action Button */}
+                                <div className="p-5 pt-0">
+                                    <div className="flex items-center justify-center gap-2 py-2.5 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-lg transition-colors duration-300">
+                                        <span className="text-white font-semibold text-sm font-['Public_Sans']">Start Learning</span>
+                                        <svg className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                         </svg>
                                     </div>
                                 </div>
