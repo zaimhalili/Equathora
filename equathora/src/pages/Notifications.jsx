@@ -122,7 +122,7 @@ const Notifications = () => {
 
                   <div className="flex-1 min-w-0">
                     <Link to={notification.to} className="block">
-                      <p className="text-[var(--secondary-color)] font-['Inter'] mb-1 leading-snug text-xs md:text-sm">
+                      <p className={`font-['Inter'] mb-1 leading-snug text-xs md:text-sm ${!notification.read ? 'text-[var(--secondary-color)] font-semibold' : 'text-[var(--secondary-color)]'}`}>
                         {notification.message}
                       </p>
                       <span className="text-xs text-[var(--french-gray)] font-['Inter']">
@@ -130,6 +130,10 @@ const Notifications = () => {
                       </span>
                     </Link>
                   </div>
+
+                  {!notification.read && (
+                    <div className="w-2.5 h-2.5 bg-[var(--accent-color)] rounded-full flex-shrink-0"></div>
+                  )}
                 </div>
               ))
             )}
