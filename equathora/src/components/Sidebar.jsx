@@ -39,6 +39,12 @@ const Sidebar = ({ isOpen, onClose }) => {
             image: Journey
         },
         {
+            to: '/recommended',
+            text: 'Recommended',
+            description: 'Personalized topics',
+            image: Choice
+        },
+        {
             to: '/discover',
             text: 'Discover',
             description: 'Explore new topics',

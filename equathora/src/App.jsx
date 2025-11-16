@@ -32,6 +32,7 @@ import OverflowChecker from "./pages/OverflowChecker";
 import Resend from "./pages/Resend";
 import ForgotPassword from "./pages/ForgotPassword";
 import Premium from "./pages/Premium";
+import Recommended from "./pages/Recommended";
 
 export default function App() {
   useEffect(() => {
@@ -59,6 +60,7 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/learn" element={<Learn />} />
         <Route path="/discover" element={<Discover />} />
+        <Route path="/recommended" element={<Recommended />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/applymentor" element={<ApplyMentor />} />
         <Route path="/helpCenter" element={<HelpCenter />} />

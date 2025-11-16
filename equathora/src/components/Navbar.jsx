@@ -61,7 +61,7 @@ const Navbar = () => {
 
   const discoverItems = [
     {
-      to: '/learn',
+      to: '/recommended',
       text: "Recommended for You",
       description: "Personalized problem suggestions.",
       image: Choice

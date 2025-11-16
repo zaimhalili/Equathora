@@ -22,7 +22,7 @@ const ApplyMentor = () => {
             showBorder={false}
             inline={true}
           >
-            Apply To Be a Mentor
+            <span className='font-[DynaPuff]'>Apply To Be a Mentor</span>
           </GradientText>
         </h1>
         <h2 className='text-center font-light text-[clamp(1rem,3vw,1.25rem)] md:pb-7'>
