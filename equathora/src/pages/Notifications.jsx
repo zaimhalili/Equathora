@@ -111,7 +111,7 @@ const Notifications = () => {
               notifications.map(notification => (
                 <div
                   key={notification.id}
-                  className={`cursor-pointer rounded-lg p-4 md:p-5 flex items-start md:items-center gap-3 md:gap-5 transition-all border-l-4 ${!notification.read ? 'bg-blue-50 border-[var(--accent-color)] hover:bg-blue-100' : 'bg-white border-gray-200 hover:bg-gray-50'}`}
+                  className={`cursor-pointer rounded-lg p-4 md:p-5 flex items-start md:items-center gap-3 md:gap-5 transition-all border-l-4 bg-white hover:bg-gray-50 ${!notification.read ? 'border-[var(--accent-color)] shadow-md' : 'border-gray-200 shadow-sm'}`}
                   onClick={() => handleSelectNotification(notification.id)}
                 >
                   <input
