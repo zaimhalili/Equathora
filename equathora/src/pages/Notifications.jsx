@@ -111,24 +111,26 @@ const Notifications = () => {
               notifications.map(notification => (
                 <div
                   key={notification.id}
-                  className="cursor-pointers rounded-xl p-4 md:p-5 flex items-start md:items-center gap-3 md:gap-5 transition-colors hover:bg-gray-50"
+                  className={`cursor-pointer rounded-lg p-4 md:p-5 flex items-start md:items-center gap-3 md:gap-5 transition-all border-l-4 ${!notification.read ? 'bg-blue-50 border-[var(--accent-color)] hover:bg-blue-100' : 'bg-white border-gray-200 hover:bg-gray-50'}`}
+                  onClick={() => handleSelectNotification(notification.id)}
                 >
                   <input
                     type="checkbox"
                     checked={selectedIds.includes(notification.id)}
                     onChange={() => handleSelectNotification(notification.id)}
+                    onClick={(e) => e.stopPropagation()}
                     className="w-4 h-4 md:w-5 md:h-5 accent-[var(--accent-color)] cursor-pointer flex-shrink-0"
                   />
 
                   <div className="flex-1 min-w-0">
-                    <Link to={notification.to} className="block">
+                    <div className="block">
                       <p className={`font-['Inter'] mb-1 leading-snug text-xs md:text-sm ${!notification.read ? 'text-[var(--secondary-color)] font-semibold' : 'text-[var(--secondary-color)]'}`}>
                         {notification.message}
                       </p>
                       <span className="text-xs text-[var(--french-gray)] font-['Inter']">
                         {notification.time}
                       </span>
-                    </Link>
+                    </div>
                   </div>
 
                   {!notification.read && (
