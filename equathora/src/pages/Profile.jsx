@@ -8,6 +8,8 @@ import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 const Profile = () => {
   const { profile } = useParams();
 
+  const [showAccuracy, setShowAccuracy] = useState(false);
+
   // Mock user data - will be replaced with real data from backend
   const [userData] = useState({
     name: 'Alex Thompson',
@@ -20,10 +22,23 @@ const Profile = () => {
       currentStreak: 15,
       reputation: 2450,
       globalRank: 3573765,
+      easy: { solved: 6, total: 143, accuracy: 92 },
+      medium: { solved: 10, total: 189, accuracy: 85 },
+      hard: { solved: 5, total: 44, accuracy: 78 }
     },
     mathTopics: ['Algebra', 'Geometry', 'Calculus I', 'Number Theory', 'Probability', 'Graphs', 'Calculus II'],
     problemsSolved: ['I loved her', 'Pretty Eyes', 'Just once more', 'Where are you?', 'Smile please', 'Unreal situation', 'Obvious choice', 'Tough Decisions', 'First time', 'I make my choices']
   });
+
+  const totalProblems = userData.stats.easy.total + userData.stats.medium.total + userData.stats.hard.total;
+  const totalSolved = userData.stats.easy.solved + userData.stats.medium.solved + userData.stats.hard.solved;
+  
+  const getCircleProgress = (solved, total) => {
+    const percentage = (solved / total) * 100;
+    const circumference = 2 * Math.PI * 40; // radius = 40
+    const offset = circumference - (percentage / 100) * circumference;
+    return { percentage, offset, circumference };
+  };
 
 
   return (
@@ -104,28 +119,108 @@ const Profile = () => {
           <div className='text-[var(--secondary-color)] flex flex-col gap-4'>
             <h5 className='font-bold text-xl'>Statistics</h5>
             <div className='flex justify-between'>
-              <div className='flex flex-col w-4/5 justify-center align-center font-medium text-center cursor-default'>
-                <p className='text-xl'><span className='text-4xl font-bold'>21</span>/376</p>
-                <div className='flex justify-center gap-1 items-center'>
-                  <FaCheckCircle className='text-green-500' />
-                  <p>Solved</p>
+              {/* Circular Progress Indicator */}
+              <div 
+                className='relative flex flex-col w-4/5 justify-center items-center cursor-pointer group'
+                onMouseEnter={() => setShowAccuracy(true)}
+                onMouseLeave={() => setShowAccuracy(false)}
+              >
+                {/* SVG Circle Progress */}
+                <svg className='w-40 h-40 transform -rotate-90'>
+                  {/* Background circle segments */}
+                  <circle
+                    cx="80"
+                    cy="80"
+                    r="70"
+                    stroke="#e5e7eb"
+                    strokeWidth="14"
+                    fill="none"
+                    strokeDasharray="140 10"
+                    strokeLinecap="round"
+                  />
+                  
+                  {/* Easy progress (green) - left third */}
+                  <circle
+                    cx="80"
+                    cy="80"
+                    r="70"
+                    stroke="#10b981"
+                    strokeWidth="14"
+                    fill="none"
+                    strokeDasharray={`${(userData.stats.easy.solved / userData.stats.easy.total) * 140} ${440 - (userData.stats.easy.solved / userData.stats.easy.total) * 140}`}
+                    strokeDashoffset="0"
+                    strokeLinecap="round"
+                    className="transition-all duration-500"
+                  />
+                  
+                  {/* Medium progress (yellow) - top third */}
+                  <circle
+                    cx="80"
+                    cy="80"
+                    r="70"
+                    stroke="#f59e0b"
+                    strokeWidth="14"
+                    fill="none"
+                    strokeDasharray={`${(userData.stats.medium.solved / userData.stats.medium.total) * 140} ${440 - (userData.stats.medium.solved / userData.stats.medium.total) * 140}`}
+                    strokeDashoffset="-150"
+                    strokeLinecap="round"
+                    className="transition-all duration-500"
+                  />
+                  
+                  {/* Hard progress (red) - right third */}
+                  <circle
+                    cx="80"
+                    cy="80"
+                    r="70"
+                    stroke="#ef4444"
+                    strokeWidth="14"
+                    fill="none"
+                    strokeDasharray={`${(userData.stats.hard.solved / userData.stats.hard.total) * 140} ${440 - (userData.stats.hard.solved / userData.stats.hard.total) * 140}`}
+                    strokeDashoffset="-300"
+                    strokeLinecap="round"
+                    className="transition-all duration-500"
+                  />
+                </svg>
+
+                {/* Center Text */}
+                <div className='absolute inset-0 flex flex-col justify-center items-center font-medium text-center pointer-events-none'>
+                  {!showAccuracy ? (
+                    <>
+                      <p className='text-xl'><span className='text-4xl font-bold'>{totalSolved}</span>/{totalProblems}</p>
+                      <div className='flex justify-center gap-1 items-center'>
+                        <FaCheckCircle className='text-green-500' />
+                        <p>Solved</p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p className='text-3xl font-bold text-[var(--mid-main-secondary)]'>{userData.stats.accuracy}%</p>
+                      <p className='text-xs font-medium text-[var(--mid-main-secondary)]'>Accuracy</p>
+                    </>
+                  )}
+                </div>
+
+                {/* Tooltip */}
+                <div className='absolute -bottom-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[var(--secondary-color)] text-white px-3 py-1 rounded-md text-xs whitespace-nowrap pointer-events-none'>
+                  Hover to see accuracy
                 </div>
               </div>
 
+              {/* Difficulty Breakdown */}
               <div className='w-1/5 min-w-25 max-w-25 flex flex-col gap-3'>
                 <div className='bg-[var(--french-gray)] rounded-lg text-center flex flex-col font-bold py-1'>
                   <p className='text-teal-700'>Easy:</p>
-                  <p>6/1943</p>
+                  <p>{userData.stats.easy.solved}/{userData.stats.easy.total}</p>
                 </div>
 
                 <div className='bg-[var(--french-gray)] rounded-lg text-center flex flex-col font-bold py-1'>
                   <p className='text-yellow-700'>Medium:</p>
-                  <p>6/1943</p>
+                  <p>{userData.stats.medium.solved}/{userData.stats.medium.total}</p>
                 </div>
 
                 <div className='bg-[var(--french-gray)] rounded-lg text-center flex flex-col font-bold py-1'>
                   <p className='text-[var(--dark-accent-color)]'>Hard:</p>
-                  <p>6/1943</p>
+                  <p>{userData.stats.hard.solved}/{userData.stats.hard.total}</p>
                 </div>
               </div>
             </div>
