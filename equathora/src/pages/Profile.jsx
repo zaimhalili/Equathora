@@ -69,37 +69,37 @@ const Profile = () => {
             <h5 className='font-bold text-xl md:text-2xl'>Community Stats</h5>
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4'>
-            <div className='flex gap-3 items-center'>
-              {/* Streak Icon */}
-              <div className='text-orange-500 text-2xl md:text-3xl'><FaFire /></div>
-              <div className='flex flex-col'>
-                <p className='text-sm md:text-base'>Streak <span className='font-bold'>{userData.stats.currentStreak}</span></p>
+              <div className='flex gap-3 items-center'>
+                {/* Streak Icon */}
+                <div className='text-orange-500 text-2xl md:text-3xl'><FaFire /></div>
+                <div className='flex flex-col'>
+                  <p className='text-sm md:text-base'>Streak <span className='font-bold'>{userData.stats.currentStreak}</span></p>
+                </div>
               </div>
-            </div>
 
-            <div className='flex gap-3 items-center'>
-              {/* Solution Icon */}
-              <div className='text-green-500 text-2xl md:text-3xl'><FaCheckCircle /></div>
-              <div className='flex flex-col'>
-                <p className='text-sm md:text-base'>Solved <span className='font-bold'>{userData.stats.problemsSolved}</span></p>
+              <div className='flex gap-3 items-center'>
+                {/* Solution Icon */}
+                <div className='text-green-500 text-2xl md:text-3xl'><FaCheckCircle /></div>
+                <div className='flex flex-col'>
+                  <p className='text-sm md:text-base'>Solved <span className='font-bold'>{userData.stats.problemsSolved}</span></p>
+                </div>
               </div>
-            </div>
 
-            <div className='flex gap-3 items-center'>
-              {/* Reputation Icon */}
-              <div className='text-yellow-500 text-2xl md:text-3xl'><FaTrophy /></div>
-              <div className='flex flex-col'>
-                <p className='text-sm md:text-base'>Reputation <span className='font-bold'>{userData.stats.reputation}</span></p>
+              <div className='flex gap-3 items-center'>
+                {/* Reputation Icon */}
+                <div className='text-yellow-500 text-2xl md:text-3xl'><FaTrophy /></div>
+                <div className='flex flex-col'>
+                  <p className='text-sm md:text-base'>Reputation <span className='font-bold'>{userData.stats.reputation}</span></p>
+                </div>
               </div>
-            </div>
 
-            <div className='flex gap-3 items-center'>
-              {/* Accuracy Icon */}
-              <div className='text-blue-500 text-2xl md:text-3xl'><FaChartLine /></div>
-              <div className='flex flex-col'>
-                <p className='text-sm md:text-base'>Accuracy <span className='font-bold'>{userData.stats.accuracy}%</span></p>
+              <div className='flex gap-3 items-center'>
+                {/* Accuracy Icon */}
+                <div className='text-blue-500 text-2xl md:text-3xl'><FaChartLine /></div>
+                <div className='flex flex-col'>
+                  <p className='text-sm md:text-base'>Accuracy <span className='font-bold'>{userData.stats.accuracy}%</span></p>
+                </div>
               </div>
-            </div>
             </div>
             <hr className='border-t-2 border-[var(--french-gray)]' />
           </div>
@@ -120,15 +120,15 @@ const Profile = () => {
           {/* Stats */}
           <div className='text-[var(--secondary-color)] flex flex-col gap-4'>
             <h5 className='font-bold text-xl md:text-2xl'>Statistics</h5>
-            <div className='flex flex-col md:flex-row justify-between items-center md:items-start gap-4'>
+            <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
               {/* Circular Progress Indicator */}
               <div
-                className='relative flex flex-col w-full md:w-auto justify-center items-center cursor-pointer group'
+                className='relative flex flex-col w-full md:flex-1 justify-center items-center cursor-pointer group'
                 onMouseEnter={() => setShowAccuracy(true)}
                 onMouseLeave={() => setShowAccuracy(false)}
               >
                 {/* SVG Circle Progress */}
-                <svg className='w-40 h-40 md:w-48 md:h-48 transform -rotate-90'>orm -rotate-90' viewBox="0 0 160 160">
+                <svg className='w-40 h-40 md:w-48 md:h-48 transform -rotate-90' viewBox="0 0 160 160">
                   {/* Background circle segments */}
                   <circle
                     cx="80"
@@ -194,8 +194,8 @@ const Profile = () => {
                     </div>
                   </div>
                   <div className={`transition-all duration-300 ${showAccuracy ? 'opacity-100 scale-100' : 'opacity-0 scale-90'} absolute`}>
-                    <p className='text-3xl font-bold text-[var(--mid-main-secondary)]'>{userData.stats.accuracy}%</p>
-                    <p className='text-xs font-medium text-[var(--mid-main-secondary)]'>Accuracy</p>
+                    <p className='text-3xl font-bold text-[var(--secondary-color)]'>{userData.stats.accuracy}%</p>
+                    <p className='text-xl font-medium text-[var(--secondary-color)]'>Accuracy</p>
                   </div>
                 </div>
 
