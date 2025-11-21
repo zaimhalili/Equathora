@@ -44,7 +44,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className='bg-[var(--french-gray)] px-3 pt-5 pb-20 flex justify-center'>
+      <main className='bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] px-3 pt-5 pb-20 flex justify-center'>
         <section className='bg-[var(--main-color)] min-h-screen rounded-xl shadow-2xl shadow-gray-500 px-5 md:px-8 lg:px-12 py-4 flex flex-col gap-3 w-full max-w-5xl'>
           {/* First Section: profile picture, name, username, rank, 'edit profile' button */}
           <div className='flex flex-col gap-4'>
