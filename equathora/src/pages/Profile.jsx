@@ -24,7 +24,7 @@ const Profile = () => {
       globalRank: 3573765,
       easy: { solved: 6, total: 143, accuracy: 92 },
       medium: { solved: 10, total: 189, accuracy: 85 },
-      hard: { solved: 5, total: 44, accuracy: 78 }
+      hard: { solved: 15, total: 44, accuracy: 78 }
     },
     mathTopics: ['Algebra', 'Geometry', 'Calculus I', 'Number Theory', 'Probability', 'Graphs', 'Calculus II'],
     problemsSolved: ['I loved her', 'Pretty Eyes', 'Just once more', 'Where are you?', 'Smile please', 'Unreal situation', 'Obvious choice', 'Tough Decisions', 'First time', 'I make my choices']
@@ -53,7 +53,7 @@ const Profile = () => {
               {/* Combined Card */}
               <div className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-6'>
                 {/* Profile Header Section */}
-                <div>
+                <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
                     <img src={Autumn} alt="Profile Picture" className='rounded-md h-20 w-20 md:h-24 md:w-24' />
                     <div className='text-[var(--secondary-color)] font-[Inter] flex flex-col justify-between gap-1'>
@@ -70,7 +70,7 @@ const Profile = () => {
                 <hr className='border-t-2 border-[var(--french-gray)]' />
 
                 {/* Community Stats Section */}
-                <div>
+                <div className='flex flex-col gap-5'>
                   <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Community Stats</h5>
                   <div className='flex flex-col gap-4'>
                     <div className='flex gap-3 items-center'>
@@ -80,7 +80,7 @@ const Profile = () => {
                       </div>
                     </div>
                     <div className='flex gap-3 items-center'>
-                      <div className='text-green-500 text-2xl md:text-3xl'><FaCheckCircle /></div>
+                      <div className='text-[#10b981] text-2xl md:text-3xl'><FaCheckCircle /></div>
                       <div className='flex flex-col'>
                         <p className='text-sm md:text-base text-[var(--secondary-color)]'>Solved <span className='font-bold'>{userData.stats.problemsSolved}</span></p>
                       </div>
@@ -103,11 +103,11 @@ const Profile = () => {
                 <hr className='border-t-2 border-[var(--french-gray)]' />
 
                 {/* Topics Section */}
-                <div>
+                <div className='flex flex-col gap-5'>
                   <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Topics</h5>
                   <div className='flex gap-2 md:gap-3 flex-wrap'>
                     {userData.mathTopics.map((topic, i) => (
-                      <p key={i} className='rounded-2xl bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)]'>{topic}</p>
+                      <p key={i} className='rounded-2xl bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)] cursor-default'>{topic}</p>
                     ))}
                   </div>
                 </div>
@@ -127,83 +127,55 @@ const Profile = () => {
                     onMouseLeave={() => setShowAccuracy(false)}
                   >
                     {/* SVG Circle Progress */}
-                    <svg className='w-40 h-40 md:w-48 md:h-48 transform -rotate-90' viewBox="0 0 160 160">
-                      {/* Background circle segments - Easy (light green) */}
+                    <svg className='w-48 h-48 md:w-56 md:h-56 transform -rotate-90' viewBox="0 0 200 200">
+                      {/* Full background circle */}
                       <circle
-                        cx="80"
-                        cy="80"
-                        r="70"
-                        stroke="#d1fae5"
-                        strokeWidth="10"
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        stroke="#e5e7eb"
+                        strokeWidth="12"
                         fill="none"
-                        strokeDasharray="135 15"
-                        strokeLinecap="round"
                       />
 
-                      {/* Background circle segments - Medium (light yellow) */}
+                      {/* Easy segment (green) - 0 to 120 degrees */}
                       <circle
-                        cx="80"
-                        cy="80"
-                        r="70"
-                        stroke="#fef3c7"
-                        strokeWidth="10"
-                        fill="none"
-                        strokeDasharray="135 15"
-                        strokeDashoffset="-150"
-                        strokeLinecap="round"
-                      />
-
-                      {/* Background circle segments - Hard (light red) */}
-                      <circle
-                        cx="80"
-                        cy="80"
-                        r="70"
-                        stroke="#fee2e2"
-                        strokeWidth="10"
-                        fill="none"
-                        strokeDasharray="135 15"
-                        strokeDashoffset="-300"
-                        strokeLinecap="round"
-                      />
-
-                      {/* Easy progress (green) - left third */}
-                      <circle
-                        cx="80"
-                        cy="80"
-                        r="70"
+                        cx="100"
+                        cy="100"
+                        r="80"
                         stroke="#10b981"
-                        strokeWidth="10"
+                        strokeWidth="12"
                         fill="none"
-                        strokeDasharray={`${(userData.stats.easy.solved / userData.stats.easy.total) * 135} ${440 - (userData.stats.easy.solved / userData.stats.easy.total) * 135}`}
+                        strokeDasharray={`${(userData.stats.easy.solved / userData.stats.easy.total) * 167} ${502 - (userData.stats.easy.solved / userData.stats.easy.total) * 167}`}
                         strokeDashoffset="0"
                         strokeLinecap="round"
                         className="transition-all duration-500"
                       />
 
-                      {/* Medium progress (yellow) - top third */}
+                      {/* Medium segment (yellow) - 125 to 245 degrees */}
                       <circle
-                        cx="80"
-                        cy="80"
-                        r="70"
-                        stroke="#f59e0b"
-                        strokeWidth="10"
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        stroke="#a16207"
+                        strokeWidth="12"
                         fill="none"
-                        strokeDasharray={`${(userData.stats.medium.solved / userData.stats.medium.total) * 135} ${440 - (userData.stats.medium.solved / userData.stats.medium.total) * 135}`}
-                        strokeDashoffset="-150"
+                        strokeDasharray={`${(userData.stats.medium.solved / userData.stats.medium.total) * 167} ${502 - (userData.stats.medium.solved / userData.stats.medium.total) * 167}`}
+                        strokeDashoffset="-172"
                         strokeLinecap="round"
                         className="transition-all duration-500"
                       />
 
-                      {/* Hard progress (red) - right third */}
+                      {/* Hard segment (red) - 250 to 370 degrees */}
                       <circle
-                        cx="80"
-                        cy="80"
-                        r="70"
-                        stroke="#ef4444"
-                        strokeWidth="10"
+                        cx="100"
+                        cy="100"
+                        r="80"
+                        stroke="var(--dark-accent-color)"
+                        strokeWidth="12"
                         fill="none"
-                        strokeDasharray={`${(userData.stats.hard.solved / userData.stats.hard.total) * 135} ${440 - (userData.stats.hard.solved / userData.stats.hard.total) * 135}`}
-                        strokeDashoffset="-300"
+                        strokeDasharray={`${(userData.stats.hard.solved / userData.stats.hard.total) * 167} ${502 - (userData.stats.hard.solved / userData.stats.hard.total) * 167}`}
+                        strokeDashoffset="-344"
                         strokeLinecap="round"
                         className="transition-all duration-500"
                       />
@@ -214,7 +186,7 @@ const Profile = () => {
                       <div className={`transition-all duration-300 ${showAccuracy ? 'opacity-0 scale-90' : 'opacity-100 scale-100'} absolute`}>
                         <p className='text-xl text-[var(--secondary-color)]'><span className='text-4xl font-bold'>{totalSolved}</span>/{totalProblems}</p>
                         <div className='flex justify-center gap-1 items-center'>
-                          <FaCheckCircle className='text-green-500' />
+                          <FaCheckCircle className='text-[#10b981]' />
                           <p className='text-[var(--secondary-color)] text-md'>Solved</p>
                         </div>
                       </div>
@@ -246,14 +218,14 @@ const Profile = () => {
               </div>
 
               {/* Solved Problems Card */}
-              <div className='bg-[var(--main-color)] rounded-xl shadow-lg p-6'>
+              <div className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-5'>
                 <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Solved Problems</h5>
-                <div className='flex flex-col gap-1'>
+                <div className='flex flex-col gap-1 text-[var(--secondary-color)] hover:text-black'>
                   {userData.problemsSolved.map((problem, i) => (
                     <Link
                       key={i}
                       to="/*"
-                      className={`w-full px-5 py-4 hover:scale-99 transition-all duration-300 rounded-md text-md ${i % 2 === 0 ? 'bg-[var(--french-gray)] text-[var(--secondary-color)]' : 'bg-[var(--main-color)] text-[var(--secondary-color)]'}`}>{problem}</Link>
+                      className={`w-full px-5 py-4 hover:scale-99 transition-all text-[var(--secondary-color)] duration-300 rounded-md text-md ${i % 2 === 0 ? 'bg-[var(--french-gray)]' : 'bg-[var(--main-color)]'}`}>{problem}</Link>
                   ))}
                 </div>
               </div>
