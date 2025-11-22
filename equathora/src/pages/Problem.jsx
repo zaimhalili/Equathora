@@ -45,17 +45,17 @@ const Problem = () => {
 
   return (
     <>
-      <main className="bg-[var(--main-color)] min-h-screen text-[var(--secondary-color)]">
+      <main className="min-h-screen text-[var(--secondary-color)]">
         {/* Navigation Header */}
-        <header className="flex items-center justify-between font-[Public_Sans,sans-serif] bg-[var(--main-color)] w-full border-b-2 border-[var(--french-gray)] px-8 py-4">
-          <Link to="/learn" className="flex items-center gap-2 text-base text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-4 py-2 rounded-lg hover:bg-[var(--mid-main-secondary)] hover:text-[var(--main-color)]">
+        <header className="flex items-center justify-between font-[Public_Sans,sans-serif] bg-[var(--main-color)] w-full px-8 py-4">
+          <Link to="/learn" className="flex items-center gap-2 text-md text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-4 py-2 rounded-lg hover:bg-[var(--french-gray)] hover:text-[var(--main-color)]">
             <img src={LilArrow} alt="arrow" className="w-5 h-5 rotate-180 transition-transform duration-200 hover:translate-x-1" />
             <span>Back to Exercises</span>
           </Link>
           <div className="flex gap-4 items-center px-10">
             <Timer />
             <button
-              className={`bg-transparent border-2 border-[var(--french-gray)] px-4 py-2 rounded-lg cursor-pointer text-2xl transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] hover:scale-105 ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)]'}`}
+              className={`bg-transparent border-2 border-[var(--french-gray)] px-4 py-2 rounded-lg cursor-pointer text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] hover:scale-105 ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)]'}`}
               onClick={() => setIsFavorite(!isFavorite)}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
@@ -65,9 +65,9 @@ const Problem = () => {
         </header>
 
         {/* Main Content */}
-        <section className="flex w-full h-[calc(100vh-180px)]">
+        <section className="flex w-full gap-5 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-5 px-3">
           {/* Description Side */}
-          <article className="w-1/2 flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] border-r-[3px] border-[var(--secondary-color)] text-[var(--secondary-color)] h-full overflow-hidden">
+          <article className="w-1/2 max-h-[90vh] rounded-2xl flex bg-[var(--accent-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] h-full overflow-hidden">
 
             <div className="w-full px-8 py-6 flex flex-col gap-5 overflow-y-auto flex-1">
               {/* Problem Title & Badges */}
@@ -130,7 +130,7 @@ const Problem = () => {
               {/* Help Actions */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
                 <button
-                  className="flex items-center justify-center gap-2 bg-[var(--secondary-color)] text-[var(--main-color)] border-2 border-[var(--secondary-color)] px-6 py-4 rounded-lg text-base font-semibold cursor-pointer transition-all duration-300 font-[Inter,sans-serif] no-underline text-center hover:-translate-y-1 hover:shadow-lg hover:bg-[var(--french-gray)] hover:border-[var(--french-gray)]"
+                  className="flex items-center justify-center gap-2 bg-[var(--secondary-color)] text-[var(--main-color)]  border-[var(--secondary-color)] px-6 py-4 rounded-lg text-base font-semibold cursor-pointer transition-all duration-300 font-[Inter,sans-serif] no-underline text-center hover:-translate-y-1 hover:shadow-lg hover:bg-[var(--french-gray)] hover:border-[var(--french-gray)]"
                   onClick={() => {
                     setShowHint(!showHint);
                     if (showAnswer) setShowAnswer(false);
@@ -185,8 +185,6 @@ const Problem = () => {
           </article>
         </section>
       </main>
-
-      <Footer />
     </>
   );
 };
