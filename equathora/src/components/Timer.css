@@ -1,16 +1,15 @@
 .stopwatch {
-    width: 20%;
-    height: 2rem;
+    padding: 0.5rem 1rem;
     background-color: var(--dark-accent-color);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    font-size: 1.5rem;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
-    margin-bottom: 2rem;
-    border-bottom-left-radius: 1rem;
+    border-radius: 0.5rem;
     animation: changeColor 300s ease-in-out forwards;
 }
 

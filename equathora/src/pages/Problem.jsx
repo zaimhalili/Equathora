@@ -52,7 +52,8 @@ const Problem = () => {
             <img src={LilArrow} alt="arrow" className="w-5 h-5 rotate-180 transition-transform duration-200 hover:translate-x-1" />
             <span>Back to Exercises</span>
           </Link>
-          <div className="flex gap-2">
+          <div className="flex gap-4 items-center px-10">
+            <Timer />
             <button
               className={`bg-transparent border-2 border-[var(--french-gray)] px-4 py-2 rounded-lg cursor-pointer text-2xl transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] hover:scale-105 ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)]'}`}
               onClick={() => setIsFavorite(!isFavorite)}
@@ -63,56 +64,44 @@ const Problem = () => {
           </div>
         </header>
 
-        {/* Problem Header */}
-        <article className="w-full flex flex-col bg-[var(--secondary-color)] items-center px-8 py-6 gap-4">
-          <h1 className="font-[Public_Sans,sans-serif] text-2xl md:text-3xl text-[var(--main-color)] font-bold text-center">{problem.title}</h1>
-          <div className="flex gap-3 flex-wrap font-[Inter,sans-serif] justify-center">
-            <span className={`px-4 py-2 rounded-full font-semibold uppercase text-xs tracking-wider ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-[var(--main-color)] text-green-500 border-2 border-green-500' :
-              problem.difficulty.toLowerCase() === 'medium' ? 'bg-[var(--main-color)] text-yellow-500 border-2 border-yellow-500' :
-                'bg-[var(--main-color)] text-[var(--accent-color)] border-2 border-[var(--accent-color)]'
-              }`}>
-              {problem.difficulty}
-            </span>
-            {problem.premium ? (
-              <span className="px-4 py-2 rounded-full font-semibold uppercase text-xs tracking-wider bg-[var(--accent-color)] text-[var(--main-color)]">Premium</span>
-            ) : (
-              <span className="px-4 py-2 rounded-full font-semibold uppercase text-xs tracking-wider bg-[var(--mid-main-secondary)] text-[var(--main-color)]">Free</span>
-            )}
-            {problem.completed ? (
-              <span className="px-4 py-2 rounded-full font-semibold uppercase text-xs tracking-wider bg-green-500 text-[var(--main-color)]">✓ Completed</span>
-            ) : (
-              <span className="px-4 py-2 rounded-full font-semibold uppercase text-xs tracking-wider bg-[var(--french-gray)] text-[var(--secondary-color)]">Incomplete</span>
-            )}
-          </div>
-        </article>
-
         {/* Main Content */}
         <section className="flex w-full h-[calc(100vh-180px)]">
           {/* Description Side */}
           <article className="w-1/2 flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] border-r-[3px] border-[var(--secondary-color)] text-[var(--secondary-color)] h-full overflow-hidden">
-            <div className="flex w-full justify-end px-8 py-4 bg-[var(--mid-main-secondary)]">
-              <Timer />
-            </div>
 
-            <div className="w-full px-8 py-8 flex flex-col gap-6 overflow-y-auto flex-1">
-              {/* Problem Description */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4 transition-all duration-200 hover:border-[var(--secondary-color)] hover:shadow-md">
-                <div className="flex items-center gap-2 mb-3 pb-2 border-b-2 border-[var(--french-gray)]">
-                  <span className="text-lg">📝</span>
-                  <h3 className="text-base m-0 text-[var(--secondary-color)] font-bold font-[Public_Sans,sans-serif]">Description</h3>
+            <div className="w-full px-8 py-6 flex flex-col gap-5 overflow-y-auto flex-1">
+              {/* Problem Title & Badges */}
+              <div>
+                <h1 className="font-[Public_Sans,sans-serif] text-2xl md:text-3xl text-[var(--secondary-color)] font-bold mb-3">{problem.title}</h1>
+                <div className="flex gap-2 flex-wrap font-[Inter,sans-serif] items-center">
+                  <span className={`px-3 py-1 rounded-md text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
+                    problem.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
+                      'bg-red-500/10 text-red-600'
+                    }`}>
+                    {problem.difficulty}
+                  </span>
+                  {problem.premium ? (
+                    <span className="px-3 py-1 rounded-md text-xs font-medium bg-yellow-500/10 text-yellow-700">Premium</span>
+                  ) : (
+                    <span className="px-3 py-1 rounded-md text-xs font-medium bg-gray-500/10 text-gray-600">Free</span>
+                  )}
+                  {problem.completed && (
+                    <span className="px-3 py-1 rounded-md text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
+                  )}
                 </div>
+              </div>
+
+              {/* Problem Description */}
+              <div>
                 <p className="text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Inter,sans-serif] m-0">{problem.description}</p>
               </div>
 
               {/* Examples */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4 transition-all duration-200 hover:border-[var(--secondary-color)] hover:shadow-md">
-                <div className="flex items-center gap-2 mb-3 pb-2 border-b-2 border-[var(--french-gray)]">
-                  <span className="text-lg">💡</span>
-                  <h3 className="text-base m-0 text-[var(--secondary-color)] font-bold font-[Public_Sans,sans-serif]">Examples</h3>
-                </div>
+              <div>
+                <h3 className="text-base mb-3 text-[var(--secondary-color)] font-bold font-[Public_Sans,sans-serif]">Examples</h3>
                 {problem.examples.map((example, index) => (
-                  <div key={index} className="p-3 bg-gray-50 rounded-md mb-3 last:mb-0 border-l-[3px] border-[var(--accent-color)]">
-                    <div className="text-xs font-bold text-[var(--mid-main-secondary)] mb-2 uppercase tracking-wide font-[Public_Sans,sans-serif]">Example {index + 1}</div>
+                  <div key={index} className="p-4 bg-[var(--french-gray)]/30 rounded-lg mb-3 last:mb-0">
+                    <div className="text-xs font-bold text-[var(--secondary-color)] mb-2 font-[Public_Sans,sans-serif]">Example {index + 1}:</div>
                     <div className="flex flex-col gap-2">
                       <div className="flex items-center gap-2 text-sm font-[Inter,sans-serif]">
                         <span className="font-semibold text-[var(--secondary-color)] min-w-[50px]">Input:</span>
@@ -133,12 +122,9 @@ const Problem = () => {
               </div>
 
               {/* Constraints */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4 transition-all duration-200 hover:border-[var(--secondary-color)] hover:shadow-md">
-                <div className="flex items-center gap-2 mb-3 pb-2 border-b-2 border-[var(--french-gray)]">
-                  <span className="text-lg">⚙️</span>
-                  <h3 className="text-base m-0 text-[var(--secondary-color)] font-bold font-[Public_Sans,sans-serif]">Constraints</h3>
-                </div>
-                <code className="block font-[Courier_New,monospace] bg-[var(--secondary-color)] text-yellow-400 px-3 py-3 rounded-md text-[0.9rem] font-semibold">{problem.constraints}</code>
+              <div>
+                <h3 className="text-base mb-3 text-[var(--secondary-color)] font-bold font-[Public_Sans,sans-serif]">Constraints</h3>
+                <code className="block font-[Courier_New,monospace] bg-[var(--french-gray)]/30 text-[var(--secondary-color)] px-4 py-3 rounded-lg text-[0.85rem]">{problem.constraints}</code>
               </div>
 
               {/* Help Actions */}
@@ -193,8 +179,8 @@ const Problem = () => {
             </div>
           </article>
 
-          {/* Solution Side */}
-          <article className="flex justify-start items-stretch flex-col w-1/2 h-full overflow-hidden">
+          {/* Solution Side - Math Live*/}
+          <article className="flex justify-start items-stretch flex-col w-1/2 h-full overflow-hidden rounded-2xl">
             <MathLiveExample />
           </article>
         </section>
