@@ -128,15 +128,41 @@ const Profile = () => {
                   >
                     {/* SVG Circle Progress */}
                     <svg className='w-40 h-40 md:w-48 md:h-48 transform -rotate-90' viewBox="0 0 160 160">
-                      {/* Background circle segments */}
+                      {/* Background circle segments - Easy (light green) */}
                       <circle
                         cx="80"
                         cy="80"
                         r="70"
-                        stroke="#e5e7eb"
-                        strokeWidth="14"
+                        stroke="#d1fae5"
+                        strokeWidth="10"
                         fill="none"
-                        strokeDasharray="140 10"
+                        strokeDasharray="135 15"
+                        strokeLinecap="round"
+                      />
+
+                      {/* Background circle segments - Medium (light yellow) */}
+                      <circle
+                        cx="80"
+                        cy="80"
+                        r="70"
+                        stroke="#fef3c7"
+                        strokeWidth="10"
+                        fill="none"
+                        strokeDasharray="135 15"
+                        strokeDashoffset="-150"
+                        strokeLinecap="round"
+                      />
+
+                      {/* Background circle segments - Hard (light red) */}
+                      <circle
+                        cx="80"
+                        cy="80"
+                        r="70"
+                        stroke="#fee2e2"
+                        strokeWidth="10"
+                        fill="none"
+                        strokeDasharray="135 15"
+                        strokeDashoffset="-300"
                         strokeLinecap="round"
                       />
 
@@ -146,9 +172,9 @@ const Profile = () => {
                         cy="80"
                         r="70"
                         stroke="#10b981"
-                        strokeWidth="14"
+                        strokeWidth="10"
                         fill="none"
-                        strokeDasharray={`${(userData.stats.easy.solved / userData.stats.easy.total) * 140} ${440 - (userData.stats.easy.solved / userData.stats.easy.total) * 140}`}
+                        strokeDasharray={`${(userData.stats.easy.solved / userData.stats.easy.total) * 135} ${440 - (userData.stats.easy.solved / userData.stats.easy.total) * 135}`}
                         strokeDashoffset="0"
                         strokeLinecap="round"
                         className="transition-all duration-500"
@@ -160,9 +186,9 @@ const Profile = () => {
                         cy="80"
                         r="70"
                         stroke="#f59e0b"
-                        strokeWidth="14"
+                        strokeWidth="10"
                         fill="none"
-                        strokeDasharray={`${(userData.stats.medium.solved / userData.stats.medium.total) * 140} ${440 - (userData.stats.medium.solved / userData.stats.medium.total) * 140}`}
+                        strokeDasharray={`${(userData.stats.medium.solved / userData.stats.medium.total) * 135} ${440 - (userData.stats.medium.solved / userData.stats.medium.total) * 135}`}
                         strokeDashoffset="-150"
                         strokeLinecap="round"
                         className="transition-all duration-500"
@@ -174,9 +200,9 @@ const Profile = () => {
                         cy="80"
                         r="70"
                         stroke="#ef4444"
-                        strokeWidth="14"
+                        strokeWidth="10"
                         fill="none"
-                        strokeDasharray={`${(userData.stats.hard.solved / userData.stats.hard.total) * 140} ${440 - (userData.stats.hard.solved / userData.stats.hard.total) * 140}`}
+                        strokeDasharray={`${(userData.stats.hard.solved / userData.stats.hard.total) * 135} ${440 - (userData.stats.hard.solved / userData.stats.hard.total) * 135}`}
                         strokeDashoffset="-300"
                         strokeLinecap="round"
                         className="transition-all duration-500"
@@ -189,18 +215,13 @@ const Profile = () => {
                         <p className='text-xl text-[var(--secondary-color)]'><span className='text-4xl font-bold'>{totalSolved}</span>/{totalProblems}</p>
                         <div className='flex justify-center gap-1 items-center'>
                           <FaCheckCircle className='text-green-500' />
-                          <p className='text-[var(--secondary-color)]'>Solved</p>
+                          <p className='text-[var(--secondary-color)] text-md'>Solved</p>
                         </div>
                       </div>
                       <div className={`transition-all duration-300 ${showAccuracy ? 'opacity-100 scale-100' : 'opacity-0 scale-90'} absolute`}>
                         <p className='text-3xl font-bold text-[var(--secondary-color)]'>{userData.stats.accuracy}%</p>
-                        <p className='text-xl font-medium text-[var(--secondary-color)]'>Accuracy</p>
+                        <p className='text-md font-medium text-[var(--secondary-color)]'>Accuracy</p>
                       </div>
-                    </div>
-
-                    {/* Tooltip */}
-                    <div className='absolute -bottom-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[var(--secondary-color)] text-white px-3 py-1 rounded-md text-xs whitespace-nowrap pointer-events-none'>
-                      Hover to see accuracy
                     </div>
                   </div>
 
