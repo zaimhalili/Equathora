@@ -44,8 +44,8 @@ const Profile = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className='bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] px-3 pt-5 pb-20'>
-        <div className='max-w-6xl mx-auto'>
+      <main className='bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] px-3 md:px-[30px] [@media(min-width:1600px)]:px-[12vw] pt-5 pb-20'>
+        <div className='mx-auto'>
           {/* Two Column Layout */}
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
             {/* Left Column - Combined Profile, Stats, and Topics */}
@@ -61,7 +61,7 @@ const Profile = () => {
                         <h5 className='font-bold text-xl md:text-2xl'>{userData.name}</h5>
                         <h5 className='font-light text-md md:text-lg'>{userData.username}</h5>
                       </div>
-                      <h6 className='text-md md:text-lg'>Rank <span className='font-bold'>{userData.stats.gloabalRank}</span></h6>
+                      <h6 className='text-md md:text-lg'>Rank <span className='font-bold'>{userData.stats.globalRank}</span></h6>
                     </div>
                   </div>
                   <button type="button" className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md cursor-pointer hover:bg-[var(--dark-accent-color)] transition-all duration-300'>Edit Profile</button>
