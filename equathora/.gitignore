@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# Environment variables - CRITICAL SECURITY
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +30,30 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Backend - ASP.NET Core
+backend/**/bin/
+backend/**/obj/
+backend/**/*.user
+backend/**/*.userosscache
+backend/**/*.suo
+backend/**/appsettings.Development.json
+backend/**/appsettings.Production.json
+backend/**/*.db
+backend/**/*.sqlite
+backend/**/*.sqlite3
+
+# Firebase Admin SDK - NEVER COMMIT THESE!
+backend/**/firebase-adminsdk*.json
+**/serviceAccountKey.json
+**/firebase-config.json
+
+# Database connection strings
+backend/**/connection-strings.json
+
+# Secrets and API keys
+**/*secrets*.json
+**/*apikeys*.json
+*.pem
+*.key
+*.cert
