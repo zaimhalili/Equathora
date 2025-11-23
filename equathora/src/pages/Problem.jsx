@@ -65,16 +65,16 @@ const Problem = () => {
         </header>
 
         {/* Main Content */}
-        <section className="flex flex-1 w-full gap-5 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-5 px-3 pb-5 overflow-hidden">
+        <section className="flex flex-1 w-full gap-5 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-5 px-2 pb-5 overflow-hidden">
           {/* Description Side */}
-          <article className="w-1/2 rounded-xl flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white">
+          <article className="w-1/2 rounded-lg flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white">
             
-            <div className='w-full py-1 flex gap-1 bg-[var(--french-gray)] px-8'>
+            <div className='w-full py-2 flex gap-1 bg-[var(--french-gray)] px-2'>
               <button type="button" className='cursor-pointer px-2 py-1 hover:bg-gray-200 rounded-sm text-md font-[Inter]'>Description</button>
               <button type="button" className='cursor-pointer px-2 py-1 hover:bg-gray-200 rounded-sm text-md font-[Inter]'>Solution</button>
             </div>
 
-            <div className="w-full px-8 py-6 flex flex-col gap-5 overflow-y-auto flex-1">
+            <div className="w-full px-6 py-6 flex flex-col gap-5 overflow-y-auto flex-1">
               {/* Problem Title & Badges */}
               <div>
                 <h1 className="font-[Public_Sans,sans-serif] text-2xl md:text-3xl text-[var(--secondary-color)] font-bold mb-3">{problem.title}</h1>
@@ -185,7 +185,7 @@ const Problem = () => {
           </article>
 
           {/* Solution Side - Math Live*/}
-          <article className="flex justify-start items-stretch flex-col w-1/2 h-full overflow-hidden rounded-xl">
+          <article className="flex justify-start items-stretch flex-col w-1/2 h-full overflow-hidden rounded-lg">
             <MathLiveExample />
           </article>
         </section>
