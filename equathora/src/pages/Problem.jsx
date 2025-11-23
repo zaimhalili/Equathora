@@ -45,9 +45,9 @@ const Problem = () => {
 
   return (
     <>
-      <main className="min-h-screen text-[var(--secondary-color)]">
+      <main className="h-screen flex flex-col text-[var(--secondary-color)] overflow-hidden">
         {/* Navigation Header */}
-        <header className="flex items-center justify-between font-[Public_Sans,sans-serif] bg-[var(--main-color)] w-full px-8 py-4">
+        <header className="flex items-center justify-between font-[Public_Sans,sans-serif] bg-[var(--main-color)] w-full px-8 py-4 flex-shrink-0">
           <Link to="/learn" className="flex items-center gap-2 text-md text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-4 py-2 rounded-lg hover:bg-[var(--french-gray)] hover:text-[var(--main-color)]">
             <img src={LilArrow} alt="arrow" className="w-5 h-5 rotate-180 transition-transform duration-200 hover:translate-x-1" />
             <span>Back to Exercises</span>
@@ -65,9 +65,14 @@ const Problem = () => {
         </header>
 
         {/* Main Content */}
-        <section className="flex w-full gap-5 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-5 px-3">
+        <section className="flex flex-1 w-full gap-5 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-5 px-3 pb-5 overflow-hidden">
           {/* Description Side */}
-          <article className="w-1/2 max-h-[90vh] rounded-2xl flex bg-[var(--accent-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] h-full overflow-hidden">
+          <article className="w-1/2 rounded-xl flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white">
+            
+            <div className='w-full py-1 flex gap-1 bg-[var(--french-gray)] px-8'>
+              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-gray-200 rounded-sm text-md font-[Inter]'>Description</button>
+              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-gray-200 rounded-sm text-md font-[Inter]'>Solution</button>
+            </div>
 
             <div className="w-full px-8 py-6 flex flex-col gap-5 overflow-y-auto flex-1">
               {/* Problem Title & Badges */}
@@ -180,7 +185,7 @@ const Problem = () => {
           </article>
 
           {/* Solution Side - Math Live*/}
-          <article className="flex justify-start items-stretch flex-col w-1/2 h-full overflow-hidden rounded-2xl">
+          <article className="flex justify-start items-stretch flex-col w-1/2 h-full overflow-hidden rounded-xl">
             <MathLiveExample />
           </article>
         </section>
