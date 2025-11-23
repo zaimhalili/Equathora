@@ -52,7 +52,7 @@ const Problem = () => {
             <img src={LilArrow} alt="arrow" className="w-5 h-5 rotate-180 transition-transform duration-200 hover:translate-x-1" />
             <span>Back to Exercises</span>
           </Link>
-          <div className="flex gap-4 items-center px-10">
+          <div className="flex gap-4 items-center">
             <Timer />
             <button
               className={`bg-transparent border-2 border-[var(--french-gray)] px-4 py-2 rounded-lg cursor-pointer text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] hover:scale-105 ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)]'}`}
@@ -65,7 +65,7 @@ const Problem = () => {
         </header>
 
         {/* Main Content */}
-        <section className="flex flex-1 w-full gap-5 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-5 px-2 pb-5 overflow-hidden">
+        <section className="flex flex-1 w-full gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-5 px-8 pb-5 overflow-hidden">
           {/* Description Side */}
           <article className="w-1/2 rounded-lg flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white">
             
