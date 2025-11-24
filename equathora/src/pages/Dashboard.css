@@ -70,16 +70,19 @@
     margin-top: .5rem;
     aspect-ratio: 16/9;
     height: 12rem;
+    max-height: 12rem;
     width: auto;
+    max-width: calc(13rem*4+8px);
     gap: 2px;
     display: flex;
-    box-shadow: 0 10px 10px rgba(141, 153, 174, 0.3);
 }
 
 .whereToStart-block {
     aspect-ratio: 1;
     height: auto;
     width: 13rem;
+    max-width: 13rem;
+    max-height: 12rem;
     background-color: white;
     transition: 0.2s ease-out;
     display: flex;
