@@ -83,17 +83,17 @@ const Problem = () => {
           <article className="w-full lg:w-1/2 rounded-lg flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white h-[50vh] lg:h-full">
 
             <div className='w-full py-1.5 md:py-2 flex gap-1 bg-[var(--french-gray)] px-2'>
-              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5'>
+              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium'>
                 <FaFileAlt className="text-[10px] md:text-xs text-[var(--secondary-color)]" />
                 <span>Description</span>
               </button>
-              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5'>
+              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium'>
                 <FaCode className="text-[10px] md:text-xs text-[var(--secondary-color)]" />
                 <span>Solution</span>
               </button>
             </div>
 
-            <div className="w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 overflow-y-auto flex-1">
+            <div className="w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 overflow-y-auto flex-1 problem-description-scroll">
               {/* Problem Title & Badges */}
               <div>
                 <h1 className="font-[Public_Sans,sans-serif] text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold pb-2 md:pb-3">{problem.title}</h1>
@@ -199,7 +199,7 @@ const Problem = () => {
                                 to={`/learn/${question.groupId}/${question.id}`}
                                 className="flex items-center justify-between p-2 md:p-3 rounded-lg group"
                               >
-                                <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Inter] group-hover:text-[var(--dark-accent-color)] transition-colors duration-200">
+                                <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Inter] group-hover:text-[var(--dark-accent-color)]">
                                   {question.title}
                                 </span>
                                 <span className={`px-2 py-0.5 rounded-md text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :

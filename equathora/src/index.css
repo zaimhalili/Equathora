@@ -108,6 +108,26 @@ a {
   color: inherit;
   text-decoration: inherit;
 }
+
+/* Custom scrollbar styles for problem description */
+.problem-description-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.problem-description-scroll::-webkit-scrollbar-track {
+  background: var(--french-gray);
+  border-radius: 10px;
+}
+
+.problem-description-scroll::-webkit-scrollbar-thumb {
+  background: var(--mid-main-secondary);
+  border-radius: 10px;
+}
+
+.problem-description-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
+
 /* 
 :focus {
   outline: 2px solid #007cba;
