@@ -6,19 +6,27 @@ import Navbar from '../components/Navbar.jsx';
 import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
 import Timer from '../components/Timer.jsx';
+import { FaChevronDown, FaChevronRight, FaLightbulb } from 'react-icons/fa';
 
 const Problem = () => {
   const { groupId, problemId } = useParams();
-  const [showHint, setShowHint] = useState(false);
+  const [openHints, setOpenHints] = useState({});
   const [showAnswer, setShowAnswer] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const toggleHint = (index) => {
+    setOpenHints(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
 
   const problem = {
     id: parseInt(problemId),
     groupId: parseInt(groupId),
     title: "Find the 44th element of the sequence",
     difficulty: "Easy",
-    description: "Given a sequence: 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, ... Find the 44th element of the sequence.",
+    description: "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.",
     examples: [
       {
         input: "n = 44",
@@ -26,7 +34,6 @@ const Problem = () => {
         explanation: "The pattern shows each number n appearing n times"
       }
     ],
-    constraints: "1 ≤ n ≤ 10^6",
     hints: [
       "Notice the pattern: number 1 appears 1 time, number 2 appears 2 times, etc.",
       "Can you find a mathematical formula for the position where number n first appears?",
@@ -47,15 +54,16 @@ const Problem = () => {
     <>
       <main className="h-screen flex flex-col text-[var(--secondary-color)] overflow-hidden">
         {/* Navigation Header */}
-        <header className="flex items-center justify-between font-[Public_Sans,sans-serif] bg-[var(--main-color)] w-full px-8 py-4 flex-shrink-0">
-          <Link to="/learn" className="flex items-center gap-2 text-md text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-4 py-2 rounded-lg hover:bg-[var(--french-gray)] hover:text-[var(--main-color)]">
-            <img src={LilArrow} alt="arrow" className="w-5 h-5 rotate-180 transition-transform duration-200 hover:translate-x-1" />
-            <span>Back to Exercises</span>
+        <header className="flex items-center justify-between font-[Public_Sans,sans-serif] bg-[var(--main-color)] w-full px-3 sm:px-6 md:px-8 py-3 md:py-4 flex-shrink-0">
+          <Link to="/learn" className="flex items-center gap-1 md:gap-2 text-sm md:text-md text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-2 md:px-4 py-2 rounded-lg hover:bg-[var(--french-gray)] hover:text-[var(--main-color)]">
+            <img src={LilArrow} alt="arrow" className="w-4 h-4 md:w-5 md:h-5 rotate-180 transition-transform duration-200 hover:translate-x-1" />
+            <span className="hidden sm:inline">Back to Exercises</span>
+            <span className="sm:hidden">Back</span>
           </Link>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-2 md:gap-4 items-center">
             <Timer />
             <button
-              className={`bg-transparent border-2 border-[var(--french-gray)] px-4 py-2 rounded-lg cursor-pointer text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] hover:scale-105 ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)]'}`}
+              className={`bg-transparent border-2 border-[var(--french-gray)] px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] hover:scale-105 ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)]'}`}
               onClick={() => setIsFavorite(!isFavorite)}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
@@ -65,60 +73,60 @@ const Problem = () => {
         </header>
 
         {/* Main Content */}
-        <section className="flex flex-1 w-full gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-5 px-8 pb-5 overflow-hidden">
+        <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 overflow-hidden">
           {/* Description Side */}
-          <article className="w-1/2 rounded-lg flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white">
-            
-            <div className='w-full py-2 flex gap-1 bg-[var(--french-gray)] px-2'>
-              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-gray-200 rounded-sm text-md font-[Inter]'>Description</button>
-              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-gray-200 rounded-sm text-md font-[Inter]'>Solution</button>
+          <article className="w-full lg:w-1/2 rounded-lg flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white h-[50vh] lg:h-full">
+
+            <div className='w-full py-1.5 md:py-2 flex gap-1 bg-[var(--french-gray)] px-2'>
+              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-gray-200 rounded-sm text-xs md:text-sm font-[Inter]'>Description</button>
+              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-gray-200 rounded-sm text-xs md:text-sm font-[Inter]'>Solution</button>
             </div>
 
-            <div className="w-full px-6 py-6 flex flex-col gap-5 overflow-y-auto flex-1">
+            <div className="w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 overflow-y-auto flex-1">
               {/* Problem Title & Badges */}
               <div>
-                <h1 className="font-[Public_Sans,sans-serif] text-2xl md:text-3xl text-[var(--secondary-color)] font-bold mb-3">{problem.title}</h1>
-                <div className="flex gap-2 flex-wrap font-[Inter,sans-serif] items-center">
-                  <span className={`px-3 py-1 rounded-md text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
+                <h1 className="font-[Public_Sans,sans-serif] text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold pb-2 md:pb-3">{problem.title}</h1>
+                <div className="flex gap-1.5 md:gap-2 flex-wrap font-[Inter,sans-serif] items-center">
+                  <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
                     problem.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
-                      'bg-red-500/10 text-red-600'
+                      'bg-red-500/10 text-[var(--accent-color)]'
                     }`}>
                     {problem.difficulty}
                   </span>
                   {problem.premium ? (
-                    <span className="px-3 py-1 rounded-md text-xs font-medium bg-yellow-500/10 text-yellow-700">Premium</span>
+                    <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-yellow-500/10 text-yellow-700">Premium</span>
                   ) : (
-                    <span className="px-3 py-1 rounded-md text-xs font-medium bg-gray-500/10 text-gray-600">Free</span>
+                    <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-gray-500/10 text-gray-600">Free</span>
                   )}
                   {problem.completed && (
-                    <span className="px-3 py-1 rounded-md text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
+                    <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
                   )}
                 </div>
               </div>
 
               {/* Problem Description */}
               <div>
-                <p className="text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Inter,sans-serif] m-0">{problem.description}</p>
+                <p className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Inter,sans-serif] m-0">{problem.description}</p>
               </div>
 
               {/* Examples */}
               <div>
-                <h3 className="text-base mb-3 text-[var(--secondary-color)] font-bold font-[Public_Sans,sans-serif]">Examples</h3>
+                <h3 className="text-sm md:text-base pb-2 md:pb-3 text-[var(--secondary-color)] font-bold font-[Public_Sans,sans-serif]">Examples</h3>
                 {problem.examples.map((example, index) => (
-                  <div key={index} className="p-4 bg-[var(--french-gray)]/30 rounded-lg mb-3 last:mb-0">
-                    <div className="text-xs font-bold text-[var(--secondary-color)] mb-2 font-[Public_Sans,sans-serif]">Example {index + 1}:</div>
-                    <div className="flex flex-col gap-2">
-                      <div className="flex items-center gap-2 text-sm font-[Inter,sans-serif]">
-                        <span className="font-semibold text-[var(--secondary-color)] min-w-[50px]">Input:</span>
-                        <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.85rem] font-semibold">{example.input}</code>
+                  <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/30 rounded-lg mb-2 md:mb-3 last:mb-0">
+                    <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 font-[Public_Sans,sans-serif]">Example {index + 1}:</div>
+                    <div className="flex flex-col gap-1.5 md:gap-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
+                        <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Input:</span>
+                        <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.input}</code>
                       </div>
-                      <div className="flex items-center gap-2 text-sm font-[Inter,sans-serif]">
-                        <span className="font-semibold text-[var(--secondary-color)] min-w-[50px]">Output:</span>
-                        <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.85rem] font-semibold">{example.output}</code>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
+                        <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Output:</span>
+                        <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.output}</code>
                       </div>
                     </div>
                     {example.explanation && (
-                      <div className="mt-2 pt-2 border-t border-dashed border-gray-300 text-[0.85rem] text-gray-600 italic leading-relaxed font-[Inter,sans-serif]">
+                      <div className="mt-2 pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed font-[Inter,sans-serif]">
                         {example.explanation}
                       </div>
                     )}
@@ -126,58 +134,38 @@ const Problem = () => {
                 ))}
               </div>
 
-              {/* Constraints */}
-              <div>
-                <h3 className="text-base mb-3 text-[var(--secondary-color)] font-bold font-[Public_Sans,sans-serif]">Constraints</h3>
-                <code className="block font-[Courier_New,monospace] bg-[var(--french-gray)]/30 text-[var(--secondary-color)] px-4 py-3 rounded-lg text-[0.85rem]">{problem.constraints}</code>
-              </div>
-
-              {/* Help Actions */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
-                <button
-                  className="flex items-center justify-center gap-2 bg-[var(--secondary-color)] text-[var(--main-color)]  border-[var(--secondary-color)] px-6 py-4 rounded-lg text-base font-semibold cursor-pointer transition-all duration-300 font-[Inter,sans-serif] no-underline text-center hover:-translate-y-1 hover:shadow-lg hover:bg-[var(--french-gray)] hover:border-[var(--french-gray)]"
-                  onClick={() => {
-                    setShowHint(!showHint);
-                    if (showAnswer) setShowAnswer(false);
-                  }}
-                >
-                  💡 {showHint ? 'Hide Hints' : 'Show Hints'}
-                </button>
-                <button
-                  className="flex items-center justify-center gap-2 bg-[var(--secondary-color)] text-[var(--main-color)] border-2 border-[var(--secondary-color)] px-6 py-4 rounded-lg text-base font-semibold cursor-pointer transition-all duration-300 font-[Inter,sans-serif] no-underline text-center hover:-translate-y-1 hover:shadow-lg hover:bg-[var(--accent-color)] hover:border-[var(--accent-color)]"
-                  onClick={() => {
-                    setShowAnswer(!showAnswer);
-                    if (showHint) setShowHint(false);
-                  }}
-                >
-                  ✓ {showAnswer ? 'Hide Answer' : 'Show Answer'}
-                </button>
-                <Link to="/more/apply-mentor" className="flex items-center justify-center gap-2 bg-[var(--secondary-color)] text-[var(--main-color)] border-2 border-[var(--secondary-color)] px-6 py-4 rounded-lg text-base font-semibold cursor-pointer transition-all duration-300 font-[Inter,sans-serif] no-underline text-center hover:-translate-y-1 hover:shadow-lg hover:bg-[var(--mid-main-secondary)] hover:border-[var(--mid-main-secondary)]">
-                  💬 Ask a Mentor
-                </Link>
-              </div>
-
-              {/* Hints Content */}
-              {showHint && (
-                <div className="mt-6 p-7 rounded-xl border-2 border-[var(--french-gray)] bg-white animate-[slideDown_0.4s_ease]">
-                  <h3 className="text-xl font-bold mb-6 text-[var(--secondary-color)] font-[Public_Sans,sans-serif] border-l-4 border-[var(--accent-color)] pl-4">💡 Hints</h3>
-                  <div className="flex flex-col gap-4">
+              {/* Hints Section - Collapsible like LeetCode */}
+              {problem.hints && problem.hints.length > 0 && (
+                <div className="border-t border-[var(--french-gray)] pt-3 md:pt-5">
+                  <div className="flex items-center gap-2 pb-2 md:pb-3">
+                    <FaLightbulb className="text-yellow-500 text-sm md:text-base" />
+                    <h3 className="text-sm md:text-base text-[var(--secondary-color)] font-bold font-[Public_Sans,sans-serif] m-0">Hints</h3>
+                  </div>
+                  <div className="flex flex-col gap-1.5 md:gap-2">
                     {problem.hints.map((hint, index) => (
-                      <div key={index} className="bg-[var(--mid-main-secondary)] p-5 rounded-lg border-l-4 border-[var(--french-gray)] transition-all duration-300 hover:border-l-[var(--accent-color)] hover:translate-x-1">
-                        <span className="font-bold text-[var(--main-color)] block mb-3 text-sm uppercase tracking-wide">Hint {index + 1}</span>
-                        <p className="m-0 text-[var(--main-color)] text-base leading-7 font-[Inter,sans-serif]">{hint}</p>
+                      <div key={index} className="border border-[var(--french-gray)] rounded-lg overflow-hidden">
+                        <button
+                          className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 bg-[var(--french-gray)]/20 hover:bg-[var(--french-gray)]/40 transition-colors duration-200 cursor-pointer text-left"
+                          onClick={() => toggleHint(index)}
+                        >
+                          <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Inter]">
+                            Hint {index + 1}
+                          </span>
+                          {openHints[index] ? (
+                            <FaChevronDown className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                          ) : (
+                            <FaChevronRight className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                          )}
+                        </button>
+                        {openHints[index] && (
+                          <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--french-gray)]">
+                            <p className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed font-[Inter] m-0">
+                              {hint}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Answer Content */}
-              {showAnswer && (
-                <div className="mt-6 p-7 rounded-xl border-2 border-[var(--french-gray)] bg-white animate-[slideDown_0.4s_ease]">
-                  <h3 className="text-xl font-bold mb-6 text-[var(--secondary-color)] font-[Public_Sans,sans-serif] border-l-4 border-[var(--accent-color)] pl-4">✓ Correct Answer</h3>
-                  <div className="bg-[var(--mid-main-secondary)] p-6 rounded-lg border-l-4 border-[var(--accent-color)]">
-                    <p className="text-[1.05rem] leading-7 text-[var(--main-color)] m-0 font-[Inter,sans-serif]">{problem.correctAnswer}</p>
                   </div>
                 </div>
               )}
@@ -185,11 +173,11 @@ const Problem = () => {
           </article>
 
           {/* Solution Side - Math Live*/}
-          <article className="flex justify-start items-stretch flex-col w-1/2 h-full overflow-hidden rounded-lg">
+          <article className="flex justify-start items-stretch flex-col w-full lg:w-1/2 h-[40vh] lg:h-full overflow-hidden rounded-lg">
             <MathLiveExample />
           </article>
         </section>
-      </main>
+      </main >
     </>
   );
 };
