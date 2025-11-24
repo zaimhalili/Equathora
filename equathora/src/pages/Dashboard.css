@@ -24,7 +24,7 @@
 }
 
 #welcome-dashboard h1 {
-    font-size: clamp(2.8rem, 5vw, 3.2rem);
+    font-size: clamp(1.5rem, 5vw, 2rem);
     margin-bottom: 2vh;
     cursor: default;
     font-weight: 700;
@@ -62,14 +62,14 @@
 #whereToStart-container h3 {
     color: var(--secondary-color);
     font-family: 'Inter', sans-serif;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
 }
 
 #whereToStart-options {
     margin-top: .5rem;
     aspect-ratio: 16/9;
-    height: 16rem;
+    height: 12rem;
     width: auto;
     gap: 2px;
     display: flex;
@@ -78,8 +78,8 @@
 
 .whereToStart-block {
     aspect-ratio: 1;
-    height: 16rem;
-    width: 17rem;
+    height: auto;
+    width: 13rem;
     background-color: white;
     transition: 0.2s ease-out;
     display: flex;
@@ -94,14 +94,14 @@
 }
 
 .whereToStart-block img {
-    height: 80%;
-    width: 80%;
+    height: 70%;
+    width: 70%;
 }
 
 .whereToStart-block h6 {
     color: var(--secondary-color);
     font-family: 'Public Sans', Arial, Helvetica, sans-serif;
-    font-size: clamp(1rem, 3vw, 1.4rem);
+    font-size: clamp(1rem, 3vw, 1.1rem);
     font-weight: 400;
     width: 80%;
     height: 8rem;
