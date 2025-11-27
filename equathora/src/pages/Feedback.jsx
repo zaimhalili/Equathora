@@ -86,7 +86,6 @@ const Feedback = () => {
             'Page not loading correctly',
             'Button/Link not working',
             'Math input not functioning',
-            'Login/Authentication issue',
             'Performance/Speed issue',
             'Mobile compatibility problem'
         ],
@@ -95,13 +94,10 @@ const Feedback = () => {
             'Colors not matching',
             'Layout broken on mobile',
             'Icons not displaying',
-            'Spacing/Alignment issue',
-            'Dark mode issue'
+            'Spacing/Alignment issue'
         ],
         feature: [
             'Better problem filtering',
-            'Progress tracking',
-            'Social features',
             'More hint options',
             'Keyboard shortcuts',
             'Export/Print functionality'
@@ -110,7 +106,6 @@ const Feedback = () => {
             'Content suggestion',
             'Documentation improvement',
             'Accessibility concern',
-            'Security concern',
             'Other'
         ]
     };
