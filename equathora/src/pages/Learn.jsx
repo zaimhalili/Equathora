@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import Navbar from '../components/Navbar.jsx';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
+import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import './Learn.css';
 import Idea from '../assets/images/idea.svg';
 import { FaSearch } from 'react-icons/fa';

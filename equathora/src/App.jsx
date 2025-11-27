@@ -33,6 +33,7 @@ import Resend from "./pages/Resend";
 import ForgotPassword from "./pages/ForgotPassword";
 import Premium from "./pages/Premium";
 import Recommended from "./pages/Recommended";
+import Feedback from "./pages/Feedback";
 
 export default function App() {
   useEffect(() => {
@@ -67,6 +68,7 @@ export default function App() {
         <Route path="/pageNotFound" element={<PageNotFound />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/premium" element={<Premium />} />
+        <Route path="/feedback" element={<Feedback />} />
 
 
 

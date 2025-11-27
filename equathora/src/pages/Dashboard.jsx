@@ -2,6 +2,7 @@ import React from 'react';
 import './Dashboard.css';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
+import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import Teacher from '../assets/images/teacher.svg';
 import YourTrack from '../components/YourTrack.jsx';
 import Books from '../assets/images/learningBooks.svg';
@@ -17,6 +18,7 @@ const Dashboard = () => {
   let username = "Friend";
   return (
     <>
+      <FeedbackBanner />
       <main id='body-dashboard'>
         <header>
           <Navbar />
