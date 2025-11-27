@@ -9,6 +9,7 @@ const Feedback = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         feedbackType: 'bug',
+        commonIssue: '',
         title: '',
         description: '',
         email: '',
@@ -32,44 +33,39 @@ const Feedback = () => {
         // Sanitize inputs to prevent XSS
         const sanitizedData = {
             feedbackType: formData.feedbackType,
+            commonIssue: formData.commonIssue,
             title: formData.title.slice(0, 100).trim(),
             description: formData.description.slice(0, 2000).trim(),
             email: formData.email.slice(0, 100).trim(),
             page: formData.page,
             timestamp: new Date().toISOString(),
-            userAgent: navigator.userAgent
+            userAgent: navigator.userAgent,
+            screenResolution: `${window.screen.width}x${window.screen.height}`
         };
 
         try {
-            // TODO: Replace with your actual backend endpoint
-            // For MVP, you can use services like:
-            // - FormSpree (https://formspree.io/)
-            // - EmailJS (https://www.emailjs.com/)
-            // - Web3Forms (https://web3forms.com/)
-            // - Or your own ASP.NET endpoint
+            // Store feedback in localStorage for now (static solution)
+            const existingFeedback = JSON.parse(localStorage.getItem('equathoraFeedback') || '[]');
+            existingFeedback.push(sanitizedData);
+            localStorage.setItem('equathoraFeedback', JSON.stringify(existingFeedback));
 
-            const response = await fetch('YOUR_BACKEND_ENDPOINT_HERE', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(sanitizedData)
+            // Also log to console for easy copying during development
+            console.log('📝 New Feedback Submitted:', sanitizedData);
+            console.log('📊 All Feedback:', existingFeedback);
+
+            setSubmitSuccess(true);
+            setFormData({
+                feedbackType: 'bug',
+                commonIssue: '',
+                title: '',
+                description: '',
+                email: '',
+                page: window.location.pathname
             });
 
-            if (response.ok) {
-                setSubmitSuccess(true);
-                setFormData({
-                    feedbackType: 'bug',
-                    title: '',
-                    description: '',
-                    email: '',
-                    page: window.location.pathname
-                });
-
-                setTimeout(() => {
-                    navigate('/');
-                }, 3000);
-            }
+            setTimeout(() => {
+                navigate('/');
+            }, 3000);
         } catch (error) {
             console.error('Error submitting feedback:', error);
             alert('Failed to submit feedback. Please try again later.');
@@ -84,6 +80,40 @@ const Feedback = () => {
         { value: 'feature', label: 'Feature Request', icon: FaLightbulb, color: 'text-yellow-600' },
         { value: 'other', label: 'General Feedback', icon: FaCommentAlt, color: 'text-blue-600' }
     ];
+
+    const commonIssues = {
+        bug: [
+            'Page not loading correctly',
+            'Button/Link not working',
+            'Math input not functioning',
+            'Login/Authentication issue',
+            'Performance/Speed issue',
+            'Mobile compatibility problem'
+        ],
+        visual: [
+            'Text hard to read',
+            'Colors not matching',
+            'Layout broken on mobile',
+            'Icons not displaying',
+            'Spacing/Alignment issue',
+            'Dark mode issue'
+        ],
+        feature: [
+            'Better problem filtering',
+            'Progress tracking',
+            'Social features',
+            'More hint options',
+            'Keyboard shortcuts',
+            'Export/Print functionality'
+        ],
+        other: [
+            'Content suggestion',
+            'Documentation improvement',
+            'Accessibility concern',
+            'Security concern',
+            'Other'
+        ]
+    };
 
     return (
         <>
@@ -113,15 +143,15 @@ const Feedback = () => {
                                 {/* Feedback Type Selection */}
                                 <div>
                                     <label className="block text-sm font-semibold text-[var(--secondary-color)] mb-3 font-[Inter]">
-                                        What type of feedback do you have?
+                                        What type of feedback do you have? <span className="text-[var(--accent-color)]">*</span>
                                     </label>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         {feedbackTypes.map((type) => (
                                             <label
                                                 key={type.value}
                                                 className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${formData.feedbackType === type.value
-                                                        ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/5'
-                                                        : 'border-[var(--french-gray)] hover:border-[var(--mid-main-secondary)]'
+                                                    ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/5'
+                                                    : 'border-[var(--french-gray)] hover:border-[var(--mid-main-secondary)]'
                                                     }`}
                                             >
                                                 <input
@@ -134,6 +164,34 @@ const Feedback = () => {
                                                 />
                                                 <type.icon className={`text-xl ${type.color}`} />
                                                 <span className="font-medium text-[var(--secondary-color)] text-sm">{type.label}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Common Issues Radio Buttons */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-[var(--secondary-color)] mb-3 font-[Inter]">
+                                        Common issues (optional)
+                                    </label>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        {commonIssues[formData.feedbackType].map((issue) => (
+                                            <label
+                                                key={issue}
+                                                className={`flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer transition-all duration-150 text-sm ${formData.commonIssue === issue
+                                                    ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/10 text-[var(--secondary-color)] font-medium'
+                                                    : 'border-[var(--french-gray)] hover:border-[var(--mid-main-secondary)] text-[var(--secondary-color)]'
+                                                    }`}
+                                            >
+                                                <input
+                                                    type="radio"
+                                                    name="commonIssue"
+                                                    value={issue}
+                                                    checked={formData.commonIssue === issue}
+                                                    onChange={handleChange}
+                                                    className="w-4 h-4 text-[var(--accent-color)] border-[var(--french-gray)] focus:ring-[var(--accent-color)]"
+                                                />
+                                                <span className="font-[Inter]">{issue}</span>
                                             </label>
                                         ))}
                                     </div>
@@ -219,13 +277,23 @@ const Feedback = () => {
                         )}
                     </div>
 
-                    {/* Information Box */}
-                    <div className="mt-6 bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
-                        <h3 className="font-bold text-blue-900 mb-2 font-[Public_Sans]">Privacy Notice</h3>
-                        <p className="text-sm text-blue-800 font-[Inter]">
-                            Your feedback is important to us. We collect this information solely to improve Equathora.
-                            Your email address (if provided) will only be used to follow up on your feedback and will never be shared with third parties.
-                        </p>
+                    {/* Information Boxes */}
+                    <div className="mt-6 space-y-4">
+                        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
+                            <h3 className="font-bold text-blue-900 mb-2 font-[Public_Sans]">Privacy Notice</h3>
+                            <p className="text-sm text-blue-800 font-[Inter]">
+                                Your feedback is important to us. We collect this information solely to improve Equathora.
+                                Your email address (if provided) will only be used to follow up on your feedback and will never be shared with third parties.
+                            </p>
+                        </div>
+
+                        <div className="bg-yellow-50 border-l-4 border-yellow-500 rounded-lg p-4">
+                            <h3 className="font-bold text-yellow-900 mb-2 font-[Public_Sans]">For Developers</h3>
+                            <p className="text-sm text-yellow-800 font-[Inter]">
+                                Feedback is currently stored in browser localStorage. Open the browser console to see submitted feedback.
+                                To export all feedback: <code className="bg-yellow-100 px-2 py-1 rounded text-xs">JSON.parse(localStorage.getItem('equathoraFeedback'))</code>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </main>
