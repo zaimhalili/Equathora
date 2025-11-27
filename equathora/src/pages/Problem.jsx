@@ -13,6 +13,8 @@ const Problem = () => {
   const [openHints, setOpenHints] = useState({});
   const [showAnswer, setShowAnswer] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [showDescription, setShowDescription] = useState(true);
+  const [showSolutionPopup, setShowSolutionPopup] = useState(false);
 
   const toggleHint = (index) => {
     setOpenHints(prev => ({
@@ -77,17 +79,36 @@ const Problem = () => {
           </div>
         </header>
 
+        {showSolutionPopup ? (
+          <div className='flex items-center justify-center w-full h-full relative z-99'>
+            <div className='bg-white absolute w-3/4 min-h-40 z-100 rounded-2xl px-5 py-3 flex flex-col gap-3'>
+              <div className='flex flex-col'>
+                <h2 className='font-[Inter, Impact] text-left font-bold text-2xl'>Check solution?</h2>
+                <p className='text-[var(--french-gray) font-[Inter, consolas]'>If the exercise wasn't solved, this will result in 0 points, but will count as a solved problem.</p>
+              </div>
+
+              <div className='flex w-full justify-between gap-3'>
+                <button type="button" className='px-3 cursor-pointer py-1 font-medium text-center border-2 border-[var(--french-gray)] rounded-md hover:bg-[var(--french-gray)] hover:shadow-md hover:-translate-y-1 shadow-gray-900 transition-all duration-300 flex-1'>Go Back</button>
+                <button type="button" className='px-3 cursor-pointer py-1 font-bold text-center border-2 border-[var(--accent-color)] rounded-md hover:text-[var(--accent-color)] hover:shadow-md hover:-translate-y-1 shadow-gray-900 transition-all duration-300 flex-1'>Check Solution</button>
+              </div>
+
+            </div>
+          </div>
+        ) : (
+          <div></div>
+        )}
+
         {/* Main Content */}
         <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 overflow-hidden">
           {/* Description Side */}
           <article className="w-full lg:w-1/2 rounded-lg flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white h-[50vh] lg:h-full">
 
             <div className='w-full py-1.5 md:py-2 flex gap-1 bg-[var(--french-gray)] px-2'>
-              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium'>
+              <button type="button" onClick={() => { setShowDescription(true); setShowSolutionPopup(false); }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${showDescription ? 'bg-[var(--main-color)]' : ''}`}>
                 <FaFileAlt className="text-[10px] md:text-xs text-[var(--secondary-color)]" />
                 <span>Description</span>
               </button>
-              <button type="button" className='cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium'>
+              <button type="button" onClick={() => { setShowDescription(false); setShowSolutionPopup(true); }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${!showDescription ? 'bg-[var(--main-color)]' : ''}`}>
                 <FaCode className="text-[10px] md:text-xs text-[var(--secondary-color)]" />
                 <span>Solution</span>
               </button>
