@@ -91,7 +91,8 @@ const Problem = () => {
 
               <div className='flex w-full justify-between gap-3 pt-6'>
                 <button type="button" onClick={() => { setShowSolutionPopup(false); setShowDescription(true); }} className='px-3 cursor-pointer py-2 font-medium text-center border-2 border-[var(--french-gray)] rounded-md bg-[var(--french-gray)] text-[var(--secondary-color)] shadow-md hover:shadow-none -translate-y-1 hover:translate-y-0 shadow-gray-900 transition-all duration-300 flex-1 text-sm'>Go Back</button>
-                <button type="button" className='px-3 cursor-pointer py-2 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] shadow-md hover:shadow-none -translate-y-1 hover:translate-y-0 shadow-gray-900 transition-all duration-300 flex-1 text-sm'>Check Solution</button>
+                
+                <button type="button" className='px-3 cursor-pointer py-2 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] shadow-md hover:shadow-none -translate-y-1 hover:translate-y-0 shadow-gray-900 transition-all duration-300 flex-1 text-sm' onClick={() => { setShowSolution(true); setShowSolutionPopup(false)}}>Check Solution</button>
               </div>
             </div>
           </div>
@@ -107,7 +108,7 @@ const Problem = () => {
                 <FaFileAlt className="text-[10px] md:text-xs text-[var(--secondary-color)]" />
                 <span>Description</span>
               </button>
-              <button type="button" onClick={() => { setShowDescription(false); setShowSolutionPopup(true); }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${!showDescription ? 'bg-[var(--main-color)]' : ''}`}>
+              <button type="button" onClick={() => { setShowDescription(false);showSolution ? '' : setShowSolutionPopup(true); }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${!showDescription ? 'bg-[var(--main-color)]' : ''}`}>
                 <FaCalculator className="text-[10px] md:text-xs text-[var(--secondary-color)]" />
                 <span>Solution</span>
               </button>
