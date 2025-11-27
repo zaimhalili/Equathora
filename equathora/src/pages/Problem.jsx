@@ -79,23 +79,21 @@ const Problem = () => {
           </div>
         </header>
 
-        {showSolutionPopup ? (
-          <div className='flex items-center justify-center w-screen h-screen relative z-99 backdrop-blur-2xl' onClick={() => { setShowDescription(true); setShowSolutionPopup(false); }}>
-            <div className='bg-white absolute w-3/4 min-h-40 z-100 rounded-2xl px-5 py-6 flex flex-col'>
+        {showSolutionPopup && (
+          <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30' onClick={() => { setShowDescription(true); setShowSolutionPopup(false); }}>
+            <div className='bg-white w-11/12 max-w-md min-h-40 rounded-2xl px-5 py-6 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
               <div className='flex flex-col'>
-                <h2 className='font-[Inter, Impact] text-left font-bold text-2xl'>Check solution?</h2>
-                <p className='text-[var(--french-gray) font-[Inter, consolas]'>If the exercise wasn't solved, this will result in 0 points, but will count as a solved problem.</p>
+                <h2 className='font-[Inter,Impact] text-left font-bold text-2xl text-[var(--secondary-color)]'>Check solution?</h2>
+                <p className='font-[Inter,consolas] text-[var(--secondary-color)] text-sm mt-2'>If the exercise wasn't solved, this will result in 0 points, but will count as a solved problem.</p>
               </div>
 
               <div className='flex w-full justify-between gap-3 pt-6'>
-                <button type="button" onClick={() => { setShowSolutionPopup(false); setShowDescription(true); }} className='px-3 cursor-pointer py-1 font-medium text-center border-2 border-[var(--french-gray)] rounded-md bg-[var(--french-gray)] shadow-md hover:shadow-none -translate-y-1 hover:translate-y-0 shadow-gray-900 transition-all duration-300 flex-1 text-sm'>Go Back</button>
-                <button type="button" className='px-3 cursor-pointer py-1 font-bold text-center border-2 border-[var(--accent-color)] rounded-md hover:text-[var(--accent-color)] shadow-md hover:shadow-none -translate-y-1 hover:translate-y-0 shadow-gray-900 transition-all duration-300 flex-1 text-sm'>Check Solution</button>
+                <button type="button" onClick={() => { setShowSolutionPopup(false); setShowDescription(true); }} className='px-3 cursor-pointer py-2 font-medium text-center border-2 border-[var(--french-gray)] rounded-md bg-[var(--french-gray)] text-[var(--secondary-color)] shadow-md hover:shadow-none -translate-y-1 hover:translate-y-0 shadow-gray-900 transition-all duration-300 flex-1 text-sm'>Go Back</button>
+                <button type="button" className='px-3 cursor-pointer py-2 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] shadow-md hover:shadow-none -translate-y-1 hover:translate-y-0 shadow-gray-900 transition-all duration-300 flex-1 text-sm'>Check Solution</button>
               </div>
 
             </div>
           </div>
-        ) : (
-          <div></div>
         )}
 
         {/* Main Content */}
