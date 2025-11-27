@@ -15,6 +15,7 @@ const Problem = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [showDescription, setShowDescription] = useState(true);
   const [showSolutionPopup, setShowSolutionPopup] = useState(false);
+  const [showSolution, setShowSolution] = useState(false);
 
   const toggleHint = (index) => {
     setOpenHints(prev => ({
@@ -79,6 +80,7 @@ const Problem = () => {
           </div>
         </header>
 
+        {/* Show Solution Popup */}
         {showSolutionPopup && (
           <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30' onClick={() => { setShowDescription(true); setShowSolutionPopup(false); }}>
             <div className='bg-white w-11/12 max-w-md min-h-40 rounded-2xl px-5 py-6 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
@@ -89,9 +91,8 @@ const Problem = () => {
 
               <div className='flex w-full justify-between gap-3 pt-6'>
                 <button type="button" onClick={() => { setShowSolutionPopup(false); setShowDescription(true); }} className='px-3 cursor-pointer py-2 font-medium text-center border-2 border-[var(--french-gray)] rounded-md bg-[var(--french-gray)] text-[var(--secondary-color)] shadow-md hover:shadow-none -translate-y-1 hover:translate-y-0 shadow-gray-900 transition-all duration-300 flex-1 text-sm'>Go Back</button>
-                <button type="button" className='px-3 cursor-pointer py-2 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] shadow-md hover:shadow-none -translate-y-1 hover:translate-y-0 shadow-gray-900 transition-all duration-300 flex-1 text-sm'>Check Solution</button>
+                <button type="button" onClick={() => setShowSolution(true)} className='px-3 cursor-pointer py-2 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] shadow-md hover:shadow-none -translate-y-1 hover:translate-y-0 shadow-gray-900 transition-all duration-300 flex-1 text-sm'>Check Solution</button>
               </div>
-
             </div>
           </div>
         )}
@@ -102,11 +103,11 @@ const Problem = () => {
           <article className="w-full lg:w-1/2 rounded-lg flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white h-[50vh] lg:h-full">
 
             <div className='w-full py-1.5 md:py-2 flex gap-1 bg-[var(--french-gray)] px-2'>
-              <button type="button" onClick={() => { setShowDescription(true); setShowSolutionPopup(false); }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${showDescription ? 'bg-[var(--main-color)]' : ''}`}>
+              <button type="button" onClick={() => { setShowDescription(true); setShowSolutionPopup(false); setShowSolution(false) }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${showDescription ? 'bg-[var(--main-color)]' : ''}`}>
                 <FaFileAlt className="text-[10px] md:text-xs text-[var(--secondary-color)]" />
                 <span>Description</span>
               </button>
-              <button type="button" onClick={() => { setShowDescription(false); setShowSolutionPopup(true); }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${!showDescription ? 'bg-[var(--main-color)]' : ''}`}>
+              <button type="button" onClick={() => { setShowDescription(false); showSolution ? '' : setShowSolutionPopup(true); }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${!showDescription ? 'bg-[var(--main-color)]' : ''}`}>
                 <FaCode className="text-[10px] md:text-xs text-[var(--secondary-color)]" />
                 <span>Solution</span>
               </button>
@@ -134,108 +135,116 @@ const Problem = () => {
                 </div>
               </div>
 
-              {/* Problem Description */}
-              <div>
-                <p className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Inter,sans-serif] m-0">{problem.description}</p>
-              </div>
+              {showSolution ? (
+                <div>
+                  <p className="text-sm md:text-base text-[var(--secondary-color)] font-[Inter,sans-serif]">Solution content will be displayed here...</p>
+                </div>
+              ) : (
+                <>
+                  {/* Problem Description */}
+                  <div>
+                    <p className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Inter,sans-serif] m-0">{problem.description}</p>
+                  </div>
 
-              {/* Examples */}
-              <div>
-                <h3 className="text-sm md:text-base pb-2 md:pb-3 text-[var(--secondary-color)] font-bold font-[Inter,sans-serif]">Examples</h3>
-                {problem.examples.map((example, index) => (
-                  <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/40 rounded-lg mb-2 md:mb-3 last:mb-0">
-                    <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 font-[Public_Sans,sans-serif]">Example {index + 1}:</div>
-                    <div className="flex flex-col gap-1.5 md:gap-2">
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
-                        <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Input:</span>
-                        <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.input}</code>
+                  {/* Examples */}
+                  <div>
+                    <h3 className="text-sm md:text-base pb-2 md:pb-3 text-[var(--secondary-color)] font-bold font-[Inter,sans-serif]">Examples</h3>
+                    {problem.examples.map((example, index) => (
+                      <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/40 rounded-lg mb-2 md:mb-3 last:mb-0">
+                        <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 font-[Public_Sans,sans-serif]">Example {index + 1}:</div>
+                        <div className="flex flex-col gap-1.5 md:gap-2">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
+                            <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Input:</span>
+                            <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.input}</code>
+                          </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
+                            <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Output:</span>
+                            <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.output}</code>
+                          </div>
+                        </div>
+                        {example.explanation && (
+                          <div className="mt-2 pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed font-[Inter,sans-serif]">
+                            {example.explanation}
+                          </div>
+                        )}
                       </div>
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
-                        <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Output:</span>
-                        <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.output}</code>
-                      </div>
-                    </div>
-                    {example.explanation && (
-                      <div className="mt-2 pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed font-[Inter,sans-serif]">
-                        {example.explanation}
+                    ))}
+                  </div>
+
+                  {/* Hints Section - Collapsible like LeetCode */}
+                  <div>
+                    {problem.hints && problem.hints.length > 0 && (
+                      <div className="border-t border-[var(--french-gray)]">
+
+                        <div className="flex flex-col">
+                          {problem.hints.map((hint, index) => (
+                            <div key={index} className="border-t border-[var(--french-gray)] overflow-hidden">
+                              <button
+                                className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
+                                onClick={() => toggleHint(index)}
+                              >
+                                <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Inter] flex items-center gap-2">
+                                  <FaLightbulb className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                                  Hint {index + 1}
+                                </span>
+                                <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints[index] ? 'rotate-180' : ''}`} />
+                              </button>
+                              <div className={`transition-all duration-300 ease-in-out ${openHints[index] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--french-gray)]">
+                                  <p className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed font-[Inter] m-0">
+                                    {hint}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
-                  </div>
-                ))}
-              </div>
 
-              {/* Hints Section - Collapsible like LeetCode */}
-              <div>
-                {problem.hints && problem.hints.length > 0 && (
-                  <div className="border-t border-[var(--french-gray)]">
-
-                    <div className="flex flex-col">
-                      {problem.hints.map((hint, index) => (
-                        <div key={index} className="border-t border-[var(--french-gray)] overflow-hidden">
-                          <button
-                            className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
-                            onClick={() => toggleHint(index)}
-                          >
-                            <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Inter] flex items-center gap-2">
-                              <FaLightbulb className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
-                              Hint {index + 1}
-                            </span>
-                            <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints[index] ? 'rotate-180' : ''}`} />
-                          </button>
-                          <div className={`transition-all duration-300 ease-in-out ${openHints[index] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                            <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--french-gray)]">
-                              <p className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed font-[Inter] m-0">
-                                {hint}
-                              </p>
+                    {/* Similar Questions Section */}
+                    {problem.similarQuestions && problem.similarQuestions.length > 0 && (
+                      <div className="">
+                        <div className="flex flex-col">
+                          <div className="border-t border-[var(--french-gray)] overflow-hidden">
+                            <button
+                              className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
+                              onClick={() => toggleHint('similar')}
+                            >
+                              <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Inter] flex items-center gap-2">
+                                <FaLink className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                                Similar Questions
+                              </span>
+                              <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
+                            </button>
+                            <div className={`transition-all duration-300 ease-in-out ${openHints['similar'] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                              <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--french-gray)] flex flex-col">
+                                {problem.similarQuestions.map((question, index) => (
+                                  <Link
+                                    key={index}
+                                    to={`/learn/${question.groupId}/${question.id}`}
+                                    className="flex items-center justify-between p-2 md:p-3 rounded-lg group"
+                                  >
+                                    <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Inter] group-hover:text-[var(--dark-accent-color)]">
+                                      {question.title}
+                                    </span>
+                                    <span className={`px-2 py-0.5 rounded-md text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
+                                      question.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
+                                        'bg-red-500/10 text-[var(--accent-color)]'
+                                      }`}>
+                                      {question.difficulty}
+                                    </span>
+                                  </Link>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Similar Questions Section */}
-                {problem.similarQuestions && problem.similarQuestions.length > 0 && (
-                  <div className="">
-                    <div className="flex flex-col">
-                      <div className="border-t border-[var(--french-gray)] overflow-hidden">
-                        <button
-                          className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
-                          onClick={() => toggleHint('similar')}
-                        >
-                          <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Inter] flex items-center gap-2">
-                            <FaLink className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
-                            Similar Questions
-                          </span>
-                          <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
-                        </button>
-                        <div className={`transition-all duration-300 ease-in-out ${openHints['similar'] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                          <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--french-gray)] flex flex-col">
-                            {problem.similarQuestions.map((question, index) => (
-                              <Link
-                                key={index}
-                                to={`/learn/${question.groupId}/${question.id}`}
-                                className="flex items-center justify-between p-2 md:p-3 rounded-lg group"
-                              >
-                                <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Inter] group-hover:text-[var(--dark-accent-color)]">
-                                  {question.title}
-                                </span>
-                                <span className={`px-2 py-0.5 rounded-md text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
-                                  question.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
-                                    'bg-red-500/10 text-[var(--accent-color)]'
-                                  }`}>
-                                  {question.difficulty}
-                                </span>
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
-                )}
-              </div>
+                </>
+              )}
 
             </div>
           </article>
