@@ -117,27 +117,27 @@ const Feedback = () => {
                 <Navbar />
             </header>
 
-            <main className="min-h-screen bg-gradient-to-b from-[var(--mid-main-secondary)] to-[var(--main-color)] py-8 px-4 sm:px-6 md:px-8">
-                <div className="max-w-3xl mx-auto">
+            <main className="min-h-screen bg-gradient-to-b from-[var(--mid-main-secondary)] to-[var(--main-color)] py-8 px-4 sm:px-6 md:px-8 w-full flex justify-center">
+                <div className="max-w-3xl">
                     <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-10">
-                        <h1 className="text-3xl sm:text-4xl font-bold text-[var(--secondary-color)] font-[Public_Sans] mb-4">
+                        <h1 className="text-3xl sm:text-4xl font-bold text-[var(--secondary-color)] font-[Public_Sans] pb-4">
                             Share Your Feedback
                         </h1>
-                        <p className="text-[var(--secondary-color)] opacity-80 font-[Inter] mb-8 text-sm sm:text-base">
+                        <p className="text-[var(--secondary-color)] opacity-80 font-[Inter] pb-4 text-sm sm:text-base">
                             Help us make Equathora better! Your feedback is valuable and helps us improve the platform for everyone.
                         </p>
 
                         {submitSuccess ? (
                             <div className="bg-green-50 border-2 border-green-500 rounded-lg p-6 text-center">
-                                <div className="text-4xl mb-4">✅</div>
-                                <h2 className="text-2xl font-bold text-green-700 mb-2">Thank You!</h2>
+                                <div className="text-4xl pb-4">✅</div>
+                                <h2 className="text-2xl font-bold text-green-700 pb-2">Thank You!</h2>
                                 <p className="text-green-600">Your feedback has been submitted successfully. Redirecting to homepage...</p>
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 {/* Feedback Type Selection */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-[var(--secondary-color)] mb-3 font-[Inter]">
+                                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pb-3 font-[Inter]">
                                         What type of feedback do you have? <span className="text-[var(--accent-color)]">*</span>
                                     </label>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -166,7 +166,7 @@ const Feedback = () => {
 
                                 {/* Common Issues Radio Buttons */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-[var(--secondary-color)] mb-3 font-[Inter]">
+                                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pt-4 pb-3 font-[Inter]">
                                         Common issues (optional)
                                     </label>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -194,7 +194,7 @@ const Feedback = () => {
 
                                 {/* Title */}
                                 <div>
-                                    <label htmlFor="title" className="block text-sm font-semibold text-[var(--secondary-color)] mb-2 font-[Inter]">
+                                    <label htmlFor="title" className="pt-4 block text-sm font-semibold text-[var(--secondary-color)] pb-2 font-[Inter]">
                                         Title <span className="text-[var(--accent-color)]">*</span>
                                     </label>
                                     <input
@@ -212,7 +212,7 @@ const Feedback = () => {
 
                                 {/* Description */}
                                 <div>
-                                    <label htmlFor="description" className="block text-sm font-semibold text-[var(--secondary-color)] mb-2 font-[Inter]">
+                                    <label htmlFor="description" className="block text-sm font-semibold text-[var(--secondary-color)] pt-4 pb-2 font-[Inter]">
                                         Description <span className="text-[var(--accent-color)]">*</span>
                                     </label>
                                     <textarea
