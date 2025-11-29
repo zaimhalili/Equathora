@@ -24,12 +24,12 @@ const Dashboard = () => {
         </header>
 
         {/* Hero Section */}
-        <section className="flex flex-col lg:flex-row items-center lg:items-start justify-center px-[4vw] xl:px-[12vw] pt-[5vh] text-center lg:text-left">
+        <section className="flex flex-col lg:flex-row items-center lg:items-start justify-center px-[4vw] xl:px-[12vw] pt-[5vh]">
           <article className="text-[var(--secondary-color)] font-[Inter] w-full lg:w-[75%] cursor-default flex flex-col items-center md:items-start">
-            <h1 className="text-4xl pb-2 cursor-default font-[DynaPuff] font-medium">
+            <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[DynaPuff] font-medium">
               Welcome Back, <span className="text-[var(--secondary-color)]">{username}</span>!
             </h1>
-            <h4 className="text-lg font-normal text-center leading-[1.2] w-4/5 lg:w-[90%] cursor-default">
+            <h4 className="text-lg font-normal leading-[1.2] w-4/5 lg:w-[90%] cursor-default">
               Tackle fun math and logic challenges with guided support to master your topics. <span className="font-semibold">Equathora is open, student-centered, and built to grow with you.</span>
             </h4>
 
