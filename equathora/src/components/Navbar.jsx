@@ -161,19 +161,20 @@ const Navbar = () => {
       text: "Settings",
       description: "Manage your preferences",
       image: Settings
-    },
-    {
-      to: '/logout',
-      text: "Sign Out",
-      description: "Securely log out of your account",
-      image: LogoutIMG
-    },
-    {
-      to: '/premium',
-      text: "Upgrade to Premium",
-      description: "Access unlimited mentor guidance and exam-mode practice.",
-      image: Premium
     }
+    // Hidden for MVP
+    // {
+    //   to: '/logout',
+    //   text: "Sign Out",
+    //   description: "Securely log out of your account",
+    //   image: LogoutIMG
+    // },
+    // {
+    //   to: '/premium',
+    //   text: "Upgrade to Premium",
+    //   description: "Access unlimited mentor guidance and exam-mode practice.",
+    //   image: Premium
+    // }
   ];
 
   return (

@@ -203,7 +203,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                         </div>
                     </nav>
 
-                    <div className="sidebar-footer">
+                    {/* Sign Out hidden for MVP */}
+                    {/* <div className="sidebar-footer">
                         <button
                             onClick={() => {
                                 LogOut();
@@ -217,7 +218,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <p>Securely log out</p>
                             </div>
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </aside>
         </>
