@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { FaSearch, FaQuestionCircle, FaBook, FaUserGraduate, FaCog, FaChevronDown, FaChevronUp, FaLightbulb, FaShieldAlt } from 'react-icons/fa';
 import './HelpCenter.css';
+import FeedbackBanner from '../components/FeedbackBanner.jsx';
 
 const HelpCenter = () => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -93,6 +94,7 @@ const HelpCenter = () => {
 
     return (
         <>
+            <FeedbackBanner />
             <div className="help-center-container">
                 <header>
                     <Navbar />

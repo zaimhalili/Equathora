@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import './About.css';
+import FeedbackBanner from '../components/FeedbackBanner.jsx';
 
 const About = () => {
     return (
         <>
+            <FeedbackBanner />
             <Navbar />
             <main className="about-page">
                 {/* Hero Section */}
