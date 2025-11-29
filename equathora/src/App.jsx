@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -35,6 +35,41 @@ import Premium from "./pages/Premium";
 import Recommended from "./pages/Recommended";
 import Feedback from "./pages/Feedback";
 
+function PageTitleUpdater() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const pageTitles = {
+      '/': 'Equathora - Master Math Through Practice',
+      '/dashboard': 'Equathora',
+      '/learn': 'Practice Problems - Equathora',
+      '/problems': 'Solve Challenge - Equathora',
+      '/achievements': 'Your Progress - Equathora',
+      '/about': 'Our Story - Equathora',
+      '/helpCenter': 'Help Center - Equathora',
+      '/feedback': 'Share Feedback - Equathora',
+      '/applymentor': 'Become a Mentor - Equathora',
+      '/leaderboards': 'Top Solvers - Equathora',
+      '/discover': 'Explore More - Equathora',
+      '/recommended': 'For You - Equathora',
+      '/notifications': 'Updates - Equathora',
+      '/settings': 'Your Settings - Equathora',
+      '/premium': 'Go Premium - Equathora',
+      '/profile': 'Profile - Equathora',
+      '/login': 'Sign In - Equathora',
+      '/signup': 'Join Now - Equathora'
+    };
+
+    const matchedRoute = Object.keys(pageTitles).find(route =>
+      location.pathname === route || location.pathname.startsWith(route + '/')
+    );
+
+    document.title = pageTitles[matchedRoute] || 'Equathora - Master Math Through Practice';
+  }, [location]);
+
+  return null;
+}
+
 export default function App() {
   useEffect(() => {
     axios.get("/mathproblem")
@@ -46,6 +81,7 @@ export default function App() {
 
   return (
     <>
+      <PageTitleUpdater />
       <OverflowChecker />
       <Routes>
         {/* Public Routes */}
