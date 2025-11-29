@@ -44,14 +44,41 @@ const Feedback = () => {
         };
 
         try {
-            // Store feedback in localStorage for now (static solution)
+            // Send feedback to FormSubmit.co (replace with your actual email)
+            const response = await fetch('https://formsubmit.co/equathora@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    // Email subject line
+                    _subject: `[Equathora Feedback] ${sanitizedData.feedbackType}: ${sanitizedData.title}`,
+                    // Custom field names for better email formatting
+                    'Feedback Type': sanitizedData.feedbackType,
+                    'Common Issue': sanitizedData.commonIssue || 'None specified',
+                    'Title': sanitizedData.title,
+                    'Description': sanitizedData.description,
+                    'User Email': sanitizedData.email || 'Not provided',
+                    'Page': sanitizedData.page,
+                    'Timestamp': sanitizedData.timestamp,
+                    'Browser': sanitizedData.userAgent,
+                    'Screen Resolution': sanitizedData.screenResolution
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit feedback');
+            }
+
+            // Also store in localStorage as backup
             const existingFeedback = JSON.parse(localStorage.getItem('equathoraFeedback') || '[]');
             existingFeedback.push(sanitizedData);
             localStorage.setItem('equathoraFeedback', JSON.stringify(existingFeedback));
 
-            // Also log to console for easy copying during development
-            console.log('📝 New Feedback Submitted:', sanitizedData);
-            console.log('📊 All Feedback:', existingFeedback);
+            // Log to console for development
+            console.log('✅ Feedback sent successfully!');
+            console.log('📝 Feedback Data:', sanitizedData);
 
             setSubmitSuccess(true);
             setFormData({
@@ -68,7 +95,7 @@ const Feedback = () => {
             }, 3000);
         } catch (error) {
             console.error('Error submitting feedback:', error);
-            alert('Failed to submit feedback. Please try again later.');
+            alert('Failed to submit feedback. Please check your internet connection and try again.');
         } finally {
             setIsSubmitting(false);
         }
@@ -206,7 +233,7 @@ const Feedback = () => {
                                         required
                                         maxLength={100}
                                         placeholder="Brief summary of your feedback"
-                                        className="w-full px-4 py-3 border-2 border-[var(--french-gray)] rounded-lg focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Inter]"
+                                        className="w-full px-4 py-3 border-2 border-[var(--french-gray)] rounded-lg focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Inter] text-black"
                                     />
                                 </div>
 
@@ -224,16 +251,16 @@ const Feedback = () => {
                                         maxLength={2000}
                                         rows={6}
                                         placeholder="Please provide detailed information about your feedback..."
-                                        className="w-full px-4 py-3 border-2 border-[var(--french-gray)] rounded-lg focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Inter] resize-none"
+                                        className="w-full px-4 py-3 border-2 border-[var(--french-gray)] rounded-lg focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Inter] resize-none text-black"
                                     />
-                                    <div className="text-xs text-gray-500 mt-1 text-right">
+                                    <div className="text-xs text-gray-500 pt-1 text-right">
                                         {formData.description.length}/2000 characters
                                     </div>
                                 </div>
 
                                 {/* Email */}
                                 <div>
-                                    <label htmlFor="email" className="block text-sm font-semibold text-[var(--secondary-color)] mb-2 font-[Inter]">
+                                    <label htmlFor="email" className="block text-sm font-semibold text-[var(--secondary-color)] pb-2 font-[Inter]">
                                         Email (optional)
                                     </label>
                                     <input
@@ -244,9 +271,9 @@ const Feedback = () => {
                                         onChange={handleChange}
                                         maxLength={100}
                                         placeholder="your.email@example.com"
-                                        className="w-full px-4 py-3 border-2 border-[var(--french-gray)] rounded-lg focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Inter]"
+                                        className="w-full px-4 py-3 border-2 text-black border-[var(--french-gray)] rounded-lg focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Inter]"
                                     />
-                                    <p className="text-xs text-gray-500 mt-1">
+                                    <p className="text-xs text-gray-500 pt-1">
                                         Provide your email if you'd like us to follow up with you.
                                     </p>
                                 </div>
@@ -254,16 +281,9 @@ const Feedback = () => {
                                 {/* Submit Button */}
                                 <div className="flex gap-4 pt-4">
                                     <button
-                                        type="button"
-                                        onClick={() => navigate(-1)}
-                                        className="flex-1 px-6 py-3 border-2 border-[var(--french-gray)] rounded-lg font-semibold text-[var(--secondary-color)] bg-white hover:bg-[var(--french-gray)] transition-all duration-200"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        className="flex-1 px-6 py-3 border-2 border-[var(--accent-color)] rounded-lg font-bold text-white bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="flex-1 px-6 py-3 border-2 border-[var(--accent-color)] rounded-lg font-bold text-white bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                                     >
                                         {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
                                     </button>
@@ -273,20 +293,20 @@ const Feedback = () => {
                     </div>
 
                     {/* Information Boxes */}
-                    <div className="mt-6 space-y-4">
+                    <div className="pt-6 flex flex-col gap-5">
                         <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
-                            <h3 className="font-bold text-blue-900 mb-2 font-[Public_Sans]">Privacy Notice</h3>
+                            <h3 className="font-bold text-blue-900 pb-2 font-[Public_Sans]">Privacy Notice</h3>
                             <p className="text-sm text-blue-800 font-[Inter]">
                                 Your feedback is important to us. We collect this information solely to improve Equathora.
                                 Your email address (if provided) will only be used to follow up on your feedback and will never be shared with third parties.
                             </p>
                         </div>
 
-                        <div className="bg-yellow-50 border-l-4 border-yellow-500 rounded-lg p-4">
-                            <h3 className="font-bold text-yellow-900 mb-2 font-[Public_Sans]">For Developers</h3>
-                            <p className="text-sm text-yellow-800 font-[Inter]">
-                                Feedback is currently stored in browser localStorage. Open the browser console to see submitted feedback.
-                                To export all feedback: <code className="bg-yellow-100 px-2 py-1 rounded text-xs">JSON.parse(localStorage.getItem('equathoraFeedback'))</code>
+                        <div className="bg-green-50 border-l-4 border-green-500 rounded-lg p-4">
+                            <h3 className="font-bold text-green-900 mb-2 font-[Public_Sans]">📧 Instant Delivery</h3>
+                            <p className="text-sm text-green-800 font-[Inter]">
+                                Your feedback will be sent directly to our team via email. We read every submission and typically respond within 24-48 hours.
+                                Thank you for helping us improve Equathora!
                             </p>
                         </div>
                     </div>
