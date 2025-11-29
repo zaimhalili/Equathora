@@ -1,6 +1,4 @@
 import React from 'react';
-import './YourTrack.css';
-import QuestionMark from '../assets/images/questionMark.svg';
 import LilArrow from '../assets/images/lilArrow.svg';
 import Mentor from '../assets/images/mentoring.svg';
 import { Link } from 'react-router-dom';
@@ -10,48 +8,64 @@ const YourTrack = () => {
     const total = 50;
     const percentage = (solved / total) * 100;
 
-
     return (
-        <>
-            <article id='your-track-container'>
-                <div id='progress-bar-track'>
-                    <h3>Your Track</h3>
-                    <h4>Problems</h4>
-                    <div className="prg-bar-arrow">
-                        <Link to="/problems" id='progressBar-container'>
-                            <progress
-                                id='measure-progressBar'
-                                style={{
-                                    width: `${percentage}%`, opacity: `${percentage}`
-                                }}
-                            />
-                        </Link>
-                        <Link to="/problems" className="arrowProblems" id='arrowProblems'>
-                            <img src={LilArrow} alt="arrow" id='arrowProblemsIMG' />
-                        </Link>
-                    </div>
+        <article className="mt-8 w-full text-[var(--secondary-color)] px-[4vw] xl:px-[12vw] pb-[6vh] flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-0">
+            <div className="flex flex-col gap-[2vh] w-full lg:w-1/2">
+                <h3 className="font-[Inter] text-[var(--secondary-color)] text-[2.5rem] font-bold w-full text-center lg:text-left">
+                    Your Track
+                </h3>
+                <h4 className="font-[Inter] text-[var(--secondary-color)] text-[1.6rem] font-bold w-full lg:pl-[2vw] text-center lg:text-left">
+                    Problems
+                </h4>
+                <div className="flex flex-col sm:flex-row items-center justify-between lg:pl-[2vw] gap-4 sm:gap-0">
+                    <Link
+                        to="/problems"
+                        className="w-full sm:w-[80%] h-8 bg-[var(--french-gray)] rounded-2xl flex items-center relative transition-all duration-300 overflow-hidden group"
+                    >
+                        <div
+                            className="h-full rounded-2xl bg-[var(--dark-accent-color)] transition-all duration-300"
+                            style={{ width: `${percentage}%`}}
+                        />
+                    </Link>
+                    <Link
+                        to="/problems"
+                        className="w-full sm:w-auto h-8 flex items-center justify-center sm:justify-start transition-transform duration-300 ease-in sm:ml-4 hover:translate-x-[15px]"
+                    >
+                        <img src={LilArrow} alt="arrow" className="h-full w-12" />
+                    </Link>
+                </div>
+                <div className="font-[Inter] text-base lg:pl-[2vw] text-center lg:text-left">
+                    <span className="font-bold">{solved}</span>/
+                    <span>{total}</span> Problems Solved
+                </div>
+            </div>
 
-                    <div id='noProblemsSolved'>
-                        <span id='completed-problems'>{solved}</span>/
-                        <span className='problems-count'>{total}</span> Problems Solved
+            <div className="w-full lg:w-1/2 flex justify-center items-center mt-8 lg:mt-0">
+                <div className="w-full max-w-[500px] flex justify-center flex-col bg-white shadow-[0_10px_10px_rgba(141,153,174,0.3)] rounded-[3px] text-center items-center p-6">
+                    <img src={Mentor} alt="Mentoring icon" className="w-[100px] h-[100px]" />
+                    <p className="font-[Public_Sans] font-bold text-[clamp(1rem,3vw,1.3rem)] text-[var(--secondary-color)] m-0 pt-5">
+                        Become a mentor
+                    </p>
+                    <p className="font-[Public_Sans] text-[clamp(1rem,3vw,1.1rem)] font-normal text-[var(--secondary-color)] m-0 pb-2.5">
+                        Mentoring is a great way to reinforce your own learning, and help students learn and discover the things they don't know.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-3 w-full justify-center mt-2">
+                        <Link
+                            to="/applymentor"
+                            className="font-[Inter] text-[0.95rem] font-semibold py-3 px-6 rounded-[3px] no-underline transition-all duration-300 cursor-pointer shadow-[inset_0_0_5px_black] bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:-translate-y-0.5 w-full sm:w-auto text-center"
+                        >
+                            Try mentoring now
+                        </Link>
+                        <Link
+                            to="/applymentor"
+                            className="font-[Inter] text-[0.95rem] font-semibold py-3 px-6 rounded-[3px] no-underline transition-all duration-300 cursor-pointer shadow-[inset_0_0_5px_black] bg-transparent text-[var(--secondary-color)] border-[var(--secondary-color)] hover:bg-[var(--french-gray)] hover:-translate-y-0.5 w-full sm:w-auto text-center"
+                        >
+                            Learn more
+                        </Link>
                     </div>
                 </div>
-                {/* <figure>
-                    <img src={QuestionMark} alt="question mark" />
-                </figure> */}
-                <div className='try-your-hand'>
-                    <div className='try-mentoring'>
-                        <img src={Mentor} alt="Mentoring icon" />
-                        <p>Become a mentor</p>
-                        <p>Mentoring is a great way to reinforce your own learning, and help students learn and discover the things they don't know.</p>
-                        <div className='flex'>
-                            <Link to='/applymentor'>Try mentoring now</Link>
-                            <Link to='/applymentor'>Learn more</Link>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        </>
+            </div>
+        </article>
     );
 };
 
