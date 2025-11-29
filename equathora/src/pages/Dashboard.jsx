@@ -25,7 +25,7 @@ const Dashboard = () => {
 
         {/* Hero Section */}
         <section className="flex flex-col lg:flex-row items-center lg:items-start justify-center px-[4vw] xl:px-[12vw] pt-[5vh] text-center lg:text-left">
-          <article className="text-[var(--secondary-color)] font-[Inter] w-full lg:w-[75%] cursor-default flex flex-col items-center">
+          <article className="text-[var(--secondary-color)] font-[Inter] w-full lg:w-[75%] cursor-default flex flex-col items-center md:items-start">
             <h1 className="text-4xl pb-2 cursor-default font-[DynaPuff] font-medium">
               Welcome Back, <span className="text-[var(--secondary-color)]">{username}</span>!
             </h1>
@@ -34,13 +34,13 @@ const Dashboard = () => {
             </h4>
 
             {/* Where To Start Section */}
-            <div className="flex flex-col text-center lg:text-left pt-8 pb-8">
+            <div className="flex flex-col text-center md:text-left pt-8 pb-8">
               <h3 className="text-[var(--secondary-color)] font-[Inter] text-3xl font-bold pb-2">
                 Where To Start...
               </h3>
 
               {/* Blocks - Squares */}
-              <div className="w-full pt-2 lg:w-auto gap-0.5 lg:gap-[2px] flex flex-wrap justify-center lg:justify-start lg:h-[12rem]">
+              <div className="w-full pt-2 lg:w-auto gap-0.5 lg:gap-[2px] flex flex-wrap justify-center md:justify-start lg:h-[12rem]">
                 <Link
                   to={`/problems/1/${randomProblemId}`}
                   className="w-60 h-50 lg:w-[13rem] lg:h-[12rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"

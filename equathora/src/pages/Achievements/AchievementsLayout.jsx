@@ -4,7 +4,7 @@ import { Outlet, NavLink } from 'react-router-dom'; // Change Link to NavLink
 import Navbar from '../../components/Navbar.jsx';
 import Footer from '../../components/Footer.jsx';
 import './AchievementsLayout.css';
-import AchievementsDD from '../../assets/images/AchievementsDD.svg';
+import AchievementsDD from '../../assets/images/achievementsDD.svg';
 import Statistics from '../../assets/images/statistics.svg';
 import Events from '../../assets/images/specialEvents.svg';
 
