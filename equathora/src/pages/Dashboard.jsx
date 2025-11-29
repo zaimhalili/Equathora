@@ -46,7 +46,7 @@ const Dashboard = () => {
                   className="w-60 h-50 lg:w-[13rem] lg:h-[12rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                 >
                   <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                  <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-md font-normal w-full text-center flex items-center justify-center">
+                  <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-lg font-normal w-full text-center flex items-center justify-center">
                     Solve the daily challenge
                   </h6>
                 </Link>
@@ -56,7 +56,7 @@ const Dashboard = () => {
                   className="w-60 h-50 lg:w-[13rem] lg:h-[12rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                 >
                   <img src={Books} alt="books" className="h-[60%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                  <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-[clamp(0.9rem,3vw,1.1rem)] font-normal w-full text-center flex items-center justify-center">
+                  <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-lg font-normal w-full text-center flex items-center justify-center">
                     Continue where you left
                   </h6>
                 </Link>
@@ -66,7 +66,7 @@ const Dashboard = () => {
                   className="w-60 h-50 lg:w-[13rem] lg:h-[12rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                 >
                   <img src={Mentoring} alt="mentoring" className="h-[60%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                  <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-[clamp(0.9rem,3vw,1.1rem)] font-normal w-full text-center flex items-center justify-center">
+                  <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-lg font-normal w-full text-center flex items-center justify-center">
                     Try mentoring
                   </h6>
                 </Link>
@@ -76,7 +76,7 @@ const Dashboard = () => {
                   className="w-60 h-50 lg:w-[13rem] lg:h-[12rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                 >
                   <img src={Leaderboards} alt="leaderboards" className="h-[60%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                  <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-[clamp(0.9rem,3vw,1.1rem)] font-normal w-full text-center flex items-center justify-center">
+                  <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-lg font-normal w-full text-center flex items-center justify-center">
                     Join the race
                   </h6>
                 </Link>
