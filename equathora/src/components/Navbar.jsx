@@ -44,12 +44,13 @@ const Navbar = () => {
       description: "Solve a fresh daily challenge.",
       image: Daily
     },
-    {
-      to: '/learn',
-      text: "Your Track",
-      description: "Track topics and problems solved.",
-      image: Journey
-    },
+    // Hidden for MVP - will be added after launch
+    // {
+    //   to: '/learn',
+    //   text: "Your Track",
+    //   description: "Track topics and problems solved.",
+    //   image: Journey
+    // },
     {
       to: "/learn",
       text: "Favourite Problems",
@@ -60,24 +61,26 @@ const Navbar = () => {
   ]
 
   const discoverItems = [
-    {
-      to: '/recommended',
-      text: "Recommended for You",
-      description: "Personalized problem suggestions.",
-      image: Choice
-    },
+    // Hidden for MVP - will be added after launch
+    // {
+    //   to: '/recommended',
+    //   text: "Recommended for You",
+    //   description: "Personalized problem suggestions.",
+    //   image: Choice
+    // },
     {
       to: '/leaderboards/global',
       text: "Leaderboards",
       description: "Join competitions and leaderboards.",
       image: Leaderboards
-    },
-    {
-      to: "/",
-      text: "Learning Paths",
-      description: "Curated sequences of related problems.",
-      image: Progress
     }
+    // Hidden for MVP - will be added after launch
+    // {
+    //   to: "/",
+    //   text: "Learning Paths",
+    //   description: "Curated sequences of related problems.",
+    //   image: Progress
+    // }
   ]
 
   const moreItems = [

@@ -217,6 +217,74 @@ const About = () => {
                     </div>
                 </section>
 
+                {/* Roadmap Section */}
+                <section className="about-section roadmap-section" style={{ backgroundColor: 'var(--main-color)', paddingTop: '4rem', paddingBottom: '4rem' }}>
+                    <div className="about-container">
+                        <div className="section-header">
+                            <h2>🚀 What's Next</h2>
+                            <div className="section-divider"></div>
+                        </div>
+                        <p style={{ textAlign: 'center', color: '#666', marginBottom: '3rem', fontSize: '1.1rem' }}>
+                            Here's what we're building to make Equathora even better
+                        </p>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+                            {/* Current Features */}
+                            <div style={{ backgroundColor: '#d1fae5', border: '2px solid #10b981', borderRadius: '1rem', padding: '2rem' }}>
+                                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#065f46', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    ✅ Available Now
+                                </h3>
+                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ 30+ Math Problems</li>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ Interactive Math Editor</li>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ Instant Feedback</li>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ Progress Tracking</li>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ Achievement Badges</li>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ Mobile Friendly</li>
+                                </ul>
+                            </div>
+
+                            {/* Coming Soon */}
+                            <div style={{ backgroundColor: '#fef3c7', border: '2px solid #f59e0b', borderRadius: '1rem', padding: '2rem' }}>
+                                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#92400e', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    🔜 Coming Soon
+                                </h3>
+                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>🎯 Personalized Recommendations</li>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>📚 Structured Learning Paths</li>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>👥 User Accounts & Login</li>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>🏆 Enhanced Leaderboards</li>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>💬 Discussion Forums</li>
+                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>🎨 Dark Mode</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div style={{ textAlign: 'center' }}>
+                            <p style={{ color: '#666', marginBottom: '1.5rem', fontSize: '1rem' }}>
+                                Have a feature request? We'd love to hear from you!
+                            </p>
+                            <Link
+                                to="/feedback"
+                                style={{
+                                    display: 'inline-block',
+                                    padding: '0.75rem 2rem',
+                                    backgroundColor: 'var(--accent-color)',
+                                    color: 'white',
+                                    borderRadius: '0.5rem',
+                                    fontWeight: 'bold',
+                                    textDecoration: 'none',
+                                    transition: 'all 0.2s'
+                                }}
+                                onMouseOver={(e) => e.target.style.backgroundColor = 'var(--dark-accent-color)'}
+                                onMouseOut={(e) => e.target.style.backgroundColor = 'var(--accent-color)'}
+                            >
+                                Send Feedback
+                            </Link>
+                        </div>
+                    </div>
+                </section>
+
                 {/* CTA Section */}
                 <section className="about-cta">
                     <div className="about-container">

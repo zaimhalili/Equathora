@@ -38,18 +38,19 @@ const Sidebar = ({ isOpen, onClose }) => {
             description: 'Practice problems',
             image: Journey
         },
-        {
-            to: '/recommended',
-            text: 'Recommended',
-            description: 'Personalized topics',
-            image: Choice
-        },
-        {
-            to: '/discover',
-            text: 'Discover',
-            description: 'Explore new topics',
-            image: Choice
-        },
+        // Hidden for MVP - will be added after launch
+        // {
+        //     to: '/recommended',
+        //     text: 'Recommended',
+        //     description: 'Personalized topics',
+        //     image: Choice
+        // },
+        // {
+        //     to: '/discover',
+        //     text: 'Discover',
+        //     description: 'Explore new topics',
+        //     image: Choice
+        // },
         {
             to: '/leaderboards/global',
             text: 'Leaderboards',
