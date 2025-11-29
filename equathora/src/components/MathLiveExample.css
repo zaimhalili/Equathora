@@ -223,54 +223,97 @@ math-field:focus-within {
     color: var(--secondary-color);
 }
 
+@media (max-width: 1024px) {
+    .ml-card {
+        padding: 0.9rem;
+    }
+    
+    .ml-steps-container {
+        gap: 0.6rem;
+    }
+    
+    .ml-output {
+        max-height: 150px;
+    }
+}
+
 @media (max-width: 768px) {
+    .ml-wrapper {
+        max-height: none;
+        min-height: 500px;
+    }
+
     .ml-card {
         padding: 0.8rem;
     }
 
     .ml-toolbar {
         flex-direction: column;
+        padding-top: 0.8rem;
     }
 
     .ml-btn {
         width: 100%;
         flex: 1;
         text-align: center;
+        padding: 0.8rem 1.2rem;
     }
 
     .ml-btn.submit,
     .ml-btn.addStep {
         flex: 1;
     }
+    
+    .ml-output {
+        max-height: 120px;
+        margin-top: 0.8rem;
+    }
 }
 
 @media (max-width: 520px) {
     .ml-wrapper {
         padding: 0;
+        max-height: none;
+        min-height: 450px;
     }
 
     .ml-title {
         font-size: 1.1rem;
-        padding: 0.8rem;
+        padding: 0.6rem;
+    }
+    
+    .ml-status {
+        padding: 0.4rem 0.8rem;
+        font-size: 11px;
     }
 
     .ml-card {
         padding: 0.6rem;
     }
+    
+    .ml-steps-container {
+        gap: 0.5rem;
+    }
 
     math-field {
         font-size: 14px;
         padding: 10px;
-        min-height: 3rem;
+        min-height: 2.8rem;
     }
 
     .ml-btn {
-        padding: 0.6rem 1rem;
-        font-size: 12px;
+        padding: 0.7rem 1rem;
+        font-size: 13px;
     }
 
     .ml-output {
         font-size: 11px;
-        padding: 0.8rem;
+        padding: 0.7rem;
+        max-height: 100px;
+    }
+    
+    .steps-list li {
+        padding: 0.4rem;
+        font-size: 11px;
     }
 }

@@ -67,7 +67,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             image: Notifications
         },
         {
-            to: '/achievements',
+            to: '/achievements/recent',
             text: 'Achievements',
             description: 'Track your progress',
             image: Achievements
@@ -130,7 +130,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
                 <div className="sidebar-content">
                     <div className="sidebar-profile">
-                        <Link to="/profile" className="sidebar-profile-link" onClick={onClose}>
+                        <Link to="/profile/myprofile" className="sidebar-profile-link" onClick={onClose}>
                             <img src={GuestAvatar} alt="avatar" className="sidebar-avatar" />
                             <div className="sidebar-profile-info">
                                 <h4>Your Profile</h4>

@@ -62,7 +62,7 @@ const Problem = () => {
   return (
     <>
       <FeedbackBanner />
-      <main className="h-screen flex flex-col text-[var(--secondary-color)] overflow-hidden">
+      <main className="min-h-screen flex flex-col text-[var(--secondary-color)]">
         {/* Navigation Header */}
         <header className="flex items-center justify-between font-[Public_Sans,sans-serif] bg-[var(--main-color)] w-full px-3 sm:px-6 md:px-8 py-3 md:py-4 flex-shrink-0">
           <Link to="/learn" className="flex items-center gap-1 md:gap-2 text-sm md:text-md text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-2 md:px-4 py-2 rounded-lg hover:bg-[var(--french-gray)] hover:text-[var(--main-color)]">
@@ -101,9 +101,9 @@ const Problem = () => {
         )}
 
         {/* Main Content */}
-        <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 overflow-hidden">
+        <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 min-h-[calc(100vh-80px)] lg:overflow-hidden">
           {/* Description Side */}
-          <article className="w-full lg:w-1/2 rounded-lg flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white h-[50vh] lg:h-full">
+          <article className="w-full lg:w-1/2 rounded-lg flex bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white min-h-[400px] max-h-[60vh] lg:h-full">
 
             <div className='w-full py-1.5 md:py-2 flex gap-1 bg-[var(--french-gray)] px-2'>
               <button type="button" onClick={() => { setShowDescription(true); setShowSolutionPopup(false); setShowSolution(false) }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${showDescription ? 'bg-[var(--main-color)]' : ''}`}>
@@ -253,7 +253,7 @@ const Problem = () => {
           </article>
 
           {/* Solution Side - Math Live*/}
-          <article className="flex justify-start items-stretch flex-col w-full lg:w-1/2 h-[40vh] lg:h-full overflow-hidden rounded-lg">
+          <article className="flex justify-start items-stretch flex-col w-full lg:w-1/2 min-h-[500px] lg:h-full overflow-hidden rounded-lg">
             <MathLiveExample />
           </article>
         </section>

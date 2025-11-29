@@ -172,7 +172,7 @@ const Landing = () => {
                         <img src={Progress} alt="" className="absolute bottom-20 left-1/4 w-36 h-36 animate-float" style={{ animationDelay: '2s' }} />
                     </div>
 
-                    <div className="max-w-6xl px-8 relative z-10" style={{ margin: '0 auto' }}>
+                    <div className="max-w-6xl px-8 py-24 relative z-10" style={{ margin: '0 auto' }}>
                         <div className="flex flex-col gap-16">
                             <motion.div
                                 className="flex flex-col gap-4 text-center"
@@ -319,7 +319,7 @@ const Landing = () => {
                     <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[var(--accent-color)] to-transparent opacity-5 rounded-full blur-3xl"></div>
                     <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[var(--secondary-color)] to-transparent opacity-5 rounded-full blur-3xl"></div>
 
-                    <div className="max-w-6xl px-8 py-10 relative z-10" style={{ margin: '0 auto' }}>
+                    <div className="max-w-6xl px-8 py-24 relative z-10" style={{ margin: '0 auto' }}>
                         <div className="flex flex-col gap-16">
                             <motion.div
                                 className="flex flex-col gap-4 text-center"
@@ -449,7 +449,7 @@ const Landing = () => {
                         </motion.div>
                     </div>
 
-                    <div className="max-w-6xl px-8 py-10 relative z-10" style={{ margin: '0 auto' }}>
+                    <div className="max-w-6xl px-8 py-24 relative z-10" style={{ margin: '0 auto' }}>
                         <div className="flex flex-col gap-16">
                             <motion.div
                                 className="flex flex-col gap-4 text-center"
