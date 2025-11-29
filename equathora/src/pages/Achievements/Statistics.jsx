@@ -3,21 +3,23 @@ import React, { useEffect, useState } from 'react';
 import './Statistics.css';
 
 const Statistics = () => {
-  // Mock data - replace with real data from your backend
+  // Load data from localStorage - starts at zero for new users
+  const progress = JSON.parse(localStorage.getItem('equathoraProgress') || '{}');
+
   const stats = {
-    totalProblems: 127,
-    solvedProblems: 89,
-    correctAnswers: 156,
-    totalAttempts: 203,
-    streakDays: 12,
-    totalTimeSpent: "24h 35m",
-    averageTime: "8m 23s",
-    favoriteTopics: ["Algebra", "Geometry", "Calculus"],
-    weeklyProgress: [5, 8, 12, 7, 15, 10, 9], // Last 7 days
+    totalProblems: progress.totalProblems || 30,
+    solvedProblems: progress.solvedProblems?.length || 0,
+    correctAnswers: progress.correctAnswers || 0,
+    totalAttempts: progress.totalAttempts || 0,
+    streakDays: progress.streakDays || 0,
+    totalTimeSpent: progress.totalTimeSpent || "0h 0m",
+    averageTime: progress.averageTime || "0m 0s",
+    favoriteTopics: progress.favoriteTopics || [],
+    weeklyProgress: progress.weeklyProgress || [0, 0, 0, 0, 0, 0, 0],
     difficultyBreakdown: {
-      easy: 45,
-      medium: 32,
-      hard: 12
+      easy: progress.difficultyBreakdown?.easy || 0,
+      medium: progress.difficultyBreakdown?.medium || 0,
+      hard: progress.difficultyBreakdown?.hard || 0
     }
   };
 
@@ -122,7 +124,7 @@ const Statistics = () => {
                   <div className="activity-label">{days[index]}</div>
                   <div className="activity-count">{problems}</div>
                 </div>
-                
+
               </div>
             );
           })}

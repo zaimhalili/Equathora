@@ -2,28 +2,32 @@ import React, { useEffect, useState } from 'react';
 import './RecentAchievements.css';
 
 const RecentAchievements = () => {
-  const achievements = 120;
+  // Load data from localStorage - starts at zero for new users
+  const progress = JSON.parse(localStorage.getItem('equathoraProgress') || '{}');
+  const achievementsEarned = progress.achievementsEarned || 0;
+  const streakDays = progress.streakDays || 0;
+  const conceptsLearned = progress.conceptsLearned || 0;
 
   const [isAnimated, setIsAnimated] = useState(false);
-    useEffect(() => {
-      setIsAnimated(true);
-    }, []);
-  
-  
+  useEffect(() => {
+    setIsAnimated(true);
+  }, []);
+
+
   return (
     <section className='rec-achievements'>
       <article className="a-top">
         <h2>Your Achievements</h2>
         <p>You have come a long way</p>
         <div className="block-container">
-          <div className={`block ${isAnimated ? "animate-in" : ''}`}><span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{51}</span> <br />
+          <div className={`block ${isAnimated ? "animate-in" : ''}`}><span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{achievementsEarned}</span> <br />
             Achievements Earned
           </div>
-          <div className={`block ${isAnimated ? "animate-in" : ''}`}><span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{achievements}</span> <br />
+          <div className={`block ${isAnimated ? "animate-in" : ''}`}><span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{streakDays}</span> <br />
             Days Streak
           </div>
-          <div className={`block ${isAnimated ? "animate-in" : ''}`}><span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{3}</span> <br />
-            Concept Learned
+          <div className={`block ${isAnimated ? "animate-in" : ''}`}><span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{conceptsLearned}</span> <br />
+            Concepts Learned
           </div>
         </div>
       </article>

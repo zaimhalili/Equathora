@@ -119,13 +119,14 @@ const Learn = () => {
                 In Progress ({problems.filter(p => p.inProgress).length})
               </button>
 
-              <button
+              {/* Premium filter hidden for MVP */}
+              {/* <button
                 type="button"
                 onClick={() => setFilter('premium')}
                 className={`filtering ${filter === 'premium' ? 'active' : ''}`}
               >
                 Premium ({problems.filter(p => p.premium).length})
-              </button>
+              </button> */}
               <button
                 type="button"
                 onClick={() => setFilter('favourite')}

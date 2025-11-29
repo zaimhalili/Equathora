@@ -65,10 +65,11 @@ const HelpCenter = () => {
             question: "Can I save problems to come back to later?",
             answer: "Yes! Click the star icon (☆) on any problem to add it to your favorites. You can then filter by favorites on the Learn page to quickly access problems you want to revisit."
         },
-        {
-            question: "What's the difference between Free and Premium problems?",
-            answer: "Free problems are available to all users and cover fundamental concepts. Premium problems offer more challenging content, detailed solutions, and advanced topics for subscribers who want to dive deeper."
-        },
+        // Premium FAQ hidden for MVP
+        // {
+        //     question: "What's the difference between Free and Premium problems?",
+        //     answer: "Free problems are available to all users and cover fundamental concepts. Premium problems offer more challenging content, detailed solutions, and advanced topics for subscribers who want to dive deeper."
+        // },
         {
             question: "How does the leaderboard work?",
             answer: "The leaderboard ranks users based on their total points earned from solving problems. Points are awarded based on problem difficulty and completion speed. You can view global rankings or compete with friends!"

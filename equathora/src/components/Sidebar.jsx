@@ -22,7 +22,10 @@ const Sidebar = ({ isOpen, onClose }) => {
     const [moreExpanded, setMoreExpanded] = useState(false);
 
     function LogOut() {
-        alert("Logged out successfully");
+        // Clear all user data
+        localStorage.clear();
+        alert("You have been signed out successfully");
+        window.location.href = '/';
     }
 
     const sidebarItems = [
@@ -84,12 +87,13 @@ const Sidebar = ({ isOpen, onClose }) => {
             description: 'Manage preferences',
             image: Settings
         },
-        {
-            to: '/premium',
-            text: 'Upgrade to Premium',
-            description: 'Unlock all features',
-            image: Premium
-        },
+        // Premium hidden for MVP
+        // {
+        //     to: '/premium',
+        //     text: 'Upgrade to Premium',
+        //     description: 'Unlock all features',
+        //     image: Premium
+        // },
         {
             to: '/helpCenter',
             text: 'Help Center',
