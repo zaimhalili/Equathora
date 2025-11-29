@@ -227,11 +227,11 @@ math-field:focus-within {
     .ml-card {
         padding: 0.9rem;
     }
-    
+
     .ml-steps-container {
         gap: 0.6rem;
     }
-    
+
     .ml-output {
         max-height: 150px;
     }
@@ -263,7 +263,7 @@ math-field:focus-within {
     .ml-btn.addStep {
         flex: 1;
     }
-    
+
     .ml-output {
         max-height: 120px;
         margin-top: 0.8rem;
@@ -281,7 +281,7 @@ math-field:focus-within {
         font-size: 1.1rem;
         padding: 0.6rem;
     }
-    
+
     .ml-status {
         padding: 0.4rem 0.8rem;
         font-size: 11px;
@@ -290,7 +290,7 @@ math-field:focus-within {
     .ml-card {
         padding: 0.6rem;
     }
-    
+
     .ml-steps-container {
         gap: 0.5rem;
     }
@@ -311,7 +311,7 @@ math-field:focus-within {
         padding: 0.7rem;
         max-height: 100px;
     }
-    
+
     .steps-list li {
         padding: 0.4rem;
         font-size: 11px;
