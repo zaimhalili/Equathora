@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Logo from '../assets/logo/TransparentFullLogo.png';
 import { Link } from 'react-router-dom';
-import { FaBell, FaTrophy, FaUser } from 'react-icons/fa';
+import { FaBell, FaTrophy, FaUser, FaBars } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
 import Menu from '../assets/images/menu.svg';
@@ -184,7 +184,7 @@ const Navbar = () => {
         <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible xl:pl-[12vw]'>
           <li>
             <Link to="/dashboard" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
-              <img src={Logo} alt="Logo" className='w-40 object-scale-down' />
+              <img src={Logo} alt="Logo" className='w-40 object-scale-down object-center scale-110' />
             </Link>
           </li>
           <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
@@ -228,9 +228,9 @@ const Navbar = () => {
               />
             </li>
             <li className='pl-6 lg:pl-4'>
-              <aside className='h-[7.5vh] flex flex-col items-center justify-center gap-[1vh] transition-all duration-200 hover:scale-y-150 cursor-pointer' onClick={() => setSidebarOpen(true)}>
-                <img src={Menu} alt="sidebar" className='hidden max-md:block h-[30px] w-[30px]' />
-              </aside>
+              <button className='h-[7.5vh] flex items-center justify-center transition-colors duration-200 cursor-pointer bg-transparent border-none text-[var(--secondary-color)] hover:text-[var(--accent-color)]' onClick={() => setSidebarOpen(true)}>
+                <FaBars size={24} className='hidden max-md:block' />
+              </button>
             </li>
           </ul>
         </div>

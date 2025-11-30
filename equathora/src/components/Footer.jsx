@@ -1,6 +1,7 @@
 import React from 'react';
 import './Footer.css';
 import { Link } from 'react-router-dom';
+import Symbol from '../assets/logo/TransparentSymbol.png';
 import {
   FaInstagram,
   FaLinkedin,
@@ -46,6 +47,7 @@ const Footer = () => {
               <FaFacebook />
             </a>
           </div>
+          <img src={Symbol} alt="Equathora" className="footer-logo" style={{ width: '60px', height: '60px', margin: '1rem auto' }} />
           <h2>equathora</h2>
         </div>
 

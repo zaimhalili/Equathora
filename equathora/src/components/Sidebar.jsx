@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import X from '../assets/images/x.svg';
 // Import icons for sidebar items
-import Dashboard from '../assets/images/logo.png';
+import Dashboard from '../assets/logo/TransparentSymbol.png';
 import Journey from '../assets/images/journey.svg';
 import Choice from '../assets/images/choice.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
