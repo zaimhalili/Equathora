@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Logo from '../assets/images/logo.png';
+import Logo from '../assets/logo/TransparentFullLogo.png';
 import Studying from '../assets/images/studying.svg';
 import Journey from '../assets/images/journey.svg';
 import Achievements from '../assets/images/achievements.svg';
@@ -51,9 +51,8 @@ const Landing = () => {
                 {/* Navigation */}
                 <nav className="w-full border-b border-gray-200 bg-white/70 backdrop-blur-sm shadow-sm">
                     <div className="w-full flex items-center justify-between px-6 md:px-12 lg:px-20 py-4">
-                        <Link to="/" className="flex items-center gap-3">
-                            <img src={Logo} alt="Equathora" className="h-10 w-10 md:h-12 md:w-12" loading="lazy" />
-                            <span className="font-[DynaPuff] text-xl md:text-2xl font-semibold">equathora</span>
+                        <Link to="/" className="flex items-center gap-3 w-40">
+                            <img src={Logo} alt="" />
                         </Link>
                         <div className="flex items-center gap-3 md:gap-4 text-sm font-semibold">
                             <Link to="/about" className="hidden sm:inline-block hover:text-[var(--accent-color)] transition-colors">About</Link>

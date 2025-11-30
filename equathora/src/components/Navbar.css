@@ -26,8 +26,7 @@
 }
 
 #navbar-logo {
-    height: 80px;
-    width: 80px;
+    width: 10rem;
     object-fit: scale-down;
 }
 

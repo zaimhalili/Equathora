@@ -1,7 +1,7 @@
 //Imports
 import React, { useState } from 'react';
 import './Navbar.css';
-import Logo from '../assets/images/logo.png';
+import Logo from '../assets/logo/TransparentFullLogo.png';
 import { Link } from 'react-router-dom';
 import { FaBell, FaTrophy } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
@@ -28,6 +28,7 @@ import Notifications from '../assets/images/notificationsDD.svg';
 import Teacher from '../assets/images/teacher.svg';
 import Achievements from '../assets/images/achievementsDD.svg';
 import Events from '../assets/images/specialEvents.svg';
+import Symbol from '../assets/logo/TransparentSymbol.png'; 
 
 const Navbar = () => {
 
@@ -187,18 +188,21 @@ const Navbar = () => {
               <img src={Logo} alt="Logo" id="navbar-logo" />
             </Link>
           </li>
-          <li><Link to="/dashboard"><h3 id="navbar-name">equathora</h3></Link></li>
-          <li className='hide-navbar'><Dropdown
+          <li className='hide-navbar'>
+            <Dropdown
             label="Learn"
-            items={learnItems} /></li>
+              items={learnItems} />
+          </li>
           <li className='hide-navbar'>
             <Dropdown
               label="Discover"
               items={discoverItems}
-            /></li>
+            />
+          </li>
           <li className='hide-navbar'><Dropdown
             label="More"
-            items={moreItems} /></li>
+            items={moreItems} />
+          </li>
         </ul>
 
         <div id='nb-sb'>
