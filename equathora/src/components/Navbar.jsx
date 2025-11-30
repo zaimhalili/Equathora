@@ -180,55 +180,55 @@ const Navbar = () => {
   return (
     <>
       <OverflowChecker></OverflowChecker>
-      <header className='w-full max-w-screen bg-[var(--main-color)] h-[9vh] flex items-center justify-between px-[30px] lg:px-5 xl:px-0 py-0 shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
+      <header className='w-full max-w-screen bg-[var(--main-color)] h-[7.5vh] flex items-center justify-between px-[30px] lg:px-5 xl:px-0 py-0 shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
         <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible xl:pl-[12vw]'>
           <li>
             <Link to="/dashboard" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
               <img src={Logo} alt="Logo" className='w-40 object-scale-down' />
             </Link>
           </li>
-          <li className='pl-4 lg:pl-2 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+          <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
             <Dropdown
               label="Learn"
               items={learnItems} />
           </li>
-          <li className='pl-4 lg:pl-2 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+          <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
             <Dropdown
               label="Discover"
               items={discoverItems}
             />
           </li>
-          <li className='pl-4 lg:pl-2 shrink-0 max-md:hidden  text-[var(--secondary-color)]'><Dropdown
+          <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'><Dropdown
             label="More"
             items={moreItems} />
           </li>
         </ul>
 
         <div className='flex justify-end items-center shrink-0'>
-          <ul className='flex items-center list-none h-[9vh] overflow-visible xl:pr-[12vw]'>
-            <li className='pl-4 lg:pl-2 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+          <ul className='flex items-center list-none h-[7.5vh] overflow-visible xl:pr-[12vw]'>
+            <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
               <Dropdown
                 label={<FaBell size={24} />}
                 items={notificationItems}
                 alignRight={true}
               />
             </li>
-            <li className='pl-4 lg:pl-2 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+            <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
               <Dropdown
                 label={<FaTrophy size={24} />}
                 items={achievementItems}
                 alignRight={true}
               />
             </li>
-            <li className='pl-4 lg:pl-2 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+            <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
               <Dropdown
                 label={<FaUser size={24} />}
                 items={profileItems}
                 alignRight={true}
               />
             </li>
-            <li className='pl-4 lg:pl-2'>
-              <aside className='h-[9vh] flex flex-col items-center justify-center gap-[1vh] transition-all duration-200 hover:scale-y-150 cursor-pointer' onClick={() => setSidebarOpen(true)}>
+            <li className='pl-6 lg:pl-4'>
+              <aside className='h-[7.5vh] flex flex-col items-center justify-center gap-[1vh] transition-all duration-200 hover:scale-y-150 cursor-pointer' onClick={() => setSidebarOpen(true)}>
                 <img src={Menu} alt="sidebar" className='hidden max-md:block h-[30px] w-[30px]' />
               </aside>
             </li>
