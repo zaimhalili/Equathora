@@ -7,7 +7,7 @@ import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
 import Timer from '../components/Timer.jsx';
-import { FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaArrowsAltH } from 'react-icons/fa';
+import { FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp } from 'react-icons/fa';
 
 const Problem = () => {
   const { groupId, problemId } = useParams();
@@ -104,8 +104,8 @@ const Problem = () => {
         {/* Main Content */}
         <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 min-h-[calc(100vh-80px)] lg:overflow-hidden">
           {/* Description Side */}
-          <aside className='flex flex-col w-full lg:w-1/2 rounded-lg bg-[var(--main-color)] p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white min-h-[400px] max-h-[60vh] lg:h-full'>
-            <div className='w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 justify-between'>
+          <aside className='flex flex-col w-full lg:w-1/2 rounded-lg bg-[var(--main-color)] p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white lg:h-full'>
+            <div className='w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 justify-between rounded-t-lg'>
               <div className='flex gap-1'>
                 <button type="button" onClick={() => {
                   setShowDescription(true); setShowSolutionPopup(false); setShowSolution(false)
@@ -120,16 +120,15 @@ const Problem = () => {
                 </button>
               </div>
 
-              {/* Mobile Only - Toggle between Description and Solution */}
+              {/* Mobile Only - Toggle Collapse/Expand */}
               <button type="button" onClick={() => {
                 setShowTop(!showTop);
-              }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-2 font-medium transition-colors duration-200 ${showTop ? '' : 'bg-[var(--main-color)]'}`}>
-                <FaArrowsAltH className="text-sm" />
-                <span>Switch View</span>
+              }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-2 font-medium transition-colors duration-200`}>
+                {showTop ? <FaChevronDown className="text-sm" /> : <FaChevronUp className="text-sm" />}
               </button>
             </div>
 
-            <article className={`${showTop ? 'hidden lg:flex' : 'flex'} w-full lg:w-1/2 rounded-b-lg bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white min-h-[400px] max-h-[60vh] lg:h-full`}>
+            <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden lg:flex ${showTop ? 'max-h-0 opacity-0' : 'max-h-[60vh] lg:max-h-full opacity-100 flex'}`}>
 
               <div className={`w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 overflow-y-auto flex-1 problem-description-scroll`}>
                 {/* Problem Title & Badges */}
