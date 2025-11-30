@@ -108,8 +108,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 👥 Team
 
-- **Lead Developer** - [@username](https://github.com/zaimhalili)
-- **UI/UX Designer** - [@designer](https://github.com/zaimhalili)
+- **Lead Developer** - [@zaimhalili](https://github.com/zaimhalili)
+- **UI/UX Designer** - [@zaimhalili](https://github.com/zaimhalili)
 
 ## 🙏 Acknowledgments
 
