@@ -9,9 +9,9 @@
 
 🧮 An interactive mathematics learning platform that makes education engaging and accessible.
 
-[Explore Demo](https://equathora.dev) • [Report Bug](https://github.com/username/equathora/issues) • [Request Feature](https://github.com/username/equathora/issues)
+[Explore Demo](https://equathora.vercel.app) • [Report Bug](https://github.com/zaimhalili/equathora/issues) • [Request Feature](https://github.com/zaimhalili/equathora/issues)
 
-![equathora Preview](src/assets/images/preview.png)
+![equathora Preview](src/assets/images/EquathoraFullLogo.png)
 
 </div>
 
@@ -108,8 +108,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 👥 Team
 
-- **Lead Developer** - [@username](https://github.com/username)
-- **UI/UX Designer** - [@designer](https://github.com/designer)
+- **Lead Developer** - [@username](https://github.com/zaimhalili)
+- **UI/UX Designer** - [@designer](https://github.com/zaimhalili)
 
 ## 🙏 Acknowledgments
 
