@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Logo from '../assets/logo/TransparentFullLogo.png';
 import { Link } from 'react-router-dom';
-import { FaBell, FaTrophy } from 'react-icons/fa';
+import { FaBell, FaTrophy, FaUser } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
 import Menu from '../assets/images/menu.svg';
@@ -210,18 +210,21 @@ const Navbar = () => {
               <Dropdown
                 label={<FaBell size={24} />}
                 items={notificationItems}
+                alignRight={true}
               />
             </li>
             <li className='pl-4 lg:pl-2 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
               <Dropdown
                 label={<FaTrophy size={24} />}
                 items={achievementItems}
+                alignRight={true}
               />
             </li>
             <li className='pl-4 lg:pl-2 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
               <Dropdown
-                label={<img src={GuestAvatar} alt="avatar" className='h-[30px] w-[30px] rounded-full hover:border hover:border-[var(--secondary-color)] object-cover' />}
+                label={<FaUser size={24} />}
                 items={profileItems}
+                alignRight={true}
               />
             </li>
             <li className='pl-4 lg:pl-2'>
