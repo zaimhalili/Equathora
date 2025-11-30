@@ -11,7 +11,7 @@
 
 [Explore Demo](https://equathora.vercel.app) • [Report Bug](https://github.com/zaimhalili/equathora/issues) • [Request Feature](https://github.com/zaimhalili/equathora/issues)
 
-![equathora Preview](src/assets/images/EquathoraFullLogo.png)
+![equathora Preview](src/assets/logo/EquathoraFullLogo.png)
 
 </div>
 
