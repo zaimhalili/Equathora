@@ -34,6 +34,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Premium from "./pages/Premium";
 import Recommended from "./pages/Recommended";
 import Feedback from "./pages/Feedback";
+import GetStarted from "./pages/GetStarted";
 
 function PageTitleUpdater() {
   const location = useLocation();
@@ -93,6 +94,7 @@ export default function App() {
 
         {/* Unprotected Routes */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/getstarted" element={<GetStarted />} />
         <Route path="/more" element={<More />} />
         <Route path="/about" element={<About />} />
         <Route path="/learn" element={<Learn />} />
