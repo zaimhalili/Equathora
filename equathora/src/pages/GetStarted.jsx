@@ -247,8 +247,8 @@ const GetStarted = () => {
                                 key={option.id}
                                 onClick={() => handleSelection(option.id)}
                                 className={`group flex items-center gap-3 p-3.5 rounded-lg border-2 transition-colors duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
-                                        ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
-                                        : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                    ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
+                                    : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                     }`}
                             >
                                 <div className='text-xl flex-shrink-0'>{option.icon}</div>
@@ -278,8 +278,8 @@ const GetStarted = () => {
                                     key={option.id}
                                     onClick={() => handleSelection(option.id)}
                                     className={`flex flex-col items-center gap-2 p-3 rounded-lg border-2 transition-colors duration-200 cursor-pointer ${isSelected
-                                            ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
-                                            : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                        ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
+                                        : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                         }`}
                                 >
                                     <div className='text-2xl'>{option.icon}</div>
@@ -297,8 +297,8 @@ const GetStarted = () => {
                     onClick={handleContinue}
                     disabled={!canContinue()}
                     className={`w-60 px-8 py-3 rounded-full font-semibold text-sm transition-all duration-200 ${canContinue()
-                            ? 'bg-[var(--secondary-color)] text-white hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgba(0,0,0,0.3)] active:shadow-none active:translate-y-1 cursor-pointer'
-                            : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
+                        ? 'bg-[var(--secondary-color)] text-white hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgba(0,0,0,0.3)] active:shadow-none active:translate-y-1 cursor-pointer'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                         }`}
                 >
                     {currentStep === totalSteps - 1 ? 'Start Learning' : 'Continue'}
