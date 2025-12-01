@@ -220,7 +220,7 @@ const GetStarted = () => {
             </div>
 
             {/* Content Section */}
-            <article className='flex flex-col items-center justify-center flex-1 w-full max-w-xl text-center'>
+            <article className='flex flex-col items-center justify-around flex-1 w-full max-w-xl text-center'>
                 <div className='flex flex-col gap-2 pb-6'>
                     {currentStepData.icon && (
                         <div className='pb-2'>
@@ -241,52 +241,52 @@ const GetStarted = () => {
                 </div>
 
                 {currentStepData.type === 'selection' && (
-                    <div className='flex flex-col gap-2.5 w-full pb-6'>
+                    <div className='flex flex-col gap-2 w-full pb-6'>
                         {currentStepData.options.map((option) => (
                             <button
                                 key={option.id}
                                 onClick={() => handleSelection(option.id)}
-                                className={`group flex items-center gap-3 p-3.5 rounded-lg border-2 transition-colors duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
+                                className={`group flex items-center gap-2.5 p-2.5 rounded-lg border-2 transition-colors duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
                                     ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
                                     : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                     }`}
                             >
-                                <div className='text-xl flex-shrink-0'>{option.icon}</div>
+                                <div className='text-lg flex-shrink-0'>{option.icon}</div>
                                 <div className='flex-1'>
-                                    <div className='font-semibold text-sm'>{option.label}</div>
+                                    <div className='font-semibold text-xs'>{option.label}</div>
                                     {option.description && (
-                                        <div className={`text-xs pt-0.5 ${selectedOptions[currentStep] === option.id ? 'opacity-90' : 'opacity-50'
+                                        <div className={`text-[11px] pt-0.5 leading-tight ${selectedOptions[currentStep] === option.id ? 'opacity-90' : 'opacity-50'
                                             }`}>
                                             {option.description}
                                         </div>
                                     )}
                                 </div>
-                                {selectedOptions[currentStep] === option.id && (
-                                    <div className='text-lg flex-shrink-0'>✓</div>
-                                )}
+                                <div className='text-base flex-shrink-0 w-4'>
+                                    {selectedOptions[currentStep] === option.id ? '✓' : ''}
+                                </div>
                             </button>
                         ))}
                     </div>
                 )}
 
                 {currentStepData.type === 'multi-selection' && (
-                    <div className='grid grid-cols-2 gap-2.5 w-full pb-6'>
+                    <div className='grid grid-cols-2 gap-2 w-full pb-6'>
                         {currentStepData.options.map((option) => {
                             const isSelected = (selectedOptions[currentStep] || []).includes(option.id);
                             return (
                                 <button
                                     key={option.id}
                                     onClick={() => handleSelection(option.id)}
-                                    className={`flex flex-col items-center gap-2 p-3 rounded-lg border-2 transition-colors duration-200 cursor-pointer ${isSelected
+                                    className={`flex flex-row items-center justify-center gap-2 px-3 py-2 rounded-lg border-2 transition-colors duration-200 cursor-pointer ${isSelected
                                         ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
                                         : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                         }`}
                                 >
-                                    <div className='text-2xl'>{option.icon}</div>
-                                    <div className='text-sm font-semibold text-center'>{option.label}</div>
-                                    {isSelected && (
-                                        <div className='text-base'>✓</div>
-                                    )}
+                                    <div className='text-lg flex items-center'>{option.icon}</div>
+                                    <div className='text-xs font-semibold flex-1 text-left leading-tight'>{option.label}</div>
+                                    <div className='text-sm w-4 flex items-center justify-center'>
+                                        {isSelected ? '✓' : ''}
+                                    </div>
                                 </button>
                             );
                         })}
@@ -297,7 +297,7 @@ const GetStarted = () => {
                     onClick={handleContinue}
                     disabled={!canContinue()}
                     className={`w-60 px-8 py-3 rounded-full font-semibold text-sm transition-all duration-200 ${canContinue()
-                        ? 'bg-[var(--secondary-color)] text-white hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgba(0,0,0,0.3)] active:shadow-none active:translate-y-1 cursor-pointer'
+                        ? 'bg-[var(--secondary-color)] text-white hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-pointer'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                         }`}
                 >
