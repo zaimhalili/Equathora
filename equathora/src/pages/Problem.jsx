@@ -19,6 +19,7 @@ const Problem = () => {
   const [showSolution, setShowSolution] = useState(false);
   const [solution, setSolution] = useState('');
   const [showTop, setShowTop] = useState(false);
+  const [descriptionCollapsed, setDescriptionCollapsed] = useState(false);
 
   const toggleHint = (index) => {
     setOpenHints(prev => ({
@@ -102,21 +103,23 @@ const Problem = () => {
         )}
 
         {/* Main Content */}
-        <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 min-h-[calc(100vh-80px)] lg:overflow-hidden">
+        <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 lg:h-[calc(100vh-7.5vh)] lg:overflow-hidden">
           {/* Description Side */}
-          <aside className='flex flex-col w-full lg:w-1/2 rounded-lg bg-[var(--main-color)] p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white lg:h-full'>
-            <div className='w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 justify-between rounded-t-lg'>
-              <div className='flex gap-1'>
+          <aside className={`flex flex-col w-full rounded-lg bg-[var(--main-color)] p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white lg:h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2'}`}>
+            <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 justify-between rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:justify-between lg:py-4 lg:px-1' : ''}`}>
+              <div className={`flex gap-1 ${descriptionCollapsed ? 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full' : ''}`}>
                 <button type="button" onClick={() => {
-                  setShowDescription(true); setShowSolutionPopup(false); setShowSolution(false)
-                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${showDescription ? 'bg-[var(--main-color)]' : ''}`}>
-                  <FaFileAlt className="text-[10px] md:text-xs text-[var(--secondary-color)]" />
-                  <span>Description</span>
+                  setShowDescription(true); setShowSolutionPopup(false); setShowSolution(false); setShowTop(false);
+                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
+                  <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Description</span>
+                  {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Description</span>}
+                  <FaFileAlt className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
                 </button>
 
-                <button type="button" onClick={() => { setShowDescription(false); showSolution ? '' : setShowSolutionPopup(true); }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-colors duration-200 ${!showDescription ? 'bg-[var(--main-color)]' : ''}`}>
-                  <FaCalculator className="text-[10px] md:text-xs text-[var(--secondary-color)]" />
-                  <span>Solution</span>
+                <button type="button" onClick={() => { setShowDescription(false); setShowTop(false); showSolution ? '' : setShowSolutionPopup(true); }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
+                  <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Solution</span>
+                  {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Solution</span>}
+                  <FaCalculator className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
                 </button>
               </div>
 
@@ -126,9 +129,16 @@ const Problem = () => {
               }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-2 font-medium transition-colors duration-200`}>
                 {showTop ? <FaChevronDown className="text-sm" /> : <FaChevronUp className="text-sm" />}
               </button>
+
+              {/* Desktop Only - Horizontal Collapse Toggle */}
+              <button type="button" onClick={() => {
+                setDescriptionCollapsed(!descriptionCollapsed);
+              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'px-2 py-2 mt-auto' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
+                {descriptionCollapsed ? <FaChevronRight className="text-sm" /> : <FaChevronDown className="text-sm rotate-[-90deg]" />}
+              </button>
             </div>
 
-            <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden lg:flex ${showTop ? 'max-h-0 opacity-0' : 'max-h-[60vh] lg:max-h-full opacity-100 flex'}`}>
+            <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden lg:flex ${showTop ? 'max-h-0 opacity-0' : 'max-h-[60vh] lg:max-h-full opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
 
               <div className={`w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 overflow-y-auto flex-1 problem-description-scroll`}>
                 {/* Problem Title & Badges */}
@@ -269,7 +279,7 @@ const Problem = () => {
 
 
           {/* Solution Side - Math Live*/}
-          <article className="flex justify-start items-stretch flex-col w-full lg:w-1/2 min-h-[500px] lg:h-full overflow-hidden rounded-lg">
+          <article className={`flex justify-start items-stretch flex-col w-full min-h-[500px] lg:h-full overflow-hidden rounded-lg transition-all duration-300 ${descriptionCollapsed ? 'lg:w-full' : 'lg:w-1/2'}`}>
             <MathLiveExample />
           </article>
         </section>
