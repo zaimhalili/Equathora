@@ -74,39 +74,47 @@
 }
 
 .ml-step-label {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.875rem;
+    font-weight: 700;
     color: var(--secondary-color);
-    min-width: 50px;
-    text-align: right;
+    min-width: 24px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--french-gray);
+    border-radius: 50%;
     flex-shrink: 0;
 }
 
 .ml-delete-btn {
-    background: #fee2e2;
-    border: 2px solid #ef4444;
+    background: transparent;
+    border: none;
     color: #dc2626;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
     flex-shrink: 0;
+    opacity: 0.6;
 }
 
 .ml-delete-btn:hover {
-    background: #fecaca;
-    border-color: #dc2626;
-    transform: scale(1.05);
+    opacity: 1;
+    background: #fee2e2;
+    transform: scale(1.1);
 }
 
 .ml-delete-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.9);
 }
 
 math-field {
@@ -159,6 +167,9 @@ math-field:focus-within {
     transition: all 0.2s ease;
     white-space: nowrap;
     min-width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .ml-btn:hover {
@@ -215,8 +226,41 @@ math-field:focus-within {
     border-color: rgb(110, 120, 139);
 }
 
-.ml-output {
+.ml-output-wrapper {
     margin-top: 1rem;
+    flex-shrink: 0;
+}
+
+.ml-preview-toggle {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--french-gray);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+}
+
+.ml-preview-toggle:hover {
+    background: var(--mid-main-secondary);
+}
+
+.ml-preview-toggle strong {
+    color: var(--secondary-color);
+    font-size: 14px;
+}
+
+.ml-preview-toggle svg {
+    color: var(--secondary-color);
+    font-size: 14px;
+}
+
+.ml-output {
+    margin-top: 0.5rem;
     padding: 1rem;
     border: 2px dashed var(--french-gray);
     border-radius: 12px;
@@ -224,7 +268,6 @@ math-field:focus-within {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 13px;
     word-break: break-word;
-    max-height: 180px;
     overflow-y: auto;
     flex-shrink: 0;
 }
@@ -247,11 +290,7 @@ math-field:focus-within {
     background: var(--secondary-color);
 }
 
-.ml-output strong {
-    color: var(--accent-color);
-    display: block;
-    margin-bottom: 0.5rem;
-}
+
 
 .steps-list {
     list-style: none;
@@ -273,18 +312,32 @@ math-field:focus-within {
 /* Global MathLive keyboard improvements */
 .ML__keyboard {
     max-width: 100vw !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 10001 !important;
 }
 
 .ML__keyboard-toolbar {
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
     gap: 2px !important;
+    padding: 4px !important;
+    overflow-x: auto !important;
 }
 
 .ML__keyboard-toolbar .ML__button {
-    flex-shrink: 1 !important;
-    min-width: 36px !important;
+    flex-shrink: 0 !important;
+    min-width: 32px !important;
+    padding: 6px 8px !important;
+    font-size: 13px !important;
+}
+
+/* Prevent keyboard from blocking input on mobile */
+math-field:focus-within {
+    scroll-margin-bottom: 350px !important;
 }
 
 /* Fix MathLive color picker visibility */
@@ -317,14 +370,16 @@ math-field:focus-within {
     }
 
     .ml-step-label {
-        min-width: 45px;
-        font-size: 0.7rem;
+        min-width: 22px;
+        width: 22px;
+        height: 22px;
+        font-size: 0.75rem;
     }
 
     .ml-delete-btn {
-        width: 28px;
-        height: 28px;
-        font-size: 12px;
+        width: 22px;
+        height: 22px;
+        font-size: 16px;
     }
 }
 
@@ -343,14 +398,16 @@ math-field:focus-within {
     }
 
     .ml-step-label {
-        min-width: 40px;
-        font-size: 0.65rem;
+        min-width: 20px;
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
     }
 
     .ml-delete-btn {
-        width: 26px;
-        height: 26px;
-        font-size: 11px;
+        width: 20px;
+        height: 20px;
+        font-size: 15px;
     }
 
     .ml-toolbar {
@@ -424,15 +481,16 @@ math-field:focus-within {
     }
 
     .ml-step-label {
-        min-width: 35px;
-        font-size: 0.6rem;
+        min-width: 18px;
+        width: 18px;
+        height: 18px;
+        font-size: 0.65rem;
     }
 
     .ml-delete-btn {
-        width: 24px;
-        height: 24px;
-        font-size: 10px;
-        border-width: 1px;
+        width: 18px;
+        height: 18px;
+        font-size: 14px;
     }
 
     math-field {

@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../components/MathLiveExample.css";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 export default function MathLiveEditor() {
     const [status, setStatus] = useState("Loading...");
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
+    const [previewOpen, setPreviewOpen] = useState(false);
 
     // refs to each math-field
     const fieldRefs = useRef({});
@@ -73,11 +75,12 @@ export default function MathLiveEditor() {
                 <div className="ml-steps-container">
                     {fields.map((field, index) => (
                         <div key={field.id} className="ml-step-wrapper">
-                            <div className="ml-step-label">Step {index + 1}</div>
+                            <div className="ml-step-label">{index + 1}</div>
                             <math-field
                                 ref={(el) => (fieldRefs.current[field.id] = el)}
                                 class="ml-field"
                                 virtualkeyboardmode="onfocus"
+                                virtualkeyboardpolicy="manual"
                                 smartfence="true"
                                 value={field.latex}
                                 onInput={(evt) =>
@@ -128,15 +131,25 @@ export default function MathLiveEditor() {
                     </button>
                 </div>
 
-                <div className="ml-output">
-                    <strong>Preview:</strong>
-                    <ul className="steps-list">
-                        {fields.map((f, i) => (
-                            <li key={f.id}>
-                                Step {i + 1}: {f.latex}
-                            </li>
-                        ))}
-                    </ul>
+                <div className="ml-output-wrapper">
+                    <button
+                        className="ml-preview-toggle"
+                        onClick={() => setPreviewOpen(!previewOpen)}
+                    >
+                        <strong>Preview</strong>
+                        {previewOpen ? <FaChevronUp /> : <FaChevronDown />}
+                    </button>
+                    {previewOpen && (
+                        <div className="ml-output">
+                            <ul className="steps-list">
+                                {fields.map((f, i) => (
+                                    <li key={f.id}>
+                                        Step {i + 1}: {f.latex}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
