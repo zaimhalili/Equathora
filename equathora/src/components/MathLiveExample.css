@@ -66,6 +66,49 @@
     margin-bottom: 1rem;
 }
 
+.ml-step-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.ml-step-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    min-width: 50px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.ml-delete-btn {
+    background: #fee2e2;
+    border: 2px solid #ef4444;
+    color: #dc2626;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.ml-delete-btn:hover {
+    background: #fecaca;
+    border-color: #dc2626;
+    transform: scale(1.05);
+}
+
+.ml-delete-btn:active {
+    transform: scale(0.95);
+}
+
 math-field {
     --caret-color: var(--accent-color);
     --selection-background-color: var(--really-light-accent);
@@ -79,7 +122,8 @@ math-field {
     border-radius: 8px;
     padding: 12px;
     display: block;
-    min-height: 3.5rem;
+    min-height: 3rem;
+    flex: 1;
     transition: all 0.2s ease;
 }
 
@@ -107,13 +151,14 @@ math-field:focus-within {
     appearance: none;
     border: 2px solid var(--french-gray);
     background: white;
-    padding: 0.7rem 1.5rem;
+    padding: 0.65rem 1.2rem;
     border-radius: 8px;
     font-weight: 600;
-    font-size: clamp(12px, 2vw, 14px);
+    font-size: 13px;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
+    min-width: fit-content;
 }
 
 .ml-btn:hover {
@@ -131,8 +176,8 @@ math-field:focus-within {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
     color: white;
-    flex: 1;
-    min-width: 120px;
+    flex: 1.2;
+    min-width: 140px;
 }
 
 .ml-btn.submit:hover {
@@ -146,6 +191,7 @@ math-field:focus-within {
     color: var(--secondary-color);
     font-weight: 500;
     font-family: 'Inter', sans-serif;
+    min-width: 90px;
 }
 
 .ml-btn.clear:hover {
@@ -160,7 +206,8 @@ math-field:focus-within {
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     color: white;
-    flex: 1.5;
+    flex: 1;
+    min-width: 110px;
 }
 
 .ml-btn.addStep:hover {
@@ -223,6 +270,39 @@ math-field:focus-within {
     color: var(--secondary-color);
 }
 
+/* Global MathLive keyboard improvements */
+.ML__keyboard {
+    max-width: 100vw !important;
+}
+
+.ML__keyboard-toolbar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 2px !important;
+}
+
+.ML__keyboard-toolbar .ML__button {
+    flex-shrink: 1 !important;
+    min-width: 36px !important;
+}
+
+/* Fix MathLive color picker visibility */
+.ML__color-swatch {
+    border: 2px solid rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8) inset !important;
+}
+
+.ML__color-swatch:hover {
+    border-color: var(--accent-color) !important;
+    transform: scale(1.15) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.9) inset !important;
+}
+
+.ML__popover {
+    z-index: 10000 !important;
+}
+
 @media (max-width: 1024px) {
     .ml-card {
         padding: 0.9rem;
@@ -234,6 +314,17 @@ math-field:focus-within {
 
     .ml-output {
         max-height: 150px;
+    }
+
+    .ml-step-label {
+        min-width: 45px;
+        font-size: 0.7rem;
+    }
+
+    .ml-delete-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
     }
 }
 
@@ -247,26 +338,59 @@ math-field:focus-within {
         padding: 0.8rem;
     }
 
+    .ml-step-wrapper {
+        gap: 0.4rem;
+    }
+
+    .ml-step-label {
+        min-width: 40px;
+        font-size: 0.65rem;
+    }
+
+    .ml-delete-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 11px;
+    }
+
     .ml-toolbar {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         padding-top: 0.8rem;
+        gap: 0.4rem;
     }
 
     .ml-btn {
-        width: 100%;
         flex: 1;
+        min-width: 80px;
         text-align: center;
-        padding: 0.8rem 1.2rem;
+        padding: 0.7rem 0.8rem;
+        font-size: 12px;
     }
 
-    .ml-btn.submit,
+    .ml-btn.submit {
+        flex: 1;
+        min-width: 100px;
+    }
+
     .ml-btn.addStep {
         flex: 1;
+        min-width: 90px;
+    }
+
+    .ml-btn.clear {
+        min-width: 80px;
     }
 
     .ml-output {
         max-height: 120px;
         margin-top: 0.8rem;
+    }
+
+    /* Improve virtual keyboard layout on mobile */
+    math-field {
+        font-size: 15px;
+        padding: 10px;
     }
 }
 
@@ -278,42 +402,81 @@ math-field:focus-within {
     }
 
     .ml-title {
-        font-size: 1.1rem;
-        padding: 0.6rem;
+        font-size: 1.05rem;
+        padding: 0.55rem;
     }
 
     .ml-status {
-        padding: 0.4rem 0.8rem;
-        font-size: 11px;
+        padding: 0.35rem 0.7rem;
+        font-size: 10px;
     }
 
     .ml-card {
-        padding: 0.6rem;
+        padding: 0.5rem;
     }
 
     .ml-steps-container {
         gap: 0.5rem;
     }
 
+    .ml-step-wrapper {
+        gap: 0.3rem;
+    }
+
+    .ml-step-label {
+        min-width: 35px;
+        font-size: 0.6rem;
+    }
+
+    .ml-delete-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+        border-width: 1px;
+    }
+
     math-field {
         font-size: 14px;
-        padding: 10px;
-        min-height: 2.8rem;
+        padding: 8px;
+        min-height: 2.5rem;
+    }
+
+    .ml-toolbar {
+        gap: 0.35rem;
     }
 
     .ml-btn {
-        padding: 0.7rem 1rem;
-        font-size: 13px;
+        padding: 0.65rem 0.7rem;
+        font-size: 11px;
+        min-width: 70px;
+    }
+
+    .ml-btn.submit {
+        min-width: 90px;
+    }
+
+    .ml-btn.addStep {
+        min-width: 80px;
     }
 
     .ml-output {
-        font-size: 11px;
-        padding: 0.7rem;
-        max-height: 100px;
+        font-size: 10px;
+        padding: 0.6rem;
+        max-height: 90px;
     }
 
     .steps-list li {
-        padding: 0.4rem;
-        font-size: 11px;
+        padding: 0.35rem;
+        font-size: 10px;
+    }
+
+    /* Better keyboard button positioning on mobile */
+    .ML__keyboard-toolbar {
+        padding: 4px !important;
+    }
+
+    .ML__keyboard-toolbar .ML__button {
+        min-width: 32px !important;
+        padding: 4px !important;
     }
 }

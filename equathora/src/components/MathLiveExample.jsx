@@ -50,6 +50,15 @@ export default function MathLiveEditor() {
         }, 0);
     };
 
+    const deleteField = (id) => {
+        if (fields.length === 1) {
+            // Don't delete if it's the last field, just clear it
+            setFields([{ id: Date.now(), latex: "" }]);
+            return;
+        }
+        setFields((prev) => prev.filter((f) => f.id !== id));
+    };
+
     const handleSubmit = () => {
         console.log("All steps:", fields);
         alert(fields.map((f, i) => `Step ${i + 1}: ${f.latex}`).join("\n"));
@@ -63,51 +72,59 @@ export default function MathLiveEditor() {
             <div className="ml-card" aria-live="polite">
                 <div className="ml-steps-container">
                     {fields.map((field, index) => (
-                        <math-field
-                            key={field.id}
-                            ref={(el) => (fieldRefs.current[field.id] = el)}
-                            class="ml-field"
-                            virtualkeyboardmode="onfocus"
-                            smartfence="true"
-                            value={field.latex}
-                            placeholder={`Step-${index + 1}-or-answer-here…`}
-                            onInput={(evt) =>
-                                updateLatex(field.id, evt.target.getValue("latex"))
-                            }
-                            onKeyDown={(e) => {
-                                const mf = fieldRefs.current[field.id];
-
-                                if (e.key === "Enter") {
-                                    e.preventDefault();
-                                    addField();
+                        <div key={field.id} className="ml-step-wrapper">
+                            <div className="ml-step-label">Step {index + 1}</div>
+                            <math-field
+                                ref={(el) => (fieldRefs.current[field.id] = el)}
+                                class="ml-field"
+                                virtualkeyboardmode="onfocus"
+                                smartfence="true"
+                                value={field.latex}
+                                onInput={(evt) =>
+                                    updateLatex(field.id, evt.target.getValue("latex"))
                                 }
+                                onKeyDown={(e) => {
+                                    const mf = fieldRefs.current[field.id];
 
-                                if (e.key === "ArrowUp") {
-                                    e.preventDefault();
-                                    const prevField = fields[index - 1];
-                                    if (prevField) fieldRefs.current[prevField.id]?.focus();
-                                }
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        addField();
+                                    }
 
-                                if (e.key === "ArrowDown") {
-                                    e.preventDefault();
-                                    const nextField = fields[index + 1];
-                                    if (nextField) fieldRefs.current[nextField.id]?.focus();
-                                }
-                            }}
-                        ></math-field>
+                                    if (e.key === "ArrowUp") {
+                                        e.preventDefault();
+                                        const prevField = fields[index - 1];
+                                        if (prevField) fieldRefs.current[prevField.id]?.focus();
+                                    }
+
+                                    if (e.key === "ArrowDown") {
+                                        e.preventDefault();
+                                        const nextField = fields[index + 1];
+                                        if (nextField) fieldRefs.current[nextField.id]?.focus();
+                                    }
+                                }}
+                            ></math-field>
+                            <button
+                                className="ml-delete-btn"
+                                onClick={() => deleteField(field.id)}
+                                title="Delete this step"
+                            >
+                                ✕
+                            </button>
+                        </div>
                     ))}
 
                 </div>
 
                 <div className="ml-toolbar">
                     <button className="ml-btn clear" onClick={clearAll}>
-                        Clear
+                        Clear All
                     </button>
                     <button className="ml-btn addStep" onClick={addField}>
-                        Add Step or Press Enter
+                        + Add Step
                     </button>
                     <button className="ml-btn submit" onClick={handleSubmit}>
-                        Submit
+                        Submit Solution
                     </button>
                 </div>
 
