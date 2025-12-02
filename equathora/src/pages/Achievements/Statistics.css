@@ -23,27 +23,45 @@
 
 .stats-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: clamp(1rem, 3vw, 2rem);
 }
 
 .stats-header h2 {
-    font-size: clamp(1.7rem, 5vw, 3.2rem);
-    padding: 0 0 1rem 0;
+    font-size: clamp(1.5rem, 5vw, 3.2rem);
+    padding: 0 0 clamp(0.5rem, 2vw, 1rem) 0;
+    line-height: 1.2;
+}
+
+.stats-header p {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    opacity: 0.9;
 }
 
 .stats-overview {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: clamp(1rem, 3vw, 2rem);
     width: 100%;
-    padding: 1rem;
+    padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+@media (max-width: 640px) {
+    .stats-overview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .stats-overview {
+        grid-template-columns: 1fr;
+    }
 }
 
 .stat-card {
     background-color: var(--secondary-color);
-    padding: 1.5rem;
-    border-radius: 8px;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition:
         opacity 0.6s ease-out,
@@ -51,15 +69,13 @@
         box-shadow 0.3s ease;
     transition-delay: 0s;
     text-align: center;
-    flex: 1 1 200px;
-    min-width: 200px;
-    max-width: 300px;
     opacity: 0;
     transform: translateY(20px);
     cursor: default;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-height: 120px;
 }
 
 .stat-card.animate-in {
@@ -80,40 +96,104 @@
 }
 
 .stat-label {
-    font-size: 1.2rem;
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
     font-weight: 500;
     color: var(--mid-main-secondary);
     margin-top: 0.5rem;
+}
+
+.stat-sublabel {
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+    opacity: 0.8;
+    margin-top: 0.25rem;
 }
 
 .difficulty-section {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 30px;
+    gap: clamp(1rem, 4vw, 2rem);
     border-radius: 15px;
-    padding: 2vh 2vw;
+    padding: clamp(1rem, 2vw, 2rem);
     font-family: 'Inter', sans-serif;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .difficulty-section h3 {
     font-size: clamp(1rem, 3vw, 1.8rem);
     font-weight: 600;
+    width: 100%;
 }
 
 .difficulty-grid {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    text-align: center;
-    font-size: clamp(0.9rem, 3vw, 1.6rem);
-    font-family: 'Inter', sans-serif;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(0.75rem, 3vw, 1.5rem);
     width: 100%;
+    font-family: 'Inter', sans-serif;
+}
+
+@media (max-width: 480px) {
+    .difficulty-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
+
+.difficulty-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.difficulty-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-item.easy {
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+.difficulty-item.easy:hover {
+    border-color: rgba(76, 175, 80, 0.6);
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.difficulty-item.medium {
+    border-color: rgba(255, 193, 7, 0.3);
+}
+
+.difficulty-item.medium:hover {
+    border-color: rgba(255, 193, 7, 0.6);
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.difficulty-item.hard {
+    border-color: rgba(244, 67, 54, 0.3);
+}
+
+.difficulty-item.hard:hover {
+    border-color: rgba(244, 67, 54, 0.6);
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+.difficulty-count {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.difficulty-label {
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
     font-weight: 500;
     color: var(--french-gray);
+    text-transform: capitalize;
 }
 
 .progress-section,
@@ -121,73 +201,114 @@
 .activity-section,
 .topics-section {
     width: 100%;
-    margin-top: 2rem;
+    margin-top: clamp(1.5rem, 3vw, 2rem);
     cursor: default;
 }
 
 .activity-section {
     background-color: var(--secondary-color);
-    padding: 2vh 2vw;
+    padding: clamp(1rem, 2vw, 2rem);
     border-radius: 15px;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
 }
 
 .activity-section h3 {
     font-size: clamp(1rem, 3vw, 1.8rem);
     font-weight: 600;
+    margin-bottom: clamp(0.75rem, 2vw, 1rem);
 }
 
-.progress-item,
-.difficulty-item {
-    margin-bottom: 1rem;
+.progress-item {
+    margin-bottom: 1.5rem;
 }
 
-.activity-day {
-    min-width: 20px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+.progress-item:last-child {
+    margin-bottom: 0;
 }
 
 .progress-header {
-    font-size: 1.2rem;
-    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+    font-weight: 600;
     margin-bottom: 0.8rem;
+    color: white;
+}
+
+.progress-section {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border-radius: 15px;
 }
 
 progress.progress-bar {
     width: 100%;
-    height: 20px;
+    height: clamp(16px, 3vw, 24px);
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
     appearance: none;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 progress.progress-bar::-webkit-progress-bar {
-    background-color: white;
-    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
 }
 
 progress.progress-bar::-webkit-progress-value {
-    background-color: var(--dark-accent-color);
-    border-radius: 10px;
+    background: linear-gradient(90deg, var(--accent-color) 0%, var(--dark-accent-color) 100%);
+    border-radius: 12px;
+    transition: width 0.5s ease;
 }
 
 progress.progress-bar::-moz-progress-bar {
-    background-color: var(--dark-accent-color);
-    border-radius: 10px;
+    background: linear-gradient(90deg, var(--accent-color) 0%, var(--dark-accent-color) 100%);
+    border-radius: 12px;
+    transition: width 0.5s ease;
 }
 
 .activity-chart {
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
-    gap: 8px;
-    height: 200px;
+    gap: clamp(6px, 2vw, 12px);
+    height: clamp(180px, 25vw, 200px);
     width: 100%;
     padding: 1rem 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) rgba(255, 255, 255, 0.1);
+}
+
+.activity-chart::-webkit-scrollbar {
+    height: 6px;
+}
+
+.activity-chart::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin: 0 0.5rem;
+}
+
+.activity-chart::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 10px;
+}
+
+.activity-chart::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-accent-color);
+}
+
+@media (max-width: 640px) {
+    .activity-chart {
+        justify-content: flex-start;
+        gap: 8px;
+    }
 }
 
 .activity-day {
@@ -196,9 +317,16 @@ progress.progress-bar::-moz-progress-bar {
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
-    min-width: 40px;
+    gap: clamp(6px, 2vw, 10px);
+    min-width: clamp(50px, 10vw, 60px);
     height: 100%;
+}
+
+@media (max-width: 640px) {
+    .activity-day {
+        flex: 0 0 auto;
+        min-width: 55px;
+    }
 }
 
 .activity-bar {
@@ -241,47 +369,77 @@ progress.progress-bar::-moz-progress-bar {
 
 @media (max-width: 768px) {
     .activity-chart {
-        gap: 4px;
         padding: 1rem 0.25rem;
     }
 
     .activity-bar {
-        max-width: 40px;
+        max-width: 45px;
+    }
+
+    .activity-label {
+        font-size: 0.75rem;
+    }
+
+    .bar-value {
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .activity-bar {
+        max-width: 42px;
     }
 
     .activity-label {
         font-size: 0.7rem;
     }
+}
 
-    .bar-value {
-        font-size: 0.6rem;
-    }
+.topics-section {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border-radius: 15px;
 }
 
 .topics-section h3 {
     text-align: center;
     font-weight: 600;
     font-family: 'Inter', sans-serif;
-    margin: 1rem 0;
+    margin: 0 0 clamp(1rem, 2vw, 1.5rem) 0;
     font-size: clamp(1rem, 3vw, 1.8rem);
 }
 
+.topics-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+    justify-content: center;
+}
+
 .topic-tag {
-    background-color: var(--secondary-color);
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--mid-main-secondary) 100%);
     color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-size: 0.9rem;
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 3vw, 1.25rem);
+    border-radius: 20px;
+    font-size: clamp(0.8rem, 2vw, 0.95rem);
     font-weight: 600;
     font-family: 'Inter', sans-serif;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
-    margin: 0.5rem;
+    transition: all 0.3s ease;
     text-align: center;
     cursor: default;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .topic-tag:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 480px) {
+    .topic-tag {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
 }
