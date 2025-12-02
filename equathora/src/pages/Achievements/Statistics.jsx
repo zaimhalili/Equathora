@@ -109,22 +109,19 @@ const Statistics = () => {
         <div className="activity-chart">
           {stats.weeklyProgress.map((problems, index) => {
             const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const maxHeight = Math.max(...stats.weeklyProgress);
-            const height = (problems / maxHeight) * 50;
+            const maxHeight = Math.max(...stats.weeklyProgress, 1); // Prevent division by zero
+            const heightPercentage = maxHeight > 0 ? (problems / maxHeight) * 100 : 0;
 
             return (
               <div key={index} className="activity-day">
                 <div
                   className="activity-bar"
-                  style={{ height: `${height}%` }}
+                  style={{ height: `${heightPercentage}%` }}
                   title={`${problems} problems on ${days[index]}`}
-                ></div>
-
-                <div className="day">
-                  <div className="activity-label">{days[index]}</div>
-                  <div className="activity-count">{problems}</div>
+                >
+                  {problems > 0 && <span className="bar-value">{problems}</span>}
                 </div>
-
+                <div className="activity-label">{days[index]}</div>
               </div>
             );
           })}
