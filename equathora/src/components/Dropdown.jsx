@@ -28,18 +28,21 @@ const Dropdown = ({ label, items, alignRight = false }) => {
                             </div>
                         </button>
                     ) : (
-                        <Link key={i} to={item.to} state={item.state} className='flex w-full p-2.5 gap-2.5 border-t border-[var(--french-gray)] items-center hover:bg-white hover:rounded-[5px_5px_10px_10px] text-[var(--secondary-color)] no-underline'>
-                            <img
-                                src={item.image}
-                                alt={item.text}
-                                className='h-[50px] w-[50px]'
-                            />
-                            <div className="flex flex-col justify-center font-[Public_Sans,serif]">
-                                <h4 className='text-[1.1rem] font-semibold'>{item.text}</h4>
-                                <h6 className='text-[0.8rem] font-normal'>{item.description}</h6>
+                        <Link key={i} to={item.to} state={item.state} className='flex w-full p-2.5 gap-2.5 border-t border-[var(--french-gray)] items-center hover:bg-white hover:rounded-[5px_5px_10px_10px] text-[var(--secondary-color)] no-underline justify-between'>
+                            <div className='flex gap-2.5'>
+                                <img
+                                    src={item.image}
+                                    alt={item.text}
+                                    className='h-[50px] w-[50px]'
+                                />
+                                <div className="flex flex-col justify-center font-[Public_Sans,serif]">
+                                    <h4 className='text-[1.1rem] font-semibold'>{item.text}</h4>
+                                    <h6 className='text-[0.8rem] font-normal'>{item.description}</h6>
+                                </div>
                             </div>
+
                             {item.notificationsNo && (
-                                <div className="ml-auto flex items-center px-2.5">
+                                <div className="ml-auto flex items-center px-2.5 justify-between">
                                     <h4 className='text-yellow-500 flex h-full items-center font-semibold'>
                                         {item.notificationsNo}
                                     </h4>
