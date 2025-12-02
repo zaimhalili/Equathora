@@ -79,8 +79,7 @@ export default function MathLiveEditor() {
                             <math-field
                                 ref={(el) => (fieldRefs.current[field.id] = el)}
                                 class="ml-field"
-                                virtualkeyboardmode="onfocus"
-                                virtualkeyboardpolicy="manual"
+                                virtualkeyboardmode="off"
                                 smartfence="true"
                                 value={field.latex}
                                 onInput={(evt) =>

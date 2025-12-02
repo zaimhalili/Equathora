@@ -309,6 +309,29 @@ math-field:focus-within {
     color: var(--secondary-color);
 }
 
+/* Improve MathLive performance and feel */
+math-field::part(container) {
+    transition: none !important;
+}
+
+math-field::part(content) {
+    line-height: 1.4 !important;
+}
+
+/* Hide virtual keyboard toggle button on mobile */
+@media (max-width: 768px) {
+    math-field::part(virtual-keyboard-toggle) {
+        display: none !important;
+    }
+
+    /* Additional selectors for keyboard toggle */
+    .ML__virtual-keyboard-toggle,
+    [part="virtual-keyboard-toggle"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+}
+
 /* Global MathLive keyboard improvements */
 .ML__keyboard {
     max-width: 100vw !important;
@@ -338,6 +361,20 @@ math-field:focus-within {
 /* Prevent keyboard from blocking input on mobile */
 math-field:focus-within {
     scroll-margin-bottom: 350px !important;
+}
+
+/* Reduce MathLive clunkiness - smoother interactions */
+.ML__fieldcontainer,
+.ML__fieldcontainer__field {
+    transition: none !important;
+}
+
+.ML__selection {
+    transition: none !important;
+}
+
+.ML__caret {
+    animation-duration: 0.8s !important;
 }
 
 /* Fix MathLive color picker visibility */
