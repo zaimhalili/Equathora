@@ -1,13 +1,15 @@
 // ProblemDetail.jsx
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import Footer from '../components/Footer.jsx';
-import Navbar from '../components/Navbar.jsx';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
 import Timer from '../components/Timer.jsx';
-import { FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaTimes } from 'react-icons/fa';
+import ReportModal from '../components/ProblemModals/ReportModal.jsx';
+import HelpModal from '../components/ProblemModals/HelpModal.jsx';
+import ViewSolutionModal from '../components/ProblemModals/ViewSolutionModal.jsx';
+import SubmissionDetailModal from '../components/ProblemModals/SubmissionDetailModal.jsx';
+import { FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 const Problem = () => {
   const { groupId, problemId } = useParams();
@@ -22,8 +24,67 @@ const Problem = () => {
   const [descriptionCollapsed, setDescriptionCollapsed] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
+  const [showSubmissions, setShowSubmissions] = useState(false);
   const [reportReason, setReportReason] = useState('');
   const [reportDetails, setReportDetails] = useState('');
+  const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [showSubmissionDetail, setShowSubmissionDetail] = useState(false);
+
+  // Mock submissions data - In production, this would come from backend/localStorage
+  const submissions = [
+    {
+      id: 1,
+      status: 'accepted',
+      timestamp: '2 days ago',
+      date: 'Dec 1, 2025 at 3:42 PM',
+      steps: [
+        { latex: 'T(n) = \\frac{n(n+1)}{2}' },
+        { latex: 'T(8) = \\frac{8 \\times 9}{2} = 36' },
+        { latex: 'T(9) = \\frac{9 \\times 10}{2} = 45' },
+        { latex: '36 < 44 \\leq 45' },
+        { latex: '\\therefore \\text{The answer is } 9' }
+      ],
+      feedback: 'Perfect! You correctly identified the triangular number pattern and applied the formula to find that 44 falls within the range where 9 appears.',
+      metadata: {
+        timeSpent: '12m 34s',
+        attempts: 3,
+        hintsUsed: 1
+      }
+    },
+    {
+      id: 2,
+      status: 'wrong',
+      timestamp: '3 days ago',
+      date: 'Nov 30, 2025 at 10:15 AM',
+      steps: [
+        { latex: 'n = 44' },
+        { latex: '\\sqrt{44} \\approx 6.63' },
+        { latex: '\\therefore \\text{The answer is } 7' }
+      ],
+      feedback: 'Your approach using square root is close, but not quite right. Think about how the sequence is structured - each number appears multiple times. Consider reviewing Hint 1.',
+      metadata: {
+        timeSpent: '5m 12s',
+        attempts: 2,
+        hintsUsed: 0
+      }
+    },
+    {
+      id: 3,
+      status: 'wrong',
+      timestamp: '3 days ago',
+      date: 'Nov 30, 2025 at 9:58 AM',
+      steps: [
+        { latex: '44 \\div 5 = 8.8' },
+        { latex: '\\text{Round up to } 9' }
+      ],
+      feedback: 'The division approach doesn\'t work for this sequence pattern. Each number n appears exactly n times, not evenly distributed. Try to find the pattern first.',
+      metadata: {
+        timeSpent: '3m 45s',
+        attempts: 1,
+        hintsUsed: 0
+      }
+    }
+  ];
 
   const toggleHint = (index) => {
     setOpenHints(prev => ({
@@ -117,134 +178,39 @@ const Problem = () => {
           </div>
         </header>
 
-        {/* Show Solution Popup */}
-        {showSolutionPopup && (
-          <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30' onClick={() => { setShowDescription(true); setShowSolutionPopup(false); }}>
-            <div className='bg-white w-11/12 max-w-md min-h-40 rounded-2xl px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
-              <div className='flex flex-col gap-3'>
-                <h2 className='font-[Public_Sans] text-left font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>View Solution?</h2>
-                <p className='font-[Inter] text-[var(--secondary-color)] text-sm md:text-base leading-relaxed opacity-80'>Viewing the solution before solving will award 0 points, but the problem will be marked as completed.</p>
-              </div>
+        {/* Modals */}
+        <ViewSolutionModal
+          isOpen={showSolutionPopup}
+          onClose={() => {
+            setShowSolutionPopup(false);
+            setShowDescription(true);
+          }}
+          onConfirm={() => {
+            setShowSolution(true);
+            setShowSolutionPopup(false);
+          }}
+        />
 
-              <div className='flex w-full justify-between gap-3 pt-7'>
-                <button type="button" onClick={() => { setShowSolutionPopup(false); setShowDescription(true); }} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-[var(--french-gray)] rounded-lg bg-white text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base'>Cancel</button>
+        <ReportModal
+          isOpen={showReportModal}
+          onClose={() => setShowReportModal(false)}
+          reportReason={reportReason}
+          setReportReason={setReportReason}
+          reportDetails={reportDetails}
+          setReportDetails={setReportDetails}
+          onSubmit={handleReport}
+        />
 
-                <button type="button" className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base' onClick={() => { setShowSolution(true); setShowSolutionPopup(false) }}>View Solution</button>
-              </div>
-            </div>
-          </div>
-        )}
+        <HelpModal
+          isOpen={showHelpModal}
+          onClose={() => setShowHelpModal(false)}
+        />
 
-        {/* Report Modal */}
-        {showReportModal && (
-          <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/40 backdrop-blur-sm' onClick={() => setShowReportModal(false)}>
-            <div className='bg-white w-11/12 max-w-lg rounded-2xl px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
-              <div className='flex justify-between items-start mb-4'>
-                <div>
-                  <h2 className='font-[Public_Sans] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>Report Problem</h2>
-                  <p className='font-[Inter] text-[var(--secondary-color)] text-sm opacity-70 mt-2'>Help us improve by reporting any issues</p>
-                </div>
-                <button onClick={() => setShowReportModal(false)} className='text-gray-400 hover:text-gray-600 transition-colors'>
-                  <FaTimes className='text-xl' />
-                </button>
-              </div>
-
-              <div className='flex flex-col gap-4 mt-4'>
-                <div>
-                  <label className='font-[Inter] text-sm font-semibold text-[var(--secondary-color)] mb-2 block'>Reason for Report</label>
-                  <select
-                    value={reportReason}
-                    onChange={(e) => setReportReason(e.target.value)}
-                    className='w-full p-3 border-2 border-[var(--french-gray)] rounded-lg font-[Inter] text-sm focus:border-[var(--accent-color)] focus:outline-none transition-colors'
-                  >
-                    <option value="">Select a reason</option>
-                    <option value="incorrect-answer">Incorrect Answer</option>
-                    <option value="typo">Typo or Grammar Error</option>
-                    <option value="unclear">Unclear Problem Statement</option>
-                    <option value="broken">Broken Feature</option>
-                    <option value="inappropriate">Inappropriate Content</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className='font-[Inter] text-sm font-semibold text-[var(--secondary-color)] mb-2 block'>Additional Details (Optional)</label>
-                  <textarea
-                    value={reportDetails}
-                    onChange={(e) => setReportDetails(e.target.value)}
-                    placeholder='Provide more information about the issue...'
-                    rows={4}
-                    className='w-full p-3 border-2 border-[var(--french-gray)] rounded-lg font-[Inter] text-sm resize-none focus:border-[var(--accent-color)] focus:outline-none transition-colors'
-                  />
-                </div>
-              </div>
-
-              <div className='flex w-full justify-between gap-3 mt-6'>
-                <button type="button" onClick={() => setShowReportModal(false)} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-[var(--french-gray)] rounded-lg bg-white text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg transition-all duration-300 flex-1 text-sm md:text-base'>Cancel</button>
-                <button type="button" onClick={handleReport} className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 flex-1 text-sm md:text-base'>Submit Report</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Help Modal */}
-        {showHelpModal && (
-          <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/40 backdrop-blur-sm' onClick={() => setShowHelpModal(false)}>
-            <div className='bg-white w-11/12 max-w-2xl rounded-2xl px-6 py-7 flex flex-col shadow-2xl max-h-[90vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
-              <div className='flex justify-between items-start mb-4'>
-                <div>
-                  <h2 className='font-[Public_Sans] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>How to Use This Page</h2>
-                  <p className='font-[Inter] text-[var(--secondary-color)] text-sm opacity-70 mt-2'>Quick guide to solving problems</p>
-                </div>
-                <button onClick={() => setShowHelpModal(false)} className='text-gray-400 hover:text-gray-600 transition-colors'>
-                  <FaTimes className='text-xl' />
-                </button>
-              </div>
-
-              <div className='flex flex-col gap-5 mt-4'>
-                <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl'>
-                  <h3 className='font-[Public_Sans] font-bold text-lg text-[var(--secondary-color)] mb-2 flex items-center gap-2'>
-                    <FaFileAlt className='text-[var(--accent-color)]' /> Reading the Problem
-                  </h3>
-                  <p className='font-[Inter] text-sm text-[var(--secondary-color)] leading-relaxed'>Start by carefully reading the problem description and examples. Make sure you understand what's being asked before attempting to solve.</p>
-                </div>
-
-                <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl'>
-                  <h3 className='font-[Public_Sans] font-bold text-lg text-[var(--secondary-color)] mb-2 flex items-center gap-2'>
-                    <FaCalculator className='text-[var(--accent-color)]' /> Entering Your Solution
-                  </h3>
-                  <ul className='font-[Inter] text-sm text-[var(--secondary-color)] leading-relaxed list-disc list-inside space-y-2'>
-                    <li>Use the math editor on the right to write your solution step-by-step</li>
-                    <li>Click "+ Add Step" to add more steps to your solution</li>
-                    <li>Use the math toolbar to insert equations, symbols, and expressions</li>
-                    <li>Delete unwanted steps using the × button next to each step</li>
-                  </ul>
-                </div>
-
-                <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl'>
-                  <h3 className='font-[Public_Sans] font-bold text-lg text-[var(--secondary-color)] mb-2 flex items-center gap-2'>
-                    <FaLightbulb className='text-[var(--accent-color)]' /> Using Hints
-                  </h3>
-                  <p className='font-[Inter] text-sm text-[var(--secondary-color)] leading-relaxed'>Stuck? Scroll down to find hints that can guide you without giving away the answer. Hints are revealed one at a time to help you learn.</p>
-                </div>
-
-                <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl'>
-                  <h3 className='font-[Public_Sans] font-bold text-lg text-[var(--secondary-color)] mb-2 flex items-center gap-2'>
-                    <FaChevronRight className='text-[var(--accent-color)]' /> Desktop Features
-                  </h3>
-                  <p className='font-[Inter] text-sm text-[var(--secondary-color)] leading-relaxed'>On desktop, you can collapse the problem description panel to get more space for your solution. Just click the arrow button in the top-right corner of the description panel.</p>
-                </div>
-
-                <div className='bg-green-50 border-2 border-green-200 p-4 rounded-xl'>
-                  <h3 className='font-[Public_Sans] font-bold text-lg text-green-800 mb-2'>💡 Pro Tip</h3>
-                  <p className='font-[Inter] text-sm text-green-700 leading-relaxed'>Try to solve the problem on your own before viewing hints or the solution. Learning happens best when you struggle through the challenge!</p>
-                </div>
-              </div>
-
-              <button type="button" onClick={() => setShowHelpModal(false)} className='mt-6 px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base'>Got It!</button>
-            </div>
-          </div>
-        )}
+        <SubmissionDetailModal
+          isOpen={showSubmissionDetail}
+          onClose={() => setShowSubmissionDetail(false)}
+          submission={selectedSubmission}
+        />
 
         {/* Main Content */}
         <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 lg:h-[calc(100vh-7.5vh)] lg:overflow-hidden">
@@ -260,10 +226,26 @@ const Problem = () => {
                   <FaFileAlt className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
                 </button>
 
-                <button type="button" onClick={() => { setShowDescription(false); setShowTop(false); showSolution ? '' : setShowSolutionPopup(true); }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
+                <button type="button" onClick={() => {
+                  setShowDescription(false);
+                  setShowTop(false);
+                  setShowSubmissions(false);
+                  showSolution ? '' : setShowSolutionPopup(true);
+                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
                   <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Solution</span>
                   {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Solution</span>}
                   <FaCalculator className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
+                </button>
+
+                <button type="button" onClick={() => {
+                  setShowDescription(false);
+                  setShowSolution(false);
+                  setShowSubmissions(true);
+                  setShowTop(false);
+                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
+                  <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Submissions</span>
+                  {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Submissions</span>}
+                  <FaList className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
                 </button>
               </div>
 
@@ -308,7 +290,57 @@ const Problem = () => {
 
                 {showSolution ? (
                   <div>
-                    <p className="text-sm md:text-base text-[var(--secondary-color)] font-[Inter,sans-serif]">Solution content will be displayed here...</p>
+                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Public_Sans,sans-serif] mb-4">Official Solution</h2>
+                    <p className="text-sm md:text-base text-[var(--secondary-color)] font-[Inter,sans-serif] leading-relaxed">{problem.correctAnswer}</p>
+                  </div>
+                ) : showSubmissions ? (
+                  <div>
+                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Public_Sans,sans-serif] mb-4">Your Submissions</h2>
+                    <div className="flex flex-col gap-3">
+                      {submissions.map((submission) => (
+                        <div 
+                          key={submission.id}
+                          onClick={() => {
+                            setSelectedSubmission(submission);
+                            setShowSubmissionDetail(true);
+                          }}
+                          className={`bg-[var(--french-gray)]/20 p-4 rounded-lg border-l-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:scale-[1.02] ${
+                            submission.status === 'accepted' ? 'border-green-500 hover:bg-green-50' : 
+                            submission.status === 'wrong' ? 'border-red-500 hover:bg-red-50' : 
+                            'border-yellow-500 hover:bg-yellow-50'
+                          }`}
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="flex items-center gap-2">
+                              {submission.status === 'accepted' && <FaCheckCircle className="text-green-600 text-sm" />}
+                              {submission.status === 'wrong' && <FaTimesCircle className="text-red-600 text-sm" />}
+                              <span className={`text-xs md:text-sm font-semibold ${
+                                submission.status === 'accepted' ? 'text-green-600' : 
+                                submission.status === 'wrong' ? 'text-red-600' : 
+                                'text-yellow-600'
+                              }`}>
+                                {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong Answer' : 'Pending'}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                              <FaClock className="text-[10px]" />
+                              <span>{submission.timestamp}</span>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-3 text-xs text-[var(--secondary-color)] opacity-70">
+                            <span>{submission.steps.length} steps</span>
+                            {submission.metadata.timeSpent && <span>• {submission.metadata.timeSpent}</span>}
+                            {submission.metadata.hintsUsed !== undefined && <span>• {submission.metadata.hintsUsed} hints used</span>}
+                          </div>
+                          <div className="mt-2 text-xs text-[var(--accent-color)] font-medium">
+                            Click to view details →
+                          </div>
+                        </div>
+                      ))}
+                      {submissions.length === 0 && (
+                        <p className="text-center text-sm text-gray-500 mt-4">No submissions yet. Start solving to see your history!</p>
+                      )}
+                    </div>
                   </div>
                 ) : (
                   <>
