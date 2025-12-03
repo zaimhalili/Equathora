@@ -241,13 +241,6 @@ const Problem = () => {
           {/* Description Side */}
           <aside className={`flex flex-col w-full rounded-lg bg-[var(--main-color)] p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white lg:h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2'}`}>
             <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
-              {/* Desktop Only - Horizontal Collapse Toggle */}
-              <button type="button" onClick={() => {
-                setDescriptionCollapsed(!descriptionCollapsed);
-              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
-                {descriptionCollapsed ? <FaChevronRight className="text-sm" /> : <FaChevronDown className="text-sm rotate-[-90deg]" />}
-              </button>
-
               <div className={`flex gap-1 ${descriptionCollapsed ? 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full' : ''}`}>
                 <button type="button" onClick={() => {
                   setShowDescription(true); setShowSolutionPopup(false); setShowSolution(false); setShowTop(false);
@@ -285,6 +278,13 @@ const Problem = () => {
                 setShowTop(!showTop);
               }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-2 font-medium transition-colors duration-200`}>
                 {showTop ? <FaChevronDown className="text-sm" /> : <FaChevronUp className="text-sm" />}
+              </button>
+
+              {/* Desktop Only - Horizontal Collapse Toggle */}
+              <button type="button" onClick={() => {
+                setDescriptionCollapsed(!descriptionCollapsed);
+              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3 mb-2' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
+                {descriptionCollapsed ? <FaChevronRight className="text-sm" /> : <FaChevronDown className="text-sm rotate-[-90deg]" />}
               </button>
             </div>
 

@@ -37,7 +37,7 @@ const YourTrack = () => {
                 </div>
             </div>
 
-            <div className="max-w-lg flex justify-center items-center">
+            <div className="max-w-sm flex justify-center items-center">
                 <div className="w-full flex justify-center flex-col bg-white shadow-[0_10px_10px_rgba(141,153,174,0.3)] rounded-[3px] text-center items-center p-6">
                     <img src={Mentor} alt="Mentoring icon" className="w-[100px] h-[100px]" />
                     <p className="font-[Public_Sans] font-bold text-lg text-[var(--secondary-color)] pt-5">

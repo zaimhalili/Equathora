@@ -4,7 +4,7 @@ const ViewSolutionModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
 
     return (
-        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/40 backdrop-blur-sm' onClick={onClose}>
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-[2px]' onClick={onClose}>
             <div className='bg-white w-11/12 max-w-md rounded-2xl px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
                 <div className='flex flex-col gap-3'>
                     <h2 className='font-[Public_Sans] text-left font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>View Solution?</h2>
