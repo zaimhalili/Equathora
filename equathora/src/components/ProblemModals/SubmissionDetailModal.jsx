@@ -11,7 +11,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                 <div className='flex justify-between items-start pb-4'>
                     <div className='flex-1'>
                         <div className='flex items-center gap-3 pb-2'>
-                            <h2 className='font-[Public_Sans] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>
+                            <h2 className='font-[Inter] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>
                                 Submission Details
                             </h2>
                             <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${submission.status === 'accepted' ? 'bg-green-100 text-green-700' :
@@ -35,7 +35,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
 
                 <div className='flex flex-col gap-4 pt-4'>
                     <div className='bg-[var(--french-gray)]/10 p-4 rounded-xl'>
-                        <h3 className='font-[Public_Sans] font-bold text-sm text-[var(--secondary-color)] pb-3'>Your Solution Steps</h3>
+                        <h3 className='font-[Inter] font-bold text-sm text-[var(--secondary-color)] pb-3'>Your Solution Steps</h3>
                         <div className='flex flex-col gap-3'>
                             {submission.steps && submission.steps.map((step, index) => (
                                 <div key={index} className='bg-white p-4 rounded-lg border border-gray-200'>

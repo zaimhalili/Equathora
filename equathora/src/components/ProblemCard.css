@@ -4,15 +4,15 @@
     background-color: var(--main-color);
     border: 1.5px solid rgba(43, 45, 66, 0.12);
     border-radius: 6px;
-    padding: 1.25rem;
+    padding: 1rem;
     transition: all 0.3s ease;
     cursor: pointer;
     text-decoration: none;
     color: var(--secondary-color);
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     position: relative;
     overflow: hidden;
-    min-height: 140px;
+    min-height: 120px;
 }
 
 .problem-card::before {
@@ -55,7 +55,7 @@
 }
 
 .problem-title {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--secondary-color);
     margin: 0;
@@ -71,21 +71,21 @@
 
 .favourite-icon {
     color: #f59e0b;
-    font-size: 1.1rem;
+    font-size: 1rem;
     filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.3));
 }
 
 .premium-icon {
     color: #a855f7;
-    font-size: 1.1rem;
+    font-size: 1rem;
     filter: drop-shadow(0 2px 4px rgba(168, 85, 247, 0.3));
 }
 
 .problem-description {
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     color: rgba(43, 45, 66, 0.7);
-    line-height: 1.5;
-    margin: 0 0 1.5rem 0;
+    line-height: 1.4;
+    margin: 0 0 1rem 0;
     flex: 1;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -144,8 +144,8 @@
 /* Responsive Design */
 @media only screen and (max-width: 480px) {
     .problem-card {
-        padding: 1rem;
-        min-height: 130px;
+        padding: 0.875rem;
+        min-height: 110px;
     }
 
     .problem-title {

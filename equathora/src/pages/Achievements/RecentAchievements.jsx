@@ -3,14 +3,14 @@ import './RecentAchievements.css';
 import { FaTrophy, FaFire, FaBolt, FaGem, FaStar, FaRocket, FaBrain, FaHeart, FaCrown, FaMedal } from 'react-icons/fa';
 
 const RecentAchievements = () => {
-  // Load data from localStorage - starts at zero for new users
+  // Load data from localStorage - starts with demo values for better initial experience
   const progress = JSON.parse(localStorage.getItem('equathoraProgress') || '{}');
-  const solvedProblems = progress.solvedProblems?.length || 0;
-  const streakDays = progress.streakDays || 0;
-  const conceptsLearned = progress.conceptsLearned || 0;
-  const totalTimeSpent = progress.totalTimeMinutes || 0;
-  const hardProblems = progress.difficultyBreakdown?.hard || 0;
-  const perfectStreak = progress.perfectStreak || 0;
+  const solvedProblems = progress.solvedProblems?.length || 12;
+  const streakDays = progress.streakDays || 5;
+  const conceptsLearned = progress.conceptsLearned || 8;
+  const totalTimeSpent = progress.totalTimeMinutes || 180;
+  const hardProblems = progress.difficultyBreakdown?.hard || 2;
+  const perfectStreak = progress.perfectStreak || 3;
 
   // Check if user is an early user (created account before a certain date)
   const accountCreated = progress.accountCreated || Date.now();
@@ -125,6 +125,13 @@ const RecentAchievements = () => {
   const unlockedAchievements = achievements.filter(a => a.unlocked);
   const achievementsEarned = unlockedAchievements.length;
 
+  // Sort achievements: unlocked first, then by rarity (harder at bottom)
+  const rarityOrder = { 'Common': 1, 'Uncommon': 2, 'Rare': 3, 'Epic': 4, 'Legendary': 5 };
+  const sortedAchievements = [...achievements].sort((a, b) => {
+    if (a.unlocked !== b.unlocked) return b.unlocked - a.unlocked;
+    return rarityOrder[a.rarity] - rarityOrder[b.rarity];
+  });
+
   const [isAnimated, setIsAnimated] = useState(false);
   useEffect(() => {
     setIsAnimated(true);
@@ -163,7 +170,7 @@ const RecentAchievements = () => {
       </article>
 
       <article className="achievements-list">
-        {achievements.map((achievement, index) => (
+        {sortedAchievements.map((achievement, index) => (
           <div
             key={achievement.id}
             className={`a-list-component ${achievement.unlocked ? 'unlocked' : 'locked'} ${isAnimated ? 'animate-in' : ''}`}

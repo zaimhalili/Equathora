@@ -7,57 +7,109 @@ const YourTrack = () => {
     const solved = 10;
     const total = 50;
     const percentage = (solved / total) * 100;
+    const nextMilestone = Math.ceil(solved / 10) * 10;
+    const toNextMilestone = nextMilestone - solved;
+
+    // Additional stats
+    const currentStreak = 5;
+    const bestStreak = 8;
+    const avgAccuracy = 87;
 
     return (
-        <article className="mt-8 w-full text-[var(--secondary-color)] px-[4vw] xl:px-[12vw] pb-[6vh] flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-0">
-            <div className="flex flex-col gap-2 w-full lg:w-1/2 items-cente">
-                <h3 className="font-[Inter] text-[var(--secondary-color)] text-3xl font-bold w-full text-center lg:text-left">
-                    Your Track
-                </h3>
-                <div className="flex items-center justify-between w-full">
+        <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)]" style={{ marginTop: '2rem', paddingLeft: '4vw', paddingRight: '4vw', paddingBottom: '6vh', gap: '2rem' }}>
+            <div className="flex flex-col w-full lg:w-[55%]" style={{ gap: '0.75rem', padding: '0' }}>
+                <div className="flex items-center justify-between" style={{ padding: '0' }}>
+                    <h3 className="font-[Inter] text-[var(--secondary-color)] text-3xl font-bold">
+                        Your Track
+                    </h3>
+                    <span className="text-sm font-semibold text-[var(--accent-color)] bg-[rgba(217,4,41,0.1)] px-3 py-1 rounded-md">
+                        Level {Math.floor(solved / 10) + 1}
+                    </span>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="flex items-center justify-between w-full" style={{ gap: '0.75rem', padding: '0' }}>
                     <Link
                         to="/problems"
-                        className="w-full sm:w-[80%] h-5 bg-[var(--french-gray)] rounded-2xl flex items-center relative transition-all duration-300 overflow-hidden group"
+                        className="flex-1 h-6 bg-[var(--french-gray)] rounded-md flex items-center relative transition-all duration-300 overflow-hidden group"
                     >
                         <div
-                            className="h-full rounded-2xl bg-[var(--dark-accent-color)] transition-all duration-300"
-                            style={{ width: `${percentage}%`}}
-                        />
+                            className="h-full rounded-md bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] transition-all duration-500 relative"
+                            style={{ width: `${percentage}%` }}
+                        >
+                            <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                        </div>
                     </Link>
                     <Link
                         to="/problems"
-                        className="w-1/5 sm:w-auto h-8 flex items-center justify-center sm:justify-start transition-transform duration-300 ease-in sm:ml-4 hover:translate-x-[15px]"
+                        className="w-10 h-10 flex items-center justify-center transition-transform duration-300 ease-in hover:translate-x-2 hover:scale-110"
                     >
-                        <img src={LilArrow} alt="arrow" className="h-full w-12" />
+                        <img src={LilArrow} alt="arrow" className="w-full h-full" />
                     </Link>
                 </div>
-                <div className="font-[Inter] text-base lg:pl-[2vw] text-center lg:text-left">
-                    <span className="font-bold">{solved}</span>/
-                    <span>{total}</span> Problems Solved
+
+                {/* Stats Row */}
+                <div className="flex items-center justify-between" style={{ padding: '0' }}>
+                    <div className="font-[Inter] text-base">
+                        <span className="font-bold text-lg">{solved}</span>
+                        <span className="text-[var(--french-gray)]">/</span>
+                        <span className="text-[var(--french-gray)]">{total}</span>
+                        <span className="text-sm ml-1">Problems Solved</span>
+                    </div>
+                    <div className="text-sm text-[var(--french-gray)]">
+                        <span className="font-semibold">{toNextMilestone}</span> to next milestone
+                    </div>
+                </div>
+
+                {/* Mini Stats Grid */}
+                <div className="grid grid-cols-3" style={{ gap: '0.75rem', marginTop: '0.5rem', padding: '0' }}>
+                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-sm" style={{ padding: '0.75rem' }}>
+                        <div className="text-xs text-[var(--french-gray)] font-medium" style={{ marginBottom: '0.25rem' }}>Current Streak</div>
+                        <div className="text-2xl font-bold text-[var(--accent-color)] flex items-center" style={{ gap: '0.25rem' }}>
+                            🔥 {currentStreak}
+                        </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-sm" style={{ padding: '0.75rem' }}>
+                        <div className="text-xs text-[var(--french-gray)] font-medium" style={{ marginBottom: '0.25rem' }}>Best Streak</div>
+                        <div className="text-2xl font-bold text-[var(--secondary-color)] flex items-center" style={{ gap: '0.25rem' }}>
+                            ⚡ {bestStreak}
+                        </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-sm" style={{ padding: '0.75rem' }}>
+                        <div className="text-xs text-[var(--french-gray)] font-medium" style={{ marginBottom: '0.25rem' }}>Accuracy</div>
+                        <div className="text-2xl font-bold text-[var(--secondary-color)]">
+                            {avgAccuracy}%
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div className="max-w-sm flex justify-center items-center">
-                <div className="w-full flex justify-center flex-col bg-white shadow-[0_10px_10px_rgba(141,153,174,0.3)] rounded-[3px] text-center items-center p-6">
-                    <img src={Mentor} alt="Mentoring icon" className="w-[100px] h-[100px]" />
-                    <p className="font-[Public_Sans] font-bold text-lg text-[var(--secondary-color)] pt-5">
-                        Become a mentor
+            <div className="w-full lg:w-[45%] flex justify-center items-start" style={{ padding: '0' }}>
+                <div className="w-full flex justify-center flex-col bg-gradient-to-br from-white to-[rgba(237,242,244,0.8)] shadow-[0_8px_16px_rgba(141,153,174,0.2)] border border-[rgba(43,45,66,0.08)] rounded-md text-center items-center transition-all duration-300 hover:shadow-[0_12px_24px_rgba(141,153,174,0.25)] hover:-translate-y-1" style={{ padding: '1.5rem' }}>
+                    <div className="relative">
+                        <img src={Mentor} alt="Mentoring icon" className="w-[90px] h-[90px]" />
+                        <div className="absolute -top-1 -right-1 bg-[var(--accent-color)] text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-lg">
+                            NEW
+                        </div>
+                    </div>
+                    <p className="font-[Inter] font-bold text-lg text-[var(--secondary-color)] pt-4 pb-1">
+                        Become a Mentor
                     </p>
-                    <p className="font-[Public_Sans] text-md font-normal text-[var(--secondary-color)] pb-2.5">
-                        Mentoring is a great way to reinforce your own learning, and help students learn and discover the things they don't know.
+                    <p className="font-[Inter] text-sm font-normal text-[var(--french-gray)] pb-4 leading-relaxed">
+                        Share your knowledge, help others grow, and strengthen your own understanding through teaching.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-3 w-full justify-center pt-2">
+                    <div className="flex flex-col sm:flex-row w-full justify-center" style={{ gap: '0.625rem', padding: '0' }}>
                         <Link
                             to="/applymentor"
-                            className="font-[Inter] text-[0.95rem] font-semibold py-3 px-6 rounded-[3px] no-underline transition-all duration-300 cursor-pointer shadow-[inset_0_0_5px_black] bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:-translate-y-0.5 w-full sm:w-auto text-center"
+                            className="font-[Inter] text-[0.9rem] font-semibold py-2.5 px-5 rounded-md no-underline transition-all duration-300 cursor-pointer bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white hover:shadow-lg hover:-translate-y-0.5 w-full sm:w-auto text-center"
                         >
-                            Try mentoring now
+                            Apply Now
                         </Link>
                         <Link
                             to="/applymentor"
-                            className="font-[Inter] text-[0.95rem] font-semibold py-3 px-6 rounded-[3px] no-underline transition-all duration-300 cursor-pointer shadow-[inset_0_0_5px_black] bg-transparent text-[var(--secondary-color)] border-[var(--secondary-color)] hover:bg-[var(--french-gray)] hover:-translate-y-0.5 w-full sm:w-auto text-center"
+                            className="font-[Inter] text-[0.9rem] font-semibold py-2.5 px-5 rounded-md no-underline transition-all duration-300 cursor-pointer bg-transparent text-[var(--secondary-color)] border-[1.5px] border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.05)] hover:-translate-y-0.5 w-full sm:w-auto text-center"
                         >
-                            Learn more
+                            Learn More
                         </Link>
                     </div>
                 </div>

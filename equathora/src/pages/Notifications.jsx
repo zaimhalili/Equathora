@@ -61,7 +61,7 @@ const Notifications = () => {
         <div className="px-6 md:px-16 lg:px-24 pt-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl text-center lg:text-left lg:text-4xl xl:text-5xl font-bold text-[var(--secondary-color)] font-['Public_Sans']">Notifications</h1>
+              <h1 className="text-3xl text-center lg:text-left lg:text-4xl xl:text-5xl font-bold text-[var(--secondary-color)] font-['Inter']">Notifications</h1>
               {unreadCount > 0 && (
                 <span className="bg-[var(--accent-color)] text-white text-sm font-semibold px-3 py-1 rounded-full">{unreadCount}</span>
               )}
@@ -100,7 +100,7 @@ const Notifications = () => {
           <div className="flex flex-col gap-5 md:gap-6">
             {notifications.length === 0 ? (
               <div className="bg-white rounded-xl p-16 text-center gap-20">
-                <h3 className="text-2xl font-bold text-[var(--secondary-color)] mb-2 font-['Public_Sans']">
+                <h3 className="text-2xl font-bold text-[var(--secondary-color)] mb-2 font-['Inter']">
                   No notifications
                 </h3>
                 <p className="text-[var(--mid-main-secondary)] font-['Inter']">

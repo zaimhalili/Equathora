@@ -35,7 +35,7 @@
 }
 
 .about-hero-title {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(2.5rem, 6vw, 4rem);
     font-weight: 800;
     color: var(--main-color);
@@ -74,7 +74,7 @@
 }
 
 .section-header h2 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 700;
     color: var(--secondary-color);
@@ -145,7 +145,7 @@
 }
 
 .vision-card h3 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--secondary-color);
@@ -260,7 +260,7 @@
 }
 
 .feature-number {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 2.5rem;
     font-weight: 800;
     color: var(--accent-color);
@@ -269,7 +269,7 @@
 }
 
 .feature-card h3 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--secondary-color);
@@ -313,7 +313,7 @@
 }
 
 .value-item h4 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--secondary-color);
@@ -350,7 +350,7 @@
 }
 
 .about-cta h2 {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 700;
     color: var(--main-color);

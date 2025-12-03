@@ -45,7 +45,7 @@
 }
 
 .error-code {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(6rem, 15vw, 10rem);
     font-weight: 800;
     color: var(--accent-color);
@@ -68,7 +68,7 @@
 }
 
 .error-title {
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 700;
     color: var(--main-color);

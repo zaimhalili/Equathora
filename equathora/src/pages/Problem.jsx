@@ -169,7 +169,7 @@ const Problem = () => {
       <FeedbackBanner />
       <main className="min-h-screen flex flex-col text-[var(--secondary-color)]">
         {/* Navigation Header */}
-        <header className="flex items-center justify-between font-[Public_Sans,sans-serif] bg-[var(--main-color)] w-full px-3 sm:px-6 md:px-8 py-3 md:py-4 flex-shrink-0">
+        <header className="flex items-center justify-between font-[Inter,sans-serif] bg-[var(--main-color)] w-full px-3 sm:px-6 md:px-8 py-3 md:py-4 flex-shrink-0">
           <Link to="/learn" className="flex items-center gap-1 md:gap-2 text-sm md:text-md text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-2 md:px-4 py-2 rounded-lg hover:bg-[var(--french-gray)] hover:text-[var(--main-color)]">
             <img src={LilArrow} alt="arrow" className="w-4 h-4 md:w-5 md:h-5 rotate-180 transition-transform duration-200 hover:translate-x-1" />
             <span className="hidden sm:inline">Back to Exercises</span>
@@ -296,7 +296,7 @@ const Problem = () => {
               <div className={`w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 overflow-y-auto flex-1 problem-description-scroll`}>
                 {/* Problem Title & Badges */}
                 <div>
-                  <h1 className="font-[Public_Sans,sans-serif] text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold pb-2 md:pb-3">{problem.title}</h1>
+                  <h1 className="font-[Inter,sans-serif] text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold pb-2 md:pb-3">{problem.title}</h1>
                   <div className="flex gap-1.5 md:gap-2 flex-wrap font-[Inter,sans-serif] items-center">
                     <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
                       problem.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
@@ -317,12 +317,12 @@ const Problem = () => {
 
                 {showSolution ? (
                   <div>
-                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Public_Sans,sans-serif] mb-4">Official Solution</h2>
+                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Inter,sans-serif] mb-4">Official Solution</h2>
                     <p className="text-sm md:text-base text-[var(--secondary-color)] font-[Inter,sans-serif] leading-relaxed">{problem.correctAnswer}</p>
                   </div>
                 ) : showSubmissions ? (
                   <div>
-                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Public_Sans,sans-serif] pb-4">Your Submissions</h2>
+                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Inter,sans-serif] pb-4">Your Submissions</h2>
                     <div className="flex flex-col gap-2">
                       {submissions.map((submission) => (
                         <div
@@ -376,7 +376,7 @@ const Problem = () => {
                       <h3 className="text-sm md:text-base pb-2 md:pb-3 text-[var(--secondary-color)] font-bold font-[Inter,sans-serif]">Examples</h3>
                       {problem.examples.map((example, index) => (
                         <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/40 rounded-lg mb-2 md:mb-3 last:mb-0">
-                          <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 font-[Public_Sans,sans-serif]">Example {index + 1}:</div>
+                          <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 font-[Inter,sans-serif]">Example {index + 1}:</div>
                           <div className="flex flex-col gap-1.5 md:gap-2">
                             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
                               <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Input:</span>

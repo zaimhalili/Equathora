@@ -15,7 +15,7 @@ const Settings = () => {
         <div >
             <Navbar />
             <main className='min-h-screen flex flex-col gap-5 xl:gap-8 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] items-center text-[var(--secondary-color)] px-8 sm:px-12 md:px-20 lg:px-30 xl:px-72'>
-                <h1 className='font-[Public Sans,cursive] font-bold text-[var(--secondary-color)] text-2xl lg:text-3xl pt-5'>Settings & Customization</h1>
+                <h1 className='font-[Inter,cursive] font-bold text-[var(--secondary-color)] text-2xl lg:text-3xl pt-5'>Settings & Customization</h1>
 
                 {/* Profile Section */}
                 <section className='bg-white shadow-gray-500 shadow-2xl rounded-xl w-full px-5 pt-3 pb-5 max-w-[800px]'>
@@ -97,7 +97,7 @@ const Settings = () => {
 
                 {/* Handle Section */}
                 <section className='bg-white shadow-gray-500 shadow-2xl rounded-xl w-full px-5 pt-3 pb-5 flex flex-col gap-2 lg:gap-4 max-w-[800px]'>
-                    <h1 className='font-[Public Sans,cursive] font-bold text-[var(--secondary-color)] text-2xl pt-5 lg:text-3xl'>Change your handle</h1>
+                    <h1 className='font-[Inter,cursive] font-bold text-[var(--secondary-color)] text-2xl pt-5 lg:text-3xl'>Change your handle</h1>
                     <div>
                         <input
                             type="text"
@@ -120,7 +120,7 @@ const Settings = () => {
                 <section className='flex gap-4 flex-col lg:flex-row pt-4 pb-7 max-w-[800px]'>
                     <div className='w-full lg:w-1/2 border-2 border-[var(--dark-accent-color)] rounded-md 
                     bg-[var(--really-light-accent)] px-5 py-5 gap-3 flex flex-col shadow-lg shadow-gray-600'>
-                        <h4 className='font-[Public Sans,cursive] font-bold text-[var(--secondary-color)] text-lg lg:text-2xl'>Reset Account</h4>
+                        <h4 className='font-[Inter,cursive] font-bold text-[var(--secondary-color)] text-lg lg:text-2xl'>Reset Account</h4>
                         <p className='text-md'>Resetting your account will reset your progress on all tracks,
                             reset all exercises and remove access to all your previous mentoring.</p>
                         <button type="submit" className='cursor-pointer py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all rounded-xs duration-200 lg:max-w-[180px] hover:-translate-y-1'>Reset account</button>
@@ -128,7 +128,7 @@ const Settings = () => {
 
                     <div className='w-full border-2 border-[var(--dark-accent-color)] rounded-md lg:w-1/2
                     bg-[var(--really-light-accent)] px-5 py-5 gap-3 flex flex-col shadow-lg shadow-gray-600'>
-                        <h4 className='font-[Public Sans,cursive] font-bold text-[var(--secondary-color)] text-lg lg:text-2xl'>Delete Account</h4>
+                        <h4 className='font-[Inter,cursive] font-bold text-[var(--secondary-color)] text-lg lg:text-2xl'>Delete Account</h4>
                         <p className='text-md'>This option will eliminate your account entirely with all data.
                             You’ll get a chance to confirm your choice.</p>
                         <button type="submit" className='cursor-pointer py-2 px-3 rounded-xs bg-[var(--accent-color)] text-white font-bold text-md border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-200 hover:-translate-y-1 lg:max-w-[180px]'>Delete account</button>

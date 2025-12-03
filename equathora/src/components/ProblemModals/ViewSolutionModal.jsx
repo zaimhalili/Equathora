@@ -7,7 +7,7 @@ const ViewSolutionModal = ({ isOpen, onClose, onConfirm }) => {
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-[2px]' onClick={onClose}>
             <div className='bg-white w-11/12 max-w-md rounded-2xl px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
                 <div className='flex flex-col gap-3'>
-                    <h2 className='font-[Public_Sans] text-left font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>View Solution?</h2>
+                    <h2 className='font-[Inter] text-left font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>View Solution?</h2>
                     <p className='font-[Inter] text-[var(--secondary-color)] text-sm md:text-base leading-relaxed opacity-80'>Viewing the solution before solving will award 0 points, but the problem will be marked as completed.</p>
                 </div>
 

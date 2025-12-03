@@ -9,7 +9,7 @@ const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDet
             <div className='bg-white w-11/12 max-w-lg rounded-2xl px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-start mb-4'>
                     <div>
-                        <h2 className='font-[Public_Sans] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>Report Problem</h2>
+                        <h2 className='font-[Inter] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>Report Problem</h2>
                         <p className='font-[Inter] text-[var(--secondary-color)] text-sm opacity-70 mt-2'>Help us improve by reporting any issues</p>
                     </div>
                     <button onClick={onClose} className='text-gray-400 hover:text-gray-600 transition-colors'>

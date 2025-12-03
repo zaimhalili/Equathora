@@ -1,7 +1,7 @@
 .help-center-container {
     min-height: 100vh;
     background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color));
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 /* Hero Section */
@@ -190,7 +190,7 @@
     color: var(--secondary-color);
     text-align: left;
     transition: all 0.2s ease;
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .faq-question:hover {
@@ -295,7 +295,7 @@
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    font-family: 'Public Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     position: relative;
     overflow: hidden;
 }

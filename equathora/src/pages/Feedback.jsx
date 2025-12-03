@@ -147,7 +147,7 @@ const Feedback = () => {
             <main className="min-h-screen bg-gradient-to-b from-[var(--mid-main-secondary)] to-[var(--main-color)] py-8 px-4 sm:px-6 md:px-8 w-full flex justify-center">
                 <div className="max-w-3xl">
                     <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-10">
-                        <h1 className="text-3xl sm:text-4xl font-bold text-[var(--secondary-color)] font-[Public_Sans] pb-4">
+                        <h1 className="text-3xl sm:text-4xl font-bold text-[var(--secondary-color)] font-[Inter] pb-4">
                             Share Your Feedback
                         </h1>
                         <p className="text-[var(--secondary-color)] opacity-80 font-[Inter] pb-4 text-sm sm:text-base">
@@ -295,7 +295,7 @@ const Feedback = () => {
                     {/* Information Boxes */}
                     <div className="pt-6 flex flex-col gap-5">
                         <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
-                            <h3 className="font-bold text-blue-900 pb-2 font-[Public_Sans]">Privacy Notice</h3>
+                            <h3 className="font-bold text-blue-900 pb-2 font-[Inter]">Privacy Notice</h3>
                             <p className="text-sm text-blue-800 font-[Inter]">
                                 Your feedback is important to us. We collect this information solely to improve Equathora.
                                 Your email address (if provided) will only be used to follow up on your feedback and will never be shared with third parties.
@@ -303,7 +303,7 @@ const Feedback = () => {
                         </div>
 
                         <div className="bg-green-50 border-l-4 border-green-500 rounded-lg p-4">
-                            <h3 className="font-bold text-green-900 mb-2 font-[Public_Sans]">📧 Instant Delivery</h3>
+                            <h3 className="font-bold text-green-900 mb-2 font-[Inter]">📧 Instant Delivery</h3>
                             <p className="text-sm text-green-800 font-[Inter]">
                                 Your feedback will be sent directly to our team via email. We read every submission and typically respond within 24-48 hours.
                                 Thank you for helping us improve Equathora!
