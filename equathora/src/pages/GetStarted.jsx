@@ -193,7 +193,7 @@ const GetStarted = () => {
                     {currentStep > 0 && (
                         <button
                             onClick={handleBack}
-                            className='p-2 rounded-lg hover:bg-[var(--french-gray)] transition-colors duration-200 text-[var(--secondary-color)]'
+                            className='p-2 rounded-lg hover:bg-[var(--french-gray)] transition-colors duration-200 text-[var(--secondary-color)] cursor-pointer'
                             aria-label="Go back"
                         >
                             <FaArrowLeft className='text-lg' />
@@ -296,7 +296,7 @@ const GetStarted = () => {
                 <button
                     onClick={handleContinue}
                     disabled={!canContinue()}
-                    className={`w-60 px-8 py-3 rounded-full font-semibold text-sm transition-all duration-200 ${canContinue()
+                    className={`w-60 px-8 py-3 rounded-full font-semibold text-sm ${canContinue()
                         ? 'bg-[var(--secondary-color)] text-white hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-pointer'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                         }`}

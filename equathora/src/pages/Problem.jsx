@@ -11,7 +11,7 @@ import {
   ViewSolutionModal,
   SubmissionDetailModal
 } from '../components/ProblemModals';
-import { FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaRegStar } from 'react-icons/fa';
 
 const Problem = () => {
   const { groupId, problemId } = useParams();
@@ -193,11 +193,11 @@ const Problem = () => {
               <FaFlag className="text-sm md:text-base" />
             </button>
             <button
-              className={`bg-transparent border-2 px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-base transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] flex items-center justify-center ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
+              className={`bg-transparent border-2 px-3 py-1.5 md:py-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] flex items-center justify-center ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
               onClick={() => setIsFavorite(!isFavorite)}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
-              {isFavorite ? '★' : '☆'}
+              {isFavorite ? <FaStar className="text-sm md:text-base" /> : <FaRegStar className="text-sm md:text-base" />}
             </button>
           </div>
         </header>
@@ -244,6 +244,7 @@ const Problem = () => {
               <div className={`flex gap-1 ${descriptionCollapsed ? 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full' : ''}`}>
                 <button type="button" onClick={() => {
                   setShowDescription(true); setShowSolutionPopup(false); setShowSolution(false); setShowTop(false);
+                  if (descriptionCollapsed) setDescriptionCollapsed(false);
                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
                   <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Description</span>
                   {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Description</span>}
@@ -255,6 +256,7 @@ const Problem = () => {
                   setShowTop(false);
                   setShowSubmissions(false);
                   showSolution ? '' : setShowSolutionPopup(true);
+                  if (descriptionCollapsed) setDescriptionCollapsed(false);
                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
                   <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Solution</span>
                   {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Solution</span>}
@@ -266,6 +268,7 @@ const Problem = () => {
                   setShowSolution(false);
                   setShowSubmissions(true);
                   setShowTop(false);
+                  if (descriptionCollapsed) setDescriptionCollapsed(false);
                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
                   <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Submissions</span>
                   {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Submissions</span>}
@@ -283,7 +286,7 @@ const Problem = () => {
               {/* Desktop Only - Horizontal Collapse Toggle */}
               <button type="button" onClick={() => {
                 setDescriptionCollapsed(!descriptionCollapsed);
-              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3 mb-2' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
+              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
                 {descriptionCollapsed ? <FaChevronRight className="text-sm" /> : <FaChevronDown className="text-sm rotate-[-90deg]" />}
               </button>
             </div>
