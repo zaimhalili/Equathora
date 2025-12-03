@@ -10,7 +10,7 @@ const FeedbackBanner = () => {
                 Help us improve Equathora!{' '}
                 <Link
                     to="/feedback"
-                    className="underline decoration-2 underline-offset-2 font-semibold hover:text-yellow-300 transition-colors duration-200"
+                    className="!underline decoration-2 underline-offset-2 !text-yellow-300 font-semibold hover:!text-yellow-400 transition-colors duration-200"
                 >
                     Share your feedback
                 </Link>
