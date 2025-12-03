@@ -7,18 +7,17 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
 
     return (
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/40 backdrop-blur-sm' onClick={onClose}>
-            <div className='bg-white w-11/12 max-w-3xl rounded-2xl px-6 py-7 flex flex-col shadow-2xl max-h-[90vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
+            <div className='bg-white w-11/12 max-w-2xl rounded-2xl px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-start mb-4'>
                     <div className='flex-1'>
                         <div className='flex items-center gap-3 mb-2'>
                             <h2 className='font-[Public_Sans] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>
                                 Submission Details
                             </h2>
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${
-                                submission.status === 'accepted' ? 'bg-green-100 text-green-700' :
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${submission.status === 'accepted' ? 'bg-green-100 text-green-700' :
                                 submission.status === 'wrong' ? 'bg-red-100 text-red-700' :
-                                'bg-yellow-100 text-yellow-700'
-                            }`}>
+                                    'bg-yellow-100 text-yellow-700'
+                                }`}>
                                 {submission.status === 'accepted' && <FaCheckCircle />}
                                 {submission.status === 'wrong' && <FaTimesCircle />}
                                 {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong Answer' : 'Pending'}
@@ -47,8 +46,8 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                                         <span className='text-xs font-semibold text-gray-600'>Step {index + 1}</span>
                                     </div>
                                     <div className='pl-8'>
-                                        <math-field 
-                                            read-only 
+                                        <math-field
+                                            read-only
                                             style={{
                                                 fontSize: '1.1rem',
                                                 padding: '8px',
@@ -64,24 +63,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                         </div>
                     </div>
 
-                    {submission.feedback && (
-                        <div className={`p-4 rounded-xl border-2 ${
-                            submission.status === 'accepted' ? 'bg-green-50 border-green-200' :
-                            submission.status === 'wrong' ? 'bg-red-50 border-red-200' :
-                            'bg-yellow-50 border-yellow-200'
-                        }`}>
-                            <h3 className='font-[Public_Sans] font-bold text-sm mb-2 flex items-center gap-2'>
-                                {submission.status === 'accepted' && <FaCheckCircle className='text-green-600' />}
-                                {submission.status === 'wrong' && <FaTimesCircle className='text-red-600' />}
-                                <span className={submission.status === 'accepted' ? 'text-green-800' : 'text-red-800'}>
-                                    Feedback
-                                </span>
-                            </h3>
-                            <p className='font-[Inter] text-sm leading-relaxed text-gray-700'>
-                                {submission.feedback}
-                            </p>
-                        </div>
-                    )}
+
 
                     {submission.metadata && (
                         <div className='grid grid-cols-2 md:grid-cols-3 gap-3'>
@@ -107,9 +89,9 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                     )}
                 </div>
 
-                <button 
-                    type="button" 
-                    onClick={onClose} 
+                <button
+                    type="button"
+                    onClick={onClose}
                     className='mt-6 px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base'
                 >
                     Close

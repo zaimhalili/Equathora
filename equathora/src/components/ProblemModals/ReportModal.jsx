@@ -6,7 +6,7 @@ const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDet
 
     return (
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/40 backdrop-blur-sm' onClick={onClose}>
-            <div className='bg-white w-11/12 max-w-lg rounded-2xl px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
+            <div className='bg-white w-11/12 max-w-md rounded-2xl px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-start mb-4'>
                     <div>
                         <h2 className='font-[Public_Sans] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>Report Problem</h2>

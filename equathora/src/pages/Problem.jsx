@@ -5,10 +5,12 @@ import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
 import Timer from '../components/Timer.jsx';
-import ReportModal from '../components/ProblemModals/ReportModal.jsx';
-import HelpModal from '../components/ProblemModals/HelpModal.jsx';
-import ViewSolutionModal from '../components/ProblemModals/ViewSolutionModal.jsx';
-import SubmissionDetailModal from '../components/ProblemModals/SubmissionDetailModal.jsx';
+import {
+  ReportModal,
+  HelpModal,
+  ViewSolutionModal,
+  SubmissionDetailModal
+} from '../components/ProblemModals';
 import { FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 const Problem = () => {
@@ -29,68 +31,91 @@ const Problem = () => {
   const [reportDetails, setReportDetails] = useState('');
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [showSubmissionDetail, setShowSubmissionDetail] = useState(false);
+  const [hintsOpened, setHintsOpened] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
 
-  // Mock submissions data - In production, this would come from backend/localStorage
-  const submissions = [
-    {
-      id: 1,
-      status: 'accepted',
-      timestamp: '2 days ago',
-      date: 'Dec 1, 2025 at 3:42 PM',
-      steps: [
-        { latex: 'T(n) = \\frac{n(n+1)}{2}' },
-        { latex: 'T(8) = \\frac{8 \\times 9}{2} = 36' },
-        { latex: 'T(9) = \\frac{9 \\times 10}{2} = 45' },
-        { latex: '36 < 44 \\leq 45' },
-        { latex: '\\therefore \\text{The answer is } 9' }
-      ],
-      feedback: 'Perfect! You correctly identified the triangular number pattern and applied the formula to find that 44 falls within the range where 9 appears.',
-      metadata: {
-        timeSpent: '12m 34s',
-        attempts: 3,
-        hintsUsed: 1
+  // Initialize with mock submissions - In production, this would come from backend/localStorage
+  React.useEffect(() => {
+    const mockSubmissions = [
+      {
+        id: 1,
+        status: 'accepted',
+        timestamp: '2 days ago',
+        date: 'Dec 1, 2025 at 3:42 PM',
+        steps: [
+          { latex: 'T(n) = \\frac{n(n+1)}{2}' },
+          { latex: 'T(8) = \\frac{8 \\times 9}{2} = 36' },
+          { latex: 'T(9) = \\frac{9 \\times 10}{2} = 45' },
+          { latex: '36 < 44 \\leq 45' },
+          { latex: '\\therefore \\text{The answer is } 9' }
+        ],
+        metadata: {
+          timeSpent: '12m 34s',
+          attempts: 3,
+          hintsUsed: 1
+        }
+      },
+      {
+        id: 2,
+        status: 'wrong',
+        timestamp: '3 days ago',
+        date: 'Nov 30, 2025 at 10:15 AM',
+        steps: [
+          { latex: 'n = 44' },
+          { latex: '\\sqrt{44} \\approx 6.63' },
+          { latex: '\\therefore \\text{The answer is } 7' }
+        ],
+        metadata: {
+          timeSpent: '5m 12s',
+          attempts: 2,
+          hintsUsed: 0
+        }
+      },
+      {
+        id: 3,
+        status: 'wrong',
+        timestamp: '3 days ago',
+        date: 'Nov 30, 2025 at 9:58 AM',
+        steps: [
+          { latex: '44 \\div 5 = 8.8' },
+          { latex: '\\text{Round up to } 9' }
+        ],
+        metadata: {
+          timeSpent: '3m 45s',
+          attempts: 1,
+          hintsUsed: 0
+        }
       }
-    },
-    {
-      id: 2,
-      status: 'wrong',
-      timestamp: '3 days ago',
-      date: 'Nov 30, 2025 at 10:15 AM',
-      steps: [
-        { latex: 'n = 44' },
-        { latex: '\\sqrt{44} \\approx 6.63' },
-        { latex: '\\therefore \\text{The answer is } 7' }
-      ],
-      feedback: 'Your approach using square root is close, but not quite right. Think about how the sequence is structured - each number appears multiple times. Consider reviewing Hint 1.',
-      metadata: {
-        timeSpent: '5m 12s',
-        attempts: 2,
-        hintsUsed: 0
-      }
-    },
-    {
-      id: 3,
-      status: 'wrong',
-      timestamp: '3 days ago',
-      date: 'Nov 30, 2025 at 9:58 AM',
-      steps: [
-        { latex: '44 \\div 5 = 8.8' },
-        { latex: '\\text{Round up to } 9' }
-      ],
-      feedback: 'The division approach doesn\'t work for this sequence pattern. Each number n appears exactly n times, not evenly distributed. Try to find the pattern first.',
-      metadata: {
-        timeSpent: '3m 45s',
-        attempts: 1,
-        hintsUsed: 0
-      }
-    }
-  ];
+    ];
+    setSubmissions(mockSubmissions);
+  }, []);
 
   const toggleHint = (index) => {
     setOpenHints(prev => ({
       ...prev,
       [index]: !prev[index]
     }));
+    // Track hint usage
+    if (!openHints[index] && !hintsOpened.includes(index)) {
+      setHintsOpened(prev => [...prev, index]);
+    }
+  };
+
+  const handleNewSubmission = (steps) => {
+    const newSubmission = {
+      id: Date.now(),
+      status: 'pending',
+      timestamp: 'Just now',
+      date: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }),
+      steps: steps,
+      metadata: {
+        timeSpent: '0m 0s', // Will be calculated by Timer
+        attempts: submissions.length + 1,
+        hintsUsed: hintsOpened.length
+      }
+    };
+    setSubmissions(prev => [newSubmission, ...prev]);
+    return newSubmission;
   };
 
   const problem = {
@@ -154,7 +179,7 @@ const Problem = () => {
             <Timer />
             <button
               onClick={() => setShowHelpModal(true)}
-              className="bg-transparent border-2 border-[var(--french-gray)] px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] hover:scale-105 text-[var(--french-gray)] flex items-center gap-1.5"
+              className="bg-transparent border-2 border-[var(--french-gray)] px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5"
               title="Help & Guide"
             >
               <FaQuestionCircle className="text-sm md:text-base" />
@@ -162,14 +187,13 @@ const Problem = () => {
             </button>
             <button
               onClick={() => setShowReportModal(true)}
-              className="bg-transparent border-2 border-[var(--french-gray)] px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] hover:scale-105 text-[var(--french-gray)] flex items-center gap-1.5"
+              className="bg-transparent border-2 border-[var(--french-gray)] px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center justify-center"
               title="Report Problem"
             >
               <FaFlag className="text-sm md:text-base" />
-              <span className="hidden sm:inline text-sm font-medium">Report</span>
             </button>
             <button
-              className={`bg-transparent border-2 border-[var(--french-gray)] px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] hover:scale-105 ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)]'}`}
+              className={`bg-transparent border-2 px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-xl transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
               onClick={() => setIsFavorite(!isFavorite)}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
@@ -216,7 +240,14 @@ const Problem = () => {
         <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 lg:h-[calc(100vh-7.5vh)] lg:overflow-hidden">
           {/* Description Side */}
           <aside className={`flex flex-col w-full rounded-lg bg-[var(--main-color)] p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white lg:h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2'}`}>
-            <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 justify-between rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:justify-between lg:py-4 lg:px-1' : ''}`}>
+            <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
+              {/* Desktop Only - Horizontal Collapse Toggle (at start when collapsed) */}
+              <button type="button" onClick={() => {
+                setDescriptionCollapsed(!descriptionCollapsed);
+              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'px-2 py-2 mb-3' : 'hidden'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
+                <FaChevronRight className="text-sm" />
+              </button>
+
               <div className={`flex gap-1 ${descriptionCollapsed ? 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full' : ''}`}>
                 <button type="button" onClick={() => {
                   setShowDescription(true); setShowSolutionPopup(false); setShowSolution(false); setShowTop(false);
@@ -256,11 +287,11 @@ const Problem = () => {
                 {showTop ? <FaChevronDown className="text-sm" /> : <FaChevronUp className="text-sm" />}
               </button>
 
-              {/* Desktop Only - Horizontal Collapse Toggle */}
+              {/* Desktop Only - Horizontal Collapse Toggle (at end when expanded) */}
               <button type="button" onClick={() => {
                 setDescriptionCollapsed(!descriptionCollapsed);
-              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'px-2 py-2 mt-auto' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
-                {descriptionCollapsed ? <FaChevronRight className="text-sm" /> : <FaChevronDown className="text-sm rotate-[-90deg]" />}
+              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'hidden' : 'px-3 py-1.5 gap-2'}`} title="Collapse">
+                <FaChevronDown className="text-sm rotate-[-90deg]" />
               </button>
             </div>
 
@@ -296,49 +327,44 @@ const Problem = () => {
                 ) : showSubmissions ? (
                   <div>
                     <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Public_Sans,sans-serif] mb-4">Your Submissions</h2>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-2">
                       {submissions.map((submission) => (
-                        <div 
+                        <div
                           key={submission.id}
                           onClick={() => {
                             setSelectedSubmission(submission);
                             setShowSubmissionDetail(true);
                           }}
-                          className={`bg-[var(--french-gray)]/20 p-4 rounded-lg border-l-4 cursor-pointer transition-all duration-200 hover:shadow-md hover:scale-[1.02] ${
-                            submission.status === 'accepted' ? 'border-green-500 hover:bg-green-50' : 
-                            submission.status === 'wrong' ? 'border-red-500 hover:bg-red-50' : 
-                            'border-yellow-500 hover:bg-yellow-50'
-                          }`}
+                          className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-lg border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/30' :
+                            submission.status === 'wrong' ? 'border-red-500 hover:bg-[var(--french-gray)]/30' :
+                              'border-yellow-500 hover:bg-[var(--french-gray)]/30'
+                            }`}
                         >
-                          <div className="flex justify-between items-start mb-2">
-                            <div className="flex items-center gap-2">
-                              {submission.status === 'accepted' && <FaCheckCircle className="text-green-600 text-sm" />}
-                              {submission.status === 'wrong' && <FaTimesCircle className="text-red-600 text-sm" />}
-                              <span className={`text-xs md:text-sm font-semibold ${
-                                submission.status === 'accepted' ? 'text-green-600' : 
-                                submission.status === 'wrong' ? 'text-red-600' : 
-                                'text-yellow-600'
-                              }`}>
-                                {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong Answer' : 'Pending'}
+                          <div className="flex flex-wrap justify-between items-center gap-2">
+                            <div className="flex items-center gap-2 min-w-0 flex-1">
+                              {submission.status === 'accepted' && <FaCheckCircle className="text-green-600 text-xs flex-shrink-0" />}
+                              {submission.status === 'wrong' && <FaTimesCircle className="text-red-600 text-xs flex-shrink-0" />}
+                              <span className={`text-xs font-semibold truncate ${submission.status === 'accepted' ? 'text-green-600' :
+                                submission.status === 'wrong' ? 'text-red-600' :
+                                  'text-yellow-600'
+                                }`}>
+                                {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong' : 'Pending'}
                               </span>
+                              <span className="text-[10px] text-gray-500 hidden sm:inline">•</span>
+                              <span className="text-[10px] text-gray-500 hidden sm:inline">{submission.steps.length} steps</span>
                             </div>
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
-                              <FaClock className="text-[10px]" />
-                              <span>{submission.timestamp}</span>
+                            <div className="flex items-center gap-3 text-[10px] text-gray-500 flex-shrink-0">
+                              {submission.metadata.hintsUsed !== undefined && <span>{submission.metadata.hintsUsed} hints</span>}
+                              <div className="flex items-center gap-1">
+                                <FaClock className="text-[8px]" />
+                                <span>{submission.timestamp}</span>
+                              </div>
                             </div>
-                          </div>
-                          <div className="flex flex-wrap gap-3 text-xs text-[var(--secondary-color)] opacity-70">
-                            <span>{submission.steps.length} steps</span>
-                            {submission.metadata.timeSpent && <span>• {submission.metadata.timeSpent}</span>}
-                            {submission.metadata.hintsUsed !== undefined && <span>• {submission.metadata.hintsUsed} hints used</span>}
-                          </div>
-                          <div className="mt-2 text-xs text-[var(--accent-color)] font-medium">
-                            Click to view details →
                           </div>
                         </div>
                       ))}
                       {submissions.length === 0 && (
-                        <p className="text-center text-sm text-gray-500 mt-4">No submissions yet. Start solving to see your history!</p>
+                        <p className="text-center text-sm text-gray-500 py-8">No submissions yet. Start solving to see your history!</p>
                       )}
                     </div>
                   </div>
@@ -456,7 +482,7 @@ const Problem = () => {
 
           {/* Solution Side - Math Live*/}
           <article className={`flex justify-start items-stretch flex-col w-full min-h-[500px] lg:h-full overflow-hidden rounded-lg transition-all duration-300 ${descriptionCollapsed ? 'lg:w-full' : 'lg:w-1/2'}`}>
-            <MathLiveExample />
+            <MathLiveExample onSubmit={handleNewSubmission} />
           </article>
         </section>
       </main >

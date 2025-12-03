@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "../components/MathLiveExample.css";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-export default function MathLiveEditor() {
+export default function MathLiveEditor({ onSubmit }) {
     const [status, setStatus] = useState("Loading...");
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -62,8 +62,30 @@ export default function MathLiveEditor() {
     };
 
     const handleSubmit = () => {
-        console.log("All steps:", fields);
-        alert(fields.map((f, i) => `Step ${i + 1}: ${f.latex}`).join("\n"));
+        // Filter out empty fields
+        const nonEmptyFields = fields.filter(f => f.latex && f.latex.trim() !== '');
+
+        if (nonEmptyFields.length === 0) {
+            alert("Please enter at least one step before submitting!");
+            return;
+        }
+
+        console.log("All steps:", nonEmptyFields);
+
+        // Call the onSubmit handler from parent if provided
+        if (onSubmit) {
+            const submission = onSubmit(nonEmptyFields);
+            alert(`Solution submitted! (Submission #${submission.metadata.attempts})`);
+
+            // Optionally clear fields after submission
+            // const newField = { id: Date.now(), latex: "" };
+            // setFields([newField]);
+            // setTimeout(() => {
+            //     fieldRefs.current[newField.id]?.focus();
+            // }, 0);
+        } else {
+            alert(nonEmptyFields.map((f, i) => `Step ${i + 1}: ${f.latex}`).join("\n"));
+        }
     };
 
     return (
