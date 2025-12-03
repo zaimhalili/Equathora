@@ -40,10 +40,10 @@ const Dashboard = () => {
               </h3>
 
               {/* Blocks - Squares */}
-              <div className="w-full pt-2 gap-0.5 lg:gap-[2px] flex flex-wrap justify-center md:justify-start lg:w-auto">
+              <div className="w-full pt-2 gap-0.5 lg:gap-[2px] flex flex-wrap justify-start md:justify-start lg:w-auto">
                 <Link
                   to={`/problems/1/${randomProblemId}`}
-                  className="w-60 h-50 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                  className="w-50 h-40 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                 >
                   <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                   <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -53,7 +53,7 @@ const Dashboard = () => {
 
                 <Link
                   to="/learn"
-                  className="w-60 h-50 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                  className="w-50 h-40 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                 >
                   <img src={Books} alt="books" className="h-[60%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                   <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -63,7 +63,7 @@ const Dashboard = () => {
 
                 <Link
                   to="/applyMentor"
-                  className="w-60 h-50 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                  className="w-50 h-40 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                 >
                   <img src={Mentoring} alt="mentoring" className="h-[60%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                   <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -73,7 +73,7 @@ const Dashboard = () => {
 
                 <Link
                   to="/leaderboards/global"
-                  className="w-60 h-50 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                  className="w-50 h-40 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                 >
                   <img src={Leaderboards} alt="leaderboards" className="h-[60%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                   <h6 className="text-[var(--secondary-color)] font-[Public_Sans] text-lg font-normal w-full text-center flex items-center justify-center">

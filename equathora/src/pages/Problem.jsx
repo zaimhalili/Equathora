@@ -193,7 +193,7 @@ const Problem = () => {
               <FaFlag className="text-sm md:text-base" />
             </button>
             <button
-              className={`bg-transparent border-2 px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-xl transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
+              className={`bg-transparent border-2 px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-base transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] flex items-center justify-center ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
               onClick={() => setIsFavorite(!isFavorite)}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
@@ -241,11 +241,11 @@ const Problem = () => {
           {/* Description Side */}
           <aside className={`flex flex-col w-full rounded-lg bg-[var(--main-color)] p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-white lg:h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2'}`}>
             <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
-              {/* Desktop Only - Horizontal Collapse Toggle (at start when collapsed) */}
+              {/* Desktop Only - Horizontal Collapse Toggle */}
               <button type="button" onClick={() => {
                 setDescriptionCollapsed(!descriptionCollapsed);
-              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'px-2 py-2 mb-3' : 'hidden'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
-                <FaChevronRight className="text-sm" />
+              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
+                {descriptionCollapsed ? <FaChevronRight className="text-sm" /> : <FaChevronDown className="text-sm rotate-[-90deg]" />}
               </button>
 
               <div className={`flex gap-1 ${descriptionCollapsed ? 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full' : ''}`}>
@@ -286,13 +286,6 @@ const Problem = () => {
               }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-2 font-medium transition-colors duration-200`}>
                 {showTop ? <FaChevronDown className="text-sm" /> : <FaChevronUp className="text-sm" />}
               </button>
-
-              {/* Desktop Only - Horizontal Collapse Toggle (at end when expanded) */}
-              <button type="button" onClick={() => {
-                setDescriptionCollapsed(!descriptionCollapsed);
-              }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'hidden' : 'px-3 py-1.5 gap-2'}`} title="Collapse">
-                <FaChevronDown className="text-sm rotate-[-90deg]" />
-              </button>
             </div>
 
             <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex-col p-0 font-[Inter,sans-serif] text-[var(--secondary-color)] overflow-hidden lg:flex ${showTop ? 'max-h-0 opacity-0' : 'max-h-[60vh] lg:max-h-full opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
@@ -326,7 +319,7 @@ const Problem = () => {
                   </div>
                 ) : showSubmissions ? (
                   <div>
-                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Public_Sans,sans-serif] mb-4">Your Submissions</h2>
+                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Public_Sans,sans-serif] pb-4">Your Submissions</h2>
                     <div className="flex flex-col gap-2">
                       {submissions.map((submission) => (
                         <div

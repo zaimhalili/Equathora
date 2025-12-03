@@ -8,9 +8,9 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
     return (
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/40 backdrop-blur-sm' onClick={onClose}>
             <div className='bg-white w-11/12 max-w-2xl rounded-2xl px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
-                <div className='flex justify-between items-start mb-4'>
+                <div className='flex justify-between items-start pb-4'>
                     <div className='flex-1'>
-                        <div className='flex items-center gap-3 mb-2'>
+                        <div className='flex items-center gap-3 pb-2'>
                             <h2 className='font-[Public_Sans] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>
                                 Submission Details
                             </h2>
@@ -33,13 +33,13 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                     </button>
                 </div>
 
-                <div className='flex flex-col gap-4 mt-4'>
+                <div className='flex flex-col gap-4 pt-4'>
                     <div className='bg-[var(--french-gray)]/10 p-4 rounded-xl'>
-                        <h3 className='font-[Public_Sans] font-bold text-sm text-[var(--secondary-color)] mb-3'>Your Solution Steps</h3>
+                        <h3 className='font-[Public_Sans] font-bold text-sm text-[var(--secondary-color)] pb-3'>Your Solution Steps</h3>
                         <div className='flex flex-col gap-3'>
                             {submission.steps && submission.steps.map((step, index) => (
                                 <div key={index} className='bg-white p-4 rounded-lg border border-gray-200'>
-                                    <div className='flex items-center gap-2 mb-2'>
+                                    <div className='flex items-center gap-2 pb-2'>
                                         <span className='bg-[var(--accent-color)] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold'>
                                             {index + 1}
                                         </span>
@@ -69,19 +69,19 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                         <div className='grid grid-cols-2 md:grid-cols-3 gap-3'>
                             {submission.metadata.timeSpent && (
                                 <div className='bg-[var(--french-gray)]/10 p-3 rounded-lg'>
-                                    <div className='text-xs text-gray-500 mb-1'>Time Spent</div>
+                                    <div className='text-xs text-gray-500 pb-1'>Time Spent</div>
                                     <div className='font-bold text-[var(--secondary-color)]'>{submission.metadata.timeSpent}</div>
                                 </div>
                             )}
                             {submission.metadata.attempts && (
                                 <div className='bg-[var(--french-gray)]/10 p-3 rounded-lg'>
-                                    <div className='text-xs text-gray-500 mb-1'>Attempt #</div>
+                                    <div className='text-xs text-gray-500 pb-1'>Attempt #</div>
                                     <div className='font-bold text-[var(--secondary-color)]'>{submission.metadata.attempts}</div>
                                 </div>
                             )}
                             {submission.metadata.hintsUsed !== undefined && (
                                 <div className='bg-[var(--french-gray)]/10 p-3 rounded-lg'>
-                                    <div className='text-xs text-gray-500 mb-1'>Hints Used</div>
+                                    <div className='text-xs text-gray-500 pb-1'>Hints Used</div>
                                     <div className='font-bold text-[var(--secondary-color)]'>{submission.metadata.hintsUsed}</div>
                                 </div>
                             )}
@@ -92,7 +92,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                 <button
                     type="button"
                     onClick={onClose}
-                    className='mt-6 px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base'
+                    className='pt-6 px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base'
                 >
                     Close
                 </button>
