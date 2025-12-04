@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import "../components/MathLiveExample.css";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaTrash, FaTimes } from "react-icons/fa";
 
 export default function MathLiveEditor({ onSubmit }) {
     const [status, setStatus] = useState("Loading...");
@@ -19,7 +19,7 @@ export default function MathLiveEditor({ onSubmit }) {
                 if (!cancelled) setStatus("MathLive loaded");
             } catch (e) {
                 console.error(e);
-                if (!cancelled) setStatus("Failed to load MathLive");
+                if (!cancelled) setStatus("Failed to load MathLive. Check your connection.");
             }
         })();
         return () => {
@@ -133,7 +133,7 @@ export default function MathLiveEditor({ onSubmit }) {
                                 onClick={() => deleteField(field.id)}
                                 title="Delete this step"
                             >
-                                ✕
+                                <FaTimes />
                             </button>
                         </div>
                     ))}
@@ -142,14 +142,17 @@ export default function MathLiveEditor({ onSubmit }) {
 
                 <div className="ml-toolbar">
                     <button className="ml-btn clear" onClick={clearAll}>
-                        Clear All
+                        <FaTrash />
                     </button>
-                    <button className="ml-btn addStep" onClick={addField}>
-                        + Add Step
-                    </button>
-                    <button className="ml-btn submit" onClick={handleSubmit}>
-                        Submit Solution
-                    </button>
+                    <div className="flex gap-2">
+                        <button className="ml-btn addStep" onClick={addField}>
+                            + Add Step
+                        </button>
+                        <button className="ml-btn submit" onClick={handleSubmit}>
+                            Submit Solution
+                        </button>
+                    </div>
+                    
                 </div>
 
                 <div className="ml-output-wrapper">
