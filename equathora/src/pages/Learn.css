@@ -42,7 +42,7 @@
 }
 
 #learn-explore {
-    font-family: 'Inter', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    
     color: var(--secondary-color);
     flex: 1;
     display: flex;
@@ -51,17 +51,18 @@
 }
 
 #learn-explore h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
+    font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: clamp(2rem, 5vw, 2.25rem);
+    font-weight: 500;
     line-height: 1.2;
     margin-bottom: 1rem;
 }
 
 #learn-explore h4 {
-    font-weight: 500;
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
-    line-height: 1.5;
-    opacity: 0.85;
+    font-family: 'Inter', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: 400;
+    font-size: clamp(1rem, 5vw, 1.125rem);
+    line-height: 1.2;
     max-width: 600px;
 }
 
@@ -90,8 +91,7 @@
 
 #problem-searchbar:focus {
     outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.1);
+    border-color: rgba(43, 45, 66, 0.5);
 }
 
 #problem-searchbar {
@@ -109,10 +109,6 @@
     transition: all 0.3s ease;
 }
 
-#problem-searchbar:hover {
-    border-color: rgba(43, 45, 66, 0.3);
-}
-
 #search-icon {
     position: absolute;
     left: 1rem;
@@ -124,7 +120,7 @@
 }
 
 #search-icon:hover {
-    color: var(--accent-color);
+    color: rgba(43, 45, 66, 0.6);
 }
 
 #problem-searchbar::placeholder {
@@ -192,7 +188,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(217, 4, 41, 0.1) 0%, rgba(217, 4, 41, 0.05) 100%);
+    /* background: linear-gradient(135deg, rgba(217, 4, 41, 0.1) 0%, rgba(217, 4, 41, 0.05) 100%); */
     opacity: 0;
     transition: opacity 0.25s ease;
 }
@@ -202,22 +198,19 @@
 }
 
 .filtering:hover {
-    border-color: var(--accent-color);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(217, 4, 41, 0.2);
+    box-shadow: 0 10px 10px rgba(141, 153, 174, 0.3);
 }
 
 .filtering.active {
     background: linear-gradient(135deg, var(--accent-color) 0%, rgba(217, 4, 41, 0.85) 100%);
     color: var(--main-color);
-    border-color: var(--accent-color);
-    box-shadow: 0 6px 20px rgba(217, 4, 41, 0.4);
     transform: translateY(-1px);
+    box-shadow: 0 10px 10px rgba(141, 153, 174, 0.5);
 }
 
 .filtering:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.2);
+    /* box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.2); */
 }
 
 .filtering.active span {
