@@ -179,7 +179,7 @@ const Problem = () => {
             <Timer />
             <button
               onClick={() => setShowHelpModal(true)}
-              className="bg-transparent border-2 border-[var(--french-gray)] px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5"
+              className="bg-transparent border-2 border-[var(--french-gray)] px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-[38px] md:h-[42px]"
               title="Help & Guide"
             >
               <FaQuestionCircle className="text-sm md:text-base" />
@@ -187,13 +187,13 @@ const Problem = () => {
             </button>
             <button
               onClick={() => setShowReportModal(true)}
-              className="bg-transparent border-2 border-[var(--french-gray)] px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center justify-center"
+              className="bg-transparent border-2 border-[var(--french-gray)] px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center justify-center h-[38px] md:h-[42px]"
               title="Report Problem"
             >
               <FaFlag className="text-sm md:text-base" />
             </button>
             <button
-              className={`bg-transparent border-2 px-3 py-1.5 md:py-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] flex items-center justify-center ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
+              className={`bg-transparent border-2 text-sm px-3 py-1.5 md:py-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] flex items-center justify-center h-[38px] md:h-[42px] ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
               onClick={() => setIsFavorite(!isFavorite)}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
