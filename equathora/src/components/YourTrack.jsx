@@ -4,7 +4,7 @@ import Mentor from '../assets/images/mentoring.svg';
 import { Link } from 'react-router-dom';
 
 const YourTrack = () => {
-    const solved = 10;
+    const solved = 30;
     const total = 50;
     const percentage = (solved / total) * 100;
     const nextMilestone = Math.ceil(solved / 10) * 10;
@@ -61,20 +61,20 @@ const YourTrack = () => {
 
                 {/* Mini Stats Grid */}
                 <div className="grid grid-cols-3" style={{ gap: '0.75rem', marginTop: '0.5rem', padding: '0' }}>
-                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-sm" style={{ padding: '0.75rem' }}>
-                        <div className="text-xs text-[var(--french-gray)] font-medium" style={{ marginBottom: '0.25rem' }}>Current Streak</div>
+                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-[3px] border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)]" style={{ padding: '0.75rem' }}>
+                        <div className="text-xs text-[var(--secondary-color)] font-medium" style={{ marginBottom: '0.25rem' }}>Current Streak</div>
                         <div className="text-2xl font-bold text-[var(--accent-color)] flex items-center" style={{ gap: '0.25rem' }}>
                             🔥 {currentStreak}
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-sm" style={{ padding: '0.75rem' }}>
-                        <div className="text-xs text-[var(--french-gray)] font-medium" style={{ marginBottom: '0.25rem' }}>Best Streak</div>
+                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-[3px] border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)]" style={{ padding: '0.75rem' }}>
+                        <div className="text-xs text-[var(--secondary-color)] font-medium" style={{ marginBottom: '0.25rem' }}>Best Streak</div>
                         <div className="text-2xl font-bold text-[var(--secondary-color)] flex items-center" style={{ gap: '0.25rem' }}>
                             ⚡ {bestStreak}
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-sm" style={{ padding: '0.75rem' }}>
-                        <div className="text-xs text-[var(--french-gray)] font-medium" style={{ marginBottom: '0.25rem' }}>Accuracy</div>
+                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-[3px] border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)]" style={{ padding: '0.75rem' }}>
+                        <div className="text-xs text-[var(--secondary-color)] font-medium" style={{ marginBottom: '0.25rem' }}>Accuracy</div>
                         <div className="text-2xl font-bold text-[var(--secondary-color)]">
                             {avgAccuracy}%
                         </div>
@@ -83,7 +83,7 @@ const YourTrack = () => {
             </div>
             {/* Mentor CTA Section */}
             <div className="w-full lg:w-[45%]" style={{ padding: '0' }}>
-                <div className="w-full bg-white border border-[rgba(43,45,66,0.12)] rounded-md" style={{ padding: '2rem' }}>
+                <div className="w-full bg-white border border-[rgba(43,45,66,0.12)] rounded-[3px]" style={{ padding: '2rem' }}>
                     {/* Header with Badge */}
                     <div className="flex items-start justify-between" style={{ marginBottom: '1rem' }}>
                         <div>
@@ -124,14 +124,14 @@ const YourTrack = () => {
                     <div className="flex" style={{ gap: '0.75rem' }}>
                         <Link
                             to="/applymentor"
-                            className="font-[Inter] font-semibold text-[0.9375rem] !text-white bg-[var(--secondary-color)] rounded no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-1"
+                            className="font-[Inter] font-semibold text-[0.9375rem] !text-white bg-[var(--secondary-color)] rounded-[3px] no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-1"
                             style={{ padding: '0.75rem 1.5rem' }}
                         >
                             Apply Now
                         </Link>
                         <Link
                             to="/applymentor"
-                            className="font-[Inter] font-medium text-[0.9375rem] text-[var(--secondary-color)] bg-transparent border border-[rgba(43,45,66,0.2)] rounded no-underline transition-all duration-200 hover:border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.02)] text-center"
+                            className="font-[Inter] font-medium text-[0.9375rem] text-[var(--secondary-color)] bg-transparent border border-[rgba(43,45,66,0.2)] rounded-[3px] no-underline transition-all duration-200 hover:border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.02)] text-center"
                             style={{ padding: '0.75rem 1.5rem' }}
                         >
                             Learn More

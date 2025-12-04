@@ -1,7 +1,7 @@
 import React from 'react';
 import './Footer.css';
 import { Link } from 'react-router-dom';
-import Symbol from '../assets/logo/EquathoraLogoFull.svg';
+import Symbol from '../assets/logo/TransparentSymbol.png';
 import {
   FaInstagram,
   FaLinkedin,
@@ -47,7 +47,8 @@ const Footer = () => {
               <FaFacebook />
             </a>
           </div>
-          <Link to="/dashboard" className='cursor-pointer'><img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '60px', width: 'auto', margin: '1rem auto', borderRadius: '10px' }} /></Link>
+          <div className="w-full flex justify-center"><Link to="/dashboard" className='cursor-pointer w-14'><img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '60px', width: '60px', margin: '1rem auto', borderRadius: '10px' }} /></Link></div>
+          
           
         </div>
 
