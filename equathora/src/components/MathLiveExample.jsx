@@ -2,10 +2,32 @@ import React, { useEffect, useState, useRef } from "react";
 import "../components/MathLiveExample.css";
 import { FaChevronDown, FaChevronUp, FaTrash, FaTimes } from "react-icons/fa";
 
+const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-[2px]' onClick={onClose}>
+            <div className='bg-white w-11/12 max-w-md rounded-2xl px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
+                <div className='flex flex-col gap-3'>
+                    <h2 className='font-[Inter] text-left font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>Clear All Steps?</h2>
+                    <p className='font-[Inter] text-[var(--secondary-color)] text-sm md:text-base leading-relaxed opacity-80'>This will delete all your current steps. This action cannot be undone.</p>
+                </div>
+
+                <div className='flex w-full justify-between gap-3 pt-7'>
+                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-[var(--french-gray)] rounded-lg bg-white text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base'>Cancel</button>
+
+                    <button type="button" className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base' onClick={onConfirm}>Clear All</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 export default function MathLiveEditor({ onSubmit }) {
     const [status, setStatus] = useState("Loading...");
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [previewOpen, setPreviewOpen] = useState(false);
+    const [deleteAllPopup, setDeleteAllPopup] = useState(false);
 
     // refs to each math-field
     const fieldRefs = useRef({});
@@ -89,93 +111,103 @@ export default function MathLiveEditor({ onSubmit }) {
     };
 
     return (
-        <div className="ml-wrapper">
-            <h2 className="ml-title">Your Solution</h2>
-            <div className="ml-status">Status: {status}</div>
+        <>
+            <DeleteAllModal
+                isOpen={deleteAllPopup}
+                onClose={() => setDeleteAllPopup(false)}
+                onConfirm={() => {
+                    clearAll();
+                    setDeleteAllPopup(false);
+                }}
+            />
+            <div className="ml-wrapper">
+                <h2 className="ml-title">Your Solution</h2>
+                <div className="ml-status">Status: {status}</div>
 
-            <div className="ml-card" aria-live="polite">
-                <div className="ml-steps-container">
-                    {fields.map((field, index) => (
-                        <div key={field.id} className="ml-step-wrapper">
-                            <div className="ml-step-label">{index + 1}</div>
-                            <math-field
-                                ref={(el) => (fieldRefs.current[field.id] = el)}
-                                class="ml-field"
-                                virtualkeyboardmode="off"
-                                smartfence="true"
-                                value={field.latex}
-                                onInput={(evt) =>
-                                    updateLatex(field.id, evt.target.getValue("latex"))
-                                }
-                                onKeyDown={(e) => {
-                                    const mf = fieldRefs.current[field.id];
-
-                                    if (e.key === "Enter") {
-                                        e.preventDefault();
-                                        addField();
+                <div className="ml-card" aria-live="polite">
+                    <div className="ml-steps-container">
+                        {fields.map((field, index) => (
+                            <div key={field.id} className="ml-step-wrapper">
+                                <div className="ml-step-label">{index + 1}</div>
+                                <math-field
+                                    ref={(el) => (fieldRefs.current[field.id] = el)}
+                                    class="ml-field"
+                                    virtualkeyboardmode="off"
+                                    smartfence="true"
+                                    value={field.latex}
+                                    onInput={(evt) =>
+                                        updateLatex(field.id, evt.target.getValue("latex"))
                                     }
+                                    onKeyDown={(e) => {
+                                        const mf = fieldRefs.current[field.id];
 
-                                    if (e.key === "ArrowUp") {
-                                        e.preventDefault();
-                                        const prevField = fields[index - 1];
-                                        if (prevField) fieldRefs.current[prevField.id]?.focus();
-                                    }
+                                        if (e.key === "Enter") {
+                                            e.preventDefault();
+                                            addField();
+                                        }
 
-                                    if (e.key === "ArrowDown") {
-                                        e.preventDefault();
-                                        const nextField = fields[index + 1];
-                                        if (nextField) fieldRefs.current[nextField.id]?.focus();
-                                    }
-                                }}
-                            ></math-field>
-                            <button
-                                className="ml-delete-btn"
-                                onClick={() => deleteField(field.id)}
-                                title="Delete this step"
-                            >
-                                <FaTimes />
+                                        if (e.key === "ArrowUp") {
+                                            e.preventDefault();
+                                            const prevField = fields[index - 1];
+                                            if (prevField) fieldRefs.current[prevField.id]?.focus();
+                                        }
+
+                                        if (e.key === "ArrowDown") {
+                                            e.preventDefault();
+                                            const nextField = fields[index + 1];
+                                            if (nextField) fieldRefs.current[nextField.id]?.focus();
+                                        }
+                                    }}
+                                ></math-field>
+                                <button
+                                    className="ml-delete-btn"
+                                    onClick={() => deleteField(field.id)}
+                                    title="Delete this step"
+                                >
+                                    <FaTimes />
+                                </button>
+                            </div>
+                        ))}
+
+                    </div>
+
+                    <div className="ml-toolbar">
+                        <button className="ml-btn clear" onClick={() => setDeleteAllPopup(true)}>
+                            <FaTrash />
+                        </button>
+                        <div className="flex gap-2">
+                            <button className="ml-btn addStep" onClick={addField}>
+                                + Add Step
+                            </button>
+                            <button className="ml-btn submit" onClick={handleSubmit}>
+                                Submit Solution
                             </button>
                         </div>
-                    ))}
 
-                </div>
-
-                <div className="ml-toolbar">
-                    <button className="ml-btn clear" onClick={clearAll}>
-                        <FaTrash />
-                    </button>
-                    <div className="flex gap-2">
-                        <button className="ml-btn addStep" onClick={addField}>
-                            + Add Step
-                        </button>
-                        <button className="ml-btn submit" onClick={handleSubmit}>
-                            Submit Solution
-                        </button>
                     </div>
-                    
-                </div>
 
-                <div className="ml-output-wrapper">
-                    <button
-                        className="ml-preview-toggle"
-                        onClick={() => setPreviewOpen(!previewOpen)}
-                    >
-                        <strong>Preview</strong>
-                        {previewOpen ? <FaChevronUp /> : <FaChevronDown />}
-                    </button>
-                    {previewOpen && (
-                        <div className="ml-output">
-                            <ul className="steps-list">
-                                {fields.map((f, i) => (
-                                    <li key={f.id}>
-                                        Step {i + 1}: {f.latex}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
+                    <div className="ml-output-wrapper">
+                        <button
+                            className="ml-preview-toggle"
+                            onClick={() => setPreviewOpen(!previewOpen)}
+                        >
+                            <strong>Preview</strong>
+                            {previewOpen ? <FaChevronUp /> : <FaChevronDown />}
+                        </button>
+                        {previewOpen && (
+                            <div className="ml-output">
+                                <ul className="steps-list">
+                                    {fields.map((f, i) => (
+                                        <li key={f.id}>
+                                            Step {i + 1}: {f.latex}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
