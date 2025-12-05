@@ -9,6 +9,7 @@ import Mentoring from '../assets/images/mentoring.svg';
 import QuestionMark from '../assets/images/questionMark.svg';
 import Leaderboards from '../assets/images/leaderboards.svg'
 import { Link } from 'react-router-dom';
+import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 
 const Dashboard = () => {
   // Later to be implemented with real-time data and user authentication in the backend
@@ -89,10 +90,12 @@ const Dashboard = () => {
           </figure>
         </section>
 
-
-
         <article>
           <YourTrack />
+        </article>
+
+        <article>
+          <CommunityPosts />
         </article>
 
         <footer>
