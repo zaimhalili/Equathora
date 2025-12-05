@@ -1,6 +1,6 @@
 import React from 'react';
 import LilArrow from '../assets/images/lilArrow.svg';
-import Mentor from '../assets/images/mentoring.svg';
+
 import { Link } from 'react-router-dom';
 
 const YourTrack = () => {
@@ -16,10 +16,10 @@ const YourTrack = () => {
     const avgAccuracy = 87;
 
     return (
-        <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] px-[4vw] xl:px-[12vw] mt-8 pb-[6vh] gap-8">
-            <div className="flex flex-col w-full lg:w-[55%] gap-3 p-0">
+        <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] mt-8 gap-8">
+            <div className="flex flex-col w-full gap-3 p-0">
                 <div className="flex items-center justify-between p-0">
-                    <h3 className="font-[Inter] text-[var(--secondary-color)] text-3xl font-bold">
+                    <h3 className="font-[Inter] text-[var(--secondary-color)] text-2xl font-bold">
                         Your Track
                     </h3>
                     <span className="text-sm font-semibold text-[var(--accent-color)] bg-[rgba(217,4,41,0.1)] px-3 py-1 rounded-md">
@@ -82,61 +82,7 @@ const YourTrack = () => {
                 </div>
             </div>
             {/* Mentor CTA Section */}
-            <div className="w-full lg:w-[45%] p-0">
-                <div className="w-full bg-white border border-[rgba(43,45,66,0.12)] rounded-[3px] p-8">
-                    {/* Header with Badge */}
-                    <div className="flex items-start justify-between mb-4">
-                        <div>
-                            <h3 className="font-[Inter] font-semibold text-xl text-[var(--secondary-color)] mb-1.5 leading-[1.3]">
-                                Become a Mentor
-                            </h3>
-                            <div className="flex items-center gap-2">
-                                <span className="text-xs font-medium text-[var(--accent-color)] bg-[rgba(217,4,41,0.08)] rounded py-1 px-2">
-                                    FREE TO JOIN
-                                </span>
-                            </div>
-                        </div>
-                        <img src={Mentor} alt="Mentor" className="opacity-90 w-14 h-14" />
-                    </div>
-
-                    {/* Value Proposition */}
-                    <p className="font-[Inter] text-[0.9375rem] text-[var(--secondary-color)] leading-relaxed opacity-90 mb-6">
-                        Guide learners, reinforce your expertise, and make a meaningful impact in the mathematics community.
-                    </p>
-
-                    {/* Benefits List */}
-                    <div className="flex flex-col gap-2.5 mb-6">
-                        <div className="flex items-start gap-2.5">
-                            <span className="text-[var(--accent-color)] font-bold text-sm mt-0.5">✓</span>
-                            <span className="font-[Inter] text-sm text-[var(--secondary-color)] opacity-80">Flexible scheduling that fits your lifestyle</span>
-                        </div>
-                        <div className="flex items-start gap-2.5">
-                            <span className="text-[var(--accent-color)] font-bold text-sm mt-0.5">✓</span>
-                            <span className="font-[Inter] text-sm text-[var(--secondary-color)] opacity-80">Strengthen understanding through teaching</span>
-                        </div>
-                        <div className="flex items-start gap-2.5">
-                            <span className="text-[var(--accent-color)] font-bold text-sm mt-0.5">✓</span>
-                            <span className="font-[Inter] text-sm text-[var(--secondary-color)] opacity-80">Build your professional portfolio</span>
-                        </div>
-                    </div>
-
-                    {/* CTA Buttons */}
-                    <div className="flex gap-3">
-                        <Link
-                            to="/applymentor"
-                            className="font-[Inter] font-semibold text-[0.9375rem] !text-white bg-[var(--secondary-color)] rounded-[3px] no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-1 py-3 px-6"
-                        >
-                            Apply Now
-                        </Link>
-                        <Link
-                            to="/applymentor"
-                            className="font-[Inter] font-medium text-[0.9375rem] text-[var(--secondary-color)] bg-transparent border border-[rgba(43,45,66,0.2)] rounded-[3px] no-underline transition-all duration-200 hover:border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.02)] text-center py-3 px-6"
-                        >
-                            Learn More
-                        </Link>
-                    </div>
-                </div>
-            </div>
+            
         </article>
     );
 };
