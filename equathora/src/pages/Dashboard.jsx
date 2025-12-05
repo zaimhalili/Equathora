@@ -27,13 +27,13 @@ const Dashboard = () => {
 
         {/* Hero Section */}
         <div className='flex w-full justify-center items-center'>
-          <div className='flex justify-center items-center px-[4vw] xl:px-[6vw] max-w-[1500px] lg:py-6 gap-8'>
-            <section className="flex flex-col items-center lg:items-start justify-center w-[70%]">
+          <div className='flex flex-col lg:flex-row justify-center items-center px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:py-6 gap-8'>
+            <section className="flex flex-col items-center lg:items-start justify-center w-full lg:w-[70%]">
               <article className="text-[var(--secondary-color)] font-[Inter] w-full cursor-default flex flex-col items-center md:items-start">
                 <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[DynaPuff] font-medium">
                   Welcome Back, <span className="text-[var(--secondary-color)]">{username}</span>!
                 </h1>
-                <h4 className="text-lg font-normal leading-[1.2] w-4/5 lg:w-[90%] cursor-default">
+                <h4 className="text-md text-center lg:text-left lg:text-lg font-normal leading-[1.2] w-4/5 lg:w-[90%] cursor-default">
                   Tackle fun math and logic challenges with guided support to master your topics. <span className="font-semibold">Equathora is open, student-centered, and built to grow with you.</span>
                 </h4>
 
@@ -92,7 +92,7 @@ const Dashboard = () => {
             </section>
 
             {/* Aside Section - Image and Apply to be a Mentor */}
-            <aside className='flex flex-col w-[30%] gap-8'>
+            <aside className='flex flex-col w-full lg:w-[30%] gap-8'>
               <figure className="hidden lg:flex justify-center">
                 <img src={Teacher} alt="teacher" loading='lazy' className="" />
               </figure>
@@ -156,7 +156,8 @@ const Dashboard = () => {
             </aside>
           </div>
         </div>
-      
+
+        {/* Community Posts - That Leads to Forum, Blog and News Page */}
         <article>
           <CommunityPosts />
         </article>

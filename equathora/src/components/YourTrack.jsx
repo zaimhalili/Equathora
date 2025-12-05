@@ -60,7 +60,7 @@ const YourTrack = () => {
                 </div>
 
                 {/* Mini Stats Grid */}
-                <div className="grid grid-cols-3 gap-3 mt-2 p-0">
+                <div className="grid grid-cols-3 gap-3 mt-2 p-0 max-w-1/2">
                     <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-[3px] border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3">
                         <div className="text-xs text-[var(--secondary-color)] font-medium mb-1">Current Streak</div>
                         <div className="text-2xl font-bold text-[var(--accent-color)] flex items-center gap-1">
