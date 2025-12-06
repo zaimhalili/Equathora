@@ -30,7 +30,7 @@ const YourTrack = () => {
                 {/* Progress Bar */}
                 <div className="flex items-center justify-between w-full gap-3 p-0">
                     <Link
-                        to="/problems"
+                        to="/achievements/stats"
                         className="flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group"
                     >
                         <div
@@ -41,7 +41,7 @@ const YourTrack = () => {
                         </div>
                     </Link>
                     <Link
-                        to="/problems"
+                        to="/achievements/stats"
                         className="w-10 h-10 flex items-center justify-center transition-transform duration-300 ease-in hover:translate-x-2 hover:scale-110"
                     >
                         <img src={LilArrow} alt="arrow" className="w-full h-full" />

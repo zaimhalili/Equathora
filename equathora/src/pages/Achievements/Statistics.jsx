@@ -14,7 +14,7 @@ const Statistics = () => {
     streakDays: progress.streakDays || 0,
     totalTimeSpent: progress.totalTimeSpent || "0h 0m",
     averageTime: progress.averageTime || "0m 0s",
-    favoriteTopics: progress.favoriteTopics || [],
+    favoriteTopics: progress.favoriteTopics || ["Algebra", "Geometry"],
     weeklyProgress: progress.weeklyProgress || [0, 0, 0, 0, 0, 0, 0],
     difficultyBreakdown: {
       easy: progress.difficultyBreakdown?.easy || 0,
