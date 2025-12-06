@@ -15,20 +15,20 @@ const CommunityPosts = () => {
               Community Blog
             </h3>
             <div className='flex gap-3 flex-wrap'>
-              <Link to="" className='bg-white rounded-[6px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-5 px-6 flex gap-3 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all cursor-pointer hover:scale-105 duration-200 ease-out min-w-50 flex-1'>
-                <img src={Autumn} alt="" className='rounded-[6px] h-1/2' />
+              <Link to="" className='bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-3 md:py-5 px-6 flex gap-3 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all cursor-pointer hover:scale-105 duration-200 ease-out min-w-50 flex-1'>
+                <img src={Autumn} alt="" className='rounded-md max-h-45 md:h-1/2' />
                 <p className='text-md text-left lg:text-lg font-[Inter] text-[var(--secondary-color)] font-bold cursor-pointer'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                 <p className='text-[var(--mid-main-secondary)] font-[Inter]'>Zaim ⋅ 1 week ago</p>
               </Link>
-              <Link to="" className='bg-white rounded-[6px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-5 px-6 flex gap-3 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1'>
-                <img src={Journey} alt="" className='rounded-[6px] h-1/2' />
+              <Link to="" className='bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-5 px-6 flex gap-3 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1'>
+                <img src={Journey} alt="" className='rounded-md max-h-45 md:h-1/2' />
                 <p className='text-md text-left lg:text-lg cursor-pointer font-[Inter] text-[var(--secondary-color)] font-bold'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                 <p className='text-[var(--mid-main-secondary)] font-[Inter]'>Zaim ⋅ 1 day ago</p>
               </Link>
-              <Link to="" className='bg-white cursor-pointer rounded-[6px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-5 px-6 flex gap-3 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out  min-w-50 hover:scale-105 flex-1'>
-                <img src={Shapes} alt="" className='rounded-[6px] h-1/2' />
+              <Link to="" className='bg-white cursor-pointer rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-5 px-6 flex gap-3 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out  min-w-50 hover:scale-105 flex-1'>
+                <img src={Shapes} alt="" className='rounded-md max-h-45 md:h-1/2' />
                 <p className='text-md text-left lg:text-lg cursor-pointer font-[Inter] text-[var(--secondary-color)] font-bold'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                <p className='text-[var(--mid-main-secondary)] font-[Inter]'>Zaim ⋅ 2 week ago</p>
+                <p className='text-[var(--mid-main-secondary)] font-[Inter]'>Zaim ⋅ 2 weeks ago</p>
               </Link>
             </div>
             <div className='w-full flex items-center justify-center'>

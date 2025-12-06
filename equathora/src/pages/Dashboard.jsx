@@ -47,7 +47,7 @@ const Dashboard = () => {
                   <div className="w-full pt-2 gap-0.5 lg:gap-[2px] flex flex-wrap justify-center sm:justify-start">
                     <Link
                       to={`/problems/1/${randomProblemId}`}
-                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                     >
                       <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                       <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -57,7 +57,7 @@ const Dashboard = () => {
 
                     <Link
                       to="/learn"
-                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                     >
                       <img src={Books} alt="books" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                       <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -67,7 +67,7 @@ const Dashboard = () => {
 
                     <Link
                       to="/applyMentor"
-                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                     >
                       <img src={Mentoring} alt="mentoring" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                       <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -77,7 +77,7 @@ const Dashboard = () => {
 
                     <Link
                       to="/leaderboards/global"
-                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                     >
                       <img src={Leaderboards} alt="leaderboards" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                       <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -99,7 +99,7 @@ const Dashboard = () => {
 
               {/* Become a Mentor Section */}
               <div className="w-full">
-                <div className="w-full bg-white border border-[rgba(43,45,66,0.12)] rounded-[3px] p-8">
+                <div className="w-full bg-white border border-[rgba(43,45,66,0.12)] rounded-md p-8">
                   {/* Header with Badge */}
                   <div className="flex items-start justify-between pb-4">
                     <div>
@@ -140,13 +140,13 @@ const Dashboard = () => {
                   <div className="flex gap-3 max-w-[400px]">
                     <Link
                       to="/applymentor"
-                      className="flex items-center justify-center font-[Inter] font-semibold text-[0.9375rem] !text-white bg-[var(--secondary-color)] rounded-[3px] no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-2 py-2 px-2 text-wrap"
+                      className="flex items-center justify-center font-[Inter] font-semibold text-[0.9375rem] !text-white bg-[var(--secondary-color)] rounded-md no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-2 py-2 px-2 text-wrap"
                     >
                       Apply Now
                     </Link>
                     <Link
                       to="/applymentor"
-                      className="flex items-center justify-center font-[Inter] font-medium text-[0.9375rem] !text-[var(--secondary-color)] bg-transparent border border-[rgba(43,45,66,0.2)] rounded-[3px] no-underline transition-all duration-200 hover:border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.02)] text-center py-2 px-2 md:flex-1"
+                      className="flex items-center justify-center font-[Inter] font-medium text-[0.9375rem] !text-[var(--secondary-color)] bg-transparent border border-[rgba(43,45,66,0.2)] rounded-md no-underline transition-all duration-200 hover:border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.02)] text-center py-2 px-2 md:flex-1"
                     >
                       Learn More
                     </Link>
