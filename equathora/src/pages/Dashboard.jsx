@@ -27,24 +27,24 @@ const Dashboard = () => {
 
         {/* Hero Section */}
         <div className='flex w-full justify-center items-center'>
-          <div className='flex flex-col lg:flex-row justify-center items-center px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:py-6 gap-8'>
-            <section className="flex flex-col items-center lg:items-start justify-center w-full lg:w-[70%]">
+          <div className='flex flex-col lg:flex-row justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>
+            <section  className="flex flex-col items-center justify-center w-full lg:w-[70%]">
               <article className="text-[var(--secondary-color)] font-[Inter] w-full cursor-default flex flex-col items-center md:items-start">
                 <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[DynaPuff] font-medium">
                   Welcome Back, <span className="text-[var(--secondary-color)]">{username}</span>!
                 </h1>
-                <h4 className="text-md text-center lg:text-left lg:text-lg font-normal leading-[1.2] w-4/5 lg:w-[90%] cursor-default">
+                <h4 className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] w-4/5 lg:w-[90%] cursor-default">
                   Tackle fun math and logic challenges with guided support to master your topics. <span className="font-semibold">Equathora is open, student-centered, and built to grow with you.</span>
                 </h4>
 
                 {/* Where To Start Section */}
-                <div className="flex flex-col text-center md:text-left pt-8 pb-8">
+                <div className="flex flex-col text-center sm:text-left pt-8 pb-8">
                   <h3 className="text-[var(--secondary-color)] font-[Inter] text-2xl font-bold pb-2">
                     Where To Start...
                   </h3>
 
                   {/* Blocks - Squares */}
-                  <div className="w-full pt-2 gap-0.5 lg:gap-[2px] flex flex-wrap justify-center md:justify-start lg:w-auto">
+                  <div className="w-full pt-2 gap-0.5 lg:gap-[2px] flex flex-wrap justify-center sm:justify-start">
                     <Link
                       to={`/problems/1/${randomProblemId}`}
                       className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-[3px] shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
@@ -93,7 +93,7 @@ const Dashboard = () => {
 
             {/* Aside Section - Image and Apply to be a Mentor */}
             <aside className='flex flex-col w-full lg:w-[30%] gap-8'>
-              <figure className="hidden lg:flex justify-center">
+              <figure className="hidden lg:flex justify-center max-h-[200px]">
                 <img src={Teacher} alt="teacher" loading='lazy' className="" />
               </figure>
 
@@ -101,9 +101,9 @@ const Dashboard = () => {
               <div className="w-full">
                 <div className="w-full bg-white border border-[rgba(43,45,66,0.12)] rounded-[3px] p-8">
                   {/* Header with Badge */}
-                  <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-start justify-between pb-4">
                     <div>
-                      <h3 className="font-[Inter] font-semibold text-xl text-[var(--secondary-color)] mb-1.5 leading-[1.3]">
+                      <h3 className="font-[Inter] font-semibold text-xl text-[var(--secondary-color)] pb-1.5 leading-[1.3]">
                         Become a Mentor
                       </h3>
                       <div className="flex items-center gap-2">
@@ -116,37 +116,37 @@ const Dashboard = () => {
                   </div>
 
                   {/* Value Proposition */}
-                  <p className="font-[Inter] text-[0.9375rem] text-[var(--secondary-color)] leading-relaxed opacity-90 mb-6">
+                  <p className="font-[Inter] text-[0.9375rem] text-[var(--secondary-color)] leading-relaxed opacity-90 pb-6">
                     Guide learners, reinforce your expertise, and make a meaningful impact in the mathematics community.
                   </p>
 
                   {/* Benefits List */}
-                  <div className="flex flex-col gap-2.5 mb-6">
+                  <div className="flex flex-col gap-2.5 pb-6">
                     <div className="flex items-start gap-2.5">
-                      <span className="text-[var(--accent-color)] font-bold text-sm mt-0.5">✓</span>
+                      <span className="text-[var(--accent-color)] font-bold text-sm pt-0.5">✓</span>
                       <span className="font-[Inter] text-sm text-[var(--secondary-color)] opacity-80">Flexible scheduling that fits your lifestyle</span>
                     </div>
                     <div className="flex items-start gap-2.5">
-                      <span className="text-[var(--accent-color)] font-bold text-sm mt-0.5">✓</span>
+                      <span className="text-[var(--accent-color)] font-bold text-sm pt-0.5">✓</span>
                       <span className="font-[Inter] text-sm text-[var(--secondary-color)] opacity-80">Strengthen understanding through teaching</span>
                     </div>
                     <div className="flex items-start gap-2.5">
-                      <span className="text-[var(--accent-color)] font-bold text-sm mt-0.5">✓</span>
+                      <span className="text-[var(--accent-color)] font-bold text-sm pt-0.5">✓</span>
                       <span className="font-[Inter] text-sm text-[var(--secondary-color)] opacity-80">Build your professional portfolio</span>
                     </div>
                   </div>
 
                   {/* CTA Buttons */}
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 max-w-[400px]">
                     <Link
                       to="/applymentor"
-                      className="font-[Inter] font-semibold text-[0.9375rem] !text-white bg-[var(--secondary-color)] rounded-[3px] no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-1 py-3 px-6"
+                      className="flex items-center justify-center font-[Inter] font-semibold text-[0.9375rem] !text-white bg-[var(--secondary-color)] rounded-[3px] no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-2 py-2 px-2 text-wrap"
                     >
                       Apply Now
                     </Link>
                     <Link
                       to="/applymentor"
-                      className="font-[Inter] font-medium text-[0.9375rem] text-[var(--secondary-color)] bg-transparent border border-[rgba(43,45,66,0.2)] rounded-[3px] no-underline transition-all duration-200 hover:border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.02)] text-center py-3 px-6"
+                      className="flex items-center justify-center font-[Inter] font-medium text-[0.9375rem] !text-[var(--secondary-color)] bg-transparent border border-[rgba(43,45,66,0.2)] rounded-[3px] no-underline transition-all duration-200 hover:border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.02)] text-center py-2 px-2 md:flex-1"
                     >
                       Learn More
                     </Link>
