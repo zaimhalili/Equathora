@@ -2,302 +2,223 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import './About.css';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
+import { FaGithub, FaCode, FaLightbulb, FaUsers, FaRocket, FaChartLine } from 'react-icons/fa';
 
 const About = () => {
     return (
         <>
             <FeedbackBanner />
-            <Navbar />
-            <main className="about-page">
-                {/* Hero Section */}
-                <section className="about-hero">
-                    <div className="about-hero-content">
-                        <h1 className="about-hero-title">
-                            About <span className="highlight">Equathora</span>
-                        </h1>
-                        <p className="about-hero-subtitle">
-                            Empowering minds through mathematical thinking and problem-solving excellence
-                        </p>
-                    </div>
-                </section>
-
-                {/* Mission Section */}
-                <section className="about-section mission-section">
-                    <div className="about-container">
-                        <div className="section-header">
-                            <h2>Our Mission</h2>
-                            <div className="section-divider"></div>
-                        </div>
-                        <div className="mission-content">
-                            <p className="mission-text">
-                                At Equathora, we believe that <strong>mathematical thinking is a superpower</strong> that everyone can develop.
-                                Our mission is to transform the way students approach mathematics not as a subject to fear, but as a
-                                journey of discovery, logic, and creative problem-solving.
-                            </p>
-                            <p className="mission-text">
-                                We're committed to providing an engaging, interactive platform where learners can build confidence,
-                                master mathematical concepts step-by-step, and unlock their full potential through guided practice
-                                and achievement-based motivation.
+            <div className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] min-h-screen">
+                <Navbar />
+                <main className="w-full">
+                    {/* Hero - Full Width Clean */}
+                    <section className="w-full px-[4vw] xl:px-[12vw] py-20">
+                        <div className="w-full flex flex-col items-center text-center">
+                            <h1 className="text-5xl md:text-6xl font-bold font-[DynaPuff] pb-4">
+                                <span className="bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] bg-clip-text text-transparent">About Equathora</span>
+                            </h1>
+                            <p className="text-lg text-gray-600 font-[Inter] max-w-2xl leading-relaxed">
+                                Where equations meet time—a platform built for mathematical mastery in 2025
                             </p>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                {/* Vision Section */}
-                <section className="about-section vision-section">
-                    <div className="about-container">
-                        <div className="section-header">
-                            <h2>Our Vision</h2>
-                            <div className="section-divider"></div>
-                        </div>
-                        <div className="vision-grid">
-                            <div className="vision-card">
-                                <div className="vision-icon">🌍</div>
-                                <h3>Global Accessibility</h3>
-                                <p>
-                                    Making high-quality mathematical education accessible to students worldwide,
-                                    breaking down barriers of geography, language, and economic status.
-                                </p>
+                    {/* Stats - Horizontal Bar */}
+                    <section className="w-full bg-gradient-to-r from-[var(--secondary-color)] via-[var(--secondary-color)] to-[var(--accent-color)]/20 py-12">
+                        <div className="w-full px-[4vw] xl:px-[12vw] flex flex-wrap justify-around items-center gap-8">
+                            <div className="flex flex-col items-center">
+                                <div className="text-4xl font-bold text-white">50+</div>
+                                <div className="text-sm text-white/70">Curated Problems</div>
                             </div>
-                            <div className="vision-card">
-                                <div className="vision-icon">🎯</div>
-                                <h3>Personalized Learning</h3>
-                                <p>
-                                    Creating adaptive learning paths that recognize each student's unique pace,
-                                    strengths, and areas for growth, ensuring everyone can succeed.
-                                </p>
+                            <div className="flex flex-col items-center">
+                                <div className="text-4xl font-bold text-white">20+</div>
+                                <div className="text-sm text-white/70">Topics Covered</div>
                             </div>
-                            <div className="vision-card">
-                                <div className="vision-icon">🚀</div>
-                                <h3>Future-Ready Skills</h3>
-                                <p>
-                                    Equipping the next generation with critical thinking, analytical reasoning,
-                                    and problem-solving skills essential for success in the modern world.
-                                </p>
+                            <div className="flex flex-col items-center">
+                                <div className="text-4xl font-bold text-white">2025</div>
+                                <div className="text-sm text-white/70">Year Launched</div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                {/* The Idea Section */}
-                <section className="about-section idea-section">
-                    <div className="about-container">
-                        <div className="section-header">
-                            <h2>The Idea Behind Equathora</h2>
-                            <div className="section-divider"></div>
-                        </div>
-                        <div className="idea-content">
-                            <div className="idea-text">
-                                <p>
-                                    Equathora was born from a simple observation: <em>students often struggle with math not because
-                                        they lack ability, but because traditional learning methods don't align with how they think</em>.
-                                </p>
-                                <p>
-                                    We noticed that when mathematics is presented as isolated formulas and disconnected problems,
-                                    learners lose sight of the bigger picture. That's why we created Equathora—a platform that
-                                    combines:
-                                </p>
-                                <ul className="idea-list">
-                                    <li><strong>Step-by-step guidance</strong> that breaks down complex problems into manageable pieces</li>
-                                    <li><strong>Interactive problem-solving</strong> with immediate feedback and hints</li>
-                                    <li><strong>Achievement systems</strong> that celebrate progress and build confidence</li>
-                                    <li><strong>Real mentorship</strong> connections for personalized support</li>
-                                    <li><strong>Community learning</strong> through leaderboards and friendly competition</li>
-                                </ul>
-                                <p>
-                                    Our name—<strong>Equathora</strong>—combines "Equation" with "Thora" (learning in Turkish),
-                                    symbolizing our commitment to making mathematical learning an enlightening journey rather than a burden.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Features Section */}
-                <section className="about-section features-section">
-                    <div className="about-container">
-                        <div className="section-header">
-                            <h2>What Makes Us Different</h2>
-                            <div className="section-divider"></div>
-                        </div>
-                        <div className="features-grid">
-                            <div className="feature-card">
-                                <div className="feature-number">01</div>
-                                <h3>Interactive Math Editor</h3>
-                                <p>
-                                    Write mathematical expressions naturally with our advanced MathLive editor.
-                                    Show your work step-by-step, just like you would on paper.
-                                </p>
-                            </div>
-                            <div className="feature-card">
-                                <div className="feature-number">02</div>
-                                <h3>Intelligent Hints System</h3>
-                                <p>
-                                    Stuck on a problem? Our progressive hint system guides you toward the solution
-                                    without giving away the answer, helping you learn through discovery.
-                                </p>
-                            </div>
-                            <div className="feature-card">
-                                <div className="feature-number">03</div>
-                                <h3>Achievement & Progress Tracking</h3>
-                                <p>
-                                    Earn achievements, track your streak, and visualize your progress with detailed
-                                    statistics that celebrate every milestone.
-                                </p>
-                            </div>
-                            <div className="feature-card">
-                                <div className="feature-number">04</div>
-                                <h3>Mentor Support Network</h3>
-                                <p>
-                                    Connect with experienced mentors who can provide personalized guidance,
-                                    answer questions, and help you overcome challenging concepts.
-                                </p>
-                            </div>
-                            <div className="feature-card">
-                                <div className="feature-number">05</div>
-                                <h3>Curated Problem Library</h3>
-                                <p>
-                                    Access 50+ carefully designed problems across 20+ topics, organized by difficulty
-                                    and concept to ensure structured learning progression.
-                                </p>
-                            </div>
-                            <div className="feature-card">
-                                <div className="feature-number">06</div>
-                                <h3>Community Leaderboards</h3>
-                                <p>
-                                    Challenge yourself and compete with peers through global and friends leaderboards,
-                                    making learning a social and motivating experience.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Values Section */}
-                <section className="about-section values-section">
-                    <div className="about-container">
-                        <div className="section-header">
-                            <h2>Our Core Values</h2>
-                            <div className="section-divider"></div>
-                        </div>
-                        <div className="values-grid">
-                            <div className="value-item">
-                                <div className="value-icon">💡</div>
-                                <h4>Learning Through Understanding</h4>
-                                <p>We prioritize deep comprehension over rote memorization</p>
-                            </div>
-                            <div className="value-item">
-                                <div className="value-icon">🤝</div>
-                                <h4>Supportive Community</h4>
-                                <p>We foster collaboration, not cutthroat competition</p>
-                            </div>
-                            <div className="value-item">
-                                <div className="value-icon">🎨</div>
-                                <h4>Engaging Experience</h4>
-                                <p>We make mathematics enjoyable and visually appealing</p>
-                            </div>
-                            <div className="value-item">
-                                <div className="value-icon">📈</div>
-                                <h4>Continuous Growth</h4>
-                                <p>We celebrate progress at every step of the journey</p>
-                            </div>
-                            <div className="value-item">
-                                <div className="value-icon">🔓</div>
-                                <h4>Accessible Education</h4>
-                                <p>We believe quality math education should be available to all</p>
-                            </div>
-                            <div className="value-item">
-                                <div className="value-icon">⚡</div>
-                                <h4>Innovation First</h4>
-                                <p>We constantly evolve to meet learners' changing needs</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Roadmap Section */}
-                <section className="about-section roadmap-section" style={{ backgroundColor: 'var(--main-color)', paddingTop: '4rem', paddingBottom: '4rem' }}>
-                    <div className="about-container">
-                        <div className="section-header">
-                            <h2>🚀 What's Next</h2>
-                            <div className="section-divider"></div>
-                        </div>
-                        <p style={{ textAlign: 'center', color: '#666', marginBottom: '3rem', fontSize: '1.1rem' }}>
-                            Here's what we're building to make Equathora even better
-                        </p>
-
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
-                            {/* Current Features */}
-                            <div style={{ backgroundColor: '#d1fae5', border: '2px solid #10b981', borderRadius: '1rem', padding: '2rem' }}>
-                                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#065f46', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    ✅ Available Now
-                                </h3>
-                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ 30+ Math Problems</li>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ Interactive Math Editor</li>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ Instant Feedback</li>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ Progress Tracking</li>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ Achievement Badges</li>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>✓ Mobile Friendly</li>
-                                </ul>
+                    {/* Story - Two Column Layout */}
+                    <section className="w-full px-[4vw] xl:px-[12vw] py-20">
+                        <div className="w-full flex flex-col lg:flex-row gap-16">
+                            {/* Left Column */}
+                            <div className="lg:w-1/2">
+                                <div className="flex items-center gap-3 pb-6">
+                                    <FaLightbulb className="text-3xl text-[var(--accent-color)]" />
+                                    <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter]">
+                                        The Name
+                                    </h2>
+                                </div>
+                                <div className="space-y-6 text-gray-700">
+                                    <div className="border-l-2 border-gray-300 pl-6">
+                                        <div className="text-xl font-bold text-[var(--accent-color)] pb-2">Equat-</div>
+                                        <p className="text-base leading-relaxed">From "Equation"—the foundation of mathematical thinking and problem-solving</p>
+                                    </div>
+                                    <div className="border-l-2 border-gray-300 pl-6">
+                                        <div className="text-xl font-bold text-[var(--accent-color)] pb-2">-hora</div>
+                                        <p className="text-base leading-relaxed">Greek "ὥρα" meaning time and hour—representing your dedication to learning</p>
+                                    </div>
+                                    <div className="border-l-2 border-[var(--accent-color)] pl-6">
+                                        <div className="text-2xl font-bold bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] bg-clip-text text-transparent pb-2">Equathora</div>
+                                        <p className="text-base leading-relaxed font-medium">Time invested in mastering mathematical equations</p>
+                                    </div>
+                                </div>
                             </div>
 
-                            {/* Coming Soon */}
-                            <div style={{ backgroundColor: '#fef3c7', border: '2px solid #f59e0b', borderRadius: '1rem', padding: '2rem' }}>
-                                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#92400e', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    🔜 Coming Soon
-                                </h3>
-                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>🎯 Personalized Recommendations</li>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>📚 Structured Learning Paths</li>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>👥 User Accounts & Login</li>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>🏆 Enhanced Leaderboards</li>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>💬 Discussion Forums</li>
-                                    <li style={{ marginBottom: '0.75rem', color: '#374151', fontSize: '1rem' }}>🎨 Dark Mode</li>
-                                </ul>
+                            {/* Right Column */}
+                            <div className="lg:w-1/2">
+                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6">
+                                    Why <span className="text-[var(--accent-color)]">Red</span>?
+                                </h2>
+                                <div className="space-y-4 text-gray-700 text-base leading-relaxed">
+                                    <p>
+                                        Every math teacher had one—a <span className="font-semibold text-[var(--accent-color)]">red pen</span>. Not to punish mistakes, but to illuminate the path forward. Red marks showed where learning happened.
+                                    </p>
+                                    <p>
+                                        Textbooks marked important theorems in red. Corrections came in red. Red commanded attention and clarity. It became the color of mathematical discovery itself.
+                                    </p>
+                                    <p className="font-medium text-[var(--secondary-color)] border-l-2 border-[var(--accent-color)] pl-4">
+                                        Red represents guidance, emphasis, and the bold moments of understanding.
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                    </section>
 
-                        <div style={{ textAlign: 'center' }}>
-                            <p style={{ color: '#666', marginBottom: '1.5rem', fontSize: '1rem' }}>
-                                Have a feature request? We'd love to hear from you!
+                    {/* Developer - Split Screen */}
+                    <section className="w-full bg-gradient-to-b from-gray-50 to-white py-20">
+                        <div className="w-full px-[4vw] xl:px-[12vw]">
+                            <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-12">
+                                Built by a Developer Who Understands Learning
+                            </h2>
+                            <div className="w-full flex flex-col lg:flex-row gap-12">
+                                {/* Developer Info */}
+                                <div className="lg:w-1/3">
+                                    <div className="flex items-center gap-4 pb-6">
+                                        <div className="w-16 h-16 bg-[var(--secondary-color)] rounded-full flex items-center justify-center text-3xl">
+                                            👨‍💻
+                                        </div>
+                                        <div>
+                                            <h3 className="text-2xl font-bold text-[var(--secondary-color)]">Zaim Halili</h3>
+                                            <p className="text-gray-600">Full-Stack Developer</p>
+                                        </div>
+                                    </div>
+                                    <p className="text-gray-700 leading-relaxed pb-6">
+                                        Built Equathora to bridge the gap between traditional math education and modern learning needs.
+                                    </p>
+                                    <a
+                                        href="https://github.com/zaimhalili"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 px-5 py-3 bg-[var(--secondary-color)] text-white rounded font-semibold text-sm hover:bg-[var(--secondary-color)]/90 transition-all duration-200"
+                                    >
+                                        <FaGithub className="text-lg" />
+                                        <span>View on GitHub</span>
+                                    </a>
+                                </div>
+
+                                {/* Tech Stack Grid */}
+                                <div className="lg:w-2/3 grid sm:grid-cols-2 gap-6">
+                                    <div className="flex items-start gap-4">
+                                        <FaCode className="text-3xl text-[var(--accent-color)] flex-shrink-0 pt-1" />
+                                        <div>
+                                            <h4 className="font-bold text-[var(--secondary-color)] text-lg pb-2">Frontend</h4>
+                                            <p className="text-gray-600">React for dynamic UI, Tailwind CSS for modern styling</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-4">
+                                        <FaRocket className="text-3xl text-[var(--accent-color)] flex-shrink-0 pt-1" />
+                                        <div>
+                                            <h4 className="font-bold text-[var(--secondary-color)] text-lg pb-2">Backend</h4>
+                                            <p className="text-gray-600">ASP.NET Core for robust server-side logic</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-4">
+                                        <FaLightbulb className="text-3xl text-[var(--accent-color)] flex-shrink-0 pt-1" />
+                                        <div>
+                                            <h4 className="font-bold text-[var(--secondary-color)] text-lg pb-2">Math Engine</h4>
+                                            <p className="text-gray-600">MathLive for real-time LaTeX rendering</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-4">
+                                        <FaUsers className="text-3xl text-[var(--accent-color)] flex-shrink-0 pt-1" />
+                                        <div>
+                                            <h4 className="font-bold text-[var(--secondary-color)] text-lg pb-2">Community</h4>
+                                            <p className="text-gray-600">Achievements, mentorship, leaderboards</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Mission - Full Width Text Block */}
+                    <section className="w-full px-[4vw] xl:px-[12vw] py-20">
+                        <div className="w-full flex flex-col items-center text-center">
+                            <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6">
+                                Our Mission
+                            </h2>
+                            <p className="text-lg text-gray-700 leading-relaxed max-w-3xl">
+                                Transform how students approach mathematics—not as a subject to fear, but as a journey of discovery. We provide an interactive platform where learners build confidence through step-by-step guidance and achievement-based motivation.
                             </p>
-                            <Link
-                                to="/feedback"
-                                style={{
-                                    display: 'inline-block',
-                                    padding: '0.75rem 2rem',
-                                    backgroundColor: 'var(--accent-color)',
-                                    color: 'white',
-                                    borderRadius: '0.5rem',
-                                    fontWeight: 'bold',
-                                    textDecoration: 'none',
-                                    transition: 'all 0.2s'
-                                }}
-                                onMouseOver={(e) => e.target.style.backgroundColor = 'var(--dark-accent-color)'}
-                                onMouseOut={(e) => e.target.style.backgroundColor = 'var(--accent-color)'}
-                            >
-                                Send Feedback
-                            </Link>
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                {/* CTA Section */}
-                <section className="about-cta">
-                    <div className="about-container">
-                        <h2>Ready to Start Your Journey?</h2>
-                        <p>Join thousands of students transforming their mathematical abilities</p>
-                        <div className="cta-buttons">
-                            <Link to="/signup" className="cta-btn primary">Join Equathora Today</Link>
-                            <Link to="/learn" className="cta-btn secondary">Explore Problems</Link>
+                    {/* Features - Bento Grid Style */}
+                    <section className="w-full bg-gradient-to-b from-white to-gray-50 px-[4vw] xl:px-[12vw] py-20">
+                        <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-12 text-center">
+                            What Makes Us Different
+                        </h2>
+                        <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {[
+                                { icon: '✏️', title: 'Math Editor', desc: 'Natural LaTeX input with real-time preview' },
+                                { icon: '💡', title: 'Smart Hints', desc: 'Progressive guidance that adapts to your level' },
+                                { icon: '🏆', title: 'Achievements', desc: 'Track progress with meaningful milestones' },
+                                { icon: '👥', title: 'Mentorship', desc: 'Expert support when you need it most' },
+                                { icon: '📚', title: '50+ Problems', desc: 'Curated library across 20+ topics' },
+                                { icon: '🎯', title: 'Leaderboards', desc: 'Compete globally, grow together' }
+                            ].map((feature, idx) => (
+                                <div key={idx} className="p-8 bg-white border border-gray-200 hover:border-[var(--accent-color)] hover:shadow-[0_4px_16px_rgba(217,4,41,0.1)] transition-all duration-200">
+                                    <div className="text-5xl pb-4">{feature.icon}</div>
+                                    <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-3">{feature.title}</h3>
+                                    <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
+                                </div>
+                            ))}
                         </div>
-                    </div>
-                </section>
-            </main>
-            <Footer />
+                    </section>
+
+                    {/* CTA - Centered Simple */}
+                    <section className="w-full px-[4vw] xl:px-[12vw] py-20">
+                        <div className="w-full flex flex-col items-center text-center">
+                            <h2 className="text-4xl font-bold text-[var(--secondary-color)] font-[Inter] pb-4">
+                                Ready to Start Learning?
+                            </h2>
+                            <p className="text-lg text-gray-600 pb-8 max-w-2xl">
+                                Join students mastering mathematics through interactive problem-solving
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <Link
+                                    to="/signup"
+                                    className="px-8 py-4 bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] text-white rounded font-semibold hover:shadow-[0_4px_16px_rgba(217,4,41,0.3)] transition-all duration-200 no-underline text-center"
+                                >
+                                    Get Started Free
+                                </Link>
+                                <Link
+                                    to="/learn"
+                                    className="px-8 py-4 bg-white text-[var(--secondary-color)] border-2 border-[var(--accent-color)] rounded font-semibold hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--secondary-color)] hover:text-white hover:border-transparent transition-all duration-200 no-underline text-center"
+                                >
+                                    Explore Problems
+                                </Link>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+                <Footer />
+            </div>
         </>
     );
 };

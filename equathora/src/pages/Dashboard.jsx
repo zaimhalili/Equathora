@@ -13,10 +13,30 @@ import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
 
 const Dashboard = () => {
-  // Later to be implemented with real-time data and user authentication in the backend
-  let numberOfProblems = 5;
-  let randomProblemId = Math.floor(Math.random() * numberOfProblems) + 1;
+  // Get daily problem that changes every day deterministically
+  const getDailyProblemId = () => {
+    const today = new Date();
+    const dateString = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+
+    // Simple hash function to convert date to number
+    const hashCode = (str) => {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash;
+      }
+      return Math.abs(hash);
+    };
+
+    const seed = hashCode(dateString);
+    const numberOfProblems = 5;
+    return (seed % numberOfProblems) + 1;
+  };
+
+  const dailyProblemId = getDailyProblemId();
   let username = "Friend";
+
   return (
     <>
       <FeedbackBanner />
@@ -28,7 +48,7 @@ const Dashboard = () => {
         {/* Hero Section */}
         <div className='flex w-full justify-center items-center'>
           <div className='flex flex-col lg:flex-row justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>
-            <section  className="flex flex-col items-center justify-center w-full lg:w-[70%]">
+            <section className="flex flex-col items-center justify-center w-full lg:w-[70%]">
               <article className="text-[var(--secondary-color)] font-[Inter] w-full cursor-default flex flex-col items-center md:items-start">
                 <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[DynaPuff] font-medium">
                   Welcome Back, <span className="text-[var(--secondary-color)]">{username}</span>!
@@ -46,7 +66,7 @@ const Dashboard = () => {
                   {/* Blocks - Squares */}
                   <div className="w-full pt-2 gap-0.5 lg:gap-[2px] flex flex-wrap justify-center sm:justify-start">
                     <Link
-                      to={`/problems/1/${randomProblemId}`}
+                      to={`/problems/1/${dailyProblemId}`}
                       className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                     >
                       <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
