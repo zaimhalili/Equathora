@@ -109,7 +109,7 @@ const HelpCenter = () => {
                 </header>
 
                 {/* Hero Section with Illustration */}
-                <section className="w-full relative overflow-hidden">
+                <section className="w-full relative overflow-hidden flex justify-center">
                     {/* Animated background shapes */}
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
                         <div className="absolute top-20 left-10 w-32 h-32 bg-blue-400 rounded-full opacity-10 blur-2xl"></div>
@@ -117,26 +117,26 @@ const HelpCenter = () => {
                         <div className="absolute bottom-20 left-1/3 w-36 h-36 bg-pink-400 rounded-full opacity-10 blur-2xl"></div>
                     </div>
 
-                    <div className="relative px-[4vw] xl:px-[12vw] py-16">
-                        <div className="w-full flex flex-col lg:flex-row items-center gap-10">
+                    <div className="relative px-[4vw] xl:px-[6vw] py-12 max-w-[1500px] w-full">
+                        <div className="w-full flex flex-col lg:flex-row items-center gap-8">
                             {/* Left: Content */}
-                            <div className="flex-1 flex flex-col gap-6">
+                            <div className="flex-1 flex flex-col gap-4">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-4xl">👋</span>
-                                    <h1 className="text-5xl md:text-6xl font-bold text-[var(--secondary-color)] font-[DynaPuff]">
+                                    <span className="text-3xl">👋</span>
+                                    <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[DynaPuff]">
                                         Help Center
                                     </h1>
                                 </div>
-                                <p className="text-lg text-gray-600">
+                                <p className="text-base text-gray-600">
                                     We're here to help you succeed! Find answers, tutorials, and support.
                                 </p>
 
                                 <div className="w-full relative">
-                                    <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
+                                    <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
                                     <input
                                         type="search"
                                         placeholder="Search for anything... timer, hints, badges, problems..."
-                                        className="w-full pl-14 pr-4 py-4 rounded-xl text-[var(--secondary-color)] text-base border-2 border-gray-200 focus:outline-none focus:border-[var(--accent-color)] shadow-sm"
+                                        className="w-full pl-12 pr-4 py-3 rounded-md text-[var(--secondary-color)] text-base border-2 border-gray-200 focus:outline-none focus:border-[var(--accent-color)] shadow-[0_10px_10px_rgba(141,153,174,0.3)]"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                     />
@@ -149,7 +149,7 @@ const HelpCenter = () => {
                                     <img
                                         src="https://illustrations.popsy.co/amber/question-mark.svg"
                                         alt="Help illustration"
-                                        className="w-64 lg:w-80"
+                                        className="w-40 lg:w-48"
                                     />
                                 </div>
                             </div>
@@ -158,157 +158,165 @@ const HelpCenter = () => {
                 </section>
 
                 {/* Quick Links Cards */}
-                <section className="w-full px-[4vw] xl:px-[12vw] py-8">
-                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {quickLinks.map((link, index) => (
-                            <div
-                                key={index}
-                                className="relative bg-white rounded-xl p-6 flex flex-col gap-3 border-2 border-transparent hover:border-gray-200 transition-all duration-200 group overflow-hidden"
-                            >
-                                <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-5 group-hover:opacity-10 transition-opacity duration-200`}></div>
-                                <div className="relative">
-                                    <div className="text-4xl pb-2">{link.emoji}</div>
-                                    <h3 className="text-lg font-bold text-[var(--secondary-color)]">{link.title}</h3>
-                                    <p className="text-sm text-gray-600 pt-1">{link.description}</p>
+                <section className="w-full flex justify-center">
+                    <div className="px-[4vw] xl:px-[6vw] py-6 max-w-[1500px] w-full">
+                        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {quickLinks.map((link, index) => (
+                                <div
+                                    key={index}
+                                    className="relative bg-white rounded-md p-4 flex flex-col gap-2 shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 group overflow-hidden cursor-pointer"
+                                >
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-5 group-hover:opacity-10 transition-opacity duration-200`}></div>
+                                    <div className="relative">
+                                        <div className="text-3xl pb-1">{link.emoji}</div>
+                                        <h3 className="text-lg font-bold text-[var(--secondary-color)]">{link.title}</h3>
+                                        <p className="text-sm text-gray-600 pt-0.5">{link.description}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </section>
 
                 {/* Fun Stats Banner */}
-                <section className="w-full px-[4vw] xl:px-[12vw] py-6">
-                    <div className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-2xl p-8 flex flex-wrap justify-around items-center gap-6 text-white">
-                        <div className="flex flex-col items-center gap-1">
-                            <div className="flex items-center gap-2">
-                                <FaFire className="text-2xl" />
-                                <span className="text-3xl font-bold">500+</span>
+                <section className="w-full flex justify-center">
+                    <div className="px-[4vw] xl:px-[6vw] py-4 max-w-[1500px] w-full">
+                        <div className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-md p-6 flex flex-wrap justify-around items-center gap-4 text-white shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
+                            <div className="flex flex-col items-center gap-1">
+                                <div className="flex items-center gap-2">
+                                    <FaFire className="text-xl" />
+                                    <span className="text-2xl font-bold">500+</span>
+                                </div>
+                                <span className="text-sm opacity-90">Answers provided</span>
                             </div>
-                            <span className="text-sm opacity-90">Answers provided</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-1">
-                            <div className="flex items-center gap-2">
-                                <FaHeart className="text-2xl" />
-                                <span className="text-3xl font-bold">98%</span>
+                            <div className="flex flex-col items-center gap-1">
+                                <div className="flex items-center gap-2">
+                                    <FaHeart className="text-xl" />
+                                    <span className="text-2xl font-bold">98%</span>
+                                </div>
+                                <span className="text-sm opacity-90">Satisfaction rate</span>
                             </div>
-                            <span className="text-sm opacity-90">Satisfaction rate</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-1">
-                            <div className="flex items-center gap-2">
-                                <FaClock className="text-2xl" />
-                                <span className="text-3xl font-bold">&lt;3h</span>
+                            <div className="flex flex-col items-center gap-1">
+                                <div className="flex items-center gap-2">
+                                    <FaClock className="text-xl" />
+                                    <span className="text-2xl font-bold">&lt;3h</span>
+                                </div>
+                                <span className="text-sm opacity-90">Response time</span>
                             </div>
-                            <span className="text-sm opacity-90">Response time</span>
                         </div>
                     </div>
                 </section>
 
                 {/* FAQ Section with Icons */}
-                <section className="w-full px-[4vw] xl:px-[12vw] py-10">
-                    <div className="flex flex-col items-center gap-3 pb-8">
-                        <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[DynaPuff] text-center">
-                            Frequently Asked Questions
-                        </h2>
-                        <p className="text-gray-600 text-center">Everything you need to know about Equathora</p>
-                    </div>
+                <section className="w-full flex justify-center">
+                    <div className="px-[4vw] xl:px-[6vw] py-8 max-w-[1500px] w-full">
+                        <div className="flex flex-col items-center gap-2 pb-6">
+                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[DynaPuff] text-center">
+                                Frequently Asked Questions
+                            </h2>
+                            <p className="text-gray-600 text-center text-base">Everything you need to know about Equathora</p>
+                        </div>
 
-                    <div className="w-full flex flex-col gap-4">
-                        {filteredFaqs.length > 0 ? (
-                            filteredFaqs.map((faq, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-white rounded-xl border-2 border-gray-100 overflow-hidden"
-                                >
-                                    <button
-                                        className="w-full p-6 flex items-start gap-4 text-left"
-                                        onClick={() => toggleFaq(index)}
+                        <div className="w-full flex flex-col gap-3">
+                            {filteredFaqs.length > 0 ? (
+                                filteredFaqs.map((faq, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
                                     >
-                                        <div className={`${faq.color} text-2xl flex-shrink-0 pt-1`}>
-                                            {faq.icon}
-                                        </div>
-                                        <div className="flex-1 flex items-center justify-between gap-4">
-                                            <span className="font-semibold text-[var(--secondary-color)] text-lg">
-                                                {faq.question}
-                                            </span>
-                                            <div className="flex-shrink-0">
-                                                {openFaq === index ?
-                                                    <FaChevronUp className="text-[var(--accent-color)] text-lg" /> :
-                                                    <FaChevronDown className="text-gray-400 text-lg" />
-                                                }
+                                        <button
+                                            className="w-full p-4 flex items-start gap-3 text-left"
+                                            onClick={() => toggleFaq(index)}
+                                        >
+                                            <div className={`${faq.color} text-xl flex-shrink-0 pt-1`}>
+                                                {faq.icon}
                                             </div>
-                                        </div>
-                                    </button>
-                                    {openFaq === index && (
-                                        <div className="px-6 pb-6 pl-[72px]">
-                                            <div className="border-l-4 border-gray-200 pl-4">
-                                                <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+                                            <div className="flex-1 flex items-center justify-between gap-3">
+                                                <span className="font-semibold text-[var(--secondary-color)] text-base">
+                                                    {faq.question}
+                                                </span>
+                                                <div className="flex-shrink-0">
+                                                    {openFaq === index ?
+                                                        <FaChevronUp className="text-[var(--accent-color)] text-base" /> :
+                                                        <FaChevronDown className="text-gray-400 text-base" />
+                                                    }
+                                                </div>
                                             </div>
+                                        </button>
+                                        {openFaq === index && (
+                                            <div className="px-4 pb-4 pl-[60px]">
+                                                <div className="border-l-4 border-gray-200 pl-3">
+                                                    <p className="text-gray-700 leading-relaxed text-sm">{faq.answer}</p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-8 flex flex-col items-center text-center gap-3">
+                                    <div className="text-5xl">🔍</div>
+                                    <div>
+                                        <p className="text-lg font-bold text-[var(--secondary-color)] pb-2">No results found</p>
+                                        <p className="text-gray-600 text-sm pb-3">Try searching with different keywords:</p>
+                                        <div className="flex flex-wrap gap-2 justify-center">
+                                            {['problem', 'hint', 'timer', 'leaderboard', 'favorite', 'badge'].map(keyword => (
+                                                <button
+                                                    key={keyword}
+                                                    onClick={() => setSearchQuery(keyword)}
+                                                    className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-md text-sm font-semibold"
+                                                >
+                                                    {keyword}
+                                                </button>
+                                            ))}
                                         </div>
-                                    )}
-                                </div>
-                            ))
-                        ) : (
-                            <div className="bg-white rounded-xl border-2 border-gray-100 p-12 flex flex-col items-center text-center gap-4">
-                                <div className="text-6xl">🔍</div>
-                                <div>
-                                    <p className="text-xl font-bold text-[var(--secondary-color)] pb-2">No results found</p>
-                                    <p className="text-gray-600 pb-4">Try searching with different keywords:</p>
-                                    <div className="flex flex-wrap gap-2 justify-center">
-                                        {['problem', 'hint', 'timer', 'leaderboard', 'favorite', 'badge'].map(keyword => (
-                                            <button
-                                                key={keyword}
-                                                onClick={() => setSearchQuery(keyword)}
-                                                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg text-sm font-semibold"
-                                            >
-                                                {keyword}
-                                            </button>
-                                        ))}
                                     </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </section>
 
                 {/* Contact Section with Illustration */}
-                <section className="w-full px-[4vw] xl:px-[12vw] py-12">
-                    <div className="w-full bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] rounded-2xl overflow-hidden">
-                        <div className="flex flex-col lg:flex-row items-center">
-                            <div className="flex-1 p-10 flex flex-col gap-6 text-white">
-                                <div className="flex items-center gap-3">
-                                    <span className="text-4xl">💌</span>
-                                    <h2 className="text-3xl font-bold font-[DynaPuff]">Still Need Help?</h2>
+                <section className="w-full flex justify-center">
+                    <div className="px-[4vw] xl:px-[6vw] py-8 max-w-[1500px] w-full">
+                        <div className="w-full bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] rounded-md overflow-hidden shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
+                            <div className="flex flex-col lg:flex-row items-center">
+                                <div className="flex-1 p-8 flex flex-col gap-4 text-white">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-3xl">💌</span>
+                                        <h2 className="text-2xl font-bold font-[DynaPuff]">Still Need Help?</h2>
+                                    </div>
+                                    <p className="text-gray-300 text-base">
+                                        Can't find your answer? Our support team responds within 3 hours (usually) !
+                                    </p>
+                                    <a
+                                        href="mailto:support@equathora.com"
+                                        className="inline-block px-6 py-3 bg-gradient-to-r from-[var(--accent-color)] to-pink-600 text-white rounded-md font-bold text-base no-underline w-fit"
+                                    >
+                                        Contact Support →
+                                    </a>
+                                    <div className="flex flex-wrap gap-3 text-sm text-gray-300">
+                                        <div className="flex items-center gap-2">
+                                            <FaClock />
+                                            <span>Fast response</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <FaHeart />
+                                            <span>Friendly team</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <FaStar />
+                                            <span>Expert help</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p className="text-gray-300 text-lg">
-                                    Can't find your answer? Our support team responds within 3 hours (usually) !
-                                </p>
-                                <a
-                                    href="mailto:support@equathora.com"
-                                    className="inline-block px-8 py-4 bg-gradient-to-r from-[var(--accent-color)] to-pink-600 text-white rounded-xl font-bold text-lg no-underline w-fit"
-                                >
-                                    Contact Support →
-                                </a>
-                                <div className="flex flex-wrap gap-4 text-sm text-gray-300">
-                                    <div className="flex items-center gap-2">
-                                        <FaClock />
-                                        <span>Fast response</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <FaHeart />
-                                        <span>Friendly team</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <FaStar />
-                                        <span>Expert help</span>
-                                    </div>
+                                <div className="flex-1 flex justify-center p-8">
+                                    <img
+                                        src="https://illustrations.popsy.co/amber/customer-support.svg"
+                                        alt="Support illustration"
+                                        className="w-40"
+                                    />
                                 </div>
-                            </div>
-                            <div className="flex-1 flex justify-center p-10">
-                                <img
-                                    src="https://illustrations.popsy.co/amber/customer-support.svg"
-                                    alt="Support illustration"
-                                    className="w-64"
-                                />
                             </div>
                         </div>
                     </div>
