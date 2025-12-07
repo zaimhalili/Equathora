@@ -87,10 +87,10 @@ export default function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/resend" element={<Resend />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} /> */}
 
         {/* Unprotected Routes */}
         <Route path="/dashboard" element={<Dashboard />} />
@@ -104,8 +104,8 @@ export default function App() {
         <Route path="/applymentor" element={<ApplyMentor />} />
         <Route path="/helpCenter" element={<HelpCenter />} />
         <Route path="/pageNotFound" element={<PageNotFound />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/premium" element={<Premium />} />
+        {/* <Route path="/settings" element={<Settings />} /> */}
+        {/* <Route path="/premium" element={<Premium />} /> */}
         <Route path="/feedback" element={<Feedback />} />
 
 

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { FaSearch, FaQuestionCircle, FaBook, FaUserGraduate, FaCog, FaChevronDown, FaChevronUp, FaLightbulb, FaShieldAlt } from 'react-icons/fa';
-import './HelpCenter.css';
+import { FaSearch, FaQuestionCircle, FaBook, FaUserGraduate, FaCog, FaChevronDown, FaChevronUp, FaLightbulb, FaShieldAlt, FaEnvelope } from 'react-icons/fa';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 
 const HelpCenter = () => {
@@ -88,86 +87,108 @@ const HelpCenter = () => {
         setOpenFaq(openFaq === index ? null : index);
     };
 
-    const filteredFaqs = faqs.filter(faq =>
-        faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    // More flexible search - splits query into words and checks if any word matches
+    const filteredFaqs = faqs.filter(faq => {
+        if (!searchQuery.trim()) return true;
+        const words = searchQuery.toLowerCase().split(' ').filter(w => w.length > 2);
+        if (words.length === 0) return faq.question.toLowerCase().includes(searchQuery.toLowerCase());
+        return words.some(word =>
+            faq.question.toLowerCase().includes(word) ||
+            faq.answer.toLowerCase().includes(word)
+        );
+    });
 
     return (
         <>
             <FeedbackBanner />
-            <div className="help-center-container">
+            <div className="w-full min-h-screen bg-[var(--main-color)] font-[Inter]">
                 <header>
                     <Navbar />
                 </header>
 
                 {/* Hero Section */}
-                <section className="help-hero">
-                    <div className="help-hero-content">
-                        <h1>How can we help you?</h1>
-                        <p>Search our knowledge base or browse categories below</p>
+                <section className="w-full bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] text-white px-[4vw] xl:px-[12vw] py-16">
+                    <div className="w-full flex flex-col items-center text-center gap-6">
+                        <h1 className="text-4xl md:text-5xl font-bold font-[DynaPuff]">How can we help you?</h1>
+                        <p className="text-lg text-gray-300 max-w-2xl">Find answers quickly or reach out to our support team</p>
 
-                        <div className="help-search-container">
-                            <FaSearch className="help-search-icon" />
+                        <div className="w-full max-w-2xl relative">
+                            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
                             <input
                                 type="search"
-                                placeholder="Search for help articles, FAQs, or topics..."
-                                className="help-search-input"
+                                placeholder="Try 'timer', 'hints', 'leaderboard'..."
+                                className="w-full pl-12 pr-4 py-4 rounded-lg text-[var(--secondary-color)] text-base focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] shadow-lg"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
-                    </div>
-                </section>
-
-                {/* Categories Section */}
-                <section className="help-categories">
-                    <h2 className="section-title">Browse by Category</h2>
-                    <div className="categories-grid">
-                        {categories.map((category, index) => (
-                            <div key={index} className="category-card" style={{ '--category-color': category.color }}>
-                                <div className="category-icon">{category.icon}</div>
-                                <h3>{category.title}</h3>
-                                <p>{category.description}</p>
-                            </div>
-                        ))}
+                        {searchQuery && (
+                            <p className="text-sm text-gray-300">
+                                Showing results for: <span className="font-semibold text-white">{searchQuery}</span>
+                            </p>
+                        )}
                     </div>
                 </section>
 
                 {/* FAQ Section */}
-                <section className="help-faq">
-                    <h2 className="section-title">Frequently Asked Questions</h2>
-                    <div className="faq-container">
+                <section className="w-full px-[4vw] xl:px-[12vw] py-12">
+                    <h2 className="text-2xl font-bold text-[var(--secondary-color)] pb-6 text-center">Frequently Asked Questions</h2>
+                    <div className="max-w-4xl mx-auto flex flex-col gap-3">
                         {filteredFaqs.length > 0 ? (
                             filteredFaqs.map((faq, index) => (
-                                <div key={index} className={`faq-item ${openFaq === index ? 'active' : ''}`}>
-                                    <button className="faq-question" onClick={() => toggleFaq(index)}>
-                                        <span>{faq.question}</span>
-                                        {openFaq === index ? <FaChevronUp /> : <FaChevronDown />}
+                                <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                                    <button
+                                        className="w-full p-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors duration-200"
+                                        onClick={() => toggleFaq(index)}
+                                    >
+                                        <span className="font-semibold text-[var(--secondary-color)] pr-4">{faq.question}</span>
+                                        {openFaq === index ?
+                                            <FaChevronUp className="text-[var(--accent-color)] flex-shrink-0" /> :
+                                            <FaChevronDown className="text-gray-400 flex-shrink-0" />
+                                        }
                                     </button>
                                     {openFaq === index && (
-                                        <div className="faq-answer">
-                                            <p>{faq.answer}</p>
+                                        <div className="px-5 pb-5 pt-0 text-gray-700 leading-relaxed border-t border-gray-100">
+                                            <p className="pt-4">{faq.answer}</p>
                                         </div>
                                     )}
                                 </div>
                             ))
                         ) : (
-                            <div className="no-results">
-                                <FaQuestionCircle />
-                                <p>No results found for "{searchQuery}"</p>
-                                <small>Try different keywords or browse categories above</small>
+                            <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-12 flex flex-col items-center text-center gap-4">
+                                <FaQuestionCircle className="text-5xl text-gray-300" />
+                                <div>
+                                    <p className="text-lg font-semibold text-[var(--secondary-color)] pb-2">No results found</p>
+                                    <p className="text-sm text-gray-600">Try searching with different keywords like:</p>
+                                    <div className="flex flex-wrap gap-2 justify-center pt-3">
+                                        {['problem', 'hint', 'timer', 'leaderboard', 'favorite'].map(keyword => (
+                                            <button
+                                                key={keyword}
+                                                onClick={() => setSearchQuery(keyword)}
+                                                className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded text-xs font-medium text-[var(--secondary-color)] transition-colors"
+                                            >
+                                                {keyword}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         )}
                     </div>
                 </section>
 
                 {/* Contact Section */}
-                <section className="help-contact">
-                    <div className="contact-card">
-                        <h2>Still need help?</h2>
-                        <p>Can't find what you're looking for? Our support team is here to help!</p>
-                        <button className="contact-button">Contact Support</button>
+                <section className="w-full px-[4vw] xl:px-[12vw] py-12">
+                    <div className="max-w-2xl mx-auto bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] rounded-lg p-10 text-center text-white">
+                        <FaEnvelope className="text-5xl mx-auto mb-4 opacity-80" />
+                        <h2 className="text-2xl font-bold pb-3">Still need help?</h2>
+                        <p className="text-gray-300 pb-6">Can't find what you're looking for? Our support team is here to help!</p>
+                        <a
+                            href="mailto:support@equathora.com"
+                            className="inline-block px-8 py-3 bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white rounded font-semibold transition-colors duration-200 no-underline"
+                        >
+                            Contact Support
+                        </a>
                     </div>
                 </section>
 

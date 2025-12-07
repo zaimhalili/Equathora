@@ -178,14 +178,19 @@ const ApplyMentor = () => {
                         We're finalizing the mentor platform. Join our waitlist to be notified when applications open!
                     </p>
 
-                    <div className='bg-white/10 border border-white/20 rounded px-8 py-4 backdrop-blur-sm'>
-                        <p className='text-sm text-white/90'>
-                            🎯 Interested in becoming a mentor?
+                    <a
+                        href='YOUR_GOOGLE_FORM_LINK_HERE'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='bg-white/10 border border-white/20 rounded px-8 py-4 backdrop-blur-sm hover:bg-white/20 transition-all duration-200 no-underline cursor-pointer block'
+                    >
+                        <p className='text-sm text-white/90 font-semibold'>
+                            🎯 Join 47+ educators on the waitlist
                         </p>
                         <p className='text-xs text-gray-400 pt-2'>
-                            Contact us at <span className='text-[var(--accent-color)]'>mentors@equathora.com</span> to join the waitlist
+                            Click to fill out our quick Google Form →
                         </p>
-                    </div>
+                    </a>
 
                     <p className='text-xs text-gray-400'>
                         No commitment • Always free • Help shape the future of math education

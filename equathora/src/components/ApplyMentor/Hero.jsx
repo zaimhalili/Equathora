@@ -36,37 +36,35 @@ const Hero = () => {
                             Guide students through math challenges, reinforce your expertise, and make a lasting impact.
                         </p>
 
-                        {/* CTA Buttons */}
-                        <div className='flex flex-col sm:flex-row gap-3 justify-center lg:justify-start'>
-                            <Link
-                                to='/signup'
-                                className='group relative bg-[var(--accent-color)] text-white px-6 py-2.5 rounded font-semibold text-sm overflow-hidden transition-colors duration-200 hover:bg-[var(--dark-accent-color)] flex items-center justify-center gap-2 no-underline'
-                            >
-                                <span className='relative z-10'>Apply Now</span>
-                                <FaArrowRight className='relative z-10 text-xs' />
-                                <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700'></div>
-                            </Link>
-                            <Link
-                                to='/login'
-                                className='bg-white/10 text-white px-6 py-2.5 rounded font-semibold text-sm backdrop-blur-sm border border-white/30 hover:bg-white/20 transition-colors duration-200 flex items-center justify-center no-underline'
-                            >
-                                Log In
-                            </Link>
-                        </div>
+                        {/* Waitlist CTA */}
+                        <div className='flex flex-col gap-4 justify-center lg:justify-start'>
+                            <div className='flex flex-col sm:flex-row gap-3'>
+                                <a
+                                    href='YOUR_GOOGLE_FORM_LINK_HERE'
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='group relative bg-[var(--accent-color)] text-white px-6 py-2.5 rounded font-semibold text-sm overflow-hidden transition-colors duration-200 hover:bg-[var(--dark-accent-color)] flex items-center justify-center gap-2 no-underline'
+                                >
+                                    <span className='relative z-10'>Join Waitlist (47+ Already Joined!)</span>
+                                    <FaArrowRight className='relative z-10 text-xs' />
+                                    <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700'></div>
+                                </a>
+                            </div>
 
-                        {/* Trust Indicators */}
-                        <div className='flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-gray-400'>
-                            <div className='flex items-center gap-1.5'>
-                                <FaCheckCircle className='text-green-400 flex-shrink-0 text-xs' />
-                                <span>No commitment</span>
-                            </div>
-                            <div className='flex items-center gap-1.5'>
-                                <FaCheckCircle className='text-green-400 flex-shrink-0 text-xs' />
-                                <span>2 min apply</span>
-                            </div>
-                            <div className='flex items-center gap-1.5'>
-                                <FaCheckCircle className='text-green-400 flex-shrink-0 text-xs' />
-                                <span>Always free</span>
+                            {/* Trust Indicators */}
+                            <div className='flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-gray-400'>
+                                <div className='flex items-center gap-1.5'>
+                                    <FaCheckCircle className='text-green-400 flex-shrink-0 text-xs' />
+                                    <span>No commitment</span>
+                                </div>
+                                <div className='flex items-center gap-1.5'>
+                                    <FaCheckCircle className='text-green-400 flex-shrink-0 text-xs' />
+                                    <span>2 min signup</span>
+                                </div>
+                                <div className='flex items-center gap-1.5'>
+                                    <FaCheckCircle className='text-green-400 flex-shrink-0 text-xs' />
+                                    <span>Always free</span>
+                                </div>
                             </div>
                         </div>                        {/* Social Proof - Commented for future use */}
                         {/* <div className='flex flex-wrap items-center gap-6 justify-center lg:justify-start text-sm'>
