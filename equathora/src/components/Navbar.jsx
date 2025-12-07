@@ -28,18 +28,16 @@ import Teacher from '../assets/images/teacher.svg';
 import Achievements from '../assets/images/achievementsDD.svg';
 import Events from '../assets/images/specialEvents.svg';
 import Symbol from '../assets/logo/TransparentSymbol.png';
+import { getDailyProblemId } from '../lib/utils';
 
 const Navbar = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // Later to be implemented with real-time data and user authentication in the backend
-  let numberOfProblems = 5;
-  let randomId = Math.floor(Math.random() * numberOfProblems) + 1;
+  const dailyProblemId = getDailyProblemId();
 
   const learnItems = [
     {
-      to: `/problems/1/${randomId}`,
+      to: `/problems/1/${dailyProblemId}`,
       text: "Daily Problem",
       description: "Solve a fresh daily challenge.",
       image: Daily
@@ -155,12 +153,6 @@ const Navbar = () => {
       text: "My Profile",
       description: "View and edit your profile",
       image: GuestAvatar
-    },
-    {
-      to: '/settings',
-      text: "Settings",
-      description: "Manage your preferences",
-      image: Settings
     }
     // Hidden for MVP
     // {

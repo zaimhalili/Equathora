@@ -11,29 +11,9 @@ import Leaderboards from '../assets/images/leaderboards.svg'
 import { Link } from 'react-router-dom';
 import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
+import { getDailyProblemId } from '../lib/utils';
 
 const Dashboard = () => {
-  // Get daily problem that changes every day deterministically
-  const getDailyProblemId = () => {
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0]; // YYYY-MM-DD format
-
-    // Simple hash function to convert date to number
-    const hashCode = (str) => {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash;
-      }
-      return Math.abs(hash);
-    };
-
-    const seed = hashCode(dateString);
-    const numberOfProblems = 5;
-    return (seed % numberOfProblems) + 1;
-  };
-
   const dailyProblemId = getDailyProblemId();
   let username = "Friend";
 
@@ -81,7 +61,7 @@ const Dashboard = () => {
                     >
                       <img src={Books} alt="books" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                       <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
-                        Continue where you left
+                        Browse problems
                       </h6>
                     </Link>
 

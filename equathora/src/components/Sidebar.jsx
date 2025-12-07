@@ -17,9 +17,11 @@ import Faq from '../assets/images/faq.svg';
 import AboutUs from '../assets/images/about.svg';
 import Premium from '../assets/images/Premium.svg';
 import Settings from '../assets/images/settings.svg';
+import { getDailyProblemId } from '../lib/utils';
 
 const Sidebar = ({ isOpen, onClose }) => {
     const [moreExpanded, setMoreExpanded] = useState(false);
+    const dailyProblemId = getDailyProblemId();
 
     function LogOut() {
         // Clear all user data
@@ -30,9 +32,9 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     const sidebarItems = [
         {
-            to: '/dashboard',
-            text: 'Dashboard',
-            description: 'Your learning hub',
+            to: `/problems/1/${dailyProblemId}`,
+            text: 'Daily Challenge',
+            description: 'Solve today\'s problem',
             image: Dashboard
         },
         {
@@ -80,12 +82,6 @@ const Sidebar = ({ isOpen, onClose }) => {
             text: 'Become a Mentor',
             description: 'Guide students',
             image: Mentoring
-        },
-        {
-            to: '/settings',
-            text: 'Settings',
-            description: 'Manage preferences',
-            image: Settings
         },
         // Premium hidden for MVP
         // {

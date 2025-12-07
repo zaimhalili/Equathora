@@ -12,21 +12,22 @@ const Profile = () => {
 
   // Mock user data - will be replaced with real data from backend
   const [userData] = useState({
-    name: 'Alex Thompson',
-    username: 'alexthompson',
+    name: 'User',
+    username: 'user1',
     title: 'Problem Solver ∑',
     status: 'Online',
     stats: {
-      problemsSolved: 127,
-      accuracy: 89,
-      currentStreak: 15,
-      reputation: 2450,
-      globalRank: 3573765,
-      easy: { solved: 6, total: 143, accuracy: 92 },
-      medium: { solved: 10, total: 189, accuracy: 85 },
-      hard: { solved: 15, total: 44, accuracy: 78 }
+      problemsSolved: 238,
+      accuracy: 57,
+      currentStreak: 0,
+      reputation: 0,
+      globalRank: 1,
+      easy: { solved: 2, total: 5, accuracy: 92 },
+      medium: { solved: 3, total: 7, accuracy: 85 },
+      hard: { solved: 1, total: 4, accuracy: 70 }
     },
-    mathTopics: ['Algebra', 'Geometry', 'Calculus I', 'Number Theory', 'Probability', 'Graphs', 'Calculus II'],
+    // mathTopics: ['Algebra', 'Geometry', 'Calculus I', 'Number Theory', 'Probability', 'Graphs', 'Calculus II'],
+    mathTopics: ['Algebra', 'Number Theory'],
     problemsSolved: ['I loved her', 'Pretty Eyes', 'Just once more', 'Where are you?', 'Smile please', 'Unreal situation', 'Obvious choice', 'Tough Decisions', 'First time', 'I make my choices']
   });
 
@@ -64,7 +65,9 @@ const Profile = () => {
                       <h6 className='text-md md:text-lg'>Rank <span className='font-bold'>{userData.stats.globalRank}</span></h6>
                     </div>
                   </div>
-                  <button type="button" className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md cursor-pointer hover:bg-[var(--dark-accent-color)] transition-all duration-300'>Edit Profile</button>
+                  <button type="button" className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md cursor-not-allowed hover:bg-[var(--dark-accent-color)] transition-all duration-300' onClick={() => {
+                    alert("This option is not possible in this version of the platform.")
+                  }}>Edit Profile</button>
                 </div>
 
                 <hr className='border-t-2 border-[var(--french-gray)]' />
@@ -82,7 +85,7 @@ const Profile = () => {
                     <div className='flex gap-3 items-center'>
                       <div className='text-[#10b981] text-2xl md:text-3xl'><FaCheckCircle /></div>
                       <div className='flex flex-col'>
-                        <p className='text-sm md:text-base text-[var(--secondary-color)]'>Solved <span className='font-bold'>{userData.stats.problemsSolved}</span></p>
+                        <p className='text-sm md:text-base text-[var(--secondary-color)]'>Solved <span className='font-bold'>{totalSolved}</span></p>
                       </div>
                     </div>
                     <div className='flex gap-3 items-center'>

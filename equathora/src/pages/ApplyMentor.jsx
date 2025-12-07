@@ -168,23 +168,27 @@ const ApplyMentor = () => {
             {/* Final CTA Section */}
             <section className='bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] text-white px-[4vw] xl:px-[12vw] py-[6vh]'>
                 <div className='w-full flex flex-col items-center text-center gap-6'>
+                    <div className='inline-block px-4 py-1.5 bg-[var(--accent-color)]/20 border border-[var(--accent-color)]/50 rounded-full text-[var(--accent-color)] text-xs font-semibold mb-2'>
+                        COMING SOON
+                    </div>
                     <h2 className='text-2xl lg:text-3xl font-bold'>
-                        Ready to Make a Difference?
+                        Mentor Applications Opening Soon
                     </h2>
                     <p className='text-base text-gray-300 max-w-xl'>
-                        Start inspiring the next generation of problem solvers today.
+                        We're finalizing the mentor platform. Join our waitlist to be notified when applications open!
                     </p>
 
-                    <Link
-                        to='/signup'
-                        className='bg-[var(--accent-color)] text-white px-8 py-3 rounded font-semibold text-sm transition-colors duration-200 hover:bg-[var(--dark-accent-color)] flex items-center justify-center gap-2 no-underline'
-                    >
-                        Start Your Application
-                        <FaArrowRight className='text-xs' />
-                    </Link>
+                    <div className='bg-white/10 border border-white/20 rounded px-8 py-4 backdrop-blur-sm'>
+                        <p className='text-sm text-white/90'>
+                            🎯 Interested in becoming a mentor?
+                        </p>
+                        <p className='text-xs text-gray-400 pt-2'>
+                            Contact us at <span className='text-[var(--accent-color)]'>mentors@equathora.com</span> to join the waitlist
+                        </p>
+                    </div>
 
                     <p className='text-xs text-gray-400'>
-                        No commitment • 2 min apply • Always free
+                        No commitment • Always free • Help shape the future of math education
                     </p>
                 </div>
             </section>
