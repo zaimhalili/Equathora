@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { FaBell, FaTrophy, FaUser, FaBars } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
-import Menu from '../assets/images/menu.svg';
 import Dropdown from './Dropdown';
 import OverflowChecker from "../pages/OverflowChecker";
 //Dropdown svgs
@@ -27,7 +26,6 @@ import Notifications from '../assets/images/notificationsDD.svg';
 import Teacher from '../assets/images/teacher.svg';
 import Achievements from '../assets/images/achievementsDD.svg';
 import Events from '../assets/images/specialEvents.svg';
-import Symbol from '../assets/logo/TransparentSymbol.png';
 import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
 
 const Navbar = () => {
@@ -166,62 +164,74 @@ const Navbar = () => {
   return (
     <>
       <OverflowChecker></OverflowChecker>
-      <header className='w-full max-w-screen bg-[var(--main-color)] h-[7.5vh] flex items-center justify-between px-[30px] lg:px-5 xl:px-0 py-0 shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
-        <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible xl:pl-[12vw]'>
-          <li>
-            <Link to="/dashboard" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
-              <img src={Logo} alt="Logo" className='w-40 object-scale-down object-center scale-110' />
-            </Link>
-          </li>
-          <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
-            <Dropdown
-              label="Learn"
-              items={learnItems} />
-          </li>
-          <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
-            <Dropdown
-              label="Discover"
-              items={discoverItems}
-            />
-          </li>
-          <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'><Dropdown
-            label="More"
-            items={moreItems} />
-          </li>
-        </ul>
+      <header className='w-full bg-[var(--main-color)] h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
+        <nav aria-label="Primary" className='w-full h-full'>
+          <div className='w-full h-full max-w-[1500px] mx-auto flex items-center justify-between px-[4vw] lg:px-[5vw] xl:px-0'>
+            <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
+              <li>
+                <Link to="/dashboard" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
+                  <img src={Logo} alt="Logo" className='w-40 object-scale-down object-center scale-110' />
+                </Link>
+              </li>
+              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                <Dropdown
+                  label="Learn"
+                  items={learnItems} />
+              </li>
+              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                <Dropdown
+                  label="Discover"
+                  items={discoverItems}
+                />
+              </li>
+              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'><Dropdown
+                label="More"
+                items={moreItems} />
+              </li>
+            </ul>
 
-        <div className='flex justify-end items-center shrink-0'>
-          <ul className='flex items-center list-none h-[7.5vh] overflow-visible xl:pr-[12vw]'>
-            <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
-              <Dropdown
-                label={<FaBell size={24} />}
-                items={notificationItems}
-                alignRight={true}
-              />
-            </li>
-            <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
-              <Dropdown
-                label={<FaTrophy size={24} />}
-                items={achievementItems}
-                alignRight={true}
-              />
-            </li>
-            <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
-              <Dropdown
-                label={<FaUser size={24} />}
-                items={profileItems}
-                alignRight={true}
-              />
-            </li>
-            <li className='pl-6 lg:pl-4'>
-              <button className='h-[7.5vh] flex items-center justify-center transition-colors duration-200 cursor-pointer bg-transparent border-none text-[var(--secondary-color)] hover:text-[var(--accent-color)]' onClick={() => setSidebarOpen(true)}>
-                <FaBars size={24} className='hidden max-md:block' />
-              </button>
-            </li>
-          </ul>
-        </div>
-
-
+            <div className='flex justify-end items-center shrink-0'>
+              <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+                  <Dropdown
+                    label={<FaBell size={24} />}
+                    ariaLabel="Notifications menu"
+                    items={notificationItems}
+                    alignRight={true}
+                  />
+                </li>
+                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                  <Dropdown
+                    label={<FaTrophy size={24} />}
+                    ariaLabel="Achievements menu"
+                    items={achievementItems}
+                    alignRight={true}
+                  />
+                </li>
+                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                  <Dropdown
+                    label={<FaUser size={24} />}
+                    ariaLabel="Profile menu"
+                    items={profileItems}
+                    alignRight={true}
+                  />
+                </li>
+                <li className='pl-6 lg:pl-4'>
+                  <button
+                    type="button"
+                    className='h-[7.5vh] flex items-center justify-center transition-colors duration-200 cursor-pointer bg-transparent border-none text-[var(--secondary-color)] hover:text-[var(--accent-color)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                    onClick={() => setSidebarOpen(true)}
+                    aria-label="Open navigation menu"
+                    aria-expanded={sidebarOpen}
+                    aria-controls="mobile-navigation"
+                  >
+                    <FaBars size={24} className='hidden max-md:block' aria-hidden="true" />
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
       </header>
 
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />

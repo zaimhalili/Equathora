@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ReputationBadge from '../components/ReputationBadge';
 import Autumn from '../assets/images/autumn.jpg';
 import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 import { getUserStats, getCompletedProblems } from '../lib/progressStorage';
@@ -15,6 +16,7 @@ const Profile = () => {
   // Get real user data from localStorage
   const userStats = getUserStats();
   const completedProblems = getCompletedProblems();
+  const accuracyBreakdown = userStats.accuracyBreakdown || { correct: 0, wrong: 0, total: 0 };
 
   // Calculate difficulty breakdowns
   const completedProblemDetails = completedProblems.map(cp => {
@@ -48,8 +50,9 @@ const Profile = () => {
     stats: {
       problemsSolved: userStats.problemsSolved,
       accuracy: userStats.accuracy,
+      accuracyDetail: accuracyBreakdown,
       currentStreak: userStats.currentStreak,
-      reputation: 0,
+      reputation: userStats.reputation || 0,
       globalRank: 1,
       easy: { solved: easySolved, total: easyProblems.length, accuracy: easyAccuracy },
       medium: { solved: mediumSolved, total: mediumProblems.length, accuracy: mediumAccuracy },
@@ -94,7 +97,7 @@ const Profile = () => {
                     </div>
                   </div>
                   <button type="button" className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md cursor-not-allowed hover:bg-[var(--dark-accent-color)] transition-all duration-300' onClick={() => {
-                    alert("This option is not possible in this version of the platform.")
+                    alert("This feature is not available yet")
                   }}>Edit Profile</button>
                 </div>
 
@@ -117,18 +120,20 @@ const Profile = () => {
                       </div>
                     </div>
                     <div className='flex gap-3 items-center'>
-                      <div className='text-yellow-500 text-2xl md:text-3xl'><FaTrophy /></div>
-                      <div className='flex flex-col'>
-                        <p className='text-sm md:text-base text-[var(--secondary-color)]'>Reputation <span className='font-bold'>{userData.stats.reputation}</span></p>
-                      </div>
-                    </div>
-                    <div className='flex gap-3 items-center'>
                       <div className='text-blue-500 text-2xl md:text-3xl'><FaChartLine /></div>
                       <div className='flex flex-col'>
                         <p className='text-sm md:text-base text-[var(--secondary-color)]'>Accuracy <span className='font-bold'>{userData.stats.accuracy}%</span></p>
+                        <span className='text-xs text-[var(--french-gray)]'>{userData.stats.accuracyDetail.correct} correct · {userData.stats.accuracyDetail.wrong} wrong</span>
                       </div>
                     </div>
                   </div>
+
+                  <ReputationBadge
+                    value={userData.stats.reputation}
+                    currentStreak={userData.stats.currentStreak}
+                    longestStreak={userStats.longestStreak}
+                    problemsSolved={totalSolved}
+                  />
                 </div>
 
                 <hr className='border-t-2 border-[var(--french-gray)]' />

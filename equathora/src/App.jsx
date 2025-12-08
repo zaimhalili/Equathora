@@ -1,41 +1,42 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import Landing from "./pages/Landing";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
-import ProblemGroup from "./pages/ProblemGroup";
-import Problem from "./pages/Problem";
-import More from "./pages/More";
-import Learn from "./pages/Learn";
-import Discover from "./pages/Discover";
-import ApplyMentor from "./pages/ApplyMentor";
-import HelpCenter from "./pages/HelpCenter";
-import SystemUpdates from "./pages/SystemUpdates";
-import PageNotFound from "./pages/PageNotFound";
-import About from "./pages/About";
-
-import LeaderboardsLayout from "./pages/Leaderboards/LeaderboardsLayout";
-import GlobalLeaderboard from "./pages/Leaderboards/GlobalLeaderboard";
-import FriendsLeaderboard from "./pages/Leaderboards/FriendsLeaderboard";
-import TopSolversLeaderboard from "./pages/Leaderboards/TopSolversLeaderboard";
-
-import Notifications from "./pages/Notifications";
-import AchievementsLayout from "./pages/Achievements/AchievementsLayout";
-import RecentAchievements from "./pages/Achievements/RecentAchievements";
-import Statistics from "./pages/Achievements/Statistics";
-import SpecialEvents from "./pages/Achievements/SpecialEvents";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
 import OverflowChecker from "./pages/OverflowChecker";
-import Resend from "./pages/Resend";
-import ForgotPassword from "./pages/ForgotPassword";
-import Premium from "./pages/Premium";
-import Recommended from "./pages/Recommended";
-import Feedback from "./pages/Feedback";
-import GetStarted from "./pages/GetStarted";
+
+const Landing = lazy(() => import("./pages/Landing"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const ProblemGroup = lazy(() => import("./pages/ProblemGroup"));
+const Problem = lazy(() => import("./pages/Problem"));
+const More = lazy(() => import("./pages/More"));
+const Learn = lazy(() => import("./pages/Learn"));
+const Discover = lazy(() => import("./pages/Discover"));
+const ApplyMentor = lazy(() => import("./pages/ApplyMentor"));
+const HelpCenter = lazy(() => import("./pages/HelpCenter"));
+const SystemUpdates = lazy(() => import("./pages/SystemUpdates"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const About = lazy(() => import("./pages/About"));
+
+const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
+const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
+const FriendsLeaderboard = lazy(() => import("./pages/Leaderboards/FriendsLeaderboard"));
+const TopSolversLeaderboard = lazy(() => import("./pages/Leaderboards/TopSolversLeaderboard"));
+
+const Notifications = lazy(() => import("./pages/Notifications"));
+const AchievementsLayout = lazy(() => import("./pages/Achievements/AchievementsLayout"));
+const RecentAchievements = lazy(() => import("./pages/Achievements/RecentAchievements"));
+const Statistics = lazy(() => import("./pages/Achievements/Statistics"));
+const SpecialEvents = lazy(() => import("./pages/Achievements/SpecialEvents"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Resend = lazy(() => import("./pages/Resend"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const Premium = lazy(() => import("./pages/Premium"));
+const Recommended = lazy(() => import("./pages/Recommended"));
+const Feedback = lazy(() => import("./pages/Feedback"));
+const GetStarted = lazy(() => import("./pages/GetStarted"));
 
 function PageTitleUpdater() {
   const location = useLocation();
@@ -75,9 +76,18 @@ function PageTitleUpdater() {
 
 export default function App() {
   useEffect(() => {
-    axios.get("/mathproblem")
+    const controller = new AbortController();
+    axios.get("/mathproblem", { signal: controller.signal })
       .then(res => console.log("Math problem:", res.data))
-      .catch(err => console.error(err));
+      .catch(err => {
+        if (err.name !== 'CanceledError') {
+          console.error(err);
+        }
+      });
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
 
@@ -86,56 +96,64 @@ export default function App() {
     <>
       <PageTitleUpdater />
       <OverflowChecker />
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/resend" element={<Resend />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
+      <Suspense fallback={
+        <div className="min-h-screen flex items-center justify-center text-[var(--secondary-color)] font-[Inter]">
+          Loading next experience...
+        </div>
+      }>
+        <div id="main-content" tabIndex={-1} className="outline-none">
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/resend" element={<Resend />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
 
-        {/* Unprotected Routes */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        {/* <Route path="/getstarted" element={<GetStarted />} /> */}
-        <Route path="/more" element={<More />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/learn" element={<Learn />} />
-        {/* <Route path="/discover" element={<Discover />} /> */}
-        {/* <Route path="/recommended" element={<Recommended />} /> */}
-        {/* <Route path="/notifications" element={<Notifications />} /> */}
-        <Route path="/applymentor" element={<ApplyMentor />} />
-        <Route path="/helpCenter" element={<HelpCenter />} />
-        <Route path="/systemupdates" element={<SystemUpdates />} />
-        <Route path="/pageNotFound" element={<PageNotFound />} />
-        {/* <Route path="/settings" element={<Settings />} /> */}
-        {/* <Route path="/premium" element={<Premium />} /> */}
-        <Route path="/feedback" element={<Feedback />} />
-
-
-
-        {/* Unprotected Nested Routes */}
-        <Route path="/leaderboards" element={<LeaderboardsLayout />}>
-          <Route path="global" element={<GlobalLeaderboard />} />
-          <Route path="friends" element={<FriendsLeaderboard />} />
-          <Route path="top-solvers" element={<TopSolversLeaderboard />} />
-        </Route>
+            {/* Unprotected Routes */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* <Route path="/getstarted" element={<GetStarted />} /> */}
+            <Route path="/more" element={<More />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/learn" element={<Learn />} />
+            {/* <Route path="/discover" element={<Discover />} /> */}
+            {/* <Route path="/recommended" element={<Recommended />} /> */}
+            {/* <Route path="/notifications" element={<Notifications />} /> */}
+            <Route path="/applymentor" element={<ApplyMentor />} />
+            <Route path="/helpCenter" element={<HelpCenter />} />
+            <Route path="/systemupdates" element={<SystemUpdates />} />
+            <Route path="/pageNotFound" element={<PageNotFound />} />
+            {/* <Route path="/settings" element={<Settings />} /> */}
+            {/* <Route path="/premium" element={<Premium />} /> */}
+            <Route path="/feedback" element={<Feedback />} />
 
 
-        <Route path="/achievements" element={<AchievementsLayout />}>
-          <Route index element={<RecentAchievements />} />
-          <Route path="recent" element={<RecentAchievements />} />
-          <Route path="stats" element={<Statistics />} />
-          <Route path="events" element={<SpecialEvents />} />
-        </Route>
 
-        {/* Dynamic Routes */}
-        <Route path="/problems/:groupId" element={<ProblemGroup />} />
-        <Route path="/problems/:groupId/:problemId" element={<Problem />} />
-        <Route path="/profile/:profile" element={<Profile />} />
+            {/* Unprotected Nested Routes */}
+            <Route path="/leaderboards" element={<LeaderboardsLayout />}>
+              <Route path="global" element={<GlobalLeaderboard />} />
+              <Route path="friends" element={<FriendsLeaderboard />} />
+              <Route path="top-solvers" element={<TopSolversLeaderboard />} />
+            </Route>
 
-        {/* 404 Route */}
-        <Route path="*" element={<Navigate to="/pageNotFound" replace />} />
-      </Routes>
+
+            <Route path="/achievements" element={<AchievementsLayout />}>
+              <Route index element={<RecentAchievements />} />
+              <Route path="recent" element={<RecentAchievements />} />
+              <Route path="stats" element={<Statistics />} />
+              <Route path="events" element={<SpecialEvents />} />
+            </Route>
+
+            {/* Dynamic Routes */}
+            <Route path="/problems/:groupId" element={<ProblemGroup />} />
+            <Route path="/problems/:groupId/:problemId" element={<Problem />} />
+            <Route path="/profile/:profile" element={<Profile />} />
+
+            {/* 404 Route */}
+            <Route path="*" element={<Navigate to="/pageNotFound" replace />} />
+          </Routes>
+        </div>
+      </Suspense>
     </>
   );
 }

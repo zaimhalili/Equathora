@@ -413,7 +413,14 @@ const Problem = () => {
                 {showSolution ? (
                   <div>
                     <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Inter,sans-serif] mb-4">Official Solution</h2>
-                    <p className="text-sm md:text-base text-[var(--secondary-color)] font-[Inter,sans-serif] leading-relaxed">{problem.correctAnswer}</p>
+                    <p className="text-sm md:text-base text-[var(--secondary-color)] font-[Inter,sans-serif] leading-relaxed whitespace-pre-line">
+                      {problem.solution || 'Solution will be available soon.'}
+                    </p>
+                    {(problem.answer || problem.acceptedAnswers?.[0]) && (
+                      <div className="mt-4 text-sm md:text-base font-semibold text-[var(--secondary-color)]">
+                        Final Answer: <span className="font-normal">{problem.answer || problem.acceptedAnswers?.[0]}</span>
+                      </div>
+                    )}
                   </div>
                 ) : showSubmissions ? (
                   <div>
