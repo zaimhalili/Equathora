@@ -91,6 +91,12 @@ const Sidebar = ({ isOpen, onClose }) => {
         //     image: Premium
         // },
         {
+            to: '/helpCenter',
+            text: 'Help Center',
+            description: 'FAQs and support',
+            image: Faq
+        },
+        {
             to: '/systemupdates',
             text: 'System Updates',
             description: 'Latest features',

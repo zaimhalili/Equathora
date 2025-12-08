@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { FaSearch, FaQuestionCircle, FaBook, FaUserGraduate, FaCog, FaChevronDown, FaChevronUp, FaLightbulb, FaShieldAlt, FaEnvelope, FaRocket, FaStar, FaHeart, FaFire, FaClock, FaTrophy } from 'react-icons/fa';
+import { FaQuestionCircle, FaBook, FaUserGraduate, FaCog, FaChevronDown, FaChevronUp, FaLightbulb, FaShieldAlt, FaEnvelope, FaRocket, FaStar, FaHeart, FaFire, FaClock, FaTrophy } from 'react-icons/fa';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 
 const HelpCenter = () => {
-    const [searchQuery, setSearchQuery] = useState('');
     const [openFaq, setOpenFaq] = useState(null);
     const [activeCategory, setActiveCategory] = useState('all');
 
@@ -89,17 +88,6 @@ const HelpCenter = () => {
         setOpenFaq(openFaq === index ? null : index);
     };
 
-    // More flexible search - splits query into words and checks if any word matches
-    const filteredFaqs = faqs.filter(faq => {
-        if (!searchQuery.trim()) return true;
-        const words = searchQuery.toLowerCase().split(' ').filter(w => w.length > 2);
-        if (words.length === 0) return faq.question.toLowerCase().includes(searchQuery.toLowerCase());
-        return words.some(word =>
-            faq.question.toLowerCase().includes(word) ||
-            faq.answer.toLowerCase().includes(word)
-        );
-    });
-
     return (
         <>
             <FeedbackBanner />
@@ -130,17 +118,6 @@ const HelpCenter = () => {
                                 <p className="text-base text-gray-600">
                                     We're here to help you succeed! Find answers, tutorials, and support.
                                 </p>
-
-                                <div className="w-full relative">
-                                    <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-                                    <input
-                                        type="search"
-                                        placeholder="Search for anything... timer, hints, badges, problems..."
-                                        className="w-full pl-12 pr-4 py-3 rounded-md text-[var(--secondary-color)] text-base border-2 border-gray-200 focus:outline-none focus:border-[var(--accent-color)] shadow-[0_10px_10px_rgba(141,153,174,0.3)]"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                </div>
                             </div>
 
                             {/* Right: Illustration */}
@@ -218,60 +195,40 @@ const HelpCenter = () => {
                         </div>
 
                         <div className="w-full flex flex-col gap-3">
-                            {filteredFaqs.length > 0 ? (
-                                filteredFaqs.map((faq, index) => (
-                                    <div
-                                        key={index}
-                                        className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
+                            {faqs.map((faq, index) => (
+                                <div
+                                    key={index}
+                                    className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
+                                >
+                                    <button
+                                        className="w-full p-4 flex items-start gap-3 text-left"
+                                        onClick={() => toggleFaq(index)}
                                     >
-                                        <button
-                                            className="w-full p-4 flex items-start gap-3 text-left"
-                                            onClick={() => toggleFaq(index)}
-                                        >
-                                            <div className={`${faq.color} text-xl flex-shrink-0 pt-1`}>
-                                                {faq.icon}
-                                            </div>
-                                            <div className="flex-1 flex items-center justify-between gap-3">
-                                                <span className="font-semibold text-[var(--secondary-color)] text-base">
-                                                    {faq.question}
-                                                </span>
-                                                <div className="flex-shrink-0">
-                                                    {openFaq === index ?
-                                                        <FaChevronUp className="text-[var(--accent-color)] text-base" /> :
-                                                        <FaChevronDown className="text-gray-400 text-base" />
-                                                    }
-                                                </div>
-                                            </div>
-                                        </button>
-                                        {openFaq === index && (
-                                            <div className="px-4 pb-4 pl-[60px]">
-                                                <div className="border-l-4 border-gray-200 pl-3">
-                                                    <p className="text-gray-700 leading-relaxed text-sm">{faq.answer}</p>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-8 flex flex-col items-center text-center gap-3">
-                                    <div className="text-5xl">🔍</div>
-                                    <div>
-                                        <p className="text-lg font-bold text-[var(--secondary-color)] pb-2">No results found</p>
-                                        <p className="text-gray-600 text-sm pb-3">Try searching with different keywords:</p>
-                                        <div className="flex flex-wrap gap-2 justify-center">
-                                            {['problem', 'hint', 'timer', 'leaderboard', 'favorite', 'badge'].map(keyword => (
-                                                <button
-                                                    key={keyword}
-                                                    onClick={() => setSearchQuery(keyword)}
-                                                    className="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-md text-sm font-semibold"
-                                                >
-                                                    {keyword}
-                                                </button>
-                                            ))}
+                                        <div className={`${faq.color} text-xl flex-shrink-0 pt-1`}>
+                                            {faq.icon}
                                         </div>
-                                    </div>
+                                        <div className="flex-1 flex items-center justify-between gap-3">
+                                            <span className="font-semibold text-[var(--secondary-color)] text-base">
+                                                {faq.question}
+                                            </span>
+                                            <div className="flex-shrink-0">
+                                                {openFaq === index ?
+                                                    <FaChevronUp className="text-[var(--accent-color)] text-base" /> :
+                                                    <FaChevronDown className="text-gray-400 text-base" />
+                                                }
+                                            </div>
+                                        </div>
+                                    </button>
+                                    {openFaq === index && (
+                                        <div className="px-4 pb-4 pl-[60px]">
+                                            <div className="border-l-4 border-gray-200 pl-3">
+                                                <p className="text-gray-700 leading-relaxed text-sm">{faq.answer}</p>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            ))
+                            }
                         </div>
                     </div>
                 </section>

@@ -1,35 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Autumn from '../assets/images/autumn.jpg';
 import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
+import { getUserStats, getCompletedProblems } from '../lib/progressStorage';
+import { problems as allProblems } from '../data/problems';
 
 const Profile = () => {
   const { profile } = useParams();
 
   const [showAccuracy, setShowAccuracy] = useState(false);
 
-  // Mock user data - will be replaced with real data from backend
-  const [userData] = useState({
-    name: 'User',
-    username: 'user1',
+  // Get real user data from localStorage
+  const userStats = getUserStats();
+  const completedProblems = getCompletedProblems();
+
+  // Calculate difficulty breakdowns
+  const completedProblemDetails = completedProblems.map(cp => {
+    const problem = allProblems.find(p => p.id === cp.problemId);
+    return { ...cp, ...problem };
+  });
+
+  const easyProblems = allProblems.filter(p => p.difficulty === 'Easy');
+  const mediumProblems = allProblems.filter(p => p.difficulty === 'Medium');
+  const hardProblems = allProblems.filter(p => p.difficulty === 'Hard');
+
+  const easySolved = completedProblemDetails.filter(p => p.difficulty === 'Easy').length;
+  const mediumSolved = completedProblemDetails.filter(p => p.difficulty === 'Medium').length;
+  const hardSolved = completedProblemDetails.filter(p => p.difficulty === 'Hard').length;
+
+  const easyAccuracy = easySolved > 0
+    ? Math.round(completedProblemDetails.filter(p => p.difficulty === 'Easy').reduce((sum, p) => sum + p.score, 0) / easySolved)
+    : 0;
+  const mediumAccuracy = mediumSolved > 0
+    ? Math.round(completedProblemDetails.filter(p => p.difficulty === 'Medium').reduce((sum, p) => sum + p.score, 0) / mediumSolved)
+    : 0;
+  const hardAccuracy = hardSolved > 0
+    ? Math.round(completedProblemDetails.filter(p => p.difficulty === 'Hard').reduce((sum, p) => sum + p.score, 0) / hardSolved)
+    : 0;
+
+  const userData = {
+    name: userStats.username || 'Student',
+    username: userStats.username || 'student',
     title: 'Problem Solver ∑',
     status: 'Online',
     stats: {
-      problemsSolved: 238,
-      accuracy: 57,
-      currentStreak: 0,
+      problemsSolved: userStats.problemsSolved,
+      accuracy: userStats.accuracy,
+      currentStreak: userStats.currentStreak,
       reputation: 0,
       globalRank: 1,
-      easy: { solved: 2, total: 5, accuracy: 92 },
-      medium: { solved: 3, total: 7, accuracy: 85 },
-      hard: { solved: 1, total: 4, accuracy: 70 }
+      easy: { solved: easySolved, total: easyProblems.length, accuracy: easyAccuracy },
+      medium: { solved: mediumSolved, total: mediumProblems.length, accuracy: mediumAccuracy },
+      hard: { solved: hardSolved, total: hardProblems.length, accuracy: hardAccuracy }
     },
-    // mathTopics: ['Algebra', 'Geometry', 'Calculus I', 'Number Theory', 'Probability', 'Graphs', 'Calculus II'],
-    mathTopics: ['Algebra', 'Number Theory'],
-    problemsSolved: ['I loved her', 'Pretty Eyes', 'Just once more', 'Where are you?', 'Smile please', 'Unreal situation', 'Obvious choice', 'Tough Decisions', 'First time', 'I make my choices']
-  });
+    mathTopics: [...new Set(completedProblemDetails.map(p => p.topic).filter(Boolean))],
+    problemsSolved: completedProblemDetails.slice(-10).reverse().map(p => p.title)
+  };
 
   const totalProblems = userData.stats.easy.total + userData.stats.medium.total + userData.stats.hard.total;
   const totalSolved = userData.stats.easy.solved + userData.stats.medium.solved + userData.stats.hard.solved;

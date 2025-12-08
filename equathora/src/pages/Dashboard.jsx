@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
+import BetaBanner from '../components/BetaBanner.jsx';
 import Teacher from '../assets/images/teacher.svg';
 import YourTrack from '../components/YourTrack.jsx';
 import Books from '../assets/images/learningBooks.svg';
@@ -19,6 +20,7 @@ const Dashboard = () => {
 
   return (
     <>
+      <BetaBanner />
       <FeedbackBanner />
       <main className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] min-h-screen ">
         <header>

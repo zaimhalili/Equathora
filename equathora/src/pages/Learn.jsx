@@ -9,19 +9,21 @@ import { FaSearch } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { problems as allProblems } from '../data/problems';
+import { isProblemCompleted, isFavorite } from '../lib/progressStorage';
 
 
 const Learn = () => {
   const { groupId } = useParams();
 
-  // Mock data
-  const problems = [
-    { id: 1, title: "Two Sum", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: true, premium: false, inProgress: false, favourite: false },
-    { id: 2, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false, favourite: false },
-    { id: 3, title: "Reverse String", groupId: 1, difficulty: "Hard", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false, favourite: false },
-    { id: 4, title: "Reverse String", groupId: 1, difficulty: "Medium", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: true, premium: false, inProgress: false, favourite: true },
-    { id: 5, title: "Reverse String", groupId: 1, difficulty: "Easy", description: "lorem lorem loremlorem loremlorem lorem lorem lorem lorem", completed: false, premium: false, inProgress: false, favourite: true },
-  ];
+  // Use real problems data with progress tracking
+  const problems = allProblems.map(problem => ({
+    ...problem,
+    completed: isProblemCompleted(problem.id),
+    favourite: isFavorite(problem.id),
+    inProgress: false // Can be enhanced later with partial solutions
+  }));
+
   const location = useLocation();
   const [filter, setFilter] = useState(location.state?.filter || 'all');
   const [searchQuery, setSearchQuery] = useState('');
