@@ -13,6 +13,7 @@ import Learn from "./pages/Learn";
 import Discover from "./pages/Discover";
 import ApplyMentor from "./pages/ApplyMentor";
 import HelpCenter from "./pages/HelpCenter";
+import SystemUpdates from "./pages/SystemUpdates";
 import PageNotFound from "./pages/PageNotFound";
 import About from "./pages/About";
 
@@ -48,6 +49,7 @@ function PageTitleUpdater() {
       '/achievements': 'Your Progress - Equathora',
       '/about': 'Our Story - Equathora',
       '/helpCenter': 'Help Center - Equathora',
+      '/systemupdates': 'System Updates - Equathora',
       '/feedback': 'Share Feedback - Equathora',
       '/applymentor': 'Become a Mentor - Equathora',
       '/leaderboards': 'Top Solvers - Equathora',
@@ -103,6 +105,7 @@ export default function App() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/applymentor" element={<ApplyMentor />} />
         <Route path="/helpCenter" element={<HelpCenter />} />
+        <Route path="/systemupdates" element={<SystemUpdates />} />
         <Route path="/pageNotFound" element={<PageNotFound />} />
         {/* <Route path="/settings" element={<Settings />} /> */}
         {/* <Route path="/premium" element={<Premium />} /> */}

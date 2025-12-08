@@ -89,12 +89,6 @@ const Navbar = () => {
       image: Mentoring
     },
     {
-      to: '/helpCenter',
-      text: "Help Center",
-      description: "FAQs and platform support.",
-      image: Faq
-    },
-    {
       to: "/about",
       text: "About equathora",
       description: "Learn about its mission and vision.",
@@ -118,8 +112,8 @@ const Navbar = () => {
       notificationsNo: "1"
     },
     {
-      to: '/notifications',
-      text: "System Update",
+      to: '/systemupdates',
+      text: "System Updates",
       description: "Check out our new features",
       image: Updates,
       notificationsNo: "3"
