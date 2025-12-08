@@ -12,10 +12,11 @@ import Leaderboards from '../assets/images/leaderboards.svg'
 import { Link } from 'react-router-dom';
 import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
-import { getDailyProblemId } from '../lib/utils';
+import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
 
 const Dashboard = () => {
   const dailyProblemId = getDailyProblemId();
+  const dailyGroupId = getGroupIdForProblem(dailyProblemId);
   let username = "Friend";
 
   return (
@@ -48,7 +49,7 @@ const Dashboard = () => {
                   {/* Blocks - Squares */}
                   <div className="w-full pt-2 gap-0.5 lg:gap-[2px] flex flex-wrap justify-center sm:justify-start">
                     <Link
-                      to={`/problems/1/${dailyProblemId}`}
+                      to={`/problems/${dailyGroupId}/${dailyProblemId}`}
                       className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
                     >
                       <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />

@@ -96,19 +96,19 @@ export default function App() {
 
         {/* Unprotected Routes */}
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/getstarted" element={<GetStarted />} />
+        {/* <Route path="/getstarted" element={<GetStarted />} /> */}
         <Route path="/more" element={<More />} />
         <Route path="/about" element={<About />} />
         <Route path="/learn" element={<Learn />} />
-        <Route path="/discover" element={<Discover />} />
-        <Route path="/recommended" element={<Recommended />} />
-        <Route path="/notifications" element={<Notifications />} />
+        {/* <Route path="/discover" element={<Discover />} /> */}
+        {/* <Route path="/recommended" element={<Recommended />} /> */}
+        {/* <Route path="/notifications" element={<Notifications />} /> */}
         <Route path="/applymentor" element={<ApplyMentor />} />
         <Route path="/helpCenter" element={<HelpCenter />} />
         <Route path="/systemupdates" element={<SystemUpdates />} />
         <Route path="/pageNotFound" element={<PageNotFound />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/premium" element={<Premium />} />
+        {/* <Route path="/settings" element={<Settings />} /> */}
+        {/* <Route path="/premium" element={<Premium />} /> */}
         <Route path="/feedback" element={<Feedback />} />
 
 

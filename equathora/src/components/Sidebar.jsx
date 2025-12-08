@@ -17,11 +17,12 @@ import Faq from '../assets/images/faq.svg';
 import AboutUs from '../assets/images/about.svg';
 import Premium from '../assets/images/Premium.svg';
 import Settings from '../assets/images/settings.svg';
-import { getDailyProblemId } from '../lib/utils';
+import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
 
 const Sidebar = ({ isOpen, onClose }) => {
     const [moreExpanded, setMoreExpanded] = useState(false);
     const dailyProblemId = getDailyProblemId();
+    const dailyGroupId = getGroupIdForProblem(dailyProblemId);
 
     function LogOut() {
         // Clear all user data
@@ -32,7 +33,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     const sidebarItems = [
         {
-            to: `/problems/1/${dailyProblemId}`,
+            to: `/problems/${dailyGroupId}/${dailyProblemId}`,
             text: 'Daily Challenge',
             description: 'Solve today\'s problem',
             image: Dashboard

@@ -28,16 +28,17 @@ import Teacher from '../assets/images/teacher.svg';
 import Achievements from '../assets/images/achievementsDD.svg';
 import Events from '../assets/images/specialEvents.svg';
 import Symbol from '../assets/logo/TransparentSymbol.png';
-import { getDailyProblemId } from '../lib/utils';
+import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
 
 const Navbar = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const dailyProblemId = getDailyProblemId();
+  const dailyGroupId = getGroupIdForProblem(dailyProblemId);
 
   const learnItems = [
     {
-      to: `/problems/1/${dailyProblemId}`,
+      to: `/problems/${dailyGroupId}/${dailyProblemId}`,
       text: "Daily Problem",
       description: "Solve a fresh daily challenge.",
       image: Daily

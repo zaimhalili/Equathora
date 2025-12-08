@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { problems } from '../data/problems';
 
 export function cn(...inputs) {
     return twMerge(clsx(inputs));
@@ -11,7 +12,7 @@ export function cn(...inputs) {
  * @returns {number} Problem ID (1-indexed)
  */
 export function getDailyProblemId() {
-    const TOTAL_PROBLEMS = 5; // Update this as you add more problems
+    const TOTAL_PROBLEMS = 30; // Total number of problems available
     const STORAGE_KEY = 'equathora_daily_problems';
 
     // Get today's date string
@@ -67,4 +68,15 @@ export function getDailyProblemId() {
     }));
 
     return selectedProblemId;
+}
+
+/**
+ * Maps problem IDs to their corresponding group IDs
+ * Looks up the groupId directly from the problem data
+ * @param {number} problemId - The problem ID (1-30)
+ * @returns {number} The group ID (1-4)
+ */
+export function getGroupIdForProblem(problemId) {
+    const problem = problems.find(p => p.id === problemId);
+    return problem ? problem.groupId : 1; // Default to group 1 if not found
 }

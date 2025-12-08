@@ -12,12 +12,18 @@ import {
   SubmissionDetailModal
 } from '../components/ProblemModals';
 import { FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaRegStar } from 'react-icons/fa';
+import { getProblemById, problems as allProblems } from '../data/problems';
+import { isProblemCompleted, isFavorite as checkFavorite, toggleFavorite, getProblemScore } from '../lib/progressStorage';
+import { validateAnswer } from '../lib/answerValidation';
 
 const Problem = () => {
   const { groupId, problemId } = useParams();
+  // Get real problem data
+  const problem = getProblemById(parseInt(problemId));
+
   const [openHints, setOpenHints] = useState({});
   const [showAnswer, setShowAnswer] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(checkFavorite(parseInt(problemId)));
   const [showDescription, setShowDescription] = useState(true);
   const [showSolutionPopup, setShowSolutionPopup] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
@@ -119,32 +125,36 @@ const Problem = () => {
     return newSubmission;
   };
 
-  const problem = {
-    id: parseInt(problemId),
-    groupId: parseInt(groupId),
-    title: "Find the 44th element of the sequence",
-    difficulty: "Easy",
-    description: "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.",
-    examples: [
-      {
-        input: "n = 44",
-        output: "9",
-        explanation: "The pattern shows each number n appearing n times"
-      }
-    ],
-    hints: [
-      "Notice the pattern: number 1 appears 1 time, number 2 appears 2 times, etc.",
-      "Can you find a mathematical formula for the position where number n first appears?",
-      "Think about triangular numbers!"
-    ],
-    similarQuestions: [
-      { id: 1, groupId: 1, title: "Fibonacci Sequence Pattern", difficulty: "Easy" },
-      { id: 3, groupId: 1, title: "Arithmetic Progression Sum", difficulty: "Medium" },
-      { id: 7, groupId: 2, title: "Geometric Series Analysis", difficulty: "Hard" }
-    ],
-    correctAnswer: "The answer is 9. The sequence follows the pattern where each number n appears n times. By using the formula for triangular numbers T(n) = n(n+1)/2, we can find that the 44th position falls within the range where 9 appears (positions 37-45).",
-    completed: false,
-    premium: false
+  // Handle problem not found
+  if (!problem) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Problem Not Found</h2>
+          <Link to="/learn" className="text-[var(--accent-color)] hover:underline">
+            Return to Learn Page
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Generate similar questions from the same group
+  const similarQuestions = allProblems
+    .filter(p => p.groupId === problem.groupId && p.id !== problem.id)
+    .slice(0, 3)
+    .map(p => ({
+      id: p.id,
+      groupId: p.groupId,
+      title: p.title,
+      difficulty: p.difficulty
+    }));
+
+  const examples = Array.isArray(problem.examples) ? problem.examples : [];
+
+  const handleFavoriteToggle = () => {
+    toggleFavorite(parseInt(problemId));
+    setIsFavorite(!isFavorite);
   };
 
 
@@ -195,7 +205,7 @@ const Problem = () => {
             </button>
             <button
               className={`bg-transparent border-2 text-sm px-3 py-1.5 md:py-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] flex items-center justify-center h-[38px] md:h-[42px] ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
-              onClick={() => setIsFavorite(!isFavorite)}
+              onClick={handleFavoriteToggle}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
               {isFavorite ? <FaStar className="text-sm md:text-base" /> : <FaRegStar className="text-sm md:text-base" />}
@@ -382,29 +392,31 @@ const Problem = () => {
                     </div>
 
                     {/* Examples */}
-                    <div>
-                      <h3 className="text-sm md:text-base pb-2 md:pb-3 text-[var(--secondary-color)] font-bold font-[Inter,sans-serif]">Examples</h3>
-                      {problem.examples.map((example, index) => (
-                        <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/40 rounded-lg mb-2 md:mb-3 last:mb-0">
-                          <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 font-[Inter,sans-serif]">Example {index + 1}:</div>
-                          <div className="flex flex-col gap-1.5 md:gap-2">
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
-                              <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Input:</span>
-                              <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.input}</code>
+                    {examples.length > 0 && (
+                      <div>
+                        <h3 className="text-sm md:text-base pb-2 md:pb-3 text-[var(--secondary-color)] font-bold font-[Inter,sans-serif]">Examples</h3>
+                        {examples.map((example, index) => (
+                          <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/40 rounded-lg mb-2 md:mb-3 last:mb-0">
+                            <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 font-[Inter,sans-serif]">Example {index + 1}:</div>
+                            <div className="flex flex-col gap-1.5 md:gap-2">
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
+                                <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Input:</span>
+                                <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.input}</code>
+                              </div>
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
+                                <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Output:</span>
+                                <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.output}</code>
+                              </div>
                             </div>
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Inter,sans-serif]">
-                              <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Output:</span>
-                              <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.output}</code>
-                            </div>
+                            {example.explanation && (
+                              <div className="mt-2 pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed font-[Inter,sans-serif]">
+                                {example.explanation}
+                              </div>
+                            )}
                           </div>
-                          {example.explanation && (
-                            <div className="mt-2 pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed font-[Inter,sans-serif]">
-                              {example.explanation}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                        ))}
+                      </div>
+                    )}
 
                     {/* Hints Section - Collapsible like LeetCode */}
                     <div>
@@ -438,7 +450,7 @@ const Problem = () => {
                       )}
 
                       {/* Similar Questions Section */}
-                      {problem.similarQuestions && problem.similarQuestions.length > 0 && (
+                      {similarQuestions && similarQuestions.length > 0 && (
                         <div className="">
                           <div className="flex flex-col">
                             <div className="border-t border-[var(--french-gray)] overflow-hidden">
@@ -454,10 +466,10 @@ const Problem = () => {
                               </button>
                               <div className={`transition-all duration-300 ease-in-out ${openHints['similar'] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                                 <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--french-gray)] flex flex-col">
-                                  {problem.similarQuestions.map((question, index) => (
+                                  {similarQuestions.map((question, index) => (
                                     <Link
                                       key={index}
-                                      to={`/learn/${question.groupId}/${question.id}`}
+                                      to={`/problems/${question.groupId}/${question.id}`}
                                       className="flex items-center justify-between p-2 md:p-3 rounded-lg group"
                                     >
                                       <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Inter] group-hover:text-[var(--dark-accent-color)]">
