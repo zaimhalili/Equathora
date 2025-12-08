@@ -1,5 +1,5 @@
 // ProblemDetail.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LilArrow from '../assets/images/lilArrow.svg';
@@ -13,21 +13,82 @@ import {
 } from '../components/ProblemModals';
 import { FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaRegStar } from 'react-icons/fa';
 import { getProblemById, problems as allProblems } from '../data/problems';
-import { isProblemCompleted, isFavorite as checkFavorite, toggleFavorite, getProblemScore } from '../lib/progressStorage';
+import {
+  isProblemCompleted,
+  isFavorite as checkFavorite,
+  toggleFavorite,
+  getSubmissions,
+  addSubmission,
+  markProblemCompleted,
+  updateStreak,
+  recordProblemStats
+} from '../lib/progressStorage';
 import { validateAnswer } from '../lib/answerValidation';
+
+const formatDurationLabel = (seconds = 0) => {
+  const safeSeconds = Math.max(0, Math.round(seconds));
+  const minutes = Math.floor(safeSeconds / 60);
+  const remainingSeconds = safeSeconds % 60;
+  if (minutes <= 0) {
+    return `${remainingSeconds}s`;
+  }
+  return `${minutes}m ${remainingSeconds}s`;
+};
+
+const sanitizeLatexAnswer = (latex = '') => latex
+  .replace(/\\/g, ' ')
+  .replace(/\text\\?\{([^}]*)\}/g, '$1')
+  .replace(/[{}]/g, ' ')
+  .replace(/\,/g, '')
+  .replace(/\times/g, '*')
+  .replace(/\frac\{([^}]*)\}\{([^}]*)\}/g, '($1)/($2)')
+  .replace(/\sqrt\{([^}]*)\}/g, 'sqrt($1)')
+  .replace(/\therefore/g, '')
+  .replace(/\text/g, '')
+  .replace(/\left|\right/g, '')
+  .replace(/\,/g, '')
+  .replace(/\ /g, ' ')
+  .replace(/\=/g, '=')
+  .trim();
+
+const hydrateStoredSubmissions = (records = []) => {
+  const chronological = [...records].sort((a, b) => {
+    const aTime = new Date(a.timestamp || 0).getTime();
+    const bTime = new Date(b.timestamp || 0).getTime();
+    return aTime - bTime;
+  });
+
+  const hydrated = chronological.map((record, index) => {
+    const rawSeconds = record.metadata?.timeSpent || record.timeSpent || 0;
+    return {
+      ...record,
+      id: record.id || `${record.problemId || 'problem'}-${record.timestamp || index}`,
+      steps: record.steps || [],
+      status: record.status || (record.isCorrect ? 'accepted' : 'wrong'),
+      timestamp: record.timestamp || new Date().toISOString(),
+      metadata: {
+        attempts: record.metadata?.attempts || index + 1,
+        hintsUsed: record.metadata?.hintsUsed || 0,
+        timeSpent: rawSeconds,
+        timeSpentLabel: record.metadata?.timeSpentLabel || formatDurationLabel(rawSeconds)
+      }
+    };
+  });
+
+  return hydrated.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+};
 
 const Problem = () => {
   const { groupId, problemId } = useParams();
+  const numericProblemId = parseInt(problemId, 10);
   // Get real problem data
-  const problem = getProblemById(parseInt(problemId));
+  const problem = getProblemById(numericProblemId);
 
   const [openHints, setOpenHints] = useState({});
-  const [showAnswer, setShowAnswer] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(checkFavorite(parseInt(problemId)));
+  const [isFavorite, setIsFavorite] = useState(checkFavorite(numericProblemId));
   const [showDescription, setShowDescription] = useState(true);
   const [showSolutionPopup, setShowSolutionPopup] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
-  const [solution, setSolution] = useState('');
   const [showTop, setShowTop] = useState(false);
   const [descriptionCollapsed, setDescriptionCollapsed] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -40,62 +101,21 @@ const Problem = () => {
   const [hintsOpened, setHintsOpened] = useState([]);
   const [submissions, setSubmissions] = useState([]);
   const [solutionViewed, setSolutionViewed] = useState(false);
+  const [submissionFeedback, setSubmissionFeedback] = useState(null);
+  const sessionStartRef = useRef(Date.now());
 
-  // Initialize with mock submissions - In production, this would come from backend/localStorage
-  React.useEffect(() => {
-    const mockSubmissions = [
-      {
-        id: 1,
-        status: 'accepted',
-        timestamp: '2 days ago',
-        date: 'Dec 1, 2025 at 3:42 PM',
-        steps: [
-          { latex: 'T(n) = \\frac{n(n+1)}{2}' },
-          { latex: 'T(8) = \\frac{8 \\times 9}{2} = 36' },
-          { latex: 'T(9) = \\frac{9 \\times 10}{2} = 45' },
-          { latex: '36 < 44 \\leq 45' },
-          { latex: '\\therefore \\text{The answer is } 9' }
-        ],
-        metadata: {
-          timeSpent: '12m 34s',
-          attempts: 3,
-          hintsUsed: 1
-        }
-      },
-      {
-        id: 2,
-        status: 'wrong',
-        timestamp: '3 days ago',
-        date: 'Nov 30, 2025 at 10:15 AM',
-        steps: [
-          { latex: 'n = 44' },
-          { latex: '\\sqrt{44} \\approx 6.63' },
-          { latex: '\\therefore \\text{The answer is } 7' }
-        ],
-        metadata: {
-          timeSpent: '5m 12s',
-          attempts: 2,
-          hintsUsed: 0
-        }
-      },
-      {
-        id: 3,
-        status: 'wrong',
-        timestamp: '3 days ago',
-        date: 'Nov 30, 2025 at 9:58 AM',
-        steps: [
-          { latex: '44 \\div 5 = 8.8' },
-          { latex: '\\text{Round up to } 9' }
-        ],
-        metadata: {
-          timeSpent: '3m 45s',
-          attempts: 1,
-          hintsUsed: 0
-        }
-      }
-    ];
-    setSubmissions(mockSubmissions);
-  }, []);
+  const isCompleted = problem ? isProblemCompleted(problem.id) : false;
+
+  useEffect(() => {
+    if (!problem) return;
+    const existing = hydrateStoredSubmissions(getSubmissions(problem.id));
+    setSubmissions(existing);
+  }, [problem, problemId]);
+
+  useEffect(() => {
+    sessionStartRef.current = Date.now();
+    setSubmissionFeedback(null);
+  }, [problemId]);
 
   const toggleHint = (index) => {
     setOpenHints(prev => ({
@@ -109,20 +129,74 @@ const Problem = () => {
   };
 
   const handleNewSubmission = (steps) => {
-    const newSubmission = {
-      id: Date.now(),
-      status: 'pending',
-      timestamp: 'Just now',
-      date: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }),
-      steps: steps,
-      metadata: {
-        timeSpent: '0m 0s', // Will be calculated by Timer
-        attempts: submissions.length + 1,
-        hintsUsed: hintsOpened.length
-      }
+    if (!problem) {
+      return { success: false, message: 'Problem not found.' };
+    }
+
+    const safeSteps = steps || [];
+    const lastStep = safeSteps[safeSteps.length - 1];
+    const preparedAnswer = sanitizeLatexAnswer(lastStep?.latex || '');
+    const finalAnswer = preparedAnswer || (lastStep?.latex || '');
+
+    if (!finalAnswer.trim()) {
+      const feedback = 'Add your final answer in the last step before submitting.';
+      setSubmissionFeedback({ message: feedback, isCorrect: false });
+      return { success: false, message: feedback };
+    }
+
+    const validation = validateAnswer(finalAnswer, problem);
+    const timeSpentSeconds = Math.max(1, Math.round((Date.now() - sessionStartRef.current) / 1000));
+    const attemptNumber = submissions.length + 1;
+
+    const entry = addSubmission(
+      problem.id,
+      finalAnswer,
+      validation.isCorrect,
+      validation.score,
+      timeSpentSeconds,
+      safeSteps,
+      attemptNumber,
+      hintsOpened.length,
+      { feedback: validation.feedback }
+    );
+    entry.metadata = {
+      ...(entry.metadata || {}),
+      attempts: entry.metadata?.attempts || attemptNumber,
+      hintsUsed: entry.metadata?.hintsUsed || hintsOpened.length,
+      timeSpent: entry.metadata?.timeSpent || timeSpentSeconds,
+      timeSpentLabel: entry.metadata?.timeSpentLabel || formatDurationLabel(timeSpentSeconds)
     };
-    setSubmissions(prev => [newSubmission, ...prev]);
-    return newSubmission;
+
+    setSubmissions(prev => [entry, ...prev]);
+    setSubmissionFeedback({ message: validation.feedback, isCorrect: validation.isCorrect });
+    setShowSubmissions(true);
+    setShowDescription(false);
+    setShowTop(false);
+    if (descriptionCollapsed) {
+      setDescriptionCollapsed(false);
+    }
+
+    if (validation.isCorrect) {
+      setShowSolution(true);
+      setShowSolutionPopup(false);
+      setSolutionViewed(true);
+      markProblemCompleted(problem.id, validation.score, timeSpentSeconds);
+    }
+
+    const streakData = updateStreak();
+    recordProblemStats(problem, {
+      isCorrect: validation.isCorrect,
+      timeSpentSeconds,
+      timestamp: entry.timestamp,
+      attemptNumber,
+      streakData,
+      hintsUsed: hintsOpened.length
+    });
+
+    return {
+      success: validation.isCorrect,
+      message: validation.feedback
+    };
   };
 
   // Handle problem not found
@@ -153,13 +227,8 @@ const Problem = () => {
   const examples = Array.isArray(problem.examples) ? problem.examples : [];
 
   const handleFavoriteToggle = () => {
-    toggleFavorite(parseInt(problemId));
+    toggleFavorite(problem.id);
     setIsFavorite(!isFavorite);
-  };
-
-
-  const handleSubmit = () => {
-    alert('Solution submitted!');
   };
 
   const handleReport = () => {
@@ -329,11 +398,17 @@ const Problem = () => {
                     ) : (
                       <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-gray-600">Free</span>
                     )}
-                    {problem.completed && (
+                    {isCompleted && (
                       <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
                     )}
                   </div>
                 </div>
+
+                {submissionFeedback && (
+                  <div className={`rounded-lg px-3 py-2 border text-xs md:text-sm font-medium ${submissionFeedback.isCorrect ? 'bg-green-500/10 border-green-500/40 text-green-600' : 'bg-red-500/10 border-red-500/40 text-red-600'}`}>
+                    {submissionFeedback.message}
+                  </div>
+                )}
 
                 {showSolution ? (
                   <div>
@@ -370,10 +445,20 @@ const Problem = () => {
                               <span className="text-[10px] text-gray-500 hidden sm:inline">{submission.steps.length} steps</span>
                             </div>
                             <div className="flex items-center gap-3 text-[10px] text-gray-500 flex-shrink-0">
-                              {submission.metadata.hintsUsed !== undefined && <span>{submission.metadata.hintsUsed} hints</span>}
+                              {typeof submission.metadata?.hintsUsed === 'number' && (
+                                <span>{submission.metadata.hintsUsed} hints</span>
+                              )}
+                              {submission.metadata?.timeSpentLabel && (
+                                <span>{submission.metadata.timeSpentLabel}</span>
+                              )}
                               <div className="flex items-center gap-1">
                                 <FaClock className="text-[8px]" />
-                                <span>{submission.timestamp}</span>
+                                <span>{new Date(submission.timestamp).toLocaleString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  hour: 'numeric',
+                                  minute: '2-digit'
+                                })}</span>
                               </div>
                             </div>
                           </div>

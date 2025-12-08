@@ -6,11 +6,18 @@ const Statistics = () => {
   // Load data from localStorage - starts at zero for new users
   const progress = JSON.parse(localStorage.getItem('equathoraProgress') || '{}');
 
+  const correctAnswers = progress.correctAnswers || 0;
+  const wrongSubmissions = progress.wrongSubmissions || 0;
+  const totalAttempts = progress.totalAttempts || correctAnswers + wrongSubmissions;
+  const accuracyDenominator = correctAnswers + wrongSubmissions;
+  const accuracyRate = accuracyDenominator > 0 ? Math.round((correctAnswers / accuracyDenominator) * 100) : 0;
+
   const stats = {
     totalProblems: progress.totalProblems || 30,
     solvedProblems: progress.solvedProblems?.length || 0,
-    correctAnswers: progress.correctAnswers || 0,
-    totalAttempts: progress.totalAttempts || 0,
+    correctAnswers,
+    wrongSubmissions,
+    totalAttempts,
     streakDays: progress.streakDays || 0,
     totalTimeSpent: progress.totalTimeSpent || "0h 0m",
     averageTime: progress.averageTime || "0m 0s",
@@ -22,8 +29,6 @@ const Statistics = () => {
       hard: progress.difficultyBreakdown?.hard || 0
     }
   };
-
-  const accuracyRate = Math.round((stats.correctAnswers / stats.totalAttempts) * 100);
   const completionRate = Math.round((stats.solvedProblems / stats.totalProblems) * 100);
 
   const [isAnimated, setIsAnimated] = useState(false);
@@ -49,7 +54,7 @@ const Statistics = () => {
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
           <div className="stat-number">{accuracyRate}%</div>
           <div className="stat-label">Accuracy Rate</div>
-          <div className="stat-sublabel">{stats.correctAnswers}/{stats.totalAttempts} correct</div>
+          <div className="stat-sublabel">{stats.correctAnswers} correct · {stats.wrongSubmissions} wrong</div>
         </div>
 
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>

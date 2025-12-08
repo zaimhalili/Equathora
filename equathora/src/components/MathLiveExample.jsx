@@ -28,6 +28,7 @@ export default function MathLiveEditor({ onSubmit }) {
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
+    const [submissionFeedback, setSubmissionFeedback] = useState(null);
 
     // refs to each math-field
     const fieldRefs = useRef({});
@@ -96,17 +97,31 @@ export default function MathLiveEditor({ onSubmit }) {
 
         // Call the onSubmit handler from parent if provided
         if (onSubmit) {
-            const submission = onSubmit(nonEmptyFields);
-            alert(`Solution submitted! (Submission #${submission.metadata.attempts})`);
-
-            // Optionally clear fields after submission
-            // const newField = { id: Date.now(), latex: "" };
-            // setFields([newField]);
-            // setTimeout(() => {
-            //     fieldRefs.current[newField.id]?.focus();
-            // }, 0);
+            try {
+                const submission = onSubmit(nonEmptyFields);
+                if (submission?.message) {
+                    setSubmissionFeedback({
+                        message: submission.message,
+                        success: submission.success ?? false
+                    });
+                } else {
+                    setSubmissionFeedback({
+                        message: 'Submission sent!',
+                        success: true
+                    });
+                }
+            } catch (error) {
+                console.error('Unable to submit steps', error);
+                setSubmissionFeedback({
+                    message: 'Something went wrong while submitting. Please try again.',
+                    success: false
+                });
+            }
         } else {
-            alert(nonEmptyFields.map((f, i) => `Step ${i + 1}: ${f.latex}`).join("\n"));
+            setSubmissionFeedback({
+                message: 'Steps captured locally.',
+                success: true
+            });
         }
     };
 
@@ -185,6 +200,12 @@ export default function MathLiveEditor({ onSubmit }) {
                         </div>
 
                     </div>
+
+                    {submissionFeedback && (
+                        <div className={`ml-feedback ${submissionFeedback.success ? 'success' : 'error'}`}>
+                            {submissionFeedback.message}
+                        </div>
+                    )}
 
                     <div className="ml-output-wrapper">
                         <button

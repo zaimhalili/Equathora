@@ -150,6 +150,27 @@ math-field:hover {
     flex-shrink: 0;
 }
 
+.ml-feedback {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.ml-feedback.success {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.4);
+    color: #15803d;
+}
+
+.ml-feedback.error {
+    background: rgba(248, 113, 113, 0.18);
+    border-color: rgba(248, 113, 113, 0.4);
+    color: #b91c1c;
+}
+
 .ml-btn {
     appearance: none;
     border: 2px solid var(--french-gray);
