@@ -9,9 +9,9 @@ const ProblemCard = ({ problem }) => {
             case 'easy':
                 return '#22c55e';
             case 'medium':
-                return '#f59e0b';
+                return '#e59e0b';
             case 'hard':
-                return '#ef4444';
+                return '#a3142c';
             default:
                 return '#6b7280';
         }

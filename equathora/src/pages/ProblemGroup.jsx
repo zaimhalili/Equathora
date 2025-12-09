@@ -2,7 +2,6 @@ import React from 'react';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 import { Link, useParams } from 'react-router-dom';
-import './ProblemGroup.css';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import { problemGroups, getProblemsByGroup, getGroupById } from '../data/problems';
 import { isProblemCompleted, getProblemScore, isFavorite, toggleFavorite } from '../lib/progressStorage';

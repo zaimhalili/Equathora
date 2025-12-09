@@ -42,7 +42,6 @@
 }
 
 #learn-explore {
-    
     color: var(--secondary-color);
     flex: 1;
     display: flex;
@@ -73,7 +72,7 @@
     backdrop-filter: blur(10px);
     border-radius: 6px;
     padding: 1.25rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 0 25px rgba(141, 153, 174, 0.3);
     border: 1px solid rgba(43, 45, 66, 0.12);
     display: flex;
     gap: 1rem;
@@ -172,7 +171,7 @@
     font-family: 'Inter', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 0.875rem;
     font-weight: 600;
-    border: 1.5px solid rgba(43, 45, 66, 0.15);
+    /* border: 1.5px solid rgba(43, 45, 66, 0.15); */
     border-radius: 6px;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
@@ -198,14 +197,14 @@
 }
 
 .filtering:hover {
-    box-shadow: 0 10px 10px rgba(141, 153, 174, 0.3);
+    box-shadow: 0 0 25px rgba(141, 153, 174, 0.5);
 }
 
 .filtering.active {
     background: linear-gradient(135deg, var(--accent-color) 0%, rgba(217, 4, 41, 0.85) 100%);
     color: var(--main-color);
     transform: translateY(-1px);
-    box-shadow: 0 10px 10px rgba(141, 153, 174, 0.5);
+    box-shadow: 0 10px 10px rgba(141, 153, 174, 0.7);
 }
 
 .filtering:focus {

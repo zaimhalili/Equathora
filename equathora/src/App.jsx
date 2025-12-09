@@ -109,6 +109,7 @@ export default function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/resend" element={<Resend />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
+            
 
             {/* Unprotected Routes */}
             <Route path="/dashboard" element={<Dashboard />} />
