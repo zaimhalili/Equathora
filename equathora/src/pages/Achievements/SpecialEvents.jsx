@@ -5,22 +5,10 @@ const SpecialEvents = () => {
   const events = [
     {
       id: 1,
-      title: "Math Marathon",
-      date: "15/11/2025",
-      description: "Join us for a day-long math challenge and win exciting prizes!",
-    },
-    {
-      id: 2,
       title: "Pi Day Celebration",
       date: "14/03/2026",
       description: "Celebrate Pi Day with fun activities and competitions.",
-    },
-    {
-      id: 3,
-      title: "Algebra Workshop",
-      date: "5/12/2025",
-      description: "Enhance your algebra skills with our expert-led workshop.",
-    },
+    }
   ];
 
 

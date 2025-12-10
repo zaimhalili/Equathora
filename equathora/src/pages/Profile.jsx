@@ -59,7 +59,7 @@ const Profile = () => {
       hard: { solved: hardSolved, total: hardProblems.length, accuracy: hardAccuracy }
     },
     mathTopics: [...new Set(completedProblemDetails.map(p => p.topic).filter(Boolean))],
-    problemsSolved: completedProblemDetails.slice(-10).reverse().map(p => p.title)
+    problemsSolved: completedProblemDetails.slice(-10).reverse()
   };
 
   const totalProblems = userData.stats.easy.total + userData.stats.medium.total + userData.stats.hard.total;
@@ -260,8 +260,8 @@ const Profile = () => {
                   {userData.problemsSolved.map((problem, i) => (
                     <Link
                       key={i}
-                      to="/*"
-                      className={`w-full px-5 py-4 hover:scale-99 transition-all text-[var(--secondary-color)] duration-300 rounded-md text-md ${i % 2 === 0 ? 'bg-[var(--french-gray)]' : 'bg-[var(--main-color)]'}`}>{problem}</Link>
+                      to={`/problems/${problem.groupId}/${problem.id}`}
+                      className={`w-full px-5 py-4 hover:scale-99 transition-all text-[var(--secondary-color)] duration-300 rounded-md text-md ${i % 2 === 0 ? 'bg-[var(--french-gray)]' : 'bg-[var(--main-color)]'}`}>{problem.title}</Link>
                   ))}
                 </div>
               </div>

@@ -165,8 +165,8 @@ const Navbar = () => {
     <>
       <OverflowChecker></OverflowChecker>
       <header className='w-full bg-[var(--main-color)] h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
-        <nav aria-label="Primary" className='w-full h-full'>
-          <div className='w-full h-full max-w-[1500px] mx-auto flex items-center justify-between px-[4vw] lg:px-[5vw] xl:px-0'>
+        <nav aria-label="Primary" className='w-full h-full flex justify-center'>
+          <div className='w-full h-full mx-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
             <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
               <li>
                 <Link to="/dashboard" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
