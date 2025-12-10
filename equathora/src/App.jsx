@@ -1,5 +1,6 @@
 import axios from "axios";
 import { lazy, Suspense, useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import OverflowChecker from "./pages/OverflowChecker";
@@ -96,6 +97,7 @@ export default function App() {
     <>
       <PageTitleUpdater />
       <OverflowChecker />
+      <Analytics />
       <Suspense fallback={
         <div className="min-h-screen flex items-center justify-center text-[var(--secondary-color)] font-[Inter]">
           Loading next experience...
@@ -109,7 +111,7 @@ export default function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/resend" element={<Resend />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
-            
+
 
             {/* Unprotected Routes */}
             <Route path="/dashboard" element={<Dashboard />} />
