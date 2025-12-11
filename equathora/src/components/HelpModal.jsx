@@ -17,7 +17,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                     </button>
                 </div>
 
-                <div className='flex flex-col gap-5 mt-4'>
+                <div className='flex flex-col gap-5 py-5'>
                     <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl'>
                         <h3 className='font-[Inter] font-bold text-lg text-[var(--secondary-color)] mb-2 flex items-center gap-2'>
                             <FaFileAlt className='text-[var(--accent-color)]' /> Reading the Problem
@@ -57,7 +57,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                     </div>
                 </div>
 
-                <button type="button" onClick={onClose} className='mt-6 px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base'>Got It!</button>
+                <button type="button" onClick={onClose} className='px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'>Got It!</button>
             </div>
         </div>
     );

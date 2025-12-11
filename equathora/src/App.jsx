@@ -121,7 +121,7 @@ export default function App() {
             <Route path="/learn" element={<Learn />} />
             {/* <Route path="/discover" element={<Discover />} /> */}
             {/* <Route path="/recommended" element={<Recommended />} /> */}
-            {/* <Route path="/notifications" element={<Notifications />} /> */}
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/applymentor" element={<ApplyMentor />} />
             <Route path="/helpCenter" element={<HelpCenter />} />
             <Route path="/systemupdates" element={<SystemUpdates />} />

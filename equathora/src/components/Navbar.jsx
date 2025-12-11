@@ -27,6 +27,7 @@ import Teacher from '../assets/images/teacher.svg';
 import Achievements from '../assets/images/achievementsDD.svg';
 import Events from '../assets/images/specialEvents.svg';
 import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
+import Books from '../assets/images/learningBooks.svg';
 
 const Navbar = () => {
 
@@ -49,12 +50,18 @@ const Navbar = () => {
     //   image: Journey
     // },
     {
-      to: "/learn",
-      text: "Favourite Problems",
-      description: "Quickly revisit starred problems.",
-      image: Favourite,
-      state: { filter: 'favourite' }
-    }
+      to: '/learn',
+      text: "Browse Problems",
+      description: "Explore all available challenges.",
+      image: Books
+    },
+    // {
+    //   to: "/learn",
+    //   text: "Favourite Problems",
+    //   description: "Quickly revisit starred problems.",
+    //   image: Favourite,
+    //   state: { filter: 'favourite' }
+    // }
   ]
 
   const discoverItems = [
@@ -70,7 +77,14 @@ const Navbar = () => {
       text: "Leaderboards",
       description: "Join competitions and leaderboards.",
       image: Leaderboards
-    }
+    },
+    {
+      to: "/learn",
+      text: "Favourite Problems",
+      description: "Quickly revisit starred problems.",
+      image: Favourite,
+      state: { filter: 'favourite' }
+    },
     // Hidden for MVP - will be added after launch
     // {
     //   to: "/",

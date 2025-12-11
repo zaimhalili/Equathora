@@ -42,12 +42,12 @@ const SpecialEvents = () => {
             <h3>{event.title}</h3>
             <time dateTime={event.date}>{event.date}</time>
             <p>{event.description}</p>
-            <button className="register-button" onClick={() => registerToEvent(event.id)}>Register Now</button>
+            {/* <button className="register-button" onClick={() => registerToEvent(event.id)}>Register Now</button>
             {registrationStatus[event.id] && (
               <p id='registration-status' style={{ color: "green", fontWeight: 700, paddingTop: '1rem' }}>
                 {registrationStatus[event.id]}
               </p>
-            )}
+            )} */}
 
           </li>
         ))}
