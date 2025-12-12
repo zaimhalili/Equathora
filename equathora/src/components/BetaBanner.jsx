@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaRocket, FaTimes } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const BetaBanner = () => {
     const [isVisible, setIsVisible] = useState(!localStorage.getItem('beta_banner_dismissed'));
@@ -18,6 +19,7 @@ const BetaBanner = () => {
                 <p className="text-sm md:text-base flex-1 text-center">
                     <strong>🎉 Beta Launch!</strong> We're in MVP mode - your progress is saved locally.
                     <span className="hidden md:inline"> User accounts and cloud sync coming soon!</span>
+                    <Link to="/waitlist" className="ml-2 underline font-semibold hover:text-yellow-300 transition-colors">Join Waitlist →</Link>
                 </p>
                 <button
                     onClick={handleDismiss}

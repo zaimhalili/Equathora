@@ -87,7 +87,7 @@ const Profile = () => {
                 {/* Profile Header Section */}
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
-                    <img src={Autumn} alt="Profile Picture" className='rounded-md h-20 w-20 md:h-24 md:w-24' />
+                    <img src={Autumn} alt="Profile Picture" className='rounded-md h-20 w-20 md:h-24 md:w-24 object-cover' />
                     <div className='text-[var(--secondary-color)] font-[Inter] flex flex-col justify-between gap-1'>
                       <div>
                         <h5 className='font-bold text-xl md:text-2xl'>{userData.name}</h5>

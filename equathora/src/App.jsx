@@ -38,6 +38,7 @@ const Premium = lazy(() => import("./pages/Premium"));
 const Recommended = lazy(() => import("./pages/Recommended"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
+const Waitlist = lazy(() => import("./pages/Waitlist"));
 
 function PageTitleUpdater() {
   const location = useLocation();
@@ -62,7 +63,8 @@ function PageTitleUpdater() {
       '/premium': 'Go Premium - Equathora',
       '/profile': 'Profile - Equathora',
       '/login': 'Sign In - Equathora',
-      '/signup': 'Join Now - Equathora'
+      '/signup': 'Join Now - Equathora',
+      '/waitlist': 'Join Waitlist - Equathora'
     };
 
     const matchedRoute = Object.keys(pageTitles).find(route =>
@@ -126,6 +128,7 @@ export default function App() {
             <Route path="/helpCenter" element={<HelpCenter />} />
             <Route path="/systemupdates" element={<SystemUpdates />} />
             <Route path="/pageNotFound" element={<PageNotFound />} />
+            <Route path="/waitlist" element={<Waitlist />} />
             {/* <Route path="/settings" element={<Settings />} /> */}
             {/* <Route path="/premium" element={<Premium />} /> */}
             <Route path="/feedback" element={<Feedback />} />

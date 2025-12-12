@@ -89,6 +89,12 @@ const NavigationBar = () => {
 
     const moreItems = [
         {
+            to: '/waitlist',
+            text: "Join Waitlist",
+            description: "Get early access to full launch.",
+            image: Daily
+        },
+        {
             to: '/applymentor',
             text: "Teacher/Mentor Mode",
             description: "Monitor students or children's progress.",
