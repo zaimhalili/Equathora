@@ -48,16 +48,16 @@ const FeaturesSection = () => {
     ];
 
     return (
-        <section className="w-full bg-white border-b border-gray-100 relative overflow-hidden flex justify-center">
+        <section className="px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-10 gap-8 w-full bg-white border-b border-gray-100 relative overflow-hidden flex justify-center">
 
-            <div className="max-w-6xl px-8 py-3 md:py-20 z-10">
-                <div className="flex flex-col gap-16">
+            <div className="z-10">
+                <div className="flex flex-col gap-5 md:gap-16">
                     <motion.div
                         className="flex flex-col gap-2 items-center text-center"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
+                        transition={{ duration: 0.3 }}
                     >
                         <GradientText
                             className="flex text-3xl font-bold sm:text-5xl"
@@ -76,7 +76,7 @@ const FeaturesSection = () => {
                             initial={{ opacity: 0, x: -50 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.7 }}
+                            transition={{ duration: 0.3 }}
                         >
                             {mainFeatures.map((card, index) => (
                                 <motion.article
@@ -91,7 +91,7 @@ const FeaturesSection = () => {
                                     <motion.div
                                         className="flex items-center justify-center w-14 h-14 flex-shrink-0 rounded-xl bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white text-2xl"
                                         whileHover={{ rotate: 360, scale: 1.1 }}
-                                        transition={{ duration: 0.5 }}
+                                        transition={{ duration: 0.3 }}
                                     >
                                         <card.icon />
                                     </motion.div>

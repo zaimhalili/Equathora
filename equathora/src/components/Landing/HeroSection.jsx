@@ -6,7 +6,7 @@ import Studying from '../../assets/images/studying.svg';
 const HeroSection = () => {
     return (
         <section className="font-[Inter] w-full bg-gray-50 border-b border-gray-100">
-            <div className="max-w-6xl px-8 py-3 md:py-20 flex flex-col md:flex-row items-center justify-between md:gap-16" style={{ margin: '0 auto' }}>
+            <div className="px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:py-6 gap-8 flex flex-col md:flex-row items-center justify-between" style={{ margin: '0 auto' }}>
                 <motion.div
                     className="flex flex-col gap-5 flex-1 text-center md:text-left"
                     initial={{ opacity: 0, x: -50 }}
@@ -39,26 +39,26 @@ const HeroSection = () => {
                         Equathora helps you master math through focused practice, gentle guidance, and a calm learning experience inspired by platforms like Exercism.
                     </motion.p>
                     <motion.div
-                        className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+                        className="flex gap-4 justify-center items-center md:justify-start"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
                     >
                         <Link
                             to="/getstarted"
-                            className="rounded-md bg-[var(--accent-color)] px-8 py-3 text-center !text-white transition-colors hover:bg-[var(--dark-accent-color)]"
+                            className="rounded-md bg-[var(--accent-color)] px-8 py-2 sm:py-3 text-center !text-white transition-colors hover:bg-[var(--dark-accent-color)]"
                         >
                             Start solving
                         </Link>
                         <Link
                             to="/about"
-                            className="rounded-md border border-gray-300 px-8 py-3 text-center text-gray-700 transition-colors hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]"
+                            className="rounded-md border border-gray-300 px-8 py-2 sm:py-3 text-center text-gray-700 transition-colors hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]"
                         >
                             How it works
                         </Link>
                     </motion.div>
                     <motion.div
-                        className="flex justify-between gap-8 pt-4"
+                        className="flex justify-between gap-8 pt-4 px-3"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.7 }}
