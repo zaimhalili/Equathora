@@ -201,14 +201,14 @@ const NavigationBar = () => {
                             <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
                                 <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
                                     <Link to="/about"
-                            className="rounded-md border border-gray-300 px-5 py-2 text-center text-gray-700 transition-colors hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]">More Info</Link>
+                                        className="rounded-md border border-gray-300 px-5 py-2 text-center text-gray-700 transition-colors hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]">Learn More</Link>
                                 </li>
                                 <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
                                     <Link to="/getstarted"
-                                        className="rounded-md bg-[var(--accent-color)] px-5 py-2 text-center !text-white transition-colors hover:bg-[var(--dark-accent-color)]">Get Started</Link>
+                                        className="rounded-md bg-[var(--accent-color)] px-5 py-2 text-center !text-white transition-colors hover:bg-[var(--dark-accent-color)]">Start Learning</Link>
                                 </li>
                                 <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
-                                    
+
                                 </li>
                                 <li className='pl-6 lg:pl-4'>
                                     <button

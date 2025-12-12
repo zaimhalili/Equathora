@@ -5,19 +5,19 @@ const TestimonialsSection = () => {
 
     const testimonials = [
         {
-            quote: "Equathora transformed how I approach math problems. The structured paths and instant feedback helped me improve my calculus grade from C to A.",
-            author: "Sarah Chen",
-            role: "Engineering Student"
+            quote: "The problem explanations are really clear and the hints help when I get stuck. It's been great for my algebra practice.",
+            author: "Sarah M.",
+            role: "Beta Tester"
         },
         {
-            quote: "The achievement system keeps me motivated every day. I've solved over 100 problems in just two months and finally feel confident with algebra.",
-            author: "Marcus Johnson",
-            role: "High School Senior"
+            quote: "I like how straightforward everything is. No unnecessary features, just solving problems and tracking my progress.",
+            author: "Alex K.",
+            role: "Early User"
         },
         {
-            quote: "As a teacher, I recommend Equathora to all my students. The explanations are clear, and the progression is perfectly paced.",
-            author: "Dr. Emily Rodriguez",
-            role: "Math Professor"
+            quote: "Clean interface and well-structured problems. Looking forward to seeing more content added as the platform grows.",
+            author: "Jordan P.",
+            role: "Beta Tester"
         }
     ];
 
@@ -39,9 +39,9 @@ const TestimonialsSection = () => {
                             WebkitTextFillColor: 'transparent',
                             backgroundClip: 'text'
                         }}>
-                            Loved by learners worldwide
+                            Early feedback from our beta community
                         </h2>
-                        <p className="text-gray-600 text-lg">See what our community has to say</p>
+                        <p className="text-gray-600 text-lg">What our early testers are saying</p>
                     </div>
 
                     <div className="relative flex items-center justify-center min-h-[280px]">

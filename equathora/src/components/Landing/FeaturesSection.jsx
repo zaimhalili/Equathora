@@ -76,7 +76,7 @@ const FeaturesSection = () => {
                             initial={{ opacity: 0, x: -50 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.3 }}
+                            transition={{ duration: 0.4 }}
                         >
                             {mainFeatures.map((card, index) => (
                                 <motion.article
@@ -85,13 +85,12 @@ const FeaturesSection = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: index * 0.1, duration: 0.5 }}
-                                    whileHover={{ scale: 1.02, x: 10 }}
+                                    transition={{ delay: index * 0.05, duration: 0.3 }}
+                                    whileHover={{ scale: 1.01, x: 10, transition: { duration: 0.2 } }}
                                 >
                                     <motion.div
                                         className="flex items-center justify-center w-14 h-14 flex-shrink-0 rounded-xl bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white text-2xl"
-                                        whileHover={{ rotate: 360, scale: 1.1 }}
-                                        transition={{ duration: 0.3 }}
+                                        whileHover={{ rotate: 360, scale: 1.05, transition: { duration: 0.3 } }}
                                     >
                                         <card.icon />
                                     </motion.div>
@@ -109,7 +108,7 @@ const FeaturesSection = () => {
                             initial={{ opacity: 0, scale: 0.8 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
+                            transition={{ duration: 0.4 }}
                         >
                             <motion.div
                                 className="relative"
@@ -126,7 +125,7 @@ const FeaturesSection = () => {
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
+                        transition={{ duration: 0.4 }}
                     >
                         {additionalFeatures.map((feature, index) => (
                             <motion.div
@@ -135,13 +134,12 @@ const FeaturesSection = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: index * 0.15 }}
-                                whileHover={{ y: -5, scale: 1.02 }}
+                                transition={{ delay: index * 0.08, duration: 0.3 }}
+                                whileHover={{ y: -5, scale: 1.01, transition: { duration: 0.2 } }}
                             >
                                 <motion.div
                                     className={`flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br ${feature.bg} text-white text-xl`}
-                                    whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
-                                    transition={{ duration: 0.5 }}
+                                    whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.05, transition: { duration: 0.3 } }}
                                 >
                                     <feature.icon />
                                 </motion.div>

@@ -85,7 +85,7 @@ const HowItWorksSection = () => {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
+                        transition={{ duration: 0.3 }}
                     >
                         <GradientText
                             className="text-3xl font-bold sm:text-5xl"
@@ -105,7 +105,7 @@ const HowItWorksSection = () => {
                                 initial={{ opacity: 0, x: item.direction === 'left' ? -50 : 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 0.7, delay: index * 0.1 }}
+                                transition={{ duration: 0.4, delay: index * 0.05 }}
                             >
                                 {/* Image Side */}
                                 <motion.div
@@ -127,7 +127,7 @@ const HowItWorksSection = () => {
                                         <motion.div
                                             className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] shadow-lg"
                                             whileHover={{ rotate: 360 }}
-                                            transition={{ duration: 0.8 }}
+                                            transition={{ duration: 0.5 }}
                                         >
                                             <span className="text-2xl font-bold text-white">{item.step}</span>
                                         </motion.div>
@@ -141,7 +141,7 @@ const HowItWorksSection = () => {
                                         initial={{ opacity: 0 }}
                                         whileInView={{ opacity: 1 }}
                                         viewport={{ once: true }}
-                                        transition={{ delay: 0.3 }}
+                                        transition={{ delay: 0.15, duration: 0.3 }}
                                     >
                                         {item.tags.map((tag) => (
                                             <span key={tag} className="px-4 py-2 bg-gray-100 text-gray-700 text-sm rounded-full border border-gray-200">

@@ -11,13 +11,13 @@ const HeroSection = () => {
                     className="flex flex-col gap-5 flex-1 text-center md:text-left"
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.4 }}
                 >
                     <motion.p
                         className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent-color)]"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
+                        transition={{ delay: 0.1, duration: 0.3 }}
                     >
                         Built for students
                     </motion.p>
@@ -25,7 +25,7 @@ const HeroSection = () => {
                         className="text-4xl font-bold leading-none sm:text-5xl font-[DynaPuff]"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
+                        transition={{ delay: 0.15, duration: 0.3 }}
                     >
                         Turn logic into your
                         <span className="block text-[var(--accent-color)]">superpower.</span>
@@ -34,15 +34,15 @@ const HeroSection = () => {
                         className="text-base text-[var(--secondary-color)]/80 sm:text-lg"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4 }}
+                        transition={{ delay: 0.2, duration: 0.3 }}
                     >
-                        Equathora helps you master math through focused practice, gentle guidance, and a calm learning experience inspired by platforms like Exercism.
+                        Master mathematics through focused practice, step-by-step guidance, and a distraction-free learning environment designed for your success.
                     </motion.p>
                     <motion.div
                         className="flex gap-4 justify-center items-center md:justify-start"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
+                        transition={{ delay: 0.25, duration: 0.3 }}
                     >
                         <Link
                             to="/getstarted"
@@ -61,7 +61,7 @@ const HeroSection = () => {
                         className="flex justify-between gap-8 pt-4 px-3"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 0.7 }}
+                        transition={{ delay: 0.3, duration: 0.3 }}
                     >
                         {[
                             { label: 'Problems', value: '50+' },
@@ -73,8 +73,8 @@ const HeroSection = () => {
                                 className="flex flex-col text-center md:text-left"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.8 + index * 0.1 }}
-                                whileHover={{ scale: 1.1 }}
+                                transition={{ delay: 0.35 + index * 0.05, duration: 0.25 }}
+                                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                             >
                                 <p className="text-2xl font-bold text-[var(--accent-color)]">{item.value}</p>
                                 <p className="text-sm text-gray-500">{item.label}</p>
@@ -86,7 +86,7 @@ const HeroSection = () => {
                     className="flex justify-center items-center flex-1"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.3 }}
+                    transition={{ duration: 0.4, delay: 0.15 }}
                 >
                     <motion.div
                         className="rounded-3xl border border-gray-200 bg-white p-6 transition-shadow"

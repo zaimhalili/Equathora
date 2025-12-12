@@ -18,14 +18,14 @@ const CTASection = () => {
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
+                    transition={{ duration: 0.3 }}
                 >
                     <motion.h2
                         className="text-3xl font-bold sm:text-5xl text-white"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
+                        transition={{ delay: 0.1, duration: 0.3 }}
                     >
                         Ready to build confidence?
                     </motion.h2>
@@ -34,7 +34,7 @@ const CTASection = () => {
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 0.95 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.3 }}
+                        transition={{ delay: 0.15, duration: 0.3 }}
                     >
                         Pick a track, solve at your own pace, and watch your math intuition grow. No ads. No fluff. Just thoughtful practice.
                     </motion.p>
@@ -42,8 +42,8 @@ const CTASection = () => {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.4 }}
-                        whileHover={{ scale: 1.05 }}
+                        transition={{ delay: 0.2, duration: 0.3 }}
+                        whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
                     >
                         <Link
                             to="/dashboard"
@@ -58,7 +58,7 @@ const CTASection = () => {
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 0.75 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.5 }}
+                        transition={{ delay: 0.25, duration: 0.3 }}
                     >
                         No credit card required • Free forever
                     </motion.p>
