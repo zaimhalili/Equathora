@@ -91,7 +91,7 @@ const ApplyMentor = () => {
                             Who Can <span className='text-[var(--accent-color)]'>Apply?</span>
                         </h2>
                         <p className='text-sm md:text-base text-gray-600 max-w-2xl'>
-                            All backgrounds welcome—share your passion for teaching
+                            All backgrounds welcome,share your passion for teaching
                         </p>
                     </div>
 

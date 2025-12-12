@@ -19,7 +19,7 @@ const About = () => {
                                 <span className="bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] bg-clip-text text-transparent">About Equathora</span>
                             </h1>
                             <p className="text-lg text-gray-600 font-[Inter] max-w-2xl leading-relaxed">
-                                Where equations meet time—a platform built for mathematical mastery in 2025
+                                Where equations meet time,a platform built for mathematical mastery in 2025
                             </p>
                         </div>
                     </section>
@@ -28,7 +28,7 @@ const About = () => {
                     <section className="w-full bg-gradient-to-r from-[var(--secondary-color)] via-[var(--secondary-color)] to-[var(--accent-color)]/20 py-12">
                         <div className="w-full px-[4vw] xl:px-[12vw] flex flex-wrap justify-around items-center gap-8">
                             <div className="flex flex-col items-center">
-                                <div className="text-4xl font-bold text-white">50+</div>
+                                <div className="text-4xl font-bold text-white">30+</div>
                                 <div className="text-sm text-white/70">Curated Problems</div>
                             </div>
                             <div className="flex flex-col items-center">
@@ -56,11 +56,11 @@ const About = () => {
                                 <div className="space-y-6 text-gray-700">
                                     <div className="border-l-2 border-gray-300 pl-6">
                                         <div className="text-xl font-bold text-[var(--accent-color)] pb-2">Equat-</div>
-                                        <p className="text-base leading-relaxed">From "Equation"—the foundation of mathematical thinking and problem-solving</p>
+                                        <p className="text-base leading-relaxed">From "Equation"-the foundation of mathematical thinking and problem-solving</p>
                                     </div>
                                     <div className="border-l-2 border-gray-300 pl-6">
                                         <div className="text-xl font-bold text-[var(--accent-color)] pb-2">-hora</div>
-                                        <p className="text-base leading-relaxed">Greek "ὥρα" meaning time and hour—representing your dedication to learning</p>
+                                        <p className="text-base leading-relaxed">Greek "ὥρα" meaning time and hour-representing your dedication to learning</p>
                                     </div>
                                     <div className="border-l-2 border-[var(--accent-color)] pl-6">
                                         <div className="text-2xl font-bold bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] bg-clip-text text-transparent pb-2">Equathora</div>
@@ -76,7 +76,7 @@ const About = () => {
                                 </h2>
                                 <div className="space-y-4 text-gray-700 text-base leading-relaxed">
                                     <p>
-                                        Every math teacher had one—a <span className="font-semibold text-[var(--accent-color)]">red pen</span>. Not to punish mistakes, but to illuminate the path forward. Red marks showed where learning happened.
+                                        Every math teacher has a <span className="font-semibold text-[var(--accent-color)]">red pen</span>. Not to punish mistakes, but to illuminate the path forward. Red marks showed where learning happened.
                                     </p>
                                     <p>
                                         Textbooks marked important theorems in red. Corrections came in red. Red commanded attention and clarity. It became the color of mathematical discovery itself.
@@ -163,7 +163,7 @@ const About = () => {
                                 Our Mission
                             </h2>
                             <p className="text-lg text-gray-700 leading-relaxed max-w-3xl">
-                                Transform how students approach mathematics—not as a subject to fear, but as a journey of discovery. We provide an interactive platform where learners build confidence through step-by-step guidance and achievement-based motivation.
+                                Transform how students approach mathematics,not as a subject to fear, but as a journey of discovery. We provide an interactive platform where learners build confidence through step-by-step guidance and achievement-based motivation.
                             </p>
                         </div>
                     </section>

@@ -121,7 +121,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <div align="center">
   
-### ⭐ Star us on GitHub — it helps!
+### ⭐ Star us on GitHub , it helps!
 
 [equathora.dev](https://equathora.dev) • [@equathora](https://twitter.com/equathora)
 
