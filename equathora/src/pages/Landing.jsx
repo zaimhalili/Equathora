@@ -1,5 +1,6 @@
 import React from 'react';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
+import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 import NavigationBar from '../components/Landing/NavigationBar.jsx';
 import HeroSection from '../components/Landing/HeroSection.jsx';
@@ -14,7 +15,7 @@ const Landing = () => {
         <>
             <FeedbackBanner />
             <div className="min-h-screen bg-white text-[var(--secondary-color)]">
-                <NavigationBar />
+                <NavigationBar></NavigationBar>
                 <HeroSection />
                 <FeaturesSection />
                 <WhyChooseSection />

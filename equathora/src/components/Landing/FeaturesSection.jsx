@@ -48,31 +48,25 @@ const FeaturesSection = () => {
     ];
 
     return (
-        <section className="w-full bg-white border-b border-gray-100 relative overflow-hidden">
-            {/* Floating Background Images */}
-            <div className="absolute inset-0 pointer-events-none opacity-5">
-                <img src={Journey} alt="" className="absolute top-10 left-10 w-32 h-32 animate-float" style={{ animationDelay: '0s' }} />
-                <img src={Achievements} alt="" className="absolute top-1/4 right-20 w-40 h-40 animate-float" style={{ animationDelay: '1s' }} />
-                <img src={Progress} alt="" className="absolute bottom-20 left-1/4 w-36 h-36 animate-float" style={{ animationDelay: '2s' }} />
-            </div>
+        <section className="w-full bg-white border-b border-gray-100 relative overflow-hidden flex justify-center">
 
-            <div className="max-w-6xl px-8 py-24 relative z-10" style={{ margin: '0 auto' }}>
+            <div className="max-w-6xl px-8 py-3 md:py-20 z-10">
                 <div className="flex flex-col gap-16">
                     <motion.div
-                        className="flex flex-col gap-4 text-center"
+                        className="flex flex-col gap-2 items-center text-center"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
                         <GradientText
-                            className="text-3xl font-bold sm:text-5xl"
+                            className="flex text-3xl font-bold sm:text-5xl"
                             colors={['#d90429', '#2b2d42', '#d90429']}
                             animationSpeed={6}
                         >
                             Everything you need to excel
                         </GradientText>
-                        <p className="text-gray-600 text-lg max-w-2xl mx-auto">Powerful features designed to accelerate your math learning journey</p>
+                        <p className="text-gray-600 text-lg max-w-2xl">Powerful features designed to accelerate your math learning journey</p>
                     </motion.div>
 
                     {/* Main Feature Showcase */}
@@ -119,10 +113,8 @@ const FeaturesSection = () => {
                         >
                             <motion.div
                                 className="relative"
-                                whileHover={{ scale: 1.05, rotate: 3 }}
-                                transition={{ type: "spring", stiffness: 200 }}
                             >
-                                <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] opacity-10 blur-3xl rounded-full"></div>
+                                <div className="rounded-full"></div>
                                 <img src={Teacher} alt="Learning illustration" className="relative w-full max-w-md drop-shadow-2xl" />
                             </motion.div>
                         </motion.div>

@@ -5,10 +5,10 @@ import Studying from '../../assets/images/studying.svg';
 
 const HeroSection = () => {
     return (
-        <section className="w-full bg-gray-50 border-b border-gray-100">
-            <div className="max-w-6xl px-8 py-20 flex flex-col md:flex-row items-center justify-between gap-16" style={{ margin: '0 auto' }}>
+        <section className="font-[Inter] w-full bg-gray-50 border-b border-gray-100">
+            <div className="max-w-6xl px-8 py-3 md:py-20 flex flex-col md:flex-row items-center justify-between md:gap-16" style={{ margin: '0 auto' }}>
                 <motion.div
-                    className="flex flex-col gap-8 flex-1 text-center md:text-left"
+                    className="flex flex-col gap-5 flex-1 text-center md:text-left"
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
@@ -22,7 +22,7 @@ const HeroSection = () => {
                         Built for students
                     </motion.p>
                     <motion.h1
-                        className="text-4xl font-extrabold leading-tight sm:text-5xl"
+                        className="text-4xl font-bold leading-none sm:text-5xl font-[DynaPuff]"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
@@ -31,7 +31,7 @@ const HeroSection = () => {
                         <span className="block text-[var(--accent-color)]">superpower.</span>
                     </motion.h1>
                     <motion.p
-                        className="text-base text-gray-600 sm:text-lg"
+                        className="text-base text-[var(--secondary-color)]/80 sm:text-lg"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
@@ -46,7 +46,7 @@ const HeroSection = () => {
                     >
                         <Link
                             to="/getstarted"
-                            className="rounded-md bg-[var(--accent-color)] px-8 py-3 text-center text-white transition-colors hover:bg-[var(--dark-accent-color)]"
+                            className="rounded-md bg-[var(--accent-color)] px-8 py-3 text-center !text-white transition-colors hover:bg-[var(--dark-accent-color)]"
                         >
                             Start solving
                         </Link>
@@ -89,9 +89,7 @@ const HeroSection = () => {
                     transition={{ duration: 0.8, delay: 0.3 }}
                 >
                     <motion.div
-                        className="rounded-3xl border border-gray-200 bg-white p-6 shadow-lg hover:shadow-xl transition-shadow"
-                        whileHover={{ scale: 1.05, rotate: 2 }}
-                        transition={{ type: "spring", stiffness: 300 }}
+                        className="rounded-3xl border border-gray-200 bg-white p-6 transition-shadow"
                     >
                         <img src={Studying} alt="Student learning" className="w-full max-w-md" loading="lazy" />
                     </motion.div>
