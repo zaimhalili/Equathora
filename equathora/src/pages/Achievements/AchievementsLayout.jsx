@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Outlet, NavLink } from 'react-router-dom'; // Change Link to NavLink
 import Navbar from '../../components/Navbar.jsx';
 import Footer from '../../components/Footer.jsx';
@@ -14,7 +15,12 @@ const AchievementsLayout = () => {
       <header><Navbar /></header>
 
       <main className='achievements-body'>
-        <div className="achievements-image-body">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="achievements-image-body"
+        >
           <h1>Your Learning <span id='prg-hover'>Progress</span></h1>
           <h3>Exploring your time on Equathora</h3>
 
@@ -27,7 +33,12 @@ const AchievementsLayout = () => {
             </div>
           </div>
 
-          <div className="achievements-filter">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="achievements-filter"
+          >
             <NavLink
               to="recent"
               className={({ isActive }) =>
@@ -57,12 +68,17 @@ const AchievementsLayout = () => {
               <img src={Events} alt="achievements" />
               Special Events
             </NavLink>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className='achievements-content'>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className='achievements-content'
+        >
           <Outlet></Outlet>
-        </div>
+        </motion.div>
       </main>
 
       <footer>

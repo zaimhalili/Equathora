@@ -12,10 +12,10 @@ const About = () => {
             <FeedbackBanner />
             <div className="w-full bg-gradient-to-b from-blue-50 via-white to-purple-50 min-h-screen">
                 <Navbar />
-                <main className="w-full flex justify-center">
+                <main className="w-full flex flex-col items-center">
                     {/* Hero - Full Width Clean */}
                     <section className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-12">
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5 }}
@@ -32,7 +32,7 @@ const About = () => {
 
                     {/* Stats - Horizontal Bar */}
                     <section className="w-full flex justify-center">
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.1 }}
@@ -57,52 +57,53 @@ const About = () => {
 
                     {/* Story - Two Column Layout */}
                     <section className="w-full flex justify-center">
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.2 }}
                             className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
                         >
                             <div className="w-full flex flex-col lg:flex-row gap-12">
-                            {/* Left Column */}
-                            <div className="lg:w-1/2">
-                                <div className="flex items-center gap-3 pb-6">
-                                    <FaLightbulb className="text-3xl text-[var(--accent-color)]" />
-                                    <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter]">
-                                        The Name
-                                    </h2>
+                                {/* Left Column */}
+                                <div className="lg:w-1/2">
+                                    <div className="flex items-center gap-3 pb-6">
+                                        <FaLightbulb className="text-3xl text-[var(--accent-color)]" />
+                                        <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter]">
+                                            The Name
+                                        </h2>
+                                    </div>
+                                    <div className="space-y-6 text-gray-700">
+                                        <div className="border-l-2 border-gray-300 pl-6">
+                                            <div className="text-xl font-bold text-[var(--accent-color)] pb-2">Equat-</div>
+                                            <p className="text-base leading-relaxed">From "Equation"-the foundation of mathematical thinking and problem-solving</p>
+                                        </div>
+                                        <div className="border-l-2 border-gray-300 pl-6">
+                                            <div className="text-xl font-bold text-[var(--accent-color)] pb-2">-hora</div>
+                                            <p className="text-base leading-relaxed">Greek "ὥρα" meaning time and hour-representing your dedication to learning</p>
+                                        </div>
+                                        <div className="border-l-2 border-[var(--accent-color)] pl-6">
+                                            <div className="text-2xl font-bold bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] bg-clip-text text-transparent pb-2">Equathora</div>
+                                            <p className="text-base leading-relaxed font-medium">Time invested in mastering mathematical equations</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="space-y-6 text-gray-700">
-                                    <div className="border-l-2 border-gray-300 pl-6">
-                                        <div className="text-xl font-bold text-[var(--accent-color)] pb-2">Equat-</div>
-                                        <p className="text-base leading-relaxed">From "Equation"-the foundation of mathematical thinking and problem-solving</p>
-                                    </div>
-                                    <div className="border-l-2 border-gray-300 pl-6">
-                                        <div className="text-xl font-bold text-[var(--accent-color)] pb-2">-hora</div>
-                                        <p className="text-base leading-relaxed">Greek "ὥρα" meaning time and hour-representing your dedication to learning</p>
-                                    </div>
-                                    <div className="border-l-2 border-[var(--accent-color)] pl-6">
-                                        <div className="text-2xl font-bold bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] bg-clip-text text-transparent pb-2">Equathora</div>
-                                        <p className="text-base leading-relaxed font-medium">Time invested in mastering mathematical equations</p>
-                                    </div>
-                                </div>
-                            </div>
 
-                            {/* Right Column */}
-                            <div className="lg:w-1/2">
-                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6">
-                                    Why <span className="text-[var(--accent-color)]">Red</span>?
-                                </h2>
-                                <div className="space-y-4 text-gray-700 text-base leading-relaxed">
-                                    <p>
-                                        Every math teacher has a <span className="font-semibold text-[var(--accent-color)]">red pen</span>. Not to punish mistakes, but to illuminate the path forward. Red marks showed where learning happened.
-                                    </p>
-                                    <p>
-                                        Textbooks marked important theorems in red. Corrections came in red. Red commanded attention and clarity. It became the color of mathematical discovery itself.
-                                    </p>
-                                    <p className="font-medium text-[var(--secondary-color)] border-l-2 border-[var(--accent-color)] pl-4">
-                                        Red represents guidance, emphasis, and the bold moments of understanding.
-                                    </p>
+                                {/* Right Column */}
+                                <div className="lg:w-1/2">
+                                    <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6">
+                                        Why <span className="text-[var(--accent-color)]">Red</span>?
+                                    </h2>
+                                    <div className="space-y-4 text-gray-700 text-base leading-relaxed">
+                                        <p>
+                                            Every math teacher has a <span className="font-semibold text-[var(--accent-color)]">red pen</span>. Not to punish mistakes, but to illuminate the path forward. Red marks showed where learning happened.
+                                        </p>
+                                        <p>
+                                            Textbooks marked important theorems in red. Corrections came in red. Red commanded attention and clarity. It became the color of mathematical discovery itself.
+                                        </p>
+                                        <p className="font-medium text-[var(--secondary-color)] border-l-2 border-[var(--accent-color)] pl-4">
+                                            Red represents guidance, emphasis, and the bold moments of understanding.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>
@@ -110,7 +111,7 @@ const About = () => {
 
                     {/* Developer - Split Screen */}
                     <section className="w-full flex justify-center bg-gradient-to-b from-white to-gray-50">
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.3 }}
@@ -182,25 +183,26 @@ const About = () => {
 
                     {/* Mission - Full Width Text Block */}
                     <section className="w-full flex justify-center">
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.4 }}
                             className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
                         >
-                        <div className="w-full flex flex-col items-center text-center">
-                            <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6">
-                                Our Mission
-                            </h2>
-                            <p className="text-lg text-gray-700 leading-relaxed max-w-3xl">
-                                Transform how students approach mathematics, not as a subject to fear, but as a journey of discovery. We provide an interactive platform where learners build confidence through step-by-step guidance and achievement-based motivation.
-                            </p>
+                            <div className="w-full flex flex-col items-center text-center">
+                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6">
+                                    Our Mission
+                                </h2>
+                                <p className="text-lg text-gray-700 leading-relaxed max-w-3xl">
+                                    Transform how students approach mathematics, not as a subject to fear, but as a journey of discovery. We provide an interactive platform where learners build confidence through step-by-step guidance and achievement-based motivation.
+                                </p>
+                            </div>
                         </motion.div>
                     </section>
 
                     {/* Features - Bento Grid Style */}
                     <section className="w-full flex justify-center bg-gradient-to-b from-gray-50 to-white">
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.5 }}
@@ -210,34 +212,34 @@ const About = () => {
                                 What Makes Us Different
                             </h2>
                             <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {[
-                                { icon: '✏️', title: 'Math Editor', desc: 'Natural LaTeX input with real-time preview' },
-                                { icon: '💡', title: 'Smart Hints', desc: 'Progressive guidance that adapts to your level' },
-                                { icon: '🏆', title: 'Achievements', desc: 'Track progress with meaningful milestones' },
-                                { icon: '👥', title: 'Mentorship', desc: 'Expert support when you need it most' },
-                                { icon: '📚', title: '50+ Problems', desc: 'Curated library across 20+ topics' },
-                                { icon: '🎯', title: 'Leaderboards', desc: 'Compete globally, grow together' }
-                            ].map((feature, idx) => (
-                                <motion.div 
-                                    key={idx}
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.3, delay: 0.6 + idx * 0.05 }}
-                                    whileHover={{ scale: 1.02 }}
-                                    className="p-6 bg-white rounded-md border border-gray-200 hover:border-[var(--accent-color)] hover:shadow-[0_10px_10px_rgba(141,153,174,0.3)] transition-all duration-200"
-                                >
-                                    <div className="text-4xl pb-3">{feature.icon}</div>
-                                    <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-2">{feature.title}</h3>
-                                    <p className="text-sm text-gray-600 leading-relaxed">{feature.desc}</p>
-                                </motion.div>
-                            ))}
+                                {[
+                                    { icon: '✏️', title: 'Math Editor', desc: 'Natural LaTeX input with real-time preview' },
+                                    { icon: '💡', title: 'Smart Hints', desc: 'Progressive guidance that adapts to your level' },
+                                    { icon: '🏆', title: 'Achievements', desc: 'Track progress with meaningful milestones' },
+                                    { icon: '👥', title: 'Mentorship', desc: 'Expert support when you need it most' },
+                                    { icon: '📚', title: '50+ Problems', desc: 'Curated library across 20+ topics' },
+                                    { icon: '🎯', title: 'Leaderboards', desc: 'Compete globally, grow together' }
+                                ].map((feature, idx) => (
+                                    <motion.div
+                                        key={idx}
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.3, delay: 0.6 + idx * 0.05 }}
+                                        whileHover={{ scale: 1.02 }}
+                                        className="p-6 bg-white rounded-md border border-gray-200 hover:border-[var(--accent-color)] hover:shadow-[0_10px_10px_rgba(141,153,174,0.3)] transition-all duration-200"
+                                    >
+                                        <div className="text-4xl pb-3">{feature.icon}</div>
+                                        <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-2">{feature.title}</h3>
+                                        <p className="text-sm text-gray-600 leading-relaxed">{feature.desc}</p>
+                                    </motion.div>
+                                ))}
                             </div>
                         </motion.div>
                     </section>
 
                     {/* CTA - Centered Simple */}
                     <section className="w-full flex justify-center">
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.7 }}

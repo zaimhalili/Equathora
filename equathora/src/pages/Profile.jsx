@@ -82,7 +82,7 @@ const Profile = () => {
           {/* Two Column Layout */}
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
             {/* Left Column - Combined Profile, Stats, and Topics */}
-            <motion.div 
+            <motion.div
               className='lg:col-span-1 flex flex-col gap-4'
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -159,7 +159,7 @@ const Profile = () => {
             {/* Right Column - Stacked cards */}
             <div className='lg:col-span-2 flex flex-col gap-4'>
               {/* Statistics Card */}
-              <motion.div 
+              <motion.div
                 className='bg-[var(--main-color)] rounded-xl shadow-lg p-6'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -265,7 +265,7 @@ const Profile = () => {
               </motion.div>
 
               {/* Solved Problems Card */}
-              <motion.div 
+              <motion.div
                 className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-5'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

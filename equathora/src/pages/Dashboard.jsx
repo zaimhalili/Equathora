@@ -35,13 +35,13 @@ const Dashboard = () => {
         <div className='flex w-full justify-center items-center'>
           <div className='flex flex-col lg:flex-row justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>
             <section className="flex flex-col items-center justify-center w-full lg:w-[70%]">
-              <motion.article 
+              <motion.article
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 className="text-[var(--secondary-color)] font-[Inter] w-full cursor-default flex flex-col items-center md:items-start"
               >
-                <motion.h1 
+                <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
@@ -49,7 +49,7 @@ const Dashboard = () => {
                 >
                   Welcome Back, <span className="text-[var(--secondary-color)]">{username}</span>!
                 </motion.h1>
-                <motion.h4 
+                <motion.h4
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
@@ -59,7 +59,7 @@ const Dashboard = () => {
                 </motion.h4>
 
                 {/* Where To Start Section */}
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
@@ -152,7 +152,7 @@ const Dashboard = () => {
             </section>
 
             {/* Aside Section - Image and Apply to be a Mentor */}
-            <motion.aside 
+            <motion.aside
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}

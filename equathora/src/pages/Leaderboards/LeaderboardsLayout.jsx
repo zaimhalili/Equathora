@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { NavLink, Outlet } from 'react-router-dom';
 import './LeaderboardsLayout.css';
 import Navbar from '../../components/Navbar.jsx';
@@ -10,7 +11,12 @@ const LeaderboardsLayout = () => {
         <div className="leaderboards-layout">
             <Navbar />
             <main className="leaderboards-main">
-                <nav className="leaderboard-opt-container">
+                <motion.nav
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="leaderboard-opt-container"
+                >
                     <NavLink to="global" className={({ isActive }) =>
                         isActive ? 'lb-option active' : 'lb-option'
                     }>
@@ -26,11 +32,16 @@ const LeaderboardsLayout = () => {
                     }>
                         Top Solvers
                     </NavLink>
-                </nav>
+                </motion.nav>
                 {/* <div className="leaderboards-content" style={{ backgroundImage: `url(${Race})`, backgroundSize: 'cover', backgroundPosition: 'center', backdropFilter: 'blur(8px)' }}> */}
-                <div className="leaderboards-content">
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="leaderboards-content"
+                >
                     <Outlet />
-                </div>
+                </motion.div>
             </main>
             <footer><Footer /></footer>
         </div>

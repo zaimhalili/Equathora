@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import mathTeacher from '../../assets/images/oldTeacher.png';
 import teacherSvg from '../../assets/images/teacher.svg';
 import GradientText from '../ui/GradientText';
@@ -13,27 +14,52 @@ const Hero = () => {
             <div className='absolute bottom-0 left-0 w-64 h-64 bg-[var(--accent-color)] rounded-full opacity-10 blur-3xl translate-y-1/2 -translate-x-1/2'></div>
             <div className='absolute top-1/2 left-1/4 w-48 h-48 bg-blue-400 rounded-full opacity-5 blur-3xl'></div>
 
-            <div className='relative z-10 w-full max-w-[1500px] flex justify-center'>
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className='relative z-10 w-full max-w-[1500px] flex justify-center'
+            >
                 <div className='flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 w-full'>
                     {/* Left Content */}
                     <div className='flex flex-col flex-1 text-center lg:text-left gap-4'>
-                        <div className='inline-flex items-center justify-center px-3 py-1.5 bg-[var(--accent-color)]/20 rounded-lg text-xs font-semibold backdrop-blur-sm border border-[var(--accent-color)]/30 self-center lg:self-start gap-2'>
+                        <motion.div
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.4, delay: 0.1 }}
+                            className='inline-flex items-center justify-center px-3 py-1.5 bg-[var(--accent-color)]/20 rounded-lg text-xs font-semibold backdrop-blur-sm border border-[var(--accent-color)]/30 self-center lg:self-start gap-2'
+                        >
                             <FaStar className='text-[var(--accent-color)]' />
                             <span>FREE TO JOIN</span>
-                        </div>
+                        </motion.div>
 
-                        <h1 className='text-3xl md:text-4xl font-bold leading-tight font-[DynaPuff]'>
+                        <motion.h1
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.15 }}
+                            className='text-3xl md:text-4xl font-bold leading-tight font-[DynaPuff]'
+                        >
                             <span className='text-[var(--accent-color)]'>Become a Mentor</span>
                             <br />
                             <span>Shape the Future</span>
-                        </h1>
+                        </motion.h1>
 
-                        <p className='text-base md:text-lg text-gray-300 leading-relaxed max-w-xl lg:max-w-none'>
+                        <motion.p
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className='text-base md:text-lg text-gray-300 leading-relaxed max-w-xl lg:max-w-none'
+                        >
                             Guide students through math challenges, reinforce your expertise, and make a lasting impact.
-                        </p>
+                        </motion.p>
 
                         {/* Waitlist CTA */}
-                        <div className='flex flex-col gap-4 justify-center lg:justify-start pt-2'>
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.25 }}
+                            className='flex flex-col gap-4 justify-center lg:justify-start pt-2'
+                        >
                             <a
                                 href='YOUR_GOOGLE_FORM_LINK_HERE'
                                 target='_blank'
@@ -60,7 +86,7 @@ const Hero = () => {
                                     <span>Always free</span>
                                 </div>
                             </div>
-                        </div>                        {/* Social Proof - Commented for future use */}
+                        </motion.div>                        {/* Social Proof - Commented for future use */}
                         {/* <div className='flex flex-wrap items-center gap-6 justify-center lg:justify-start text-sm'>
                             <div className='flex items-center gap-2'>
                                 <div className='flex -space-x-2'>
@@ -82,7 +108,12 @@ const Hero = () => {
                     </div>
 
                     {/* Right Illustration */}
-                    <div className='flex flex-1 justify-center lg:justify-end'>
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className='flex flex-1 justify-center lg:justify-end'
+                    >
                         <div className='relative flex items-center justify-center'>
                             <div className='absolute inset-0 bg-gradient-to-br from-[var(--accent-color)] to-blue-500 rounded-full blur-3xl opacity-20'></div>
                             <img
@@ -91,9 +122,9 @@ const Hero = () => {
                                 className='relative w-64 md:w-80 lg:w-96 drop-shadow-2xl'
                             />
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
-            </div>
+            </motion.div>
         </section>
     );
 };

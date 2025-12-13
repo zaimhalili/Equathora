@@ -70,7 +70,7 @@ const Learn = () => {
           <Navbar></Navbar>
         </header>
         <section id='hero-learn'>
-          <motion.article 
+          <motion.article
             id='welcome-learn'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -83,7 +83,7 @@ const Learn = () => {
             </div>
           </motion.article>
 
-          <motion.article 
+          <motion.article
             id='search-filtering'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -150,7 +150,7 @@ const Learn = () => {
             </div>
 
           </motion.article>
-          <motion.article 
+          <motion.article
             id='problems-container'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

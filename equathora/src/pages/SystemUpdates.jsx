@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import FeedbackBanner from '../components/FeedbackBanner';
@@ -101,7 +102,12 @@ const SystemUpdates = () => {
 
                 {/* Hero Section */}
                 <section className="w-full flex justify-center">
-                    <div className="px-[4vw] xl:px-[6vw] py-12 max-w-[1500px] w-full">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="px-[4vw] xl:px-[6vw] py-12 max-w-[1500px] w-full"
+                    >
                         <div className="flex flex-col items-center text-center gap-3">
                             <div className="flex items-center gap-2">
                                 <span className="text-3xl">🔔</span>
@@ -113,7 +119,7 @@ const SystemUpdates = () => {
                                 Stay informed about the latest features, improvements, and bug fixes in Equathora
                             </p>
                         </div>
-                    </div>
+                    </motion.div>
                 </section>
 
                 {/* Updates Timeline */}
@@ -121,8 +127,11 @@ const SystemUpdates = () => {
                     <div className="px-[4vw] xl:px-[6vw] pb-12 max-w-[1500px] w-full">
                         <div className="flex flex-col gap-4">
                             {updates.map((update, index) => (
-                                <div
+                                <motion.div
                                     key={index}
+                                    initial={{ opacity: 0, y: 15 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.45, delay: 0.1 * index }}
                                     className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
                                 >
                                     {/* Header */}
@@ -160,7 +169,7 @@ const SystemUpdates = () => {
                                     </div>
                                 </div>
                             ))}
-                        </div>
+                        </motion.div>
 
                         {/* Subscribe Section */}
                         <div className="pt-8">
