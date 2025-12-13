@@ -49,107 +49,109 @@ const FeaturesSection = () => {
 
     return (
         <section className="px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-10 gap-8 w-full bg-white border-b border-gray-100 relative overflow-hidden flex justify-center">
-
-            <div className="z-10">
-                <div className="flex flex-col gap-5 md:gap-16">
-                    <motion.div
-                        className="flex flex-col gap-2 items-center text-center"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        <GradientText
-                            className="flex text-3xl font-bold sm:text-5xl"
-                            colors={['#d90429', '#2b2d42', '#d90429']}
-                            animationSpeed={6}
-                        >
-                            Everything you need to excel
-                        </GradientText>
-                        <p className="text-gray-600 text-lg max-w-2xl">Powerful features designed to accelerate your math learning journey</p>
-                    </motion.div>
-
-                    {/* Main Feature Showcase */}
-                    <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <div className="flex justify-center">
+                <div className="z-10">
+                    <div className="flex flex-col gap-5 md:gap-16">
                         <motion.div
-                            className="flex-1 flex flex-col gap-8"
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            className="flex flex-col gap-2 items-center text-center"
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <GradientText
+                                className="flex text-3xl font-bold sm:text-5xl"
+                                colors={['#d90429', '#2b2d42', '#d90429']}
+                                animationSpeed={6}
+                            >
+                                Everything you need to excel
+                            </GradientText>
+                            <p className="text-gray-600 text-lg max-w-2xl">Powerful features designed to accelerate your math learning journey</p>
+                        </motion.div>
+
+                        {/* Main Feature Showcase */}
+                        <div className="flex flex-col lg:flex-row gap-12 items-center">
+                            <motion.div
+                                className="flex-1 flex flex-col gap-8"
+                                initial={{ opacity: 0, x: -50 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4 }}
+                            >
+                                {mainFeatures.map((card, index) => (
+                                    <motion.article
+                                        key={card.title}
+                                        className="flex flex-row gap-5 p-6 rounded-2xl border border-gray-200 bg-gray-50 hover:shadow-lg transition-all hover:border-[var(--accent-color)] hover:bg-white"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.05, duration: 0.3 }}
+                                        whileHover={{ scale: 1.01, x: 10, transition: { duration: 0.2 } }}
+                                    >
+                                        <motion.div
+                                            className="flex items-center justify-center w-14 h-14 flex-shrink-0 rounded-xl bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white text-2xl"
+                                            whileHover={{ rotate: 360, scale: 1.05, transition: { duration: 0.3 } }}
+                                        >
+                                            <card.icon />
+                                        </motion.div>
+                                        <div className="flex flex-col gap-2">
+                                            <h3 className="text-xl font-semibold">{card.title}</h3>
+                                            <p className="text-sm text-gray-600 leading-relaxed">{card.text}</p>
+                                        </div>
+                                    </motion.article>
+                                ))}
+                            </motion.div>
+
+                            {/* Visual Element */}
+                            <motion.div
+                                className="flex-1 flex justify-center items-center"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4 }}
+                            >
+                                <motion.div
+                                    className="relative"
+                                >
+                                    <div className="rounded-full"></div>
+                                    <img src={Teacher} alt="Learning illustration" className="relative w-full max-w-md drop-shadow-2xl" />
+                                </motion.div>
+                            </motion.div>
+                        </div>
+
+                        {/* Additional Features Grid */}
+                        <motion.div
+                            className="flex flex-col md:flex-row gap-6"
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.4 }}
                         >
-                            {mainFeatures.map((card, index) => (
-                                <motion.article
-                                    key={card.title}
-                                    className="flex flex-row gap-5 p-6 rounded-2xl border border-gray-200 bg-gray-50 hover:shadow-lg transition-all hover:border-[var(--accent-color)] hover:bg-white"
+                            {additionalFeatures.map((feature, index) => (
+                                <motion.div
+                                    key={feature.title}
+                                    className="flex-1 flex flex-col gap-3 p-6 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:shadow-md transition-all"
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: index * 0.05, duration: 0.3 }}
-                                    whileHover={{ scale: 1.01, x: 10, transition: { duration: 0.2 } }}
+                                    transition={{ delay: index * 0.08, duration: 0.3 }}
+                                    whileHover={{ y: -5, scale: 1.01, transition: { duration: 0.2 } }}
                                 >
                                     <motion.div
-                                        className="flex items-center justify-center w-14 h-14 flex-shrink-0 rounded-xl bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white text-2xl"
-                                        whileHover={{ rotate: 360, scale: 1.05, transition: { duration: 0.3 } }}
+                                        className={`flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br ${feature.bg} text-white text-xl`}
+                                        whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.05, transition: { duration: 0.3 } }}
                                     >
-                                        <card.icon />
+                                        <feature.icon />
                                     </motion.div>
-                                    <div className="flex flex-col gap-2">
-                                        <h3 className="text-xl font-semibold">{card.title}</h3>
-                                        <p className="text-sm text-gray-600 leading-relaxed">{card.text}</p>
-                                    </div>
-                                </motion.article>
+                                    <h4 className="text-lg font-bold text-[var(--secondary-color)]">{feature.title}</h4>
+                                    <p className="text-sm text-gray-600 leading-relaxed">{feature.text}</p>
+                                </motion.div>
                             ))}
                         </motion.div>
-
-                        {/* Visual Element */}
-                        <motion.div
-                            className="flex-1 flex justify-center items-center"
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.4 }}
-                        >
-                            <motion.div
-                                className="relative"
-                            >
-                                <div className="rounded-full"></div>
-                                <img src={Teacher} alt="Learning illustration" className="relative w-full max-w-md drop-shadow-2xl" />
-                            </motion.div>
-                        </motion.div>
                     </div>
-
-                    {/* Additional Features Grid */}
-                    <motion.div
-                        className="flex flex-col md:flex-row gap-6"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4 }}
-                    >
-                        {additionalFeatures.map((feature, index) => (
-                            <motion.div
-                                key={feature.title}
-                                className="flex-1 flex flex-col gap-3 p-6 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:shadow-md transition-all"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.08, duration: 0.3 }}
-                                whileHover={{ y: -5, scale: 1.01, transition: { duration: 0.2 } }}
-                            >
-                                <motion.div
-                                    className={`flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br ${feature.bg} text-white text-xl`}
-                                    whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.05, transition: { duration: 0.3 } }}
-                                >
-                                    <feature.icon />
-                                </motion.div>
-                                <h4 className="text-lg font-bold text-[var(--secondary-color)]">{feature.title}</h4>
-                                <p className="text-sm text-gray-600 leading-relaxed">{feature.text}</p>
-                            </motion.div>
-                        ))}
-                    </motion.div>
                 </div>
             </div>
+            
         </section>
     );
 };

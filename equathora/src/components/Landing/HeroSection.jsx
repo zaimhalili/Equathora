@@ -64,9 +64,9 @@ const HeroSection = () => {
                         transition={{ delay: 0.3, duration: 0.3 }}
                     >
                         {[
-                            { label: 'Problems', value: '50+' },
+                            { label: 'Problems', value: '30+' },
                             { label: 'Achievements', value: '30+' },
-                            { label: 'Topics', value: '20+' },
+                            { label: 'Topics', value: '5+' },
                         ].map((item, index) => (
                             <motion.div
                                 key={item.label}
