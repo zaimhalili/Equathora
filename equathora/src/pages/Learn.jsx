@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
@@ -69,15 +70,25 @@ const Learn = () => {
           <Navbar></Navbar>
         </header>
         <section id='hero-learn'>
-          <article id='welcome-learn'>
+          <motion.article 
+            id='welcome-learn'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <figure><img src={Idea} alt="idea image" /></figure>
             <div id="learn-explore">
               <h1>Explore the Math <br />exercises on <span style={{ color: 'var(--dark-accent-color)' }}>Equathora</span></h1>
               <h4>Unlock more exercises as you progress. They're great practise and fun to do!</h4>
             </div>
-          </article>
+          </motion.article>
 
-          <article id='search-filtering'>
+          <motion.article 
+            id='search-filtering'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
 
             <div id="searchbar-and-icon">
               <FaSearch
@@ -138,12 +149,25 @@ const Learn = () => {
               </button>
             </div>
 
-          </article>
-          <article id='problems-container'>
-            {filteredProblems.map(problem => (
-              <ProblemCard key={problem.id} problem={problem} />
+          </motion.article>
+          <motion.article 
+            id='problems-container'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            {filteredProblems.map((problem, index) => (
+              <motion.div
+                key={problem.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: 0.3 + index * 0.05 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <ProblemCard problem={problem} />
+              </motion.div>
             ))}
-          </article>
+          </motion.article>
         </section>
 
         <footer>

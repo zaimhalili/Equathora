@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Hero from '../components/ApplyMentor/Hero';
 import Footer from '../components/Footer';
@@ -12,23 +13,29 @@ import { FaCheckCircle, FaUsers, FaChalkboardTeacher, FaHeart, FaArrowRight, FaS
 
 const ApplyMentor = () => {
     return (
-        <div className='text-[var(--secondary-color)] font-[Inter] w-full bg-[var(--main-color)]'>
+        <div className='text-[var(--secondary-color)] font-[Inter] w-full bg-gradient-to-b from-blue-50 via-white to-purple-50'>
             <header><Navbar /></header>
 
             {/* Hero Section */}
             <Hero />
 
             {/* Benefits Section */}
-            <section className='bg-[var(--main-color)] px-[4vw] xl:px-[6vw] py-12'>
-                <div className='w-full max-w-[1500px] flex flex-col items-center gap-8'>
-                    <div className='text-center flex flex-col gap-2'>
-                        <h2 className='text-2xl md:text-3xl font-bold font-[DynaPuff]'>Why Become a Mentor?</h2>
-                        <p className='text-sm md:text-base text-gray-600 max-w-2xl'>
-                            Join a vibrant community making math accessible and enjoyable for everyone
-                        </p>
-                    </div>
+            <section className='flex justify-center w-full'>
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className='w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8'
+                >
+                    <div className='flex flex-col items-center gap-6'>
+                        <div className='text-center flex flex-col gap-2'>
+                            <h2 className='text-2xl md:text-3xl font-bold font-[DynaPuff]'>Why Become a Mentor?</h2>
+                            <p className='text-sm md:text-base text-gray-600 max-w-2xl'>
+                                Join a vibrant community making math accessible and enjoyable for everyone
+                            </p>
+                        </div>
 
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full'>
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full'>
                         {[
                             {
                                 icon: <FaGraduationCap className='text-xl' />,
@@ -67,8 +74,12 @@ const ApplyMentor = () => {
                                 gradient: 'from-indigo-500 to-blue-500'
                             }
                         ].map((benefit, index) => (
-                            <div
+                            <motion.div
                                 key={index}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
+                                whileHover={{ scale: 1.02 }}
                                 className='relative bg-white p-5 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 flex flex-col gap-3 overflow-hidden group'
                             >
                                 <div className={`absolute inset-0 bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-200`}></div>
@@ -77,27 +88,40 @@ const ApplyMentor = () => {
                                 </div>
                                 <h3 className='relative text-base md:text-lg font-bold'>{benefit.title}</h3>
                                 <p className='relative text-sm text-gray-600 leading-relaxed'>{benefit.description}</p>
-                            </div>
+                            </motion.div>
                         ))}
+                        </div>
                     </div>
-                </div>
+                </motion.div>
             </section>
 
             {/* Who Can Apply Section */}
-            <section className='bg-gradient-to-b from-[var(--main-color)] to-[var(--mid-main-secondary)] px-[4vw] xl:px-[6vw] py-12'>
-                <div className='w-full max-w-[1500px] flex flex-col items-center gap-8'>
-                    <div className='text-center flex flex-col gap-2'>
-                        <h2 className='text-2xl md:text-3xl font-bold font-[DynaPuff]'>
-                            Who Can <span className='text-[var(--accent-color)]'>Apply?</span>
-                        </h2>
-                        <p className='text-sm md:text-base text-gray-600 max-w-2xl'>
-                            All backgrounds welcome,share your passion for teaching
-                        </p>
-                    </div>
+            <section className='flex justify-center w-full bg-gradient-to-b from-white to-gray-50'>
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                    className='w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8'
+                >
+                    <div className='flex flex-col items-center gap-6'>
+                        <div className='text-center flex flex-col gap-2'>
+                            <h2 className='text-2xl md:text-3xl font-bold font-[DynaPuff]'>
+                                Who Can <span className='text-[var(--accent-color)]'>Apply?</span>
+                            </h2>
+                            <p className='text-sm md:text-base text-gray-600 max-w-2xl'>
+                                All backgrounds welcome, share your passion for teaching
+                            </p>
+                        </div>
 
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full'>
-                        {/* Community Mentors */}
-                        <div className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col border-2 border-transparent hover:border-blue-200'>
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full'>
+                            {/* Community Mentors */}
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.3, delay: 0.4 }}
+                                whileHover={{ scale: 1.02 }}
+                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col border-2 border-transparent hover:border-blue-200'
+                            >
                             <div className='relative h-48 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden'>
                                 <img
                                     src={skate}
@@ -119,10 +143,16 @@ const ApplyMentor = () => {
                                     <span className='px-3 py-1 bg-gradient-to-r from-pink-100 to-red-100 text-pink-700 rounded-full text-xs font-semibold'>Solutions</span>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
 
                         {/* Teachers */}
-                        <div className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col border-2 border-transparent hover:border-green-200'>
+                        <motion.div 
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3, delay: 0.5 }}
+                            whileHover={{ scale: 1.02 }}
+                            className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col border-2 border-transparent hover:border-green-200'
+                        >
                             <div className='relative h-48 bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center overflow-hidden'>
                                 <img
                                     src={teachers}
@@ -144,10 +174,16 @@ const ApplyMentor = () => {
                                     <span className='px-3 py-1 bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700 rounded-full text-xs font-semibold'>Feedback</span>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
 
                         {/* Parents */}
-                        <div className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col border-2 border-transparent hover:border-orange-200 md:col-span-2 lg:col-span-1'>
+                        <motion.div 
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3, delay: 0.6 }}
+                            whileHover={{ scale: 1.02 }}
+                            className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col border-2 border-transparent hover:border-orange-200 md:col-span-2 lg:col-span-1'
+                        >
                             <div className='relative h-48 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center overflow-hidden'>
                                 <img
                                     src={parents}
@@ -169,18 +205,25 @@ const ApplyMentor = () => {
                                     <span className='px-3 py-1 bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 rounded-full text-xs font-semibold'>Support</span>
                                 </div>
                             </div>
+                        </motion.div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </section>
 
             {/* Final CTA Section */}
-            <section className='relative bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] text-white px-[4vw] xl:px-[6vw] py-12 overflow-hidden'>
+            <section className='relative w-full flex justify-center bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] text-white overflow-hidden'>
                 <div className='absolute top-0 right-0 w-64 h-64 bg-[var(--accent-color)] rounded-full opacity-10 blur-3xl'></div>
                 <div className='absolute bottom-0 left-0 w-48 h-48 bg-blue-400 rounded-full opacity-10 blur-3xl'></div>
 
-                <div className='relative z-10 w-full max-w-[1500px] flex flex-col lg:flex-row items-center gap-8'>
-                    <div className='flex-1 flex flex-col text-center lg:text-left gap-5'>
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.7 }}
+                    className='relative z-10 w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8'
+                >
+                    <div className='flex flex-col lg:flex-row items-center gap-8'>
+                        <div className='flex-1 flex flex-col text-center lg:text-left gap-5'>
                         <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-[var(--accent-color)]/20 border border-[var(--accent-color)]/50 rounded-full text-[var(--accent-color)] text-xs font-semibold self-center lg:self-start'>
                             COMING SOON
                         </div>
@@ -218,16 +261,17 @@ const ApplyMentor = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </div>
 
-                    <div className='flex-1 flex justify-center lg:justify-end'>
-                        <img
-                            src={achievements}
-                            alt="Join waitlist"
-                            className='w-64 md:w-80 lg:w-96 drop-shadow-2xl'
-                        />
+                        <div className='flex-1 flex justify-center lg:justify-end'>
+                            <img
+                                src={achievements}
+                                alt="Join waitlist"
+                                className='w-64 md:w-80 lg:w-96 drop-shadow-2xl'
+                            />
+                        </div>
                     </div>
-                </div>
+                </motion.div>
             </section>
 
             {/* Footer */}

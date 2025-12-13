@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ReputationBadge from '../components/ReputationBadge';
@@ -81,7 +82,12 @@ const Profile = () => {
           {/* Two Column Layout */}
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
             {/* Left Column - Combined Profile, Stats, and Topics */}
-            <div className='lg:col-span-1 flex flex-col gap-4'>
+            <motion.div 
+              className='lg:col-span-1 flex flex-col gap-4'
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               {/* Combined Card */}
               <div className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-6'>
                 {/* Profile Header Section */}
@@ -148,12 +154,17 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Right Column - Stacked cards */}
             <div className='lg:col-span-2 flex flex-col gap-4'>
               {/* Statistics Card */}
-              <div className='bg-[var(--main-color)] rounded-xl shadow-lg p-6'>
+              <motion.div 
+                className='bg-[var(--main-color)] rounded-xl shadow-lg p-6'
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
                 <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Statistics</h5>
                 <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
                   {/* Circular Progress Indicator */}
@@ -251,20 +262,32 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Solved Problems Card */}
-              <div className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-5'>
+              <motion.div 
+                className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-5'
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
                 <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Solved Problems</h5>
                 <div className='flex flex-col gap-1 text-[var(--secondary-color)] hover:text-black'>
                   {userData.problemsSolved.map((problem, i) => (
-                    <Link
+                    <motion.div
                       key={i}
-                      to={`/problems/${problem.groupId}/${problem.id}`}
-                      className={`w-full px-5 py-4 hover:scale-99 transition-all text-[var(--secondary-color)] duration-300 rounded-md text-md ${i % 2 === 0 ? 'bg-[var(--french-gray)]' : 'bg-[var(--main-color)]'}`}>{problem.title}</Link>
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: 0.3 + i * 0.05 }}
+                      whileHover={{ scale: 1.01 }}
+                    >
+                      <Link
+                        to={`/problems/${problem.groupId}/${problem.id}`}
+                        className={`w-full px-5 py-4 transition-all text-[var(--secondary-color)] duration-300 rounded-md text-md block ${i % 2 === 0 ? 'bg-[var(--french-gray)]' : 'bg-[var(--main-color)]'}`}>{problem.title}</Link>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>

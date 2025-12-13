@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
@@ -34,70 +35,129 @@ const Dashboard = () => {
         <div className='flex w-full justify-center items-center'>
           <div className='flex flex-col lg:flex-row justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>
             <section className="flex flex-col items-center justify-center w-full lg:w-[70%]">
-              <article className="text-[var(--secondary-color)] font-[Inter] w-full cursor-default flex flex-col items-center md:items-start">
-                <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[DynaPuff] font-medium">
+              <motion.article 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-[var(--secondary-color)] font-[Inter] w-full cursor-default flex flex-col items-center md:items-start"
+              >
+                <motion.h1 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="text-4xl text-center md:text-left pb-2 cursor-default font-[DynaPuff] font-medium"
+                >
                   Welcome Back, <span className="text-[var(--secondary-color)]">{username}</span>!
-                </h1>
-                <h4 className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] w-4/5 lg:w-[90%] cursor-default">
+                </motion.h1>
+                <motion.h4 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] w-4/5 lg:w-[90%] cursor-default"
+                >
                   Tackle fun math and logic challenges with guided support to master your topics. <span className="font-semibold">Equathora is open, student-centered, and built to grow with you.</span>
-                </h4>
+                </motion.h4>
 
                 {/* Where To Start Section */}
-                <div className="flex flex-col text-center sm:text-left pt-8 pb-8">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="flex flex-col text-center sm:text-left pt-8 pb-8"
+                >
                   <h3 className="text-[var(--secondary-color)] font-[Inter] text-2xl font-bold pb-2">
                     Where To Start...
                   </h3>
 
                   {/* Blocks - Squares */}
                   <div className="w-full pt-2 gap-0.5 lg:gap-[2px] flex flex-wrap justify-center sm:justify-start">
-                    <Link
-                      to={`/problems/${dailyGroupId}/${dailyProblemId}`}
-                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: 0.4 }}
+                      whileHover={{ scale: 1.05 }}
                     >
-                      <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                      <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
-                        Solve the daily challenge
-                      </h6>
-                    </Link>
+                      <Link
+                        to={`/problems/${dailyGroupId}/${dailyProblemId}`}
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                      >
+                        <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                        <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
+                          Solve the daily challenge
+                        </h6>
+                      </Link>
+                    </motion.div>
 
-                    <Link
-                      to="/learn"
-                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: 0.5 }}
+                      whileHover={{ scale: 1.05 }}
                     >
-                      <img src={Books} alt="books" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                      <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
-                        Browse problems
-                      </h6>
-                    </Link>
+                      <Link
+                        to="/learn"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                      >
+                        <img src={Books} alt="books" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                        <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
+                          Browse problems
+                        </h6>
+                      </Link>
+                    </motion.div>
 
-                    <Link
-                      to="/applyMentor"
-                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: 0.6 }}
+                      whileHover={{ scale: 1.05 }}
                     >
-                      <img src={Mentoring} alt="mentoring" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                      <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
-                        Try mentoring
-                      </h6>
-                    </Link>
+                      <Link
+                        to="/applyMentor"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                      >
+                        <img src={Mentoring} alt="mentoring" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                        <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
+                          Try mentoring
+                        </h6>
+                      </Link>
+                    </motion.div>
 
-                    <Link
-                      to="/leaderboards/global"
-                      className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4, delay: 0.7 }}
+                      whileHover={{ scale: 1.05 }}
                     >
-                      <img src={Leaderboards} alt="leaderboards" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                      <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
-                        Join the race
-                      </h6>
-                    </Link>
+                      <Link
+                        to="/leaderboards/global"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-200 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)]"
+                      >
+                        <img src={Leaderboards} alt="leaderboards" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                        <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
+                          Join the race
+                        </h6>
+                      </Link>
+                    </motion.div>
                   </div>
-                </div>
-              </article>
-              <YourTrack />
+                </motion.div>
+              </motion.article>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
+                <YourTrack />
+              </motion.div>
 
             </section>
 
             {/* Aside Section - Image and Apply to be a Mentor */}
-            <aside className='flex flex-col w-full lg:w-[30%] gap-8'>
+            <motion.aside 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className='flex flex-col w-full lg:w-[30%] gap-8'
+            >
               <figure className="hidden lg:flex justify-center max-h-[200px]">
                 <img src={Teacher} alt="teacher" loading='lazy' className="" />
               </figure>
@@ -158,14 +218,18 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-            </aside>
+            </motion.aside>
           </div>
         </div>
 
         {/* Community Posts - That Leads to Forum, Blog and News Page */}
-        <article>
+        <motion.article
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.9 }}
+        >
           <CommunityPosts />
-        </article>
+        </motion.article>
 
         <footer>
           <Footer />

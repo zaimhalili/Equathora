@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
@@ -9,42 +10,60 @@ const About = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] min-h-screen">
+            <div className="w-full bg-gradient-to-b from-blue-50 via-white to-purple-50 min-h-screen">
                 <Navbar />
-                <main className="w-full">
+                <main className="w-full flex justify-center">
                     {/* Hero - Full Width Clean */}
-                    <section className="w-full px-[4vw] xl:px-[12vw] py-20">
-                        <div className="w-full flex flex-col items-center text-center">
-                            <h1 className="text-5xl md:text-6xl font-bold font-[DynaPuff] pb-4">
+                    <section className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-12">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="w-full flex flex-col items-center text-center"
+                        >
+                            <h1 className="text-4xl md:text-5xl font-bold font-[DynaPuff] pb-4">
                                 <span className="bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] bg-clip-text text-transparent">About Equathora</span>
                             </h1>
-                            <p className="text-lg text-gray-600 font-[Inter] max-w-2xl leading-relaxed">
-                                Where equations meet time,a platform built for mathematical mastery in 2025
+                            <p className="text-base text-gray-600 font-[Inter] max-w-2xl leading-relaxed">
+                                Where equations meet time, a platform built for mathematical mastery in 2025
                             </p>
-                        </div>
+                        </motion.div>
                     </section>
 
                     {/* Stats - Horizontal Bar */}
-                    <section className="w-full bg-gradient-to-r from-[var(--secondary-color)] via-[var(--secondary-color)] to-[var(--accent-color)]/20 py-12">
-                        <div className="w-full px-[4vw] xl:px-[12vw] flex flex-wrap justify-around items-center gap-8">
-                            <div className="flex flex-col items-center">
-                                <div className="text-4xl font-bold text-white">30+</div>
-                                <div className="text-sm text-white/70">Curated Problems</div>
+                    <section className="w-full flex justify-center">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                            className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-4"
+                        >
+                            <div className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-md p-6 flex flex-wrap justify-around items-center gap-4 text-white shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
+                                <div className="flex flex-col items-center gap-1">
+                                    <div className="text-2xl font-bold text-white">30+</div>
+                                    <div className="text-sm text-white opacity-90">Curated Problems</div>
+                                </div>
+                                <div className="flex flex-col items-center gap-1">
+                                    <div className="text-2xl font-bold text-white">20+</div>
+                                    <div className="text-sm text-white opacity-90">Topics Covered</div>
+                                </div>
+                                <div className="flex flex-col items-center gap-1">
+                                    <div className="text-2xl font-bold text-white">2025</div>
+                                    <div className="text-sm text-white opacity-90">Year Launched</div>
+                                </div>
                             </div>
-                            <div className="flex flex-col items-center">
-                                <div className="text-4xl font-bold text-white">20+</div>
-                                <div className="text-sm text-white/70">Topics Covered</div>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <div className="text-4xl font-bold text-white">2025</div>
-                                <div className="text-sm text-white/70">Year Launched</div>
-                            </div>
-                        </div>
+                        </motion.div>
                     </section>
 
                     {/* Story - Two Column Layout */}
-                    <section className="w-full px-[4vw] xl:px-[12vw] py-20">
-                        <div className="w-full flex flex-col lg:flex-row gap-16">
+                    <section className="w-full flex justify-center">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
+                        >
+                            <div className="w-full flex flex-col lg:flex-row gap-12">
                             {/* Left Column */}
                             <div className="lg:w-1/2">
                                 <div className="flex items-center gap-3 pb-6">
@@ -86,12 +105,17 @@ const About = () => {
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     </section>
 
                     {/* Developer - Split Screen */}
-                    <section className="w-full bg-gradient-to-b from-gray-50 to-white py-20">
-                        <div className="w-full px-[4vw] xl:px-[12vw]">
+                    <section className="w-full flex justify-center bg-gradient-to-b from-white to-gray-50">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                            className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
+                        >
                             <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-12">
                                 Built by a Developer Who Understands Learning
                             </h2>
@@ -153,27 +177,39 @@ const About = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     </section>
 
                     {/* Mission - Full Width Text Block */}
-                    <section className="w-full px-[4vw] xl:px-[12vw] py-20">
+                    <section className="w-full flex justify-center">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                            className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
+                        >
                         <div className="w-full flex flex-col items-center text-center">
                             <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6">
                                 Our Mission
                             </h2>
                             <p className="text-lg text-gray-700 leading-relaxed max-w-3xl">
-                                Transform how students approach mathematics,not as a subject to fear, but as a journey of discovery. We provide an interactive platform where learners build confidence through step-by-step guidance and achievement-based motivation.
+                                Transform how students approach mathematics, not as a subject to fear, but as a journey of discovery. We provide an interactive platform where learners build confidence through step-by-step guidance and achievement-based motivation.
                             </p>
-                        </div>
+                        </motion.div>
                     </section>
 
                     {/* Features - Bento Grid Style */}
-                    <section className="w-full bg-gradient-to-b from-white to-gray-50 px-[4vw] xl:px-[12vw] py-20">
-                        <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-12 text-center">
-                            What Makes Us Different
-                        </h2>
-                        <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <section className="w-full flex justify-center bg-gradient-to-b from-gray-50 to-white">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                            className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
+                        >
+                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[DynaPuff] pb-6 text-center">
+                                What Makes Us Different
+                            </h2>
+                            <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {[
                                 { icon: '✏️', title: 'Math Editor', desc: 'Natural LaTeX input with real-time preview' },
                                 { icon: '💡', title: 'Smart Hints', desc: 'Progressive guidance that adapts to your level' },
@@ -182,39 +218,54 @@ const About = () => {
                                 { icon: '📚', title: '50+ Problems', desc: 'Curated library across 20+ topics' },
                                 { icon: '🎯', title: 'Leaderboards', desc: 'Compete globally, grow together' }
                             ].map((feature, idx) => (
-                                <div key={idx} className="p-8 bg-white border border-gray-200 hover:border-[var(--accent-color)] hover:shadow-[0_4px_16px_rgba(217,4,41,0.1)] transition-all duration-200">
-                                    <div className="text-5xl pb-4">{feature.icon}</div>
-                                    <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-3">{feature.title}</h3>
-                                    <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
-                                </div>
+                                <motion.div 
+                                    key={idx}
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.3, delay: 0.6 + idx * 0.05 }}
+                                    whileHover={{ scale: 1.02 }}
+                                    className="p-6 bg-white rounded-md border border-gray-200 hover:border-[var(--accent-color)] hover:shadow-[0_10px_10px_rgba(141,153,174,0.3)] transition-all duration-200"
+                                >
+                                    <div className="text-4xl pb-3">{feature.icon}</div>
+                                    <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-2">{feature.title}</h3>
+                                    <p className="text-sm text-gray-600 leading-relaxed">{feature.desc}</p>
+                                </motion.div>
                             ))}
-                        </div>
+                            </div>
+                        </motion.div>
                     </section>
 
                     {/* CTA - Centered Simple */}
-                    <section className="w-full px-[4vw] xl:px-[12vw] py-20">
-                        <div className="w-full flex flex-col items-center text-center">
-                            <h2 className="text-4xl font-bold text-[var(--secondary-color)] font-[Inter] pb-4">
-                                Ready to Start Learning?
-                            </h2>
-                            <p className="text-lg text-gray-600 pb-8 max-w-2xl">
-                                Join students mastering mathematics through interactive problem-solving
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <Link
-                                    to="/signup"
-                                    className="px-8 py-4 bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] text-white rounded font-semibold hover:shadow-[0_4px_16px_rgba(217,4,41,0.3)] transition-all duration-200 no-underline text-center"
-                                >
-                                    Get Started Free
-                                </Link>
-                                <Link
-                                    to="/learn"
-                                    className="px-8 py-4 bg-white text-[var(--secondary-color)] border-2 border-[var(--accent-color)] rounded font-semibold hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--secondary-color)] hover:text-white hover:border-transparent transition-all duration-200 no-underline text-center"
-                                >
-                                    Explore Problems
-                                </Link>
+                    <section className="w-full flex justify-center">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.7 }}
+                            className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
+                        >
+                            <div className="w-full flex flex-col items-center text-center">
+                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[DynaPuff] pb-4">
+                                    Ready to Start Learning?
+                                </h2>
+                                <p className="text-base text-gray-600 pb-6 max-w-2xl">
+                                    Join students mastering mathematics through interactive problem-solving
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4">
+                                    <Link
+                                        to="/signup"
+                                        className="px-6 py-3 bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] text-white rounded-md font-semibold hover:shadow-[0_10px_10px_rgba(141,153,174,0.3)] transition-all duration-200 no-underline text-center text-base"
+                                    >
+                                        Get Started Free
+                                    </Link>
+                                    <Link
+                                        to="/learn"
+                                        className="px-6 py-3 bg-white text-[var(--secondary-color)] border-2 border-[var(--accent-color)] rounded-md font-semibold hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--secondary-color)] hover:text-white hover:border-transparent transition-all duration-200 no-underline text-center text-base"
+                                    >
+                                        Explore Problems
+                                    </Link>
+                                </div>
                             </div>
-                        </div>
+                        </motion.div>
                     </section>
                 </main>
                 <Footer />
