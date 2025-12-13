@@ -53,19 +53,13 @@ const FeaturesSection = () => {
                 <div className="z-10">
                     <div className="flex flex-col gap-5 md:gap-16">
                         <motion.div
-                            className="flex flex-col gap-2 items-center text-center"
+                            className="flex flex-col gap-2 items-center text-center font-[Inter] text-[var(--accent-color)] font-bold"
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.3 }}
                         >
-                            <GradientText
-                                className="flex text-3xl font-bold sm:text-5xl"
-                                colors={['#d90429', '#2b2d42', '#d90429']}
-                                animationSpeed={6}
-                            >
-                                Everything you need to excel
-                            </GradientText>
+                            Everything you need to excel
                             <p className="text-gray-600 text-lg max-w-2xl">Powerful features designed to accelerate your math learning journey</p>
                         </motion.div>
 
@@ -151,7 +145,7 @@ const FeaturesSection = () => {
                     </div>
                 </div>
             </div>
-            
+
         </section>
     );
 };

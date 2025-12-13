@@ -37,19 +37,13 @@ const WhyChooseSection = () => {
             <div className="max-w-6xl px-8 py-24 relative z-10" style={{ margin: '0 auto' }}>
                 <div className="flex flex-col gap-16">
                     <motion.div
-                        className="flex flex-col gap-4 text-center"
+                        className="flex flex-col gap-4 text-center text-3xl font-bold sm:text-4xl text-[var(--secondary-color]"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <GradientText
-                            className="text-3xl font-bold sm:text-4xl"
-                            colors={['#d90429', '#2b2d42', '#d90429']}
-                            animationSpeed={6}
-                        >
-                            Why choose Equathora?
-                        </GradientText>
+                        Why choose Equathora?
                         <p className="text-gray-600 text-lg">Built differently for better results</p>
                     </motion.div>
 
