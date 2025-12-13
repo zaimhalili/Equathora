@@ -49,7 +49,7 @@ const CTASection = () => {
                             to="/dashboard"
                             className="flex items-center gap-3 rounded-xl bg-white px-10 py-4 text-lg font-semibold text-[var(--accent-color)] transition-all hover:bg-gray-100 hover:gap-4 shadow-xl hover:shadow-2xl"
                         >
-                            Start for free
+                            Start your first session
                             <FaArrowRight />
                         </Link>
                     </motion.div>
@@ -60,7 +60,7 @@ const CTASection = () => {
                         viewport={{ once: true }}
                         transition={{ delay: 0.25, duration: 0.3 }}
                     >
-                        No credit card required • Free forever
+                        Track your progress at your own pace
                     </motion.p>
                 </motion.div>
             </div>

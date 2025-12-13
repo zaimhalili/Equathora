@@ -49,7 +49,7 @@ const Waitlist = () => {
                                     <FaArrowRight />
                                 </button>
                                 <p className="flex items-center justify-center text-sm text-[var(--secondary-color)]/60 text-center">
-                                    Free forever • No credit card required • Unsubscribe anytime
+                                    Early access spots are limited • No credit card required • Unsubscribe anytime
                                 </p>
                             </div>
 

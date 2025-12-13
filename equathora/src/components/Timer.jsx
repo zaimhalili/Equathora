@@ -1,8 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Timer.css';
 
-const Timer = () => {
-    const [time, setTime] = useState(0);
+const getStoredTime = (storageKey) => {
+    if (typeof window === 'undefined') return 0;
+    const raw = window.localStorage.getItem(storageKey);
+    const parsed = Number(raw);
+    return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+};
+
+const Timer = ({ problemId }) => {
+    const storageKey = problemId ? `eq:problemTime:${problemId}` : 'eq:problemTime:global';
+    const [time, setTime] = useState(() => getStoredTime(storageKey));
     const [running, setRunning] = useState(true);
     const timer = useRef();
 
@@ -21,11 +29,20 @@ const Timer = () => {
     useEffect(() => {
         if (running) {
             timer.current = setInterval(() => {
-                setTime(prev => prev + 1);  
+                setTime(prev => prev + 1);
             }, 1000);
         }
         return () => clearInterval(timer.current);
     }, [running]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        window.localStorage.setItem(storageKey, String(time));
+    }, [time, storageKey]);
+
+    useEffect(() => {
+        setTime(getStoredTime(storageKey));
+    }, [storageKey]);
 
     return (
         <div className='stopwatch'>

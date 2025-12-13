@@ -256,7 +256,7 @@ const Problem = () => {
             <span className="sm:hidden">Back</span>
           </Link>
           <div className="flex gap-2 md:gap-4 items-center">
-            <Timer />
+            <Timer problemId={problem?.id} />
             <button
               onClick={() => setShowHelpModal(true)}
               className="bg-transparent border-2 border-[var(--french-gray)] px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-[38px] md:h-[42px]"
