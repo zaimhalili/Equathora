@@ -141,7 +141,7 @@ const Waitlist = () => {
                                 <div className="text-xl opacity-90">On Waitlist</div>
                             </div>
                             <div className="flex flex-col items-center justify-center gap-2">
-                                <div className="text-5xl md:text-6xl font-black">Q1 2026</div>
+                                <div className="text-5xl md:text-6xl font-black">2026</div>
                                 <div className="text-xl opacity-90">Launch Date</div>
                             </div>
                             <div className="flex flex-col items-center justify-center gap-2">
@@ -163,7 +163,7 @@ const Waitlist = () => {
                             {[
                                 {
                                     q: 'When will the platform launch?',
-                                    a: 'We\'re targeting Q1 2026 for the full launch with user accounts and cloud sync. Beta access is available now.'
+                                    a: 'We\'re targeting 2026 for the full launch with user accounts and cloud sync. Beta access is available now.'
                                 },
                                 {
                                     q: 'Is there any cost to join?',

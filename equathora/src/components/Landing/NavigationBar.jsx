@@ -115,13 +115,13 @@ const NavigationBar = () => {
     ]
 
     const notificationItems = [
-        {
-            to: '/notifications',
-            text: "All Notifications",
-            description: "View everything at once.",
-            image: Notifications,
-            notificationsNo: "4"
-        },
+        // {
+        //     to: '/notifications',
+        //     text: "All Notifications",
+        //     description: "View everything at once.",
+        //     image: Notifications,
+        //     notificationsNo: "4"
+        // },
         {
             to: '/systemupdates',
             text: "System Updates",

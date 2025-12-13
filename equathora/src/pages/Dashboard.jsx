@@ -30,7 +30,7 @@ const Dashboard = () => {
         </header>
 
         {/* Hero Section */}
-        <div className='flex w-full justify-center items-center'>
+        <div className='flex w-full justify-center items-center pb-35'>
           <div className='flex flex-col lg:flex-row justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>
             <section className="flex flex-col items-center justify-center w-full lg:w-[70%]">
               <motion.article
@@ -222,13 +222,13 @@ const Dashboard = () => {
         </div>
 
         {/* Community Posts - That Leads to Forum, Blog and News Page */}
-        <motion.article
+        {/* <motion.article
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.9 }}
         >
           <CommunityPosts />
-        </motion.article>
+        </motion.article> */}
 
         <footer>
           <Footer />

@@ -44,8 +44,8 @@ const Feedback = () => {
         };
 
         try {
-            // Send feedback to FormSubmit.co (replace with your actual email)
-            const response = await fetch('https://formsubmit.co/equathora@gmail.com', {
+            // Send feedback to FormSubmit.co
+            const response = await fetch('https://formsubmit.co/14558baaab9f5a1e34822be7e3151850', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

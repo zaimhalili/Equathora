@@ -48,19 +48,19 @@ const FeaturesSection = () => {
     ];
 
     return (
-        <section className="px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-10 gap-8 w-full bg-white border-b border-gray-100 relative overflow-hidden flex justify-center">
-            <div className="flex justify-center">
+        <section className="w-full bg-white border-b border-gray-100 relative overflow-hidden">
+            <div className="max-w-6xl px-8 py-16" style={{ margin: '0 auto' }}>
                 <div className="z-10">
                     <div className="flex flex-col gap-5 md:gap-16">
                         <motion.div
-                            className="flex flex-col gap-2 items-center text-center font-[Inter] text-[var(--accent-color)] font-bold"
+                            className="flex flex-col gap-4 text-center text-3xl font-bold sm:text-4xl text-[var(--secondary-color)]"
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.3 }}
+                            transition={{ duration: 0.6 }}
                         >
                             Everything you need to excel
-                            <p className="text-gray-600 text-lg max-w-2xl">Powerful features designed to accelerate your math learning journey</p>
+                            <p className="text-gray-600 text-lg">Powerful features designed to accelerate your math learning journey</p>
                         </motion.div>
 
                         {/* Main Feature Showcase */}
@@ -145,7 +145,6 @@ const FeaturesSection = () => {
                     </div>
                 </div>
             </div>
-
         </section>
     );
 };

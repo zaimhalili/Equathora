@@ -19,7 +19,7 @@ const Footer = () => {
           </h1>
           <div id="socialMedia-container">
             <a
-              href="https://www.linkedin.com/in/yourprofile"
+              href="https://www.linkedin.com/in/equathora-undefined-572032394/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Connect with us on LinkedIn"
@@ -28,7 +28,7 @@ const Footer = () => {
               <FaLinkedin />
             </a>
             <a
-              href="https://www.instagram.com/yourusername"
+              href="https://www.instagram.com/equathora/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow us on Instagram"
@@ -38,7 +38,7 @@ const Footer = () => {
             </a>
 
             <a
-              href="https://www.facebook.com/yourpage"
+              href="https://www.instagram.com/equathora/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Like us on Facebook"

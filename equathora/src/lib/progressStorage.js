@@ -2,13 +2,28 @@
 // This will be replaced with backend API calls in v1.1
 
 // Generate a unique device ID to prevent cross-device sync issues
+// Using sessionStorage to ensure it NEVER syncs between devices
 const getDeviceId = () => {
     const DEVICE_ID_KEY = 'equathora_device_id';
-    let deviceId = localStorage.getItem(DEVICE_ID_KEY);
+    // Check sessionStorage first (never syncs)
+    let deviceId = sessionStorage.getItem(DEVICE_ID_KEY);
 
     if (!deviceId) {
-        // Create a unique device ID using timestamp + random string
-        deviceId = `device_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+        // Check if we have it in localStorage from before
+        deviceId = localStorage.getItem(DEVICE_ID_KEY);
+
+        if (!deviceId) {
+            // Create a completely unique device ID using multiple entropy sources
+            const timestamp = Date.now();
+            const random1 = Math.random().toString(36).substring(2, 15);
+            const random2 = Math.random().toString(36).substring(2, 15);
+            const userAgent = navigator.userAgent.substring(0, 10);
+            deviceId = `device_${timestamp}_${random1}_${random2}_${btoa(userAgent).substring(0, 8)}`;
+        }
+
+        // Store in sessionStorage (which never syncs across devices)
+        sessionStorage.setItem(DEVICE_ID_KEY, deviceId);
+        // Also keep a backup in localStorage
         localStorage.setItem(DEVICE_ID_KEY, deviceId);
     }
 

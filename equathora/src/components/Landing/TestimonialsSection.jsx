@@ -32,15 +32,8 @@ const TestimonialsSection = () => {
         <section className="w-full bg-gray-50 border-b border-gray-100 overflow-hidden">
             <div className="max-w-6xl px-8 py-20" style={{ margin: '0 auto' }}>
                 <div className="flex flex-col gap-12">
-                    <div className="flex flex-col gap-4 text-center">
-                        <h2 className="text-3xl font-bold sm:text-4xl" style={{
-                            background: 'linear-gradient(135deg, var(--accent-color) 0%, var(--dark-accent-color) 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text'
-                        }}>
-                            Early feedback from our beta community
-                        </h2>
+                    <div className="flex flex-col gap-4 text-center text-3xl font-bold sm:text-4xl text-[var(--secondary-color)]">
+                        Early feedback from our beta community
                         <p className="text-gray-600 text-lg">What our early testers are saying</p>
                     </div>
 
