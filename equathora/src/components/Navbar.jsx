@@ -85,6 +85,12 @@ const Navbar = () => {
       image: Favourite,
       state: { filter: 'favourite' }
     },
+    {
+      to: '/waitlist',
+      text: "Join Waitlist",
+      description: "Get early access to full launch.",
+      image: Daily
+    },
     // Hidden for MVP - will be added after launch
     // {
     //   to: "/",

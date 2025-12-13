@@ -25,7 +25,7 @@ const ApplyMentor = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className='w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8'
+                    className='w-full px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'
                 >
                     <div className='flex flex-col items-center gap-6'>
                         <div className='text-center flex flex-col gap-2'>

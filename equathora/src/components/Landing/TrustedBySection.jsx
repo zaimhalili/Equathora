@@ -1,27 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { SiExercism, SiLeetcode, SiCodeforces } from 'react-icons/si';
+import { FaLightbulb } from 'react-icons/fa';
 
 const TrustedBySection = () => {
     const organizations = [
         {
-            name: "Khan Academy",
-            description: "Free online education",
-            logo: "🎓"
+            name: "Exercism",
+            description: "Code practice & mentorship",
+            icon: SiExercism,
+            color: "#009CAB"
         },
         {
-            name: "MIT OpenCourseWare",
-            description: "Open learning resources",
-            logo: "📚"
+            name: "Brilliant",
+            description: "Interactive learning",
+            icon: FaLightbulb,
+            color: "#FFB800"
         },
         {
-            name: "Coursera",
-            description: "Online learning platform",
-            logo: "💻"
+            name: "LeetCode",
+            description: "Coding challenges",
+            icon: SiLeetcode,
+            color: "#FFA116"
         },
         {
-            name: "Wolfram Alpha",
-            description: "Computational knowledge",
-            logo: "🧮"
+            name: "CodeForces",
+            description: "Competitive programming",
+            icon: SiCodeforces,
+            color: "#1F8ACB"
         }
     ];
 
@@ -39,21 +45,27 @@ const TrustedBySection = () => {
                         Inspired by industry leaders
                     </p>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full">
-                        {organizations.map((org, index) => (
-                            <motion.div
-                                key={org.name}
-                                className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-gray-50 transition-all"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.05, duration: 0.3 }}
-                                whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-                            >
-                                <span className="text-4xl">{org.logo}</span>
-                                <p className="text-sm font-semibold text-gray-700 text-center">{org.name}</p>
-                                <p className="text-xs text-gray-500 text-center">{org.description}</p>
-                            </motion.div>
-                        ))}
+                        {organizations.map((org, index) => {
+                            const IconComponent = org.icon;
+                            return (
+                                <motion.div
+                                    key={org.name}
+                                    className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-gray-50 transition-all"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.05, duration: 0.3 }}
+                                    whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+                                >
+                                    <IconComponent
+                                        className="text-5xl"
+                                        style={{ color: org.color }}
+                                    />
+                                    <p className="text-sm font-semibold text-gray-700 text-center">{org.name}</p>
+                                    <p className="text-xs text-gray-500 text-center">{org.description}</p>
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 </motion.div>
             </div>

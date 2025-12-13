@@ -1,16 +1,33 @@
 // localStorage-based progress tracking system for MVP
 // This will be replaced with backend API calls in v1.1
 
-const STORAGE_KEYS = {
-    USER_PROGRESS: 'equathora_user_progress',
-    COMPLETED_PROBLEMS: 'equathora_completed_problems',
-    FAVORITES: 'equathora_favorites',
-    USER_STATS: 'equathora_user_stats',
-    STREAK_DATA: 'equathora_streak',
-    SUBMISSIONS: 'equathora_submissions'
+// Generate a unique device ID to prevent cross-device sync issues
+const getDeviceId = () => {
+    const DEVICE_ID_KEY = 'equathora_device_id';
+    let deviceId = localStorage.getItem(DEVICE_ID_KEY);
+
+    if (!deviceId) {
+        // Create a unique device ID using timestamp + random string
+        deviceId = `device_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+        localStorage.setItem(DEVICE_ID_KEY, deviceId);
+    }
+
+    return deviceId;
 };
 
-const ACHIEVEMENTS_KEY = 'equathoraProgress';
+// Add device ID to all storage keys to make them device-specific
+const DEVICE_ID = getDeviceId();
+
+const STORAGE_KEYS = {
+    USER_PROGRESS: `equathora_user_progress_${DEVICE_ID}`,
+    COMPLETED_PROBLEMS: `equathora_completed_problems_${DEVICE_ID}`,
+    FAVORITES: `equathora_favorites_${DEVICE_ID}`,
+    USER_STATS: `equathora_user_stats_${DEVICE_ID}`,
+    STREAK_DATA: `equathora_streak_${DEVICE_ID}`,
+    SUBMISSIONS: `equathora_submissions_${DEVICE_ID}`
+};
+
+const ACHIEVEMENTS_KEY = `equathoraProgress_${DEVICE_ID}`;
 
 const defaultProgressSnapshot = () => ({
     totalProblems: 30,

@@ -217,7 +217,7 @@ const About = () => {
                                     { icon: '💡', title: 'Smart Hints', desc: 'Progressive guidance that adapts to your level' },
                                     { icon: '🏆', title: 'Achievements', desc: 'Track progress with meaningful milestones' },
                                     { icon: '👥', title: 'Mentorship', desc: 'Expert support when you need it most' },
-                                    { icon: '📚', title: '50+ Problems', desc: 'Curated library across 20+ topics' },
+                                    { icon: '📚', title: '30+ Problems', desc: 'Curated library across many topics' },
                                     { icon: '🎯', title: 'Leaderboards', desc: 'Compete globally, grow together' }
                                 ].map((feature, idx) => (
                                     <motion.div
@@ -261,7 +261,7 @@ const About = () => {
                                     </Link>
                                     <Link
                                         to="/learn"
-                                        className="px-6 py-3 bg-white text-[var(--secondary-color)] border-2 border-[var(--accent-color)] rounded-md font-semibold hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--secondary-color)] hover:text-white hover:border-transparent transition-all duration-200 no-underline text-center text-base"
+                                        className="px-6 py-3 bg-white !text-[var(--secondary-color)] border-2 rounded-md font-semibold hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--secondary-color)] hover:text-white transition-all duration-200 no-underline text-center text-base"
                                     >
                                         Explore Problems
                                     </Link>
