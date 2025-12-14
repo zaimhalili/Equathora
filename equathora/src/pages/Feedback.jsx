@@ -44,28 +44,27 @@ const Feedback = () => {
         };
 
         try {
-            // Send feedback to FormSubmit.co using FormData (required for hash endpoints)
-            const formDataToSend = new FormData();
-            
-            // Add FormSubmit configuration fields
-            formDataToSend.append('_subject', `[Equathora Feedback] ${sanitizedData.feedbackType}: ${sanitizedData.title}`);
-            formDataToSend.append('_captcha', 'false');
-            formDataToSend.append('_template', 'table');
-            
-            // Add custom fields
-            formDataToSend.append('Feedback Type', sanitizedData.feedbackType);
-            formDataToSend.append('Common Issue', sanitizedData.commonIssue || 'None specified');
-            formDataToSend.append('Title', sanitizedData.title);
-            formDataToSend.append('Description', sanitizedData.description);
-            formDataToSend.append('User Email', sanitizedData.email || 'Not provided');
-            formDataToSend.append('Page', sanitizedData.page);
-            formDataToSend.append('Timestamp', sanitizedData.timestamp);
-            formDataToSend.append('Browser', sanitizedData.userAgent);
-            formDataToSend.append('Screen Resolution', sanitizedData.screenResolution);
-
-            const response = await fetch('https://formsubmit.co/14558baaab9f5a1e34822be7e3151850', {
+            // Send feedback to FormSubmit.co using AJAX endpoint for JSON support
+            const response = await fetch('https://formsubmit.co/ajax/support@equathora.com', {
                 method: 'POST',
-                body: formDataToSend
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: `[Equathora Feedback] ${sanitizedData.feedbackType}: ${sanitizedData.title}`,
+                    _captcha: 'false',
+                    _template: 'table',
+                    'Feedback Type': sanitizedData.feedbackType,
+                    'Common Issue': sanitizedData.commonIssue || 'None specified',
+                    'Title': sanitizedData.title,
+                    'Description': sanitizedData.description,
+                    'User Email': sanitizedData.email || 'Not provided',
+                    'Page': sanitizedData.page,
+                    'Timestamp': sanitizedData.timestamp,
+                    'Browser': sanitizedData.userAgent,
+                    'Screen Resolution': sanitizedData.screenResolution
+                })
             });
 
             if (!response.ok) {
