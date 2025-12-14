@@ -236,7 +236,7 @@ const ApplyMentor = () => {
 
                             <div className='flex flex-col gap-3'>
                                 <a
-                                    href='YOUR_GOOGLE_FORM_LINK_HERE'
+                                    href='https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform'
                                     target='_blank'
                                     rel='noopener noreferrer'
                                     className='bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white px-8 py-4 rounded-lg font-semibold text-base flex items-center justify-center gap-2 no-underline shadow-lg transition-colors duration-200 w-full sm:w-auto'

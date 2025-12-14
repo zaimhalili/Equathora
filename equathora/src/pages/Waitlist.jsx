@@ -42,7 +42,7 @@ const Waitlist = () => {
                             {/* CTA Button */}
                             <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
                                 <button
-                                    onClick={() => window.open('https://forms.gle/YOUR_GOOGLE_FORM_ID', '_blank')}
+                                    onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform', '_blank')}
                                     className="flex items-center justify-center gap-3 px-12 py-5 bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white text-xl font-bold rounded-xl transition-all w-full"
                                 >
                                     <span>Join the Waitlist</span>
@@ -206,7 +206,7 @@ const Waitlist = () => {
 
                         <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
                             <button
-                                onClick={() => window.open('https://forms.gle/YOUR_GOOGLE_FORM_ID', '_blank')}
+                                onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform', '_blank')}
                                 className="flex items-center justify-center gap-3 px-12 py-5 bg-white text-[var(--secondary-color)] text-xl font-bold rounded-xl hover:bg-gray-100 transition-all w-full"
                             >
                                 <span>Secure My Spot</span>
