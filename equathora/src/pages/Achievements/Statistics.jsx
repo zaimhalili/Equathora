@@ -1,33 +1,43 @@
 
 import React, { useEffect, useState } from 'react';
 import './Statistics.css';
+import { getUserStats } from '../../lib/progressStorage';
 
 const Statistics = () => {
-  // Load data from localStorage - starts at zero for new users
-  const progress = JSON.parse(localStorage.getItem('equathoraProgress') || '{}');
+  // Load data from device-specific localStorage
+  const userStats = getUserStats();
+  const progress = {
+    correctAnswers: userStats.accuracyBreakdown?.correct || 0,
+    wrongSubmissions: userStats.accuracyBreakdown?.wrong || 0,
+    totalAttempts: userStats.totalAttempts || 0,
+    totalProblems: 30,
+    solvedProblems: userStats.problemsSolved || 0,
+    streakDays: userStats.currentStreak || 0,
+    totalTimeSpent: userStats.totalTime ? `${Math.floor(userStats.totalTime / 3600)}h ${Math.floor((userStats.totalTime % 3600) / 60)}m` : '0h 0m',
+    averageTime: userStats.problemsSolved > 0 ? `${Math.floor(userStats.totalTime / userStats.problemsSolved / 60)}m ${Math.floor((userStats.totalTime / userStats.problemsSolved) % 60)}s` : '0m 0s',
+    favoriteTopics: userStats.favoriteTopics || ['Algebra', 'Geometry'],
+    weeklyProgress: userStats.weeklyProgress || [0, 0, 0, 0, 0, 0, 0],
+    difficultyBreakdown: userStats.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 }
+  };
 
-  const correctAnswers = progress.correctAnswers || 0;
-  const wrongSubmissions = progress.wrongSubmissions || 0;
-  const totalAttempts = progress.totalAttempts || correctAnswers + wrongSubmissions;
+  const correctAnswers = progress.correctAnswers;
+  const wrongSubmissions = progress.wrongSubmissions;
+  const totalAttempts = progress.totalAttempts;
   const accuracyDenominator = correctAnswers + wrongSubmissions;
-  const accuracyRate = accuracyDenominator > 0 ? Math.round((correctAnswers / accuracyDenominator) * 100) : 0;
+  const accuracyRate = userStats.accuracy || (accuracyDenominator > 0 ? Math.round((correctAnswers / accuracyDenominator) * 100) : 0);
 
   const stats = {
-    totalProblems: progress.totalProblems || 30,
-    solvedProblems: progress.solvedProblems?.length || 0,
+    totalProblems: progress.totalProblems,
+    solvedProblems: progress.solvedProblems,
     correctAnswers,
     wrongSubmissions,
     totalAttempts,
-    streakDays: progress.streakDays || 0,
-    totalTimeSpent: progress.totalTimeSpent || "0h 0m",
-    averageTime: progress.averageTime || "0m 0s",
-    favoriteTopics: progress.favoriteTopics || ["Algebra", "Geometry"],
-    weeklyProgress: progress.weeklyProgress || [0, 0, 0, 0, 0, 0, 0],
-    difficultyBreakdown: {
-      easy: progress.difficultyBreakdown?.easy || 0,
-      medium: progress.difficultyBreakdown?.medium || 0,
-      hard: progress.difficultyBreakdown?.hard || 0
-    }
+    streakDays: progress.streakDays,
+    totalTimeSpent: progress.totalTimeSpent,
+    averageTime: progress.averageTime,
+    favoriteTopics: progress.favoriteTopics,
+    weeklyProgress: progress.weeklyProgress,
+    difficultyBreakdown: progress.difficultyBreakdown
   };
   const completionRate = Math.round((stats.solvedProblems / stats.totalProblems) * 100);
 

@@ -12,6 +12,8 @@ import Leaderboards from '../assets/images/leaderboards.svg';
 import Notifications from '../assets/images/notificationsDD.svg';
 import Achievements from '../assets/images/achievementsDD.svg';
 import LogoutIMG from '../assets/images/logout.svg';
+import Updates from '../assets/images/updates.svg';
+
 import Mentoring from '../assets/images/mentoring.svg';
 import Faq from '../assets/images/faq.svg';
 import AboutUs from '../assets/images/about.svg';
@@ -101,7 +103,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             to: '/systemupdates',
             text: 'System Updates',
             description: 'Latest features',
-            image: Faq
+            image: Updates
         },
         {
             to: '/about',

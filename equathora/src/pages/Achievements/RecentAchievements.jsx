@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import './RecentAchievements.css';
 import { FaTrophy, FaFire, FaBolt, FaGem, FaStar, FaRocket, FaBrain, FaHeart, FaCrown, FaMedal } from 'react-icons/fa';
+import { getUserStats } from '../../lib/progressStorage';
 
 const RecentAchievements = () => {
-  // Load data from localStorage - starts with demo values for better initial experience
-  const progress = JSON.parse(localStorage.getItem('equathoraProgress') || '{}');
-  const solvedProblems = progress.solvedProblems?.length || 12;
-  const streakDays = progress.streakDays || 5;
-  const conceptsLearned = progress.conceptsLearned || 8;
-  const totalTimeSpent = progress.totalTimeMinutes || 180;
-  const hardProblems = progress.difficultyBreakdown?.hard || 2;
-  const perfectStreak = progress.perfectStreak || 3;
+  // Load data from device-specific localStorage
+  const userStats = getUserStats();
+  const progress = {
+    solvedProblems: userStats.problemsSolved || 0,
+    streakDays: userStats.currentStreak || 0,
+    conceptsLearned: Object.keys(userStats.favoriteTopics || {}).length || 0,
+    totalTimeMinutes: Math.floor(userStats.totalTime / 60) || 0,
+    difficultyBreakdown: userStats.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 },
+    perfectStreak: 0, // Will be tracked in future
+    accountCreated: userStats.joinDate ? new Date(userStats.joinDate).getTime() : Date.now(),
+    achievementsUnlocked: [],
+    achievementsEarned: 0
+  };
+  const solvedProblems = progress.solvedProblems;
+  const streakDays = progress.streakDays;
+  const conceptsLearned = progress.conceptsLearned;
+  const totalTimeSpent = progress.totalTimeMinutes;
+  const hardProblems = progress.difficultyBreakdown?.hard || 0;
+  const perfectStreak = progress.perfectStreak;
 
   // Check if user is an early user (created account before a certain date)
   const accountCreated = progress.accountCreated || Date.now();
@@ -109,18 +121,6 @@ const RecentAchievements = () => {
       rarity: 'Legendary'
     }
   ];
-
-  // Automatically grant early user achievement
-  useEffect(() => {
-    if (isEarlyUser && !progress.achievementsUnlocked?.includes('early-bird')) {
-      const updatedProgress = {
-        ...progress,
-        achievementsUnlocked: [...(progress.achievementsUnlocked || []), 'early-bird'],
-        achievementsEarned: (progress.achievementsEarned || 0) + 1
-      };
-      localStorage.setItem('equathoraProgress', JSON.stringify(updatedProgress));
-    }
-  }, [isEarlyUser]);
 
   const unlockedAchievements = achievements.filter(a => a.unlocked);
   const achievementsEarned = unlockedAchievements.length;

@@ -28,7 +28,7 @@ const HeroSection = () => {
                         transition={{ delay: 0.15, duration: 0.3 }}
                     >
                         Turn logic into your
-                        <span className="block text-[var(--accent-color)]">superpower.</span>
+                        <span className="block text-[var(--accent-color)]">`superpower.</span>
                     </motion.h1>
                     <motion.p
                         className="text-base text-[var(--secondary-color)]/80 sm:text-lg"
@@ -45,7 +45,7 @@ const HeroSection = () => {
                         transition={{ delay: 0.25, duration: 0.3 }}
                     >
                         <Link
-                            to="/getstarted"
+                            to="/dashboard"
                             className="rounded-md bg-[var(--accent-color)] px-8 py-2 sm:py-3 text-center !text-white transition-colors hover:bg-[var(--dark-accent-color)]"
                         >
                             Start solving
