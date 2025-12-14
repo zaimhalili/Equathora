@@ -57,7 +57,7 @@ const Footer = () => {
             <h3 className="footer-column-title">Platform</h3>
             <ul className="links">
               <li><Link to="/learn" className='footer-links'>Learn</Link></li>
-              <li><Link to="/discover" className='footer-links'>Discover</Link></li>
+              {/* <li><Link to="/discover" className='footer-links'>Discover</Link></li> */}
               <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
               <li><Link to="/notifications" className='footer-links'>Notifications</Link></li>
               <li><Link to="/profile/myprofile" className='footer-links'>My Profile</Link></li>
@@ -67,8 +67,8 @@ const Footer = () => {
             <h3 className="footer-column-title">Company</h3>
             <ul className="links">
               <li><Link to="/about" className='footer-links'>About Us</Link></li>
-              <li><Link to="/" className='footer-links'>Legal & Policies</Link></li>
-              <li><Link to="/" className='footer-links'>Cookie Policy</Link></li>
+              {/* <li><Link to="/" className='footer-links'>Legal & Policies</Link></li>
+              <li><Link to="/" className='footer-links'>Cookie Policy</Link></li> */}
               <li><Link to="/helpCenter" className='footer-links'>FAQs</Link></li>
               <li><Link to="/report" className='footer-links'>Report</Link></li>
             </ul>

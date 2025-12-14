@@ -65,12 +65,12 @@ const Sidebar = ({ isOpen, onClose }) => {
             description: 'View rankings',
             image: Leaderboards
         },
-        {
-            to: '/notifications',
-            text: 'Notifications',
-            description: 'Stay updated',
-            image: Notifications
-        },
+        // {
+        //     to: '/notifications',
+        //     text: 'Notifications',
+        //     description: 'Stay updated',
+        //     image: Notifications
+        // },
         {
             to: '/achievements/recent',
             text: 'Achievements',

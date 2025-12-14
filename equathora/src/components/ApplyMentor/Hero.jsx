@@ -62,7 +62,7 @@ const Hero = () => {
                                 className='flex flex-col gap-4 justify-center lg:justify-start pt-2'
                             >
                                 <a
-                                    href='YOUR_GOOGLE_FORM_LINK_HERE'
+                                    href='https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform'
                                     target='_blank'
                                     rel='noopener noreferrer'
                                     className='group relative bg-[var(--accent-color)] text-white px-8 py-3 rounded-lg font-semibold text-sm md:text-base overflow-hidden transition-colors duration-200 hover:bg-[var(--dark-accent-color)] flex items-center justify-center gap-2 no-underline shadow-lg w-full sm:w-auto'
