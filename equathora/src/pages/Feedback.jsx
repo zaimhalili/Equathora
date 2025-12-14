@@ -45,7 +45,7 @@ const Feedback = () => {
 
         try {
             // Send feedback to FormSubmit.co using AJAX endpoint for JSON support
-            const response = await fetch('https://formsubmit.co/ajax/support@equathora.com', {
+            const response = await fetch('https://formsubmit.co/ajax/equathora@gmail.com', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
