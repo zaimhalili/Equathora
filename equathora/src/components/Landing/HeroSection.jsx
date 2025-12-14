@@ -28,7 +28,7 @@ const HeroSection = () => {
                         transition={{ delay: 0.15, duration: 0.3 }}
                     >
                         Turn logic into your
-                        <span className="block text-[var(--accent-color)]">`superpower.</span>
+                        <span className="block text-[var(--accent-color)]">superpower.</span>
                     </motion.h1>
                     <motion.p
                         className="text-base text-[var(--secondary-color)]/80 sm:text-lg"
