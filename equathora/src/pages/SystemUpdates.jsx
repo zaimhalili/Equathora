@@ -125,7 +125,7 @@ const SystemUpdates = () => {
                 {/* Updates Timeline */}
                 <section className="w-full flex justify-center">
                     <div className="px-[4vw] xl:px-[6vw] pb-12 max-w-[1500px] w-full">
-                        <div className="flex flex-col gap-4">
+                        <motion.div className="flex flex-col gap-4">
                             {updates.map((update, index) => (
                                 <motion.div
                                     key={index}
@@ -167,7 +167,7 @@ const SystemUpdates = () => {
                                             ))}
                                         </ul>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
                         </motion.div>
 
