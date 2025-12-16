@@ -52,6 +52,7 @@ backend/**/firebase-adminsdk*.json
 **/firebase-config.json
 
 # Database connection strings
+problems.js
 backend/**/connection-strings.json
 
 # Secrets and API keys

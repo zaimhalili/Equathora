@@ -1,6 +1,6 @@
 // ProblemDetail.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
@@ -11,7 +11,7 @@ import {
   ViewSolutionModal,
   SubmissionDetailModal
 } from '../components/ProblemModals';
-import { FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaRegStar } from 'react-icons/fa';
+import { FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaRegStar } from 'react-icons/fa';
 import { getProblemById, problems as allProblems } from '../data/problems';
 import {
   isProblemCompleted,
@@ -80,9 +80,23 @@ const hydrateStoredSubmissions = (records = []) => {
 
 const Problem = () => {
   const { groupId, problemId } = useParams();
+  const navigate = useNavigate();
   const numericProblemId = parseInt(problemId, 10);
   // Get real problem data
   const problem = getProblemById(numericProblemId);
+
+  // Find current problem index and get prev/next problems within the same group (circular navigation)
+  const currentGroupProblems = problem
+    ? allProblems.filter(p => p.groupId === problem.groupId)
+    : [];
+  const currentIndex = currentGroupProblems.findIndex(p => p.id === numericProblemId);
+  const hasGroupProblems = currentGroupProblems.length > 0 && currentIndex !== -1;
+  const prevProblem = hasGroupProblems
+    ? currentGroupProblems[(currentIndex - 1 + currentGroupProblems.length) % currentGroupProblems.length]
+    : null;
+  const nextProblem = hasGroupProblems
+    ? currentGroupProblems[(currentIndex + 1) % currentGroupProblems.length]
+    : null;
 
   const [openHints, setOpenHints] = useState({});
   const [isFavorite, setIsFavorite] = useState(checkFavorite(numericProblemId));
@@ -116,6 +130,26 @@ const Problem = () => {
     sessionStartRef.current = Date.now();
     setSubmissionFeedback(null);
   }, [problemId]);
+
+  // Reset transient UI state when navigating between problems
+  useEffect(() => {
+    setShowSolution(false);
+    setShowSolutionPopup(false);
+    setShowDescription(true);
+    setShowSubmissions(false);
+    setShowTop(false);
+    setDescriptionCollapsed(false);
+    setOpenHints({});
+    setHintsOpened([]);
+    setSelectedSubmission(null);
+    setShowSubmissionDetail(false);
+    setSolutionViewed(false);
+    setReportReason('');
+    setReportDetails('');
+    setShowReportModal(false);
+    setShowHelpModal(false);
+    setIsFavorite(checkFavorite(numericProblemId));
+  }, [numericProblemId]);
 
   const toggleHint = (index) => {
     setOpenHints(prev => ({
@@ -249,31 +283,49 @@ const Problem = () => {
       <FeedbackBanner />
       <main className="min-h-screen flex flex-col text-[var(--secondary-color)]">
         {/* Navigation Header */}
-        <header className="flex items-center justify-between font-[Inter,sans-serif] bg-[var(--main-color)] w-full px-3 sm:px-6 md:px-8 py-3 md:py-4 flex-shrink-0">
-          <Link to="/learn" className="flex items-center gap-1 md:gap-2 text-sm md:text-md text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-2 md:px-4 py-2 rounded-lg hover:bg-[var(--french-gray)] hover:text-[var(--main-color)]">
-            <img src={LilArrow} alt="arrow" className="w-4 h-4 md:w-5 md:h-5 rotate-180 transition-transform duration-200 hover:translate-x-1" />
-            <span className="hidden sm:inline">Back to Exercises</span>
-            <span className="sm:hidden">Back</span>
-          </Link>
-          <div className="flex gap-2 md:gap-4 items-center">
+        <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 sm:gap-2.5 md:gap-3 font-[Inter,sans-serif] bg-[var(--main-color)] w-full px-3 sm:px-5 md:px-7 py-2.5 md:py-4 flex-shrink-0">
+          <div className="w-full md:w-auto flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <Link to="/learn" className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm md:text-md text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-[var(--french-gray)] hover:text-[var(--main-color)]">
+              <img src={LilArrow} alt="arrow" className="w-4 h-4 md:w-5 md:h-5 rotate-180 transition-transform duration-200 hover:translate-x-1" />
+              <span className="hidden sm:inline">Back to Exercises</span>
+              <span className="sm:hidden">Back</span>
+            </Link>
+            <div className="flex items-center gap-1 border-l border-[var(--french-gray)] pl-2">
+              <button
+                onClick={() => prevProblem && navigate(`/problems/${prevProblem.groupId}/${prevProblem.id}`)}
+                className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:border-[var(--accent-color)] hover:bg-[rgba(217,4,41,0.05)] cursor-pointer"
+                title={prevProblem ? `Previous: ${prevProblem.title}` : ''}
+              >
+                <FaChevronLeft className="text-sm" />
+              </button>
+              <button
+                onClick={() => nextProblem && navigate(`/problems/${nextProblem.groupId}/${nextProblem.id}`)}
+                className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:border-[var(--accent-color)] hover:bg-[rgba(217,4,41,0.05)] cursor-pointer"
+                title={nextProblem ? `Next: ${nextProblem.title}` : ''}
+              >
+                <FaChevronRight className="text-sm" />
+              </button>
+            </div>
+          </div>
+          <div className="w-full md:w-auto flex flex-wrap items-center gap-1.5 sm:gap-2 md:gap-3 justify-start md:justify-end">
             <Timer problemId={problem?.id} />
             <button
               onClick={() => setShowHelpModal(true)}
-              className="bg-transparent border-2 border-[var(--french-gray)] px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-[38px] md:h-[42px]"
+              className="bg-transparent border-2 border-[var(--french-gray)] px-2.5 sm:px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-[34px] sm:h-[38px] md:h-[42px]"
               title="Help & Guide"
             >
               <FaQuestionCircle className="text-sm md:text-base" />
-              <span className="hidden sm:inline text-sm font-medium">Help</span>
+              <span className="hidden sm:inline text-xs sm:text-sm font-medium">Help</span>
             </button>
             <button
               onClick={() => setShowReportModal(true)}
-              className="bg-transparent border-2 border-[var(--french-gray)] px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center justify-center h-[38px] md:h-[42px]"
+              className="bg-transparent border-2 border-[var(--french-gray)] px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px]"
               title="Report Problem"
             >
               <FaFlag className="text-sm md:text-base" />
             </button>
             <button
-              className={`bg-transparent border-2 text-sm px-3 py-1.5 md:py-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] flex items-center justify-center h-[38px] md:h-[42px] ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
+              className={`bg-transparent border-2 text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px] ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
               onClick={handleFavoriteToggle}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
@@ -595,7 +647,7 @@ const Problem = () => {
             <MathLiveExample onSubmit={handleNewSubmission} />
           </article>
         </section>
-      </main >
+      </main>
     </>
   );
 };
