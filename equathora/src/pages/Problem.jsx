@@ -293,14 +293,14 @@ const Problem = () => {
             <div className="flex items-center gap-1 border-l border-[var(--french-gray)] pl-2">
               <button
                 onClick={() => prevProblem && navigate(`/problems/${prevProblem.groupId}/${prevProblem.id}`)}
-                className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:border-[var(--accent-color)] hover:bg-[rgba(217,4,41,0.05)] cursor-pointer"
+                className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)]  hover:bg-[var(--french-gray)] cursor-pointer"
                 title={prevProblem ? `Previous: ${prevProblem.title}` : ''}
               >
                 <FaChevronLeft className="text-sm" />
               </button>
               <button
                 onClick={() => nextProblem && navigate(`/problems/${nextProblem.groupId}/${nextProblem.id}`)}
-                className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:border-[var(--accent-color)] hover:bg-[rgba(217,4,41,0.05)] cursor-pointer"
+                className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)]  hover:bg-[var(--french-gray)]  cursor-pointer"
                 title={nextProblem ? `Next: ${nextProblem.title}` : ''}
               >
                 <FaChevronRight className="text-sm" />
