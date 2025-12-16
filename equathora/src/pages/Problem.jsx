@@ -317,13 +317,20 @@ const Problem = () => {
               <FaQuestionCircle className="text-sm md:text-base" />
               <span className="hidden sm:inline text-xs sm:text-sm font-medium">Help</span>
             </button>
-            <button
+            {/* <button
               onClick={() => setShowReportModal(true)}
               className="bg-transparent border-2 border-[var(--french-gray)] px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px]"
               title="Report Problem"
             >
               <FaFlag className="text-sm md:text-base" />
-            </button>
+            </button> */}
+            <Link
+              to="/feedback"
+              className="bg-transparent border-2 border-[var(--french-gray)] px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:!text-[var(--accent-color)] !text-[var(--french-gray)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px]"
+              title="Report Problem"
+            >
+              <FaFlag className="text-sm md:text-base" />
+            </Link>
             <button
               className={`bg-transparent border-2 text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px] ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
               onClick={handleFavoriteToggle}
