@@ -8,6 +8,47 @@ import { FaRocket, FaBug, FaStar, FaPalette, FaCode, FaCheckCircle } from 'react
 const SystemUpdates = () => {
     const updates = [
         {
+            version: "1.2.3",
+            date: "December 17, 2025",
+            type: "improvement",
+            icon: <FaStar className="text-xl" />,
+            color: "from-indigo-500 to-blue-500",
+            title: "Leaderboard Polish & Reporting",
+            changes: [
+                "Renamed leaderboards for clearer labeling",
+                "Fixed the faulty report flag button",
+                "Minor UI refinements across recent pages"
+            ]
+        },
+        {
+            version: "1.2.2",
+            date: "December 16, 2025",
+            type: "feature",
+            icon: <FaRocket className="text-xl" />,
+            color: "from-amber-500 to-orange-500",
+            title: "Waitlist & Navigation Boosts",
+            changes: [
+                "Added join waitlist card directly in the dashboard",
+                "Introduced next/previous problem buttons for faster practice",
+                "Restyled Waitlist page with fresher layout",
+                "Minor visual polish across components"
+            ]
+        },
+        {
+            version: "1.2.1",
+            date: "December 14, 2025",
+            type: "improvement",
+            icon: <FaCode className="text-xl" />,
+            color: "from-slate-500 to-gray-700",
+            title: "Performance & Reliability",
+            changes: [
+                "Integrated Vercel Speed Insights for monitoring",
+                "Updated navigation links to land on dashboard and load stats reliably",
+                "Replaced faulty links with Google Form fallback in Hero section",
+                "Smoothed achievements background rendering"
+            ]
+        },
+        {
             version: "1.2.0",
             date: "December 8, 2025",
             type: "feature",
@@ -71,8 +112,7 @@ const SystemUpdates = () => {
             color: "from-indigo-500 to-blue-500",
             title: "Technical Improvements",
             changes: [
-                "Optimized backend API response times",
-                "Enhanced security measures",
+                "Added button to switch problems quicker",
                 "Better error handling and user feedback",
                 "Improved data caching for faster loading"
             ]

@@ -98,8 +98,8 @@ const Waitlist = () => {
                                 },
                                 {
                                     icon: FaStar,
-                                    title: 'Premium Features Free',
-                                    description: 'Get 6 months of premium features absolutely free when we launch.'
+                                    title: 'Early Feature Drops',
+                                    description: 'Get first access to new lessons, challenges, and tools before they roll out to everyone.'
                                 },
                                 {
                                     icon: FaRocket,

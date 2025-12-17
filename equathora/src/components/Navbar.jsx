@@ -134,7 +134,7 @@ const Navbar = () => {
       text: "System Updates",
       description: "Check out our new features",
       image: Updates,
-      notificationsNo: "3"
+      notificationsNo: ""
     }
   ];
 
