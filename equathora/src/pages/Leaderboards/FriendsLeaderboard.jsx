@@ -3,17 +3,10 @@ import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 
 const FriendsLeaderboard = () => {
-    const user = { id: 11, name: 'Zaim', problemsSolved: 80, xp: 1500, }
+    const user = { id: 11, name: 'Student', problemsSolved: "Unknown", xp: 1500, }
     // Mock data - replace with real data from your backend
     const players = [
-        { id: 1, name: 'Alice', problemsSolved: 80, xp: 1500, },
-        { id: 2, name: 'Bob', problemsSolved: 195, xp: 1900 },
-        { id: 3, name: 'Charlie', problemsSolved: 120, xp: 2100 },
-        { id: 4, name: 'David', problemsSolved: 95, xp: 1800 },
-        { id: 5, name: 'Emma', problemsSolved: 150, xp: 2500 },
-        { id: 6, name: 'Frank', problemsSolved: 100, xp: 3244 },
-        { id: 7, name: 'Grace', problemsSolved: 75, xp: 1400 },
-        { id: 8, name: 'Henry', problemsSolved: 110, xp: 2200 },
+        { id: 1, name: 'Student', problemsSolved: 80, xp: 1500, },
     ];
 
     const sortedPlayers = players.sort((a, b) => b.xp - a.xp);

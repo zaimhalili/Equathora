@@ -3,7 +3,7 @@ import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 
 const GlobalLeaderboard = () => {
-    const user = { id: 11, name: 'Zaim', problemsSolved: 80, xp: 1500, }
+    const user = { id: 11, name: 'Student', problemsSolved: "Unknown", xp: 1500, }
     // Mock data - replace with real data from your backend
     const players = [
         { id: 1, name: 'Student', problemsSolved: 80, xp: 1500, }
