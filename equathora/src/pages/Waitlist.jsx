@@ -171,7 +171,7 @@ const Waitlist = () => {
                                 },
                                 {
                                     q: 'What do I get as an early member?',
-                                    a: 'Founding member badge, 6 months free premium, early feature access, priority support, and the ability to shape our product.'
+                                    a: 'Founding member badge, early feature access, priority support, and the ability to shape our product.'
                                 },
                                 {
                                     q: 'Can I start using Equathora now?',
