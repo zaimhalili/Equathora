@@ -79,7 +79,6 @@ const ApplyMentor = () => {
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
-                                    whileHover={{ scale: 1.02 }}
                                     className='relative bg-white p-5 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 flex flex-col gap-3 overflow-hidden group'
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-200`}></div>
@@ -120,7 +119,7 @@ const ApplyMentor = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.4 }}
                                 whileHover={{ scale: 1.02 }}
-                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col border-2 border-transparent hover:border-blue-200'
+                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col '
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -138,9 +137,12 @@ const ApplyMentor = () => {
                                         Guide students publicly, answer questions, and share solutions that inspire the community.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>
-                                        <span className='px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-xs font-semibold'>Public Forums</span>
-                                        <span className='px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 rounded-full text-xs font-semibold'>Q&A</span>
-                                        <span className='px-3 py-1 bg-gradient-to-r from-pink-100 to-red-100 text-pink-700 rounded-full text-xs font-semibold'>Solutions</span>
+                                        <span className='px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 
+                                        text-blue-700 rounded-full text-xs font-semibold'>Public Forums</span>
+                                        <span className='px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 
+                                        text-purple-700 rounded-full text-xs font-semibold'>Q&A</span>
+                                        <span className='px-3 py-1 bg-gradient-to-r from-pink-100 to-red-100 
+                                        text-pink-700 rounded-full text-xs font-semibold'>Solutions</span>
                                     </div>
                                 </div>
                             </motion.div>
@@ -151,7 +153,7 @@ const ApplyMentor = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.5 }}
                                 whileHover={{ scale: 1.02 }}
-                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col border-2 border-transparent hover:border-green-200'
+                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col '
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -182,7 +184,7 @@ const ApplyMentor = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.6 }}
                                 whileHover={{ scale: 1.02 }}
-                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col border-2 border-transparent hover:border-orange-200 md:col-span-2 lg:col-span-1'
+                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col  md:col-span-2 lg:col-span-1'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center overflow-hidden'>
                                     <img

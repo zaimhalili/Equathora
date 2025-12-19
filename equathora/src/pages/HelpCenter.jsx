@@ -141,7 +141,7 @@ const HelpCenter = () => {
                             {quickLinks.map((link, index) => (
                                 <div
                                     key={index}
-                                    className="relative bg-white rounded-md p-4 flex flex-col gap-2 shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 group overflow-hidden cursor-pointer"
+                                    className="relative bg-white rounded-md p-4 flex flex-col gap-2 shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 group overflow-hidden "
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-5 group-hover:opacity-10 transition-opacity duration-200`}></div>
                                     <div className="relative">
@@ -201,7 +201,7 @@ const HelpCenter = () => {
                                     className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
                                 >
                                     <button
-                                        className="w-full p-4 flex items-start gap-3 text-left"
+                                        className="w-full p-4 flex items-start gap-3 text-left cursor-pointer"
                                         onClick={() => toggleFaq(index)}
                                     >
                                         <div className={`${faq.color} text-xl flex-shrink-0 pt-1`}>
