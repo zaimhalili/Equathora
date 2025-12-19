@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../components/MathLiveExample.css";
 import { FaChevronDown, FaChevronUp, FaTrash, FaTimes } from "react-icons/fa";
 
@@ -24,7 +24,6 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
 };
 
 export default function MathLiveEditor({ onSubmit }) {
-    const [status, setStatus] = useState("Loading...");
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
@@ -39,10 +38,11 @@ export default function MathLiveEditor({ onSubmit }) {
         (async () => {
             try {
                 await import("mathlive");
-                if (!cancelled) setStatus("MathLive loaded");
+                if (!cancelled) {
+                    // MathLive loaded successfully
+                }
             } catch (e) {
-                console.error(e);
-                if (!cancelled) setStatus("Failed to load MathLive. Check your connection.");
+                console.error("Failed to load MathLive. Check your connection.", e);
             }
         })();
         return () => {
@@ -137,7 +137,9 @@ export default function MathLiveEditor({ onSubmit }) {
             />
             <div className="ml-wrapper">
                 <h2 className="ml-title">Your Solution</h2>
-                <div className="ml-status">Status: {status}</div>
+                <div className="ml-status">
+                    Type each step. Enter adds a step, ↑↓ move focus, and the last step counts as your final answer.
+                </div>
 
                 <div className="ml-card" aria-live="polite">
                     <div className="ml-steps-container">
@@ -149,6 +151,7 @@ export default function MathLiveEditor({ onSubmit }) {
                                     class="ml-field"
                                     virtualkeyboardmode="off"
                                     smartfence="true"
+                                    placeholder=""
                                     value={field.latex}
                                     onInput={(evt) =>
                                         updateLatex(field.id, evt.target.getValue("latex"))

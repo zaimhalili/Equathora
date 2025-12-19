@@ -311,7 +311,7 @@ const Problem = () => {
             <Timer problemId={problem?.id} />
             <button
               onClick={() => setShowHelpModal(true)}
-              className="bg-transparent border-2 border-[var(--french-gray)] px-2.5 sm:px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-[34px] sm:h-[38px] md:h-[42px]"
+              className="bg-transparent border-1 border-[var(--french-gray)] px-2.5 sm:px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200  hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-[34px] sm:h-[38px] md:h-[42px]"
               title="Help & Guide"
             >
               <FaQuestionCircle className="text-sm md:text-base" />
@@ -326,13 +326,13 @@ const Problem = () => {
             </button> */}
             <Link
               to="/feedback"
-              className="bg-transparent border-2 border-[var(--french-gray)] px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:!text-[var(--accent-color)] !text-[var(--french-gray)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px]"
+              className="bg-transparent border-1 border-[var(--french-gray)] px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 hover:!text-[var(--accent-color)] !text-[var(--french-gray)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px]"
               title="Report Problem"
             >
               <FaFlag className="text-sm md:text-base" />
             </Link>
             <button
-              className={`bg-transparent border-2 text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px] ${isFavorite ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
+              className={`bg-transparent border-1 text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer transition-all duration-200 hover:text-[var(--accent-color)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px] ${isFavorite ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
               onClick={handleFavoriteToggle}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
@@ -435,7 +435,7 @@ const Problem = () => {
               <button type="button" onClick={() => {
                 setDescriptionCollapsed(!descriptionCollapsed);
               }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
-                {descriptionCollapsed ? <FaChevronRight className="text-sm" /> : <FaChevronDown className="text-sm rotate-[-90deg]" />}
+                <FaChevronRight className={`text-sm transition-transform duration-200 ${descriptionCollapsed ? 'rotate-0' : 'rotate-180'}`} />
               </button>
             </div>
 
