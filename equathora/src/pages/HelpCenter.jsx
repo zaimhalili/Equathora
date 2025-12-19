@@ -184,7 +184,7 @@ const HelpCenter = () => {
                     </div>
                 </section>
 
-                {/* FAQ Section with Icons */}
+            {/* FAQ Section with Icons */}
                 <section className="w-full flex justify-center">
                     <div className="px-[4vw] xl:px-[6vw] py-8 max-w-[1500px] w-full">
                         <div className="flex flex-col items-center gap-2 pb-6">

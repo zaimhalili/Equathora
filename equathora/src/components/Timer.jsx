@@ -23,7 +23,8 @@ const Timer = ({ problemId }) => {
         minutes = minutes < 10 ? '0' + minutes : minutes;
         seconds = seconds < 10 ? '0' + seconds : seconds;
 
-        return hours + ':' + minutes + ':' + seconds;
+        // return hours + ':' + minutes + ':' + seconds;
+        return "Time: " + minutes + ':' + seconds;
     };
 
     useEffect(() => {
