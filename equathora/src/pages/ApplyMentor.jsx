@@ -231,7 +231,7 @@ const ApplyMentor = () => {
                                 Applications Opening Soon!
                             </h2>
                             <p className='text-base md:text-lg text-gray-300 max-w-xl lg:max-w-none'>
-                                We're putting the final touches on the mentor platform. Join 47+ educators already on the waitlist!
+                                We're putting the final touches on the mentor platform. Join 50+ educators already on the waitlist!
                             </p>
 
                             <div className='flex flex-col gap-3'>

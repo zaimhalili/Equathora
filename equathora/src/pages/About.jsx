@@ -79,7 +79,7 @@ const About = () => {
                                         </div>
                                         <div className="border-l-2 border-gray-300 pl-6">
                                             <div className="text-xl font-bold text-[var(--accent-color)] pb-2">-hora</div>
-                                            <p className="text-base leading-relaxed">Greek "ὥρα" meaning time and hour-representing your dedication to learning</p>
+                                            <p className="text-base leading-relaxed">Greek "ὥρα" meaning time and hour, representing your dedication to learning</p>
                                         </div>
                                         <div className="border-l-2 border-[var(--accent-color)] pl-6">
                                             <div className="text-2xl font-bold bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] bg-clip-text text-transparent pb-2">Equathora</div>
@@ -226,7 +226,7 @@ const About = () => {
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ duration: 0.3, delay: 0.6 + idx * 0.05 }}
                                         whileHover={{ scale: 1.02 }}
-                                        className="p-6 bg-white rounded-md border border-gray-200 hover:border-[var(--accent-color)] hover:shadow-[0_10px_10px_rgba(141,153,174,0.3)] transition-all duration-200"
+                                        className="p-6 bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] transition-all duration-200"
                                     >
                                         <div className="text-4xl pb-3">{feature.icon}</div>
                                         <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-2">{feature.title}</h3>
@@ -261,7 +261,7 @@ const About = () => {
                                     </Link>
                                     <Link
                                         to="/learn"
-                                        className="px-6 py-3 bg-white !text-[var(--secondary-color)] border-2 rounded-md font-semibold hover:bg-gradient-to-r hover:from-[var(--accent-color)] hover:to-[var(--secondary-color)] hover:text-white transition-all duration-200 no-underline text-center text-base"
+                                        className="px-6 py-3 bg-white !text-[var(--secondary-color)] border-2 rounded-md font-semibold  transition-shadows duration-200 hover:shadow-[0_10px_10px_rgba(141,153,174,0.3)] no-underline text-center text-base"
                                     >
                                         Explore Problems
                                     </Link>

@@ -68,7 +68,7 @@ const Hero = () => {
                                     className='group relative bg-[var(--accent-color)] text-white px-8 py-3 rounded-lg font-semibold text-sm md:text-base overflow-hidden transition-colors duration-200 hover:bg-[var(--dark-accent-color)] flex items-center justify-center gap-2 no-underline shadow-lg w-full sm:w-auto'
                                 >
                                     <FaUsers />
-                                    <span className='relative z-10'>Join 47+ Educators</span>
+                                    <span className='relative z-10'>Join 50+ Educators</span>
                                     <FaArrowRight className='relative z-10 text-xs' />
                                 </a>
 

@@ -5,7 +5,8 @@ import Symbol from '../assets/logo/TransparentSymbol.png';
 import {
   FaInstagram,
   FaLinkedin,
-  FaFacebook
+  FaFacebook,
+  FaReddit,
 } from 'react-icons/fa';
 
 const Footer = () => {
@@ -38,13 +39,13 @@ const Footer = () => {
             </a>
 
             <a
-              href="https://www.instagram.com/equathora/"
+              href="https://www.reddit.com/user/Equathora/"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Like us on Facebook"
+              aria-label="Follow us on Reddit"
               className='socialMedia'
             >
-              <FaFacebook />
+              <FaReddit />
             </a>
           </div>
           <div className="w-full flex justify-center"><Link to="/dashboard" className='cursor-pointer w-14'><img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '60px', width: '60px', margin: '1rem auto', borderRadius: '10px' }} /></Link></div>
@@ -78,7 +79,7 @@ const Footer = () => {
         <div className="footer-bottom">
           <p className="footer-copyright">© 2025 equathora. All rights reserved.</p>
           <p className="footer-credit">
-            Page design inspired by <a href="https://exercism.org" target="_blank" rel="noopener noreferrer" aria-label="Exercism">Exercism</a> - free coding platform
+            Page design inspired by <a href="https://exercism.org" target="_blank" rel="noopener noreferrer" aria-label="Exercism">Exercism</a> - code practice & mentorship
           </p>
         </div>
 

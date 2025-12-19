@@ -187,8 +187,9 @@ export default function MathLiveEditor({ onSubmit }) {
                     </div>
 
                     <div className="ml-toolbar">
-                        <button className="ml-btn clear" onClick={() => setDeleteAllPopup(true)}>
+                        <button className="ml-btn clear flex gap-1" onClick={() => setDeleteAllPopup(true)}>
                             <FaTrash />
+                            <p>Clear All</p>
                         </button>
                         <div className="flex gap-2">
                             <button className="ml-btn addStep" onClick={addField}>

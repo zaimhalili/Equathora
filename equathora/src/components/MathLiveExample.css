@@ -174,7 +174,6 @@ math-field:hover {
 
 .ml-btn {
     appearance: none;
-    border: 2px solid var(--french-gray);
     background: white;
     padding: 0.65rem 1.2rem;
     border-radius: 8px;
