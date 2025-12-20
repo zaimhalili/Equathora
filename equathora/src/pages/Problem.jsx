@@ -1,5 +1,5 @@
 // ProblemDetail.jsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LilArrow from '../assets/images/lilArrow.svg';
@@ -11,7 +11,7 @@ import {
   ViewSolutionModal,
   SubmissionDetailModal
 } from '../components/ProblemModals';
-import { FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaRegStar } from 'react-icons/fa';
+import { FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaRegStar, FaPencilAlt } from 'react-icons/fa';
 import { getProblemById, problems as allProblems } from '../data/problems';
 import {
   isProblemCompleted,
@@ -116,7 +116,100 @@ const Problem = () => {
   const [submissions, setSubmissions] = useState([]);
   const [solutionViewed, setSolutionViewed] = useState(false);
   const [submissionFeedback, setSubmissionFeedback] = useState(null);
+  const [showDrawingPad, setShowDrawingPad] = useState(false);
+  const [drawingColor, setDrawingColor] = useState('black');
+  const [strokes, setStrokes] = useState([]);
+  const canvasRef = useRef(null);
+  const isDrawingRef = useRef(false);
+  const currentStrokeRef = useRef([]);
   const sessionStartRef = useRef(Date.now());
+
+  const redrawCanvas = useCallback((paths) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const allStrokes = paths || strokes;
+    allStrokes.forEach((stroke) => {
+      if (!stroke?.points?.length) return;
+      ctx.strokeStyle = stroke.color || 'black';
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+      stroke.points.slice(1).forEach((point) => {
+        ctx.lineTo(point.x, point.y);
+      });
+      ctx.stroke();
+    });
+  }, [strokes]);
+
+  const getCanvasPoint = useCallback((event) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+
+    const rect = canvas.getBoundingClientRect();
+    const clientX = event.clientX ?? event.touches?.[0]?.clientX;
+    const clientY = event.clientY ?? event.touches?.[0]?.clientY;
+    if (clientX == null || clientY == null) return null;
+
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top
+    };
+  }, []);
+
+  const startDrawing = useCallback((event) => {
+    const point = getCanvasPoint(event);
+    if (!point) return;
+
+    isDrawingRef.current = true;
+    currentStrokeRef.current = [point];
+  }, [getCanvasPoint]);
+
+  const drawStroke = useCallback((event) => {
+    if (!isDrawingRef.current) return;
+
+    const point = getCanvasPoint(event);
+    if (!point) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const lastPoint = currentStrokeRef.current[currentStrokeRef.current.length - 1];
+
+    ctx.strokeStyle = drawingColor;
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(lastPoint.x, lastPoint.y);
+    ctx.lineTo(point.x, point.y);
+    ctx.stroke();
+
+    currentStrokeRef.current.push(point);
+  }, [drawingColor, getCanvasPoint]);
+
+  const endDrawing = useCallback(() => {
+    if (!isDrawingRef.current) return;
+
+    isDrawingRef.current = false;
+    if (currentStrokeRef.current.length > 0) {
+      setStrokes((prev) => [...prev, { color: drawingColor, points: currentStrokeRef.current }]);
+    }
+    currentStrokeRef.current = [];
+  }, [drawingColor]);
+
+  const clearCanvas = useCallback(() => {
+    setStrokes([]);
+    redrawCanvas([]);
+  }, [redrawCanvas]);
+
+  const undoStroke = useCallback(() => {
+    setStrokes((prev) => prev.slice(0, -1));
+  }, []);
 
   const isCompleted = problem ? isProblemCompleted(problem.id) : false;
 
@@ -149,7 +242,37 @@ const Problem = () => {
     setShowReportModal(false);
     setShowHelpModal(false);
     setIsFavorite(checkFavorite(numericProblemId));
+    setShowDrawingPad(false);
+    setStrokes([]);
+    setDrawingColor('black');
   }, [numericProblemId]);
+
+  useEffect(() => {
+    if (!showDrawingPad) return;
+
+    const resizeCanvas = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const width = canvas.offsetWidth || 0;
+      canvas.width = width;
+      canvas.height = 220;
+      redrawCanvas();
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, [showDrawingPad, redrawCanvas]);
+
+  useEffect(() => {
+    if (showDrawingPad) {
+      redrawCanvas();
+    }
+  }, [strokes, showDrawingPad, redrawCanvas]);
 
   const toggleHint = (index) => {
     setOpenHints(prev => ({
@@ -396,9 +519,24 @@ const Problem = () => {
                 </button>
 
                 <button type="button" onClick={() => {
+                  setShowDescription(true);
+                  setShowSolutionPopup(false);
+                  setShowSolution(false);
+                  setShowTop(false);
+                  setShowSubmissions(false);
+                  setShowDrawingPad((prev) => !prev);
+                  if (descriptionCollapsed) setDescriptionCollapsed(false);
+                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${(showDescription && !showSubmissions && showDrawingPad) ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Draw" : ""}>
+                  <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Draw</span>
+                  {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Draw</span>}
+                  <FaPencilAlt className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
+                </button>
+
+                <button type="button" onClick={() => {
                   setShowDescription(false);
                   setShowTop(false);
                   setShowSubmissions(false);
+                  setShowDrawingPad(false);
                   if (!solutionViewed) {
                     setShowSolutionPopup(true);
                   } else {
@@ -416,6 +554,7 @@ const Problem = () => {
                   setShowSolution(false);
                   setShowSubmissions(true);
                   setShowTop(false);
+                  setShowDrawingPad(false);
                   if (descriptionCollapsed) setDescriptionCollapsed(false);
                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
                   <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Submissions</span>
@@ -541,6 +680,62 @@ const Problem = () => {
                     <div>
                       <p className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Inter,sans-serif] m-0">{problem.description}</p>
                     </div>
+
+                    {showDrawingPad && (
+                      <div className="rounded-lg border border-[var(--french-gray)] bg-[var(--french-gray)]/20 p-3 md:p-4 flex flex-col gap-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] md:text-xs font-semibold text-[var(--secondary-color)] uppercase tracking-[0.05em]">Sketch</span>
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                type="button"
+                                onClick={() => setDrawingColor('black')}
+                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'black' ? 'bg-[var(--secondary-color)] text-[var(--main-color)] border-[var(--secondary-color)]' : 'text-[var(--secondary-color)] border-[var(--french-gray)] hover:border-[var(--secondary-color)]'}`}
+                              >
+                                Black
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setDrawingColor('red')}
+                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-[var(--accent-color)] text-[var(--main-color)] border-[var(--accent-color)]' : 'text-[var(--secondary-color)] border-[var(--french-gray)] hover:border-[var(--accent-color)]'}`}
+                              >
+                                Red
+                              </button>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={undoStroke}
+                              disabled={strokes.length === 0}
+                              className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--french-gray)] text-[var(--french-gray)]' : 'text-[var(--secondary-color)] border-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'}`}
+                            >
+                              Undo
+                            </button>
+                            <button
+                              type="button"
+                              onClick={clearCanvas}
+                              disabled={strokes.length === 0}
+                              className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--french-gray)] text-[var(--french-gray)]' : 'text-[var(--accent-color)] border-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-[var(--main-color)]'}`}
+                            >
+                              Clear
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="rounded-md border border-[var(--french-gray)] bg-[var(--main-color)] overflow-hidden shadow-sm">
+                          <canvas
+                            ref={canvasRef}
+                            className="w-full h-48 md:h-56 bg-[var(--main-color)] cursor-crosshair"
+                            style={{ touchAction: 'none' }}
+                            onPointerDown={(e) => { e.preventDefault(); startDrawing(e); }}
+                            onPointerMove={(e) => { e.preventDefault(); drawStroke(e); }}
+                            onPointerUp={(e) => { e.preventDefault(); endDrawing(); }}
+                            onPointerLeave={(e) => { e.preventDefault(); endDrawing(); }}
+                          />
+                        </div>
+                      </div>
+                    )}
 
                     {/* Examples */}
                     {examples.length > 0 && (
