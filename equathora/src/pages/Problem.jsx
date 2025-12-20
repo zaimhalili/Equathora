@@ -197,7 +197,8 @@ const Problem = () => {
     if (!isDrawingRef.current) return;
 
     isDrawingRef.current = false;
-    if (currentStrokeRef.current.length > 0) {
+    // Always save strokes, even single points (for quick clicks/taps)
+    if (currentStrokeRef.current.length >= 1) {
       setStrokes((prev) => [...prev, { color: drawingColor, points: currentStrokeRef.current }]);
     }
     currentStrokeRef.current = [];
@@ -223,7 +224,7 @@ const Problem = () => {
   useEffect(() => {
     sessionStartRef.current = Date.now();
     setSubmissionFeedback(null);
-    
+
     // Load cached strokes for this problem if they exist
     if (strokesCacheRef.current[numericProblemId]) {
       setStrokes(strokesCacheRef.current[numericProblemId]);
@@ -285,6 +286,24 @@ const Problem = () => {
       strokesCacheRef.current[numericProblemId] = strokes;
     }
   }, [strokes, showDrawingPad, redrawCanvas, numericProblemId]);
+
+  // Warn user before refresh/close if drawings exist
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      const hasDrawings = Object.keys(strokesCacheRef.current).some(
+        key => strokesCacheRef.current[key]?.length > 0
+      );
+      
+      if (hasDrawings) {
+        e.preventDefault();
+        e.returnValue = 'You have unsaved sketches. Are you sure you want to leave? Your drawings will be lost.';
+        return e.returnValue;
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, []);
 
   const toggleHint = (index) => {
     setOpenHints(prev => ({
@@ -607,6 +626,9 @@ const Problem = () => {
                       <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-yellow-500/10 text-yellow-700">Premium</span>
                     ) : (
                       <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-gray-600">Free</span>
+                    )}
+                    {problem.topic && (
+                      <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-blue-500/10 text-blue-700 border border-blue-200">{problem.topic}</span>
                     )}
                     {isCompleted && (
                       <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
