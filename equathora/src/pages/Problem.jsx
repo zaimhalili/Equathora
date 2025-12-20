@@ -123,6 +123,7 @@ const Problem = () => {
   const isDrawingRef = useRef(false);
   const currentStrokeRef = useRef([]);
   const sessionStartRef = useRef(Date.now());
+  const strokesCacheRef = useRef({});
 
   const redrawCanvas = useCallback((paths) => {
     const canvas = canvasRef.current;
@@ -222,7 +223,14 @@ const Problem = () => {
   useEffect(() => {
     sessionStartRef.current = Date.now();
     setSubmissionFeedback(null);
-  }, [problemId]);
+    
+    // Load cached strokes for this problem if they exist
+    if (strokesCacheRef.current[numericProblemId]) {
+      setStrokes(strokesCacheRef.current[numericProblemId]);
+    } else {
+      setStrokes([]);
+    }
+  }, [problemId, numericProblemId]);
 
   // Reset transient UI state when navigating between problems
   useEffect(() => {
@@ -243,8 +251,8 @@ const Problem = () => {
     setShowHelpModal(false);
     setIsFavorite(checkFavorite(numericProblemId));
     setShowDrawingPad(false);
-    setStrokes([]);
     setDrawingColor('black');
+    // Strokes are now loaded from cache in the other useEffect
   }, [numericProblemId]);
 
   useEffect(() => {
@@ -272,7 +280,11 @@ const Problem = () => {
     if (showDrawingPad) {
       redrawCanvas();
     }
-  }, [strokes, showDrawingPad, redrawCanvas]);
+    // Cache strokes for this problem
+    if (strokes.length > 0) {
+      strokesCacheRef.current[numericProblemId] = strokes;
+    }
+  }, [strokes, showDrawingPad, redrawCanvas, numericProblemId]);
 
   const toggleHint = (index) => {
     setOpenHints(prev => ({
@@ -433,6 +445,22 @@ const Problem = () => {
           <div className="w-full md:w-auto flex flex-wrap items-center gap-1.5 sm:gap-2 md:gap-3 justify-start md:justify-end">
             <Timer problemId={problem?.id} />
             <button
+              onClick={() => {
+                setShowDrawingPad((prev) => !prev);
+                setShowDescription(true);
+                setShowSolutionPopup(false);
+                setShowSolution(false);
+                setShowTop(false);
+                setShowSubmissions(false);
+                if (descriptionCollapsed) setDescriptionCollapsed(false);
+              }}
+              className={`bg-transparent border-1 px-2.5 sm:px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 flex items-center gap-1.5 h-[34px] sm:h-[38px] md:h-[42px] ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)] hover:text-[var(--accent-color)]'}`}
+              title={showDrawingPad ? "Hide sketch pad" : "Show sketch pad"}
+            >
+              <FaPencilAlt className="text-sm md:text-base" />
+              <span className="hidden sm:inline text-xs sm:text-sm font-medium">Sketch</span>
+            </button>
+            <button
               onClick={() => setShowHelpModal(true)}
               className="bg-transparent border-1 border-[var(--french-gray)] px-2.5 sm:px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200  hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-[34px] sm:h-[38px] md:h-[42px]"
               title="Help & Guide"
@@ -519,24 +547,9 @@ const Problem = () => {
                 </button>
 
                 <button type="button" onClick={() => {
-                  setShowDescription(true);
-                  setShowSolutionPopup(false);
-                  setShowSolution(false);
-                  setShowTop(false);
-                  setShowSubmissions(false);
-                  setShowDrawingPad((prev) => !prev);
-                  if (descriptionCollapsed) setDescriptionCollapsed(false);
-                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${(showDescription && !showSubmissions && showDrawingPad) ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Draw" : ""}>
-                  <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Draw</span>
-                  {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Draw</span>}
-                  <FaPencilAlt className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
-                </button>
-
-                <button type="button" onClick={() => {
                   setShowDescription(false);
                   setShowTop(false);
                   setShowSubmissions(false);
-                  setShowDrawingPad(false);
                   if (!solutionViewed) {
                     setShowSolutionPopup(true);
                   } else {
@@ -554,7 +567,6 @@ const Problem = () => {
                   setShowSolution(false);
                   setShowSubmissions(true);
                   setShowTop(false);
-                  setShowDrawingPad(false);
                   if (descriptionCollapsed) setDescriptionCollapsed(false);
                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Inter] flex items-center gap-1.5 font-medium transition-all duration-200 ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
                   <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Submissions</span>
