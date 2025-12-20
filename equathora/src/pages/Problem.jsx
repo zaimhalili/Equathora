@@ -293,7 +293,7 @@ const Problem = () => {
       const hasDrawings = Object.keys(strokesCacheRef.current).some(
         key => strokesCacheRef.current[key]?.length > 0
       );
-      
+
       if (hasDrawings) {
         e.preventDefault();
         e.returnValue = 'You have unsaved sketches. Are you sure you want to leave? Your drawings will be lost.';
