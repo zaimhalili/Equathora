@@ -145,7 +145,20 @@ const Problem = () => {
       });
       ctx.stroke();
     });
-  }, [strokes]);
+
+    // Also draw current stroke if actively drawing
+    if (isDrawingRef.current && currentStrokeRef.current.length > 0) {
+      ctx.strokeStyle = drawingColor;
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(currentStrokeRef.current[0].x, currentStrokeRef.current[0].y);
+      currentStrokeRef.current.slice(1).forEach((point) => {
+        ctx.lineTo(point.x, point.y);
+      });
+      ctx.stroke();
+    }
+  }, [strokes, drawingColor]);
 
   const getCanvasPoint = useCallback((event) => {
     const canvas = canvasRef.current;
@@ -199,7 +212,8 @@ const Problem = () => {
     isDrawingRef.current = false;
     // Always save strokes, even single points (for quick clicks/taps)
     if (currentStrokeRef.current.length >= 1) {
-      setStrokes((prev) => [...prev, { color: drawingColor, points: currentStrokeRef.current }]);
+      const strokeToSave = { color: drawingColor, points: [...currentStrokeRef.current] };
+      setStrokes((prev) => [...prev, strokeToSave]);
     }
     currentStrokeRef.current = [];
   }, [drawingColor]);
