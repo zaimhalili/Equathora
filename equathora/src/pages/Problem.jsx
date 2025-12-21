@@ -276,7 +276,7 @@ const Problem = () => {
   // Close mobile menu when clicking outside
   useEffect(() => {
     if (!showMobileMenu) return;
-    
+
     const handleClickOutside = (e) => {
       if (!e.target.closest('.mobile-menu-container')) {
         setShowMobileMenu(false);
@@ -364,7 +364,7 @@ const Problem = () => {
     }
 
     const validation = validateAnswer(finalAnswer, problem);
-    
+
     // Get actual time from localStorage (what the Timer component tracks)
     const storageKey = `eq:problemTime:${problem.id}`;
     const storedTime = window.localStorage.getItem(storageKey);
@@ -502,7 +502,7 @@ const Problem = () => {
           {/* Right side - Timer and Actions */}
           <div className="flex items-center gap-2">
             <Timer key={problem?.id} problemId={problem?.id} />
-            
+
             {/* Desktop buttons - hidden on mobile */}
             <div className="hidden md:flex items-center gap-2">
               <button
