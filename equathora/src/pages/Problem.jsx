@@ -468,15 +468,16 @@ const Problem = () => {
               </button>
               <button
                 onClick={() => nextProblem && navigate(`/problems/${nextProblem.groupId}/${nextProblem.id}`)}
-                className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)]  hover:bg-[var(--french-gray)]  cursor-pointer"
+                className="flex items-center justify-center h-8 gap-2 pl-3 pr-2 sm:h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)]  hover:bg-[var(--french-gray)]  cursor-pointer"
                 title={nextProblem ? `Next: ${nextProblem.title}` : ''}
               >
+                <p className=''>Next</p>
                 <FaChevronRight className="text-sm" />
               </button>
             </div>
           </div>
           <div className="w-full md:w-auto flex flex-wrap items-center gap-1.5 sm:gap-2 md:gap-3 justify-start md:justify-end">
-            <Timer problemId={problem?.id} />
+            <Timer key={problem?.id} problemId={problem?.id} />
             <button
               onClick={() => {
                 setShowDrawingPad((prev) => !prev);

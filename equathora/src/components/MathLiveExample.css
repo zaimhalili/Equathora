@@ -124,16 +124,21 @@ math-field {
     --placeholder-color: var(--mid-main-secondary);
     --contains-highlight-background-color: var(--french-gray);
 
-    font-size: clamp(14px, 2vw, 16px);
+    font-size: clamp(14px, 2vw, 20px);
     color: #000;
     background: white;
     border: 2px solid var(--french-gray);
+    padding: 0;
     border-radius: 8px;
-    padding: 12px;
     display: block;
     min-height: 3rem;
     flex: 1;
     transition: all 0.2s ease;
+    overflow-x: auto;
+}
+
+math-field::-webkit-scrollbar{
+    display: none;
 }
 
 math-field:hover {
@@ -493,8 +498,8 @@ math-field:focus-within {
 
     /* Improve virtual keyboard layout on mobile */
     math-field {
-        font-size: 15px;
-        padding: 10px;
+        font-size: 18px;
+        padding: 0 !important;
     }
 }
 
@@ -541,9 +546,8 @@ math-field:focus-within {
     }
 
     math-field {
-        font-size: 14px;
-        padding: 8px;
-        min-height: 2.5rem;
+        font-size: 18px;
+        padding: 0;
     }
 
     .ml-toolbar {

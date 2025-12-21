@@ -142,7 +142,7 @@ export default function MathLiveEditor({ onSubmit }) {
                 </div>
 
                 <div className="ml-card" aria-live="polite">
-                    <div className="ml-steps-container">
+                    <div className="ml-steps-container cursor-text">
                         {fields.map((field, index) => (
                             <div key={field.id} className="ml-step-wrapper">
                                 <div className="ml-step-label">{index + 1}</div>

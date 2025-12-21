@@ -41,10 +41,6 @@ const Timer = ({ problemId }) => {
         window.localStorage.setItem(storageKey, String(time));
     }, [time, storageKey]);
 
-    useEffect(() => {
-        setTime(getStoredTime(storageKey));
-    }, [storageKey]);
-
     return (
         <div className='stopwatch'>
             <p className="timer">{format(time)}</p>
