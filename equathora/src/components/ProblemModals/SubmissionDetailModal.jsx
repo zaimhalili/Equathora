@@ -5,6 +5,15 @@ import { MathfieldElement } from 'mathlive';
 const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
     const [copyMessage, setCopyMessage] = useState('');
 
+    const formatMinutesSeconds = (totalSeconds = 0) => {
+        const seconds = Math.max(0, Math.round(totalSeconds));
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        const mm = String(minutes).padStart(2, '0');
+        const ss = String(remainingSeconds).padStart(2, '0');
+        return `${mm}:${ss}`;
+    };
+
     const handleCopySteps = () => {
         if (!submission || !submission.steps) return;
 
@@ -99,10 +108,12 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
 
                     {submission.metadata && (
                         <div className='grid grid-cols-2 md:grid-cols-3 gap-3'>
-                            {submission.metadata.timeSpent && (
+                            {submission.metadata.timeSpent !== undefined && (
                                 <div className='bg-[var(--french-gray)]/10 p-3 rounded-lg'>
                                     <div className='text-xs text-gray-500 pb-1'>Time Spent</div>
-                                    <div className='font-bold text-[var(--secondary-color)]'>{submission.metadata.timeSpent}</div>
+                                    <div className='font-bold text-[var(--secondary-color)]'>
+                                        {submission.metadata.timeSpentLabel || formatMinutesSeconds(submission.metadata.timeSpent)}
+                                    </div>
                                 </div>
                             )}
                             {submission.metadata.attempts && (

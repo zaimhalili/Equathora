@@ -122,6 +122,7 @@ const Problem = () => {
   const [strokes, setStrokes] = useState([]);
   const [timerResetSeq, setTimerResetSeq] = useState(0);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const prevProblemIdRef = useRef(numericProblemId);
   const canvasRef = useRef(null);
   const isDrawingRef = useRef(false);
   const currentStrokeRef = useRef([]);
@@ -249,13 +250,15 @@ const Problem = () => {
       setStrokes([]);
     }
 
-    // Reset timer storage for this problem on navigation
-    if (typeof window !== 'undefined' && problem) {
+    // Only reset timer when navigating to a different problem (not on first load/refresh)
+    const prevId = prevProblemIdRef.current;
+    if (typeof window !== 'undefined' && problem && prevId !== null && prevId !== numericProblemId) {
       const storageKey = `eq:problemTime:${problem.id}`;
       window.localStorage.setItem(storageKey, '0');
       setTimerResetSeq(prev => prev + 1);
     }
-  }, [problemId, numericProblemId]);
+    prevProblemIdRef.current = numericProblemId;
+  }, [problemId, numericProblemId, problem]);
 
   // Reset transient UI state when navigating between problems
   useEffect(() => {

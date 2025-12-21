@@ -143,7 +143,7 @@
     #filters-container {
         flex-wrap: nowrap;
         overflow-x: auto;
-        overflow-y: hidden;
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
         padding-bottom: 0.5rem;
