@@ -32,7 +32,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                             <h2 className='font-[Inter] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>
                                 Submission Details
                             </h2>
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${submission.status === 'accepted' ? 'bg-green-100 text-green-700' :
+                            <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 text-center ${submission.status === 'accepted' ? 'bg-green-100 text-green-700' :
                                 submission.status === 'wrong' ? 'bg-red-100 text-red-700' :
                                     'bg-yellow-100 text-yellow-700'
                                 }`}>

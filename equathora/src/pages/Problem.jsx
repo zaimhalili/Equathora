@@ -120,6 +120,7 @@ const Problem = () => {
   const [showDrawingPad, setShowDrawingPad] = useState(false);
   const [drawingColor, setDrawingColor] = useState('black');
   const [strokes, setStrokes] = useState([]);
+  const [timerResetSeq, setTimerResetSeq] = useState(0);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const canvasRef = useRef(null);
   const isDrawingRef = useRef(false);
@@ -247,6 +248,13 @@ const Problem = () => {
     } else {
       setStrokes([]);
     }
+
+    // Reset timer storage for this problem on navigation
+    if (typeof window !== 'undefined' && problem) {
+      const storageKey = `eq:problemTime:${problem.id}`;
+      window.localStorage.setItem(storageKey, '0');
+      setTimerResetSeq(prev => prev + 1);
+    }
   }, [problemId, numericProblemId]);
 
   // Reset transient UI state when navigating between problems
@@ -367,7 +375,7 @@ const Problem = () => {
 
     // Get actual time from localStorage (what the Timer component tracks)
     const storageKey = `eq:problemTime:${problem.id}`;
-    const storedTime = window.localStorage.getItem(storageKey);
+    const storedTime = typeof window !== 'undefined' ? window.localStorage.getItem(storageKey) : null;
     const timeSpentSeconds = storedTime ? Math.max(1, parseInt(storedTime, 10)) : Math.max(1, Math.round((Date.now() - sessionStartRef.current) / 1000));
     const attemptNumber = submissions.length + 1;
 
@@ -501,7 +509,7 @@ const Problem = () => {
 
           {/* Right side - Timer and Actions */}
           <div className="flex items-center gap-2">
-            <Timer key={problem?.id} problemId={problem?.id} />
+            <Timer key={`${problem?.id}-${timerResetSeq}`} problemId={problem?.id} />
 
             {/* Desktop buttons - hidden on mobile */}
             <div className="hidden md:flex items-center gap-2">

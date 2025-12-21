@@ -216,9 +216,10 @@ math-field:hover {
     border-color: var(--dark-accent-color);
 }
 
+/* Clear all button */
 .ml-btn.clear {
     background: white;
-    color: var(--french-gray);
+    color: var(--secondary-color);
     font-weight: 500;
     font-family: 'Inter', sans-serif;
 }
