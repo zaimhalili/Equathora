@@ -1,17 +1,26 @@
 .stopwatch {
-    padding: 0.5rem 1rem;
+    padding: 0 0.75rem;
     background-color: var(--accent-color);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     border-radius: 0.5rem;
+    height: 2.25rem;
+    white-space: nowrap;
     /* animation: changeColor 300s ease-in-out forwards; */
     /* border: 2px solid var(--french-gray); */
+}
+
+@media only screen and (min-width: 768px) {
+    .stopwatch {
+        height: 2.5rem;
+        font-size: 0.9rem;
+        padding: 0 1rem;
+    }
 }
 
 @keyframes changeColor {

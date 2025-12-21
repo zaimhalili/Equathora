@@ -5,6 +5,7 @@ import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
 import Timer from '../components/Timer.jsx';
+import ProblemMobileMenu from '../components/ProblemMobileMenu.jsx';
 import {
   ReportModal,
   HelpModal,
@@ -119,6 +120,7 @@ const Problem = () => {
   const [showDrawingPad, setShowDrawingPad] = useState(false);
   const [drawingColor, setDrawingColor] = useState('black');
   const [strokes, setStrokes] = useState([]);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const canvasRef = useRef(null);
   const isDrawingRef = useRef(false);
   const currentStrokeRef = useRef([]);
@@ -267,8 +269,23 @@ const Problem = () => {
     setIsFavorite(checkFavorite(numericProblemId));
     setShowDrawingPad(false);
     setDrawingColor('black');
+    setShowMobileMenu(false);
     // Strokes are now loaded from cache in the other useEffect
   }, [numericProblemId]);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    if (!showMobileMenu) return;
+    
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('.mobile-menu-container')) {
+        setShowMobileMenu(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showMobileMenu]);
 
   useEffect(() => {
     if (!showDrawingPad) return;
@@ -347,7 +364,11 @@ const Problem = () => {
     }
 
     const validation = validateAnswer(finalAnswer, problem);
-    const timeSpentSeconds = Math.max(1, Math.round((Date.now() - sessionStartRef.current) / 1000));
+    
+    // Get actual time from localStorage (what the Timer component tracks)
+    const storageKey = `eq:problemTime:${problem.id}`;
+    const storedTime = window.localStorage.getItem(storageKey);
+    const timeSpentSeconds = storedTime ? Math.max(1, parseInt(storedTime, 10)) : Math.max(1, Math.round((Date.now() - sessionStartRef.current) / 1000));
     const attemptNumber = submissions.length + 1;
 
     const entry = addSubmission(
@@ -451,78 +472,96 @@ const Problem = () => {
       <FeedbackBanner />
       <main className="min-h-screen flex flex-col text-[var(--secondary-color)]">
         {/* Navigation Header */}
-        <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 sm:gap-2.5 md:gap-3 font-[Inter,sans-serif] bg-[var(--main-color)] w-full px-3 sm:px-5 md:px-7 py-2.5 md:py-4 flex-shrink-0">
-          <div className="w-full md:w-auto flex items-center gap-1.5 sm:gap-2 flex-wrap">
-            <Link to="/learn" className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm md:text-md text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-[var(--french-gray)] hover:text-[var(--main-color)]">
-              <img src={LilArrow} alt="arrow" className="w-4 h-4 md:w-5 md:h-5 rotate-180 transition-transform duration-200 hover:translate-x-1" />
-              <span className="hidden sm:inline">Back to Exercises</span>
-              <span className="sm:hidden">Back</span>
+        <header className="flex items-center justify-between gap-2 md:gap-3 font-[Inter,sans-serif] bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0">
+          {/* Left side - Back button and Navigation */}
+          <div className="flex items-center gap-2">
+            <Link to="/learn" className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-lg hover:bg-[var(--french-gray)] hover:text-[var(--main-color)] h-9 md:h-10">
+              <img src={LilArrow} alt="arrow" className="w-4 h-4 rotate-180 transition-transform duration-200 hover:translate-x-1" />
+              <span className="hidden md:inline">Back to Exercises</span>
+              <span className="md:hidden">Back</span>
             </Link>
-            <div className="flex items-center gap-1 border-l border-[var(--french-gray)] pl-2">
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={() => prevProblem && navigate(`/problems/${prevProblem.groupId}/${prevProblem.id}`)}
-                className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)]  hover:bg-[var(--french-gray)] cursor-pointer"
+                className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                 title={prevProblem ? `Previous: ${prevProblem.title}` : ''}
               >
                 <FaChevronLeft className="text-sm" />
               </button>
               <button
                 onClick={() => nextProblem && navigate(`/problems/${nextProblem.groupId}/${nextProblem.id}`)}
-                className="flex items-center justify-center h-8 gap-2 pl-3 pr-2 sm:h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)]  hover:bg-[var(--french-gray)]  cursor-pointer"
+                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                 title={nextProblem ? `Next: ${nextProblem.title}` : ''}
               >
-                <p className=''>Next</p>
+                <span className="hidden sm:inline text-xs md:text-sm font-medium">Next</span>
                 <FaChevronRight className="text-sm" />
               </button>
             </div>
           </div>
-          <div className="w-full md:w-auto flex flex-wrap items-center gap-1.5 sm:gap-2 md:gap-3 justify-start md:justify-end">
+
+          {/* Right side - Timer and Actions */}
+          <div className="flex items-center gap-2">
             <Timer key={problem?.id} problemId={problem?.id} />
-            <button
-              onClick={() => {
-                setShowDrawingPad((prev) => !prev);
-                setShowDescription(true);
-                setShowSolutionPopup(false);
-                setShowSolution(false);
-                setShowTop(false);
-                setShowSubmissions(false);
-                if (descriptionCollapsed) setDescriptionCollapsed(false);
-              }}
-              className={`bg-transparent border-1 px-2.5 sm:px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 flex items-center gap-1.5 h-[34px] sm:h-[38px] md:h-[42px] ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)] hover:text-[var(--accent-color)]'}`}
-              title={showDrawingPad ? "Hide sketch pad" : "Show sketch pad"}
-            >
-              <FaPencilAlt className="text-sm md:text-base" />
-              <span className="hidden sm:inline text-xs sm:text-sm font-medium">Sketch</span>
-            </button>
-            <button
-              onClick={() => setShowHelpModal(true)}
-              className="bg-transparent border-1 border-[var(--french-gray)] px-2.5 sm:px-3 md:px-4 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200  hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-[34px] sm:h-[38px] md:h-[42px]"
-              title="Help & Guide"
-            >
-              <FaQuestionCircle className="text-sm md:text-base" />
-              <span className="hidden sm:inline text-xs sm:text-sm font-medium">Help</span>
-            </button>
-            {/* <button
-              onClick={() => setShowReportModal(true)}
-              className="bg-transparent border-2 border-[var(--french-gray)] px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 hover:border-[var(--accent-color)] hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px]"
-              title="Report Problem"
-            >
-              <FaFlag className="text-sm md:text-base" />
-            </button> */}
-            <Link
-              to="/feedback"
-              className="bg-transparent border-1 border-[var(--french-gray)] px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer text-xs sm:text-sm md:text-md transition-all duration-200 hover:!text-[var(--accent-color)] !text-[var(--french-gray)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px]"
-              title="Report Problem"
-            >
-              <FaFlag className="text-sm md:text-base" />
-            </Link>
-            <button
-              className={`bg-transparent border-1 text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 md:py-2 rounded-lg cursor-pointer transition-all duration-200 hover:text-[var(--accent-color)] flex items-center justify-center h-[34px] sm:h-[38px] md:h-[42px] ${isFavorite ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
-              onClick={handleFavoriteToggle}
-              title={isFavorite ? "Remove from favorites" : "Add to favorites"}
-            >
-              {isFavorite ? <FaStar className="text-sm md:text-base" /> : <FaRegStar className="text-sm md:text-base" />}
-            </button>
+            
+            {/* Desktop buttons - hidden on mobile */}
+            <div className="hidden md:flex items-center gap-2">
+              <button
+                onClick={() => {
+                  setShowDrawingPad((prev) => !prev);
+                  setShowDescription(true);
+                  setShowSolutionPopup(false);
+                  setShowSolution(false);
+                  setShowTop(false);
+                  setShowSubmissions(false);
+                  if (descriptionCollapsed) setDescriptionCollapsed(false);
+                }}
+                className={`bg-transparent border-1 px-3 md:px-4 rounded-lg cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)] hover:text-[var(--accent-color)]'}`}
+                title={showDrawingPad ? "Hide sketch pad" : "Show sketch pad"}
+              >
+                <FaPencilAlt className="text-sm md:text-base" />
+                <span className="text-xs sm:text-sm font-medium">Sketch</span>
+              </button>
+              <button
+                onClick={() => setShowHelpModal(true)}
+                className="bg-transparent border-1 border-[var(--french-gray)] px-3 md:px-4 rounded-lg cursor-pointer text-xs md:text-sm transition-all duration-200 hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-9 md:h-10"
+                title="Help & Guide"
+              >
+                <FaQuestionCircle className="text-sm md:text-base" />
+                <span className="text-xs sm:text-sm font-medium">Help</span>
+              </button>
+              <Link
+                to="/feedback"
+                className="bg-transparent border-1 border-[var(--french-gray)] px-3 rounded-lg cursor-pointer text-xs md:text-sm transition-all duration-200 hover:!text-[var(--accent-color)] !text-[var(--french-gray)] flex items-center justify-center w-9 h-9 md:w-10 md:h-10"
+                title="Report Problem"
+              >
+                <FaFlag className="text-sm md:text-base" />
+              </Link>
+              <button
+                className={`bg-transparent border-1 text-xs md:text-sm px-3 rounded-lg cursor-pointer transition-all duration-200 hover:text-[var(--accent-color)] flex items-center justify-center w-9 h-9 md:w-10 md:h-10 ${isFavorite ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
+                onClick={handleFavoriteToggle}
+                title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+              >
+                {isFavorite ? <FaStar className="text-sm md:text-base" /> : <FaRegStar className="text-sm md:text-base" />}
+              </button>
+            </div>
+
+            {/* Mobile menu button */}
+            <ProblemMobileMenu
+              showMobileMenu={showMobileMenu}
+              setShowMobileMenu={setShowMobileMenu}
+              showDrawingPad={showDrawingPad}
+              setShowDrawingPad={setShowDrawingPad}
+              setShowDescription={setShowDescription}
+              setShowSolutionPopup={setShowSolutionPopup}
+              setShowSolution={setShowSolution}
+              setShowTop={setShowTop}
+              setShowSubmissions={setShowSubmissions}
+              descriptionCollapsed={descriptionCollapsed}
+              setDescriptionCollapsed={setDescriptionCollapsed}
+              setShowHelpModal={setShowHelpModal}
+              isFavorite={isFavorite}
+              handleFavoriteToggle={handleFavoriteToggle}
+            />
           </div>
         </header>
 
