@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "jkat7M5jy0I=",
+  "dgSpecHash": "zXUSvybc83Y=",
   "success": true,
   "projectFilePath": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25-26\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\halil\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.8\\microsoft.aspnetcore.openapi.9.0.8.nupkg.sha512",
+    "C:\\Users\\halil\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\10.0.1\\microsoft.entityframeworkcore.tools.10.0.1.nupkg.sha512",
     "C:\\Users\\halil\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512",
     "C:\\Users\\halil\\.nuget\\packages\\microsoft.netcore.app.ref\\9.0.10\\microsoft.netcore.app.ref.9.0.10.nupkg.sha512",
     "C:\\Users\\halil\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\9.0.10\\microsoft.windowsdesktop.app.ref.9.0.10.nupkg.sha512",
