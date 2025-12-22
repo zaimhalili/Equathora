@@ -31,3 +31,7 @@ C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25\Web Developmen
 C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25\Web Development\Equathora\equathora\backend\EquathoraBackend\obj\Debug\net9.0\EquathoraBackend.pdb
 C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25\Web Development\Equathora\equathora\backend\EquathoraBackend\obj\Debug\net9.0\EquathoraBackend.genruntimeconfig.cache
 C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25\Web Development\Equathora\equathora\backend\EquathoraBackend\obj\Debug\net9.0\ref\EquathoraBackend.dll
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\EquathoraBackend.exe
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\EquathoraBackend.dll
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\Microsoft.OpenApi.dll

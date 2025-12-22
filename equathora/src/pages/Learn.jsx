@@ -17,6 +17,8 @@ import { isProblemCompleted, isFavorite } from '../lib/progressStorage';
 const Learn = () => {
   const { groupId } = useParams();
 
+
+
   // Use real problems data with progress tracking
   const problems = allProblems.map(problem => ({
     ...problem,

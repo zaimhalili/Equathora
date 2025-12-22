@@ -261,9 +261,9 @@ math-field:hover {
     transition: all 0.2s ease;
 }
 
-.ml-preview-toggle:hover {
+/* .ml-preview-toggle:hover {
     background: var(--mid-main-secondary);
-}
+} */
 
 .ml-preview-toggle strong {
     color: var(--secondary-color);
