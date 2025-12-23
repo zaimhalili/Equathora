@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using EquathoraBackend.Data;
@@ -21,6 +22,7 @@ var secretKey = jwtSection["SecretKey"] ?? throw new InvalidOperationException("
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
+        options.MapInboundClaims = false; // keep claim names as issued (sub, email)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -28,7 +30,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtSection["Issuer"],
             ValidAudience = jwtSection["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+            NameClaimType = "sub",
+            RoleClaimType = "role"
         };
     });
 
@@ -91,6 +95,14 @@ app.MapPost("/api/auth/login", async (LoginRequest req, AppDbContext db, IConfig
     return Results.Ok(new { token });
 });
 
+// Simple protected endpoint to verify JWT works
+app.MapGet("/api/auth/me", [Authorize] (ClaimsPrincipal user) =>
+{
+    var email = user.FindFirstValue("email");
+    var sub = user.FindFirstValue("sub");
+    return Results.Ok(new { id = sub, email });
+});
+
 // Existing math endpoint
 app.MapGet("/mathproblem", () =>
 {
@@ -128,8 +140,8 @@ static string CreateToken(User user, IConfiguration config)
 
     var claims = new[]
     {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-        new Claim(JwtRegisteredClaimNames.Email, user.Email)
+        new Claim("sub", user.Id.ToString()),
+        new Claim("email", user.Email)
     };
 
     var token = new JwtSecurityToken(
