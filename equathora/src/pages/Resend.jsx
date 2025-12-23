@@ -49,12 +49,12 @@ const Resend = () => {
           <h3>Resend confirmation instructions</h3>
           <h6><br />Not received a confirmation email? Use the form below and we'll send you another.</h6>
         </article>
-        
+
         <article style={{ width: '100%', height: 'calc(100vh - 90px)', display: 'flex', flexDirection: 'column', marginTop: '30px' }}>
           <form onSubmit={handleResend} style={{ width: '100%' }}>
             {error && <p style={{ color: 'red', fontSize: '14px', marginBottom: '10px' }}>{error}</p>}
             {message && <p style={{ color: 'green', fontSize: '14px', marginBottom: '10px' }}>{message}</p>}
-            
+
             <h5 className='typeOfInput resend'>EMAIL</h5>
             <input
               type="email"

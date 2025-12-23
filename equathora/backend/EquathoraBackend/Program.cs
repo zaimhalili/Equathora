@@ -73,7 +73,7 @@ app.MapPost("/api/auth/register", async (RegisterRequest req, AppDbContext db) =
     if (exists) return Results.BadRequest(new { error = "Email already registered" });
 
     var verificationCode = new Random().Next(100000, 999999).ToString();
-    
+
     var user = new User
     {
         Email = req.Email,
@@ -86,7 +86,7 @@ app.MapPost("/api/auth/register", async (RegisterRequest req, AppDbContext db) =
 
     db.Users.Add(user);
     await db.SaveChangesAsync();
-    
+
     // TODO: Send email with verificationCode
     return Results.Ok(new { message = "Registered. Check your email for verification code.", code = verificationCode });
 });

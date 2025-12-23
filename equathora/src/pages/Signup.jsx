@@ -68,56 +68,56 @@ const Signup = () => {
 
         <form id='auth' onSubmit={handleSignup}>
           {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
-          
+
           <h5 className='typeOfInput'>USERNAME</h5>
-          <input 
-            type="text" 
-            className='inputAuth' 
-            placeholder='Choose a unique username' 
-            maxLength="20" 
+          <input
+            type="text"
+            className='inputAuth'
+            placeholder='Choose a unique username'
+            maxLength="20"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            required 
+            required
           />
 
           <h5 className='typeOfInput'>EMAIL</h5>
-          <input 
-            type="email" 
-            className='inputAuth' 
-            placeholder='Enter your email address' 
+          <input
+            type="email"
+            className='inputAuth'
+            placeholder='Enter your email address'
             maxLength="254"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required 
+            required
           />
 
           <h5 className='typeOfInput'>PASSWORD</h5>
-          <input 
-            type="password" 
-            className='inputAuth' 
-            placeholder='Enter your password' 
-            minLength="6" 
+          <input
+            type="password"
+            className='inputAuth'
+            placeholder='Enter your password'
+            minLength="6"
             maxLength="128"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required 
+            required
           />
 
           <h5 className='typeOfInput'>PASSWORD CONFIRMATION</h5>
-          <input 
-            type="password" 
-            className='inputAuth' 
-            placeholder='Confirm your password' 
+          <input
+            type="password"
+            className='inputAuth'
+            placeholder='Confirm your password'
             maxLength="128"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            required 
+            required
           />
 
           <button type="submit" id="signup-btn" disabled={loading}>
             {loading ? 'Signing Up...' : 'Sign Up'}
           </button>
-          
+
           <div id='auth-other-options'>
             <p className='auth-other-options-text'>
               Already have an account?{' '}
