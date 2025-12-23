@@ -5,6 +5,11 @@ namespace EquathoraBackend.Models
         public int Id { get; set; }
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
+        public string? Username { get; set; }
+        public bool IsEmailVerified { get; set; } = false;
+        public string? VerificationCode { get; set; }
+        public DateTime? VerificationCodeExpiry { get; set; }
+        public string? GoogleId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

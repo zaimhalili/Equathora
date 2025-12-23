@@ -1,14 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/images/logo.png';
 import GoogleAuth from '../components/GoogleAuth.jsx';
-import Auth from '../components/Auth.jsx';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const res = await fetch('http://localhost:5203/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || 'Login failed');
+        return;
+      }
+
+      localStorage.setItem('token', data.token);
+      alert('Login successful!');
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Connection error. Make sure backend is running.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function GoogleLogin() {
-    alert("yeah buddy like this is gonna work");
+    alert('Google OAuth coming soon!');
   }
 
   return (
@@ -21,15 +56,40 @@ const Login = () => {
           </div>
           <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleLogin} /></div>
 
-          <div id='auth'>
-            <Auth />
+          <form id='auth' onSubmit={handleLogin}>
+            {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
+            
+            <h5 className='typeOfInput'>EMAIL</h5>
+            <input 
+              type="email" 
+              className='inputAuth' 
+              placeholder='Enter your email address' 
+              maxLength="254"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required 
+            />
+
+            <h5 className='typeOfInput'>PASSWORD</h5>
+            <input 
+              type="password" 
+              className='inputAuth' 
+              placeholder='Enter your password' 
+              minLength="6" 
+              maxLength="128"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required 
+            />
+
             <Link to="/forgotPassword" className="btnForgotPass" id='forgotPass'>
               Forgot your password?
             </Link>
 
-            <button type="submit" id="login-btn">
-              Log In
+            <button type="submit" id="login-btn" disabled={loading}>
+              {loading ? 'Logging In...' : 'Log In'}
             </button>
+            
             <div id='auth-other-options'>
               <p className='auth-other-options-text'>
                 Don't have an account yet?{' '}
@@ -44,17 +104,11 @@ const Login = () => {
                   Resend it.
                 </Link>
               </p>
-
             </div>
-          </div>
-
-
-
+          </form>
         </section>
-        {/* Polygon Illustration */}
         <aside id="background-container"><BackgroundPolygons /></aside>
       </main>
-
     </>
   );
 };
