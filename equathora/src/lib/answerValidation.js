@@ -18,6 +18,9 @@ const normalizeAnswer = (answer) => {
         .replace(/,/g, '') // Remove commas
         .replace(/\$/g, '') // Remove dollar signs
         .replace(/°/g, '') // Remove degree symbols
+        .replace(/−|–|—/g, '-') // Normalize Unicode minus/dash to hyphen
+        .replace(/×|·/g, '*') // Normalize common multiply symbols
+        .replace(/left|right/gi, '') // Drop LaTeX sizing markers
         .replace(/²/g, '^2') // Normalize superscripts
         .replace(/³/g, '^3');
 };

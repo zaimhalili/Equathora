@@ -66,15 +66,19 @@ export const problems = [
         groupId: 1,
         title: "Garden Plot Dimensions",
         difficulty: "Medium",
-        description: "A rectangular garden has a length that is 3 meters more than its width. If we call the width w, we can express the area as w(w + 3). Expand this expression to write the area in standard form, then evaluate it when w = 5 meters.",
+        description: "A rectangular garden has a length that is 3 meters more than its width. If we call the width w, we can express the area as w(w + 3). Expand this expression to write the area in standard form. You can also plug in w = 5 to find the specific area for that width (either form is accepted).",
         answer: "w²+3w",
-        acceptedAnswers: ["w²+3w", "w^2+3w", "w² + 3w", "w^2 + 3w", "3w+w²", "3w+w^2"],
+        acceptedAnswers: [
+            "w²+3w", "w^2+3w", "w² + 3w", "w^2 + 3w", "3w+w²", "3w+w^2",
+            "w(w+3)", "w (w+3)",
+            "40", "40 square meters", "40 m^2", "40 sqm", "40 sq meters"
+        ],
         hints: [
             "Use the distributive property: w × (w + 3)",
             "Multiply w by each term in the parentheses",
             "w × w = w², and w × 3 = 3w"
         ],
-        solution: "Step 1: w(w + 3)\nStep 2: w × w + w × 3\nStep 3: w² + 3w\nWhen w = 5: 5² + 3(5) = 25 + 15 = 40 square meters",
+        solution: "Step 1: w(w + 3)\nStep 2: w × w + w × 3\nStep 3: w² + 3w (expanded form)\nOptional check when w = 5: 5² + 3(5) = 25 + 15 = 40 square meters",
         premium: false,
         topic: "Quadratic Expressions"
     },
@@ -433,7 +437,10 @@ export const problems = [
         difficulty: "Medium",
         description: "An engineer is simplifying a structural formula that contains the expression x² - 4. To optimize calculations, they need to factor this expression using the difference of squares pattern. What is the factored form?",
         answer: "(x+2)(x-2)",
-        acceptedAnswers: ["(x+2)(x-2)", "(x-2)(x+2)", "(x + 2)(x - 2)", "(x - 2)(x + 2)"],
+        acceptedAnswers: [
+            "(x+2)(x-2)", "(x-2)(x+2)", "(x + 2)(x - 2)", "(x - 2)(x + 2)",
+            "x^2-4=(x+2)(x-2)", "x^2-4=(x-2)(x+2)", "x^2 - 4 = (x + 2)(x - 2)", "x^2 - 4 = (x - 2)(x + 2)"
+        ],
         hints: [
             "This is a difference of squares",
             "Pattern: a² - b² = (a + b)(a - b)",
