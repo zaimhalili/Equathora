@@ -13,7 +13,7 @@ export const problems = [
     {
         id: 1,
         groupId: 1,
-        title: "The Movie Theater Ticket Pricing Problem",
+        title: "The Movie Theater Ticket Pricing",
         difficulty: "Easy",
         description: "A movie theater charges $12 for adult tickets and sells popcorn for $5 per bag. Maria spent $29 total buying one adult ticket and some bags of popcorn. Write and solve an equation to find how many bags of popcorn Maria bought. Let p represent the number of popcorn bags.",
         answer: "3.4",

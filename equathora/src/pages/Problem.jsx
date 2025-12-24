@@ -951,7 +951,7 @@ const Problem = () => {
 
           {/* Solution Side - Math Live*/}
           <article className={`flex justify-start items-stretch flex-col w-full min-h-[500px] lg:h-full overflow-hidden rounded-lg transition-all duration-300 ${descriptionCollapsed ? 'lg:w-full' : 'lg:w-1/2'}`}>
-            <MathLiveExample onSubmit={handleNewSubmission} />
+            <MathLiveExample key={`ml-${problem?.id}-${timerResetSeq}`} onSubmit={handleNewSubmission} />
           </article>
         </section>
       </main>

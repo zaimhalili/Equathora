@@ -161,10 +161,6 @@ const Learn = () => {
             {filteredProblems.map((problem, index) => (
               <motion.div
                 key={problem.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: 0.3 + index * 0.05 }}
-                whileHover={{ scale: 1.02 }}
               >
                 <ProblemCard problem={problem} />
               </motion.div>
