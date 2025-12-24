@@ -9,7 +9,7 @@
 
 🧮 An interactive mathematics learning platform that makes education engaging and accessible.
 
-[Explore Demo](https://equathora.vercel.app) • [Report Bug](https://github.com/zaimhalili/equathora/issues) • [Request Feature](https://github.com/zaimhalili/equathora/issues)
+[Explore Demo](https://equathora.com) • [Report Bug](https://github.com/zaimhalili/equathora/issues) • [Request Feature](https://github.com/zaimhalili/equathora/issues)
 
 ![equathora Preview](src/assets/logo/EquathoraFullLogo.png)
 
