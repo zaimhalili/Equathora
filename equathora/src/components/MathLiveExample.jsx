@@ -200,15 +200,15 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                     </div>
 
                     <div className="ml-toolbar">
-                        <button className="ml-btn clear flex gap-1" onClick={() => setDeleteAllPopup(true)}>
+                        <button className="ml-btn clear flex gap-1 order-2 sm:order-1" onClick={() => setDeleteAllPopup(true)}>
                             <FaTrash />
                             <p>Clear All</p>
                         </button>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 w-full sm:w-auto sm:order-2">
                             <button className="ml-btn addStep" onClick={addField}>
                                 + Add Step
                             </button>
-                            <button className="ml-btn submit" onClick={handleSubmit}>
+                            <button className="ml-btn submit flex-1" onClick={handleSubmit}>
                                 Submit Solution
                             </button>
                             {showNextProblem && (
