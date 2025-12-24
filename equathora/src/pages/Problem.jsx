@@ -955,6 +955,7 @@ const Problem = () => {
               key={`ml-${problem?.id}-${timerResetSeq}`}
               onSubmit={handleNewSubmission}
               nextProblemPath={nextProblem ? `/problems/${nextProblem.groupId}/${nextProblem.id}` : null}
+              isSolved={isCompleted}
             />
           </article>
         </section>

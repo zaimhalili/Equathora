@@ -24,11 +24,12 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     );
 };
 
-export default function MathLiveEditor({ onSubmit, nextProblemPath }) {
+export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false }) {
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
+    const [canShowNext, setCanShowNext] = useState(isSolved);
     const navigate = useNavigate();
 
     // refs to each math-field
@@ -101,17 +102,10 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath }) {
         if (onSubmit) {
             try {
                 const submission = onSubmit(nonEmptyFields);
-                if (submission?.message) {
-                    setSubmissionFeedback({
-                        message: submission.message,
-                        success: submission.success ?? false
-                    });
-                } else {
-                    setSubmissionFeedback({
-                        message: 'Submission sent!',
-                        success: true
-                    });
-                }
+                const success = submission?.success ?? false;
+                const message = submission?.message || 'Submission sent!';
+                setSubmissionFeedback({ message, success });
+                if (success) setCanShowNext(true);
             } catch (error) {
                 console.error('Unable to submit steps', error);
                 setSubmissionFeedback({
@@ -124,6 +118,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath }) {
                 message: 'Steps captured locally.',
                 success: true
             });
+            setCanShowNext(true);
         }
     };
 
@@ -132,7 +127,13 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath }) {
         navigate(nextProblemPath);
     };
 
-    const showNextProblem = Boolean(submissionFeedback?.success && nextProblemPath);
+    useEffect(() => {
+        if (isSolved) {
+            setCanShowNext(true);
+        }
+    }, [isSolved]);
+
+    const showNextProblem = Boolean(canShowNext && nextProblemPath);
 
     return (
         <>
