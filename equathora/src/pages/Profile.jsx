@@ -8,6 +8,7 @@ import Autumn from '../assets/images/autumn.jpg';
 import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 import { getUserStats, getCompletedProblems } from '../lib/progressStorage';
 import { problems as allProblems } from '../data/problems';
+import ProfileExportButtons from '../components/ProfileExportButtons';
 
 const Profile = () => {
   const { profile } = useParams();
@@ -146,7 +147,10 @@ const Profile = () => {
 
                 {/* Topics Section */}
                 <div className='flex flex-col gap-5'>
-                  <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Topics</h5>
+                  <div className='flex items-center justify-between gap-3 flex-wrap'>
+                    <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)]'>Topics</h5>
+                    <ProfileExportButtons />
+                  </div>
                   <div className='flex gap-2 md:gap-3 flex-wrap'>
                     {userData.mathTopics.map((topic, i) => (
                       <p key={i} className='rounded-2xl bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)] cursor-default'>{topic}</p>

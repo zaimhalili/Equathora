@@ -20,6 +20,7 @@ const HelpCenter = lazy(() => import("./pages/HelpCenter"));
 const SystemUpdates = lazy(() => import("./pages/SystemUpdates"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const About = lazy(() => import("./pages/About"));
+const Blog = lazy(() => import("./pages/Blog"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -65,7 +66,12 @@ function PageTitleUpdater() {
       '/profile': 'Profile - Equathora',
       '/login': 'Sign In - Equathora',
       '/signup': 'Join Now - Equathora',
-      '/waitlist': 'Join Waitlist - Equathora'
+      '/waitlist': 'Join Waitlist - Equathora',
+      '/resend': 'Resend Confirmation - Equathora',
+      '/forgotpassword': 'Reset Password - Equathora',
+      '/pageNotFound': '404 - Page Not Found - Equathora',
+      '/blog': 'Blog - Equathora',
+
     };
 
     const matchedRoute = Object.keys(pageTitles).find(route =>
@@ -134,6 +140,7 @@ export default function App() {
             {/* <Route path="/settings" element={<Settings />} /> */}
             {/* <Route path="/premium" element={<Premium />} /> */}
             <Route path="/feedback" element={<Feedback />} />
+            <Route path="/blog" element={<Blog />} />
 
 
 

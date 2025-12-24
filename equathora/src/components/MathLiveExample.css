@@ -222,7 +222,7 @@ math-field:hover {
     min-width: 160px;
 }
 
-.ml-next-btn:hover{
+.ml-next-btn:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -250,6 +250,19 @@ math-field:hover {
 
 .ml-btn.addStep:hover {
     background: var(--french-gray);
+}
+
+.ml-btn.subtle {
+    background: #f8f9fb;
+    border: 1px solid var(--french-gray);
+    color: var(--secondary-color);
+    font-weight: 600;
+    box-shadow: none;
+}
+
+.ml-btn.subtle:hover {
+    background: #eef0f5;
+    border-color: var(--mid-main-secondary);
 }
 
 .ml-output-wrapper {

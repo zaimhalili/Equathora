@@ -17,6 +17,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.22",
+    "jspdf": "^3.0.4",
     "mathlive": "^0.107.0",
     "motion": "^12.23.22",
     "react": "^19.1.1",
