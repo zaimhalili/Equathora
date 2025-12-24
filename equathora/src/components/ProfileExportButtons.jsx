@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { FaFileDownload, FaFilePdf, FaFileCsv, FaChevronDown } from 'react-icons/fa';
 import { jsPDF } from 'jspdf';
-import Logo from '../assets/images/logo.png';
+import Logo from '../assets/logo/EquathoraSymbolIcon.png';
 import { getUserStats, getCompletedProblems, getSubmissions } from '../lib/progressStorage';
 import { problems as allProblems } from '../data/problems';
 
@@ -188,24 +188,36 @@ const ProfileExportButtons = () => {
         const pageHeight = 297;
         const margin = 20;
         const contentWidth = pageWidth - 2 * margin;
+        const maxContentHeight = pageHeight - 40; // Safe zone to avoid cutting
 
         const issueDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
         const username = stats.username || 'Student';
         const reportId = `EQ-${Date.now().toString(36).toUpperCase()}`;
 
-        // Header with logo placeholder and title
+        // Load and add logo
+        const addLogo = (yPosition = 12) => {
+            try {
+                doc.addImage(Logo, 'PNG', margin, yPosition, 15, 15);
+            } catch (e) {
+                console.warn('Logo could not be loaded:', e);
+            }
+        };
+
+        // Page 1 - Header and Data
         doc.setFillColor(217, 4, 41);
         doc.rect(0, 0, pageWidth, 35, 'F');
+
+        addLogo(10);
 
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(22);
         doc.setFont('helvetica', 'bold');
-        doc.text('EQUATHORA', margin, 15);
+        doc.text('EQUATHORA', margin + 20, 15);
 
         doc.setFontSize(11);
         doc.setFont('helvetica', 'normal');
-        doc.text('Official Learner Performance Certificate', margin, 22);
-        doc.text(`Report ID: ${reportId}`, margin, 28);
+        doc.text('Official Learner Performance Certificate', margin + 20, 22);
+        doc.text(`Report ID: ${reportId}`, margin + 20, 28);
 
         // Document info box
         doc.setTextColor(0, 0, 0);
@@ -229,14 +241,23 @@ const ProfileExportButtons = () => {
         doc.text('Comprehensive Learning Analytics', margin + 5, 68);
 
         let yPos = 80;
+        let currentPage = 1;
 
-        // Render sections
-        comprehensiveData.forEach(({ section, items }) => {
+        // Render sections with pagination
+        comprehensiveData.forEach(({ section, items }, sectionIndex) => {
+            // Check if we need a new page for section header
+            if (yPos > maxContentHeight - 30) {
+                doc.addPage();
+                currentPage++;
+                yPos = margin;
+            }
+
             // Section header
             doc.setFillColor(240, 240, 245);
             doc.rect(margin, yPos, contentWidth, 8, 'F');
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
             doc.text(section.toUpperCase(), margin + 3, yPos + 5.5);
             yPos += 10;
 
@@ -244,13 +265,19 @@ const ProfileExportButtons = () => {
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(9);
             items.forEach(([label, value], idx) => {
-                if (yPos > 270) return; // Prevent overflow
+                // Check if we need a new page
+                if (yPos > maxContentHeight - 15) {
+                    doc.addPage();
+                    currentPage++;
+                    yPos = margin;
+                }
 
                 const bgColor = idx % 2 === 0 ? [255, 255, 255] : [250, 250, 252];
                 doc.setFillColor(...bgColor);
                 doc.rect(margin, yPos, contentWidth, 7, 'F');
 
                 doc.setFont('helvetica', 'bold');
+                doc.setTextColor(0, 0, 0);
                 doc.text(label, margin + 3, yPos + 4.5);
                 doc.setFont('helvetica', 'normal');
                 doc.text(String(value), margin + 95, yPos + 4.5);
@@ -259,12 +286,18 @@ const ProfileExportButtons = () => {
             yPos += 3;
         });
 
+        // Add new page for footer if needed
+        if (yPos > maxContentHeight - 35) {
+            doc.addPage();
+            currentPage++;
+            yPos = margin;
+        }
+
         // Footer verification box
-        yPos = Math.max(yPos, 250);
         doc.setDrawColor(180, 180, 190);
         doc.setLineWidth(0.5);
         doc.setLineDash([2, 2]);
-        doc.roundedRect(margin, yPos, contentWidth, 25, 2, 2);
+        doc.roundedRect(margin, yPos, contentWidth, 30, 2, 2);
         doc.setLineDash([]);
 
         doc.setFontSize(8);
@@ -280,12 +313,21 @@ const ProfileExportButtons = () => {
         // Official stamp
         doc.setDrawColor(217, 4, 41);
         doc.setLineWidth(1.5);
-        doc.roundedRect(margin + 110, yPos + 4, 50, 12, 2, 2);
+        doc.roundedRect(margin + 3, yPos + 20, 50, 8, 2, 2);
         doc.setTextColor(217, 4, 41);
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(10);
-        doc.text('VERIFIED BY', margin + 118, yPos + 10);
-        doc.text('EQUATHORA', margin + 118, yPos + 15);
+        doc.setFontSize(9);
+        doc.text('VERIFIED BY EQUATHORA', margin + 8, yPos + 25.5);
+
+        // Add page numbers to all pages
+        const totalPages = doc.internal.pages.length - 1;
+        for (let i = 1; i <= totalPages; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(120, 120, 130);
+            doc.text(`Page ${i} of ${totalPages}`, pageWidth - margin - 20, pageHeight - 10);
+        }
 
         // Save PDF
         doc.save(`EQUATHORA_Certificate_${username}_${new Date().toISOString().split('T')[0]}.pdf`);
