@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import '../components/Auth.css';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/images/logo.png';
 import GoogleAuth from '../components/GoogleAuth.jsx';
@@ -58,28 +59,28 @@ const Login = () => {
 
           <form id='auth' onSubmit={handleLogin}>
             {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
-            
+
             <h5 className='typeOfInput'>EMAIL</h5>
-            <input 
-              type="email" 
-              className='inputAuth' 
-              placeholder='Enter your email address' 
+            <input
+              type="email"
+              className='inputAuth'
+              placeholder='Enter your email address'
               maxLength="254"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required 
+              required
             />
 
             <h5 className='typeOfInput'>PASSWORD</h5>
-            <input 
-              type="password" 
-              className='inputAuth' 
-              placeholder='Enter your password' 
-              minLength="6" 
+            <input
+              type="password"
+              className='inputAuth'
+              placeholder='Enter your password'
+              minLength="6"
               maxLength="128"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required 
+              required
             />
 
             <Link to="/forgotPassword" className="btnForgotPass" id='forgotPass'>
@@ -89,7 +90,7 @@ const Login = () => {
             <button type="submit" id="login-btn" disabled={loading}>
               {loading ? 'Logging In...' : 'Log In'}
             </button>
-            
+
             <div id='auth-other-options'>
               <p className='auth-other-options-text'>
                 Don't have an account yet?{' '}

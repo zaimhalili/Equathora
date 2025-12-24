@@ -201,6 +201,9 @@ export default function MathLiveEditor({ onSubmit }) {
                             <button className="ml-btn submit" onClick={handleSubmit}>
                                 Submit Solution
                             </button>
+                            <button className="ml-btn addStep" onClick={addField}>
+                                + Next Problem
+                            </button>
                         </div>
 
                     </div>

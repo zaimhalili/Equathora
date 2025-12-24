@@ -8,10 +8,9 @@ const getStoredTime = (storageKey) => {
     return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
 };
 
-const Timer = ({ problemId }) => {
+const Timer = ({ problemId, isRunning = true }) => {
     const storageKey = problemId ? `eq:problemTime:${problemId}` : 'eq:problemTime:global';
     const [time, setTime] = useState(() => getStoredTime(storageKey));
-    const [running, setRunning] = useState(true);
     const timer = useRef();
 
     const format = (time) => {
@@ -28,13 +27,15 @@ const Timer = ({ problemId }) => {
     };
 
     useEffect(() => {
-        if (running) {
-            timer.current = setInterval(() => {
-                setTime(prev => prev + 1);
-            }, 1000);
-        }
+        clearInterval(timer.current);
+        if (!isRunning) return undefined;
+
+        timer.current = setInterval(() => {
+            setTime(prev => prev + 1);
+        }, 1000);
+
         return () => clearInterval(timer.current);
-    }, [running]);
+    }, [isRunning]);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -44,15 +45,7 @@ const Timer = ({ problemId }) => {
     return (
         <div className='stopwatch'>
             <p className="timer">{format(time)}</p>
-            <div className="actions">
-                {/* <button onClick={() => setTime(0)}>Restart</button>
-                <button onClick={() => {
-                    if (running) clearInterval(timer.current);
-                    setRunning(!running);
-                }}>
-                    {running ? 'Stop' : 'Resume'}
-                </button> */}
-            </div>
+            <div className="actions" />
         </div>
     );
 };

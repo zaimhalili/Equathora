@@ -5,6 +5,7 @@ import Logo from '../assets/images/logo.png';
 import GoogleAuth from '../components/GoogleAuth.jsx';
 import { Link } from 'react-router-dom';
 import './Signup.css';
+import '../components/Auth.css';
 
 const Signup = () => {
   const [username, setUsername] = useState('');

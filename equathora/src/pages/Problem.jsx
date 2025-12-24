@@ -232,12 +232,17 @@ const Problem = () => {
   }, []);
 
   const isCompleted = problem ? isProblemCompleted(problem.id) : false;
+  const [timerRunning, setTimerRunning] = useState(!isCompleted);
 
   useEffect(() => {
     if (!problem) return;
     const existing = hydrateStoredSubmissions(getSubmissions(problem.id));
     setSubmissions(existing);
   }, [problem, problemId]);
+
+  useEffect(() => {
+    setTimerRunning(!isCompleted);
+  }, [problemId, isCompleted]);
 
   useEffect(() => {
     sessionStartRef.current = Date.now();
@@ -411,6 +416,7 @@ const Problem = () => {
     }
 
     if (validation.isCorrect) {
+      setTimerRunning(false);
       setShowSolution(true);
       setShowSolutionPopup(false);
       setSolutionViewed(true);
@@ -512,7 +518,7 @@ const Problem = () => {
 
           {/* Right side - Timer and Actions */}
           <div className="flex items-center gap-2">
-            <Timer key={`${problem?.id}-${timerResetSeq}`} problemId={problem?.id} />
+            <Timer key={`${problem?.id}-${timerResetSeq}`} problemId={problem?.id} isRunning={timerRunning} />
 
             {/* Desktop buttons - hidden on mobile */}
             <div className="hidden md:flex items-center gap-2">
