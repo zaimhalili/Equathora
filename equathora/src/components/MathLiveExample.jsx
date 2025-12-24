@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../components/MathLiveExample.css";
 import { FaChevronDown, FaChevronUp, FaTrash, FaTimes } from "react-icons/fa";
 
@@ -23,11 +24,12 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     );
 };
 
-export default function MathLiveEditor({ onSubmit }) {
+export default function MathLiveEditor({ onSubmit, nextProblemPath }) {
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
+    const navigate = useNavigate();
 
     // refs to each math-field
     const fieldRefs = useRef({});
@@ -125,6 +127,13 @@ export default function MathLiveEditor({ onSubmit }) {
         }
     };
 
+    const handleNextProblem = () => {
+        if (!nextProblemPath) return;
+        navigate(nextProblemPath);
+    };
+
+    const showNextProblem = Boolean(submissionFeedback?.success && nextProblemPath);
+
     return (
         <>
             <DeleteAllModal
@@ -201,9 +210,11 @@ export default function MathLiveEditor({ onSubmit }) {
                             <button className="ml-btn submit" onClick={handleSubmit}>
                                 Submit Solution
                             </button>
-                            <button className="ml-btn addStep" onClick={addField}>
-                                + Next Problem
-                            </button>
+                            {showNextProblem && (
+                                <button className="ml-btn ml-next-btn !bg-green-600 hover:!bg-green-700" onClick={handleNextProblem} title="Go to next problem">
+                                    Next Problem
+                                </button>
+                            )}
                         </div>
 
                     </div>

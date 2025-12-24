@@ -137,7 +137,7 @@ math-field {
     overflow-x: auto;
 }
 
-math-field::-webkit-scrollbar{
+math-field::-webkit-scrollbar {
     display: none;
 }
 
@@ -212,8 +212,18 @@ math-field:hover {
 }
 
 .ml-btn.submit:hover {
-    background: var(--dark-accent-color);
-    border-color: var(--dark-accent-color);
+    background: var(--dark-accent-color)
+}
+
+.ml-next-btn {
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    min-width: 160px;
+}
+
+.ml-next-btn:hover{
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Clear all button */
