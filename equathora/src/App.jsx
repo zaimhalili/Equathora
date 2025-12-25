@@ -140,7 +140,7 @@ export default function App() {
             {/* <Route path="/settings" element={<Settings />} /> */}
             {/* <Route path="/premium" element={<Premium />} /> */}
             <Route path="/feedback" element={<Feedback />} />
-            {/* <Route path="/blog" element={<Blog />} /> */}
+            <Route path="/blog" element={<Blog />} />
 
 
 
