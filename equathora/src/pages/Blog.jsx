@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ShareButton from '../components/ui/ShareButton.jsx';
 import Navbar from '../components/Navbar.jsx';
 import FeebackBanner from '../components/FeedbackBanner.jsx';
 import { Link } from 'react-router-dom';
@@ -10,12 +11,12 @@ const Blog = () => {
         <div>
             <FeebackBanner />
             <Navbar />
-            <main className='flex bg-white font-[Inter] flex-col min-h-screen w-screen'>
-                <section className='flex flex-col lg:flex-row justify-start px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pt-4 lg:pt-6 gap-8 bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)90%)] shadow-2xl shadow-black/20 relative'>
+            <main className='flex bg-white font-[Inter] flex-col min-h-screen w-full items-center'>
+                <section className='flex flex-col w-full items-center lg:flex-row justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)90%)] shadow-2xl shadow-black/20 relative'>
                     {/* header section */}
-                    <header className=' w-full pt-10 flex flex-col gap-8'>
+                    <header className=' w-full flex flex-col px-[4vw] xl:px-[6vw] max-w-[1500px] lg:pt-6 gap-8'>
                         {/* Header and Profile Picture of the one who posts */}
-                        <div className='flex w-full justify-between items-center'>
+                        <div className='flex w-full justify-between items-center pt-8'>
                             <div className='gap-2 flex flex-col'>
                                 <h1 className='text-6xl font-bold font-[DynaPuff] text-white'>Lorem ipsum dolor sit amet consectetur elit.</h1>
                                 <div className='flex gap-2 font-medium text-xl text-[var(--french-gray)]'>
@@ -32,23 +33,29 @@ const Blog = () => {
                                 <div className='flex items-center gap-8'>
                                     <img src={ProfilePic} alt="Profile picture" className='rounded-full h-20 w-20' />
                                     <div>
-                                        <h3 className='font-bold text-xl'>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h3>
-                                        <p className='text-lg'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste.</p>
+                                        <h3 className='font-bold text-xl'>Find the post interesting or useful?</h3>
+                                        <p className='text-lg'>Share it around and have others benefit too!</p>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" className="button border-[var(--accent-color)] border-2 h-3/4 text-center px-4 text-xl font-medium rounded-sm shadow-lg cursor-pointer">Share</button>
+                            <ShareButton
+                                text="Check out this awesome blog post on Equathora!"
+                                url={window.location.href}
+                            />
                         </div>
                     </header>
                 </section>
                 {/* Blog Content Section */}
-                <section className='flex flex-col lg:flex-row justify-start px-[4vw] xl:px-[6vw] w-full max-w-[1500px] gap-8 bg-[var(--main-color)]'>
-                    <article className='bg-white max-w-3/4 px-8 py-6 gap-1 text-black flex flex-col shadow-2xl'>
-                        <h2 className='text-3xl font-medium font-[Inter]'>Introduction</h2>
-                        <p className='text-black pb-4'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
-                        <hr />
-                        <h2 className='text-3xl font-medium font-[Inter] pt-4'>So let's do it!</h2>
-                        <p className='text-black'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
+                <section className='flex flex-col lg:flex-row justify-center bg-[var(--main-color)] w-full'>
+                    <article className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pb-6 gap-1 text-black flex flex-col'>
+                        <div className='flex max-w-3/4 bg-white flex-col px-8 py-6 gap-2'>
+                            <h2 className='text-3xl font-medium font-[Inter]'>Introduction</h2>
+                            <p className='text-black pb-4'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
+                            <hr />
+                            <h2 className='text-3xl font-medium font-[Inter] pt-4'>So let's do it!</h2>
+                            <p className='text-black'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.</p>
+                        </div>
+
                     </article>
                 </section>
             </main>
