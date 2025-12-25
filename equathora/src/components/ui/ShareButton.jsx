@@ -101,15 +101,15 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href }) =
 
             {/* Popup */}
             {shareNow && (
-                <div className="absolute top-full right-0 mt-2 bg-white border-2 border-[var(--accent-color)] rounded-lg shadow-2xl p-4 z-50 min-w-[280px]">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b-2 border-[var(--accent-color)] pb-2">
+                <div className="flex flex-col gap-1 absolute top-full right-0 pt-2 bg-white border-2 border-[var(--accent-color)] rounded-lg shadow-2xl p-4 z-50 min-w-[280px]">
+                    <h3 className="text-lg font-semibold text-gray-800 border-b-2 border-[var(--accent-color)] pb-2">
                         Share via
                     </h3>
                     <div className="grid grid-cols-3 gap-3">
                         {/* WhatsApp */}
                         <button
                             onClick={handleWhatsAppShare}
-                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-green-50 transition-colors group"
+                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-green-50 transition-colors group cursor-pointer"
                             title="Share on WhatsApp"
                         >
                             <FaWhatsapp className="text-3xl text-green-500 group-hover:scale-110 transition-transform" />
@@ -119,7 +119,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href }) =
                         {/* Twitter */}
                         <button
                             onClick={handleTwitterShare}
-                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-blue-50 transition-colors group"
+                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-blue-50 transition-colors group cursor-pointer"
                             title="Share on Twitter"
                         >
                             <FaTwitter className="text-3xl text-blue-400 group-hover:scale-110 transition-transform" />
@@ -129,7 +129,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href }) =
                         {/* LinkedIn */}
                         <button
                             onClick={handleLinkedInShare}
-                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-blue-50 transition-colors group"
+                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-blue-50 transition-colors group cursor-pointer"
                             title="Share on LinkedIn"
                         >
                             <FaLinkedin className="text-3xl text-blue-700 group-hover:scale-110 transition-transform" />
@@ -139,7 +139,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href }) =
                         {/* Facebook */}
                         <button
                             onClick={handleMessengerShare}
-                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-blue-50 transition-colors group"
+                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-blue-50 transition-colors group cursor-pointer"
                             title="Share on Facebook"
                         >
                             <FaFacebookMessenger className="text-3xl text-blue-600 group-hover:scale-110 transition-transform" />
@@ -149,7 +149,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href }) =
                         {/* Reddit */}
                         <button
                             onClick={handleRedditShare}
-                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-orange-50 transition-colors group"
+                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-orange-50 transition-colors group cursor-pointer"
                             title="Share on Reddit"
                         >
                             <FaReddit className="text-3xl text-orange-600 group-hover:scale-110 transition-transform" />
@@ -159,7 +159,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href }) =
                         {/* Telegram */}
                         <button
                             onClick={handleTelegramShare}
-                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-blue-50 transition-colors group"
+                            className="flex flex-col items-center gap-1 p-3 rounded-lg hover:bg-blue-50 transition-colors group cursor-pointer"
                             title="Share on Telegram"
                         >
                             <FaTelegram className="text-3xl text-blue-500 group-hover:scale-110 transition-transform" />
@@ -170,7 +170,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href }) =
                     {/* Copy Link Button */}
                     <button
                         onClick={handleCopy}
-                        className="w-full mt-4 flex items-center justify-center gap-2 p-3 bg-[var(--accent-color)] text-white rounded-lg hover:opacity-90 transition-opacity font-medium"
+                        className="w-full flex items-center justify-center gap-2 p-3 bg-[var(--accent-color)] text-white rounded-lg hover:opacity-80 transition-opacity font-medium cursor-pointer"
                     >
                         {copied ? (
                             <>
