@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import FeedbackBanner from '../components/FeedbackBanner';
+import { Link } from 'react-router-dom';
 import { FaRocket, FaBug, FaStar, FaPalette, FaCode, FaCheckCircle } from 'react-icons/fa';
 
 const SystemUpdates = () => {
@@ -218,9 +219,14 @@ const SystemUpdates = () => {
                                 <p className="text-gray-300 text-base pb-4">
                                     Get notified about new features and updates directly in your notifications
                                 </p>
-                                <div className="flex items-center justify-center gap-2 text-sm">
+                                {/* <div className="flex items-center justify-center gap-2 text-sm">
                                     <FaCheckCircle className="text-green-400" />
                                     <span>You're already subscribed to update notifications</span>
+                                </div> */}
+                                <div className="flex items-center justify-center gap-2 text-sm">
+                                    <span>Are you subscribed to our newsletter? </span>
+                                    <Link to="/waitlist" className='!text-yellow-500 !underline hover:!text-yellow-400' title='Subscribe to our waitlist now for free!'>Click to Join</Link>
+                                    <FaCheckCircle className="text-green-400" />
                                 </div>
                             </div>
                         </div>

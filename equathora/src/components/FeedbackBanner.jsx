@@ -11,8 +11,9 @@ const FeedbackBanner = () => {
                 <Link
                     to="/feedback"
                     className="!underline decoration-2 underline-offset-2 !text-yellow-300 font-semibold hover:!text-yellow-400 transition-colors duration-200"
+                    title='Click to share your feedback! It is really helpful to us!'
                 >
-                    Share your feedback
+                    Click here to share your feedback!
                 </Link>
             </span>
         </div>

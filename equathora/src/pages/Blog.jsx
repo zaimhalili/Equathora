@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import ProfilePic from '../assets/images/autumn.jpg';
 import Footer from '../components/Footer.jsx';
 import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
+import Journey from '../assets/images/journey.jpg';
 
 const Blog = () => {
     return (
@@ -47,7 +48,7 @@ const Blog = () => {
                     </header>
                 </section>
                 {/* Blog Content Section */}
-                <section className='flex flex-col lg:flex-row justify-center bg-[var(--main-color)] w-full'>
+                <section className='flex flex-col md:flex-row justify-center bg-[var(--main-color)] w-full'>
                     <article className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pb-6 gap-1 text-black flex flex-col'>
                         <div className='flex w-full sm:max-w-3/4 bg-white flex-col px-4 sm:px-8 pt-6 pb-10 gap-2 rounded-b-2xl'>
                             <h2 className='text-xl sm:text-2xl font-bold font-[Inter]'>Why most math practice fails</h2>
@@ -81,7 +82,18 @@ const Blog = () => {
                             <p className='text-[var(--mid-main-secondary)] text-sm sm:text-base'>20th Aug 2025 · Found it useful?</p>
                             <ShareButton />
                         </div>
-
+                    </article>
+                </section>
+                <section className='w-full flex flex-col bg-[var(--main-color)] items-center py-4'>
+                    <article className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pb-6 text-black flex flex-col gap-4'>
+                        <h1 className='text-xl sm:text-2xl font-bold font-[Inter] text-black'>Other Community Posts</h1>
+                        <div className='flex w-full'>
+                            <Link to="/waitlist" className='bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-5 px-6 flex gap-3 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80'>
+                                <img src={Journey} alt="" className='rounded-md max-h-45 md:h-1/2' />
+                                <p className='text-md text-left lg:text-lg cursor-pointer font-[Inter] text-[var(--secondary-color)] font-bold'>Join our waitlist to recieve weekly updates</p>
+                                <p className='text-[var(--mid-main-secondary)] font-[Inter]'>Zaim ⋅ Recently</p>
+                            </Link>
+                        </div>
                     </article>
                 </section>
             </main>
