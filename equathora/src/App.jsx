@@ -21,6 +21,8 @@ const SystemUpdates = lazy(() => import("./pages/SystemUpdates"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const About = lazy(() => import("./pages/About"));
 const Blog = lazy(() => import("./pages/Blog"));
+const BlogList = lazy(() => import("./pages/BlogList"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -71,6 +73,7 @@ function PageTitleUpdater() {
       '/forgotpassword': 'Reset Password - Equathora',
       '/pageNotFound': '404 - Page Not Found - Equathora',
       '/blog': 'Blog - Equathora',
+      '/blogs': 'All Posts - Equathora',
 
     };
 
@@ -141,6 +144,8 @@ export default function App() {
             {/* <Route path="/premium" element={<Premium />} /> */}
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blogs" element={<BlogList />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
 
 
 

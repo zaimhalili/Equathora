@@ -11,11 +11,25 @@ import {
     FaTelegram,
 } from "react-icons/fa";
 
-const ShareButton = ({ text = "Check this out!", url = window.location.href }) => {
+const ShareButton = ({ text = "Check this out!", url = window.location.href, popupPosition = "right" }) => {
     const [shareNow, setShareNow] = useState(false);
     const [copied, setCopied] = useState(false);
     const popupRef = useRef(null);
     const message = encodeURIComponent(`${text} ${url}`);
+
+    // Determine popup positioning classes based on popupPosition prop
+    const getPositionClasses = () => {
+        switch (popupPosition) {
+            case "left":
+                return "top-full left-0";
+            case "center":
+                return "top-full left-1/2 -translate-x-1/2";
+            case "top":
+                return "bottom-full right-0 pb-2";
+            default: // "right"
+                return "top-full right-0";
+        }
+    };
 
     // Close popup when clicking outside
     useEffect(() => {
@@ -101,7 +115,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href }) =
 
             {/* Popup */}
             {shareNow && (
-                <div className="flex flex-col gap-1 absolute top-full right-0 pt-2 bg-white border-2 border-[var(--accent-color)] rounded-lg shadow-2xl p-4 z-50 min-w-[280px]">
+                <div className={`flex flex-col gap-1 absolute ${getPositionClasses()} pt-2 bg-white border-2 border-[var(--accent-color)] rounded-lg shadow-2xl p-4 z-50 min-w-[280px]`}>
                     <h3 className="text-lg font-semibold text-gray-800 border-b-2 border-[var(--accent-color)] pb-2">
                         Share via
                     </h3>

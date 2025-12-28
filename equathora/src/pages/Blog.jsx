@@ -80,7 +80,11 @@ const Blog = () => {
                             </p>
                             <hr />
                             <p className='text-[var(--mid-main-secondary)] text-sm sm:text-base'>20th Aug 2025 · Found it useful?</p>
-                            <ShareButton />
+                            <ShareButton
+                                text="Check out this awesome blog post on Equathora!"
+                                url={window.location.href}
+                                popupPosition="left"
+                            />
                         </div>
                     </article>
                 </section>
