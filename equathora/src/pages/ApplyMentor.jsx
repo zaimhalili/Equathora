@@ -13,7 +13,7 @@ import { FaCheckCircle, FaUsers, FaChalkboardTeacher, FaHeart, FaArrowRight, FaS
 
 const ApplyMentor = () => {
     return (
-        <div className='text-[var(--secondary-color)] font-[Inter] w-full bg-gradient-to-b from-blue-50 via-white to-purple-50'>
+        <div className='text-[var(--secondary-color)] font-[Inter] w-full bg-[var(--main-color)]'>
             <header><Navbar /></header>
 
             {/* Hero Section */}
@@ -95,7 +95,7 @@ const ApplyMentor = () => {
             </section>
 
             {/* Who Can Apply Section */}
-            <section className='flex justify-center w-full bg-gradient-to-b from-white to-gray-50'>
+            <section className='flex justify-center w-full bg-[var(--main-color)]'>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -118,8 +118,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.4 }}
-                                whileHover={{ scale: 1.02 }}
-                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col '
+                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -152,8 +151,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.5 }}
-                                whileHover={{ scale: 1.02 }}
-                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col '
+                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -183,8 +181,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.6 }}
-                                whileHover={{ scale: 1.02 }}
-                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-200 overflow-hidden flex flex-col  md:col-span-2 lg:col-span-1'
+                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col  md:col-span-2 lg:col-span-1 hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -214,7 +211,7 @@ const ApplyMentor = () => {
             </section>
 
             {/* Final CTA Section */}
-            <section className='relative w-full flex justify-center bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] text-white overflow-hidden'>
+            <section className='relative w-full flex justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white overflow-hidden'>
                 <div className='absolute top-0 right-0 w-64 h-64 bg-[var(--accent-color)] rounded-full opacity-10 blur-3xl'></div>
                 <div className='absolute bottom-0 left-0 w-48 h-48 bg-blue-400 rounded-full opacity-10 blur-3xl'></div>
 
@@ -226,7 +223,7 @@ const ApplyMentor = () => {
                 >
                     <div className='flex flex-col lg:flex-row items-center gap-8'>
                         <div className='flex-1 flex flex-col text-center lg:text-left gap-5'>
-                            <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-[var(--accent-color)]/20 border border-[var(--accent-color)]/50 rounded-full text-[var(--accent-color)] text-xs font-semibold self-center lg:self-start'>
+                            <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-[var(--secondary-color)]/20 border border-[var(--white-color)]/50 rounded-full text-white text-xs font-semibold self-center lg:self-start'>
                                 COMING SOON
                             </div>
                             <h2 className='text-2xl md:text-3xl font-bold font-[DynaPuff]'>
@@ -241,7 +238,7 @@ const ApplyMentor = () => {
                                     href='https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform'
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    className='bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white px-8 py-4 rounded-lg font-semibold text-base flex items-center justify-center gap-2 no-underline shadow-lg transition-colors duration-200 w-full sm:w-auto'
+                                    className='bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-4 rounded-lg !font-bold text-base flex items-center justify-center gap-2 no-underline shadow-lg transition-colors duration-200 w-full sm:w-auto'
                                 >
                                     <FaUsers />
                                     <span>Join the Waitlist</span>

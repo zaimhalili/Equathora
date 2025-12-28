@@ -8,7 +8,7 @@ import { FaCheckCircle, FaArrowRight, FaUsers, FaHeart, FaStar } from 'react-ico
 
 const Hero = () => {
     return (
-        <section className='relative bg-gradient-to-br from-[var(--secondary-color)] via-[#3a3d52] to-[var(--secondary-color)] text-white flex justify-center overflow-hidden'>
+        <section className='relative  bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white flex justify-center overflow-hidden'>
             {/* Decorative Elements */}
             <div className='px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:py-6 gap-8'>
                 <div className='absolute top-0 right-0 w-72 h-72 bg-[var(--accent-color)] rounded-full opacity-10 blur-3xl -translate-y-1/2 translate-x-1/2'></div>
@@ -65,7 +65,7 @@ const Hero = () => {
                                     href='https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform'
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    className='group relative bg-[var(--accent-color)] text-white px-8 py-3 rounded-lg font-semibold text-sm md:text-base overflow-hidden transition-colors duration-200 hover:bg-[var(--dark-accent-color)] flex items-center justify-center gap-2 no-underline shadow-lg w-full sm:w-auto'
+                                    className='group relative bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-3 rounded-lg !font-bold text-sm md:text-base overflow-hidden transition-all flex items-center justify-center gap-2 no-underline shadow-lg hover:shadow-xl w-full sm:w-auto'
                                 >
                                     <FaUsers />
                                     <span className='relative z-10'>Join 50+ Educators</span>
