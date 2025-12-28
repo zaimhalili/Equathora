@@ -1,6 +1,6 @@
 // Blog posts data - Add new posts here without creating new JSX files
 import Journey from '../assets/images/journey.jpg';
-import Autumn from '../assets/images/autumn.jpg';
+import Me from '../assets/images/mePr.jpg';
 import Sketch from '../assets/images/sketch.svg';
 import Math from '../assets/images/mathfix.svg';
 // Note: Add 'features.jpg' to src/assets/images/ or use a different image
@@ -13,9 +13,9 @@ export const blogPosts = [
         author: {
             name: "Zaim",
             username: "@Zaim",
-            profilePic: Autumn
+            profilePic: Me
         },
-        date: "20th Aug 2025",
+        date: "24th Dec 2025",
         readTime: "5 min read",
         category: "Platform Updates",
         description: "Most online math platforms focus on repetition and memorization. Here's how Equathora is different.",
@@ -92,9 +92,9 @@ export const blogPosts = [
         author: {
             name: "Zaim",
             username: "@Zaim",
-            profilePic: Sketch,
+            profilePic: Me,
         },
-        date: "30th Aug 2025",
+        date: "28th Dec 2025",
         readTime: "7 min read",
         category: "Platform Updates",
         description: "From time-based leaderboards to an in-problem sketch pad and full CSV/PDF exports, here's a deeper look at new Equathora features and why they exist.",

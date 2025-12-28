@@ -51,17 +51,17 @@ const SystemUpdates = () => {
             ]
         },
         {
-            version: "1.2.7",
-            date: "December 23, 2025",
-            type: "improvement",
-            icon: <FaStar className="text-xl" />,
-            color: "from-green-500 to-teal-500",
-            title: "Better Login & Security",
+            version: "1.2.6",
+            date: "December 20, 2025",
+            type: "feature",
+            icon: <FaRocket className="text-xl" />,
+            color: "from-purple-500 to-pink-500",
+            title: "Drawing Canvas for Problem Solving",
             changes: [
-                "More secure login system to protect your account",
-                "Added email verification for new accounts",
-                "You can now sign in with Google",
-                "Fixed issues with answer checking ignoring extra spaces"
+                "Added sketch pad to help you visualize and work through problems",
+                "Drawings are saved temporarily while you solve",
+                "Help modal now includes drawing instructions",
+                "Drawing prevents accidental navigation away from your work"
             ]
         },
         {

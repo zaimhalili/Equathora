@@ -50,7 +50,7 @@ const BlogList = () => {
                                         <img
                                             src={post.author.profilePic}
                                             alt={post.author.name}
-                                            className='w-8 h-8 rounded-full'
+                                            className='w-8 h-8 rounded-full object-contain'
                                         />
                                         <div className='text-sm'>
                                             <p className='font-medium text-gray-800'>{post.author.name}</p>
@@ -64,6 +64,11 @@ const BlogList = () => {
                 </section>
             </main>
             <Footer />
+            <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-3 text-white/60 text-xs'>
+                <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
+                    Education illustrations by Storyset
+                </a>
+            </div>
         </div>
     );
 };

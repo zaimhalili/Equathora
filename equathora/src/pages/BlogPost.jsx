@@ -86,18 +86,18 @@ const BlogPost = () => {
                             <img
                                 src={post.author.profilePic}
                                 alt="Profile picture"
-                                className='rounded-full h-20 w-20 md:h-24 md:w-24 lg:h-30 lg:w-30 flex-shrink-0'
+                                className='rounded-full h-20 w-20 md:h-24 md:w-24 lg:h-30 lg:w-30 flex-shrink-0 object-cover object-bottom hidden md:flex'
                             />
                         </div>
 
                         {/* Share Link Container */}
-                        <div className='flex flex-col sm:flex-row w-full rounded-tr-2xl rounded-tl-2xl px-4 sm:px-8 py-6 gap-4 bg-white text-black items-center'>
+                        <div className='flex flex-col sm:flex-row w-full sm:max-w-3/4 rounded-tr-2xl rounded-tl-2xl px-4 sm:px-8 py-6 gap-4 bg-white text-black items-center'>
                             <div className='flex items-center gap-4 justify-between w-full flex-1'>
                                 <div className='flex items-center gap-3 sm:gap-8'>
                                     <img
                                         src={post.author.profilePic}
                                         alt="Profile picture"
-                                        className='rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0'
+                                        className='rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 object-cover object-bottom'
                                     />
                                     <div className='flex flex-col gap-1'>
                                         <h3 className='font-bold text-base sm:text-xl'>Find the post interesting or useful?</h3>
