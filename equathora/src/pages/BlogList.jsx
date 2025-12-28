@@ -31,7 +31,7 @@ const BlogList = () => {
                                 <img
                                     src={post.thumbnail}
                                     alt={post.title}
-                                    className='w-full h-48 object-cover'
+                                    className='w-full max-h-40 object-cover'
                                 />
                                 <div className='p-6 flex flex-col gap-3 flex-1'>
                                     <div className='flex items-center gap-2 text-sm text-[var(--mid-main-secondary)]'>

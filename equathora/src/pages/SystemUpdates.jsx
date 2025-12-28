@@ -9,6 +9,62 @@ import { FaRocket, FaBug, FaStar, FaPalette, FaCode, FaCheckCircle } from 'react
 const SystemUpdates = () => {
     const updates = [
         {
+            version: "1.3.0",
+            date: "December 28, 2025",
+            type: "feature",
+            icon: <FaRocket className="text-xl" />,
+            color: "from-blue-500 to-cyan-500",
+            title: "Blog & Sharing Features",
+            changes: [
+                "Added new blog section to share updates and insights",
+                "You can now share posts on WhatsApp, Twitter, LinkedIn, Facebook, Reddit, and Telegram",
+                "Blog posts appear in your dashboard for easy access",
+                "Each post shows reading time and category"
+            ]
+        },
+        {
+            version: "1.2.9",
+            date: "December 27, 2025",
+            type: "improvement",
+            icon: <FaPalette className="text-xl" />,
+            color: "from-purple-500 to-pink-500",
+            title: "Faster & Smoother Experience",
+            changes: [
+                "Page animations are now faster and more responsive",
+                "Refreshed the Apply Mentor page with better colors",
+                "Improved button designs across the platform",
+                "Blog page works better on mobile devices"
+            ]
+        },
+        {
+            version: "1.2.8",
+            date: "December 25, 2025",
+            type: "feature",
+            icon: <FaCode className="text-xl" />,
+            color: "from-indigo-500 to-blue-500",
+            title: "Export Your Data & Easier Navigation",
+            changes: [
+                "Download your progress and stats as PDF or CSV files",
+                "Exported files now include the Equathora logo",
+                "Added next problem button to move through questions faster",
+                "Math editor now clears automatically when you start a new problem"
+            ]
+        },
+        {
+            version: "1.2.7",
+            date: "December 23, 2025",
+            type: "improvement",
+            icon: <FaStar className="text-xl" />,
+            color: "from-green-500 to-teal-500",
+            title: "Better Login & Security",
+            changes: [
+                "More secure login system to protect your account",
+                "Added email verification for new accounts",
+                "You can now sign in with Google",
+                "Fixed issues with answer checking ignoring extra spaces"
+            ]
+        },
+        {
             version: "1.2.3",
             date: "December 17, 2025",
             type: "improvement",

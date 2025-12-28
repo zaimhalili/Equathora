@@ -18,8 +18,7 @@ const BlogPost = () => {
 
     // Get other posts for suggestions (exclude current post)
     const otherPosts = getAllBlogPosts()
-        .filter(p => p.id !== post.id)
-        .slice(0, 3);
+        .filter(p => p.id !== post.id);
 
     // Render content based on type
     const renderContent = (contentItem, index) => {
@@ -92,7 +91,7 @@ const BlogPost = () => {
                         </div>
 
                         {/* Share Link Container */}
-                        <div className='flex flex-col sm:flex-row max-w-3/4 rounded-tr-2xl rounded-tl-2xl px-4 sm:px-8 py-6 gap-4 bg-white text-black items-center'>
+                        <div className='flex flex-col sm:flex-row w-full rounded-tr-2xl rounded-tl-2xl px-4 sm:px-8 py-6 gap-4 bg-white text-black items-center'>
                             <div className='flex items-center gap-4 justify-between w-full flex-1'>
                                 <div className='flex items-center gap-3 sm:gap-8'>
                                     <img
@@ -143,9 +142,9 @@ const BlogPost = () => {
                                 <Link
                                     key={otherPost.id}
                                     to={`/blog/${otherPost.slug}`}
-                                    className='bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] py-5 px-6 flex gap-3 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80'
+                                    className='bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80'
                                 >
-                                    <img src={otherPost.thumbnail} alt="" className='rounded-md max-h-45 md:h-1/2' />
+                                    <img src={otherPost.thumbnail} alt="" className='rounded-md w-full max-h-40 object-cover' />
                                     <p className='text-md text-left lg:text-lg cursor-pointer font-[Inter] text-[var(--secondary-color)] font-bold'>
                                         {otherPost.title}
                                     </p>

@@ -1,5 +1,6 @@
 // ProblemDetail.jsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Navbar from '@/components/Navbar.jsx';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LilArrow from '../assets/images/lilArrow.svg';
@@ -487,6 +488,7 @@ const Problem = () => {
   return (
     <>
       <FeedbackBanner />
+      {/* <Navbar></Navbar> */}
       <main className="min-h-screen flex flex-col text-[var(--secondary-color)]">
         {/* Navigation Header */}
         <header className="flex items-center justify-between gap-2 md:gap-3 font-[Inter,sans-serif] bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0">

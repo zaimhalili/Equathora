@@ -62,3 +62,6 @@ backend/**/connection-strings.json
 *.pem
 *.key
 *.cert
+
+# Blog system README
+BLOG_SYSTEM_README.md
