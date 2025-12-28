@@ -77,12 +77,11 @@ const WhyChooseSection = () => {
                             {features.map((item, index) => (
                                 <motion.div
                                     key={item.title}
-                                    className="flex flex-row gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-[var(--accent-color)] hover:shadow-lg transition-all"
+                                    className="flex flex-row gap-4 p-5 bg-white hover:translate-x-2 hover:scale-102 rounded-xl border border-gray-200 hover:border-[var(--accent-color)] hover:shadow-lg transition-all"
                                     initial={{ opacity: 0, x: 30 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: index * 0.1 }}
-                                    whileHover={{ x: 5, scale: 1.02 }}
                                 >
                                     <motion.div
                                         className="flex items-center justify-center w-12 h-12 flex-shrink-0 rounded-lg bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white text-xl"

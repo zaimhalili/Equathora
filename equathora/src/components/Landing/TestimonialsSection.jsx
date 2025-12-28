@@ -64,7 +64,7 @@ const TestimonialsSection = () => {
                             <button
                                 key={index}
                                 onClick={() => setCurrentTestimonial(index)}
-                                className="w-3 h-3 rounded-full transition-all"
+                                className="w-3 h-3 rounded-full transition-all cursor-pointer"
                                 style={{
                                     backgroundColor: currentTestimonial === index ? 'var(--accent-color)' : '#d1d5db'
                                 }}

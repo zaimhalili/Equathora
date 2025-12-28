@@ -47,7 +47,7 @@ const CTASection = () => {
                     >
                         <Link
                             to="/dashboard"
-                            className="flex items-center gap-3 rounded-xl bg-white px-10 py-4 text-lg font-semibold text-[var(--accent-color)] transition-all hover:bg-gray-100 hover:gap-4 shadow-xl hover:shadow-2xl"
+                            className="flex items-center gap-3 rounded-xl bg-white px-10 py-4 text-lg font-semibold text-[var(--accent-color)] transition-all hover:bg-gray-100  shadow-xl hover:shadow-2xl"
                         >
                             Start your first session
                             <FaArrowRight />

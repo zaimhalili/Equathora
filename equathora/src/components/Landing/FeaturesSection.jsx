@@ -75,16 +75,15 @@ const FeaturesSection = () => {
                                 {mainFeatures.map((card, index) => (
                                     <motion.article
                                         key={card.title}
-                                        className="flex flex-row gap-5 p-6 rounded-2xl border border-gray-200 bg-gray-50 hover:shadow-lg transition-all hover:border-[var(--accent-color)] hover:bg-white"
+                                        className="flex flex-row gap-5 p-6 rounded-2xl border border-gray-200 bg-gray-50 hover:shadow-lg transition-all hover:border-[var(--accent-color)] hover:bg-white hover:scale-101 hover:translate-x-3"
                                         initial={{ opacity: 0, y: 20 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ delay: index * 0.05, duration: 0.3 }}
-                                        whileHover={{ scale: 1.01, x: 10, transition: { duration: 0.2 } }}
                                     >
                                         <motion.div
                                             className="flex items-center justify-center w-14 h-14 flex-shrink-0 rounded-xl bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white text-2xl"
-                                            whileHover={{ rotate: 360, scale: 1.05, transition: { duration: 0.3 } }}
+                                            whileHover={{ rotate: 360, scale: 1.05, transition: { duration: 0.6 } }}
                                         >
                                             <card.icon />
                                         </motion.div>
@@ -124,12 +123,11 @@ const FeaturesSection = () => {
                             {additionalFeatures.map((feature, index) => (
                                 <motion.div
                                     key={feature.title}
-                                    className="flex-1 flex flex-col gap-3 p-6 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:shadow-md transition-all"
+                                    className="flex-1 flex flex-col gap-3 p-6 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:shadow-md transition-all hover:-translate-y-2 hover:scale-101"
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: index * 0.08, duration: 0.3 }}
-                                    whileHover={{ y: -5, scale: 1.01, transition: { duration: 0.2 } }}
                                 >
                                     <motion.div
                                         className={`flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-br ${feature.bg} text-white text-xl`}

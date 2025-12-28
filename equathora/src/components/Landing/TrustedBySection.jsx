@@ -50,12 +50,11 @@ const TrustedBySection = () => {
                             return (
                                 <motion.div
                                     key={org.name}
-                                    className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-gray-50 transition-all"
+                                    className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-gray-50 transition-all hover:scale-103"
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: index * 0.05, duration: 0.3 }}
-                                    whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
                                 >
                                     <IconComponent
                                         className="text-5xl"
