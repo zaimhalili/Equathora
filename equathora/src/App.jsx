@@ -120,10 +120,10 @@ export default function App() {
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Landing />} />
-            {/* <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} /> */}
-            {/* <Route path="/resend" element={<Resend />} /> */}
-            {/* <Route path="/forgotpassword" element={<ForgotPassword />} /> */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/resend" element={<Resend />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
 
 
             {/* Unprotected Routes */}

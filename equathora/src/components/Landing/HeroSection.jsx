@@ -89,7 +89,7 @@ const HeroSection = () => {
                     transition={{ duration: 0.4, delay: 0.15 }}
                 >
                     <motion.div
-                        className="rounded-3xl border border-gray-200 bg-white p-6 transition-shadow"
+                        className="rounded-3xl p-6 transition-shadow"
                     >
                         <img src={Studying} alt="Student learning" className="w-full max-w-md" loading="lazy" />
                     </motion.div>

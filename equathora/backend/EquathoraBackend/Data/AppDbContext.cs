@@ -10,5 +10,8 @@ namespace EquathoraBackend.Data
         }
 
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Problem> Problems => Set<Problem>();
+        public DbSet<Attempt> Attempts => Set<Attempt>();
+
     }
 }
