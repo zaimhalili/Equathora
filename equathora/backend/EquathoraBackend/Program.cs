@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using EquathoraBackend.Data;
 using EquathoraBackend.Models;
+using EquathoraBackend.Contracts;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -185,7 +187,43 @@ app.MapGet("/mathproblem", () =>
 })
 .WithName("GetMathProblem");
 
-app.Run();
+
+app.MapGet("/api/problems", async (AppDbContext db) =>
+{
+    var problems = await db.Problems
+        .Select(p => new
+        {
+            p.Id,
+            p.Title,
+            p.Statement,
+            p.Topic,
+            p.Difficulty
+        })
+        .ToListAsync();
+
+    return Results.Ok(problems)
+})
+
+app.MapPost("/api/attempts", [Authorize] async (
+    ClaimsPrincipal user,
+    AppDbContext db,
+    AttemptRequest req) =>
+{
+    var userId = Guid.Parse(user.FindFirstValue("sub")!);
+
+    var attempt = new Attempt
+    {
+        UserId = userId,
+        ProblemId = req.ProblemId,
+        IsCorrect = req.IsCorrect,
+        TimeSpentSeconds = req.TimeSpentSeconds
+    };
+
+    db.Attempts.Add(attempt);
+    await db.SaveChangesAsync();
+
+    return Results.Ok();
+});
 
 // Helper functions and DTOs
 static string CreateToken(User user, IConfiguration config)
@@ -211,7 +249,11 @@ static string CreateToken(User user, IConfiguration config)
     return new JwtSecurityTokenHandler().WriteToken(token);
 }
 
-record RegisterRequest(string Email, string Password, string Username);
-record LoginRequest(string Email, string Password);
-record VerifyEmailRequest(string Email, string Code);
-record ResendRequest(string Email);
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    DbSeeder.Seed(db);
+}
+
+
+app.Run();
