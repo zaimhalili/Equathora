@@ -211,19 +211,27 @@ app.MapPost("/api/attempts", [Authorize] async (
 {
     var userId = Guid.Parse(user.FindFirstValue("sub")!);
 
+    var problem = await db.Problems.FindAsync(req.ProblemId);
+    if (problem is null)
+        return Results.NotFound();
+
+    var isCorrect =
+        string.Equals(problem.Answer.Trim(), req.UserAnswer.Trim(), StringComparison.OrdinalIgnoreCase);
+
     var attempt = new Attempt
     {
         UserId = userId,
-        ProblemId = req.ProblemId,
-        IsCorrect = req.IsCorrect,
+        ProblemId = problem.Id,
+        IsCorrect = isCorrect,
         TimeSpentSeconds = req.TimeSpentSeconds
     };
 
     db.Attempts.Add(attempt);
     await db.SaveChangesAsync();
 
-    return Results.Ok();
+    return Results.Ok(new { isCorrect });
 });
+
 
 // Helper functions and DTOs
 static string CreateToken(User user, IConfiguration config)

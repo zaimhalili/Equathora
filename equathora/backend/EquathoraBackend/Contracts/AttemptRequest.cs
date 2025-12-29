@@ -2,6 +2,6 @@ namespace EquathoraBackend.Contracts;
 
 public record AttemptRequest(
     Guid ProblemId,
-    bool IsCorrect,
+    string UserAnswer,
     int TimeSpentSeconds
 );
