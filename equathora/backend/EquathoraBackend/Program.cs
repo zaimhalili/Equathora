@@ -232,6 +232,113 @@ app.MapPost("/api/attempts", [Authorize] async (
     return Results.Ok(new { isCorrect });
 });
 
+// Sync Supabase/External user into local DB (upsert)
+app.MapPost("/api/users/sync", async (UserSyncRequest req, AppDbContext db) =>
+{
+    if (req.Id == Guid.Empty || string.IsNullOrEmpty(req.Email))
+        return Results.BadRequest(new { error = "Invalid payload" });
+
+    var user = await db.Users.FindAsync(req.Id);
+    if (user == null)
+    {
+        user = new User
+        {
+            Id = req.Id,
+            Email = req.Email,
+            Username = req.Username,
+            GoogleId = req.Provider == "google" ? req.ProviderId : null,
+            IsEmailVerified = req.IsEmailVerified,
+            CreatedAt = DateTime.UtcNow
+        };
+        db.Users.Add(user);
+    }
+    else
+    {
+        user.Email = req.Email;
+        user.Username = req.Username ?? user.Username;
+        if (req.Provider == "google") user.GoogleId = req.ProviderId ?? user.GoogleId;
+        user.IsEmailVerified = req.IsEmailVerified;
+    }
+
+    // Ensure stats row exists
+    var stats = await db.UserStats.FirstOrDefaultAsync(s => s.UserId == req.Id);
+    if (stats == null)
+    {
+        stats = new Models.UserStats { UserId = req.Id, CreatedAt = DateTime.UtcNow };
+        db.UserStats.Add(stats);
+    }
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { message = "User synced" });
+});
+
+// Accept attempt sync (used when frontend uses backend for saving solves)
+app.MapPost("/api/users/{userId:guid}/attempts/sync", async (Guid userId, AttemptRequest req, AppDbContext db) =>
+{
+    var user = await db.Users.FindAsync(userId);
+    if (user == null) return Results.NotFound(new { error = "User not found" });
+
+    var problem = await db.Problems.FindAsync(req.ProblemId);
+    if (problem == null) return Results.NotFound(new { error = "Problem not found" });
+
+    var isCorrect = string.Equals(problem.Answer.Trim(), req.UserAnswer.Trim(), StringComparison.OrdinalIgnoreCase);
+
+    var attempt = new Attempt
+    {
+        UserId = userId,
+        ProblemId = problem.Id,
+        IsCorrect = isCorrect,
+        TimeSpentSeconds = req.TimeSpentSeconds,
+        CreatedAt = DateTime.UtcNow
+    };
+    db.Attempts.Add(attempt);
+
+    var stats = await db.UserStats.FirstOrDefaultAsync(s => s.UserId == userId);
+    if (stats == null)
+    {
+        stats = new Models.UserStats { UserId = userId, CreatedAt = DateTime.UtcNow };
+        db.UserStats.Add(stats);
+    }
+
+    stats.Attempts += 1;
+    if (isCorrect)
+    {
+        stats.ProblemsSolved += 1;
+        stats.CorrectAttempts += 1;
+
+        // streak logic: increment if last solved within 1 day, else reset
+        if (stats.LastSolvedAt.HasValue && (DateTime.UtcNow - stats.LastSolvedAt.Value).TotalDays <= 1)
+            stats.CurrentStreak += 1;
+        else
+            stats.CurrentStreak = 1;
+
+        if (stats.CurrentStreak > stats.LongestStreak) stats.LongestStreak = stats.CurrentStreak;
+
+        stats.Reputation += 10;
+    }
+    else
+    {
+        // incorrect attempt reduces reputation slightly and resets streak
+        stats.Reputation = Math.Max(0, stats.Reputation - 2);
+        stats.CurrentStreak = 0;
+    }
+
+    stats.LastSolvedAt = DateTime.UtcNow;
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { isCorrect, stats });
+});
+
+// Get user stats
+app.MapGet("/api/users/{userId:guid}/stats", async (Guid userId, AppDbContext db) =>
+{
+    var stats = await db.UserStats.FirstOrDefaultAsync(s => s.UserId == userId);
+    if (stats == null) return Results.NotFound();
+    return Results.Ok(stats);
+});
+
 
 // Helper functions and DTOs
 static string CreateToken(User user, IConfiguration config)
