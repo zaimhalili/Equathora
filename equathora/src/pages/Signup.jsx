@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
@@ -6,6 +7,7 @@ import GoogleAuth from '../components/GoogleAuth.jsx';
 import { Link } from 'react-router-dom';
 import './Signup.css';
 import '../components/Auth.css';
+import { supabase } from '../lib/supabaseClient';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -31,31 +33,34 @@ const Signup = () => {
     }
 
     setLoading(true);
-    try {
-      const res = await fetch('http://localhost:5203/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, username })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || 'Registration failed');
-        return;
+    // Supabase sign up
+    const { error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { username }
       }
+    });
 
-      alert(`Registration successful! Verification code: ${data.code}\n(Check your email in production)`);
-      navigate('/login');
-    } catch (err) {
-      setError('Connection error. Make sure backend is running.');
-    } finally {
+    if (signUpError) {
+      setError(signUpError.message || 'Registration failed');
       setLoading(false);
+      return;
     }
+
+    alert('Registration successful! Check your email for a confirmation link.');
+    navigate('/login');
+    setLoading(false);
   }
 
-  function GoogleSignup() {
-    alert('Google OAuth coming soon!');
+  async function GoogleSignup() {
+    setError("");
+    setLoading(true);
+    const { error: googleError } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    if (googleError) {
+      setError(googleError.message || 'Google signup failed');
+    }
+    setLoading(false);
   }
 
   return (

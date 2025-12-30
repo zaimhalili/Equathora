@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
@@ -6,6 +7,7 @@ import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/images/logo.png';
 import GoogleAuth from '../components/GoogleAuth.jsx';
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -19,32 +21,30 @@ const Login = () => {
     setError('');
     setLoading(true);
 
-    try {
-      const res = await fetch('http://localhost:5203/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || 'Login failed');
-        return;
-      }
-
-      localStorage.setItem('token', data.token);
-      alert('Login successful!');
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Connection error. Make sure backend is running.');
-    } finally {
+    if (signInError) {
+      setError(signInError.message || 'Login failed');
       setLoading(false);
+      return;
     }
+
+    alert('Login successful!');
+    navigate('/dashboard');
+    setLoading(false);
   }
 
-  function GoogleLogin() {
-    alert('Google OAuth coming soon!');
+  async function GoogleLogin() {
+    setError("");
+    setLoading(true);
+    const { error: googleError } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    if (googleError) {
+      setError(googleError.message || 'Google login failed');
+    }
+    setLoading(false);
   }
 
   return (
