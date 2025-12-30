@@ -33,7 +33,7 @@ const PrivacyPolicy = () => (
             <li>Contact us for any privacy-related requests</li>
         </ul>
         <h2>Contact</h2>
-        <p>If you have questions about this policy, contact us at support@equathora.com.</p>
+        <p>If you have questions about this policy, contact us at equathora@gmail.com.</p>
     </main>
 );
 
