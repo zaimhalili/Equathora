@@ -3,7 +3,7 @@
     background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
     color: #22223b;
     font-family: 'Inter', Arial, sans-serif;
-    padding: 2rem 0 3rem 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,28 +21,27 @@
 
 .legal-content h1 {
     font-size: 2.2rem;
-    margin-bottom: 1.2rem;
-    color: #2d3142;
+    color: black;
+    font-weight: bold;
 }
 
 .legal-content h2 {
     font-size: 1.2rem;
     margin-top: 1.5rem;
-    color: #4f5d75;
+    color: var(--secondary-color);
+    font-weight: bold;
 }
 
 .legal-content ul {
-    margin-left: 1.2rem;
     margin-bottom: 1rem;
 }
-
+/* 
 .legal-content li {
-    margin-bottom: 0.5rem;
-}
+} */
 
 .legal-content p {
     margin-bottom: 1rem;
-    line-height: 1.7;
+    line-height: 1.3;
 }
 
 @media (max-width: 600px) {
