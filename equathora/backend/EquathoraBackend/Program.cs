@@ -233,8 +233,13 @@ app.MapPost("/api/attempts", [Authorize] async (
 });
 
 // Sync Supabase/External user into local DB (upsert)
-app.MapPost("/api/users/sync", async (UserSyncRequest req, AppDbContext db) =>
+app.MapPost("/api/users/sync", async (UserSyncRequest req, AppDbContext db, IConfiguration config, HttpRequest http) =>
 {
+    // Shared-secret validation
+    var shared = config["BackendSharedSecret"];
+    if (string.IsNullOrEmpty(shared) || !http.Headers.TryGetValue("X-Backend-Secret", out var provided) || provided != shared)
+        return Results.Unauthorized();
+
     if (req.Id == Guid.Empty || string.IsNullOrEmpty(req.Email))
         return Results.BadRequest(new { error = "Invalid payload" });
 
@@ -274,8 +279,12 @@ app.MapPost("/api/users/sync", async (UserSyncRequest req, AppDbContext db) =>
 });
 
 // Accept attempt sync (used when frontend uses backend for saving solves)
-app.MapPost("/api/users/{userId:guid}/attempts/sync", async (Guid userId, AttemptRequest req, AppDbContext db) =>
+app.MapPost("/api/users/{userId:guid}/attempts/sync", async (Guid userId, AttemptRequest req, AppDbContext db, IConfiguration config, HttpRequest http) =>
 {
+    var shared = config["BackendSharedSecret"];
+    if (string.IsNullOrEmpty(shared) || !http.Headers.TryGetValue("X-Backend-Secret", out var provided) || provided != shared)
+        return Results.Unauthorized();
+
     var user = await db.Users.FindAsync(userId);
     if (user == null) return Results.NotFound(new { error = "User not found" });
 
@@ -366,8 +375,38 @@ static string CreateToken(User user, IConfiguration config)
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    DbSeeder.Seed(db);
+    var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+    var logger = loggerFactory.CreateLogger("StartupCheck");
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        // quick connectivity check
+        try
+        {
+            await db.Database.OpenConnectionAsync();
+            await db.Database.CloseConnectionAsync();
+            logger.LogInformation("Database connection successful.");
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Unable to open database connection at startup. Check connection string and network access.");
+        }
+
+        // run seeder in a try/catch so startup won't crash if DB isn't ready
+        try
+        {
+            DbSeeder.Seed(db);
+            logger.LogInformation("Database seeding completed (if any).");
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Seeding failed or skipped.");
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Unexpected error during startup checks");
+    }
 }
 
 

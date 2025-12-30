@@ -38,7 +38,11 @@ supabase.auth.onAuthStateChange(async (event, session) => {
     const user = session.user;
     await fetch('https://your-backend.example.com/api/users/sync', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        // include the shared secret header configured in your backend
+        'X-Backend-Secret': process.env.VITE_BACKEND_SHARED_SECRET || process.env.BACKEND_SHARED_SECRET
+      },
       body: JSON.stringify({
         id: user.id,
         email: user.email,
@@ -54,6 +58,7 @@ supabase.auth.onAuthStateChange(async (event, session) => {
 
 B) Supabase Edge Function / Webhook
 - Create an Edge Function in Supabase that posts to `https://your-backend.example.com/api/users/sync` when an auth event occurs.
+  - When calling the backend, include the header `X-Backend-Secret` with the value set in your backend's `BackendSharedSecret` config (or environment variable). This shared-secret prevents unauthorized clients from syncing data.
 
 ## 4) Recording attempts / solves
 Call the backend endpoint to sync attempts (from frontend or server-side) after the user completes a problem:
