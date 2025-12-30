@@ -48,7 +48,8 @@ const Signup = () => {
       return;
     }
 
-    alert('Registration successful! Check your email for a confirmation link.');
+    // Optionally log to console
+    console.log('Registration successful! Check your email for a confirmation link.');
     navigate('/login');
     setLoading(false);
   }

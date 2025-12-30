@@ -32,7 +32,8 @@ const Login = () => {
       return;
     }
 
-    alert('Login successful!');
+    // Optionally log to console
+    console.log('Login successful!');
     navigate('/dashboard');
     setLoading(false);
   }
