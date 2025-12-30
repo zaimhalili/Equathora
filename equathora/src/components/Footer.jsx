@@ -49,8 +49,8 @@ const Footer = () => {
             </a>
           </div>
           <div className="w-full flex justify-center"><Link to="/dashboard" className='cursor-pointer w-14'><img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '60px', width: '60px', margin: '1rem auto', borderRadius: '10px' }} /></Link></div>
-          
-          
+
+
         </div>
 
         <div className="links-wrapper">
@@ -68,8 +68,9 @@ const Footer = () => {
             <h3 className="footer-column-title">Company</h3>
             <ul className="links">
               <li><Link to="/about" className='footer-links'>About Us</Link></li>
-              {/* <li><Link to="/" className='footer-links'>Legal & Policies</Link></li>
-              <li><Link to="/" className='footer-links'>Cookie Policy</Link></li> */}
+              <li><Link to="/privacy-policy" className='footer-links'>Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service" className='footer-links'>Terms of Service</Link></li>
+              {/* <li><Link to="/" className='footer-links'>Cookie Policy</Link></li> */}
               <li><Link to="/helpCenter" className='footer-links'>FAQs</Link></li>
               <li><Link to="/report" className='footer-links'>Report</Link></li>
             </ul>

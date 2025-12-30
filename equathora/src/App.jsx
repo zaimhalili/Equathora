@@ -4,6 +4,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import OverflowChecker from "./pages/OverflowChecker";
 
 const Landing = lazy(() => import("./pages/Landing"));
@@ -168,6 +170,10 @@ export default function App() {
             <Route path="/problems/:groupId" element={<ProblemGroup />} />
             <Route path="/problems/:groupId/:problemId" element={<Problem />} />
             <Route path="/profile/:profile" element={<Profile />} />
+
+            {/* Legal Pages */}
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
 
             {/* 404 Route */}
             <Route path="*" element={<Navigate to="/pageNotFound" replace />} />
