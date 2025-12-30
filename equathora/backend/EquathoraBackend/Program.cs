@@ -4,6 +4,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using EquathoraBackend.Data;
 using EquathoraBackend.Models;
@@ -201,8 +203,8 @@ app.MapGet("/api/problems", async (AppDbContext db) =>
         })
         .ToListAsync();
 
-    return Results.Ok(problems)
-})
+    return Results.Ok(problems);
+});
 
 app.MapPost("/api/attempts", [Authorize] async (
     ClaimsPrincipal user,
@@ -269,7 +271,7 @@ app.MapPost("/api/users/sync", async (UserSyncRequest req, AppDbContext db, ICon
     var stats = await db.UserStats.FirstOrDefaultAsync(s => s.UserId == req.Id);
     if (stats == null)
     {
-        stats = new Models.UserStats { UserId = req.Id, CreatedAt = DateTime.UtcNow };
+        stats = new UserStats { UserId = req.Id, CreatedAt = DateTime.UtcNow };
         db.UserStats.Add(stats);
     }
 
@@ -306,7 +308,7 @@ app.MapPost("/api/users/{userId:guid}/attempts/sync", async (Guid userId, Attemp
     var stats = await db.UserStats.FirstOrDefaultAsync(s => s.UserId == userId);
     if (stats == null)
     {
-        stats = new Models.UserStats { UserId = userId, CreatedAt = DateTime.UtcNow };
+        stats = new UserStats { UserId = userId, CreatedAt = DateTime.UtcNow };
         db.UserStats.Add(stats);
     }
 
