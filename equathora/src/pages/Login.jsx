@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import '../components/Auth.css';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
-import Logo from '../assets/images/logo.png';
+import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import GoogleAuth from '../components/GoogleAuth.jsx';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
@@ -53,8 +53,7 @@ const Login = () => {
       <main id='body-login'>
         <section id='login-container'>
           <div id='login-logo-name'>
-            <img src={Logo} alt="Logo" id='login-logoIMG' />
-            <h3 id='login-name'>equathora</h3>
+            <img src={Logo} alt="Logo" id='login-logoIMG' className='w-70'/>
           </div>
           <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleLogin} /></div>
 

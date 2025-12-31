@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Resend.css';
 import BackgroundPolygons from '../components/BackgroundPolygons';
 import { Link } from 'react-router-dom';
-import Logo from '../assets/images/logo.png';
+import Logo from '../assets/logo/EquathoraLogoFull.svg';
 
 const Resend = () => {
   const [email, setEmail] = useState('');
@@ -42,8 +42,7 @@ const Resend = () => {
     <main id='body-resend'>
       <section id='resend-container'>
         <article id='resend-logo-name'>
-          <img src={Logo} alt="Logo" />
-          <h3 id='login-name'>equathora</h3>
+          <img src={Logo} alt="Logo" className='w-70' />
         </article>
         <article id='resend-text-container'>
           <h3>Resend confirmation instructions</h3>

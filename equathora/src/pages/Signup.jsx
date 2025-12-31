@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
-import Logo from '../assets/images/logo.png';
+import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import GoogleAuth from '../components/GoogleAuth.jsx';
 import { Link } from 'react-router-dom';
 import './Signup.css';
@@ -68,8 +68,7 @@ const Signup = () => {
     <main id='body-signup'>
       <section id='signup-container'>
         <div id='signup-logo-name'>
-          <img src={Logo} alt="Logo" id='signup-logoIMG' />
-          <h3 id='signup-name'>equathora</h3>
+          <img src={Logo} alt="Logo" id='signup-logoIMG' className='w-70' />
         </div>
         <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleSignup} /></div>
 
