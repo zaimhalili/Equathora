@@ -34,7 +34,9 @@
 }
 
 .or-line {
+    height: 1px;
     width: calc(40vw - 80px);
+    background-color: black;
 }
 
 @media only screen and (max-width: 600px) {}
@@ -50,3 +52,19 @@
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {}
+
+/* Divider HR in GoogleAuth component: ensure visible when using utility bg classes */
+.google-auth-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.google-auth-divider hr {
+    flex: 1 1 auto;
+    height: 1px;
+    border: none;
+    background-color: var(--secondary-color);
+    margin: 0;
+}

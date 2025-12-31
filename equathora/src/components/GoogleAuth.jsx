@@ -16,12 +16,12 @@ const GoogleAuth = ({ onClick }) => { // 👈 Accept onClick as prop
                 </button>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <hr className='or-line' />
+            <div className="google-auth-divider">
+                <hr className='bg-black' />
                 <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: '700', color: 'var(--secondary-color)', textAlign: 'center', padding: '0 10px' }}>
                     OR
                 </p>
-                <hr className='or-line' />
+                <hr className='bg-black' />
             </div>
         </>
 

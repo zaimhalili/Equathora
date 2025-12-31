@@ -247,7 +247,7 @@ const HelpCenter = () => {
                                         Can't find your answer? Our support team responds within 3 hours (usually) !
                                     </p>
                                     <a
-                                        href="mailto:support@equathora.com"
+                                        href="mailto:equathora@gmail.com"
                                         className="inline-block px-6 py-3 bg-gradient-to-r from-[var(--accent-color)] to-pink-600 text-white rounded-md font-bold text-base no-underline w-fit"
                                     >
                                         Contact Support →
