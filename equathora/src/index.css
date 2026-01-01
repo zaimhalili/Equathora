@@ -65,6 +65,7 @@
 * {
   box-sizing: border-box;
   margin: 0;
+  /* This is for debugging */
   /* border: 2px solid skyblue; */
 }
 
