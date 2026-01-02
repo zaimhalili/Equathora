@@ -25,9 +25,23 @@ import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
 
 const Sidebar = ({ isOpen, onClose }) => {
     const [moreExpanded, setMoreExpanded] = useState(false);
+    const [dailyProblemId, setDailyProblemId] = useState(1);
+    const [dailyGroupId, setDailyGroupId] = useState(1);
     const navigate = useNavigate();
-    const dailyProblemId = getDailyProblemId();
-    const dailyGroupId = getGroupIdForProblem(dailyProblemId);
+
+    useEffect(() => {
+        const loadDailyProblem = async () => {
+            try {
+                const problemId = await getDailyProblemId();
+                const groupId = await getGroupIdForProblem(problemId);
+                setDailyProblemId(problemId);
+                setDailyGroupId(groupId);
+            } catch (error) {
+                console.error('Failed to load daily problem:', error);
+            }
+        };
+        loadDailyProblem();
+    }, []);
 
     async function LogOut() {
         await clearUserData();

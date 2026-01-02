@@ -25,8 +25,22 @@ import Books from '../../assets/images/learningBooks.svg';
 const NavigationBar = () => {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const dailyProblemId = getDailyProblemId();
-    const dailyGroupId = getGroupIdForProblem(dailyProblemId);
+    const [dailyProblemId, setDailyProblemId] = useState(1);
+    const [dailyGroupId, setDailyGroupId] = useState(1);
+
+    useEffect(() => {
+        const loadDailyProblem = async () => {
+            try {
+                const problemId = await getDailyProblemId();
+                const groupId = await getGroupIdForProblem(problemId);
+                setDailyProblemId(problemId);
+                setDailyGroupId(groupId);
+            } catch (error) {
+                console.error('Failed to load daily problem:', error);
+            }
+        };
+        loadDailyProblem();
+    }, []);
 
     const learnItems = [
         {

@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { problems } from '../data/problems';
+import { getAllProblems } from './problemService';
 
 export function cn(...inputs) {
     return twMerge(clsx(inputs));
@@ -9,17 +9,14 @@ export function cn(...inputs) {
 /**
  * Gets the daily problem ID that rotates through all problems before repeating
  * Uses localStorage to track which problems have been shown
- * @returns {number} Problem ID (1-indexed)
+ * @returns {Promise<number>} Problem ID
  */
-export function getDailyProblemId() {
-    const TOTAL_PROBLEMS = 30; // Total number of problems available
+export async function getDailyProblemId() {
     const STORAGE_KEY = 'equathora_daily_problems';
 
-    // Get today's date string
     const today = new Date();
-    const dateString = today.toISOString().split('T')[0]; // YYYY-MM-DD
+    const dateString = today.toISOString().split('T')[0];
 
-    // Check if we already selected today's problem
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
         const data = JSON.parse(stored);
@@ -28,18 +25,18 @@ export function getDailyProblemId() {
         }
     }
 
-    // Get the list of already shown problems
+    const allProblems = await getAllProblems();
+    const TOTAL_PROBLEMS = allProblems.length;
+    
+    if (TOTAL_PROBLEMS === 0) return 1;
+
     const shownProblems = stored ? JSON.parse(stored).shownProblems || [] : [];
 
-    // If all problems have been shown, reset the list
     let availableProblems = [];
     if (shownProblems.length >= TOTAL_PROBLEMS) {
-        // All problems shown, start fresh
-        availableProblems = Array.from({ length: TOTAL_PROBLEMS }, (_, i) => i + 1);
+        availableProblems = allProblems.map(p => p.id);
     } else {
-        // Get problems that haven't been shown yet
-        availableProblems = Array.from({ length: TOTAL_PROBLEMS }, (_, i) => i + 1)
-            .filter(id => !shownProblems.includes(id));
+        availableProblems = allProblems.map(p => p.id).filter(id => !shownProblems.includes(id));
     }
 
     // Use date as seed for deterministic selection
@@ -72,11 +69,11 @@ export function getDailyProblemId() {
 
 /**
  * Maps problem IDs to their corresponding group IDs
- * Looks up the groupId directly from the problem data
- * @param {number} problemId - The problem ID (1-30)
- * @returns {number} The group ID (1-4)
+ * @param {number} problemId - The problem ID
+ * @returns {Promise<number>} The group ID
  */
-export function getGroupIdForProblem(problemId) {
-    const problem = problems.find(p => p.id === problemId);
-    return problem ? problem.groupId : 1; // Default to group 1 if not found
+export async function getGroupIdForProblem(problemId) {
+    const allProblems = await getAllProblems();
+    const problem = allProblems.find(p => p.id === problemId);
+    return problem ? problem.group_id : 1;
 }

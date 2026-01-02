@@ -20,8 +20,22 @@ import { supabase } from '../lib/supabaseClient';
 const Dashboard = () => {
   const [migrationStatus, setMigrationStatus] = useState(null);
   const [username, setUsername] = useState("Friend");
-  const dailyProblemId = getDailyProblemId();
-  const dailyGroupId = getGroupIdForProblem(dailyProblemId);
+  const [dailyProblemId, setDailyProblemId] = useState(1);
+  const [dailyGroupId, setDailyGroupId] = useState(1);
+
+  useEffect(() => {
+    const loadDailyProblem = async () => {
+      try {
+        const problemId = await getDailyProblemId();
+        const groupId = await getGroupIdForProblem(problemId);
+        setDailyProblemId(problemId);
+        setDailyGroupId(groupId);
+      } catch (error) {
+        console.error('Failed to load daily problem:', error);
+      }
+    };
+    loadDailyProblem();
+  }, []);
 
   // Fetch username from database
   useEffect(() => {

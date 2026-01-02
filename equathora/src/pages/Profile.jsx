@@ -14,26 +14,8 @@ import ProfileExportButtons from '../components/ProfileExportButtons';
 const Profile = () => {
   const { profile } = useParams();
   const [showAccuracy, setShowAccuracy] = useState(false);
-  const [userData, setUserData] = useState({
-    name: 'Student',
-    username: 'student',
-    title: 'Problem Solver ∑',
-    status: 'Online',
-    stats: {
-      problemsSolved: 0,
-      accuracy: 0,
-      accuracyDetail: { correct: 0, wrong: 0, total: 0 },
-      currentStreak: 0,
-      longestStreak: 0,
-      reputation: 0,
-      globalRank: 1,
-      easy: { solved: 0, total: 10, accuracy: 0 },
-      medium: { solved: 0, total: 10, accuracy: 0 },
-      hard: { solved: 0, total: 10, accuracy: 0 }
-    },
-    mathTopics: [],
-    problemsSolved: []
-  });
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -128,11 +110,25 @@ const Profile = () => {
 
       } catch (error) {
         console.error('Failed to fetch user data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUserData();
   }, []);
+
+  if (loading || !userData) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className='bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] px-3 md:px-[30px] [@media(min-width:1600px)]:px-[12vw] pt-5 pb-20 flex items-center justify-center'>
+          <div className='text-[var(--secondary-color)] text-xl'>Loading profile...</div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   const totalProblems = userData.stats.easy.total + userData.stats.medium.total + userData.stats.hard.total;
   const totalSolved = userData.stats.easy.solved + userData.stats.medium.solved + userData.stats.hard.solved;

@@ -1,6 +1,9 @@
 // localStorage-based progress tracking system for MVP
 // This will be replaced with backend API calls in v1.1
 
+import { markProblemComplete as dbMarkProblemComplete, saveUserProgress, getUserProgress } from './databaseService';
+import { getAllProblems } from './problemService';
+
 // Generate a unique device ID to prevent cross-device sync issues
 // Using sessionStorage to ensure it NEVER syncs between devices
 const getDeviceId = () => {
@@ -152,30 +155,45 @@ export const getCompletedProblems = () => {
 };
 
 // Mark problem as completed
-export const markProblemCompleted = (problemId, score, timeSpent) => {
-    const completed = getCompletedProblems();
-    const existing = completed.find(p => p.problemId === problemId);
-
-    if (existing) {
-        // Update if better score
-        if (score > existing.score) {
-            existing.score = score;
-            existing.timeSpent = Math.min(timeSpent, existing.timeSpent);
-            existing.attempts += 1;
-            existing.lastAttempt = new Date().toISOString();
+export const markProblemCompleted = async (problemId, score, timeSpent) => {
+    try {
+        const allProblems = await getAllProblems();
+        const problem = allProblems.find(p => p.id === problemId);
+        
+        if (problem) {
+            await dbMarkProblemComplete(
+                problemId,
+                timeSpent,
+                problem.difficulty,
+                problem.topic || 'General'
+            );
         }
-    } else {
-        completed.push({
-            problemId,
-            score,
-            timeSpent,
-            attempts: 1,
-            completedAt: new Date().toISOString(),
-            lastAttempt: new Date().toISOString()
-        });
-    }
+        
+        const completed = getCompletedProblems();
+        const existing = completed.find(p => p.problemId === problemId);
 
-    localStorage.setItem(STORAGE_KEYS.COMPLETED_PROBLEMS, JSON.stringify(completed));
+        if (existing) {
+            if (score > existing.score) {
+                existing.score = score;
+                existing.timeSpent = Math.min(timeSpent, existing.timeSpent);
+                existing.attempts += 1;
+                existing.lastAttempt = new Date().toISOString();
+            }
+        } else {
+            completed.push({
+                problemId,
+                score,
+                timeSpent,
+                attempts: 1,
+                completedAt: new Date().toISOString(),
+                lastAttempt: new Date().toISOString()
+            });
+        }
+
+        localStorage.setItem(STORAGE_KEYS.COMPLETED_PROBLEMS, JSON.stringify(completed));
+    } catch (error) {
+        console.error('Failed to mark problem as complete:', error);
+    }
 
     // Update user stats snapshot (accuracy handled by recordProblemStats)
     updateUserProgress({

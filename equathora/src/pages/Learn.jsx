@@ -48,6 +48,11 @@ const Learn = () => {
     };
 
     fetchProblems();
+
+    // Refresh on window focus (when returning from Problem page)
+    const handleFocus = () => fetchProblems();
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
   }, []);
 
   const filteredProblems = useMemo(() => {
