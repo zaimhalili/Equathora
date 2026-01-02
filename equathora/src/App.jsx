@@ -94,21 +94,6 @@ function PageTitleUpdater() {
 export default function App() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const controller = new AbortController();
-    axios.get("/mathproblem", { signal: controller.signal })
-      .then(res => console.log("Math problem:", res.data))
-      .catch(err => {
-        if (err.name !== 'CanceledError') {
-          console.error(err);
-        }
-      });
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
   // Handle OAuth callback and redirect to dashboard
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {

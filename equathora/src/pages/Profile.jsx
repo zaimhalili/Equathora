@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ReputationBadge from '../components/ReputationBadge';
 import Autumn from '../assets/images/autumn.jpg';
-import { FaFire, FaCheckCircle, FaTrophy, FaChartLine, FaUser, FaCalendarAlt, FaEnvelope } from 'react-icons/fa';
+import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 import { getUserProgress, getStreakData, getCompletedProblems } from '../lib/databaseService';
 import { getAllProblems } from '../lib/problemService';
 import { supabase } from '../lib/supabaseClient';
@@ -13,26 +13,61 @@ import ProfileExportButtons from '../components/ProfileExportButtons';
 
 const Profile = () => {
   const { profile } = useParams();
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [showAccuracy, setShowAccuracy] = useState(false);
+  const [userData, setUserData] = useState({
+    name: 'Student',
+    username: 'student',
+    title: 'Problem Solver ∑',
+    status: 'Online',
+    stats: {
+      problemsSolved: 0,
+      accuracy: 0,
+      accuracyDetail: { correct: 0, wrong: 0, total: 0 },
+      currentStreak: 0,
+      longestStreak: 0,
+      reputation: 0,
+      globalRank: 1,
+      easy: { solved: 0, total: 10, accuracy: 0 },
+      medium: { solved: 0, total: 10, accuracy: 0 },
+      hard: { solved: 0, total: 10, accuracy: 0 }
+    },
+    mathTopics: [],
+    problemsSolved: []
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
-          setLoading(false);
+          console.log('No session found');
           return;
         }
 
-        // Fetch all user data
-        const [userProgress, streakData, completedIds, allProblems] = await Promise.all([
-          getUserProgress(),
-          getStreakData(),
-          getCompletedProblems(),
-          getAllProblems()
-        ]);
+        console.log('Fetching user data...');
+
+        // Fetch all user data with error handling for each
+        const userProgress = await getUserProgress().catch(err => {
+          console.error('Error fetching user progress:', err);
+          return null;
+        });
+        
+        const streakData = await getStreakData().catch(err => {
+          console.error('Error fetching streak data:', err);
+          return null;
+        });
+        
+        const completedIds = await getCompletedProblems().catch(err => {
+          console.error('Error fetching completed problems:', err);
+          return [];
+        });
+        
+        const allProblems = await getAllProblems().catch(err => {
+          console.error('Error fetching all problems:', err);
+          return [];
+        });
+
+        console.log('Data fetched:', { userProgress, streakData, completedIds, allProblems });
 
         // Get user metadata
         const user = session.user;
@@ -63,18 +98,9 @@ const Profile = () => {
         const mediumSolved = completedProblems.filter(p => p.difficulty === 'Medium').length;
         const hardSolved = completedProblems.filter(p => p.difficulty === 'Hard').length;
 
-        // Get join date
-        const joinDate = user.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { 
-          month: 'short', 
-          year: 'numeric' 
-        }) : 'Recently';
-
-        setUserData({
+        const newUserData = {
           name: displayName,
           username: username,
-          email: user.email,
-          avatar: user.user_metadata?.avatar_url || null,
-          joinDate: joinDate,
           title: 'Problem Solver ∑',
           status: 'Online',
           stats: {
@@ -89,47 +115,24 @@ const Profile = () => {
             longestStreak: streakData?.longest_streak || 0,
             reputation: userProgress?.reputation || 0,
             globalRank: 1,
-            easy: { solved: easySolved, total: easyProblems.length, accuracy: easySolved > 0 ? Math.round((easySolved / easyProblems.length) * 100) : 0 },
-            medium: { solved: mediumSolved, total: mediumProblems.length, accuracy: mediumSolved > 0 ? Math.round((mediumSolved / mediumProblems.length) * 100) : 0 },
-            hard: { solved: hardSolved, total: hardProblems.length, accuracy: hardSolved > 0 ? Math.round((hardSolved / hardProblems.length) * 100) : 0 }
+            easy: { solved: easySolved, total: easyProblems.length || 10, accuracy: easySolved > 0 ? Math.round((easySolved / (easyProblems.length || 1)) * 100) : 0 },
+            medium: { solved: mediumSolved, total: mediumProblems.length || 10, accuracy: mediumSolved > 0 ? Math.round((mediumSolved / (mediumProblems.length || 1)) * 100) : 0 },
+            hard: { solved: hardSolved, total: hardProblems.length || 10, accuracy: hardSolved > 0 ? Math.round((hardSolved / (hardProblems.length || 1)) * 100) : 0 }
           },
           mathTopics: [...new Set(completedProblems.map(p => p.topic).filter(Boolean))],
           problemsSolved: completedProblems.slice(-10).reverse()
-        });
+        };
+
+        console.log('Setting user data:', newUserData);
+        setUserData(newUserData);
 
       } catch (error) {
         console.error('Failed to fetch user data:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchUserData();
   }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <div className="flex-grow flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--accent-color)]"></div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (!userData) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <div className="flex-grow flex items-center justify-center">
-          <p className="text-lg text-[var(--secondary-color)]">Please log in to view your profile</p>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
 
   const totalProblems = userData.stats.easy.total + userData.stats.medium.total + userData.stats.hard.total;
   const totalSolved = userData.stats.easy.solved + userData.stats.medium.solved + userData.stats.hard.solved;
@@ -161,38 +164,16 @@ const Profile = () => {
                 {/* Profile Header Section */}
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
-                    {userData.avatar ? (
-                      <img src={userData.avatar} alt="Profile Picture" className='rounded-full h-20 w-20 md:h-24 md:w-24 object-cover border-4 border-[var(--accent-color)]' />
-                    ) : (
-                      <div className='rounded-full h-20 w-20 md:h-24 md:w-24 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] flex items-center justify-center border-4 border-[var(--accent-color)]'>
-                        <FaUser className='text-white text-3xl md:text-4xl' />
-                      </div>
-                    )}
+                    <img src={Autumn} alt="Profile Picture" className='rounded-md h-20 w-20 md:h-24 md:w-24 object-cover' />
                     <div className='text-[var(--secondary-color)] font-[Inter] flex flex-col justify-between gap-1'>
                       <div>
                         <h5 className='font-bold text-xl md:text-2xl'>{userData.name}</h5>
-                        <h5 className='font-light text-md md:text-lg text-[var(--french-gray)]'>@{userData.username}</h5>
+                        <h5 className='font-light text-md md:text-lg'>{userData.username}</h5>
                       </div>
-                      <div className='flex items-center gap-2 text-sm text-[var(--french-gray)]'>
-                        <FaCalendarAlt className='text-xs' />
-                        <span>Joined {userData.joinDate}</span>
-                      </div>
+                      <h6 className='text-md md:text-lg'>Rank <span className='font-bold'>{userData.stats.globalRank}</span></h6>
                     </div>
                   </div>
-                  
-                  {/* User Info Pills */}
-                  <div className='flex flex-wrap gap-2'>
-                    <div className='flex items-center gap-1 px-3 py-1 bg-[rgba(217,4,41,0.1)] rounded-full text-sm'>
-                      <FaTrophy className='text-[var(--accent-color)]' />
-                      <span className='text-[var(--secondary-color)] font-semibold'>Rank #{userData.stats.globalRank}</span>
-                    </div>
-                    <div className='flex items-center gap-1 px-3 py-1 bg-[rgba(16,185,129,0.1)] rounded-full text-sm'>
-                      <span className='text-green-600 text-xs'>●</span>
-                      <span className='text-[var(--secondary-color)] font-medium'>{userData.status}</span>
-                    </div>
-                  </div>
-                  
-                  <button type="button" className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300' onClick={() => {
+                  <button type="button" className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md cursor-not-allowed hover:bg-[var(--dark-accent-color)] transition-all duration-300' onClick={() => {
                     alert("This feature is not available yet")
                   }}>Edit Profile</button>
                 </div>
@@ -201,20 +182,18 @@ const Profile = () => {
 
                 {/* Community Stats Section */}
                 <div className='flex flex-col gap-5'>
-                  <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-2'>Community Stats</h5>
+                  <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Community Stats</h5>
                   <div className='flex flex-col gap-4'>
                     <div className='flex gap-3 items-center'>
                       <div className='text-orange-500 text-2xl md:text-3xl'><FaFire /></div>
                       <div className='flex flex-col'>
-                        <p className='text-sm md:text-base text-[var(--secondary-color)]'>Current Streak <span className='font-bold'>{userData.stats.currentStreak} days</span></p>
-                        <span className='text-xs text-[var(--french-gray)]'>Best: {userData.stats.longestStreak} days</span>
+                        <p className='text-sm md:text-base text-[var(--secondary-color)]'>Streak <span className='font-bold'>{userData.stats.currentStreak}</span></p>
                       </div>
                     </div>
                     <div className='flex gap-3 items-center'>
                       <div className='text-[#10b981] text-2xl md:text-3xl'><FaCheckCircle /></div>
                       <div className='flex flex-col'>
-                        <p className='text-sm md:text-base text-[var(--secondary-color)]'>Problems Solved <span className='font-bold'>{totalSolved}</span></p>
-                        <span className='text-xs text-[var(--french-gray)]'>Out of {totalProblems} total</span>
+                        <p className='text-sm md:text-base text-[var(--secondary-color)]'>Solved <span className='font-bold'>{totalSolved}</span></p>
                       </div>
                     </div>
                     <div className='flex gap-3 items-center'>
@@ -229,7 +208,7 @@ const Profile = () => {
                   <ReputationBadge
                     value={userData.stats.reputation}
                     currentStreak={userData.stats.currentStreak}
-                    longestStreak={userStats.longestStreak}
+                    longestStreak={userData.stats.longestStreak}
                     problemsSolved={totalSolved}
                   />
                 </div>
