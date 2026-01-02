@@ -63,7 +63,7 @@ export async function removeUserScopedItem(key) {
 export async function clearUserData() {
     const prefix = await getUserStoragePrefix();
     const keysToRemove = [];
-    
+
     // Find all keys for this user
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -71,7 +71,7 @@ export async function clearUserData() {
             keysToRemove.push(key);
         }
     }
-    
+
     // Remove them
     keysToRemove.forEach(key => localStorage.removeItem(key));
 }

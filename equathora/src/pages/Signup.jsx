@@ -66,7 +66,7 @@ const Signup = () => {
   async function GoogleSignup() {
     setError("");
     setLoading(true);
-    const { error: googleError } = await supabase.auth.signInWithOAuth({ 
+    const { error: googleError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/dashboard`
@@ -88,11 +88,11 @@ const Signup = () => {
 
         <form id='auth' onSubmit={handleSignup}>
           {error && (
-            <div style={{ 
-              backgroundColor: '#fee', 
-              border: '1px solid #fcc', 
-              borderRadius: '8px', 
-              padding: '12px 16px', 
+            <div style={{
+              backgroundColor: '#fee',
+              border: '1px solid #fcc',
+              borderRadius: '8px',
+              padding: '12px 16px',
               marginBottom: '16px',
               color: '#c33',
               fontSize: '14px',
