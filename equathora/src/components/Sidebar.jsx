@@ -1,9 +1,11 @@
 // Sidebar.jsx
 import React, { useState } from 'react';
 import './Sidebar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import X from '../assets/images/x.svg';
+import { supabase } from '../lib/supabaseClient';
+import { clearUserData } from '../lib/userStorage';
 // Import icons for sidebar items
 import Dashboard from '../assets/logo/TransparentSymbol.png';
 import Journey from '../assets/images/journey.svg';
@@ -23,14 +25,15 @@ import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
 
 const Sidebar = ({ isOpen, onClose }) => {
     const [moreExpanded, setMoreExpanded] = useState(false);
+    const navigate = useNavigate();
     const dailyProblemId = getDailyProblemId();
     const dailyGroupId = getGroupIdForProblem(dailyProblemId);
 
-    function LogOut() {
-        // Clear all user data
-        localStorage.clear();
-        alert("You have been signed out successfully");
-        window.location.href = '/';
+    async function LogOut() {
+        await clearUserData();
+        await supabase.auth.signOut();
+        onClose();
+        navigate('/login');
     }
 
     const sidebarItems = [
@@ -208,12 +211,10 @@ const Sidebar = ({ isOpen, onClose }) => {
                         </div>
                     </nav>
 
-                    {/* Sign Out hidden for MVP */}
-                    {/* <div className="sidebar-footer">
+                    <div className="sidebar-footer">
                         <button
                             onClick={() => {
                                 LogOut();
-                                onClose();
                             }}
                             className="sidebar-logout"
                         >
@@ -223,7 +224,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <p>Securely log out</p>
                             </div>
                         </button>
-                    </div> */}
+                    </div>
                 </div>
             </aside>
         </>

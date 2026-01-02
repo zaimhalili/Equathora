@@ -66,11 +66,16 @@ const Signup = () => {
   async function GoogleSignup() {
     setError("");
     setLoading(true);
-    const { error: googleError } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    const { error: googleError } = await supabase.auth.signInWithOAuth({ 
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/dashboard`
+      }
+    });
     if (googleError) {
       setError(googleError.message || 'Google signup failed');
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   return (
@@ -82,7 +87,20 @@ const Signup = () => {
         <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleSignup} /></div>
 
         <form id='auth' onSubmit={handleSignup}>
-          {error && <p style={{ color: 'red', fontSize: '14px' }}>{error}</p>}
+          {error && (
+            <div style={{ 
+              backgroundColor: '#fee', 
+              border: '1px solid #fcc', 
+              borderRadius: '8px', 
+              padding: '12px 16px', 
+              marginBottom: '16px',
+              color: '#c33',
+              fontSize: '14px',
+              fontFamily: 'Inter, sans-serif'
+            }}>
+              {error}
+            </div>
+          )}
 
           <h5 className='typeOfInput'>USERNAME</h5>
           <input

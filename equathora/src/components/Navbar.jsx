@@ -7,6 +7,8 @@ import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
 import Dropdown from './Dropdown';
 import OverflowChecker from "../pages/OverflowChecker";
+import { supabase } from '../lib/supabaseClient';
+import { clearUserData } from '../lib/userStorage';
 //Dropdown svgs
 import Daily from '../assets/images/questionMark.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
@@ -165,14 +167,19 @@ const Navbar = () => {
       text: "My Profile",
       description: "View and edit your profile",
       image: GuestAvatar
+    },
+    {
+      text: "Sign Out",
+      description: "Securely log out of your account",
+      image: LogoutIMG,
+      isButton: true,
+      onClick: async () => {
+        await clearUserData();
+        await supabase.auth.signOut();
+        window.location.href = '/login';
+      }
     }
     // Hidden for MVP
-    // {
-    //   to: '/logout',
-    //   text: "Sign Out",
-    //   description: "Securely log out of your account",
-    //   image: LogoutIMG
-    // },
     // {
     //   to: '/premium',
     //   text: "Upgrade to Premium",
