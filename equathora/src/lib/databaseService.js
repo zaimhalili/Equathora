@@ -137,6 +137,9 @@ export async function getFavorites() {
     }
 }
 
+// Alias for consistency
+export const getFavoriteProblems = getFavorites;
+
 export async function toggleFavorite(problemId) {
     try {
         const { data: { session } } = await supabase.auth.getSession();

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
 import { Link } from 'react-router-dom';
@@ -10,26 +10,45 @@ import { FaSearch } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { problems as allProblems } from '../data/problems';
-import { isProblemCompleted, isFavorite } from '../lib/progressStorage';
+import { getAllProblems } from '../lib/problemService';
+import { getCompletedProblems, getFavoriteProblems } from '../lib/databaseService';
 
 
 const Learn = () => {
   const { groupId } = useParams();
-
-
-
-  // Use real problems data with progress tracking
-  const problems = allProblems.map(problem => ({
-    ...problem,
-    completed: isProblemCompleted(problem.id),
-    favourite: isFavorite(problem.id),
-    inProgress: false // Can be enhanced later with partial solutions
-  }));
-
   const location = useLocation();
   const [filter, setFilter] = useState(location.state?.filter || 'all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [problems, setProblems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const [allProblems, completedIds, favoriteIds] = await Promise.all([
+          getAllProblems(),
+          getCompletedProblems(),
+          getFavoriteProblems()
+        ]);
+
+        const problemsWithStatus = allProblems.map(problem => ({
+          ...problem,
+          completed: completedIds.includes(String(problem.id)),
+          favourite: favoriteIds.includes(String(problem.id)),
+          inProgress: false
+        }));
+
+        setProblems(problemsWithStatus);
+      } catch (error) {
+        console.error('Failed to fetch problems:', error);
+        setProblems([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProblems();
+  }, []);
 
   const filteredProblems = useMemo(() => {
     let filtered = problems;
