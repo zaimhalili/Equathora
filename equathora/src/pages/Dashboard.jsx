@@ -20,9 +20,28 @@ import { supabase } from '../lib/supabaseClient';
 
 const Dashboard = () => {
   const [migrationStatus, setMigrationStatus] = useState(null);
+  const [username, setUsername] = useState("Friend");
   const dailyProblemId = getDailyProblemId();
   const dailyGroupId = getGroupIdForProblem(dailyProblemId);
-  let username = "Friend";
+
+  // Fetch username from database
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          const displayName = session.user.user_metadata?.full_name || 
+                             session.user.user_metadata?.name || 
+                             session.user.email?.split('@')[0] || 
+                             "Friend";
+          setUsername(displayName);
+        }
+      } catch (error) {
+        console.error('Failed to fetch username:', error);
+      }
+    };
+    fetchUsername();
+  }, []);
 
   // Auto-migrate localStorage data on first visit
   useEffect(() => {
@@ -37,24 +56,34 @@ const Dashboard = () => {
         }
       }
       
-      // Auto-migrate problems from problems.js to database (runs once)
+      // Auto-migrate problems from problems.js to database (runs once per browser)
       const problemsMigrated = localStorage.getItem('equathora_problems_migrated');
-      if (!problemsMigrated) {
+      if (problemsMigrated === 'true') {
+        return; // Already migrated in this browser
+      }
+      
+      try {
         // Check if problems already exist in database
         const { data, error } = await supabase.from('problems').select('id').limit(1);
-        if (!error && (!data || data.length === 0)) {
-          console.log('🔄 Migrating problems to database...');
-          try {
-            const result = await migrateProblemsToDatabase();
-            console.log(`✅ Migrated ${result.success} problems!`);
-            localStorage.setItem('equathora_problems_migrated', 'true');
-          } catch (err) {
-            console.error('❌ Problem migration failed:', err);
-          }
-        } else {
-          // Problems exist, mark as migrated
-          localStorage.setItem('equathora_problems_migrated', 'true');
+        
+        if (error) {
+          console.error('Could not check problems table:', error);
+          return;
         }
+        
+        if (!data || data.length === 0) {
+          // No problems in database, run migration
+          console.log('🔄 Migrating problems to database...');
+          const result = await migrateProblemsToDatabase();
+          console.log(`✅ Migrated ${result.success} problems across ${result.groups} groups!`);
+        } else {
+          console.log('✓ Problems already exist in database');
+        }
+        
+        // Mark as migrated regardless of outcome
+        localStorage.setItem('equathora_problems_migrated', 'true');
+      } catch (err) {
+        console.error('❌ Problem migration check failed:', err);
       }
     };
     checkAndMigrate();

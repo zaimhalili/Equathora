@@ -1,53 +1,70 @@
 import React, { useEffect, useState } from 'react';
 import LilArrow from '../assets/images/lilArrow.svg';
 import { Link } from 'react-router-dom';
-import { getUserStats } from '../lib/progressStorage';
-import { problems } from '../data/problems';
+import { getUserProgress, getStreakData } from '../lib/databaseService';
+import { getAllProblems } from '../lib/problemService';
+import { supabase } from '../lib/supabaseClient';
 
-const TOTAL_PROBLEMS = problems.length;
 const fallbackStats = {
     problemsSolved: 0,
     accuracy: 0,
     currentStreak: 0,
-    longestStreak: 0
-};
-
-const getInitialStats = () => {
-    if (typeof window === 'undefined') {
-        return fallbackStats;
-    }
-    try {
-        return getUserStats() || fallbackStats;
-    } catch (error) {
-        console.warn('Unable to read user stats, using defaults', error);
-        return fallbackStats;
-    }
+    longestStreak: 0,
+    totalProblems: 30
 };
 
 const YourTrack = () => {
-    const [stats, setStats] = useState(() => getInitialStats());
+    const [stats, setStats] = useState(fallbackStats);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (typeof window === 'undefined') return;
-        const refreshStats = () => {
+        const fetchStats = async () => {
             try {
-                setStats(getUserStats());
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) {
+                    setStats(fallbackStats);
+                    setLoading(false);
+                    return;
+                }
+
+                // Fetch from database
+                const [userProgress, streakData, allProblems] = await Promise.all([
+                    getUserProgress(),
+                    getStreakData(),
+                    getAllProblems()
+                ]);
+
+                const totalProblems = allProblems.length || 30;
+                const solved = userProgress?.solved_problems?.length || 0;
+                const correctAnswers = userProgress?.correct_answers || 0;
+                const totalAttempts = userProgress?.total_attempts || 0;
+                const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
+
+                setStats({
+                    problemsSolved: solved,
+                    accuracy: accuracy,
+                    currentStreak: streakData?.current_streak || 0,
+                    longestStreak: streakData?.longest_streak || 0,
+                    totalProblems: totalProblems,
+                    totalAttempts: totalAttempts
+                });
             } catch (error) {
-                console.warn('Failed to refresh stats', error);
+                console.error('Failed to fetch stats:', error);
+                setStats(fallbackStats);
+            } finally {
+                setLoading(false);
             }
         };
 
-        window.addEventListener('focus', refreshStats);
-        window.addEventListener('storage', refreshStats);
-        refreshStats();
-        return () => {
-            window.removeEventListener('focus', refreshStats);
-            window.removeEventListener('storage', refreshStats);
-        };
+        fetchStats();
+
+        // Refresh on focus
+        window.addEventListener('focus', fetchStats);
+        return () => window.removeEventListener('focus', fetchStats);
     }, []);
 
     const solved = Math.max(0, stats?.problemsSolved || 0);
-    const total = Math.max(TOTAL_PROBLEMS, solved);
+    const total = Math.max(stats?.totalProblems || 30, solved);
     const percentage = Math.min(100, (solved / (total || 1)) * 100);
     const nextMilestone = solved >= total
         ? total
@@ -64,6 +81,17 @@ const YourTrack = () => {
     const level = Math.max(1, Math.floor(solved / 10) + 1);
 
     const progressLabel = `You have solved ${solved} of ${total} problems`;
+
+    if (loading) {
+        return (
+            <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] mt-8 gap-8">
+                <div className="flex flex-col w-full gap-3 p-0">
+                    <div className="animate-pulse bg-gray-200 h-8 w-48 rounded"></div>
+                    <div className="animate-pulse bg-gray-200 h-6 w-full rounded"></div>
+                </div>
+            </article>
+        );
+    }
 
     return (
         <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] mt-8 gap-8">
@@ -115,22 +143,22 @@ const YourTrack = () => {
                 </div>
 
                 {/* Mini Stats Grid */}
-                <div className="grid grid-cols-3 gap-3 mt-2 p-0 md:max-w-1/2">
-                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3">
-                        <div className="text-xs text-[var(--secondary-color)] font-medium pb-1">Current Streak</div>
-                        <div className="text-2xl font-bold text-[var(--accent-color)] flex items-center gap-1 text-center">
+                <div className="grid grid-cols-3 gap-3 mt-2 p-0 md:max-w-1/2 justify-items-center lg:justify-items-start">
+                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full">
+                        <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Current Streak</div>
+                        <div className="text-2xl font-bold text-[var(--accent-color)] flex items-center gap-1 justify-center lg:justify-start">
                             🔥 {currentStreak}
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3">
-                        <div className="text-xs text-[var(--secondary-color)] font-medium pb-1">Best Streak</div>
-                        <div className="text-2xl font-bold text-[var(--secondary-color)] flex items-center gap-1">
+                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full">
+                        <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Best Streak</div>
+                        <div className="text-2xl font-bold text-[var(--secondary-color)] flex items-center gap-1 justify-center lg:justify-start">
                             ⚡ {bestStreak}
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3">
-                        <div className="text-xs text-[var(--secondary-color)] font-medium pb-1">Accuracy</div>
-                        <div className="text-2xl font-bold text-[var(--secondary-color)]">
+                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full">
+                        <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Accuracy</div>
+                        <div className="text-2xl font-bold text-[var(--secondary-color)] justify-center lg:justify-start flex">
                             {avgAccuracy}%
                         </div>
                     </div>
