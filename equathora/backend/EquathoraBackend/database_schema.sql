@@ -179,6 +179,57 @@ ALTER TABLE problem_groups ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE problems ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Anyone can view active problem groups" ON problem_groups;
+
+DROP POLICY IF EXISTS "Anyone can view active problems" ON problems;
+
+DROP POLICY IF EXISTS "Users can view own progress" ON user_progress;
+
+DROP POLICY IF EXISTS "Users can insert own progress" ON user_progress;
+
+DROP POLICY IF EXISTS "Users can update own progress" ON user_progress;
+
+DROP POLICY IF EXISTS "Users can view own topics" ON user_topic_frequency;
+
+DROP POLICY IF EXISTS "Users can insert own topics" ON user_topic_frequency;
+
+DROP POLICY IF EXISTS "Users can update own topics" ON user_topic_frequency;
+
+DROP POLICY IF EXISTS "Users can view own weekly progress" ON user_weekly_progress;
+
+DROP POLICY IF EXISTS "Users can insert own weekly progress" ON user_weekly_progress;
+
+DROP POLICY IF EXISTS "Users can update own weekly progress" ON user_weekly_progress;
+
+DROP POLICY IF EXISTS "Users can view own difficulty" ON user_difficulty_breakdown;
+
+DROP POLICY IF EXISTS "Users can insert own difficulty" ON user_difficulty_breakdown;
+
+DROP POLICY IF EXISTS "Users can update own difficulty" ON user_difficulty_breakdown;
+
+DROP POLICY IF EXISTS "Users can view own completed" ON user_completed_problems;
+
+DROP POLICY IF EXISTS "Users can insert own completed" ON user_completed_problems;
+
+DROP POLICY IF EXISTS "Users can delete own completed" ON user_completed_problems;
+
+DROP POLICY IF EXISTS "Users can view own favorites" ON user_favorites;
+
+DROP POLICY IF EXISTS "Users can insert own favorites" ON user_favorites;
+
+DROP POLICY IF EXISTS "Users can delete own favorites" ON user_favorites;
+
+DROP POLICY IF EXISTS "Users can view own streak" ON user_streak_data;
+
+DROP POLICY IF EXISTS "Users can insert own streak" ON user_streak_data;
+
+DROP POLICY IF EXISTS "Users can update own streak" ON user_streak_data;
+
+DROP POLICY IF EXISTS "Users can view own submissions" ON user_submissions;
+
+DROP POLICY IF EXISTS "Users can insert own submissions" ON user_submissions;
+
 -- RLS Policies for problems (public read access)
 CREATE POLICY "Anyone can view active problem groups" ON problem_groups FOR
 SELECT USING (is_active = TRUE);
@@ -304,6 +355,21 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Drop existing triggers if they exist
+DROP TRIGGER IF EXISTS update_problem_groups_updated_at ON problem_groups;
+
+DROP TRIGGER IF EXISTS update_problems_updated_at ON problems;
+
+DROP TRIGGER IF EXISTS update_user_progress_updated_at ON user_progress;
+
+DROP TRIGGER IF EXISTS update_user_topic_updated_at ON user_topic_frequency;
+
+DROP TRIGGER IF EXISTS update_user_weekly_updated_at ON user_weekly_progress;
+
+DROP TRIGGER IF EXISTS update_user_difficulty_updated_at ON user_difficulty_breakdown;
+
+DROP TRIGGER IF EXISTS update_user_streak_updated_at ON user_streak_data;
 
 -- Triggers for updated_at
 CREATE TRIGGER update_problem_groups_updated_at BEFORE UPDATE ON problem_groups FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
