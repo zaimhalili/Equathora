@@ -1,7 +1,7 @@
 // localStorage-based progress tracking system for MVP
 // This will be replaced with backend API calls in v1.1
 
-import { markProblemComplete as dbMarkProblemComplete, saveUserProgress, getUserProgress } from './databaseService';
+import { markProblemComplete as dbMarkProblemComplete } from './databaseService';
 import { getAllProblems } from './problemService';
 
 // Generate a unique device ID to prevent cross-device sync issues
