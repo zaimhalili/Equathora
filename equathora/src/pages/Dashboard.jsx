@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
@@ -14,11 +14,29 @@ import { Link } from 'react-router-dom';
 import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
 import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
+import { migrateLocalStorageToDatabase, needsMigration } from '../lib/migrateStorage';
 
 const Dashboard = () => {
+  const [migrationStatus, setMigrationStatus] = useState(null);
   const dailyProblemId = getDailyProblemId();
   const dailyGroupId = getGroupIdForProblem(dailyProblemId);
   let username = "Friend";
+
+  // Auto-migrate localStorage data on first visit
+  useEffect(() => {
+    const checkAndMigrate = async () => {
+      const needs = await needsMigration();
+      if (needs) {
+        console.log('Starting localStorage migration...');
+        const result = await migrateLocalStorageToDatabase();
+        setMigrationStatus(result);
+        if (result.success) {
+          console.log('Migration complete:', result.message);
+        }
+      }
+    };
+    checkAndMigrate();
+  }, []);
 
   return (
     <>

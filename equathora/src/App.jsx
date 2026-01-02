@@ -3,11 +3,12 @@ import { lazy, Suspense, useEffect } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import OverflowChecker from "./pages/OverflowChecker";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { supabase } from "./lib/supabaseClient";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -91,6 +92,8 @@ function PageTitleUpdater() {
 }
 
 export default function App() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const controller = new AbortController();
     axios.get("/mathproblem", { signal: controller.signal })
@@ -105,6 +108,19 @@ export default function App() {
       controller.abort();
     };
   }, []);
+
+  // Handle OAuth callback and redirect to dashboard
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        // Check if we're not already on dashboard or a protected route
+        const currentPath = window.location.pathname;
+        if (currentPath === '/' || currentPath === '/login' || currentPath === '/signup') {
+          navigate('/dashboard', { replace: true });
+        }
+      }
+    });
+  }, [navigate]);
 
 
 

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
@@ -12,6 +14,16 @@ import TestimonialsSection from '../components/Landing/TestimonialsSection.jsx';
 import CTASection from '../components/Landing/CTASection.jsx';
 
 const Landing = () => {
+    const navigate = useNavigate();
+
+    // Redirect logged-in users to dashboard
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                navigate('/dashboard', { replace: true });
+            }
+        });
+    }, [navigate]);
     return (
         <>
             <FeedbackBanner />
