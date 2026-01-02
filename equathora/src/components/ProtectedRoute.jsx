@@ -1,10 +1,18 @@
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const ProtectedRoute = ({ children }) => {
-    // Replace this with your actual authentication logic
-    const isAuthenticated = !!localStorage.getItem("user");
+    const { loading, isAuth } = useAuth();
 
-    if (!isAuthenticated) {
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center text-[var(--secondary-color)] font-[Inter]">
+                Loading...
+            </div>
+        );
+    }
+
+    if (!isAuth) {
         return <Navigate to="/login" replace />;
     }
 

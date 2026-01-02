@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import '../components/Auth.css';
@@ -15,6 +15,15 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        navigate('/dashboard');
+      }
+    });
+  }, [navigate]);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -53,7 +62,7 @@ const Login = () => {
       <main id='body-login'>
         <section id='login-container'>
           <div id='login-logo-name'>
-            <img src={Logo} alt="Logo" id='login-logoIMG' className='w-70'/>
+            <img src={Logo} alt="Logo" id='login-logoIMG' className='w-70' />
           </div>
           <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleLogin} /></div>
 

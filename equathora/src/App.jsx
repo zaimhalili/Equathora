@@ -7,6 +7,7 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import OverflowChecker from "./pages/OverflowChecker";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -126,54 +127,51 @@ export default function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/resend" element={<Resend />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
-
-
-            {/* Unprotected Routes */}
-            <Route path="/dashboard" element={<Dashboard />} />
-            {/* <Route path="/getstarted" element={<GetStarted />} /> */}
-            <Route path="/more" element={<More />} />
             <Route path="/about" element={<About />} />
-            <Route path="/learn" element={<Learn />} />
-            {/* <Route path="/discover" element={<Discover />} /> */}
-            {/* <Route path="/recommended" element={<Recommended />} /> */}
-            {/* <Route path="/notifications" element={<Notifications />} /> */}
-            <Route path="/applymentor" element={<ApplyMentor />} />
             <Route path="/helpCenter" element={<HelpCenter />} />
             <Route path="/systemupdates" element={<SystemUpdates />} />
             <Route path="/pageNotFound" element={<PageNotFound />} />
             <Route path="/waitlist" element={<Waitlist />} />
-            {/* <Route path="/settings" element={<Settings />} /> */}
-            {/* <Route path="/premium" element={<Premium />} /> */}
-            <Route path="/feedback" element={<Feedback />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blogs" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+
+
+            {/* Protected Routes - Require Authentication */}
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
+            <Route path="/learn" element={<ProtectedRoute><Learn /></ProtectedRoute>} />
+            <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
+            <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
+            {/* <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} /> */}
+            {/* <Route path="/recommended" element={<ProtectedRoute><Recommended /></ProtectedRoute>} /> */}
+            {/* <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} /> */}
+            {/* <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} /> */}
+            {/* <Route path="/premium" element={<ProtectedRoute><Premium /></ProtectedRoute>} /> */}
 
 
 
-            {/* Unprotected Nested Routes */}
-            <Route path="/leaderboards" element={<LeaderboardsLayout />}>
+            {/* Protected Nested Routes */}
+            <Route path="/leaderboards" element={<ProtectedRoute><LeaderboardsLayout /></ProtectedRoute>}>
               <Route path="global" element={<GlobalLeaderboard />} />
               <Route path="friends" element={<FriendsLeaderboard />} />
               <Route path="top-solvers" element={<TopSolversLeaderboard />} />
             </Route>
 
 
-            <Route path="/achievements" element={<AchievementsLayout />}>
+            <Route path="/achievements" element={<ProtectedRoute><AchievementsLayout /></ProtectedRoute>}>
               <Route index element={<RecentAchievements />} />
               <Route path="recent" element={<RecentAchievements />} />
               <Route path="stats" element={<Statistics />} />
               <Route path="events" element={<SpecialEvents />} />
             </Route>
 
-            {/* Dynamic Routes */}
-            <Route path="/problems/:groupId" element={<ProblemGroup />} />
-            <Route path="/problems/:groupId/:problemId" element={<Problem />} />
-            <Route path="/profile/:profile" element={<Profile />} />
-
-            {/* Legal Pages */}
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
+            {/* Protected Dynamic Routes */}
+            <Route path="/problems/:groupId" element={<ProtectedRoute><ProblemGroup /></ProtectedRoute>} />
+            <Route path="/problems/:groupId/:problemId" element={<ProtectedRoute><Problem /></ProtectedRoute>} />
+            <Route path="/profile/:profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
             {/* 404 Route */}
             <Route path="*" element={<Navigate to="/pageNotFound" replace />} />
