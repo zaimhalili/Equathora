@@ -486,23 +486,3 @@ export const clearAllProgress = () => {
     });
     localStorage.removeItem(ACHIEVEMENTS_KEY);
 };
-
-// Export a default object with all functions
-export default {
-    getUserProgress,
-    updateUserProgress,
-    getCompletedProblems,
-    markProblemCompleted,
-    isProblemCompleted,
-    getProblemScore,
-    getFavorites,
-    toggleFavorite,
-    isFavorite,
-    getStreakData,
-    updateStreak,
-    getSubmissions,
-    addSubmission,
-    recordProblemStats,
-    getUserStats,
-    clearAllProgress
-};
