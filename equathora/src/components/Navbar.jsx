@@ -1,5 +1,5 @@
 //Imports
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Logo from '../assets/logo/TransparentFullLogo.png';
 import { Link } from 'react-router-dom';
 import { FaBell, FaTrophy, FaUser, FaBars } from 'react-icons/fa';
