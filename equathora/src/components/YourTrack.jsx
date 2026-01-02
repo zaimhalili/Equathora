@@ -128,7 +128,7 @@ const YourTrack = () => {
                             ⚡ {bestStreak}
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 flex">
+                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3">
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1">Accuracy</div>
                         <div className="text-2xl font-bold text-[var(--secondary-color)]">
                             {avgAccuracy}%

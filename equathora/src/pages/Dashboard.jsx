@@ -15,6 +15,8 @@ import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
 import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
 import { migrateLocalStorageToDatabase, needsMigration } from '../lib/migrateStorage';
+import { migrateProblemsToDatabase } from '../lib/migrateProblems';
+import { supabase } from '../lib/supabaseClient';
 
 const Dashboard = () => {
   const [migrationStatus, setMigrationStatus] = useState(null);
@@ -32,6 +34,26 @@ const Dashboard = () => {
         setMigrationStatus(result);
         if (result.success) {
           console.log('Migration complete:', result.message);
+        }
+      }
+      
+      // Auto-migrate problems from problems.js to database (runs once)
+      const problemsMigrated = localStorage.getItem('equathora_problems_migrated');
+      if (!problemsMigrated) {
+        // Check if problems already exist in database
+        const { data, error } = await supabase.from('problems').select('id').limit(1);
+        if (!error && (!data || data.length === 0)) {
+          console.log('🔄 Migrating problems to database...');
+          try {
+            const result = await migrateProblemsToDatabase();
+            console.log(`✅ Migrated ${result.success} problems!`);
+            localStorage.setItem('equathora_problems_migrated', 'true');
+          } catch (err) {
+            console.error('❌ Problem migration failed:', err);
+          }
+        } else {
+          // Problems exist, mark as migrated
+          localStorage.setItem('equathora_problems_migrated', 'true');
         }
       }
     };
