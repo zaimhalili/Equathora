@@ -3,6 +3,7 @@
 
 import { markProblemComplete as dbMarkProblemComplete } from './databaseService';
 import { getAllProblems } from './problemService';
+import { supabase } from './supabaseClient';
 
 // Generate a unique device ID to prevent cross-device sync issues
 // Using sessionStorage to ensure it NEVER syncs between devices
@@ -342,7 +343,7 @@ export const addSubmission = (
     return entry;
 };
 
-export const recordProblemStats = (
+export const recordProblemStats = async (
     problem,
     {
         isCorrect = false,
@@ -383,6 +384,26 @@ export const recordProblemStats = (
     progress.accuracyRate = totalCount > 0
         ? Math.round((correctCount / totalCount) * 100)
         : progress.accuracyRate || 0;
+
+    // Update database with accuracy stats
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            await supabase
+                .from('user_progress')
+                .upsert({
+                    user_id: session.user.id,
+                    total_attempts: progress.totalAttempts,
+                    correct_answers: progress.correctAnswers || 0,
+                    wrong_submissions: progress.wrongSubmissions || 0,
+                    accuracy: progress.accuracyRate,
+                    reputation: progress.reputation || 0,
+                    solved_problems: progress.solvedProblems || []
+                }, { onConflict: 'user_id' });
+        }
+    } catch (error) {
+        console.error('Failed to update database stats:', error);
+    }
 
     const minutesSpent = Math.max(1, Math.round(timeSpentSeconds / 60));
     progress.totalTimeMinutes = (progress.totalTimeMinutes || 0) + minutesSpent;
