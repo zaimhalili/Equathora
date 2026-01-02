@@ -4,6 +4,46 @@
 -- Enable UUID extension if not already enabled
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- ============================================================================
+-- PROBLEMS & CONTENT TABLES
+-- ============================================================================
+
+-- Problem groups (categories like "Algebra Fundamentals")
+CREATE TABLE IF NOT EXISTS problem_groups (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    display_order INTEGER DEFAULT 0,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Problems table (the actual math problems)
+CREATE TABLE IF NOT EXISTS problems (
+    id SERIAL PRIMARY KEY,
+    group_id INTEGER REFERENCES problem_groups (id) ON DELETE CASCADE NOT NULL,
+    title VARCHAR(500) NOT NULL,
+    difficulty VARCHAR(20) NOT NULL CHECK (
+        difficulty IN ('Easy', 'Medium', 'Hard')
+    ),
+    description TEXT NOT NULL,
+    answer VARCHAR(500) NOT NULL,
+    accepted_answers TEXT [] DEFAULT '{}', -- Array of acceptable answer variations
+    hints TEXT [] DEFAULT '{}', -- Array of hints
+    solution TEXT,
+    is_premium BOOLEAN DEFAULT FALSE,
+    topic VARCHAR(255),
+    display_order INTEGER DEFAULT 0,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ============================================================================
+-- USER PROGRESS TABLES
+-- ============================================================================
+
 -- User progress table (main progress tracking)
 CREATE TABLE IF NOT EXISTS user_progress (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
@@ -134,6 +174,18 @@ ALTER TABLE user_streak_data ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE user_submissions ENABLE ROW LEVEL SECURITY;
 
+-- Problem tables are public (everyone can read, only admins can write)
+ALTER TABLE problem_groups ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE problems ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for problems (public read access)
+CREATE POLICY "Anyone can view active problem groups" ON problem_groups FOR
+SELECT USING (is_active = TRUE);
+
+CREATE POLICY "Anyone can view active problems" ON problems FOR
+SELECT USING (is_active = TRUE);
+
 -- RLS Policies: Users can only access their own data
 CREATE POLICY "Users can view own progress" ON user_progress FOR
 SELECT USING (auth.uid () = user_id);
@@ -216,6 +268,14 @@ WITH
     CHECK (auth.uid () = user_id);
 
 -- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_problem_groups_active ON problem_groups (is_active);
+
+CREATE INDEX IF NOT EXISTS idx_problems_group_id ON problems (group_id);
+
+CREATE INDEX IF NOT EXISTS idx_problems_active ON problems (is_active);
+
+CREATE INDEX IF NOT EXISTS idx_problems_difficulty ON problems (difficulty);
+
 CREATE INDEX IF NOT EXISTS idx_user_progress_user_id ON user_progress (user_id);
 
 CREATE INDEX IF NOT EXISTS idx_user_topic_user_id ON user_topic_frequency (user_id);
@@ -246,6 +306,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Triggers for updated_at
+CREATE TRIGGER update_problem_groups_updated_at BEFORE UPDATE ON problem_groups FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_problems_updated_at BEFORE UPDATE ON problems FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
 CREATE TRIGGER update_user_progress_updated_at BEFORE UPDATE ON user_progress FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_user_topic_updated_at BEFORE UPDATE ON user_topic_frequency FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
