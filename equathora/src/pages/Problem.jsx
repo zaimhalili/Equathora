@@ -421,7 +421,10 @@ const Problem = () => {
       setShowSolution(true);
       setShowSolutionPopup(false);
       setSolutionViewed(true);
-      markProblemCompleted(problem.id, validation.score, timeSpentSeconds);
+      
+      // Reduce score if solution was viewed before solving
+      const finalScore = solutionViewed ? Math.floor(validation.score * 0.5) : validation.score;
+      markProblemCompleted(problem.id, finalScore, timeSpentSeconds);
     }
 
     const streakData = updateStreak();

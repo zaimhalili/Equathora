@@ -263,7 +263,7 @@ const Profile = () => {
                         stroke="#10b981"
                         strokeWidth="12"
                         fill="none"
-                        strokeDasharray={`${(userData.stats.easy.solved / userData.stats.easy.total) * 167} ${502 - (userData.stats.easy.solved / userData.stats.easy.total) * 167}`}
+                        strokeDasharray={`${getCircleProgress(userData.stats.easy.solved, userData.stats.easy.total).circumference * (userData.stats.easy.solved / (userData.stats.easy.total || 1)) / 3} ${502}`}
                         strokeDashoffset="0"
                         strokeLinecap="round"
                         className="transition-all duration-500"
@@ -277,7 +277,7 @@ const Profile = () => {
                         stroke="#a16207"
                         strokeWidth="12"
                         fill="none"
-                        strokeDasharray={`${(userData.stats.medium.solved / userData.stats.medium.total) * 167} ${502 - (userData.stats.medium.solved / userData.stats.medium.total) * 167}`}
+                        strokeDasharray={`${getCircleProgress(userData.stats.medium.solved, userData.stats.medium.total).circumference * (userData.stats.medium.solved / (userData.stats.medium.total || 1)) / 3} ${502}`}
                         strokeDashoffset="-172"
                         strokeLinecap="round"
                         className="transition-all duration-500"
@@ -291,7 +291,7 @@ const Profile = () => {
                         stroke="var(--dark-accent-color)"
                         strokeWidth="12"
                         fill="none"
-                        strokeDasharray={`${(userData.stats.hard.solved / userData.stats.hard.total) * 167} ${502 - (userData.stats.hard.solved / userData.stats.hard.total) * 167}`}
+                        strokeDasharray={`${getCircleProgress(userData.stats.hard.solved, userData.stats.hard.total).circumference * (userData.stats.hard.solved / (userData.stats.hard.total || 1)) / 3} ${502}`}
                         strokeDashoffset="-344"
                         strokeLinecap="round"
                         className="transition-all duration-500"
