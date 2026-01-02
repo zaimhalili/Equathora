@@ -1,7 +1,6 @@
 -- User Progress Database Schema for Equathora
 -- Run this in Supabase SQL Editor
 
--- Enable UUID extension if not already enabled
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- ============================================================================
@@ -174,12 +173,10 @@ ALTER TABLE user_streak_data ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE user_submissions ENABLE ROW LEVEL SECURITY;
 
--- Problem tables are public (everyone can read, only admins can write)
 ALTER TABLE problem_groups ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE problems ENABLE ROW LEVEL SECURITY;
 
--- Drop existing policies if they exist
 DROP POLICY IF EXISTS "Anyone can view active problem groups" ON problem_groups;
 
 DROP POLICY IF EXISTS "Anyone can view active problems" ON problems;

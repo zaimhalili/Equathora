@@ -115,9 +115,9 @@ const Profile = () => {
             longestStreak: streakData?.longest_streak || 0,
             reputation: userProgress?.reputation || 0,
             globalRank: 1,
-            easy: { solved: easySolved, total: easyProblems.length || 10, accuracy: easySolved > 0 ? Math.round((easySolved / (easyProblems.length || 1)) * 100) : 0 },
-            medium: { solved: mediumSolved, total: mediumProblems.length || 10, accuracy: mediumSolved > 0 ? Math.round((mediumSolved / (mediumProblems.length || 1)) * 100) : 0 },
-            hard: { solved: hardSolved, total: hardProblems.length || 10, accuracy: hardSolved > 0 ? Math.round((hardSolved / (hardProblems.length || 1)) * 100) : 0 }
+            easy: { solved: easySolved, total: easyProblems.length, accuracy: easySolved > 0 ? Math.round((easySolved / (easyProblems.length || 1)) * 100) : 0 },
+            medium: { solved: mediumSolved, total: mediumProblems.length, accuracy: mediumSolved > 0 ? Math.round((mediumSolved / (mediumProblems.length || 1)) * 100) : 0 },
+            hard: { solved: hardSolved, total: hardProblems.length, accuracy: hardSolved > 0 ? Math.round((hardSolved / (hardProblems.length || 1)) * 100) : 0 }
           },
           mathTopics: [...new Set(completedProblems.map(p => p.topic).filter(Boolean))],
           problemsSolved: completedProblems.slice(-10).reverse()

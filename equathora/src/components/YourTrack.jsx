@@ -14,18 +14,20 @@ const fallbackStats = {
 };
 
 const YourTrack = () => {
-    const [stats, setStats] = useState(fallbackStats);
-    const [loading, setLoading] = useState(true);
+    const [stats, setStats] = useState({
+        problemsSolved: 0,
+        accuracy: 0,
+        currentStreak: 0,
+        longestStreak: 0,
+        totalProblems: 5,
+        totalAttempts: 0
+    });
 
     useEffect(() => {
         const fetchStats = async () => {
             try {
                 const { data: { session } } = await supabase.auth.getSession();
-                if (!session) {
-                    setStats(fallbackStats);
-                    setLoading(false);
-                    return;
-                }
+                if (!session) return;
 
                 // Fetch from database
                 const [userProgress, streakData, allProblems] = await Promise.all([
@@ -34,7 +36,7 @@ const YourTrack = () => {
                     getAllProblems()
                 ]);
 
-                const totalProblems = allProblems.length || 30;
+                const totalProblems = allProblems.length || 5;
                 const solved = userProgress?.solved_problems?.length || 0;
                 const correctAnswers = userProgress?.correct_answers || 0;
                 const totalAttempts = userProgress?.total_attempts || 0;
@@ -50,9 +52,6 @@ const YourTrack = () => {
                 });
             } catch (error) {
                 console.error('Failed to fetch stats:', error);
-                setStats(fallbackStats);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -63,17 +62,17 @@ const YourTrack = () => {
         return () => window.removeEventListener('focus', fetchStats);
     }, []);
 
-    const solved = Math.max(0, stats?.problemsSolved || 0);
-    const total = Math.max(stats?.totalProblems || 30, solved);
+    const solved = stats.problemsSolved;
+    const total = stats.totalProblems;
     const percentage = Math.min(100, (solved / (total || 1)) * 100);
     const nextMilestone = solved >= total
         ? total
         : Math.max(10, Math.ceil(solved / 10) * 10);
     const toNextMilestone = Math.max(0, nextMilestone - solved);
-    const currentStreak = stats?.currentStreak || 0;
-    const bestStreak = stats?.longestStreak || 0;
-    const avgAccuracy = Math.max(0, Math.min(100, stats?.accuracy || 0));
-    const totalAttempts = stats?.totalAttempts || solved || 0;
+    const currentStreak = stats.currentStreak;
+    const bestStreak = stats.longestStreak;
+    const avgAccuracy = stats.accuracy;
+    const totalAttempts = stats.totalAttempts;
     const milestoneMessage = solved >= total
         ? 'All core problems cleared'
         : `${toNextMilestone} to next milestone`;
@@ -81,17 +80,6 @@ const YourTrack = () => {
     const level = Math.max(1, Math.floor(solved / 10) + 1);
 
     const progressLabel = `You have solved ${solved} of ${total} problems`;
-
-    if (loading) {
-        return (
-            <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] mt-8 gap-8">
-                <div className="flex flex-col w-full gap-3 p-0">
-                    <div className="animate-pulse bg-gray-200 h-8 w-48 rounded"></div>
-                    <div className="animate-pulse bg-gray-200 h-6 w-full rounded"></div>
-                </div>
-            </article>
-        );
-    }
 
     return (
         <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] mt-8 gap-8">

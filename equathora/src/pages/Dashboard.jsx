@@ -55,19 +55,6 @@ const Dashboard = () => {
         }
       }
     };
-          return;
-        }
-        
-        if (!data || data.length === 0) {
-          // No problems in database, run migration
-          console.log('🔄 Migrating problems to database...');
-          const result = await migrateProblemsToDatabase();
-          console.log(`✅ Migrated ${result.success} problems across ${result.groups} groups!`);
-        } else {
-          console.log('✓ Problems already exist in database');
-        }
-        
-    };
     checkAndMigrate();
   }, []);
 
