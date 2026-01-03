@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
+AUTH_SETUP.md
 ToDo.txt
 SECURITY_SETUP.md
 node_modules
