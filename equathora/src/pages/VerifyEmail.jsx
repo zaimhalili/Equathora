@@ -58,7 +58,7 @@ const VerifyEmail = () => {
             <main id='body-verify'>
                 <section id='verify-container'>
                     <div id='verify-logo-name'>
-        <img src={Logo} alt="Logo" id='verify-logoIMG' className='w-70' />
+                        <img src={Logo} alt="Logo" id='verify-logoIMG' className='w-70' />
                     </div >
 
                     <div id='verify-text-container'>
@@ -148,7 +148,7 @@ const VerifyEmail = () => {
                         </div>
                     </form>
                 </section >
-    <aside id="background-container"><BackgroundPolygons /></aside>
+                <aside id="background-container"><BackgroundPolygons /></aside>
             </main >
         </>
     );
