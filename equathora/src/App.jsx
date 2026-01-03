@@ -13,6 +13,7 @@ import { supabase } from "./lib/supabaseClient";
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const ProblemGroup = lazy(() => import("./pages/ProblemGroup"));
 const Problem = lazy(() => import("./pages/Problem"));
@@ -72,6 +73,7 @@ function PageTitleUpdater() {
       '/profile': 'Profile - Equathora',
       '/login': 'Sign In - Equathora',
       '/signup': 'Join Now - Equathora',
+      '/verify': 'Verify Email - Equathora',
       '/waitlist': 'Join Waitlist - Equathora',
       '/resend': 'Resend Confirmation - Equathora',
       '/forgotpassword': 'Reset Password - Equathora',
@@ -126,6 +128,7 @@ export default function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/verify" element={<VerifyEmail />} />
             <Route path="/resend" element={<Resend />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
             <Route path="/about" element={<About />} />
