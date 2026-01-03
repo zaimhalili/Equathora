@@ -356,16 +356,40 @@ export const recordProblemStats = async (
 ) => {
     if (!problem) return null;
 
-    const progress = getAchievementProgress();
-    progress.totalAttempts = (progress.totalAttempts || 0) + 1;
+    // Get current database values first
+    let dbProgress = null;
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            const { data } = await supabase
+                .from('user_progress')
+                .select('*')
+                .eq('user_id', session.user.id)
+                .single();
+            dbProgress = data;
+        }
+    } catch (error) {
+        console.error('Failed to fetch database stats:', error);
+    }
 
-    const solved = new Set(progress.solvedProblems || []);
+    const progress = getAchievementProgress();
+    
+    // Use database values as source of truth for accuracy counters
+    const currentTotalAttempts = dbProgress?.total_attempts || progress.totalAttempts || 0;
+    const currentCorrectAnswers = dbProgress?.correct_answers || progress.correctAnswers || 0;
+    const currentWrongSubmissions = dbProgress?.wrong_submissions || progress.wrongSubmissions || 0;
+    const currentSolvedProblems = dbProgress?.solved_problems || progress.solvedProblems || [];
+    
+    // Increment counters
+    progress.totalAttempts = currentTotalAttempts + 1;
+
+    const solved = new Set(currentSolvedProblems);
     const alreadySolved = solved.has(problem.id);
 
     if (isCorrect && !alreadySolved) {
         solved.add(problem.id);
         progress.solvedProblems = Array.from(solved);
-        progress.correctAnswers = (progress.correctAnswers || 0) + 1;
+        progress.correctAnswers = currentCorrectAnswers + 1;
 
         const difficultyKey = (problem.difficulty || 'easy').toLowerCase();
         if (!progress.difficultyBreakdown) {
@@ -375,31 +399,45 @@ export const recordProblemStats = async (
             progress.difficultyBreakdown[difficultyKey] += 1;
         }
     } else if (!isCorrect) {
-        progress.wrongSubmissions = (progress.wrongSubmissions || 0) + 1;
+        progress.wrongSubmissions = currentWrongSubmissions + 1;
+    } else {
+        // Already solved, keep existing counts
+        progress.correctAnswers = currentCorrectAnswers;
+        progress.wrongSubmissions = currentWrongSubmissions;
     }
 
-    const correctCount = progress.correctAnswers || 0;
-    const wrongCount = progress.wrongSubmissions || 0;
+    const correctCount = progress.correctAnswers;
+    const wrongCount = progress.wrongSubmissions;
     const totalCount = correctCount + wrongCount;
     progress.accuracyRate = totalCount > 0
         ? Math.round((correctCount / totalCount) * 100)
-        : progress.accuracyRate || 0;
+        : 0;
 
     // Update database with accuracy stats
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-            await supabase
+            const updateData = {
+                user_id: session.user.id,
+                total_attempts: progress.totalAttempts,
+                correct_answers: progress.correctAnswers,
+                wrong_submissions: progress.wrongSubmissions,
+                accuracy: progress.accuracyRate,
+                reputation: progress.reputation || 0,
+                solved_problems: progress.solvedProblems
+            };
+            console.log('📊 Updating database with:', updateData);
+            
+            const { data: result, error } = await supabase
                 .from('user_progress')
-                .upsert({
-                    user_id: session.user.id,
-                    total_attempts: progress.totalAttempts,
-                    correct_answers: progress.correctAnswers || 0,
-                    wrong_submissions: progress.wrongSubmissions || 0,
-                    accuracy: progress.accuracyRate,
-                    reputation: progress.reputation || 0,
-                    solved_problems: progress.solvedProblems || []
-                }, { onConflict: 'user_id' });
+                .upsert(updateData, { onConflict: 'user_id' })
+                .select();
+            
+            if (error) {
+                console.error('❌ Database update error:', error);
+            } else {
+                console.log('✅ Database updated successfully:', result);
+            }
         }
     } catch (error) {
         console.error('Failed to update database stats:', error);

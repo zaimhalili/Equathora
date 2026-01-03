@@ -67,6 +67,14 @@ const Profile = () => {
         const wrongSubmissions = userProgress?.wrong_submissions || 0;
         const totalAttempts = userProgress?.total_attempts || 0;
         const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
+        
+        console.log('📈 Profile accuracy calculation:', {
+            correctAnswers,
+            wrongSubmissions,
+            totalAttempts,
+            accuracy,
+            rawData: userProgress
+        });
 
         // Get completed problem details
         const completedProblems = allProblems.filter(p => completedIds.includes(String(p.id)));
