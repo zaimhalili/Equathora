@@ -13,12 +13,31 @@ const ResetPassword = () => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isValidSession, setIsValidSession] = useState(false);
     const navigate = useNavigate();
+
+    // Check if user accessed via password reset link
+    useEffect(() => {
+        const checkSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                setIsValidSession(true);
+            } else {
+                setError('Invalid or expired reset link. Please request a new one.');
+            }
+        };
+        checkSession();
+    }, []);
 
     async function handleResetPassword(e) {
         e.preventDefault();
         setError('');
         setMessage('');
+
+        if (!isValidSession) {
+            setError('Invalid session. Please request a new reset link.');
+            return;
+        }
 
         if (newPassword !== confirmPassword) {
             setError('Passwords do not match');
@@ -32,21 +51,27 @@ const ResetPassword = () => {
 
         setLoading(true);
 
-        const { error: updateError } = await supabase.auth.updateUser({
-            password: newPassword
-        });
+        try {
+            const { error: updateError } = await supabase.auth.updateUser({
+                password: newPassword
+            });
 
-        if (updateError) {
-            setError(updateError.message || 'Password reset failed');
+            if (updateError) {
+                setError(updateError.message || 'Password reset failed');
+                setLoading(false);
+                return;
+            }
+
+            setMessage('Password reset successfully! Redirecting...');
+            // Sign out and redirect to login for security
+            await supabase.auth.signOut();
+            setTimeout(() => {
+                navigate('/login');
+            }, 1500);
+        } catch (err) {
+            setError('An unexpected error occurred');
             setLoading(false);
-            return;
         }
-
-        setMessage('Password reset successfully! Redirecting to dashboard...');
-        setTimeout(() => {
-            navigate('/dashboard');
-        }, 2000);
-        setLoading(false);
     }
 
     return (

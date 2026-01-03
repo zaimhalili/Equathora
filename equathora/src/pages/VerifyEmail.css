@@ -95,6 +95,7 @@
 #verify-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    background-color: var(--dark-accent-color);
 }
 
 #auth-other-options {

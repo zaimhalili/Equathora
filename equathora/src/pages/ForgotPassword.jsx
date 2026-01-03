@@ -17,18 +17,23 @@ const ForgotPassword = () => {
     setMessage('');
     setLoading(true);
 
-    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
+    try {
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
 
-    if (resetError) {
-      setError(resetError.message || 'Failed to send reset email');
+      if (resetError) {
+        setError(resetError.message || 'Failed to send reset email');
+        setLoading(false);
+        return;
+      }
+
+      setMessage('Password reset link sent! Check your email inbox and spam folder. Click the link to reset your password.');
       setLoading(false);
-      return;
+    } catch (err) {
+      setError('An unexpected error occurred');
+      setLoading(false);
     }
-
-    setMessage('Password reset link sent! Check your email.');
-    setLoading(false);
   }
 
   return (
@@ -59,7 +64,7 @@ const ForgotPassword = () => {
             />
 
             <button type="submit" className="resend-btn" disabled={loading}>
-              {loading ? 'Sending...' : 'Send Reset Code'}
+              {loading ? 'Sending...' : 'Send Reset Link'}
             </button>
           </form>
 

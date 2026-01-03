@@ -17,19 +17,24 @@ const Resend = () => {
     setMessage('');
     setLoading(true);
 
-    const { error: resendError } = await supabase.auth.resend({
-      type: 'signup',
-      email: email,
-    });
+    try {
+      const { error: resendError } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+      });
 
-    if (resendError) {
-      setError(resendError.message || 'Failed to resend confirmation email');
+      if (resendError) {
+        setError(resendError.message || 'Failed to resend confirmation email');
+        setLoading(false);
+        return;
+      }
+
+      setMessage('Confirmation email sent! Check your inbox and spam folder.');
       setLoading(false);
-      return;
+    } catch (err) {
+      setError('An unexpected error occurred');
+      setLoading(false);
     }
-
-    setMessage('Confirmation email sent! Check your inbox.');
-    setLoading(false);
   }
 
   return (

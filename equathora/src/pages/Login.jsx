@@ -30,21 +30,24 @@ const Login = () => {
     setError('');
     setLoading(true);
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
+    try {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
-    if (signInError) {
-      setError(signInError.message || 'Login failed');
+      if (signInError) {
+        setError(signInError.message || 'Login failed');
+        setLoading(false);
+        return;
+      }
+
+      // Navigate immediately for better UX
+      navigate('/dashboard');
+    } catch (err) {
+      setError('An unexpected error occurred');
       setLoading(false);
-      return;
     }
-
-    // Optionally log to console
-    console.log('Login successful!');
-    navigate('/dashboard');
-    setLoading(false);
   }
 
   async function GoogleLogin() {

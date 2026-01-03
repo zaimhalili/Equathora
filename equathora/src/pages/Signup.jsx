@@ -42,25 +42,35 @@ const Signup = () => {
     }
 
     setLoading(true);
-    // Supabase sign up
-    const { error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { username }
+
+    try {
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { username },
+          emailRedirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+
+      if (signUpError) {
+        setError(signUpError.message || 'Registration failed');
+        setLoading(false);
+        return;
       }
-    });
 
-    if (signUpError) {
-      setError(signUpError.message || 'Registration failed');
+      // Check if email confirmation is required
+      if (data?.user && !data.session) {
+        // Email confirmation required
+        navigate(`/verify?email=${encodeURIComponent(email)}`);
+      } else if (data?.session) {
+        // Auto-confirmed, redirect to dashboard
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred');
       setLoading(false);
-      return;
     }
-
-    // Optionally log to console
-    console.log('Registration successful! Check your email for a confirmation link.');
-    navigate('/login');
-    setLoading(false);
   }
 
   async function GoogleSignup() {

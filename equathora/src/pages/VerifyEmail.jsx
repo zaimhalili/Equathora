@@ -30,23 +30,34 @@ const VerifyEmail = () => {
         setMessage('');
         setLoading(true);
 
-        const { error: verifyError } = await supabase.auth.verifyOtp({
-            email: email,
-            token: token,
-            type: 'signup'
-        });
+        try {
+            const { error: verifyError } = await supabase.auth.verifyOtp({
+                email: email,
+                token: token,
+                type: 'email'
+            });
 
-        if (verifyError) {
-            setError(verifyError.message || 'Verification failed');
+            if (verifyError) {
+                setError(verifyError.message || 'Verification failed. Please check your code and try again.');
+                setLoading(false);
+                return;
+            }
+
+            setMessage('Email verified successfully! Redirecting...');
+            setTimeout(() => {
+                navigate('/dashboard');
+            }, 1500);
+        } catch (err) {
+            setError('An unexpected error occurred');
             setLoading(false);
-            return;
         }
+    }
 
-        setMessage('Email verified successfully! Redirecting to dashboard...');
-        setTimeout(() => {
-            navigate('/dashboard');
-        }, 2000);
-        setLoading(false);
+    return (
+        <>
+            <main id='body-verify'>
+                <section id='verify-container'>
+                    <div id='verify-logo-name'>
         <img src={Logo} alt="Logo" id='verify-logoIMG' className='w-70' />
                     </div >
 
@@ -104,8 +115,15 @@ const VerifyEmail = () => {
                             placeholder='Enter 6-digit code'
                             maxLength="6"
                             pattern="[0-9]{6}"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
+                            value={token}
+                            onChange={(e) => setToken(e.target.value)}
+                            required
+                        />
+
+                        <button type="submit" id="verify-btn" disabled={loading}>
+                            {loading ? 'Verifying...' : 'Verify Email'}
+                        </button>
+
                         <div id='auth-other-options'>
                             <p className='auth-other-options-text'>
                                 Didn't receive your code?{' '}
