@@ -33,17 +33,17 @@ const Profile = () => {
           console.error('Error fetching user progress:', err);
           return null;
         });
-        
+
         const streakData = await getStreakData().catch(err => {
           console.error('Error fetching streak data:', err);
           return null;
         });
-        
+
         const completedIds = await getCompletedProblems().catch(err => {
           console.error('Error fetching completed problems:', err);
           return [];
         });
-        
+
         const allProblems = await getAllProblems().catch(err => {
           console.error('Error fetching all problems:', err);
           return [];
@@ -53,32 +53,32 @@ const Profile = () => {
 
         // Get user metadata
         const user = session.user;
-        const displayName = user.user_metadata?.full_name || 
-                           user.user_metadata?.name || 
-                           user.email?.split('@')[0] || 
-                           'Student';
-        const username = user.user_metadata?.preferred_username || 
-                        user.email?.split('@')[0] || 
-                        'student';
-        
+        const displayName = user.user_metadata?.full_name ||
+          user.user_metadata?.name ||
+          user.email?.split('@')[0] ||
+          'Student';
+        const username = user.user_metadata?.preferred_username ||
+          user.email?.split('@')[0] ||
+          'student';
+
         // Calculate stats
         const solved = userProgress?.solved_problems?.length || 0;
         const correctAnswers = userProgress?.correct_answers || 0;
         const wrongSubmissions = userProgress?.wrong_submissions || 0;
         const totalAttempts = userProgress?.total_attempts || 0;
         const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
-        
+
         console.log('📈 Profile accuracy calculation:', {
-            correctAnswers,
-            wrongSubmissions,
-            totalAttempts,
-            accuracy,
-            rawData: userProgress
+          correctAnswers,
+          wrongSubmissions,
+          totalAttempts,
+          accuracy,
+          rawData: userProgress
         });
 
         // Get completed problem details
         const completedProblems = allProblems.filter(p => completedIds.includes(String(p.id)));
-        
+
         // Calculate difficulty breakdowns
         const easyProblems = allProblems.filter(p => p.difficulty === 'Easy');
         const mediumProblems = allProblems.filter(p => p.difficulty === 'Medium');

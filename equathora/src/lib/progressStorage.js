@@ -160,7 +160,7 @@ export const markProblemCompleted = async (problemId, score, timeSpent) => {
     try {
         const allProblems = await getAllProblems();
         const problem = allProblems.find(p => p.id === problemId);
-        
+
         if (problem) {
             await dbMarkProblemComplete(
                 problemId,
@@ -169,7 +169,7 @@ export const markProblemCompleted = async (problemId, score, timeSpent) => {
                 problem.topic || 'General'
             );
         }
-        
+
         const completed = getCompletedProblems();
         const existing = completed.find(p => p.problemId === problemId);
 
@@ -373,13 +373,13 @@ export const recordProblemStats = async (
     }
 
     const progress = getAchievementProgress();
-    
+
     // Use database values as source of truth for accuracy counters
     const currentTotalAttempts = dbProgress?.total_attempts || progress.totalAttempts || 0;
     const currentCorrectAnswers = dbProgress?.correct_answers || progress.correctAnswers || 0;
     const currentWrongSubmissions = dbProgress?.wrong_submissions || progress.wrongSubmissions || 0;
     const currentSolvedProblems = dbProgress?.solved_problems || progress.solvedProblems || [];
-    
+
     // Increment counters
     progress.totalAttempts = currentTotalAttempts + 1;
 
@@ -427,12 +427,12 @@ export const recordProblemStats = async (
                 solved_problems: progress.solvedProblems
             };
             console.log('📊 Updating database with:', updateData);
-            
+
             const { data: result, error } = await supabase
                 .from('user_progress')
                 .upsert(updateData, { onConflict: 'user_id' })
                 .select();
-            
+
             if (error) {
                 console.error('❌ Database update error:', error);
             } else {
