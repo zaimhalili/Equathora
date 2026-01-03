@@ -182,6 +182,40 @@ app.MapPost("/api/auth/resend-verification", async (ResendRequest req, AppDbCont
     return Results.Ok(new { message = "Verification code resent", code = verificationCode });
 });
 
+// Forgot password - send reset token
+app.MapPost("/api/auth/forgot-password", async (ForgotPasswordRequest req, AppDbContext db) =>
+{
+    var user = await db.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+    if (user is null)
+        return Results.Ok(new { message = "If the email exists, a reset link has been sent" });
+
+    var resetToken = new Random().Next(100000, 999999).ToString();
+    user.PasswordResetToken = resetToken;
+    user.PasswordResetExpiry = DateTime.UtcNow.AddHours(1);
+    await db.SaveChangesAsync();
+
+    // TODO: Send email with resetToken
+    return Results.Ok(new { message = "Reset code sent to your email", token = resetToken });
+});
+
+// Reset password with token
+app.MapPost("/api/auth/reset-password", async (ResetPasswordRequest req, AppDbContext db) =>
+{
+    var user = await db.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+    if (user is null)
+        return Results.BadRequest(new { error = "Invalid reset request" });
+
+    if (user.PasswordResetToken != req.Token || user.PasswordResetExpiry < DateTime.UtcNow)
+        return Results.BadRequest(new { error = "Invalid or expired reset token" });
+
+    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(req.NewPassword);
+    user.PasswordResetToken = null;
+    user.PasswordResetExpiry = null;
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { message = "Password reset successfully" });
+});
+
 // Simple protected endpoint to verify JWT works
 app.MapGet("/api/auth/me", [Authorize] (ClaimsPrincipal user) =>
 {

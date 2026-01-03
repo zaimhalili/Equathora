@@ -8,6 +8,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import OverflowChecker from "./pages/OverflowChecker";
 import ProtectedRoute from "./components/ProtectedRoute";
+import LoadingSpinner from "./components/LoadingSpinner";
 import { supabase } from "./lib/supabaseClient";
 
 const Landing = lazy(() => import("./pages/Landing"));
@@ -43,6 +44,7 @@ const Profile = lazy(() => import("./pages/Profile"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Resend = lazy(() => import("./pages/Resend"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Premium = lazy(() => import("./pages/Premium"));
 const Recommended = lazy(() => import("./pages/Recommended"));
 const Feedback = lazy(() => import("./pages/Feedback"));
@@ -77,6 +79,7 @@ function PageTitleUpdater() {
       '/waitlist': 'Join Waitlist - Equathora',
       '/resend': 'Resend Confirmation - Equathora',
       '/forgotpassword': 'Reset Password - Equathora',
+      '/reset-password': 'Reset Password - Equathora',
       '/pageNotFound': '404 - Page Not Found - Equathora',
       '/blog': 'Blog - Equathora',
       '/blogs': 'All Posts - Equathora',
@@ -117,11 +120,7 @@ export default function App() {
       <OverflowChecker />
       <Analytics />
       <SpeedInsights />
-      <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center text-[var(--secondary-color)] font-[Inter]">
-          Loading next experience...
-        </div>
-      }>
+      <Suspense fallback={<LoadingSpinner />}>
         <div id="main-content" tabIndex={-1} className="outline-none">
           <Routes>
             {/* Public Routes */}
@@ -131,6 +130,7 @@ export default function App() {
             <Route path="/verify" element={<VerifyEmail />} />
             <Route path="/resend" element={<Resend />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/about" element={<About />} />
             <Route path="/helpCenter" element={<HelpCenter />} />
             <Route path="/systemupdates" element={<SystemUpdates />} />

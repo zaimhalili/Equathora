@@ -9,6 +9,8 @@ namespace EquathoraBackend.Models
         public bool IsEmailVerified { get; set; } = false;
         public string? VerificationCode { get; set; }
         public DateTime? VerificationCodeExpiry { get; set; }
+        public string? PasswordResetToken { get; set; }
+        public DateTime? PasswordResetExpiry { get; set; }
         public string? GoogleId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

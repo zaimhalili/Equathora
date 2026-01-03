@@ -20,3 +20,13 @@ public record VerifyEmailRequest(
 public record ResendRequest(
     string Email
 );
+
+public record ForgotPasswordRequest(
+    string Email
+);
+
+public record ResetPasswordRequest(
+    string Email,
+    string Token,
+    string NewPassword
+);

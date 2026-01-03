@@ -5,60 +5,48 @@ import '../components/Auth.css';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 
 const VerifyEmail = () => {
-    const [email, setEmail] = useState('');
-    const [code, setCode] = useState('');
-    const [error, setError] = useState('');
-    const [message, setMessage] = useState('');
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
+  const [email, setEmail] = useState('');
+  const [token, setToken] = useState('');
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-    // Pre-fill email if passed as query parameter
-    useEffect(() => {
-        const emailParam = searchParams.get('email');
-        if (emailParam) {
-            setEmail(emailParam);
-        }
-    }, [searchParams]);
+  // Pre-fill email if passed as query parameter
+  useEffect(() => {
+    const emailParam = searchParams.get('email');
+    if (emailParam) {
+      setEmail(emailParam);
+    }
+  }, [searchParams]);
 
-    async function handleVerification(e) {
-        e.preventDefault();
-        setError('');
-        setMessage('');
-        setLoading(true);
+  async function handleVerification(e) {
+    e.preventDefault();
+    setError('');
+    setMessage('');
+    setLoading(true);
 
-        try {
-            const res = await fetch('http://localhost:5203/api/auth/verify-email', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, code })
-            });
+    const { error: verifyError } = await supabase.auth.verifyOtp({
+      email: email,
+      token: token,
+      type: 'signup'
+    });
 
-            const data = await res.json();
-
-            if (!res.ok) {
-                setError(data.error || 'Verification failed');
-                setLoading(false);
-                return;
-            }
-
-            setMessage('Email verified successfully! Redirecting to login...');
-            setTimeout(() => {
-                navigate('/login');
-            }, 2000);
-        } catch (err) {
-            setError('Connection error. Make sure backend is running.');
-            setLoading(false);
-        }
+    if (verifyError) {
+      setError(verifyError.message || 'Verification failed');
+      setLoading(false);
+      return;
     }
 
-    return (
-        <>
-            <main id='body-verify'>
-                <section id='verify-container'>
-                    <div id='verify-logo-name'>
+    setMessage('Email verified successfully! Redirecting to dashboard...');
+    setTimeout(() => {
+      navigate('/dashboard');
+    }, 2000);
+    setLoading(false);
                         <img src={Logo} alt="Logo" id='verify-logoIMG' className='w-70' />
                     </div>
 
@@ -116,15 +104,8 @@ const VerifyEmail = () => {
                             placeholder='Enter 6-digit code'
                             maxLength="6"
                             pattern="[0-9]{6}"
-                            value={code}
-                            onChange={(e) => setCode(e.target.value)}
-                            required
-                        />
-
-                        <button type="submit" id="verify-btn" disabled={loading}>
-                            {loading ? 'Verifying...' : 'Verify Email'}
-                        </button>
-
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
                         <div id='auth-other-options'>
                             <p className='auth-other-options-text'>
                                 Didn't receive your code?{' '}

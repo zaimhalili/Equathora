@@ -3,6 +3,7 @@ import './Resend.css';
 import BackgroundPolygons from '../components/BackgroundPolygons';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
+import { supabase } from '../lib/supabaseClient';
 
 const Resend = () => {
   const [email, setEmail] = useState('');
@@ -16,26 +17,19 @@ const Resend = () => {
     setMessage('');
     setLoading(true);
 
-    try {
-      const res = await fetch('http://localhost:5203/api/auth/resend-verification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
+    const { error: resendError } = await supabase.auth.resend({
+      type: 'signup',
+      email: email,
+    });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || 'Resend failed');
-        return;
-      }
-
-      setMessage(`Verification code resent! Code: ${data.code} (Check your email in production)`);
-    } catch (err) {
-      setError('Connection error. Make sure backend is running.');
-    } finally {
+    if (resendError) {
+      setError(resendError.message || 'Failed to resend confirmation email');
       setLoading(false);
+      return;
     }
+
+    setMessage('Confirmation email sent! Check your inbox.');
+    setLoading(false);
   }
 
   return (
