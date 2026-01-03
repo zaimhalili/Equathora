@@ -8,47 +8,47 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 
 const VerifyEmail = () => {
-  const [email, setEmail] = useState('');
-  const [token, setToken] = useState('');
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+    const [email, setEmail] = useState('');
+    const [token, setToken] = useState('');
+    const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
-  // Pre-fill email if passed as query parameter
-  useEffect(() => {
-    const emailParam = searchParams.get('email');
-    if (emailParam) {
-      setEmail(emailParam);
-    }
-  }, [searchParams]);
+    // Pre-fill email if passed as query parameter
+    useEffect(() => {
+        const emailParam = searchParams.get('email');
+        if (emailParam) {
+            setEmail(emailParam);
+        }
+    }, [searchParams]);
 
-  async function handleVerification(e) {
-    e.preventDefault();
-    setError('');
-    setMessage('');
-    setLoading(true);
+    async function handleVerification(e) {
+        e.preventDefault();
+        setError('');
+        setMessage('');
+        setLoading(true);
 
-    const { error: verifyError } = await supabase.auth.verifyOtp({
-      email: email,
-      token: token,
-      type: 'signup'
-    });
+        const { error: verifyError } = await supabase.auth.verifyOtp({
+            email: email,
+            token: token,
+            type: 'signup'
+        });
 
-    if (verifyError) {
-      setError(verifyError.message || 'Verification failed');
-      setLoading(false);
-      return;
-    }
+        if (verifyError) {
+            setError(verifyError.message || 'Verification failed');
+            setLoading(false);
+            return;
+        }
 
-    setMessage('Email verified successfully! Redirecting to dashboard...');
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 2000);
-    setLoading(false);
-                        <img src={Logo} alt="Logo" id='verify-logoIMG' className='w-70' />
-                    </div>
+        setMessage('Email verified successfully! Redirecting to dashboard...');
+        setTimeout(() => {
+            navigate('/dashboard');
+        }, 2000);
+        setLoading(false);
+        <img src={Logo} alt="Logo" id='verify-logoIMG' className='w-70' />
+                    </div >
 
                     <div id='verify-text-container'>
                         <h3>Verify your email</h3>
@@ -129,9 +129,9 @@ const VerifyEmail = () => {
                             </p>
                         </div>
                     </form>
-                </section>
-                <aside id="background-container"><BackgroundPolygons /></aside>
-            </main>
+                </section >
+    <aside id="background-container"><BackgroundPolygons /></aside>
+            </main >
         </>
     );
 };
