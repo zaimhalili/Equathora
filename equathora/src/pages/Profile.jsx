@@ -19,6 +19,18 @@ const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  const handleProfileSave = (updatedData) => {
+    setUserData(prevData => ({
+      ...prevData,
+      name: updatedData.name || prevData.name,
+      username: updatedData.username || prevData.username,
+      bio: updatedData.bio || prevData.bio,
+      location: updatedData.location || prevData.location,
+      website: updatedData.website || prevData.website,
+      avatar_url: updatedData.avatar_url || prevData.avatar_url
+    }));
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {

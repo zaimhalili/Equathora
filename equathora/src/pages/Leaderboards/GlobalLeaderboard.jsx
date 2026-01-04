@@ -1,16 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
+import { getCachedGlobalLeaderboard, getCurrentUserRank } from '../../lib/leaderboardService';
+import { supabase } from '../../lib/supabaseClient';
 
 const GlobalLeaderboard = () => {
-    const user = { id: 11, name: 'Student', problemsSolved: "Unknown", xp: 1500, }
-    // Mock data - replace with real data from your backend
-    const players = [
-        { id: 1, name: 'Student', problemsSolved: 80, xp: 1500, }
-    ];
+    const [players, setPlayers] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const sortedPlayers = players.sort((a, b) => b.xp - a.xp);
-    const userRank = sortedPlayers.findIndex(p => p.id === user.id) + 1;
+    useEffect(() => {
+        fetchLeaderboardData();
+    }, []);
+
+    const fetchLeaderboardData = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            // Get current user session
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            // Fetch leaderboard data
+            const leaderboardData = await getCachedGlobalLeaderboard();
+            setPlayers(leaderboardData);
+
+            // Get current user's rank if logged in
+            if (session) {
+                const userRankData = await getCurrentUserRank();
+                if (userRankData) {
+                    setCurrentUser({
+                        id: userRankData.userId,
+                        name: userRankData.name,
+                        problemsSolved: userRankData.problemsSolved,
+                        xp: userRankData.xp,
+                        rank: userRankData.rank,
+                        accuracy: userRankData.accuracy,
+                        currentStreak: userRankData.currentStreak
+                    });
+                }
+            }
+        } catch (err) {
+            console.error('Error fetching leaderboard:', err);
+            setError('Failed to load leaderboard data');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const sortedPlayers = players;
+    const userRank = currentUser?.rank || 0;
 
     const getRankBadge = (rank) => {
         if (rank === 1) return '🥇';
@@ -26,6 +66,55 @@ const GlobalLeaderboard = () => {
         return 'rank-default';
     };
 
+    if (loading) {
+        return (
+            <article className="global-leaderboard">
+                <div className="leaderboard-header">
+                    <h2>Global Leaderboard</h2>
+                    <p className="leaderboard-subtitle">Top players worldwide</p>
+                </div>
+                <div className="loading-container" style={{ textAlign: 'center', padding: '3rem', color: 'var(--secondary-color)' }}>
+                    <p>Loading leaderboard...</p>
+                </div>
+            </article>
+        );
+    }
+
+    if (error) {
+        return (
+            <article className="global-leaderboard">
+                <div className="leaderboard-header">
+                    <h2>Global Leaderboard</h2>
+                    <p className="leaderboard-subtitle">Top players worldwide</p>
+                </div>
+                <div className="error-container" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>
+                    <p>{error}</p>
+                    <button 
+                        onClick={fetchLeaderboardData} 
+                        style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}
+                    >
+                        Retry
+                    </button>
+                </div>
+            </article>
+        );
+    }
+
+    if (players.length === 0) {
+        return (
+            <article className="global-leaderboard">
+                <div className="leaderboard-header">
+                    <h2>Global Leaderboard</h2>
+                    <p className="leaderboard-subtitle">Top players worldwide</p>
+                </div>
+                <div className="empty-container" style={{ textAlign: 'center', padding: '3rem', color: 'var(--secondary-color)' }}>
+                    <p>No leaderboard data available yet.</p>
+                    <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Start solving problems to appear on the leaderboard!</p>
+                </div>
+            </article>
+        );
+    }
+
     return (
         <article className="global-leaderboard">
             <div className="leaderboard-header">
@@ -34,13 +123,13 @@ const GlobalLeaderboard = () => {
             </div>
 
             <div className="leaderboard-list">
-                {sortedPlayers.map((player, index) => (
+                {sortedPlayers.map((player) => (
                     <Link
-                        key={player.id}
-                        to={`/profile/${player.id}`}
-                        className={`leaderboard-card ${getRankClass(index + 1)} ${player.id === user.id ? 'current-user' : ''}`}
+                        key={player.userId}
+                        to={`/profile/${player.userId}`}
+                        className={`leaderboard-card ${getRankClass(player.rank)} ${currentUser && player.userId === currentUser.id ? 'current-user' : ''}`}
                     >
-                        <div className="rank-badge">{getRankBadge(index + 1)}</div>
+                        <div className="rank-badge">{getRankBadge(player.rank)}</div>
                         <div className="player-info">
                             <div className="player-name">{player.name}</div>
                             <div className="player-stats">
@@ -48,6 +137,12 @@ const GlobalLeaderboard = () => {
                                     <span className="stat-icon">📊</span>
                                     {player.problemsSolved} solved
                                 </span>
+                                {player.accuracy > 0 && (
+                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                        <span className="stat-icon">🎯</span>
+                                        {player.accuracy}%
+                                    </span>
+                                )}
                             </div>
                         </div>
                         <div className="player-xp">
@@ -58,28 +153,36 @@ const GlobalLeaderboard = () => {
                 ))}
             </div>
 
-            <div className="user-rank-card">
-                <div className="your-rank-label">Your Rank</div>
-                <Link
-                    to={`/profile/${user.id}`}
-                    className={`leaderboard-card current-user-highlight ${getRankClass(userRank)}`}
-                >
-                    <div className="rank-badge">{getRankBadge(userRank)}</div>
-                    <div className="player-info">
-                        <div className="player-name">{user.name}</div>
-                        <div className="player-stats">
-                            <span className="stat-item">
-                                <span className="stat-icon">📊</span>
-                                {user.problemsSolved} solved
-                            </span>
+            {currentUser && (
+                <div className="user-rank-card">
+                    <div className="your-rank-label">Your Rank</div>
+                    <Link
+                        to={`/profile/${currentUser.id}`}
+                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUser.rank)}`}
+                    >
+                        <div className="rank-badge">{getRankBadge(currentUser.rank)}</div>
+                        <div className="player-info">
+                            <div className="player-name">{currentUser.name}</div>
+                            <div className="player-stats">
+                                <span className="stat-item">
+                                    <span className="stat-icon">📊</span>
+                                    {currentUser.problemsSolved} solved
+                                </span>
+                                {currentUser.accuracy > 0 && (
+                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                        <span className="stat-icon">🎯</span>
+                                        {currentUser.accuracy}%
+                                    </span>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                    <div className="player-xp">
-                        <span className="xp-value">{user.xp.toLocaleString()}</span>
-                        <span className="xp-label">XP</span>
-                    </div>
-                </Link>
-            </div>
+                        <div className="player-xp">
+                            <span className="xp-value">{currentUser.xp.toLocaleString()}</span>
+                            <span className="xp-label">XP</span>
+                        </div>
+                    </Link>
+                </div>
+            )}
         </article>
     );
 };

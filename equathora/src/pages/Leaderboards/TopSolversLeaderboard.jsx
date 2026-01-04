@@ -1,16 +1,56 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './GlobalLeaderboard.css';
+import { getTopSolvers, getCurrentUserRank } from '../../lib/leaderboardService';
+import { supabase } from '../../lib/supabaseClient';
 
 const TopSolversLeaderboard = () => {
-    const user = { id: 11, name: 'Student', problemsSolved: "Unknown", xp: 1500, }
+    const [players, setPlayers] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [category, setCategory] = useState('overall');
 
-    const players = [
-        { id: 1, name: 'Student', problemsSolved: 80, xp: 1500, },
-    ];
+    useEffect(() => {
+        fetchTopSolvers();
+    }, [category]);
 
-    const sortedPlayers = players.sort((a, b) => b.problemsSolved - a.problemsSolved);
-    const userRank = sortedPlayers.findIndex(p => p.id === user.id) + 1;
+    const fetchTopSolvers = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            // Get current user session
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            // Fetch top solvers data
+            const topSolversData = await getTopSolvers(category);
+            setPlayers(topSolversData);
+
+            // Get current user's rank if logged in
+            if (session) {
+                const userRankData = await getCurrentUserRank();
+                if (userRankData) {
+                    setCurrentUser({
+                        id: userRankData.userId,
+                        name: userRankData.name,
+                        problemsSolved: userRankData.problemsSolved,
+                        xp: userRankData.xp,
+                        rank: userRankData.rank,
+                        accuracy: userRankData.accuracy,
+                        currentStreak: userRankData.currentStreak
+                    });
+                }
+            }
+        } catch (err) {
+            console.error('Error fetching top solvers:', err);
+            setError('Failed to load top solvers data');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const sortedPlayers = players;
 
     const getRankBadge = (rank) => {
         if (rank === 1) return '🥇';
@@ -26,21 +66,77 @@ const TopSolversLeaderboard = () => {
         return 'rank-default';
     };
 
+    if (loading) {
+        return (
+            <article className="global-leaderboard">
+                <div className="leaderboard-header">
+                    <h2>Top Solvers</h2>
+                    <p className="leaderboard-subtitle">Most problems solved</p>
+                </div>
+                <div className="loading-container" style={{ textAlign: 'center', padding: '3rem', color: 'var(--secondary-color)' }}>
+                    <p>Loading top solvers...</p>
+                </div>
+            </article>
+        );
+    }
+
+    if (error) {
+        return (
+            <article className="global-leaderboard">
+                <div className="leaderboard-header">
+                    <h2>Top Solvers</h2>
+                    <p className="leaderboard-subtitle">Most problems solved</p>
+                </div>
+                <div className="error-container" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>
+                    <p>{error}</p>
+                    <button 
+                        onClick={fetchTopSolvers} 
+                        style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}
+                    >
+                        Retry
+                    </button>
+                </div>
+            </article>
+        );
+    }
+
     return (
         <article className="global-leaderboard">
             <div className="leaderboard-header">
                 <h2>Top Solvers</h2>
                 <p className="leaderboard-subtitle">Most problems solved</p>
+                
+                {/* Category selector */}
+                <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    {['overall', 'accuracy', 'streak'].map(cat => (
+                        <button
+                            key={cat}
+                            onClick={() => setCategory(cat)}
+                            style={{
+                                padding: '0.5rem 1rem',
+                                background: category === cat ? 'var(--accent-color)' : 'var(--main-color)',
+                                color: category === cat ? 'white' : 'var(--secondary-color)',
+                                border: '1px solid var(--french-gray)',
+                                borderRadius: '0.5rem',
+                                cursor: 'pointer',
+                                textTransform: 'capitalize',
+                                fontSize: '0.9rem'
+                            }}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
             </div>
 
             <div className="leaderboard-list">
-                {sortedPlayers.map((player, index) => (
+                {sortedPlayers.map((player) => (
                     <Link
-                        key={player.id}
-                        to={`/profile/${player.id}`}
-                        className={`leaderboard-card ${getRankClass(index + 1)} ${player.id === user.id ? 'current-user' : ''}`}
+                        key={player.userId}
+                        to={`/profile/${player.userId}`}
+                        className={`leaderboard-card ${getRankClass(player.rank)} ${currentUser && player.userId === currentUser.id ? 'current-user' : ''}`}
                     >
-                        <div className="rank-badge">{getRankBadge(index + 1)}</div>
+                        <div className="rank-badge">{getRankBadge(player.rank)}</div>
                         <div className="player-info">
                             <div className="player-name">{player.name}</div>
                             <div className="player-stats">
@@ -48,6 +144,18 @@ const TopSolversLeaderboard = () => {
                                     <span className="stat-icon">📊</span>
                                     {player.problemsSolved} solved
                                 </span>
+                                {category === 'accuracy' && player.accuracy > 0 && (
+                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                        <span className="stat-icon">🎯</span>
+                                        {player.accuracy}%
+                                    </span>
+                                )}
+                                {category === 'streak' && (
+                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                        <span className="stat-icon">🔥</span>
+                                        {player.currentStreak} days
+                                    </span>
+                                )}
                             </div>
                         </div>
                         <div className="player-xp">
@@ -58,28 +166,42 @@ const TopSolversLeaderboard = () => {
                 ))}
             </div>
 
-            <div className="user-rank-card">
-                <div className="your-rank-label">Your Rank</div>
-                <Link
-                    to={`/profile/${user.id}`}
-                    className={`leaderboard-card current-user-highlight ${getRankClass(userRank)}`}
-                >
-                    <div className="rank-badge">{getRankBadge(userRank)}</div>
-                    <div className="player-info">
-                        <div className="player-name">{user.name}</div>
-                        <div className="player-stats">
-                            <span className="stat-item">
-                                <span className="stat-icon">📊</span>
-                                {user.problemsSolved} solved
-                            </span>
+            {currentUser && (
+                <div className="user-rank-card">
+                    <div className="your-rank-label">Your Rank</div>
+                    <Link
+                        to={`/profile/${currentUser.id}`}
+                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUser.rank)}`}
+                    >
+                        <div className="rank-badge">{getRankBadge(currentUser.rank)}</div>
+                        <div className="player-info">
+                            <div className="player-name">{currentUser.name}</div>
+                            <div className="player-stats">
+                                <span className="stat-item">
+                                    <span className="stat-icon">📊</span>
+                                    {currentUser.problemsSolved} solved
+                                </span>
+                                {category === 'accuracy' && currentUser.accuracy > 0 && (
+                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                        <span className="stat-icon">🎯</span>
+                                        {currentUser.accuracy}%
+                                    </span>
+                                )}
+                                {category === 'streak' && (
+                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                        <span className="stat-icon">🔥</span>
+                                        {currentUser.currentStreak} days
+                                    </span>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                    <div className="player-xp">
-                        <span className="xp-value">{user.xp.toLocaleString()}</span>
-                        <span className="xp-label">XP</span>
-                    </div>
-                </Link>
-            </div>
+                        <div className="player-xp">
+                            <span className="xp-value">{currentUser.xp.toLocaleString()}</span>
+                            <span className="xp-label">XP</span>
+                        </div>
+                    </Link>
+                </div>
+            )}
         </article>
     );
 };
