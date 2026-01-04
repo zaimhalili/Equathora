@@ -375,14 +375,6 @@ const Profile = () => {
               {/* Solved Problems Card */}
               <motion.div
                 className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-5'
-      
-      {/* Edit Profile Modal */}
-      <EditProfileModal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        userData={userData}
-        onSave={handleProfileSave}
-      />
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
