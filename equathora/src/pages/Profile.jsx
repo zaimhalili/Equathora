@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ReputationBadge from '../components/ReputationBadge';
+import EditProfileModal from '../components/EditProfileModal';
 import Autumn from '../assets/images/autumn.jpg';
 import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 import { getUserProgress, getStreakData, getCompletedProblems } from '../lib/databaseService';
@@ -16,6 +17,7 @@ const Profile = () => {
   const [showAccuracy, setShowAccuracy] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -91,6 +93,10 @@ const Profile = () => {
         const newUserData = {
           name: displayName,
           username: username,
+          bio: user.user_metadata?.bio || '',
+          location: user.user_metadata?.location || '',
+          website: user.user_metadata?.website || '',
+          avatar_url: user.user_metadata?.avatar_url || '',
           title: 'Problem Solver ∑',
           status: 'Online',
           stats: {
@@ -168,18 +174,42 @@ const Profile = () => {
                 {/* Profile Header Section */}
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
-                    <img src={Autumn} alt="Profile Picture" className='rounded-md h-20 w-20 md:h-24 md:w-24 object-cover' />
+                    <img 
+                      src={userData.avatar_url || Autumn} 
+                      alt="Profile Picture" 
+                      className='rounded-md h-20 w-20 md:h-24 md:w-24 object-cover' 
+                    />
                     <div className='text-[var(--secondary-color)] font-[Inter] flex flex-col justify-between gap-1'>
                       <div>
                         <h5 className='font-bold text-xl md:text-2xl'>{userData.name}</h5>
-                        <h5 className='font-light text-md md:text-lg'>{userData.username}</h5>
+                        <h5 className='font-light text-md md:text-lg'>@{userData.username}</h5>
                       </div>
                       <h6 className='text-md md:text-lg'>Rank <span className='font-bold'>{userData.stats.globalRank}</span></h6>
                     </div>
                   </div>
-                  <button type="button" className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md cursor-not-allowed hover:bg-[var(--dark-accent-color)] transition-all duration-300' onClick={() => {
-                    alert("This feature is not available yet")
-                  }}>Edit Profile</button>
+                  {userData.bio && (
+                    <p className='text-sm text-[var(--secondary-color)] italic'>{userData.bio}</p>
+                  )}
+                  {userData.location && (
+                    <p className='text-xs text-gray-600'>📍 {userData.location}</p>
+                  )}
+                  {userData.website && (
+                    <a 
+                      href={userData.website} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className='text-xs text-[var(--accent-color)] hover:underline'
+                    >
+                      🔗 {userData.website}
+                    </a>
+                  )}
+                  <button 
+                    type="button" 
+                    className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300' 
+                    onClick={() => setIsEditModalOpen(true)}
+                  >
+                    Edit Profile
+                  </button>
                 </div>
 
                 <hr className='border-t-2 border-[var(--french-gray)]' />
@@ -345,6 +375,14 @@ const Profile = () => {
               {/* Solved Problems Card */}
               <motion.div
                 className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-5'
+      
+      {/* Edit Profile Modal */}
+      <EditProfileModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        userData={userData}
+        onSave={handleProfileSave}
+      />
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -369,6 +407,14 @@ const Profile = () => {
         </div>
       </main>
       <Footer />
+      
+      {/* Edit Profile Modal */}
+      <EditProfileModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        userData={userData}
+        onSave={handleProfileSave}
+      />
     </div>
   );
 };
