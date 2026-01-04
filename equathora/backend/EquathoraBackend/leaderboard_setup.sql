@@ -167,7 +167,9 @@ SELECT
     sd.current_streak,
     sd.longest_streak,
     ROW_NUMBER() OVER (
-        ORDER BY up.total_xp DESC, up.reputation DESC, COALESCE(array_length(up.solved_problems, 1), 0) DESC
+        ORDER BY up.total_xp DESC, up.reputation DESC, COALESCE(
+                array_length(up.solved_problems, 1), 0
+            ) DESC
     ) as rank
 FROM
     user_progress up
@@ -184,9 +186,9 @@ CREATE EXTENSION IF NOT EXISTS pg_cron;
 
 -- Schedule refresh every 5 minutes
 SELECT cron.schedule(
-    'refresh-leaderboard',
-    '* /5 * * * *',
-    'REFRESH MATERIALIZED VIEW leaderboard_view'
+'refresh-leaderboard',
+'* /5 * * * *',
+'REFRESH MATERIALIZED VIEW leaderboard_view'
 );
 
 -- To unschedule:
