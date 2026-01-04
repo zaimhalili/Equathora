@@ -18,9 +18,10 @@ export async function getUserProgress() {
             .from('user_progress')
             .select('*')
             .eq('user_id', session.user.id)
-            .single();
+            .maybeSingle();
 
-        if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows
+        // PostgREST returns 406 when no rows with single(); maybeSingle avoids that
+        if (error) throw error;
         
         // Return default if no data
         if (!data) {
@@ -194,9 +195,9 @@ export async function getStreakData() {
             .from('user_streak_data')
             .select('*')
             .eq('user_id', session.user.id)
-            .single();
+            .maybeSingle();
 
-        if (error && error.code !== 'PGRST116') throw error;
+        if (error) throw error;
         
         return data || createDefaultStreak();
     } catch (error) {

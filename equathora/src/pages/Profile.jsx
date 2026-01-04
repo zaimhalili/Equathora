@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
@@ -19,7 +19,7 @@ const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const handleProfileSave = (updatedData) => {
+  const handleProfileSave = useCallback((updatedData) => {
     setUserData(prevData => ({
       ...prevData,
       name: updatedData.name || prevData.name,
@@ -29,7 +29,7 @@ const Profile = () => {
       website: updatedData.website || prevData.website,
       avatar_url: updatedData.avatar_url || prevData.avatar_url
     }));
-  };
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
