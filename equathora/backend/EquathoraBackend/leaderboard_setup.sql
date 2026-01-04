@@ -7,18 +7,14 @@
 -- Users can see others' progress data (but not modify)
 DROP POLICY IF EXISTS "Public users can view leaderboard data" ON user_progress;
 
-CREATE POLICY "Public users can view leaderboard data" ON user_progress
-FOR SELECT
-TO authenticated
-USING (true);
+CREATE POLICY "Public users can view leaderboard data" ON user_progress FOR
+SELECT TO authenticated USING (true);
 
 -- Allow public read access to user_streak_data for leaderboard
 DROP POLICY IF EXISTS "Public users can view streak leaderboard data" ON user_streak_data;
 
-CREATE POLICY "Public users can view streak leaderboard data" ON user_streak_data
-FOR SELECT
-TO authenticated
-USING (true);
+CREATE POLICY "Public users can view streak leaderboard data" ON user_streak_data FOR
+SELECT TO authenticated USING (true);
 
 -- Keep existing policies for INSERT/UPDATE (users can only modify own data)
 -- These should already exist from database_schema.sql
@@ -28,14 +24,30 @@ USING (true);
 -- ============================================================================
 
 -- Check all policies on user_progress
-SELECT schemaname, tablename, policyname, permissive, roles, cmd, qual 
-FROM pg_policies 
-WHERE tablename = 'user_progress';
+SELECT
+    schemaname,
+    tablename,
+    policyname,
+    permissive,
+    roles,
+    cmd,
+    qual
+FROM pg_policies
+WHERE
+    tablename = 'user_progress';
 
 -- Check all policies on user_streak_data
-SELECT schemaname, tablename, policyname, permissive, roles, cmd, qual 
-FROM pg_policies 
-WHERE tablename = 'user_streak_data';
+SELECT
+    schemaname,
+    tablename,
+    policyname,
+    permissive,
+    roles,
+    cmd,
+    qual
+FROM pg_policies
+WHERE
+    tablename = 'user_streak_data';
 
 -- ============================================================================
 -- OPTIONAL: ADD XP COLUMN TO USER_PROGRESS
@@ -50,7 +62,9 @@ BEGIN
         WHERE table_name = 'user_progress' AND column_name = 'total_xp'
     ) THEN
         ALTER TABLE user_progress ADD COLUMN total_xp INTEGER DEFAULT 0;
-    END IF;
+
+END IF;
+
 END $$;
 
 -- ============================================================================
@@ -163,12 +177,12 @@ EXECUTE FUNCTION trigger_calculate_xp();
 /*
 DO $$
 DECLARE
-    user_record RECORD;
+user_record RECORD;
 BEGIN
-    FOR user_record IN (SELECT user_id FROM user_progress)
-    LOOP
-        PERFORM calculate_user_xp(user_record.user_id);
-    END LOOP;
+FOR user_record IN (SELECT user_id FROM user_progress)
+LOOP
+PERFORM calculate_user_xp(user_record.user_id);
+END LOOP;
 END $$;
 */
 
@@ -182,7 +196,7 @@ DROP MATERIALIZED VIEW IF EXISTS leaderboard_view;
 
 -- Create materialized view
 CREATE MATERIALIZED VIEW leaderboard_view AS
-SELECT 
+SELECT
     up.user_id,
     up.solved_problems,
     up.correct_answers,
@@ -191,22 +205,32 @@ SELECT
     up.reputation,
     up.perfect_streak,
     up.total_xp,
-    COALESCE(array_length(up.solved_problems, 1), 0) as problems_solved_count,
-    CASE 
-        WHEN up.total_attempts > 0 
-        THEN ROUND((up.correct_answers::DECIMAL / up.total_attempts) * 100)
-        ELSE 0 
+    COALESCE(
+        array_length(up.solved_problems, 1),
+        0
+    ) as problems_solved_count,
+    CASE
+        WHEN up.total_attempts > 0 THEN ROUND(
+            (
+                up.correct_answers::DECIMAL / up.total_attempts
+            ) * 100
+        )
+        ELSE 0
     END as accuracy_percentage,
     sd.current_streak,
     sd.longest_streak,
-    ROW_NUMBER() OVER (ORDER BY up.total_xp DESC, up.reputation DESC, problems_solved_count DESC) as rank
-FROM user_progress up
-LEFT JOIN user_streak_data sd ON up.user_id = sd.user_id
+    ROW_NUMBER() OVER (
+        ORDER BY up.total_xp DESC, up.reputation DESC, problems_solved_count DESC
+    ) as rank
+FROM
+    user_progress up
+    LEFT JOIN user_streak_data sd ON up.user_id = sd.user_id
 ORDER BY up.total_xp DESC;
 
 -- Create index on materialized view
-CREATE INDEX idx_leaderboard_view_rank ON leaderboard_view(rank);
-CREATE INDEX idx_leaderboard_view_user_id ON leaderboard_view(user_id);
+CREATE INDEX idx_leaderboard_view_rank ON leaderboard_view (rank);
+
+CREATE INDEX idx_leaderboard_view_user_id ON leaderboard_view (user_id);
 
 -- Refresh the materialized view (run this periodically or after updates)
 -- REFRESH MATERIALIZED VIEW leaderboard_view;
@@ -222,8 +246,9 @@ CREATE EXTENSION IF NOT EXISTS pg_cron;
 
 -- Schedule refresh every 5 minutes
 SELECT cron.schedule(
-    'refresh-leaderboard',
-    '*/5 * * * *',
+'refresh-leaderboard',
+'*/
+5 * * * *',
     'REFRESH MATERIALIZED VIEW leaderboard_view'
 );
 
