@@ -10,13 +10,10 @@ DELETE FROM user_difficulty_breakdown;
 
 DELETE FROM user_weekly_progress;
 
--- Delete all topic frequency
 DELETE FROM user_topic_frequency;
 
--- Delete all user progress
 DELETE FROM user_progress;
 
--- Verify all tables are empty
 SELECT 'user_progress' AS table_name, COUNT(*) AS count
 FROM user_progress
 UNION ALL

@@ -1,13 +1,5 @@
--- User Progress Database Schema for Equathora
--- Run this in Supabase SQL Editor
-
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- ============================================================================
--- PROBLEMS & CONTENT TABLES
--- ============================================================================
-
--- Problem groups (categories like "Algebra Fundamentals")
 CREATE TABLE IF NOT EXISTS problem_groups (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -18,7 +10,6 @@ CREATE TABLE IF NOT EXISTS problem_groups (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Problems table (the actual math problems)
 CREATE TABLE IF NOT EXISTS problems (
     id SERIAL PRIMARY KEY,
     group_id INTEGER REFERENCES problem_groups (id) ON DELETE CASCADE NOT NULL,
@@ -28,8 +19,8 @@ CREATE TABLE IF NOT EXISTS problems (
     ),
     description TEXT NOT NULL,
     answer VARCHAR(500) NOT NULL,
-    accepted_answers TEXT [] DEFAULT '{}', -- Array of acceptable answer variations
-    hints TEXT [] DEFAULT '{}', -- Array of hints
+    accepted_answers TEXT [] DEFAULT '{}',
+    hints TEXT [] DEFAULT '{}',
     solution TEXT,
     is_premium BOOLEAN DEFAULT FALSE,
     topic VARCHAR(255),
@@ -39,11 +30,6 @@ CREATE TABLE IF NOT EXISTS problems (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- ============================================================================
--- USER PROGRESS TABLES
--- ============================================================================
-
--- User progress table (main progress tracking)
 CREATE TABLE IF NOT EXISTS user_progress (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
     user_id UUID REFERENCES auth.users (id) ON DELETE CASCADE NOT NULL,
@@ -68,7 +54,6 @@ CREATE TABLE IF NOT EXISTS user_progress (
     UNIQUE (user_id)
 );
 
--- Topic frequency tracking
 CREATE TABLE IF NOT EXISTS user_topic_frequency (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
     user_id UUID REFERENCES auth.users (id) ON DELETE CASCADE NOT NULL,
@@ -79,7 +64,6 @@ CREATE TABLE IF NOT EXISTS user_topic_frequency (
     UNIQUE (user_id, topic)
 );
 
--- Weekly progress tracking
 CREATE TABLE IF NOT EXISTS user_weekly_progress (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
     user_id UUID REFERENCES auth.users (id) ON DELETE CASCADE NOT NULL,
@@ -98,7 +82,6 @@ CREATE TABLE IF NOT EXISTS user_weekly_progress (
     )
 );
 
--- Difficulty breakdown
 CREATE TABLE IF NOT EXISTS user_difficulty_breakdown (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
     user_id UUID REFERENCES auth.users (id) ON DELETE CASCADE NOT NULL,
@@ -111,7 +94,6 @@ CREATE TABLE IF NOT EXISTS user_difficulty_breakdown (
     UNIQUE (user_id, difficulty)
 );
 
--- Completed problems
 CREATE TABLE IF NOT EXISTS user_completed_problems (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
     user_id UUID REFERENCES auth.users (id) ON DELETE CASCADE NOT NULL,
@@ -123,7 +105,6 @@ CREATE TABLE IF NOT EXISTS user_completed_problems (
     UNIQUE (user_id, problem_id)
 );
 
--- Favorite problems
 CREATE TABLE IF NOT EXISTS user_favorites (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
     user_id UUID REFERENCES auth.users (id) ON DELETE CASCADE NOT NULL,
@@ -132,7 +113,6 @@ CREATE TABLE IF NOT EXISTS user_favorites (
     UNIQUE (user_id, problem_id)
 );
 
--- Streak data
 CREATE TABLE IF NOT EXISTS user_streak_data (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
     user_id UUID REFERENCES auth.users (id) ON DELETE CASCADE NOT NULL,
@@ -145,7 +125,6 @@ CREATE TABLE IF NOT EXISTS user_streak_data (
     UNIQUE (user_id)
 );
 
--- Problem submissions
 CREATE TABLE IF NOT EXISTS user_submissions (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4 (),
     user_id UUID REFERENCES auth.users (id) ON DELETE CASCADE NOT NULL,
@@ -156,7 +135,6 @@ CREATE TABLE IF NOT EXISTS user_submissions (
     submitted_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Enable Row Level Security
 ALTER TABLE user_progress ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE user_topic_frequency ENABLE ROW LEVEL SECURITY;
@@ -227,14 +205,12 @@ DROP POLICY IF EXISTS "Users can view own submissions" ON user_submissions;
 
 DROP POLICY IF EXISTS "Users can insert own submissions" ON user_submissions;
 
--- RLS Policies for problems (public read access)
 CREATE POLICY "Anyone can view active problem groups" ON problem_groups FOR
 SELECT USING (is_active = TRUE);
 
 CREATE POLICY "Anyone can view active problems" ON problems FOR
 SELECT USING (is_active = TRUE);
 
--- RLS Policies: Users can only access their own data
 CREATE POLICY "Users can view own progress" ON user_progress FOR
 SELECT USING (auth.uid () = user_id);
 
@@ -315,7 +291,6 @@ CREATE POLICY "Users can insert own submissions" ON user_submissions FOR INSERT
 WITH
     CHECK (auth.uid () = user_id);
 
--- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_problem_groups_active ON problem_groups (is_active);
 
 CREATE INDEX IF NOT EXISTS idx_problems_group_id ON problems (group_id);
@@ -344,7 +319,6 @@ CREATE INDEX IF NOT EXISTS idx_user_submissions_user_id ON user_submissions (use
 
 CREATE INDEX IF NOT EXISTS idx_user_submissions_problem_id ON user_submissions (problem_id);
 
--- Function to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -368,7 +342,6 @@ DROP TRIGGER IF EXISTS update_user_difficulty_updated_at ON user_difficulty_brea
 
 DROP TRIGGER IF EXISTS update_user_streak_updated_at ON user_streak_data;
 
--- Triggers for updated_at
 CREATE TRIGGER update_problem_groups_updated_at BEFORE UPDATE ON problem_groups FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_problems_updated_at BEFORE UPDATE ON problems FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

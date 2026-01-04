@@ -1,7 +1,3 @@
--- One-time migration script to add all problems from problems.js to database
--- Run this ONCE in Supabase SQL Editor after running database_schema.sql
-
--- Insert problem groups
 INSERT INTO
     problem_groups (
         name,
@@ -35,7 +31,6 @@ VALUES (
     )
 ON CONFLICT DO NOTHING;
 
--- Get group IDs (adjust these after running the insert above)
 DO $$
 DECLARE
     algebra_id INTEGER;
@@ -43,7 +38,6 @@ DECLARE
     number_id INTEGER;
     logic_id INTEGER;
 BEGIN
-    -- Fetch group IDs
     SELECT id INTO algebra_id FROM problem_groups WHERE name = 'Algebra Fundamentals';
     SELECT id INTO geometry_id FROM problem_groups WHERE name = 'Geometry Basics';
     SELECT id INTO number_id FROM problem_groups WHERE name = 'Number Theory';

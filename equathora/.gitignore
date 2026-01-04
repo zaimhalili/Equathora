@@ -59,6 +59,9 @@ backend/**/firebase-adminsdk*.json
 problems.js
 backend/**/connection-strings.json
 
+# SQL files (schema scripts, migrations)
+*.sql
+
 # Secrets and API keys
 **/*secrets*.json
 **/*apikeys*.json

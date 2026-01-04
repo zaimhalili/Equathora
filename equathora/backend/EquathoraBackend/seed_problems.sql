@@ -1,7 +1,3 @@
--- Seed problems from problems.js into database
--- Run this AFTER creating the tables
-
--- Insert problem groups
 INSERT INTO
     problem_groups (
         id,
@@ -39,7 +35,6 @@ VALUES (
         TRUE
     );
 
--- Reset sequence for problem_groups
 SELECT setval(
         'problem_groups_id_seq', (
             SELECT MAX(id)
@@ -47,7 +42,6 @@ SELECT setval(
         )
     );
 
--- Insert first 5 problems as examples (you can add more)
 INSERT INTO
     problems (
         id,

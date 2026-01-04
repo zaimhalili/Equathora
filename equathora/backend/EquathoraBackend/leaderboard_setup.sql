@@ -1,29 +1,13 @@
--- ============================================================================
--- LEADERBOARD DATABASE POLICIES
--- Run this in Supabase SQL Editor to enable public leaderboard access
--- ============================================================================
-
--- Allow public read access to user_progress for leaderboard
--- Users can see others' progress data (but not modify)
 DROP POLICY IF EXISTS "Public users can view leaderboard data" ON user_progress;
 
 CREATE POLICY "Public users can view leaderboard data" ON user_progress FOR
 SELECT TO authenticated USING (true);
 
--- Allow public read access to user_streak_data for leaderboard
 DROP POLICY IF EXISTS "Public users can view streak leaderboard data" ON user_streak_data;
 
 CREATE POLICY "Public users can view streak leaderboard data" ON user_streak_data FOR
 SELECT TO authenticated USING (true);
 
--- Keep existing policies for INSERT/UPDATE (users can only modify own data)
--- These should already exist from database_schema.sql
-
--- ============================================================================
--- VERIFY POLICIES
--- ============================================================================
-
--- Check all policies on user_progress
 SELECT
     schemaname,
     tablename,
@@ -49,12 +33,6 @@ FROM pg_policies
 WHERE
     tablename = 'user_streak_data';
 
--- ============================================================================
--- OPTIONAL: ADD XP COLUMN TO USER_PROGRESS
--- This can store pre-calculated XP for better performance
--- ============================================================================
-
--- Add XP column if it doesn't exist
 DO $$ 
 BEGIN
     IF NOT EXISTS (
@@ -66,11 +44,6 @@ BEGIN
 END IF;
 
 END $$;
-
--- ============================================================================
--- FUNCTION TO CALCULATE AND UPDATE XP (Optional)
--- This can be called periodically or after problem completions
--- ============================================================================
 
 CREATE OR REPLACE FUNCTION calculate_user_xp(p_user_id UUID)
 RETURNS INTEGER AS $$
@@ -87,7 +60,6 @@ DECLARE
     v_streak_bonus INTEGER;
     v_perfect_streak_bonus INTEGER;
 BEGIN
-    -- Get user progress data
     SELECT 
         array_length(solved_problems, 1),
         correct_answers,
@@ -103,12 +75,10 @@ BEGIN
     FROM user_progress
     WHERE user_id = p_user_id;
 
-    -- Get current streak
     SELECT current_streak INTO v_current_streak
     FROM user_streak_data
     WHERE user_id = p_user_id;
 
-    -- Handle NULL values
     v_solved_count := COALESCE(v_solved_count, 0);
     v_correct_answers := COALESCE(v_correct_answers, 0);
     v_total_attempts := COALESCE(v_total_attempts, 0);
@@ -116,7 +86,6 @@ BEGIN
     v_perfect_streak := COALESCE(v_perfect_streak, 0);
     v_current_streak := COALESCE(v_current_streak, 0);
 
-    -- Calculate XP components
     v_base_xp := v_solved_count * 50;
     
     IF v_total_attempts > 0 THEN
@@ -128,10 +97,8 @@ BEGIN
     v_streak_bonus := v_current_streak * 10;
     v_perfect_streak_bonus := v_perfect_streak * 20;
 
-    -- Calculate total XP
     v_xp := v_base_xp + v_accuracy_bonus + v_streak_bonus + v_reputation + v_perfect_streak_bonus;
 
-    -- Update the user_progress table with calculated XP
     UPDATE user_progress
     SET total_xp = v_xp,
         updated_at = NOW()
@@ -140,11 +107,6 @@ BEGIN
     RETURN v_xp;
 END;
 $$ LANGUAGE plpgsql;
-
--- ============================================================================
--- TRIGGER TO AUTO-UPDATE XP (Optional)
--- Automatically recalculate XP when user_progress is updated
--- ============================================================================
 
 CREATE OR REPLACE FUNCTION trigger_calculate_xp()
 RETURNS TRIGGER AS $$
@@ -156,11 +118,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Drop existing trigger if exists
 DROP TRIGGER IF EXISTS auto_calculate_xp ON user_progress;
 
--- Create trigger (optional - may impact performance)
--- Comment out if you prefer to calculate XP on-demand
 /*
 CREATE TRIGGER auto_calculate_xp
 BEFORE UPDATE ON user_progress
@@ -168,12 +127,6 @@ FOR EACH ROW
 EXECUTE FUNCTION trigger_calculate_xp();
 */
 
--- ============================================================================
--- BULK XP CALCULATION (Run once to initialize)
--- Calculate XP for all existing users
--- ============================================================================
-
--- Uncomment and run this to initialize XP for all users:
 /*
 DO $$
 DECLARE
@@ -186,12 +139,6 @@ END LOOP;
 END $$;
 */
 
--- ============================================================================
--- LEADERBOARD VIEW (Optional - for better performance)
--- Create a materialized view for leaderboard data
--- ============================================================================
-
--- Drop if exists
 DROP MATERIALIZED VIEW IF EXISTS leaderboard_view;
 
 -- Create materialized view
@@ -227,18 +174,9 @@ FROM
     LEFT JOIN user_streak_data sd ON up.user_id = sd.user_id
 ORDER BY up.total_xp DESC;
 
--- Create index on materialized view
 CREATE INDEX idx_leaderboard_view_rank ON leaderboard_view (rank);
 
 CREATE INDEX idx_leaderboard_view_user_id ON leaderboard_view (user_id);
-
--- Refresh the materialized view (run this periodically or after updates)
--- REFRESH MATERIALIZED VIEW leaderboard_view;
-
--- ============================================================================
--- SCHEDULED REFRESH (Optional - requires pg_cron extension)
--- Auto-refresh leaderboard every 5 minutes
--- ============================================================================
 
 /*
 -- Enable pg_cron extension first (run as postgres superuser)
@@ -254,30 +192,4 @@ SELECT cron.schedule(
 
 -- To unschedule:
 -- SELECT cron.unschedule('refresh-leaderboard');
-*/
-
--- ============================================================================
--- USAGE NOTES
--- ============================================================================
-
-/*
-IMPLEMENTATION STEPS:
-
-1. Run the policy statements at the top to enable leaderboard access
-2. Optionally add total_xp column for performance
-3. Optionally create calculate_user_xp function for pre-calculation
-4. Optionally create materialized view for better performance
-5. In your application, either:
-   - Calculate XP on-the-fly (current approach in leaderboardService.js)
-   - Call calculate_user_xp() function from database
-   - Query from materialized view if created
-
-PERFORMANCE CONSIDERATIONS:
-
-- On-the-fly calculation: Simple, always accurate, but slower for large user bases
-- Stored XP column: Fast queries, but needs periodic updates
-- Materialized view: Fastest queries, but needs scheduled refreshes
-
-For current user base size (< 1000 users), on-the-fly calculation is fine.
-For larger scale (10k+ users), consider materialized view approach.
 */
