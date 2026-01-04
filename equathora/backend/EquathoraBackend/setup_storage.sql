@@ -1,10 +1,4 @@
-INSERT INTO
-    storage.buckets (id, name, public)
-VALUES (
-        'user-avatars',
-        'user-avatars',
-        true
-    );
+-- Bucket already exists, skip to policies
 
 CREATE POLICY "Users can upload their own avatar" ON storage.objects FOR INSERT TO authenticated
 WITH
