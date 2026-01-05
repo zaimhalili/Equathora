@@ -76,7 +76,7 @@ const Profile = () => {
           'student';
 
         // Calculate stats
-        const solved = userProgress?.solved_problems?.length || 0;
+        const solved = completedIds?.length || 0;
         const correctAnswers = userProgress?.correct_answers || 0;
         const wrongSubmissions = userProgress?.wrong_submissions || 0;
         const totalAttempts = userProgress?.total_attempts || 0;
@@ -186,10 +186,10 @@ const Profile = () => {
                 {/* Profile Header Section */}
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
-                    <img 
-                      src={userData.avatar_url || Autumn} 
-                      alt="Profile Picture" 
-                      className='rounded-md h-20 w-20 md:h-24 md:w-24 object-cover' 
+                    <img
+                      src={userData.avatar_url || Autumn}
+                      alt="Profile Picture"
+                      className='rounded-md h-20 w-20 md:h-24 md:w-24 object-cover'
                     />
                     <div className='text-[var(--secondary-color)] font-[Inter] flex flex-col justify-between gap-1'>
                       <div>
@@ -206,18 +206,18 @@ const Profile = () => {
                     <p className='text-xs text-gray-600'>📍 {userData.location}</p>
                   )}
                   {userData.website && (
-                    <a 
-                      href={userData.website} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
+                    <a
+                      href={userData.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className='text-xs text-[var(--accent-color)] hover:underline'
                     >
                       🔗 {userData.website}
                     </a>
                   )}
-                  <button 
-                    type="button" 
-                    className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300' 
+                  <button
+                    type="button"
+                    className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300'
                     onClick={() => setIsEditModalOpen(true)}
                   >
                     Edit Profile
@@ -411,7 +411,7 @@ const Profile = () => {
         </div>
       </main>
       <Footer />
-      
+
       {/* Edit Profile Modal */}
       <EditProfileModal
         isOpen={isEditModalOpen}

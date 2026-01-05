@@ -1,30 +1,72 @@
 
 import React, { useEffect, useState } from 'react';
 import './Statistics.css';
-import { getUserStats } from '../../lib/progressStorage';
+import { getUserProgress, getStreakData, getWeeklyProgress, getDifficultyBreakdown, getTopicFrequency, getCompletedProblems } from '../../lib/databaseService';
+import { getAllProblems } from '../../lib/problemService';
+import { supabase } from '../../lib/supabaseClient';
 
 const Statistics = () => {
-  // Load data from device-specific localStorage
-  const userStats = getUserStats();
-  const progress = {
-    correctAnswers: userStats.accuracyBreakdown?.correct || 0,
-    wrongSubmissions: userStats.accuracyBreakdown?.wrong || 0,
-    totalAttempts: userStats.totalAttempts || 0,
-    totalProblems: 30,
-    solvedProblems: userStats.problemsSolved || 0,
-    streakDays: userStats.currentStreak || 0,
-    totalTimeSpent: userStats.totalTime ? `${Math.floor(userStats.totalTime / 3600)}h ${Math.floor((userStats.totalTime % 3600) / 60)}m` : '0h 0m',
-    averageTime: userStats.problemsSolved > 0 ? `${Math.floor(userStats.totalTime / userStats.problemsSolved / 60)}m ${Math.floor((userStats.totalTime / userStats.problemsSolved) % 60)}s` : '0m 0s',
-    favoriteTopics: userStats.favoriteTopics || ['Algebra', 'Geometry'],
-    weeklyProgress: userStats.weeklyProgress || [0, 0, 0, 0, 0, 0, 0],
-    difficultyBreakdown: userStats.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 }
-  };
+  const [progress, setProgress] = useState({
+    correctAnswers: 0,
+    wrongSubmissions: 0,
+    totalAttempts: 0,
+    totalProblems: 0,
+    solvedProblems: 0,
+    streakDays: 0,
+    totalTimeSpent: '0h 0m',
+    averageTime: '0m 0s',
+    favoriteTopics: [],
+    weeklyProgress: [0, 0, 0, 0, 0, 0, 0],
+    difficultyBreakdown: { easy: 0, medium: 0, hard: 0 }
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+
+        const [userProgress, streakData, weeklyData, allProblems, completedIds, difficultyData, topicData] = await Promise.all([
+          getUserProgress(),
+          getStreakData(),
+          getWeeklyProgress(),
+          getAllProblems(),
+          getCompletedProblems(),
+          getDifficultyBreakdown(),
+          getTopicFrequency()
+        ]);
+
+        const totalProblems = allProblems.length || 0;
+        const solved = completedIds?.length || 0;
+        const totalTimeSec = completedIds.length > 0 ? (userProgress?.total_time_minutes || 0) * 60 : 0;
+        const avgTimeSec = solved > 0 ? totalTimeSec / solved : 0;
+
+        const topTopics = (topicData || []).sort((a, b) => b.count - a.count).slice(0, 5).map(t => t.topic);
+
+        setProgress({
+          correctAnswers: userProgress?.correct_answers || 0,
+          wrongSubmissions: userProgress?.wrong_submissions || 0,
+          totalAttempts: userProgress?.total_attempts || 0,
+          totalProblems,
+          solvedProblems: solved,
+          streakDays: streakData?.current_streak || 0,
+          totalTimeSpent: `${Math.floor(totalTimeSec / 3600)}h ${Math.floor((totalTimeSec % 3600) / 60)}m`,
+          averageTime: `${Math.floor(avgTimeSec / 60)}m ${Math.floor(avgTimeSec % 60)}s`,
+          favoriteTopics: topTopics.length > 0 ? topTopics : ['No data yet'],
+          weeklyProgress: weeklyData,
+          difficultyBreakdown: difficultyData || { easy: 0, medium: 0, hard: 0 }
+        });
+      } catch (error) {
+        console.error('Error fetching statistics:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const correctAnswers = progress.correctAnswers;
   const wrongSubmissions = progress.wrongSubmissions;
   const totalAttempts = progress.totalAttempts;
-  const accuracyDenominator = correctAnswers + wrongSubmissions;
-  const accuracyRate = userStats.accuracy || (accuracyDenominator > 0 ? Math.round((correctAnswers / accuracyDenominator) * 100) : 0);
+  const accuracyRate = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
 
   const stats = {
     totalProblems: progress.totalProblems,
@@ -39,7 +81,7 @@ const Statistics = () => {
     weeklyProgress: progress.weeklyProgress,
     difficultyBreakdown: progress.difficultyBreakdown
   };
-  const completionRate = Math.round((stats.solvedProblems / stats.totalProblems) * 100);
+  const completionRate = stats.totalProblems > 0 ? Math.round((stats.solvedProblems / stats.totalProblems) * 100) : 0;
 
   const [isAnimated, setIsAnimated] = useState(false);
   useEffect(() => {

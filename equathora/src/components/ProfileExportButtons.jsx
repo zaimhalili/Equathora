@@ -2,7 +2,8 @@ import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { FaFileDownload, FaFilePdf, FaFileCsv, FaChevronDown } from 'react-icons/fa';
 import { jsPDF } from 'jspdf';
 import Logo from '../assets/logo/EquathoraSymbolIcon.png';
-import { getUserStats, getCompletedProblems, getSubmissions } from '../lib/progressStorage';
+import { getUserStats, getSubmissions } from '../lib/progressStorage';
+import { getCompletedProblems, getUserProgress } from '../lib/databaseService';
 import { problems as allProblems } from '../data/problems';
 
 const formatDuration = (totalSeconds = 0) => {
@@ -25,9 +26,10 @@ const formatDate = (iso, includeTime = false) => {
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 };
 
-const buildDataSnapshot = () => {
+const buildDataSnapshot = async () => {
     const stats = getUserStats();
-    const completed = getCompletedProblems();
+    const completedIds = await getCompletedProblems();
+    const completed = allProblems.filter(p => completedIds.includes(String(p.id)));
     const allSubmissions = getSubmissions();
 
     const totalTimeSeconds = completed.reduce((sum, item) => sum + (item.timeSpent || 0), 0);
@@ -62,9 +64,21 @@ const buildDataSnapshot = () => {
 };
 
 const ProfileExportButtons = () => {
-    const snapshot = useMemo(buildDataSnapshot, []);
+    const [snapshot, setSnapshot] = useState(null);
     const [showMenu, setShowMenu] = useState(false);
     const menuRef = useRef(null);
+
+    useEffect(() => {
+        const loadData = async () => {
+            const data = await buildDataSnapshot();
+            setSnapshot(data);
+        };
+        loadData();
+    }, []);
+
+    if (!snapshot) {
+        return <div className="flex gap-2">Loading...</div>;
+    }
 
     const {
         stats, completed, completedCount, totalTimeSeconds, latestCompletion, firstCompletion,

@@ -22,7 +22,7 @@ export async function getUserProgress() {
 
         // PostgREST returns 406 when no rows with single(); maybeSingle avoids that
         if (error) throw error;
-        
+
         // Return default if no data
         if (!data) {
             return createDefaultProgress();
@@ -56,7 +56,7 @@ export async function saveUserProgress(progress) {
 
 function createDefaultProgress() {
     return {
-        total_problems: 30,
+        total_problems: 0,
         solved_problems: [],
         correct_answers: 0,
         wrong_submissions: 0,
@@ -161,7 +161,7 @@ export async function toggleFavorite(problemId) {
                 .delete()
                 .eq('user_id', session.user.id)
                 .eq('problem_id', problemId);
-            
+
             if (error) throw error;
             return false; // now unfavorited
         } else {
@@ -172,7 +172,7 @@ export async function toggleFavorite(problemId) {
                     user_id: session.user.id,
                     problem_id: problemId
                 });
-            
+
             if (error) throw error;
             return true; // now favorited
         }
@@ -198,7 +198,7 @@ export async function getStreakData() {
             .maybeSingle();
 
         if (error) throw error;
-        
+
         return data || createDefaultStreak();
     } catch (error) {
         console.error('Error getting streak data:', error);
@@ -291,7 +291,7 @@ export async function getUserSubmissions(problemId = null) {
 export async function getTopicFrequency() {
     try {
         const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return {};
+        if (!session) return [];
 
         const { data, error } = await supabase
             .from('user_topic_frequency')
@@ -299,15 +299,11 @@ export async function getTopicFrequency() {
             .eq('user_id', session.user.id);
 
         if (error) throw error;
-        
-        const frequency = {};
-        data.forEach(item => {
-            frequency[item.topic] = item.count;
-        });
-        return frequency;
+
+        return data || [];
     } catch (error) {
         console.error('Error getting topic frequency:', error);
-        return {};
+        return [];
     }
 }
 
@@ -328,13 +324,13 @@ export async function incrementTopicFrequency(topic) {
             // Increment
             const { error } = await supabase
                 .from('user_topic_frequency')
-                .update({ 
+                .update({
                     count: existing.count + 1,
                     updated_at: new Date().toISOString()
                 })
                 .eq('user_id', session.user.id)
                 .eq('topic', topic);
-            
+
             if (error) throw error;
         } else {
             // Insert new
@@ -345,7 +341,7 @@ export async function incrementTopicFrequency(topic) {
                     topic,
                     count: 1
                 });
-            
+
             if (error) throw error;
         }
     } catch (error) {
@@ -363,7 +359,7 @@ export async function getWeeklyProgress() {
         if (!session) return Array(7).fill(0);
 
         const weekStart = getWeekStartDate();
-        
+
         const { data, error } = await supabase
             .from('user_weekly_progress')
             .select('day_index, count')
@@ -371,7 +367,7 @@ export async function getWeeklyProgress() {
             .eq('week_start_date', weekStart);
 
         if (error) throw error;
-        
+
         const weekly = Array(7).fill(0);
         data.forEach(item => {
             if (item.day_index >= 0 && item.day_index <= 6) {
@@ -405,14 +401,14 @@ export async function incrementWeeklyProgress(dayIndex) {
             // Increment
             const { error } = await supabase
                 .from('user_weekly_progress')
-                .update({ 
+                .update({
                     count: existing.count + 1,
                     updated_at: new Date().toISOString()
                 })
                 .eq('user_id', session.user.id)
                 .eq('day_index', dayIndex)
                 .eq('week_start_date', weekStart);
-            
+
             if (error) throw error;
         } else {
             // Insert new
@@ -424,7 +420,7 @@ export async function incrementWeeklyProgress(dayIndex) {
                     count: 1,
                     week_start_date: weekStart
                 });
-            
+
             if (error) throw error;
         }
     } catch (error) {
@@ -455,7 +451,7 @@ export async function getDifficultyBreakdown() {
             .eq('user_id', session.user.id);
 
         if (error) throw error;
-        
+
         const breakdown = { easy: 0, medium: 0, hard: 0 };
         data.forEach(item => {
             if (item.difficulty in breakdown) {
@@ -486,13 +482,13 @@ export async function incrementDifficultyBreakdown(difficulty) {
             // Increment
             const { error } = await supabase
                 .from('user_difficulty_breakdown')
-                .update({ 
+                .update({
                     count: existing.count + 1,
                     updated_at: new Date().toISOString()
                 })
                 .eq('user_id', session.user.id)
                 .eq('difficulty', difficulty);
-            
+
             if (error) throw error;
         } else {
             // Insert new
@@ -503,7 +499,7 @@ export async function incrementDifficultyBreakdown(difficulty) {
                     difficulty,
                     count: 1
                 });
-            
+
             if (error) throw error;
         }
     } catch (error) {

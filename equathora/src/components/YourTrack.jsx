@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import LilArrow from '../assets/images/lilArrow.svg';
 import { Link } from 'react-router-dom';
-import { getUserProgress, getStreakData } from '../lib/databaseService';
+import { getUserProgress, getStreakData, getCompletedProblems } from '../lib/databaseService';
 import { getAllProblems } from '../lib/problemService';
 import { supabase } from '../lib/supabaseClient';
 
@@ -30,15 +30,15 @@ const YourTrack = () => {
                 if (!session) return;
 
                 // Fetch from database
-                const [userProgress, streakData, allProblems] = await Promise.all([
+                const [userProgress, streakData, allProblems, completedProblemIds] = await Promise.all([
                     getUserProgress(),
                     getStreakData(),
-                    getAllProblems()
+                    getAllProblems(),
+                    getCompletedProblems()
                 ]);
 
-                const totalProblems = allProblems.length || userProgress?.total_problems || 0;
-                const safeTotalProblems = Math.max(totalProblems, userProgress?.solved_problems?.length || 0, 1);
-                const solved = userProgress?.solved_problems?.length || 0;
+                const totalProblems = allProblems.length || 0;
+                const solved = completedProblemIds?.length || 0;
                 const correctAnswers = userProgress?.correct_answers || 0;
                 const totalAttempts = userProgress?.total_attempts || 0;
                 const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
@@ -48,7 +48,7 @@ const YourTrack = () => {
                     accuracy: accuracy,
                     currentStreak: streakData?.current_streak || 0,
                     longestStreak: streakData?.longest_streak || 0,
-                    totalProblems: safeTotalProblems,
+                    totalProblems: totalProblems,
                     totalAttempts: totalAttempts
                 });
             } catch (error) {

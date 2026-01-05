@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/MathLiveExample.css";
-import { FaChevronDown, FaChevronUp, FaTrash, FaTimes } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb } from "react-icons/fa";
 
 const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
@@ -151,6 +151,20 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                     Type each step. Enter adds a step, ↑↓ move focus, and the last step counts as your final answer.
                 </div>
 
+                {/* Format Hints */}
+                <div className="ml-format-hints">
+                    <div className="ml-format-hints-title">
+                        <FaLightbulb />
+                        Math Input Tips
+                    </div>
+                    <ul className="ml-format-hints-list">
+                        <li>Fractions: Use <code>\frac{"{numerator}"}{"{denominator}"}</code> or type "/" for quick fraction</li>
+                        <li>Exponents: Use ^ symbol (e.g., x^2 for x²)</li>
+                        <li>Square root: Type \sqrt{"{x}"} or use √ button</li>
+                        <li>Multiplication: Use * or × (times symbol)</li>
+                    </ul>
+                </div>
+
                 <div className="ml-card" aria-live="polite">
                     <div className="ml-steps-container cursor-text">
                         {fields.map((field, index) => (
@@ -223,6 +237,16 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                     {submissionFeedback && (
                         <div className={`ml-feedback ${submissionFeedback.success ? 'success' : 'error'}`}>
                             {submissionFeedback.message}
+                        </div>
+                    )}
+
+                    {/* Answer Preview */}
+                    {fields.length > 0 && fields[fields.length - 1].latex && (
+                        <div className="ml-answer-preview">
+                            <div className="ml-answer-preview-title">Your Final Answer (Last Step)</div>
+                            <div className="ml-answer-preview-content">
+                                <math-field read-only value={fields[fields.length - 1].latex}></math-field>
+                            </div>
                         </div>
                     )}
 

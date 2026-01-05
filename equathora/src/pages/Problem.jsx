@@ -375,7 +375,7 @@ const Problem = () => {
     const finalAnswer = preparedAnswer || (lastStep?.latex || '');
 
     if (!finalAnswer.trim()) {
-      const feedback = 'Add your final answer in the last step before submitting.';
+      const feedback = '📝 Please enter your final answer in the last step before submitting.';
       setSubmissionFeedback({ message: feedback, isCorrect: false });
       return { success: false, message: feedback };
     }
@@ -421,7 +421,7 @@ const Problem = () => {
       setShowSolution(true);
       setShowSolutionPopup(false);
       setSolutionViewed(true);
-      
+
       // Reduce score if solution was viewed before solving
       const finalScore = solutionViewed ? Math.floor(validation.score * 0.5) : validation.score;
       markProblemCompleted(problem.id, finalScore, timeSpentSeconds);
