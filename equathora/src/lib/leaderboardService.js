@@ -21,21 +21,21 @@ import { supabase } from './supabaseClient';
 export function calculateUserXP(userProgress, streakData) {
     if (!userProgress) return 0;
 
-    const solvedProblems = Array.isArray(userProgress.solved_problems) 
-        ? userProgress.solved_problems.length 
+    const solvedProblems = Array.isArray(userProgress.solved_problems)
+        ? userProgress.solved_problems.length
         : 0;
-    
+
     const correctAnswers = userProgress.correct_answers || 0;
     const totalAttempts = userProgress.total_attempts || 0;
     const reputation = userProgress.reputation || 0;
     const perfectStreak = userProgress.perfect_streak || 0;
-    
+
     const currentStreak = streakData?.current_streak || 0;
 
     // Calculate XP components
     const baseXP = solvedProblems * 50;
-    const accuracyBonus = totalAttempts > 0 
-        ? Math.round((correctAnswers / totalAttempts) * 500) 
+    const accuracyBonus = totalAttempts > 0
+        ? Math.round((correctAnswers / totalAttempts) * 500)
         : 0;
     const streakBonus = currentStreak * 10;
     const reputationXP = reputation;
@@ -60,7 +60,7 @@ export function calculateUserXP(userProgress, streakData) {
  */
 export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt) {
     let baseXP = 0;
-    
+
     // Base XP by difficulty
     switch (difficulty?.toLowerCase()) {
         case 'easy':
@@ -125,6 +125,65 @@ async function getProfileMap(userIds = []) {
     }, {});
 }
 
+// Fallback: build leaderboard directly from user_progress and streak data
+async function computeLeaderboardFromTables(limit = 100) {
+    try {
+        const { data: progressData, error: progressError } = await supabase
+            .from('user_progress')
+            .select('user_id, solved_problems, correct_answers, wrong_submissions, total_attempts, reputation, perfect_streak, total_xp')
+            .limit(limit);
+
+        if (progressError) {
+            console.error('Fallback progress fetch failed:', progressError);
+            return [];
+        }
+
+        const { data: streakData } = await supabase
+            .from('user_streak_data')
+            .select('user_id, current_streak, longest_streak');
+
+        const streakMap = {};
+        (streakData || []).forEach(s => {
+            streakMap[s.user_id] = s.current_streak || 0;
+        });
+
+        const userIds = progressData.map(p => p.user_id);
+        const profileMap = await getProfileMap(userIds);
+
+        const leaderboardData = progressData.map((progress) => {
+            const xpData = calculateUserXP(progress, { current_streak: streakMap[progress.user_id] });
+            const profile = profileMap[progress.user_id] || {};
+            const solvedCount = Array.isArray(progress.solved_problems)
+                ? progress.solved_problems.length
+                : 0;
+
+            return {
+                userId: progress.user_id,
+                name: profile.name || `Student-${String(progress.user_id).slice(0, 6)}`,
+                avatarUrl: profile.avatarUrl || '',
+                xp: progress.total_xp || xpData.totalXP || 0,
+                problemsSolved: solvedCount,
+                accuracy: progress.total_attempts > 0
+                    ? Math.round((progress.correct_answers / progress.total_attempts) * 100)
+                    : 0,
+                reputation: progress.reputation || 0,
+                currentStreak: streakMap[progress.user_id] || 0,
+                rank: 0
+            };
+        });
+
+        leaderboardData.sort((a, b) => b.xp - a.xp);
+
+        return leaderboardData.map((entry, index) => ({
+            ...entry,
+            rank: index + 1
+        }));
+    } catch (error) {
+        console.error('Fallback leaderboard computation failed:', error);
+        return [];
+    }
+}
+
 /**
  * Get global leaderboard using the backend `leaderboard_view` (materialized view)
  * to avoid client-side XP computation and hard-coded data.
@@ -139,10 +198,13 @@ export async function getGlobalLeaderboard(limit = 100) {
 
         if (error) {
             console.error('Error fetching leaderboard_view:', error);
-            return [];
         }
 
         const rows = data || [];
+        // If the view is empty (not refreshed yet), compute directly so multiple accounts still show up
+        if (!rows.length) {
+            return computeLeaderboardFromTables(limit);
+        }
         const userIds = rows.map(r => r.user_id).filter(Boolean);
         const profileMap = await getProfileMap(userIds);
 
@@ -296,6 +358,66 @@ export async function getTopSolvers(category = 'overall', limit = 50) {
 }
 
 /**
+ * Get recent top solvers based on completions in the last N days.
+ */
+export async function getRecentTopSolvers(days = 7, limit = 50) {
+    try {
+        const since = new Date();
+        since.setDate(since.getDate() - days);
+
+        const { data, error } = await supabase
+            .from('user_completed_problems')
+            .select('user_id, completed_at')
+            .gte('completed_at', since.toISOString());
+
+        if (error) {
+            console.error('Error fetching recent completions:', error);
+            return [];
+        }
+
+        const counts = {};
+        (data || []).forEach(row => {
+            const uid = row.user_id;
+            counts[uid] = (counts[uid] || 0) + 1;
+        });
+
+        const userIds = Object.keys(counts);
+        if (!userIds.length) return [];
+
+        // Pull base leaderboard info to attach streak/xp/accuracy
+        const baseLeaderboard = await getGlobalLeaderboard(limit);
+        const baseMap = baseLeaderboard.reduce((acc, item) => {
+            acc[item.userId] = item;
+            return acc;
+        }, {});
+
+        const profileMap = await getProfileMap(userIds);
+
+        const result = userIds.map(uid => {
+            const base = baseMap[uid] || {};
+            return {
+                userId: uid,
+                name: profileMap[uid]?.name || base.name || `Student-${String(uid).slice(0, 6)}`,
+                avatarUrl: profileMap[uid]?.avatarUrl || base.avatarUrl || '',
+                problemsSolved: counts[uid],
+                recentSolved: counts[uid],
+                xp: base.xp || 0,
+                accuracy: base.accuracy || 0,
+                reputation: base.reputation || 0,
+                currentStreak: base.currentStreak || 0,
+            };
+        });
+
+        result.sort((a, b) => b.recentSolved - a.recentSolved || b.xp - a.xp);
+
+        return result.slice(0, limit).map((item, idx) => ({ ...item, rank: idx + 1 }));
+    } catch (error) {
+        console.error('Error getting recent top solvers:', error);
+        return [];
+    }
+}
+
+/**
  * Update leaderboard RLS policies helper
  * This should be run in Supabase SQL editor to allow public reading of leaderboard data
  */
@@ -326,7 +448,7 @@ const CACHE_DURATION = 60000; // 1 minute
  */
 export async function getCachedGlobalLeaderboard(forceRefresh = false) {
     const now = Date.now();
-    
+
     if (!forceRefresh && leaderboardCache && cacheTimestamp && (now - cacheTimestamp < CACHE_DURATION)) {
         return leaderboardCache;
     }

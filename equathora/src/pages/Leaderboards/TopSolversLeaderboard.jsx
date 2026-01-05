@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './GlobalLeaderboard.css';
-import { getTopSolvers, getCurrentUserRank } from '../../lib/leaderboardService';
+import { getTopSolvers, getCurrentUserRank, getRecentTopSolvers } from '../../lib/leaderboardService';
 import { supabase } from '../../lib/supabaseClient';
 
 const TopSolversLeaderboard = () => {
@@ -22,9 +22,11 @@ const TopSolversLeaderboard = () => {
 
             // Get current user session
             const { data: { session } } = await supabase.auth.getSession();
-            
+
             // Fetch top solvers data
-            const topSolversData = await getTopSolvers(category);
+            const topSolversData = category === 'weekly'
+                ? await getRecentTopSolvers(7)
+                : await getTopSolvers(category);
             setPlayers(topSolversData);
 
             // Get current user's rank if logged in
@@ -89,8 +91,8 @@ const TopSolversLeaderboard = () => {
                 </div>
                 <div className="error-container" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>
                     <p>{error}</p>
-                    <button 
-                        onClick={fetchTopSolvers} 
+                    <button
+                        onClick={fetchTopSolvers}
                         style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}
                     >
                         Retry
@@ -105,10 +107,10 @@ const TopSolversLeaderboard = () => {
             <div className="leaderboard-header">
                 <h2>Top Solvers</h2>
                 <p className="leaderboard-subtitle">Most problems solved</p>
-                
+
                 {/* Category selector */}
                 <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                    {['overall', 'accuracy', 'streak'].map(cat => (
+                    {['overall', 'weekly', 'accuracy', 'streak'].map(cat => (
                         <button
                             key={cat}
                             onClick={() => setCategory(cat)}
@@ -142,7 +144,7 @@ const TopSolversLeaderboard = () => {
                             <div className="player-stats">
                                 <span className="stat-item">
                                     <span className="stat-icon">📊</span>
-                                    {player.problemsSolved} solved
+                                    {category === 'weekly' ? player.recentSolved || player.problemsSolved : player.problemsSolved} solved
                                 </span>
                                 {category === 'accuracy' && player.accuracy > 0 && (
                                     <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
@@ -154,6 +156,12 @@ const TopSolversLeaderboard = () => {
                                     <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
                                         <span className="stat-icon">🔥</span>
                                         {player.currentStreak} days
+                                    </span>
+                                )}
+                                {category === 'weekly' && (
+                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                        <span className="stat-icon">📅</span>
+                                        last 7d
                                     </span>
                                 )}
                             </div>

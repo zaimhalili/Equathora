@@ -36,7 +36,8 @@ const YourTrack = () => {
                     getAllProblems()
                 ]);
 
-                const totalProblems = allProblems.length || 5;
+                const totalProblems = allProblems.length || userProgress?.total_problems || 0;
+                const safeTotalProblems = Math.max(totalProblems, userProgress?.solved_problems?.length || 0, 1);
                 const solved = userProgress?.solved_problems?.length || 0;
                 const correctAnswers = userProgress?.correct_answers || 0;
                 const totalAttempts = userProgress?.total_attempts || 0;
@@ -47,7 +48,7 @@ const YourTrack = () => {
                     accuracy: accuracy,
                     currentStreak: streakData?.current_streak || 0,
                     longestStreak: streakData?.longest_streak || 0,
-                    totalProblems: totalProblems,
+                    totalProblems: safeTotalProblems,
                     totalAttempts: totalAttempts
                 });
             } catch (error) {
