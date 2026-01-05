@@ -125,7 +125,7 @@ export default function App() {
         console.error('Error cleaning localStorage:', error);
       }
     };
-    
+
     cleanupOldLocalStorage();
   }, []);
 
