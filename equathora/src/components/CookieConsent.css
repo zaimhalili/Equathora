@@ -23,7 +23,7 @@
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border-top: 3px solid var(--accent-color);
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-    padding: 1.5rem 2rem;
+    padding: 1rem 4vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -40,20 +40,9 @@
 }
 
 .cookie-consent-icon {
-    font-size: 3rem;
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
+    font-size: 2rem;
+    color: var(--accent-color);
+    animation: none;
 }
 
 .cookie-consent-text {
@@ -61,10 +50,10 @@
 }
 
 .cookie-consent-text h3 {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 700;
     color: var(--secondary-color);
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.35rem 0;
     font-family: 'Inter', sans-serif;
 }
 
@@ -95,40 +84,36 @@
 }
 
 .cookie-btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
+    padding: 0.5rem 2rem;
+    border-radius: 0.375rem;
     font-size: 0.875rem;
     font-weight: 600;
     font-family: 'Inter', sans-serif;
     cursor: pointer;
     transition: all 0.2s ease;
-    border: 2px solid transparent;
+    border: none;
     white-space: nowrap;
 }
 
 .cookie-btn-decline {
     background: transparent;
-    border-color: var(--french-gray);
-    color: var(--secondary-color);
+    border: 1px solid #d1d5db;
+    color: #374151;
 }
 
 .cookie-btn-decline:hover {
-    background: var(--french-gray);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
 }
 
 .cookie-btn-accept {
     background: var(--accent-color);
     color: white;
-    border-color: var(--accent-color);
+    border: none;
 }
 
 .cookie-btn-accept:hover {
     background: var(--dark-accent-color);
-    border-color: var(--dark-accent-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(217, 4, 41, 0.3);
 }
 
 /* Mobile responsive */

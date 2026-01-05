@@ -11,7 +11,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import CookieConsent from "./components/CookieConsent";
 import { supabase } from "./lib/supabaseClient";
-import './utils/checkDuplicates'; // Load duplicate checker utilities
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));

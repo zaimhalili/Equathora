@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FaShieldAlt } from 'react-icons/fa';
 import './CookieConsent.css';
 
 const CookieConsent = () => {
@@ -35,7 +36,7 @@ const CookieConsent = () => {
             <div className="cookie-consent-banner">
                 <div className="cookie-consent-content">
                     <div className="cookie-consent-icon">
-                        🍪
+                        <FaShieldAlt />
                     </div>
                     <div className="cookie-consent-text">
                         <h3>We use cookies</h3>

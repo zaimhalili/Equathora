@@ -87,7 +87,10 @@ export async function getCompletedProblems() {
             .eq('user_id', session.user.id);
 
         if (error) throw error;
-        return data.map(item => item.problem_id);
+
+        // Ensure we only return UNIQUE problem IDs to prevent duplicate counts
+        const uniqueProblemIds = [...new Set(data.map(item => item.problem_id))];
+        return uniqueProblemIds;
     } catch (error) {
         console.error('Error getting completed problems:', error);
         return [];
