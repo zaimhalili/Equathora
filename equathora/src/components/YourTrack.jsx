@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { getUserProgress, getStreakData, getCompletedProblems } from '../lib/databaseService';
 import { getAllProblems } from '../lib/problemService';
 import { supabase } from '../lib/supabaseClient';
+import { getSubmissions } from '../lib/progressStorage';
 
 const fallbackStats = {
     problemsSolved: 0,
@@ -38,9 +39,23 @@ const YourTrack = () => {
                 ]);
 
                 const totalProblems = allProblems.length || 0;
-                const solved = completedProblemIds?.length || 0;
-                const correctAnswers = userProgress?.correct_answers || 0;
-                const totalAttempts = userProgress?.total_attempts || 0;
+                const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
+                const solved = (completedProblemIds || []).filter(id => validProblemIds.has(String(id))).length;
+                let correctAnswers = userProgress?.correct_answers || 0;
+                let wrongSubmissions = userProgress?.wrong_submissions || 0;
+                let totalAttempts = userProgress?.total_attempts || 0;
+
+                // If backend counters aren't being maintained yet, fall back to local submissions.
+                if (totalAttempts > 0 && correctAnswers === 0 && wrongSubmissions === 0) {
+                    const local = (getSubmissions() || []).filter(s => validProblemIds.has(String(s.problemId)));
+                    if (local.length > 0) {
+                        const localCorrect = local.filter(s => s.isCorrect).length;
+                        correctAnswers = localCorrect;
+                        wrongSubmissions = local.length - localCorrect;
+                        totalAttempts = local.length;
+                    }
+                }
+
                 const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
 
                 setStats({

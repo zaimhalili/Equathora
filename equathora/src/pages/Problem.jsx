@@ -26,6 +26,7 @@ import {
   recordProblemStats
 } from '../lib/progressStorage';
 import { validateAnswer } from '../lib/answerValidation';
+import { recordSubmission } from '../lib/databaseService';
 
 const formatDurationLabel = (seconds = 0) => {
   const safeSeconds = Math.max(0, Math.round(seconds));
@@ -425,6 +426,13 @@ const Problem = () => {
       // Reduce score if solution was viewed before solving
       const finalScore = solutionViewed ? Math.floor(validation.score * 0.5) : validation.score;
       markProblemCompleted(problem.id, finalScore, timeSpentSeconds);
+    }
+
+    // Persist attempt to backend (best-effort; does not block UI)
+    try {
+      void recordSubmission(problem.id, finalAnswer, validation.isCorrect, timeSpentSeconds);
+    } catch {
+      // noop
     }
 
     const streakData = updateStreak();

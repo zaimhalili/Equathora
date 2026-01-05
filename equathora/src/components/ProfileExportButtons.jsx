@@ -76,16 +76,6 @@ const ProfileExportButtons = () => {
         loadData();
     }, []);
 
-    if (!snapshot) {
-        return <div className="flex gap-2">Loading...</div>;
-    }
-
-    const {
-        stats, completed, completedCount, totalTimeSeconds, latestCompletion, firstCompletion,
-        difficulty, favoriteTopics, avgTimePerProblem, totalSessions, avgProblemsPerSession,
-        totalSubmissions, easyTotal, mediumTotal, hardTotal
-    } = snapshot;
-
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -95,6 +85,16 @@ const ProfileExportButtons = () => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
+    if (!snapshot) {
+        return <div className="flex gap-2">Loading...</div>;
+    }
+
+    const {
+        stats, completed, completedCount, totalTimeSeconds, latestCompletion, firstCompletion,
+        difficulty, favoriteTopics, avgTimePerProblem, totalSessions, avgProblemsPerSession,
+        totalSubmissions, easyTotal, mediumTotal, hardTotal
+    } = snapshot;
 
     const comprehensiveData = [
         {

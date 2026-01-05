@@ -11,6 +11,7 @@ import { getUserProgress, getStreakData, getCompletedProblems } from '../lib/dat
 import { getAllProblems } from '../lib/problemService';
 import { supabase } from '../lib/supabaseClient';
 import ProfileExportButtons from '../components/ProfileExportButtons';
+import { getSubmissions } from '../lib/progressStorage';
 
 const Profile = () => {
   const { profile } = useParams();
@@ -40,8 +41,6 @@ const Profile = () => {
           return;
         }
 
-        console.log('Fetching user data...');
-
         // Fetch all user data with error handling for each
         const userProgress = await getUserProgress().catch(err => {
           console.error('Error fetching user progress:', err);
@@ -63,8 +62,6 @@ const Profile = () => {
           return [];
         });
 
-        console.log('Data fetched:', { userProgress, streakData, completedIds, allProblems });
-
         // Get user metadata
         const user = session.user;
         const displayName = user.user_metadata?.full_name ||
@@ -75,23 +72,28 @@ const Profile = () => {
           user.email?.split('@')[0] ||
           'student';
 
-        // Calculate stats
-        const solved = completedIds?.length || 0;
-        const correctAnswers = userProgress?.correct_answers || 0;
-        const wrongSubmissions = userProgress?.wrong_submissions || 0;
-        const totalAttempts = userProgress?.total_attempts || 0;
-        const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
-
-        console.log('📈 Profile accuracy calculation:', {
-          correctAnswers,
-          wrongSubmissions,
-          totalAttempts,
-          accuracy,
-          rawData: userProgress
-        });
-
         // Get completed problem details
         const completedProblems = allProblems.filter(p => completedIds.includes(String(p.id)));
+
+        // Calculate stats (scope solved to current problems list)
+        const solved = completedProblems.length;
+        let correctAnswers = userProgress?.correct_answers || 0;
+        let wrongSubmissions = userProgress?.wrong_submissions || 0;
+        let totalAttempts = userProgress?.total_attempts || 0;
+
+        // If backend counters aren't being maintained yet, fall back to local submissions.
+        if (totalAttempts > 0 && correctAnswers === 0 && wrongSubmissions === 0) {
+          const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
+          const local = (getSubmissions() || []).filter(s => validProblemIds.has(String(s.problemId)));
+          if (local.length > 0) {
+            const localCorrect = local.filter(s => s.isCorrect).length;
+            correctAnswers = localCorrect;
+            wrongSubmissions = local.length - localCorrect;
+            totalAttempts = local.length;
+          }
+        }
+
+        const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
 
         // Calculate difficulty breakdowns
         const easyProblems = allProblems.filter(p => p.difficulty === 'Easy');
@@ -131,7 +133,6 @@ const Profile = () => {
           problemsSolved: completedProblems.slice(-10).reverse()
         };
 
-        console.log('Setting user data:', newUserData);
         setUserData(newUserData);
 
       } catch (error) {

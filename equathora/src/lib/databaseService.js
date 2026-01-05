@@ -88,12 +88,64 @@ export async function getCompletedProblems() {
 
         if (error) throw error;
 
+        // Clean corrupted data: extract IDs from both simple strings and JSON objects
+        const cleanedIds = data.map(item => {
+            const pid = item.problem_id;
+            // If it's a JSON string, parse it and extract problemId
+            if (typeof pid === 'string' && pid.startsWith('{')) {
+                try {
+                    const parsed = JSON.parse(pid);
+                    return String(parsed.problemId ?? parsed.id ?? '');
+                } catch (e) {
+                    console.error('Failed to parse problem_id JSON:', pid);
+                    return null;
+                }
+            }
+            // Otherwise use as is
+            return String(pid);
+        }).filter(id => id !== null && id !== '');
+
         // Ensure we only return UNIQUE problem IDs to prevent duplicate counts
-        const uniqueProblemIds = [...new Set(data.map(item => item.problem_id))];
+        const uniqueProblemIds = [...new Set(cleanedIds)];
         return uniqueProblemIds;
     } catch (error) {
         console.error('Error getting completed problems:', error);
         return [];
+    }
+}
+
+export async function recordSubmission(problemId, submittedAnswer, isCorrect, timeSpentSeconds) {
+    // Best-effort: persist the submission and increment progress counters.
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+
+        const normalizedProblemId = String(problemId);
+
+        await saveSubmission(
+            normalizedProblemId,
+            submittedAnswer,
+            Boolean(isCorrect),
+            Number.isFinite(timeSpentSeconds) ? timeSpentSeconds : 0
+        );
+
+        const current = await getUserProgress();
+
+        const nextTotalAttempts = (current?.total_attempts || 0) + 1;
+        const nextCorrect = (current?.correct_answers || 0) + (isCorrect ? 1 : 0);
+        const nextWrong = (current?.wrong_submissions || 0) + (isCorrect ? 0 : 1);
+        const nextAccuracyRate = nextTotalAttempts > 0
+            ? Math.round((nextCorrect / nextTotalAttempts) * 100)
+            : 0;
+
+        await saveUserProgress({
+            total_attempts: nextTotalAttempts,
+            correct_answers: nextCorrect,
+            wrong_submissions: nextWrong,
+            accuracy_rate: nextAccuracyRate
+        });
+    } catch (error) {
+        console.error('Error recording submission:', error);
     }
 }
 
