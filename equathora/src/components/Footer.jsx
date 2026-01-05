@@ -68,7 +68,7 @@ const Footer = () => {
             <h3 className="footer-column-title">Company</h3>
             <ul className="links">
               <li><Link to="/about" className='footer-links'>About Us</Link></li>
-              {/* <li><Link to="/" className='footer-links'>Cookie Policy</Link></li> */}
+              <li><Link to="/cookie-policy" className='footer-links'>Cookie Policy</Link></li>
               <li><Link to="/helpCenter" className='footer-links'>FAQs</Link></li>
               <li><Link to="/report" className='footer-links'>Report</Link></li>
               <li><Link to="/privacy-policy" className='footer-links'>Privacy Policy</Link></li>

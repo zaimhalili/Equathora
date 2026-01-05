@@ -716,13 +716,30 @@ math-field:focus-within {
     color: var(--secondary-color);
 }
 
+.ml-format-hints-toggle {
+    background: none;
+    border: none;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 0.5rem;
+    color: #1e40af;
+    transition: color 0.2s;
+}
+
+.ml-format-hints-toggle:hover {
+    color: #1e3a8a;
+}
+
 .ml-format-hints-title {
     font-weight: 600;
-    margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #1e40af;
+    color: inherit;
 }
 
 .ml-format-hints-list {

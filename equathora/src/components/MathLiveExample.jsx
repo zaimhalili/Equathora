@@ -30,6 +30,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
     const [canShowNext, setCanShowNext] = useState(isSolved);
+    const [hintsOpen, setHintsOpen] = useState(false);
     const navigate = useNavigate();
 
     // refs to each math-field
@@ -151,18 +152,27 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                     Type each step. Enter adds a step, ↑↓ move focus, and the last step counts as your final answer.
                 </div>
 
-                {/* Format Hints */}
+                {/* Format Hints - Collapsible */}
                 <div className="ml-format-hints">
-                    <div className="ml-format-hints-title">
-                        <FaLightbulb />
-                        Math Input Tips
-                    </div>
-                    <ul className="ml-format-hints-list">
-                        <li>Fractions: Use <code>\frac{"{numerator}"}{"{denominator}"}</code> or type "/" for quick fraction</li>
-                        <li>Exponents: Use ^ symbol (e.g., x^2 for x²)</li>
-                        <li>Square root: Type \sqrt{"{x}"} or use √ button</li>
-                        <li>Multiplication: Use * or × (times symbol)</li>
-                    </ul>
+                    <button
+                        type="button"
+                        onClick={() => setHintsOpen(!hintsOpen)}
+                        className="ml-format-hints-toggle"
+                    >
+                        <div className="ml-format-hints-title">
+                            <FaLightbulb />
+                            Math Input Tips
+                        </div>
+                        {hintsOpen ? <FaChevronUp /> : <FaChevronDown />}
+                    </button>
+                    {hintsOpen && (
+                        <ul className="ml-format-hints-list">
+                            <li>Fractions: Use <code>\frac{"{numerator}"}{"{denominator}"}</code> or type "/" for quick fraction</li>
+                            <li>Exponents: Use ^ symbol (e.g., x^2 for x²)</li>
+                            <li>Square root: Type \sqrt{"{x}"} or use √ button</li>
+                            <li>Multiplication: Use * or × (times symbol)</li>
+                        </ul>
+                    )}
                 </div>
 
                 <div className="ml-card" aria-live="polite">

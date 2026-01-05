@@ -9,7 +9,9 @@ import TermsOfService from "./pages/TermsOfService";
 import OverflowChecker from "./pages/OverflowChecker";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
+import CookieConsent from "./components/CookieConsent";
 import { supabase } from "./lib/supabaseClient";
+import './utils/checkDuplicates'; // Load duplicate checker utilities
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -29,6 +31,7 @@ const About = lazy(() => import("./pages/About"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogList = lazy(() => import("./pages/BlogList"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -148,8 +151,6 @@ export default function App() {
     <>
       <PageTitleUpdater />
       <OverflowChecker />
-      <Analytics />
-      <SpeedInsights />
       <Suspense fallback={<LoadingSpinner />}>
         <div id="main-content" tabIndex={-1} className="outline-none">
           <Routes>
@@ -171,6 +172,7 @@ export default function App() {
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
 
 
             {/* Protected Routes - Require Authentication */}
@@ -212,6 +214,13 @@ export default function App() {
           </Routes>
         </div>
       </Suspense>
+
+      {/* Cookie Consent Banner */}
+      <CookieConsent />
+
+      {/* Analytics */}
+      <Analytics />
+      <SpeedInsights />
     </>
   );
 }
