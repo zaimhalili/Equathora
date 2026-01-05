@@ -214,8 +214,8 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                 <div className="space-y-4">
                 {/* Full Name */}
                 <div>
-                    <label className="block text-sm font-semibold text-[var(--secondary-color)] mb-2">
-                    <FaUser className="inline mr-2" />
+                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pb-2">
+                    <FaUser className="inline pr-2" />
                     Full Name *
                     </label>
                     <input
@@ -231,8 +231,8 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
 
                 {/* Username */}
                 <div>
-                    <label className="block text-sm font-semibold text-[var(--secondary-color)] mb-2">
-                    <FaUser className="inline mr-2" />
+                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pb-2">
+                    <FaUser className="inline pr-2" />
                     Username *
                     </label>
                     <input
@@ -245,12 +245,12 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
                     placeholder="username_123"
                     />
-                    <p className="text-xs text-gray-500 mt-1">3-20 characters, letters, numbers, and underscores only</p>
+                    <p className="text-xs text-gray-500 pt-1">3-20 characters, letters, numbers, and underscores only</p>
                 </div>
 
                 {/* Bio */}
                 <div>
-                    <label className="block text-sm font-semibold text-[var(--secondary-color)] mb-2">
+                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pb-2">
                     Bio
                     </label>
                     <textarea
@@ -262,13 +262,13 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all resize-none"
                     placeholder="Tell us about yourself... (max 200 characters)"
                     />
-                    <p className="text-xs text-gray-500 mt-1 text-right">{formData.bio.length}/200</p>
+                    <p className="text-xs text-gray-500 pt-1 text-right">{formData.bio.length}/200</p>
                 </div>
 
                 {/* Location */}
                 <div>
-                    <label className="block text-sm font-semibold text-[var(--secondary-color)] mb-2">
-                    <FaGlobeAmericas className="inline mr-2" />
+                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pb-2">
+                    <FaGlobeAmericas className="inline pr-2" />
                     Location
                     </label>
                     <input
@@ -283,8 +283,8 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
 
                 {/* Website */}
                 <div>
-                    <label className="block text-sm font-semibold text-[var(--secondary-color)] mb-2">
-                    <FaGlobeAmericas className="inline mr-2" />
+                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pb-2">
+                    <FaGlobeAmericas className="inline pr-2" />
                     Website
                     </label>
                     <input
