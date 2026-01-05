@@ -7,7 +7,7 @@ import { supabase } from '../lib/supabaseClient';
 export async function checkForDuplicateCompletions() {
     try {
         const { data: { session } } = await supabase.auth.getSession();
-        
+
         if (!session) {
             console.log('❌ Not logged in');
             return { success: false, message: 'Not logged in' };
@@ -99,7 +99,7 @@ export async function checkForDuplicateCompletions() {
 export async function removeDuplicateCompletions() {
     try {
         const { data: { session } } = await supabase.auth.getSession();
-        
+
         if (!session) {
             console.log('❌ Not logged in');
             return { success: false, message: 'Not logged in' };
@@ -107,7 +107,7 @@ export async function removeDuplicateCompletions() {
 
         // First check what duplicates exist
         const checkResult = await checkForDuplicateCompletions();
-        
+
         if (!checkResult.success || checkResult.duplicates.length === 0) {
             console.log('✅ Nothing to remove');
             return { success: true, message: 'No duplicates to remove' };
@@ -115,16 +115,16 @@ export async function removeDuplicateCompletions() {
 
         console.log(`\n🗑️  Preparing to remove duplicates...`);
         console.log(`⚠️  This will delete ${checkResult.totalEntries - checkResult.uniqueProblems} entries`);
-        
+
         const idsToDelete = [];
 
         // For each problem with duplicates, keep the FIRST entry, delete the rest
         checkResult.duplicates.forEach(dup => {
             // Sort by completed_at to ensure we keep the earliest
-            const sorted = [...dup.entries].sort((a, b) => 
+            const sorted = [...dup.entries].sort((a, b) =>
                 new Date(a.completed_at) - new Date(b.completed_at)
             );
-            
+
             // Keep first, delete rest
             for (let i = 1; i < sorted.length; i++) {
                 idsToDelete.push(sorted[i].id);
