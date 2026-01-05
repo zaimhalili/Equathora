@@ -224,7 +224,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     value={formData.full_name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                    className="text-black w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
                     placeholder="Enter your full name"
                     />
                 </div>
