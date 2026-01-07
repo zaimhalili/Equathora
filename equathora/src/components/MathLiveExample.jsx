@@ -148,81 +148,82 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
             />
             <div className="ml-wrapper">
                 <h2 className="ml-title">Your Solution</h2>
-                <div className="ml-status">
-                    Type each step. Enter adds a step, ↑↓ move focus, and the last step counts as your final answer.
-                </div>
 
-                {/* Format Hints - Collapsible */}
-                <div className="ml-format-hints">
-                    <button
-                        type="button"
-                        onClick={() => setHintsOpen(!hintsOpen)}
-                        className="ml-format-hints-toggle"
-                    >
+                {/* Usage Guide - Combined Instructions and Tips */}
+                <div className="ml-format-hints" onClick={() => setHintsOpen(!hintsOpen)}>
+                    <div className="ml-format-hints-toggle">
                         <div className="ml-format-hints-title">
                             <FaLightbulb />
-                            Math Input Tips
+                            How to Use This Interface
                         </div>
                         {hintsOpen ? <FaChevronUp /> : <FaChevronDown />}
-                    </button>
+                    </div>
                     {hintsOpen && (
-                        <ul className="ml-format-hints-list">
-                            <li>Fractions: Use <code>\frac{"{numerator}"}{"{denominator}"}</code> or type "/" for quick fraction</li>
-                            <li>Exponents: Use ^ symbol (e.g., x^2 for x²)</li>
-                            <li>Square root: Type \sqrt{"{x}"} or use √ button</li>
-                            <li>Multiplication: Use * or × (times symbol)</li>
-                        </ul>
+                        <div className="ml-format-hints-content">
+                            <div className="ml-usage-instructions">
+                                Type each step. Press <strong>Enter</strong> to add a new step, use <strong>↑↓</strong> arrows to move between steps, and the last step counts as your final answer.
+                            </div>
+                            <ul className="ml-format-hints-list">
+                                <li>Fractions: Use <code>frac{"{numerator}"}{"{denominator}"}</code> or type "/" for quick fraction</li>
+                                <li>Exponents: Use ^ symbol (e.g., x^2 for x²)</li>
+                                <li>Square root: Type sqrt{"{x}"} or use √ button</li>
+                                <li>Multiplication: Use * or × (times symbol)</li>
+                            </ul>
+                        </div>
                     )}
                 </div>
 
                 <div className="ml-card" aria-live="polite">
-                    <div className="ml-steps-container cursor-text">
-                        {fields.map((field, index) => (
-                            <div key={field.id} className="ml-step-wrapper">
-                                <div className="ml-step-label">{index + 1}</div>
-                                <math-field
-                                    ref={(el) => (fieldRefs.current[field.id] = el)}
-                                    class="ml-field"
-                                    virtualkeyboardmode="off"
-                                    smartfence="true"
-                                    placeholder=""
-                                    value={field.latex}
-                                    onInput={(evt) =>
-                                        updateLatex(field.id, evt.target.getValue("latex"))
-                                    }
-                                    onKeyDown={(e) => {
-                                        const mf = fieldRefs.current[field.id];
-
-                                        if (e.key === "Enter") {
-                                            e.preventDefault();
-                                            addField();
+                    <div className="ml-steps-scrollable">
+                        <div className="ml-steps-container cursor-text">
+                            {fields.map((field, index) => (
+                                <div key={field.id} className="ml-step-wrapper">
+                                    <div className="ml-step-label">{index + 1}</div>
+                                    <math-field
+                                        ref={(el) => (fieldRefs.current[field.id] = el)}
+                                        class="ml-field"
+                                        virtualkeyboardmode="off"
+                                        smartfence="true"
+                                        placeholder=""
+                                        value={field.latex}
+                                        onInput={(evt) =>
+                                            updateLatex(field.id, evt.target.getValue("latex"))
                                         }
+                                        onKeyDown={(e) => {
+                                            const mf = fieldRefs.current[field.id];
 
-                                        if (e.key === "ArrowUp") {
-                                            e.preventDefault();
-                                            const prevField = fields[index - 1];
-                                            if (prevField) fieldRefs.current[prevField.id]?.focus();
-                                        }
+                                            if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                addField();
+                                            }
 
-                                        if (e.key === "ArrowDown") {
-                                            e.preventDefault();
-                                            const nextField = fields[index + 1];
-                                            if (nextField) fieldRefs.current[nextField.id]?.focus();
-                                        }
-                                    }}
-                                ></math-field>
-                                <button
-                                    className="ml-delete-btn"
-                                    onClick={() => deleteField(field.id)}
-                                    title="Delete this step"
-                                >
-                                    <FaTimes />
-                                </button>
-                            </div>
-                        ))}
+                                            if (e.key === "ArrowUp") {
+                                                e.preventDefault();
+                                                const prevField = fields[index - 1];
+                                                if (prevField) fieldRefs.current[prevField.id]?.focus();
+                                            }
 
+                                            if (e.key === "ArrowDown") {
+                                                e.preventDefault();
+                                                const nextField = fields[index + 1];
+                                                if (nextField) fieldRefs.current[nextField.id]?.focus();
+                                            }
+                                        }}
+                                    ></math-field>
+                                    <button
+                                        className="ml-delete-btn"
+                                        onClick={() => deleteField(field.id)}
+                                        title="Delete this step"
+                                    >
+                                        <FaTrash />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
+                </div>
 
+                <div className="ml-toolbar-sticky">
                     <div className="ml-toolbar">
                         <button className="ml-btn clear flex gap-1 order-2 sm:order-1" onClick={() => setDeleteAllPopup(true)}>
                             <FaTrash />
@@ -230,7 +231,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                         </button>
                         <div className="flex gap-2 w-full sm:w-auto sm:order-2">
                             <button className="ml-btn addStep" onClick={addField}>
-                                + Add Step
+                                + Add New Line
                             </button>
                             <button className="ml-btn submit flex-1" onClick={handleSubmit}>
                                 Submit Solution
@@ -250,22 +251,12 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                         </div>
                     )}
 
-                    {/* Answer Preview */}
-                    {fields.length > 0 && fields[fields.length - 1].latex && (
-                        <div className="ml-answer-preview">
-                            <div className="ml-answer-preview-title">Your Final Answer (Last Step)</div>
-                            <div className="ml-answer-preview-content">
-                                <math-field read-only value={fields[fields.length - 1].latex}></math-field>
-                            </div>
-                        </div>
-                    )}
-
                     <div className="ml-output-wrapper">
                         <button
                             className="ml-preview-toggle"
                             onClick={() => setPreviewOpen(!previewOpen)}
                         >
-                            <strong>Preview</strong>
+                            <strong>LaTeX</strong>
                             {previewOpen ? <FaChevronUp /> : <FaChevronDown />}
                         </button>
                         {previewOpen && (
