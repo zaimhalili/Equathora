@@ -94,7 +94,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--french-gray);
+    /* background: var(--french-gray); */
     border-radius: 50%;
     flex-shrink: 0;
 }
@@ -102,7 +102,7 @@
 .ml-delete-btn {
     background: transparent;
     border: none;
-    color: #dc2626;
+    color: var(--mid-main-secondary);
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -113,15 +113,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: all 0.150s ease;
     flex-shrink: 0;
-    opacity: 0.6;
 }
 
 .ml-delete-btn:hover {
-    opacity: 1;
-    background: #fee2e2;
-    transform: scale(1.1);
+    color: var(--secondary-color);
+    /* transform: scale(1.1); */
 }
 
 .ml-delete-btn:active {
@@ -143,7 +141,7 @@ math-field {
     display: block;
     min-height: 3rem;
     flex: 1;
-    transition: all 0.2s ease;
+    transition: all 0.150s ease;
     overflow-x: auto;
 }
 
@@ -201,7 +199,7 @@ math-field:hover {
     font-weight: 600;
     font-size: 13px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.150s ease;
     white-space: nowrap;
     min-width: fit-content;
     display: flex;
@@ -310,7 +308,7 @@ math-field:hover {
     align-items: center;
     justify-content: space-between;
     font-family: 'Inter', sans-serif;
-    transition: all 0.2s ease;
+    transition: all 0.150s ease;
 }
 
 /* .ml-preview-toggle:hover {
@@ -357,8 +355,6 @@ math-field:hover {
     background: var(--secondary-color);
 }
 
-
-
 .steps-list {
     list-style: none;
     padding: 0;
@@ -367,7 +363,7 @@ math-field:hover {
 
 .steps-list li {
     padding: 0.5rem;
-    background: var(--french-gray);
+    /* background: var(--french-gray); */
     border-radius: 6px;
     border-left: 3px solid var(--accent-color);
     font-family: 'Courier New', monospace;
@@ -422,6 +418,10 @@ math-field::part(content) {
     min-width: 32px !important;
     padding: 6px 8px !important;
     font-size: 13px !important;
+}
+
+math-field:focus {
+    outline: var(--mid-main-secondary);border-color: var(--mid-main-secondary);
 }
 
 /* Prevent keyboard from blocking input on mobile */
@@ -745,7 +745,7 @@ math-field:focus-within {
     flex-shrink: 0;
     cursor: pointer;
     user-select: none;
-    transition: background 0.2s ease;
+    transition: background 0.150s ease;
 }
 
 .ml-format-hints:hover {
@@ -761,9 +761,8 @@ math-field:focus-within {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
     color: #1e40af;
-    transition: color 0.2s;
+    transition: color 0.150s;
 }
 
 .ml-format-hints-title {
@@ -783,7 +782,7 @@ math-field:focus-within {
     flex-direction: column;
     gap: 0.25rem;
     margin: 0;
-    padding-left: 1.25rem;
+    padding-top: 0.25rem;
     color: var(--secondary-color);
     opacity: 0.9;
 }
