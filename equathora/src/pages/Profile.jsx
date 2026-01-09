@@ -7,7 +7,6 @@ import ReputationBadge from '../components/ReputationBadge';
 import EditProfileModal from '../components/EditProfileModal';
 import Autumn from '../assets/images/autumn.jpg';
 import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
-import { getUserProgress, getStreakData, getCompletedProblems } from '../lib/databaseService';
 import { getAllProblems } from '../lib/problemService';
 import { supabase } from '../lib/supabaseClient';
 import ProfileExportButtons from '../components/ProfileExportButtons';
@@ -41,48 +40,44 @@ const Profile = () => {
           return;
         }
 
-        // Fetch all user data with error handling for each
-        const userProgress = await getUserProgress().catch(err => {
-          console.error('Error fetching user progress:', err);
-          return null;
-        });
+        const targetUserId = profile || session.user.id;
 
-        const streakData = await getStreakData().catch(err => {
-          console.error('Error fetching streak data:', err);
-          return null;
-        });
+        // Pull profile, progress, streak, and completed problems for the target user
+        const [{ data: profileRow }, { data: progressRow }, { data: streakRow }, { data: completedRows }] = await Promise.all([
+          supabase.from('profiles').select('*').eq('id', targetUserId).maybeSingle(),
+          supabase.from('user_progress').select('*').eq('user_id', targetUserId).maybeSingle(),
+          supabase.from('user_streak_data').select('*').eq('user_id', targetUserId).maybeSingle(),
+          supabase.from('user_completed_problems').select('problem_id').eq('user_id', targetUserId)
+        ]);
 
-        const completedIds = await getCompletedProblems().catch(err => {
-          console.error('Error fetching completed problems:', err);
-          return [];
-        });
+        const completedIds = (completedRows || []).map(r => String(r.problem_id));
 
         const allProblems = await getAllProblems().catch(err => {
           console.error('Error fetching all problems:', err);
           return [];
         });
 
-        // Get user metadata
-        const user = session.user;
-        const displayName = user.user_metadata?.full_name ||
-          user.user_metadata?.name ||
-          user.email?.split('@')[0] ||
-          'Student';
-        const username = user.user_metadata?.preferred_username ||
-          user.email?.split('@')[0] ||
-          'student';
+        const viewingOwnProfile = targetUserId === session.user.id;
+        const meta = viewingOwnProfile ? session.user.user_metadata : {};
+
+        const displayName = profileRow?.full_name || profileRow?.username || meta.full_name || meta.name || session.user.email?.split('@')[0] || 'Student';
+        const username = profileRow?.username || meta.preferred_username || session.user.email?.split('@')[0] || 'student';
+        const avatarUrl = profileRow?.avatar_url || meta.avatar_url || meta.picture || meta.image || meta.photo_url || '';
+        const bio = profileRow?.bio || meta.bio || '';
+        const location = profileRow?.location || meta.location || '';
+        const website = profileRow?.website || meta.website || '';
 
         // Get completed problem details
         const completedProblems = allProblems.filter(p => completedIds.includes(String(p.id)));
 
         // Calculate stats (scope solved to current problems list)
         const solved = completedProblems.length;
-        let correctAnswers = userProgress?.correct_answers || 0;
-        let wrongSubmissions = userProgress?.wrong_submissions || 0;
-        let totalAttempts = userProgress?.total_attempts || 0;
+        let correctAnswers = progressRow?.correct_answers || 0;
+        let wrongSubmissions = progressRow?.wrong_submissions || 0;
+        let totalAttempts = progressRow?.total_attempts || 0;
 
-        // If backend counters aren't being maintained yet, fall back to local submissions.
-        if (totalAttempts > 0 && correctAnswers === 0 && wrongSubmissions === 0) {
+        // If backend counters aren't being maintained yet, fall back to local submissions for self only.
+        if (viewingOwnProfile && totalAttempts > 0 && correctAnswers === 0 && wrongSubmissions === 0) {
           const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
           const local = (getSubmissions() || []).filter(s => validProblemIds.has(String(s.problemId)));
           if (local.length > 0) {
@@ -107,12 +102,12 @@ const Profile = () => {
         const newUserData = {
           name: displayName,
           username: username,
-          bio: user.user_metadata?.bio || '',
-          location: user.user_metadata?.location || '',
-          website: user.user_metadata?.website || '',
-          avatar_url: user.user_metadata?.avatar_url || '',
+          bio,
+          location,
+          website,
+          avatar_url: avatarUrl,
           title: 'Problem Solver ∑',
-          status: 'Online',
+          status: viewingOwnProfile ? 'Online' : 'Viewing',
           stats: {
             problemsSolved: solved,
             accuracy: accuracy,
@@ -121,9 +116,9 @@ const Profile = () => {
               wrong: wrongSubmissions,
               total: totalAttempts
             },
-            currentStreak: streakData?.current_streak || 0,
-            longestStreak: streakData?.longest_streak || 0,
-            reputation: userProgress?.reputation || 0,
+            currentStreak: streakRow?.current_streak || 0,
+            longestStreak: streakRow?.longest_streak || 0,
+            reputation: progressRow?.reputation || 0,
             globalRank: 1,
             easy: { solved: easySolved, total: easyProblems.length, percentage: easyProblems.length > 0 ? Math.round((easySolved / easyProblems.length) * 100) : 0 },
             medium: { solved: mediumSolved, total: mediumProblems.length, percentage: mediumProblems.length > 0 ? Math.round((mediumSolved / mediumProblems.length) * 100) : 0 },
@@ -143,7 +138,7 @@ const Profile = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [profile]);
 
   if (loading || !userData) {
     return (

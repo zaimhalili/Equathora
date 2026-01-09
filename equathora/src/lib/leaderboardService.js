@@ -311,31 +311,55 @@ export async function getGlobalLeaderboard(limit = 100) {
         }
 
         const rows = data || [];
-        // If the view is empty (not refreshed yet), compute directly so multiple accounts still show up
         if (!rows.length) {
             return computeLeaderboardFromTables(limit);
         }
+
         const userIds = rows.map(r => r.user_id).filter(Boolean);
-        const profileMap = await getProfileMap(userIds);
+        const [profileMap, progressData, streakData] = await Promise.all([
+            getProfileMap(userIds),
+            supabase.from('user_progress').select('user_id, solved_problems, correct_answers, wrong_submissions, total_attempts, reputation, perfect_streak, total_xp').in('user_id', userIds),
+            supabase.from('user_streak_data').select('user_id, current_streak').in('user_id', userIds)
+        ]).then((results) => {
+            const [pMap, progRes, streakRes] = results;
+            return [pMap, progRes.data || [], streakRes.data || []];
+        });
+
+        const progressMap = (progressData || []).reduce((acc, row) => {
+            acc[row.user_id] = row;
+            return acc;
+        }, {});
+
+        const streakMap = (streakData || []).reduce((acc, row) => {
+            acc[row.user_id] = row.current_streak || 0;
+            return acc;
+        }, {});
 
         return rows.map((row, index) => {
             const profile = profileMap[row.user_id] || {};
-            const problemsSolved = typeof row.problems_solved_count === 'number'
+            const progress = progressMap[row.user_id];
+            const problemsSolvedFromRow = typeof row.problems_solved_count === 'number'
                 ? row.problems_solved_count
                 : Array.isArray(row.solved_problems)
                     ? row.solved_problems.length
                     : 0;
 
+            // Fallback: if leaderboard view is stale (xp or solved 0), recompute from progress
+            const shouldRecompute = (!row.total_xp && progress) || (problemsSolvedFromRow === 0 && progress && Array.isArray(progress.solved_problems));
+
+            const solvedFallback = Array.isArray(progress?.solved_problems) ? progress.solved_problems.length : problemsSolvedFromRow;
+            const xpData = shouldRecompute ? calculateUserXP(progress, { current_streak: streakMap[row.user_id] }) : null;
+
             return {
                 userId: row.user_id,
                 name: profile.name || `Student-${String(row.user_id).slice(0, 6)}`,
                 avatarUrl: profile.avatarUrl || '',
-                xp: row.total_xp || 0,
+                xp: shouldRecompute ? (progress?.total_xp || xpData?.totalXP || 0) : (row.total_xp || 0),
                 xpBreakdown: {},
-                problemsSolved,
-                accuracy: row.accuracy_percentage || 0,
-                reputation: row.reputation || 0,
-                currentStreak: row.current_streak || 0,
+                problemsSolved: shouldRecompute ? solvedFallback : problemsSolvedFromRow,
+                accuracy: row.accuracy_percentage || (progress?.total_attempts ? Math.round((progress.correct_answers / progress.total_attempts) * 100) : 0),
+                reputation: row.reputation || progress?.reputation || 0,
+                currentStreak: row.current_streak || streakMap[row.user_id] || 0,
                 rank: row.rank || index + 1
             };
         });
