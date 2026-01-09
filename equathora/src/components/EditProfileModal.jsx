@@ -114,25 +114,44 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
             avatarUrl = await uploadAvatar(userId);
         }
 
-        // Update user metadata
+        // Update auth metadata so session reflects new profile fields
         const { error: updateError } = await supabase.auth.updateUser({
             data: {
-            full_name: formData.full_name,
-            preferred_username: formData.username,
-            bio: formData.bio,
-            location: formData.location,
-            website: formData.website,
-            avatar_url: avatarUrl
+                full_name: formData.full_name,
+                preferred_username: formData.username,
+                bio: formData.bio,
+                location: formData.location,
+                website: formData.website,
+                avatar_url: avatarUrl
             }
         });
 
         if (updateError) throw updateError;
+
+        // Persist profile data in profiles table so leaderboards and public views have latest info
+        const { error: profileError } = await supabase
+            .from('profiles')
+            .upsert({
+                id: userId,
+                full_name: formData.full_name,
+                username: formData.username,
+                avatar_url: avatarUrl,
+                bio: formData.bio,
+                location: formData.location,
+                website: formData.website,
+                updated_at: new Date().toISOString()
+            }, { onConflict: 'id' });
+
+        if (profileError) throw profileError;
 
         // Call onSave callback with updated data
         onSave({
             ...formData,
             avatar_url: avatarUrl
         });
+
+        // Refresh the auth session so new metadata (name/avatar) is immediately available elsewhere
+        await supabase.auth.refreshSession();
 
         onClose();
         } catch (error) {

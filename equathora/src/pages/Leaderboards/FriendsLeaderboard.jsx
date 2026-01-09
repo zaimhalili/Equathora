@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 import { getFriendsLeaderboard, getCurrentUserRank } from '../../lib/leaderboardService';
+import GuestAvatar from '../../assets/images/guestAvatar.png';
 
 const FriendsLeaderboard = () => {
     const [players, setPlayers] = useState([]);
@@ -109,6 +110,13 @@ const FriendsLeaderboard = () => {
                         className={`leaderboard-card ${getRankClass(player.rank)} ${currentUser && player.userId === currentUser.userId ? 'current-user' : ''}`}
                     >
                         <div className="rank-badge">{getRankBadge(player.rank)}</div>
+                        <div className="player-avatar-wrapper">
+                            <img
+                                src={player.avatarUrl || GuestAvatar}
+                                alt={`${player.name} avatar`}
+                                className="player-avatar"
+                            />
+                        </div>
                         <div className="player-info">
                             <div className="player-name">{player.name}</div>
                             <div className="player-stats">
@@ -140,6 +148,13 @@ const FriendsLeaderboard = () => {
                         className={`leaderboard-card current-user-highlight ${getRankClass(currentUser.rank)}`}
                     >
                         <div className="rank-badge">{getRankBadge(currentUser.rank)}</div>
+                        <div className="player-avatar-wrapper">
+                            <img
+                                src={currentUser.avatarUrl || GuestAvatar}
+                                alt={`${currentUser.name} avatar`}
+                                className="player-avatar"
+                            />
+                        </div>
                         <div className="player-info">
                             <div className="player-name">{currentUser.name}</div>
                             <div className="player-stats">

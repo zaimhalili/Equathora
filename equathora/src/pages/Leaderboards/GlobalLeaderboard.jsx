@@ -3,6 +3,7 @@ import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 import { getCachedGlobalLeaderboard, getCurrentUserRank } from '../../lib/leaderboardService';
 import { supabase } from '../../lib/supabaseClient';
+import GuestAvatar from '../../assets/images/guestAvatar.png';
 
 const GlobalLeaderboard = () => {
     const [players, setPlayers] = useState([]);
@@ -37,7 +38,8 @@ const GlobalLeaderboard = () => {
                         xp: userRankData.xp,
                         rank: userRankData.rank,
                         accuracy: userRankData.accuracy,
-                        currentStreak: userRankData.currentStreak
+                        currentStreak: userRankData.currentStreak,
+                        avatarUrl: userRankData.avatarUrl
                     });
                 }
             }
@@ -130,6 +132,13 @@ const GlobalLeaderboard = () => {
                         className={`leaderboard-card ${getRankClass(player.rank)} ${currentUser && player.userId === currentUser.id ? 'current-user' : ''}`}
                     >
                         <div className="rank-badge">{getRankBadge(player.rank)}</div>
+                        <div className="player-avatar-wrapper">
+                            <img
+                                src={player.avatarUrl || GuestAvatar}
+                                alt={`${player.name} avatar`}
+                                className="player-avatar"
+                            />
+                        </div>
                         <div className="player-info">
                             <div className="player-name">{player.name}</div>
                             <div className="player-stats">
@@ -161,6 +170,13 @@ const GlobalLeaderboard = () => {
                         className={`leaderboard-card current-user-highlight ${getRankClass(currentUser.rank)}`}
                     >
                         <div className="rank-badge">{getRankBadge(currentUser.rank)}</div>
+                        <div className="player-avatar-wrapper">
+                            <img
+                                src={currentUser.avatarUrl || GuestAvatar}
+                                alt={`${currentUser.name} avatar`}
+                                className="player-avatar"
+                            />
+                        </div>
                         <div className="player-info">
                             <div className="player-name">{currentUser.name}</div>
                             <div className="player-stats">

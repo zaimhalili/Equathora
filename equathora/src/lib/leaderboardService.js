@@ -112,17 +112,41 @@ async function getProfileMap(userIds = []) {
         .in('id', userIds);
 
     if (error) {
-        console.warn('profiles lookup failed, falling back to ids only:', error.message);
-        return {};
+        console.warn('profiles lookup failed, falling back to auth metadata only:', error.message);
     }
 
-    return (data || []).reduce((acc, profile) => {
+    const profileMap = (data || []).reduce((acc, profile) => {
         acc[profile.id] = {
             name: profile.full_name || profile.username || 'Student',
             avatarUrl: profile.avatar_url || ''
         };
         return acc;
     }, {});
+
+    // Ensure the current user shows their saved name even if the profiles table is empty
+    try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        const sessionUser = sessionData?.session?.user;
+        if (sessionUser && userIds.includes(sessionUser.id)) {
+            const displayName = sessionUser.user_metadata?.preferred_username
+                || sessionUser.user_metadata?.username
+                || sessionUser.user_metadata?.full_name
+                || sessionUser.user_metadata?.name
+                || sessionUser.email?.split('@')[0]
+                || 'Student';
+
+            profileMap[sessionUser.id] = {
+                name: profileMap[sessionUser.id]?.name || displayName,
+                avatarUrl: profileMap[sessionUser.id]?.avatarUrl
+                    || sessionUser.user_metadata?.avatar_url
+                    || ''
+            };
+        }
+    } catch (sessionError) {
+        console.warn('session lookup failed while building profile map:', sessionError.message);
+    }
+
+    return profileMap;
 }
 
 // Fallback: build leaderboard directly from user_progress and streak data
