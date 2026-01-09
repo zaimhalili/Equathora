@@ -22,7 +22,7 @@ const GlobalLeaderboard = () => {
 
             // Get current user session
             const { data: { session } } = await supabase.auth.getSession();
-            
+
             // Fetch leaderboard data
             const leaderboardData = await getCachedGlobalLeaderboard();
             setPlayers(leaderboardData);
@@ -91,8 +91,8 @@ const GlobalLeaderboard = () => {
                 </div>
                 <div className="error-container" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>
                     <p>{error}</p>
-                    <button 
-                        onClick={fetchLeaderboardData} 
+                    <button
+                        onClick={fetchLeaderboardData}
                         style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}
                     >
                         Retry
