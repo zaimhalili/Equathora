@@ -166,7 +166,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
             >
             {/* Header */}
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
-                <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[DynaPuff]">Edit Profile</h2>
+                <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Inter]">Edit Profile</h2>
                 <button
                 onClick={onClose}
                 className="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-lg"
@@ -242,7 +242,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     onChange={handleInputChange}
                     required
                     pattern="^[a-zA-Z0-9_]{3,20}$"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                    className="text-black w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
                     placeholder="username_123"
                     />
                     <p className="text-xs text-gray-500 pt-1">3-20 characters, letters, numbers, and underscores only</p>
@@ -259,7 +259,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     onChange={handleInputChange}
                     rows={4}
                     maxLength={200}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all resize-none"
+                    className="text-black w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all resize-none"
                     placeholder="Tell us about yourself... (max 200 characters)"
                     />
                     <p className="text-xs text-gray-500 pt-1 text-right">{formData.bio.length}/200</p>
@@ -276,26 +276,12 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     name="location"
                     value={formData.location}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                    className=" text-black w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
                     placeholder="City, Country"
                     />
                 </div>
 
                 {/* Website */}
-                <div>
-                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pb-2">
-                    <FaGlobeAmericas className="inline pr-2" />
-                    Website
-                    </label>
-                    <input
-                    type="url"
-                    name="website"
-                    value={formData.website}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
-                    placeholder="https://yourwebsite.com"
-                    />
-                </div>
                 </div>
 
                 {/* Action Buttons */}
@@ -304,14 +290,14 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     type="button"
                     onClick={onClose}
                     disabled={isLoading}
-                    className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                     Cancel
                 </button>
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="flex-1 px-6 py-3 bg-[var(--accent-color)] text-white font-semibold rounded-lg hover:bg-[var(--dark-accent-color)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="flex-1 px-6 py-3 bg-[var(--accent-color)] text-white font-semibold rounded-lg hover:bg-[var(--dark-accent-color)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
                 >
                     {isLoading ? (
                     <>

@@ -125,9 +125,9 @@ const Profile = () => {
             longestStreak: streakData?.longest_streak || 0,
             reputation: userProgress?.reputation || 0,
             globalRank: 1,
-            easy: { solved: easySolved, total: easyProblems.length, accuracy: easySolved > 0 ? Math.round((easySolved / (easyProblems.length || 1)) * 100) : 0 },
-            medium: { solved: mediumSolved, total: mediumProblems.length, accuracy: mediumSolved > 0 ? Math.round((mediumSolved / (mediumProblems.length || 1)) * 100) : 0 },
-            hard: { solved: hardSolved, total: hardProblems.length, accuracy: hardSolved > 0 ? Math.round((hardSolved / (hardProblems.length || 1)) * 100) : 0 }
+            easy: { solved: easySolved, total: easyProblems.length, percentage: easyProblems.length > 0 ? Math.round((easySolved / easyProblems.length) * 100) : 0 },
+            medium: { solved: mediumSolved, total: mediumProblems.length, percentage: mediumProblems.length > 0 ? Math.round((mediumSolved / mediumProblems.length) * 100) : 0 },
+            hard: { solved: hardSolved, total: hardProblems.length, percentage: hardProblems.length > 0 ? Math.round((hardSolved / hardProblems.length) * 100) : 0 }
           },
           mathTopics: [...new Set(completedProblems.map(p => p.topic).filter(Boolean))],
           problemsSolved: completedProblems.slice(-10).reverse()
@@ -218,7 +218,7 @@ const Profile = () => {
                   )}
                   <button
                     type="button"
-                    className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300'
+                    className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300 cursor-pointer'
                     onClick={() => setIsEditModalOpen(true)}
                   >
                     Edit Profile

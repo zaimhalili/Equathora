@@ -107,6 +107,30 @@ export async function getCompletedProblems() {
 
         // Ensure we only return UNIQUE problem IDs to prevent duplicate counts
         const uniqueProblemIds = [...new Set(cleanedIds)];
+        
+        // If we found duplicates, clean them up in the database
+        if (cleanedIds.length > uniqueProblemIds.length) {
+            console.log(`Found ${cleanedIds.length - uniqueProblemIds.length} duplicate problem entries, cleaning up...`);
+            // Delete all entries for this user first
+            await supabase
+                .from('user_completed_problems')
+                .delete()
+                .eq('user_id', session.user.id);
+            
+            // Re-insert only unique entries
+            if (uniqueProblemIds.length > 0) {
+                const uniqueEntries = uniqueProblemIds.map(pid => ({
+                    user_id: session.user.id,
+                    problem_id: pid,
+                    completed_at: new Date().toISOString()
+                }));
+                
+                await supabase
+                    .from('user_completed_problems')
+                    .insert(uniqueEntries);
+            }
+        }
+        
         return uniqueProblemIds;
     } catch (error) {
         console.error('Error getting completed problems:', error);

@@ -128,6 +128,92 @@ async function getProfileMap(userIds = []) {
 // Fallback: build leaderboard directly from user_progress and streak data
 async function computeLeaderboardFromTables(limit = 100) {
     try {
+        // Get ALL users from auth.users first, so we can show everyone even with 0 progress
+        const { data: allUsers, error: usersError } = await supabase.auth.admin.listUsers();
+        if (usersError) {
+            console.warn('Could not fetch all users, falling back to users with progress only:', usersError.message);
+            // Fall back to old behavior if admin access not available
+            return await computeLeaderboardFromProgressOnly(limit);
+        }
+
+        const allUserIds = (allUsers?.users || []).map(u => u.id);
+
+        // Get progress data for all users
+        const { data: progressData } = await supabase
+            .from('user_progress')
+            .select('user_id, solved_problems, correct_answers, wrong_submissions, total_attempts, reputation, perfect_streak, total_xp')
+            .in('user_id', allUserIds);
+
+        const { data: streakData } = await supabase
+            .from('user_streak_data')
+            .select('user_id, current_streak, longest_streak');
+
+        // Create maps for quick lookup
+        const progressMap = {};
+        (progressData || []).forEach(p => {
+            progressMap[p.user_id] = p;
+        });
+
+        const streakMap = {};
+        (streakData || []).forEach(s => {
+            streakMap[s.user_id] = s.current_streak || 0;
+        });
+
+        const profileMap = await getProfileMap(allUserIds);
+
+        // Build leaderboard entry for EVERY user
+        const leaderboardData = allUserIds.map((userId) => {
+            const progress = progressMap[userId] || {
+                solved_problems: [],
+                correct_answers: 0,
+                wrong_submissions: 0,
+                total_attempts: 0,
+                reputation: 0,
+                perfect_streak: 0,
+                total_xp: 0
+            };
+
+            const xpData = calculateUserXP(progress, { current_streak: streakMap[userId] || 0 });
+            const profile = profileMap[userId] || {};
+            const solvedCount = Array.isArray(progress.solved_problems)
+                ? progress.solved_problems.length
+                : 0;
+
+            return {
+                userId: userId,
+                name: profile.name || `Student-${String(userId).slice(0, 6)}`,
+                avatarUrl: profile.avatarUrl || '',
+                xp: progress.total_xp || xpData.totalXP || 0,
+                problemsSolved: solvedCount,
+                accuracy: progress.total_attempts > 0
+                    ? Math.round((progress.correct_answers / progress.total_attempts) * 100)
+                    : 0,
+                reputation: progress.reputation || 0,
+                currentStreak: streakMap[userId] || 0,
+                rank: 0
+            };
+        });
+
+        // Sort by XP (descending), then by problems solved as tiebreaker
+        leaderboardData.sort((a, b) => {
+            if (b.xp !== a.xp) return b.xp - a.xp;
+            return b.problemsSolved - a.problemsSolved;
+        });
+
+        // Assign ranks
+        return leaderboardData.map((entry, index) => ({
+            ...entry,
+            rank: index + 1
+        })).slice(0, limit);
+    } catch (error) {
+        console.error('Fallback leaderboard computation failed:', error);
+        return await computeLeaderboardFromProgressOnly(limit);
+    }
+}
+
+// Helper: compute leaderboard from only users who have progress data (old behavior)
+async function computeLeaderboardFromProgressOnly(limit = 100) {
+    try {
         const { data: progressData, error: progressError } = await supabase
             .from('user_progress')
             .select('user_id, solved_problems, correct_answers, wrong_submissions, total_attempts, reputation, perfect_streak, total_xp')
