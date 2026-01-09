@@ -537,6 +537,119 @@ export const problems = [
     }
 ];
 
+// Override legacy data with the current 6-problem seed to avoid showing old IDs like 29.
+problemGroups.length = 0;
+problemGroups.push(
+    { id: 1, name: "Algebra Fundamentals", description: "Master basic algebraic equations and expressions" },
+    { id: 2, name: "Geometry Basics", description: "Explore shapes, areas, and perimeters" }
+);
+
+problems.length = 0;
+problems.push(
+    {
+        id: 1,
+        groupId: 1,
+        title: "Shopping Cart Total",
+        difficulty: "Easy",
+        description: "Emma bought 4 notebooks at $3 each and some pens at $2 each. Her total was $20. Write and solve an equation to find how many pens she bought. Let p represent the number of pens.",
+        answer: "4",
+        acceptedAnswers: ["4", "4 pens", "p=4", "p = 4"],
+        hints: [
+            "Set up the equation: 4(3) + 2p = 20",
+            "First calculate 4 x 3 = 12",
+            "Subtract 12 from both sides, then divide by 2"
+        ],
+        solution: "Step 1: 4(3) + 2p = 20\nStep 2: 12 + 2p = 20\nStep 3: 2p = 20 - 12\nStep 4: 2p = 8\nStep 5: p = 4 pens",
+        premium: false,
+        topic: "Linear Equations"
+    },
+    {
+        id: 2,
+        groupId: 1,
+        title: "Gym Membership Costs",
+        difficulty: "Easy",
+        description: "A gym charges a $50 signup fee plus $30 per month. Write an expression for the total cost after m months, then calculate the total cost for 6 months.",
+        answer: "230",
+        acceptedAnswers: ["230", "$230", "230 dollars", "50+30(6)", "50 + 180"],
+        hints: [
+            "The signup fee is $50 (one-time)",
+            "Monthly cost is $30 x m",
+            "Total = 50 + 30m, then substitute m = 6"
+        ],
+        solution: "Step 1: Total cost = 50 + 30m\nStep 2: For m = 6: Total = 50 + 30(6)\nStep 3: Total = 50 + 180\nStep 4: Total = $230",
+        premium: false,
+        topic: "Algebraic Expressions"
+    },
+    {
+        id: 3,
+        groupId: 1,
+        title: "Pizza Party Planning",
+        difficulty: "Medium",
+        description: "A pizza restaurant charges a $15 delivery fee plus $12 per large pizza. If the total bill was $87, how many large pizzas were ordered? Solve the equation: 15 + 12p = 87",
+        answer: "6",
+        acceptedAnswers: ["6", "6 pizzas", "p=6", "p = 6"],
+        hints: [
+            "Start with equation: 15 + 12p = 87",
+            "Subtract the delivery fee (15) from both sides",
+            "Then divide the result by the cost per pizza (12)"
+        ],
+        solution: "Step 1: 15 + 12p = 87\nStep 2: 12p = 87 - 15\nStep 3: 12p = 72\nStep 4: p = 72 / 12\nStep 5: p = 6 pizzas",
+        premium: false,
+        topic: "Linear Equations"
+    },
+    {
+        id: 4,
+        groupId: 2,
+        title: "Rectangular Garden Design",
+        difficulty: "Medium",
+        description: "A rectangular garden has a length of 15 meters and a width of 8 meters. Calculate the area of the garden in square meters. (Area = length x width)",
+        answer: "120",
+        acceptedAnswers: ["120", "120 square meters", "120 m^2", "120 sqm"],
+        hints: [
+            "Use the formula: Area = length x width",
+            "Length = 15 meters, Width = 8 meters",
+            "Multiply these values together"
+        ],
+        solution: "Step 1: Area = length x width\nStep 2: Area = 15 x 8\nStep 3: Area = 120 square meters",
+        premium: false,
+        topic: "Geometry"
+    },
+    {
+        id: 5,
+        groupId: 1,
+        title: "Square Playground Area",
+        difficulty: "Hard",
+        description: "A square playground has an area of 225 square meters. Find the length of each side of the playground by solving: x^2 = 225. Remember to only use the positive solution.",
+        answer: "15",
+        acceptedAnswers: ["15", "15 meters", "15m", "15 m", "x=15"],
+        hints: [
+            "To solve x^2 = 225, take the square root of both sides",
+            "Calculate the square root of 225",
+            "Only use the positive value since length cannot be negative"
+        ],
+        solution: "Step 1: x^2 = 225\nStep 2: x = ±sqrt(225)\nStep 3: x = ±15\nStep 4: Since length must be positive, x = 15 meters",
+        premium: false,
+        topic: "Quadratic Equations"
+    },
+    {
+        id: 6,
+        groupId: 1,
+        title: "The Temperature Tolerance Problem",
+        difficulty: "Hard",
+        description: "A laboratory machine must maintain a temperature exactly 5 degrees away from 3C to function properly. The absolute deviation is represented by |x - 3| = 5. Find both possible temperature settings x that satisfy this requirement.",
+        answer: "8, -2",
+        acceptedAnswers: ["8", "-2", "8,-2", "-2,8", "x=8", "x=-2"],
+        hints: [
+            "Interpret |x - 3| = 5 as a distance of 5 from 3 on the number line.",
+            "Set up two equations: x - 3 = 5 and x - 3 = -5.",
+            "Solve each equation to get the two possible temperatures."
+        ],
+        solution: "Case 1: x - 3 = 5 => x = 8\nCase 2: x - 3 = -5 => x = -2\nBoth temperatures (8C and -2C) are exactly 5 degrees away from 3C.",
+        premium: false,
+        topic: "Absolute Value"
+    }
+);
+
 // Helper function to get problems by group
 export const getProblemsByGroup = (groupId) => {
     return problems.filter(p => p.groupId === groupId);
