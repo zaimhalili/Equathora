@@ -275,7 +275,7 @@ const ApplyMentor = () => {
 
             {/* Footer */}
             <footer><Footer /></footer>
-            <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-3 text-white/60 text-xs'>
+            <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-5 text-white/60 text-xs'>
                 <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
                     Education illustrations by Storyset
                 </a>
