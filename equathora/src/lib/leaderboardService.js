@@ -311,19 +311,28 @@ export async function getGlobalLeaderboard(limit = 100) {
         }
 
         const rows = data || [];
-        if (!rows.length) {
-            return computeLeaderboardFromTables(limit);
+
+        // Also pull raw progress/streak for a broader set to cover cases where the materialized view is stale or missing rows
+        const { data: progressData } = await supabase
+            .from('user_progress')
+            .select('user_id, solved_problems, correct_answers, wrong_submissions, total_attempts, reputation, perfect_streak, total_xp')
+            .order('total_xp', { ascending: false })
+            .limit(limit * 2);
+
+        const progressIds = (progressData || []).map(p => p.user_id);
+        const viewIds = rows.map(r => r.user_id).filter(Boolean);
+        const allIds = Array.from(new Set([...viewIds, ...progressIds]));
+
+        if (!allIds.length) {
+            return [];
         }
 
-        const userIds = rows.map(r => r.user_id).filter(Boolean);
-        const [profileMap, progressData, streakData] = await Promise.all([
-            getProfileMap(userIds),
-            supabase.from('user_progress').select('user_id, solved_problems, correct_answers, wrong_submissions, total_attempts, reputation, perfect_streak, total_xp').in('user_id', userIds),
-            supabase.from('user_streak_data').select('user_id, current_streak').in('user_id', userIds)
-        ]).then((results) => {
-            const [pMap, progRes, streakRes] = results;
-            return [pMap, progRes.data || [], streakRes.data || []];
-        });
+        const { data: streakData } = await supabase
+            .from('user_streak_data')
+            .select('user_id, current_streak')
+            .in('user_id', allIds);
+
+        const profileMap = await getProfileMap(allIds);
 
         const progressMap = (progressData || []).reduce((acc, row) => {
             acc[row.user_id] = row;
@@ -335,34 +344,52 @@ export async function getGlobalLeaderboard(limit = 100) {
             return acc;
         }, {});
 
-        return rows.map((row, index) => {
-            const profile = profileMap[row.user_id] || {};
-            const progress = progressMap[row.user_id];
-            const problemsSolvedFromRow = typeof row.problems_solved_count === 'number'
-                ? row.problems_solved_count
-                : Array.isArray(row.solved_problems)
-                    ? row.solved_problems.length
+        // Build combined entries, preferring view data but filling gaps with progress
+        const combined = allIds.map((userId) => {
+            const viewRow = rows.find(r => r.user_id === userId);
+            const progress = progressMap[userId];
+            const profile = profileMap[userId] || {};
+
+            const problemsFromView = typeof viewRow?.problems_solved_count === 'number'
+                ? viewRow.problems_solved_count
+                : Array.isArray(viewRow?.solved_problems)
+                    ? viewRow.solved_problems.length
                     : 0;
 
-            // Fallback: if leaderboard view is stale (xp or solved 0), recompute from progress
-            const shouldRecompute = (!row.total_xp && progress) || (problemsSolvedFromRow === 0 && progress && Array.isArray(progress.solved_problems));
+            const solvedFallback = Array.isArray(progress?.solved_problems) ? progress.solved_problems.length : problemsFromView;
 
-            const solvedFallback = Array.isArray(progress?.solved_problems) ? progress.solved_problems.length : problemsSolvedFromRow;
-            const xpData = shouldRecompute ? calculateUserXP(progress, { current_streak: streakMap[row.user_id] }) : null;
+            const shouldRecompute = (!viewRow?.total_xp && progress) || (problemsFromView === 0 && progress && Array.isArray(progress.solved_problems));
+            const xpData = shouldRecompute ? calculateUserXP(progress, { current_streak: streakMap[userId] }) : null;
+
+            const xpValue = shouldRecompute
+                ? (progress?.total_xp || xpData?.totalXP || 0)
+                : (viewRow?.total_xp || progress?.total_xp || 0);
+
+            const accuracyVal = viewRow?.accuracy_percentage
+                || (progress?.total_attempts ? Math.round((progress.correct_answers / progress.total_attempts) * 100) : 0)
+                || 0;
 
             return {
-                userId: row.user_id,
-                name: profile.name || `Student-${String(row.user_id).slice(0, 6)}`,
+                userId,
+                name: profile.name || `Student-${String(userId).slice(0, 6)}`,
                 avatarUrl: profile.avatarUrl || '',
-                xp: shouldRecompute ? (progress?.total_xp || xpData?.totalXP || 0) : (row.total_xp || 0),
+                xp: xpValue,
                 xpBreakdown: {},
-                problemsSolved: shouldRecompute ? solvedFallback : problemsSolvedFromRow,
-                accuracy: row.accuracy_percentage || (progress?.total_attempts ? Math.round((progress.correct_answers / progress.total_attempts) * 100) : 0),
-                reputation: row.reputation || progress?.reputation || 0,
-                currentStreak: row.current_streak || streakMap[row.user_id] || 0,
-                rank: row.rank || index + 1
+                problemsSolved: shouldRecompute ? solvedFallback : (problemsFromView || solvedFallback),
+                accuracy: accuracyVal,
+                reputation: viewRow?.reputation || progress?.reputation || 0,
+                currentStreak: viewRow?.current_streak || streakMap[userId] || 0,
+                rank: viewRow?.rank || 0
             };
         });
+
+        // Sort and rank client-side to ensure consistency when mixing data sources
+        combined.sort((a, b) => {
+            if (b.xp !== a.xp) return b.xp - a.xp;
+            return b.problemsSolved - a.problemsSolved;
+        });
+
+        return combined.slice(0, limit).map((entry, idx) => ({ ...entry, rank: idx + 1 }));
     } catch (error) {
         console.error('Error getting global leaderboard:', error);
         return [];
