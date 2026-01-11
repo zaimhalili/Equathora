@@ -123,7 +123,7 @@ export const validateMultiStep = (steps, problem) => {
     // In future, could validate intermediate steps
     return {
         isCorrect: true,
-        feedback: `🎉 Correct! ${steps.length} steps shown.`,
+        feedback: `Correct! ${steps.length} steps shown.`,
         score: 100
     };
 };
@@ -177,10 +177,10 @@ export const getSmartFeedback = (userAnswer, problem) => {
 
         if (!isNaN(userNum) && !isNaN(correctNum)) {
             if (Math.abs(userNum - correctNum) < 2) {
-                return '🤔 You\'re very close! Double-check your arithmetic.';
+                return 'You\'re very close! Double-check your arithmetic.';
             }
             if (userNum === -correctNum) {
-                return '⚠️ Check your signs! You may have a sign error.';
+                return 'Check your signs! You may have a sign error.';
             }
         }
     }
@@ -192,10 +192,10 @@ export const getSmartFeedback = (userAnswer, problem) => {
         if (!isNaN(userNum) && !isNaN(correctNum)) {
             // Check if they forgot to square/cube
             if (userNum * userNum === correctNum) {
-                return '💡 Tip: Did you remember to square the value?';
+                return 'Tip: Did you remember to square the value?';
             }
             if (userNum / 2 === correctNum) {
-                return '💡 Tip: For triangles, don\'t forget to divide by 2!';
+                return 'Tip: For triangles, don\'t forget to divide by 2!';
             }
         }
     }

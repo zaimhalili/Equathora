@@ -8,6 +8,7 @@ import EditProfileModal from '../components/EditProfileModal';
 import Autumn from '../assets/images/autumn.jpg';
 import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 import { getAllProblems } from '../lib/problemService';
+import { problems as localProblems } from '../data/problems';
 import { supabase } from '../lib/supabaseClient';
 import ProfileExportButtons from '../components/ProfileExportButtons';
 import { getSubmissions } from '../lib/progressStorage';
@@ -18,6 +19,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [viewingOwnProfile, setViewingOwnProfile] = useState(false);
 
   const handleProfileSave = useCallback((updatedData) => {
     setUserData(prevData => ({
@@ -40,25 +42,48 @@ const Profile = () => {
           return;
         }
 
-        const targetUserId = profile || session.user.id;
+        const isMyProfileAlias = profile === 'myprofile' || profile === 'me';
+        const targetUserId = isMyProfileAlias || !profile ? session.user.id : profile;
 
-        // Pull profile, progress, streak, and completed problems for the target user
-        const [{ data: profileRow }, { data: progressRow }, { data: streakRow }, { data: completedRows }] = await Promise.all([
+        // Pull profile, progress, streak, completed problems, and leaderboard data for the target user
+        const [
+          { data: profileRow },
+          { data: progressRow },
+          { data: streakRow },
+          { data: completedRows },
+          { data: leaderboardRow }
+        ] = await Promise.all([
           supabase.from('profiles').select('*').eq('id', targetUserId).maybeSingle(),
           supabase.from('user_progress').select('*').eq('user_id', targetUserId).maybeSingle(),
           supabase.from('user_streak_data').select('*').eq('user_id', targetUserId).maybeSingle(),
-          supabase.from('user_completed_problems').select('problem_id').eq('user_id', targetUserId)
+          supabase.from('user_completed_problems').select('problem_id').eq('user_id', targetUserId),
+          supabase.from('leaderboard_view').select('*').eq('user_id', targetUserId).maybeSingle()
         ]);
 
-        const completedIds = (completedRows || []).map(r => String(r.problem_id));
+        const completedIds = (completedRows || []).map(r => {
+          const pid = r.problem_id;
+          if (typeof pid === 'string' && pid.startsWith('{')) {
+            try {
+              const parsed = JSON.parse(pid);
+              return String(parsed.problemId ?? parsed.id ?? '');
+            } catch {
+              return '';
+            }
+          }
+          return String(pid);
+        }).filter(Boolean);
 
         const allProblems = await getAllProblems().catch(err => {
           console.error('Error fetching all problems:', err);
           return [];
         });
 
-        const viewingOwnProfile = targetUserId === session.user.id;
-        const meta = viewingOwnProfile ? session.user.user_metadata : {};
+        // Fall back to bundled problems if Supabase returns none
+        const problemList = allProblems.length ? allProblems : (localProblems || []);
+
+        const isSelf = targetUserId === session.user.id;
+        setViewingOwnProfile(isSelf);
+        const meta = isSelf ? session.user.user_metadata : {};
 
         const displayName = profileRow?.full_name || profileRow?.username || meta.full_name || meta.name || session.user.email?.split('@')[0] || 'Student';
         const username = profileRow?.username || meta.preferred_username || session.user.email?.split('@')[0] || 'student';
@@ -71,8 +96,24 @@ const Profile = () => {
         const solvedFromProgress = Array.isArray(progressRow?.solved_problems)
           ? progressRow.solved_problems.map(id => String(id))
           : [];
-        const allCompletedIds = completedIds.length ? completedIds : solvedFromProgress;
-        const completedProblems = allProblems.filter(p => allCompletedIds.includes(String(p.id)));
+        
+        // For viewing own profile, also check local storage as ultimate fallback
+        let localCompletedIds = [];
+        if (isSelf) {
+          const localSubmissions = getSubmissions() || [];
+          const validProblemIds = new Set((problemList || []).map(p => String(p.id)));
+          localCompletedIds = localSubmissions
+            .filter(s => s.isCorrect && validProblemIds.has(String(s.problemId)))
+            .map(s => String(s.problemId));
+        }
+        
+        const allCompletedIds = completedIds.length 
+          ? completedIds 
+          : solvedFromProgress.length 
+            ? solvedFromProgress 
+            : localCompletedIds;
+        
+        const completedProblems = problemList.filter(p => allCompletedIds.includes(String(p.id)));
 
         // Calculate stats (scope solved to current problems list)
         const solved = completedProblems.length;
@@ -81,8 +122,8 @@ const Profile = () => {
         let totalAttempts = progressRow?.total_attempts || 0;
 
         // If backend counters aren't being maintained yet, fall back to local submissions for self only.
-        if (viewingOwnProfile && totalAttempts > 0 && correctAnswers === 0 && wrongSubmissions === 0) {
-          const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
+        if (isSelf && (totalAttempts === 0 || (totalAttempts > 0 && correctAnswers === 0 && wrongSubmissions === 0))) {
+          const validProblemIds = new Set((problemList || []).map(p => String(p.id)));
           const local = (getSubmissions() || []).filter(s => validProblemIds.has(String(s.problemId)));
           if (local.length > 0) {
             const localCorrect = local.filter(s => s.isCorrect).length;
@@ -92,12 +133,30 @@ const Profile = () => {
           }
         }
 
-        const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
+        // Use leaderboard data as fallback for accuracy and solved count
+        const accuracyFromLeaderboard = leaderboardRow?.accuracy_percentage;
+        const solvedFromLeaderboard = typeof leaderboardRow?.problems_solved_count === 'number'
+          ? leaderboardRow.problems_solved_count
+          : null;
+
+        const accuracy = accuracyFromLeaderboard ?? (totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0);
+
+        const solvedFromProgressCount = Array.isArray(progressRow?.solved_problems)
+          ? progressRow.solved_problems.length
+          : null;
+        const completedTableCount = completedIds.length ? completedIds.length : null;
+        const localCompletedCount = isSelf && localCompletedIds.length ? localCompletedIds.length : null;
+
+        const finalSolved = solvedFromLeaderboard
+          ?? solvedFromProgressCount
+          ?? completedTableCount
+          ?? localCompletedCount
+          ?? solved;
 
         // Calculate difficulty breakdowns
-        const easyProblems = allProblems.filter(p => p.difficulty === 'Easy');
-        const mediumProblems = allProblems.filter(p => p.difficulty === 'Medium');
-        const hardProblems = allProblems.filter(p => p.difficulty === 'Hard');
+        const easyProblems = problemList.filter(p => p.difficulty === 'Easy');
+        const mediumProblems = problemList.filter(p => p.difficulty === 'Medium');
+        const hardProblems = problemList.filter(p => p.difficulty === 'Hard');
 
         const easySolved = completedProblems.filter(p => p.difficulty === 'Easy').length;
         const mediumSolved = completedProblems.filter(p => p.difficulty === 'Medium').length;
@@ -111,9 +170,9 @@ const Profile = () => {
           website,
           avatar_url: avatarUrl,
           title: 'Problem Solver ∑',
-          status: viewingOwnProfile ? 'Online' : 'Viewing',
+          status: isSelf ? 'Online' : 'Viewing',
           stats: {
-            problemsSolved: solved,
+            problemsSolved: finalSolved,
             accuracy: accuracy,
             accuracyDetail: {
               correct: correctAnswers,
@@ -123,7 +182,7 @@ const Profile = () => {
             currentStreak: streakRow?.current_streak || 0,
             longestStreak: streakRow?.longest_streak || 0,
             reputation: progressRow?.reputation || 0,
-            globalRank: 1,
+            globalRank: leaderboardRow?.rank || 0,
             easy: { solved: easySolved, total: easyProblems.length, percentage: easyProblems.length > 0 ? Math.round((easySolved / easyProblems.length) * 100) : 0 },
             medium: { solved: mediumSolved, total: mediumProblems.length, percentage: mediumProblems.length > 0 ? Math.round((mediumSolved / mediumProblems.length) * 100) : 0 },
             hard: { solved: hardSolved, total: hardProblems.length, percentage: hardProblems.length > 0 ? Math.round((hardSolved / hardProblems.length) * 100) : 0 }
@@ -157,7 +216,7 @@ const Profile = () => {
   }
 
   const totalProblems = userData.stats.easy.total + userData.stats.medium.total + userData.stats.hard.total;
-  const totalSolved = userData.stats.easy.solved + userData.stats.medium.solved + userData.stats.hard.solved;
+  const totalSolved = userData.stats.problemsSolved || (userData.stats.easy.solved + userData.stats.medium.solved + userData.stats.hard.solved);
 
   const getCircleProgress = (solved, total) => {
     const percentage = (solved / total) * 100;
