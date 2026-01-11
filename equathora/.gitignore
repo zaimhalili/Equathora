@@ -75,6 +75,9 @@ backend/**/connection-strings.json
 # Blog system README
 BLOG_SYSTEM_README.md
 
+
+# exercise source
 exercises.txt
 exercises.json
+ts.txt
 

@@ -1,666 +1,803 @@
-// Real math problems for MVP launch
-// Structure: { id, groupId, title, difficulty, description, answer, hints, solution, premium }
+// Seeded algebra problems derived from OCR of Hall & Knight exercises (polynomial add/sub/construct)
+// Structure: { id, groupId, title, difficulty, description, answer, acceptedAnswers, hints, solution, premium, topic }
 
 export const problemGroups = [
-    { id: 1, name: "Algebra Fundamentals", description: "Master basic algebraic equations and expressions" },
-    { id: 2, name: "Geometry Basics", description: "Explore shapes, areas, and perimeters" },
-    { id: 3, name: "Logic & Puzzles", description: "Develop critical thinking with logic problems" },
-    { id: 4, name: "Word Problems", description: "Apply math to real-world scenarios" }
+  { id: 1, name: "Grade 8 - Add/Subtract Expressions", description: "Combine and simplify linear and binomial expressions" },
+  { id: 2, name: "Grade 9 - Polynomial Simplification", description: "Work with higher-degree polynomials and mixed terms" },
+  { id: 3, name: "Grade 9 - Expression Reconstruction", description: "Find missing expressions to reach a target form" }
 ];
 
 export const problems = [
-    // ALGEBRA FUNDAMENTALS (Group 1)
-    {
-        id: 1,
-        groupId: 1,
-        title: "The Movie Theater Ticket Pricing",
-        difficulty: "Easy",
-        description: "A movie theater charges $12 for adult tickets and sells popcorn for $5 per bag. Maria spent $29 total buying one adult ticket and some bags of popcorn. Write and solve an equation to find how many bags of popcorn Maria bought. Let p represent the number of popcorn bags.",
-        answer: "3.4",
-        acceptedAnswers: ["3.4", "3.4 bags", "17/5", "3 2/5"],
-        hints: [
-            "Set up the equation: 12 + 5p = 29, where p is the number of popcorn bags",
-            "Subtract 12 from both sides to isolate the term with p",
-            "Then divide both sides by 5 to find the value of p"
-        ],
-        solution: "Step 1: Set up equation: 12 + 5p = 29\nStep 2: Subtract 12 from both sides: 5p = 17\nStep 3: Divide by 5: p = 17/5\nStep 4: p = 3.4 bags",
-        premium: false,
-        topic: "Linear Equations"
-    },
-    {
-        id: 2,
-        groupId: 1,
-        title: "Distributing Resources Fairly",
-        difficulty: "Easy",
-        description: "A teacher has x students in her class. She gives each student 3 pencils and 4 erasers, then keeps 5 extra pencils for herself. Write and simplify an expression for the total number of pencils the teacher started with. Then expand and simplify: 3(x + 4) + 2x - 5",
-        answer: "5x+7",
-        acceptedAnswers: ["5x+7", "5x + 7", "7+5x", "7 + 5x"],
-        hints: [
-            "First, distribute the 3 to both terms inside the parentheses: 3x + 12",
-            "Then add the 2x term and subtract 5",
-            "Combine like terms: 3x + 2x = 5x"
-        ],
-        solution: "Step 1: 3(x + 4) + 2x - 5\nStep 2: 3x + 12 + 2x - 5\nStep 3: (3x + 2x) + (12 - 5)\nStep 4: 5x + 7",
-        premium: false,
-        topic: "Algebraic Expressions"
-    },
-    {
-        id: 3,
-        groupId: 1,
-        title: "The Two Brothers' Age Mystery",
-        difficulty: "Medium",
-        description: "James is 5 years older than twice his younger brother Tom's age. If James is currently 23 years old, how old is Tom? Set up the equation where t represents Tom's age: 2t + 5 = 23, then solve for t.",
-        answer: "9",
-        acceptedAnswers: ["9", "9 years", "9 years old", "t=9"],
-        hints: [
-            "The equation is 2t + 5 = 23, where t is Tom's age",
-            "Subtract 5 from both sides to get 2t alone",
-            "Then divide both sides by 2 to find t"
-        ],
-        solution: "Step 1: 2t + 5 = 23\nStep 2: 2t = 23 - 5\nStep 3: 2t = 18\nStep 4: t = 18 ÷ 2\nStep 5: t = 9 years old",
-        premium: false,
-        topic: "Linear Equations"
-    },
-    {
-        id: 4,
-        groupId: 1,
-        title: "Garden Plot Dimensions",
-        difficulty: "Medium",
-        description: "A rectangular garden has a length that is 3 meters more than its width. If we call the width w, we can express the area as w(w + 3). Expand this expression to write the area in standard form. You can also plug in w = 5 to find the specific area for that width (either form is accepted).",
-        answer: "w²+3w",
-        acceptedAnswers: [
-            "w²+3w", "w^2+3w", "w² + 3w", "w^2 + 3w", "3w+w²", "3w+w^2",
-            "w(w+3)", "w (w+3)",
-            "40", "40 square meters", "40 m^2", "40 sqm", "40 sq meters"
-        ],
-        hints: [
-            "Use the distributive property: w × (w + 3)",
-            "Multiply w by each term in the parentheses",
-            "w × w = w², and w × 3 = 3w"
-        ],
-        solution: "Step 1: w(w + 3)\nStep 2: w × w + w × 3\nStep 3: w² + 3w (expanded form)\nOptional check when w = 5: 5² + 3(5) = 25 + 15 = 40 square meters",
-        premium: false,
-        topic: "Quadratic Expressions"
-    },
-    {
-        id: 5,
-        groupId: 1,
-        title: "The Square Courtyard Problem",
-        difficulty: "Medium",
-        description: "A square courtyard has an area of 144 square meters. To find the length of each side, you need to solve the equation x² = 144. What is the length of each side? (Note: Only consider the positive solution since length cannot be negative)",
-        answer: "12",
-        acceptedAnswers: ["12", "12m", "12 meters", "12 m", "x=12"],
-        hints: [
-            "To solve x² = 144, take the square root of both sides",
-            "Remember that √144 = 12",
-            "Since this is a length measurement, we only use the positive value"
-        ],
-        solution: "Step 1: x² = 144\nStep 2: x = ±√144\nStep 3: x = ±12\nStep 4: Since length must be positive, x = 12 meters",
-        premium: false,
-        topic: "Quadratic Equations"
-    },
+  // Grade 8 - Add/Subtract Expressions (Group 1)
+  {
+    id: 1,
+    groupId: 1,
+    title: "Combine Four Linear Triplets",
+    difficulty: "Medium",
+    description: "Add (2a - 3b - 2c) and (2b - a + 7c) to (a - 4c + 7b) and (c - 6b). Simplify the final sum.",
+    answer: "2a+2c",
+    acceptedAnswers: ["2a+2c", "2a + 2c", "2c+2a", "2c + 2a"],
+    hints: [
+      "Combine the first pair, then the second pair.",
+      "Sum the intermediate results.",
+      "Collect a, b, and c terms separately."
+    ],
+    solution: "Pair1: (2a - 3b - 2c)+(2b - a + 7c) = a - b + 5c\nPair2: (a - 4c + 7b)+(c - 6b) = a + b - 3c\nTotal: (a - b + 5c)+(a + b - 3c) = 2a + 2c",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 2,
+    groupId: 1,
+    title: "Cubic Difference then Combine",
+    difficulty: "Medium",
+    description: "Compute 2x^3 - (5x^3 + 3x - 1) and add the result to (3x^2 + 3x - 1). Simplify.",
+    answer: "-3x^3+3x^2",
+    acceptedAnswers: ["-3x^3+3x^2", "-3x^3 + 3x^2", "3x^2-3x^3", "3x^2 - 3x^3"],
+    hints: [
+      "Distribute the minus sign on the subtraction.",
+      "Combine the result with 3x^2 + 3x - 1.",
+      "Notice the linear terms cancel."
+    ],
+    solution: "2x^3 - (5x^3 + 3x - 1) = -3x^3 - 3x + 1\nAdd 3x^2 + 3x - 1 gives -3x^3 + 3x^2",
+    premium: false,
+    topic: "Polynomial Operations"
+  },
+  {
+    id: 3,
+    groupId: 1,
+    title: "Nested Subtraction with y",
+    difficulty: "Medium",
+    description: "Add (2y - 3y^2) and (1 - 5y^3) to the remainder of 5y^2 - (1 - 2y^2 + y^3). Simplify.",
+    answer: "-6y^3+4y^2+2y",
+    acceptedAnswers: ["-6y^3+4y^2+2y", "-6y^3 + 4y^2 + 2y", "4y^2+2y-6y^3", "4y^2 + 2y - 6y^3"],
+    hints: [
+      "Evaluate the inner subtraction first.",
+      "Add the two outside expressions.",
+      "Group like powers of y."
+    ],
+    solution: "5y^2 - (1 - 2y^2 + y^3) = 7y^2 - 1 - y^3\n(2y - 3y^2) + (1 - 5y^3) = -5y^3 - 3y^2 + 2y + 1\nTotal = -6y^3 + 4y^2 + 2y",
+    premium: false,
+    topic: "Polynomial Operations"
+  },
+  {
+    id: 4,
+    groupId: 1,
+    title: "Fractional Mix of x and y",
+    difficulty: "Hard",
+    description: "Take (x^3 - y^3) from (3xy - 4y^2), then add the result to (0.5xy - x^2 - 3y^2) + (2x^2 + 6y^2). Simplify.",
+    answer: "-x^3+y^3+x^2+3.5xy-y^2",
+    acceptedAnswers: ["-x^3+y^3+x^2+3.5xy-y^2", "-x^3 + y^3 + x^2 + 3.5xy - y^2", "-x^3+y^3+x^2+7/2xy-y^2", "-x^3 + y^3 + x^2 + 7/2xy - y^2"],
+    hints: [
+      "First compute (3xy - 4y^2) - (x^3 - y^3).",
+      "Simplify the second sum separately.",
+      "Combine like terms across both results."
+    ],
+    solution: "(3xy - 4y^2) - (x^3 - y^3) = -x^3 + y^3 + 3xy - 4y^2\n(0.5xy - x^2 - 3y^2) + (2x^2 + 6y^2) = x^2 + 0.5xy + 3y^2\nCombined: -x^3 + y^3 + x^2 + 3.5xy - y^2",
+    premium: false,
+    topic: "Polynomial Operations"
+  },
+  {
+    id: 5,
+    groupId: 1,
+    title: "Subtract a Sum from c - 4b",
+    difficulty: "Easy",
+    description: "Find the sum of (5a - 7b + c) and (3b - 9a), then subtract it from (c - 4b).",
+    answer: "4a",
+    acceptedAnswers: ["4a"],
+    hints: [
+      "Add the two three-term expressions first.",
+      "Subtract that result from c - 4b.",
+      "Only the a-term survives."
+    ],
+    solution: "(5a - 7b + c) + (3b - 9a) = -4a - 4b + c\n(c - 4b) - (-4a - 4b + c) = 4a",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 6,
+    groupId: 1,
+    title: "Diminish a Combined Polynomial",
+    difficulty: "Medium",
+    description: "Add (3x^2 - 7x + 5) to (2x^3 + 5x - 3), then subtract (3x^2 + 2). Simplify.",
+    answer: "2x^3-2x",
+    acceptedAnswers: ["2x^3-2x", "2x^3 - 2x"],
+    hints: [
+      "Combine the first two polynomials.",
+      "Subtract the third polynomial.",
+      "Group like terms."
+    ],
+    solution: "(3x^2 - 7x + 5)+(2x^3 + 5x - 3) = 2x^3 + 3x^2 - 2x + 2\nSubtract (3x^2 + 2) to get 2x^3 - 2x",
+    premium: false,
+    topic: "Polynomial Operations"
+  },
+  {
+    id: 7,
+    groupId: 1,
+    title: "Fill the Gap to Target Quadratic",
+    difficulty: "Easy",
+    description: "What expression must be added to 5x^2 - 7x + 2 to produce 7x^2 - 1?",
+    answer: "2x^2+7x-3",
+    acceptedAnswers: ["2x^2+7x-3", "2x^2 + 7x - 3"],
+    hints: [
+      "Target minus given equals the required addend.",
+      "Subtract each coefficient carefully."
+    ],
+    solution: "(7x^2 - 1) - (5x^2 - 7x + 2) = 2x^2 + 7x - 3",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 8,
+    groupId: 1,
+    title: "Add to Reach New Cubic Form",
+    difficulty: "Medium",
+    description: "What expression must be added to 4x^3 - 3x^2 + 2 to produce 4x^3 + 7x - 6?",
+    answer: "3x^2+7x-8",
+    acceptedAnswers: ["3x^2+7x-8", "3x^2 + 7x - 8"],
+    hints: [
+      "Subtract the original from the target.",
+      "Match coefficients term by term."
+    ],
+    solution: "(4x^3 + 7x - 6) - (4x^3 - 3x^2 + 2) = 3x^2 + 7x - 8",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 9,
+    groupId: 1,
+    title: "Required Subtrahend a - b",
+    difficulty: "Easy",
+    description: "What expression must be subtracted from 3a - 5b + c to leave 2a - 4b + c?",
+    answer: "a-b",
+    acceptedAnswers: ["a-b", "a - b", "-b+a", "-b + a"],
+    hints: [
+      "Let S be the subtrahend and solve (3a - 5b + c) - S = 2a - 4b + c.",
+      "Subtract componentwise."
+    ],
+    solution: "S = (3a - 5b + c) - (2a - 4b + c) = a - b",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 10,
+    groupId: 1,
+    title: "Subtrahend to Hit Target Quadratic",
+    difficulty: "Medium",
+    description: "What expression must be subtracted from 9x^2 + 11x - 5 to leave 6x^2 - 17x + 3?",
+    answer: "3x^2+28x-8",
+    acceptedAnswers: ["3x^2+28x-8", "3x^2 + 28x - 8"],
+    hints: [
+      "Compute original minus target.",
+      "Watch the signs on each term."
+    ],
+    solution: "(9x^2 + 11x - 5) - (6x^2 - 17x + 3) = 3x^2 + 28x - 8",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 11,
+    groupId: 1,
+    title: "Source Expression for a^2 Terms",
+    difficulty: "Hard",
+    description: "Find X so that X - (11a^2 - 6ab - 7bc) = 5a^2 + 7ab + 7bc.",
+    answer: "16a^2+ab",
+    acceptedAnswers: ["16a^2+ab", "16a^2 + ab", "ab+16a^2"],
+    hints: [
+      "Move the subtracted expression to the right side.",
+      "Add term by term."
+    ],
+    solution: "X = (5a^2 + 7ab + 7bc) + (11a^2 - 6ab - 7bc) = 16a^2 + ab",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 12,
+    groupId: 1,
+    title: "Source Expression with abc",
+    difficulty: "Medium",
+    description: "Find X so that X - (3ab + b^2c - 6ca) = 6ca - 5bc.",
+    answer: "3ab+b^2c-5bc",
+    acceptedAnswers: ["3ab+b^2c-5bc", "3ab + b^2c - 5bc"],
+    hints: [
+      "Add the subtracted expression to the target remainder.",
+      "Combine like bc terms."
+    ],
+    solution: "X = (6ca - 5bc) + (3ab + b^2c - 6ca) = 3ab + b^2c - 5bc",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 13,
+    groupId: 1,
+    title: "Add to Complete a Cubic",
+    difficulty: "Medium",
+    description: "What expression must be added to 7x^3 - 6x^2 - 5x to make 9x^3 - 6x - 7x^2?",
+    answer: "2x^3-x^2-x",
+    acceptedAnswers: ["2x^3-x^2-x", "2x^3 - x^2 - x"],
+    hints: [
+      "Take target minus given.",
+      "Align coefficients by degree."
+    ],
+    solution: "(9x^3 - 6x - 7x^2) - (7x^3 - 6x^2 - 5x) = 2x^3 - x^2 - x",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 14,
+    groupId: 1,
+    title: "Add to Reach Zero",
+    difficulty: "Easy",
+    description: "What expression must be added to 5ab - 11bc - 7ca to produce zero?",
+    answer: "-5ab+11bc+7ca",
+    acceptedAnswers: ["-5ab+11bc+7ca", "-5ab + 11bc + 7ca"],
+    hints: [
+      "You need the additive inverse of each term."
+    ],
+    solution: "-(5ab - 11bc - 7ca) = -5ab + 11bc + 7ca",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 15,
+    groupId: 1,
+    title: "Negate a Quadratic",
+    difficulty: "Easy",
+    description: "If 3x^2 - 7x + 2 is subtracted from zero, what is the result?",
+    answer: "-3x^2+7x-2",
+    acceptedAnswers: ["-3x^2+7x-2", "-3x^2 + 7x - 2"],
+    hints: [
+      "Subtracting from zero changes every sign."
+    ],
+    solution: "0 - (3x^2 - 7x + 2) = -3x^2 + 7x - 2",
+    premium: false,
+    topic: "Polynomial Operations"
+  },
+  {
+    id: 16,
+    groupId: 1,
+    title: "Difference of a Sum from 5x^2+3x-1",
+    difficulty: "Hard",
+    description: "From 5x^2 + 3x - 1 subtract the sum of (2x - 5 + 7x^2) and (3x^3 + 4 - 2x^2 + x). Simplify.",
+    answer: "-3x^3",
+    acceptedAnswers: ["-3x^3", "-3x^3+0"],
+    hints: [
+      "Combine the two parentheses first.",
+      "Then subtract from 5x^2 + 3x - 1."
+    ],
+    solution: "(2x - 5 + 7x^2) + (3x^3 + 4 - 2x^2 + x) = 3x^3 + 5x^2 + 3x - 1\n(5x^2 + 3x - 1) - (3x^3 + 5x^2 + 3x - 1) = -3x^3",
+    premium: false,
+    topic: "Polynomial Operations"
+  },
+  {
+    id: 17,
+    groupId: 1,
+    title: "Addend for Mixed Cubic",
+    difficulty: "Medium",
+    description: "Find the expression that must be added to 2x^3 - 3x^2 + x to obtain x^3 + 4x^2 - 5x.",
+    answer: "-x^3+7x^2-6x",
+    acceptedAnswers: ["-x^3+7x^2-6x", "-x^3 + 7x^2 - 6x"],
+    hints: [
+      "Compute target minus given.",
+      "Track each degree separately."
+    ],
+    solution: "(x^3 + 4x^2 - 5x) - (2x^3 - 3x^2 + x) = -x^3 + 7x^2 - 6x",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 18,
+    groupId: 1,
+    title: "Subtract Two Quadratic Forms",
+    difficulty: "Medium",
+    description: "Simplify (x^2 + 2xy - y^2) - (2x^2 - xy + 3y^2).",
+    answer: "-x^2+3xy-4y^2",
+    acceptedAnswers: ["-x^2+3xy-4y^2", "-x^2 + 3xy - 4y^2"],
+    hints: [
+      "Distribute the negative sign to the second parentheses.",
+      "Combine like terms."
+    ],
+    solution: "x^2 + 2xy - y^2 - 2x^2 + xy - 3y^2 = -x^2 + 3xy - 4y^2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 19,
+    groupId: 1,
+    title: "Add Two Cubic Binomials",
+    difficulty: "Easy",
+    description: "Simplify (4a^2b - 2ab^2 + b^3) + (-3a^2b + 5ab^2 - b^3).",
+    answer: "a^2b+3ab^2",
+    acceptedAnswers: ["a^2b+3ab^2", "a^2b + 3ab^2"],
+    hints: [
+      "Group the a^2b, ab^2, and b^3 terms separately."
+    ],
+    solution: "(4a^2b - 2ab^2 + b^3) + (-3a^2b + 5ab^2 - b^3) = a^2b + 3ab^2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 20,
+    groupId: 1,
+    title: "Subtract Quadratic in m and n",
+    difficulty: "Medium",
+    description: "Simplify (6m^2 - 3mn + n^2) - (2m^2 + mn - 4n^2).",
+    answer: "4m^2-4mn+5n^2",
+    acceptedAnswers: ["4m^2-4mn+5n^2", "4m^2 - 4mn + 5n^2"],
+    hints: [
+      "Distribute the negative through the second bracket.",
+      "Combine like terms."
+    ],
+    solution: "6m^2 - 3mn + n^2 - 2m^2 - mn + 4n^2 = 4m^2 - 4mn + 5n^2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 21,
+    groupId: 1,
+    title: "Three-Step Linear Combination",
+    difficulty: "Easy",
+    description: "Simplify (5p - 2q) + (7p + 6q) - (4p - 9q).",
+    answer: "8p+13q",
+    acceptedAnswers: ["8p+13q", "8p + 13q"],
+    hints: [
+      "Add the first two, then subtract the third.",
+      "Combine p-terms and q-terms."
+    ],
+    solution: "(5p - 2q) + (7p + 6q) = 12p + 4q; subtract (4p - 9q) to get 8p + 13q",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 22,
+    groupId: 1,
+    title: "rs Mixed Powers",
+    difficulty: "Medium",
+    description: "Simplify (3r^2s - 5rs^2) - (-2r^2s + 7rs^2).",
+    answer: "5r^2s-12rs^2",
+    acceptedAnswers: ["5r^2s-12rs^2", "5r^2s - 12rs^2"],
+    hints: [
+      "Subtracting a negative becomes addition.",
+      "Combine the r^2s and rs^2 terms."
+    ],
+    solution: "3r^2s - 5rs^2 + 2r^2s - 7rs^2 = 5r^2s - 12rs^2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 23,
+    groupId: 1,
+    title: "Linear Triple Difference",
+    difficulty: "Easy",
+    description: "Simplify (9a - 4b + 6c) - (3a + 7b - 2c).",
+    answer: "6a-11b+8c",
+    acceptedAnswers: ["6a-11b+8c", "6a - 11b + 8c"],
+    hints: [
+      "Subtract term by term."
+    ],
+    solution: "(9a - 4b + 6c) - (3a + 7b - 2c) = 6a - 11b + 8c",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 24,
+    groupId: 1,
+    title: "Add Two Linear Triples",
+    difficulty: "Easy",
+    description: "Simplify (2x - 3y + 4z) + (-5x + y - z).",
+    answer: "-3x-2y+3z",
+    acceptedAnswers: ["-3x-2y+3z", "-3x - 2y + 3z"],
+    hints: [
+      "Combine coefficients of x, y, z separately."
+    ],
+    solution: "(2x - 3y + 4z) + (-5x + y - z) = -3x - 2y + 3z",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 25,
+    groupId: 1,
+    title: "Sum of Two Quadratics in u and v",
+    difficulty: "Medium",
+    description: "Simplify (7u^2 + 2uv - v^2) + (3u^2 - 5uv + 4v^2).",
+    answer: "10u^2-3uv+3v^2",
+    acceptedAnswers: ["10u^2-3uv+3v^2", "10u^2 - 3uv + 3v^2"],
+    hints: [
+      "Combine u^2, uv, and v^2 terms separately."
+    ],
+    solution: "(7u^2 + 2uv - v^2) + (3u^2 - 5uv + 4v^2) = 10u^2 - 3uv + 3v^2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
 
-    // GEOMETRY BASICS (Group 2)
-    {
-        id: 6,
-        groupId: 2,
-        title: "The Classroom Carpet Installation",
-        difficulty: "Easy",
-        description: "A school is installing new carpet in a rectangular classroom. The room measures 8 cm in length and 5 cm in width on the floor plan. Calculate the total area to determine how much carpet to order.",
-        answer: "40",
-        acceptedAnswers: ["40", "40cm²", "40 cm²", "40 square cm"],
-        hints: [
-            "Area of rectangle = length × width",
-            "Multiply 8 by 5",
-            "Don't forget the units (cm²)"
-        ],
-        solution: "Area = length × width\nArea = 8 cm × 5 cm\nArea = 40 cm²",
-        premium: false,
-        topic: "Area"
-    },
-    {
-        id: 7,
-        groupId: 2,
-        title: "The Picture Frame Border",
-        difficulty: "Easy",
-        description: "An artist is creating a decorative border around a square painting. Each side of the square canvas measures 7 inches. Calculate the total perimeter to determine how much border material is needed to frame all four sides.",
-        answer: "28",
-        acceptedAnswers: ["28", "28in", "28 in", "28 inches"],
-        hints: [
-            "A square has 4 equal sides",
-            "Perimeter = side + side + side + side",
-            "Or: Perimeter = 4 × side"
-        ],
-        solution: "Perimeter = 4 × side\nPerimeter = 4 × 7 inches\nPerimeter = 28 inches",
-        premium: false,
-        topic: "Perimeter"
-    },
-    {
-        id: 8,
-        groupId: 2,
-        title: "The Sailboat Flag Design",
-        difficulty: "Medium",
-        description: "A boat designer is creating a triangular flag for a sailboat. The flag has a base of 10 cm and a height of 6 cm. Calculate the area of fabric needed to manufacture this flag design.",
-        answer: "30",
-        acceptedAnswers: ["30", "30cm²", "30 cm²", "30 square cm"],
-        hints: [
-            "Area of triangle = ½ × base × height",
-            "Multiply base (10) by height (6), then divide by 2",
-            "10 × 6 = 60, then 60 ÷ 2 = ?"
-        ],
-        solution: "Area = ½ × base × height\nArea = ½ × 10 cm × 6 cm\nArea = ½ × 60 cm²\nArea = 30 cm²",
-        premium: false,
-        topic: "Area"
-    },
-    {
-        id: 9,
-        groupId: 2,
-        title: "The Bicycle Wheel Measurement",
-        difficulty: "Medium",
-        description: "A bicycle mechanic needs to order new rubber for a bike wheel. The wheel has a radius of 5 cm. Calculate the circumference to determine the exact length of rubber needed to wrap around the entire wheel. (Use π ≈ 3.14)",
-        answer: "31.4",
-        acceptedAnswers: ["31.4", "31.4cm", "31.4 cm", "10π", "10π cm"],
-        hints: [
-            "Circumference = 2πr, where r is radius",
-            "Substitute r = 5 and π = 3.14",
-            "2 × 3.14 × 5 = ?"
-        ],
-        solution: "Circumference = 2πr\nCircumference = 2 × 3.14 × 5\nCircumference = 31.4 cm",
-        premium: false,
-        topic: "Circles"
-    },
-    {
-        id: 10,
-        groupId: 2,
-        title: "The Storage Container Capacity",
-        difficulty: "Medium",
-        description: "A warehouse manager is ordering cubic storage containers for inventory. Each container has sides measuring 4 meters. Calculate the volume of each container to determine how much storage capacity it provides.",
-        answer: "64",
-        acceptedAnswers: ["64", "64m³", "64 m³", "64 cubic meters"],
-        hints: [
-            "Volume of cube = side³",
-            "Calculate 4 × 4 × 4",
-            "This is 4 cubed or 4³"
-        ],
-        solution: "Volume = side³\nVolume = 4³\nVolume = 4 × 4 × 4\nVolume = 64 m³",
-        premium: false,
-        topic: "Volume"
-    },
+  // Grade 9 - Polynomial Simplification (Group 2)
+  {
+    id: 26,
+    groupId: 2,
+    title: "Subtract Two Cubics in x",
+    difficulty: "Medium",
+    description: "Simplify (6x^3 - 2x^2 + x) - (4x^3 + x^2 - 5x).",
+    answer: "2x^3-3x^2+6x",
+    acceptedAnswers: ["2x^3-3x^2+6x", "2x^3 - 3x^2 + 6x"],
+    hints: [
+      "Distribute the subtraction.",
+      "Collect like terms."
+    ],
+    solution: "6x^3 - 2x^2 + x - 4x^3 - x^2 + 5x = 2x^3 - 3x^2 + 6x",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 27,
+    groupId: 2,
+    title: "Combine Two Quadratics in a and b",
+    difficulty: "Easy",
+    description: "Simplify (a^2 - 4ab + b^2) + (3ab - 2b^2).",
+    answer: "a^2-ab-b^2",
+    acceptedAnswers: ["a^2-ab-b^2", "a^2 - ab - b^2"],
+    hints: [
+      "Combine ab terms then b^2 terms."
+    ],
+    solution: "a^2 - 4ab + b^2 + 3ab - 2b^2 = a^2 - ab - b^2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 28,
+    groupId: 2,
+    title: "Combine with Opposite Signs in xy",
+    difficulty: "Medium",
+    description: "Simplify (-2x^2y + 5xy^2) - (-3x^2y - xy^2).",
+    answer: "x^2y+6xy^2",
+    acceptedAnswers: ["x^2y+6xy^2", "x^2y + 6xy^2"],
+    hints: [
+      "Subtracting a negative flips the sign.",
+      "Combine x^2y and xy^2 terms."
+    ],
+    solution: "-2x^2y + 5xy^2 + 3x^2y + xy^2 = x^2y + 6xy^2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 29,
+    groupId: 2,
+    title: "Cubic and Linear Mix in k",
+    difficulty: "Easy",
+    description: "Simplify (4k^3 - 7k + 2) + (-k^3 + 5k - 9).",
+    answer: "3k^3-2k-7",
+    acceptedAnswers: ["3k^3-2k-7", "3k^3 - 2k - 7"],
+    hints: [
+      "Combine k^3 terms, then k terms, then constants."
+    ],
+    solution: "4k^3 - 7k + 2 - k^3 + 5k - 9 = 3k^3 - 2k - 7",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 30,
+    groupId: 2,
+    title: "Fractional Coefficients in a and b",
+    difficulty: "Medium",
+    description: "Simplify (5/2 a - 3/4 b) + (3/2 a + 1/4 b).",
+    answer: "4a-0.5b",
+    acceptedAnswers: ["4a-0.5b", "4a - 0.5b", "4a-1/2b", "4a - 1/2 b", "4a-1/2 b"],
+    hints: [
+      "Add the a-terms, then the b-terms.",
+      "Convert to halves for clarity."
+    ],
+    solution: "(5/2 + 3/2)a = 4a; (-3/4 + 1/4)b = -1/2 b",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 31,
+    groupId: 2,
+    title: "Fractions in x and y",
+    difficulty: "Medium",
+    description: "Simplify (7/3 x - 5/6 y) - (2/3 x + 1/6 y).",
+    answer: "5/3x-y",
+    acceptedAnswers: ["5/3x-y", "5/3 x - y", "(5/3)x - y"],
+    hints: [
+      "Subtract numerators with common denominators.",
+      "Combine y-terms carefully."
+    ],
+    solution: "(7/3 - 2/3)x + (-5/6 - 1/6)y = (5/3)x - y",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 32,
+    groupId: 2,
+    title: "Decimals in a^2",
+    difficulty: "Easy",
+    description: "Simplify (0.5a^2 - 3a + 4) + (1.5a^2 + a - 6).",
+    answer: "2a^2-2a-2",
+    acceptedAnswers: ["2a^2-2a-2", "2a^2 - 2a - 2"],
+    hints: [
+      "Add a^2 coefficients, then a, then constants."
+    ],
+    solution: "0.5a^2 + 1.5a^2 = 2a^2; -3a + a = -2a; 4 - 6 = -2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 33,
+    groupId: 2,
+    title: "Three-Step Linear in x",
+    difficulty: "Easy",
+    description: "Simplify (8x - 3) - (2x + 5) + (x - 4).",
+    answer: "7x-12",
+    acceptedAnswers: ["7x-12", "7x - 12"],
+    hints: [
+      "Work left to right or combine like terms directly."
+    ],
+    solution: "8x - 3 - 2x - 5 + x - 4 = 7x - 12",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 34,
+    groupId: 2,
+    title: "Net Result in m and n",
+    difficulty: "Medium",
+    description: "Simplify (3m - 2n) - (5m + n) + (2m + 4n).",
+    answer: "n",
+    acceptedAnswers: ["n"],
+    hints: [
+      "Combine m-terms and n-terms separately."
+    ],
+    solution: "3m - 2n - 5m - n + 2m + 4n = n",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 35,
+    groupId: 2,
+    title: "Subtracting Mixed b^2 Terms",
+    difficulty: "Hard",
+    description: "Simplify (6a^2b^2 - 4ab^2 + 2b^2) - (3a^2b^2 - 5ab^2 - b^2).",
+    answer: "3a^2b^2+ab^2+3b^2",
+    acceptedAnswers: ["3a^2b^2+ab^2+3b^2", "3a^2b^2 + ab^2 + 3b^2"],
+    hints: [
+      "Distribute the negative across the second parentheses.",
+      "Combine like b^2 factors."
+    ],
+    solution: "6a^2b^2 - 4ab^2 + 2b^2 - 3a^2b^2 + 5ab^2 + b^2 = 3a^2b^2 + ab^2 + 3b^2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
 
-    // LOGIC & PUZZLES (Group 3)
-    {
-        id: 11,
-        groupId: 3,
-        title: "The Building Floor Numbers",
-        difficulty: "Easy",
-        description: "An elevator in an office building stops only at even-numbered floors: 2nd, 4th, 6th, and 8th floors so far. If the pattern continues, which floor will the elevator stop at next?",
-        answer: "10",
-        acceptedAnswers: ["10", "10th", "10th floor"],
-        hints: [
-            "Look for a pattern in how the numbers change",
-            "Each number increases by 2",
-            "8 + 2 = ?"
-        ],
-        solution: "This is a sequence of even numbers increasing by 2.\n2, 4 (+2), 6 (+2), 8 (+2), 10",
-        premium: false,
-        topic: "Patterns"
-    },
-    {
-        id: 12,
-        groupId: 3,
-        title: "The Family Reunion Age Mystery",
-        difficulty: "Medium",
-        description: "At a family reunion, Sarah mentions she is 12 years old. Her mother reveals that she is exactly 3 times Sarah's age. Can you determine the mother's current age based on this relationship?",
-        answer: "36",
-        acceptedAnswers: ["36", "36 years", "36 years old"],
-        hints: [
-            "3 times means multiply by 3",
-            "Mother's age = Sarah's age × 3",
-            "12 × 3 = ?"
-        ],
-        solution: "Mother's age = 3 × Sarah's age\nMother's age = 3 × 12\nMother's age = 36 years old",
-        premium: false,
-        topic: "Logic"
-    },
-    {
-        id: 13,
-        groupId: 3,
-        title: "The Mismatched Locker Numbers",
-        difficulty: "Easy",
-        description: "A school gym assigns locker numbers in a specific pattern. The assigned lockers are: 2, 4, 7, 8, 10. However, one locker number doesn't follow the same rule as the others. Which number is the odd one out?",
-        answer: "7",
-        acceptedAnswers: ["7"],
-        hints: [
-            "Look at whether numbers are even or odd",
-            "Even numbers are divisible by 2",
-            "Which number is odd?"
-        ],
-        solution: "All numbers except 7 are even (divisible by 2).\n2, 4, 8, 10 are even.\n7 is odd, so it doesn't belong.",
-        premium: false,
-        topic: "Logic"
-    },
-    {
-        id: 14,
-        groupId: 3,
-        title: "The Rabbit Population Growth Model",
-        difficulty: "Hard",
-        description: "A biologist is studying rabbit population growth. The monthly population follows this pattern: 1, 1, 2, 3, 5, 8... Each month's population equals the sum of the two previous months. What will the population be in the next month?",
-        answer: "13",
-        acceptedAnswers: ["13", "13 rabbits"],
-        hints: [
-            "Each number is the sum of the previous two numbers",
-            "1 + 1 = 2, 1 + 2 = 3, 2 + 3 = 5, 3 + 5 = 8",
-            "Add the last two numbers: 5 + 8 = ?"
-        ],
-        solution: "This is the Fibonacci sequence.\nEach term = sum of previous two terms\n5 + 8 = 13",
-        premium: false,
-        topic: "Patterns"
-    },
-    {
-        id: 15,
-        groupId: 3,
-        title: "The Secret Code Decoder",
-        difficulty: "Hard",
-        description: "A spy receives a coded message where each letter has a numerical value: A = 1, B = 2, C = 3, and so on. The spy intercepts the code word 'CAB'. What is the total numerical value of this coded message?",
-        answer: "6",
-        acceptedAnswers: ["6"],
-        hints: [
-            "Find the value of each letter: C, A, B",
-            "C = 3, A = 1, B = 2",
-            "Add them together: 3 + 1 + 2 = ?"
-        ],
-        solution: "C = 3, A = 1, B = 2\nSum = 3 + 1 + 2 = 6",
-        premium: false,
-        topic: "Logic"
-    },
-
-    // WORD PROBLEMS (Group 4)
-    {
-        id: 16,
-        groupId: 4,
-        title: "The Farmer's Market Apple Donation",
-        difficulty: "Easy",
-        description: "Emma runs a fruit stand at the farmer's market with 15 fresh apples. A local charity asks for a donation, and she generously gives 6 apples. How many apples remain in her inventory for customers?",
-        answer: "9",
-        acceptedAnswers: ["9", "9 apples"],
-        hints: [
-            "This is a subtraction problem",
-            "Start with 15, take away 6",
-            "15 - 6 = ?"
-        ],
-        solution: "Apples left = Total apples - Apples given\nApples left = 15 - 6\nApples left = 9",
-        premium: false,
-        topic: "Basic Operations"
-    },
-    {
-        id: 17,
-        groupId: 4,
-        title: "The Back-to-School Supply Shopping",
-        difficulty: "Easy",
-        description: "You're shopping for school supplies at the bookstore. Each premium pencil costs $2, and each high-quality eraser costs $1. If you need to buy 3 pencils and 2 erasers, what is your total expense?",
-        answer: "8",
-        acceptedAnswers: ["8", "$8", "8 dollars"],
-        hints: [
-            "Calculate cost of pencils: 3 × $2",
-            "Calculate cost of erasers: 2 × $1",
-            "Add both costs together"
-        ],
-        solution: "Pencils cost = 3 × $2 = $6\nErasers cost = 2 × $1 = $2\nTotal = $6 + $2 = $8",
-        premium: false,
-        topic: "Money"
-    },
-    {
-        id: 18,
-        groupId: 4,
-        title: "The Highway Road Trip Calculation",
-        difficulty: "Medium",
-        description: "During a cross-country road trip, your family drives steadily for 2 hours and covers a distance of 120 miles on the highway. Calculate your average travel speed to estimate arrival times for future destinations.",
-        answer: "60",
-        acceptedAnswers: ["60", "60mph", "60 mph", "60 miles per hour"],
-        hints: [
-            "Speed = Distance ÷ Time",
-            "Distance = 120 miles, Time = 2 hours",
-            "120 ÷ 2 = ?"
-        ],
-        solution: "Speed = Distance ÷ Time\nSpeed = 120 miles ÷ 2 hours\nSpeed = 60 mph",
-        premium: false,
-        topic: "Speed & Distance"
-    },
-    {
-        id: 19,
-        groupId: 4,
-        title: "The Holiday Sale Shopping Strategy",
-        difficulty: "Medium",
-        description: "You spot a stylish shirt in a department store with an original price tag of $40. The store is having a holiday sale with 25% off all clothing items. Calculate the final sale price to determine if it fits your budget.",
-        answer: "30",
-        acceptedAnswers: ["30", "$30", "30 dollars"],
-        hints: [
-            "Find 25% of $40 first",
-            "25% = 0.25, so 0.25 × 40 = $10",
-            "Sale price = Original price - Discount"
-        ],
-        solution: "Discount = 25% of $40 = 0.25 × 40 = $10\nSale price = $40 - $10 = $30",
-        premium: false,
-        topic: "Percentages"
-    },
-    {
-        id: 20,
-        groupId: 4,
-        title: "The Construction Project Deadline",
-        difficulty: "Hard",
-        description: "A construction manager knows that 3 workers can paint a building in 6 hours. Due to a tight deadline, the manager decides to hire 6 workers instead. How many hours will it take the larger team to complete the same painting job?",
-        answer: "3",
-        acceptedAnswers: ["3", "3 hours", "3hrs"],
-        hints: [
-            "This is an inverse proportion problem",
-            "More workers = less time needed",
-            "If you double the workers, you halve the time"
-        ],
-        solution: "Total work = 3 workers × 6 hours = 18 worker-hours\nWith 6 workers: Time = 18 ÷ 6 = 3 hours",
-        premium: false,
-        topic: "Ratios & Proportions"
-    },
-
-    // Additional problems for variety
-    {
-        id: 21,
-        groupId: 1,
-        title: "The Recipe Scaling Challenge",
-        difficulty: "Medium",
-        description: "A chef is scaling a recipe for a catering event. The original recipe calls for a certain amount of flour x (in cups), and three halves of this amount (3x/2) equals 9 cups. Solve for x to find the base flour measurement needed.",
-        answer: "6",
-        acceptedAnswers: ["6", "6.0", "x=6", "6 cups"],
-        hints: [
-            "Multiply both sides by 2 first",
-            "This gives you 3x = 18",
-            "Then divide by 3"
-        ],
-        solution: "Step 1: 3x/2 = 9\nStep 2: 3x = 18 (multiply both sides by 2)\nStep 3: x = 6 (divide by 3)",
-        premium: false,
-        topic: "Linear Equations"
-    },
-    {
-        id: 22,
-        groupId: 2,
-        title: "The Ladder Safety Calculation",
-        difficulty: "Hard",
-        description: "A firefighter places a ladder against a building. The base of the ladder is 3 meters from the wall, and it reaches 4 meters up the building. Using the Pythagorean theorem, calculate the length of the ladder to ensure it meets safety requirements.",
-        answer: "5",
-        acceptedAnswers: ["5", "5.0", "5 meters"],
-        hints: [
-            "Use the Pythagorean theorem: a² + b² = c²",
-            "3² + 4² = c²",
-            "9 + 16 = 25, so c = √25"
-        ],
-        solution: "a² + b² = c²\n3² + 4² = c²\n9 + 16 = c²\n25 = c²\nc = √25 = 5",
-        premium: false,
-        topic: "Triangles"
-    },
-    {
-        id: 23,
-        groupId: 3,
-        title: "The Team Formation Problem",
-        difficulty: "Medium",
-        description: "A PE teacher wants to divide students into teams of exactly 3 players. There are 20 students numbered 1 through 20. How many student numbers between 1 and 20 are divisible by 3, which would be team captains?",
-        answer: "6",
-        acceptedAnswers: ["6", "6 students"],
-        hints: [
-            "List the multiples of 3 up to 20",
-            "3, 6, 9, 12, 15, 18",
-            "Count how many there are"
-        ],
-        solution: "Multiples of 3 between 1 and 20:\n3, 6, 9, 12, 15, 18\nTotal count = 6",
-        premium: false,
-        topic: "Number Theory"
-    },
-    {
-        id: 24,
-        groupId: 4,
-        title: "The Semester Grade Calculation",
-        difficulty: "Medium",
-        description: "A student wants to know their overall performance for the semester. Their test scores across 4 exams are: 85, 90, 78, and 95. Calculate the average score to determine their semester grade and academic standing.",
-        answer: "87",
-        acceptedAnswers: ["87", "87.0"],
-        hints: [
-            "Average = Sum of all scores ÷ Number of tests",
-            "Add: 85 + 90 + 78 + 95",
-            "Divide the sum by 4"
-        ],
-        solution: "Sum = 85 + 90 + 78 + 95 = 348\nAverage = 348 ÷ 4 = 87",
-        premium: false,
-        topic: "Statistics"
-    },
-    {
-        id: 25,
-        groupId: 1,
-        title: "The Algebraic Pattern Recognition",
-        difficulty: "Medium",
-        description: "An engineer is simplifying a structural formula that contains the expression x² - 4. To optimize calculations, they need to factor this expression using the difference of squares pattern. What is the factored form?",
-        answer: "(x+2)(x-2)",
-        acceptedAnswers: [
-            "(x+2)(x-2)", "(x-2)(x+2)", "(x + 2)(x - 2)", "(x - 2)(x + 2)",
-            "x^2-4=(x+2)(x-2)", "x^2-4=(x-2)(x+2)", "x^2 - 4 = (x + 2)(x - 2)", "x^2 - 4 = (x - 2)(x + 2)"
-        ],
-        hints: [
-            "This is a difference of squares",
-            "Pattern: a² - b² = (a + b)(a - b)",
-            "Here, a = x and b = 2"
-        ],
-        solution: "x² - 4 = x² - 2²\nThis is a difference of squares\nx² - 2² = (x + 2)(x - 2)",
-        premium: false,
-        topic: "Factoring"
-    },
-    {
-        id: 26,
-        groupId: 2,
-        title: "The Circular Garden Bed Design",
-        difficulty: "Medium",
-        description: "A landscape architect is designing a circular flower bed for a park. The flower bed will have a radius of 3 cm on the blueprint. Calculate the area to estimate how much soil and mulch to order. (Use π ≈ 3.14)",
-        answer: "28.26",
-        acceptedAnswers: ["28.26", "28.26cm²", "28.26 cm²", "9π", "9π cm²"],
-        hints: [
-            "Area of circle = πr²",
-            "Square the radius first: 3² = 9",
-            "Then multiply by π: 9 × 3.14"
-        ],
-        solution: "Area = πr²\nArea = 3.14 × 3²\nArea = 3.14 × 9\nArea = 28.26 cm²",
-        premium: false,
-        topic: "Circles"
-    },
-    {
-        id: 27,
-        groupId: 3,
-        title: "The Cryptography Key Selection",
-        difficulty: "Easy",
-        description: "A computer security system requires a prime number as an encryption key. From the available options: 15, 17, 18, 20, which number should the system administrator select as it is the only prime number?",
-        answer: "17",
-        acceptedAnswers: ["17"],
-        hints: [
-            "A prime number is only divisible by 1 and itself",
-            "Check each number for factors",
-            "15 = 3×5, 18 = 2×9, 20 = 4×5, but 17...?"
-        ],
-        solution: "15 = 3 × 5 (not prime)\n17 has no factors other than 1 and 17 (prime!)\n18 = 2 × 9 (not prime)\n20 = 4 × 5 (not prime)",
-        premium: false,
-        topic: "Number Theory"
-    },
-    {
-        id: 28,
-        groupId: 4,
-        title: "The School Enrollment Planning",
-        difficulty: "Hard",
-        description: "A school principal is analyzing enrollment data. The current class has a boy-to-girl ratio of 3:2. The registrar confirms there are exactly 15 boys enrolled. Using this ratio, determine how many girls are in the class for resource planning.",
-        answer: "10",
-        acceptedAnswers: ["10", "10 girls"],
-        hints: [
-            "The ratio 3:2 means for every 3 boys, there are 2 girls",
-            "Find how many groups of 3 are in 15 boys",
-            "15 ÷ 3 = 5 groups, so multiply 2 by 5"
-        ],
-        solution: "Ratio boys:girls = 3:2\nIf there are 15 boys, that's 15÷3 = 5 groups\nGirls = 2 × 5 = 10",
-        premium: false,
-        topic: "Ratios"
-    },
-    {
-        id: 29,
-        groupId: 1,
-        title: "The Temperature Tolerance Problem",
-        difficulty: "Hard",
-        description: "A laboratory machine must maintain a temperature exactly 5 degrees away from 3°C to function properly. The absolute deviation is represented by |x - 3| = 5. Find both possible temperature settings x that satisfy this requirement.",
-        answer: "8,-2",
-        acceptedAnswers: ["8,-2", "-2,8", "8 or -2", "-2 or 8", "x=8 or x=-2", "8 and -2"],
-        hints: [
-            "Absolute value means distance from zero",
-            "|x - 3| = 5 means x - 3 = 5 OR x - 3 = -5",
-            "Solve both equations"
-        ],
-        solution: "Case 1: x - 3 = 5 → x = 8\nCase 2: x - 3 = -5 → x = -2\nSolutions: x = 8 or x = -2",
-        premium: false,
-        topic: "Absolute Value"
-    },
-    {
-        id: 30,
-        groupId: 4,
-        title: "The Savings Account Growth Plan",
-        difficulty: "Hard",
-        description: "You're planning your financial future and decide to invest $1000 in a savings account offering 5% simple interest per year. Calculate how much interest you will earn after 2 years to determine your total savings growth.",
-        answer: "100",
-        acceptedAnswers: ["100", "$100", "100 dollars"],
-        hints: [
-            "Simple Interest = Principal × Rate × Time",
-            "Principal = $1000, Rate = 5% = 0.05, Time = 2 years",
-            "I = 1000 × 0.05 × 2"
-        ],
-        solution: "Simple Interest = P × R × T\nI = $1000 × 0.05 × 2\nI = $1000 × 0.10\nI = $100",
-        premium: false,
-        topic: "Finance"
-    }
+  // Grade 9 - Expression Reconstruction (Group 3)
+  {
+    id: 36,
+    groupId: 3,
+    title: "Addend for a Quadratic Target",
+    difficulty: "Medium",
+    description: "Find E so that E + (2x^2 - 3x + 1) = 5x^2 + x - 4.",
+    answer: "3x^2+4x-5",
+    acceptedAnswers: ["3x^2+4x-5", "3x^2 + 4x - 5"],
+    hints: [
+      "Subtract the known addend from the target."
+    ],
+    solution: "(5x^2 + x - 4) - (2x^2 - 3x + 1) = 3x^2 + 4x - 5",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 37,
+    groupId: 3,
+    title: "Subtrahend for a Quadratic Target",
+    difficulty: "Medium",
+    description: "Find S so that (9y^2 - 2y + 7) - S = 4y^2 + 5y - 1.",
+    answer: "5y^2-7y+8",
+    acceptedAnswers: ["5y^2-7y+8", "5y^2 - 7y + 8"],
+    hints: [
+      "Move the target to the left to isolate S."
+    ],
+    solution: "S = (9y^2 - 2y + 7) - (4y^2 + 5y - 1) = 5y^2 - 7y + 8",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 38,
+    groupId: 3,
+    title: "Addend to Reach a^2 + 2ab + 3b^2",
+    difficulty: "Medium",
+    description: "Find the expression that must be added to (-3a^2 + 4ab - b^2) to obtain (a^2 + 2ab + 3b^2).",
+    answer: "4a^2-2ab+4b^2",
+    acceptedAnswers: ["4a^2-2ab+4b^2", "4a^2 - 2ab + 4b^2"],
+    hints: [
+      "Compute target minus given."
+    ],
+    solution: "(a^2 + 2ab + 3b^2) - (-3a^2 + 4ab - b^2) = 4a^2 - 2ab + 4b^2",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 39,
+    groupId: 3,
+    title: "Subtrahend for Cubic in x",
+    difficulty: "Hard",
+    description: "Find S so that (7x^3 - x) - S = 2x^3 + 5x.",
+    answer: "5x^3-6x",
+    acceptedAnswers: ["5x^3-6x", "5x^3 - 6x"],
+    hints: [
+      "Rearrange to S = (7x^3 - x) - (2x^3 + 5x)."
+    ],
+    solution: "S = 7x^3 - x - 2x^3 - 5x = 5x^3 - 6x",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 40,
+    groupId: 3,
+    title: "Addend for pq Mix",
+    difficulty: "Medium",
+    description: "Find the expression to add to (4p^2q - 3pq^2) to obtain (10p^2q + pq^2).",
+    answer: "6p^2q+4pq^2",
+    acceptedAnswers: ["6p^2q+4pq^2", "6p^2q + 4pq^2"],
+    hints: [
+      "Target minus current gives the needed addend."
+    ],
+    solution: "(10p^2q + pq^2) - (4p^2q - 3pq^2) = 6p^2q + 4pq^2",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 41,
+    groupId: 3,
+    title: "Subtrahend for Quadratic in m",
+    difficulty: "Medium",
+    description: "Find the expression that must be subtracted from (8m^2 + 6m - 5) to leave (-m^2 + 2m + 9).",
+    answer: "9m^2+4m-14",
+    acceptedAnswers: ["9m^2+4m-14", "9m^2 + 4m - 14"],
+    hints: [
+      "Set S so that original - S = target.",
+      "Solve S = original - target."
+    ],
+    solution: "S = (8m^2 + 6m - 5) - (-m^2 + 2m + 9) = 9m^2 + 4m - 14",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 42,
+    groupId: 3,
+    title: "Addend for Linear Pair",
+    difficulty: "Easy",
+    description: "Find the expression to add to (5r - 3s) so the result is (12r + 4s).",
+    answer: "7r+7s",
+    acceptedAnswers: ["7r+7s", "7r + 7s"],
+    hints: [
+      "Addend = target - current."
+    ],
+    solution: "(12r + 4s) - (5r - 3s) = 7r + 7s",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 43,
+    groupId: 3,
+    title: "Additive Inverse of a Cubic",
+    difficulty: "Easy",
+    description: "What expression must be added to (2x^3 - x^2 - x) so that the total is zero?",
+    answer: "-2x^3+x^2+x",
+    acceptedAnswers: ["-2x^3+x^2+x", "-2x^3 + x^2 + x"],
+    hints: [
+      "Use the additive inverse of each term."
+    ],
+    solution: "-(2x^3 - x^2 - x) = -2x^3 + x^2 + x",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 44,
+    groupId: 3,
+    title: "Subtrahend for Linear Triple",
+    difficulty: "Medium",
+    description: "Find S so that (3a - 2b + c) - S = -a + 4b - c.",
+    answer: "4a-6b+2c",
+    acceptedAnswers: ["4a-6b+2c", "4a - 6b + 2c"],
+    hints: [
+      "Solve S = (3a - 2b + c) - (-a + 4b - c)."
+    ],
+    solution: "S = 3a - 2b + c + a - 4b + c = 4a - 6b + 2c",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 45,
+    groupId: 3,
+    title: "Addend for Quadratic in k",
+    difficulty: "Medium",
+    description: "Find S so that (6k^2 - 5k + 2) + S = k^2 + 9k - 7.",
+    answer: "-5k^2+14k-9",
+    acceptedAnswers: ["-5k^2+14k-9", "-5k^2 + 14k - 9"],
+    hints: [
+      "Subtract the given from the target."
+    ],
+    solution: "(k^2 + 9k - 7) - (6k^2 - 5k + 2) = -5k^2 + 14k - 9",
+    premium: false,
+    topic: "Polynomial Equations"
+  },
+  {
+    id: 46,
+    groupId: 3,
+    title: "Net of Symmetric Linear Sum",
+    difficulty: "Easy",
+    description: "Simplify (x + y + z) + (x - y + z) - (2x + 3z).",
+    answer: "-z",
+    acceptedAnswers: ["-z"],
+    hints: [
+      "Combine x, y, z separately."
+    ],
+    solution: "(x + y + z) + (x - y + z) = 2x + 2z; subtract (2x + 3z) to get -z",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 47,
+    groupId: 3,
+    title: "Subtract a Negative Triple",
+    difficulty: "Easy",
+    description: "Simplify (4a - 3b + 2c) - (-2a + b - 5c).",
+    answer: "6a-4b+7c",
+    acceptedAnswers: ["6a-4b+7c", "6a - 4b + 7c"],
+    hints: [
+      "Subtracting a negative flips signs."
+    ],
+    solution: "4a - 3b + 2c + 2a - b + 5c = 6a - 4b + 7c",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 48,
+    groupId: 3,
+    title: "Combine Mixed xy Powers",
+    difficulty: "Medium",
+    description: "Simplify (5x^2y - 2xy^2 + y^3) + (-3x^2y + 4xy^2 - y^3).",
+    answer: "2x^2y+2xy^2",
+    acceptedAnswers: ["2x^2y+2xy^2", "2x^2y + 2xy^2"],
+    hints: [
+      "Group x^2y, xy^2, and y^3 terms."
+    ],
+    solution: "5x^2y - 2xy^2 + y^3 - 3x^2y + 4xy^2 - y^3 = 2x^2y + 2xy^2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 49,
+    groupId: 3,
+    title: "Difference of Two Squares of Binomials",
+    difficulty: "Hard",
+    description: "Simplify (2a - 3b)^2 - (a - b)^2.",
+    answer: "3a^2-10ab+8b^2",
+    acceptedAnswers: ["3a^2-10ab+8b^2", "3a^2 - 10ab + 8b^2"],
+    hints: [
+      "Expand each square separately.",
+      "Subtract the second expansion from the first."
+    ],
+    solution: "(4a^2 - 12ab + 9b^2) - (a^2 - 2ab + b^2) = 3a^2 - 10ab + 8b^2",
+    premium: false,
+    topic: "Polynomial Simplification"
+  },
+  {
+    id: 50,
+    groupId: 3,
+    title: "Sum of Two Symmetric Squares",
+    difficulty: "Easy",
+    description: "Simplify (x - 2)^2 + (x + 2)^2.",
+    answer: "2x^2+8",
+    acceptedAnswers: ["2x^2+8", "2x^2 + 8"],
+    hints: [
+      "Expand each square.",
+      "Combine like terms."
+    ],
+    solution: "(x^2 - 4x + 4) + (x^2 + 4x + 4) = 2x^2 + 8",
+    premium: false,
+    topic: "Polynomial Simplification"
+  }
 ];
 
-// Override legacy data with the current 6-problem seed to avoid showing old IDs like 29.
-problemGroups.length = 0;
-problemGroups.push(
-    { id: 1, name: "Algebra Fundamentals", description: "Master basic algebraic equations and expressions" },
-    { id: 2, name: "Geometry Basics", description: "Explore shapes, areas, and perimeters" }
-);
-
-problems.length = 0;
-problems.push(
-    {
-        id: 1,
-        groupId: 1,
-        title: "Shopping Cart Total",
-        difficulty: "Easy",
-        description: "Emma bought 4 notebooks at $3 each and some pens at $2 each. Her total was $20. Write and solve an equation to find how many pens she bought. Let p represent the number of pens.",
-        answer: "4",
-        acceptedAnswers: ["4", "4 pens", "p=4", "p = 4"],
-        hints: [
-            "Set up the equation: 4(3) + 2p = 20",
-            "First calculate 4 x 3 = 12",
-            "Subtract 12 from both sides, then divide by 2"
-        ],
-        solution: "Step 1: 4(3) + 2p = 20\nStep 2: 12 + 2p = 20\nStep 3: 2p = 20 - 12\nStep 4: 2p = 8\nStep 5: p = 4 pens",
-        premium: false,
-        topic: "Linear Equations"
-    },
-    {
-        id: 2,
-        groupId: 1,
-        title: "Gym Membership Costs",
-        difficulty: "Easy",
-        description: "A gym charges a $50 signup fee plus $30 per month. Write an expression for the total cost after m months, then calculate the total cost for 6 months.",
-        answer: "230",
-        acceptedAnswers: ["230", "$230", "230 dollars", "50+30(6)", "50 + 180"],
-        hints: [
-            "The signup fee is $50 (one-time)",
-            "Monthly cost is $30 x m",
-            "Total = 50 + 30m, then substitute m = 6"
-        ],
-        solution: "Step 1: Total cost = 50 + 30m\nStep 2: For m = 6: Total = 50 + 30(6)\nStep 3: Total = 50 + 180\nStep 4: Total = $230",
-        premium: false,
-        topic: "Algebraic Expressions"
-    },
-    {
-        id: 3,
-        groupId: 1,
-        title: "Pizza Party Planning",
-        difficulty: "Medium",
-        description: "A pizza restaurant charges a $15 delivery fee plus $12 per large pizza. If the total bill was $87, how many large pizzas were ordered? Solve the equation: 15 + 12p = 87",
-        answer: "6",
-        acceptedAnswers: ["6", "6 pizzas", "p=6", "p = 6"],
-        hints: [
-            "Start with equation: 15 + 12p = 87",
-            "Subtract the delivery fee (15) from both sides",
-            "Then divide the result by the cost per pizza (12)"
-        ],
-        solution: "Step 1: 15 + 12p = 87\nStep 2: 12p = 87 - 15\nStep 3: 12p = 72\nStep 4: p = 72 / 12\nStep 5: p = 6 pizzas",
-        premium: false,
-        topic: "Linear Equations"
-    },
-    {
-        id: 4,
-        groupId: 2,
-        title: "Rectangular Garden Design",
-        difficulty: "Medium",
-        description: "A rectangular garden has a length of 15 meters and a width of 8 meters. Calculate the area of the garden in square meters. (Area = length x width)",
-        answer: "120",
-        acceptedAnswers: ["120", "120 square meters", "120 m^2", "120 sqm"],
-        hints: [
-            "Use the formula: Area = length x width",
-            "Length = 15 meters, Width = 8 meters",
-            "Multiply these values together"
-        ],
-        solution: "Step 1: Area = length x width\nStep 2: Area = 15 x 8\nStep 3: Area = 120 square meters",
-        premium: false,
-        topic: "Geometry"
-    },
-    {
-        id: 5,
-        groupId: 1,
-        title: "Square Playground Area",
-        difficulty: "Hard",
-        description: "A square playground has an area of 225 square meters. Find the length of each side of the playground by solving: x^2 = 225. Remember to only use the positive solution.",
-        answer: "15",
-        acceptedAnswers: ["15", "15 meters", "15m", "15 m", "x=15"],
-        hints: [
-            "To solve x^2 = 225, take the square root of both sides",
-            "Calculate the square root of 225",
-            "Only use the positive value since length cannot be negative"
-        ],
-        solution: "Step 1: x^2 = 225\nStep 2: x = ±sqrt(225)\nStep 3: x = ±15\nStep 4: Since length must be positive, x = 15 meters",
-        premium: false,
-        topic: "Quadratic Equations"
-    },
-    {
-        id: 6,
-        groupId: 1,
-        title: "The Temperature Tolerance Problem",
-        difficulty: "Hard",
-        description: "A laboratory machine must maintain a temperature exactly 5 degrees away from 3C to function properly. The absolute deviation is represented by |x - 3| = 5. Find both possible temperature settings x that satisfy this requirement.",
-        answer: "8, -2",
-        acceptedAnswers: ["8", "-2", "8,-2", "-2,8", "x=8", "x=-2"],
-        hints: [
-            "Interpret |x - 3| = 5 as a distance of 5 from 3 on the number line.",
-            "Set up two equations: x - 3 = 5 and x - 3 = -5.",
-            "Solve each equation to get the two possible temperatures."
-        ],
-        solution: "Case 1: x - 3 = 5 => x = 8\nCase 2: x - 3 = -5 => x = -2\nBoth temperatures (8C and -2C) are exactly 5 degrees away from 3C.",
-        premium: false,
-        topic: "Absolute Value"
-    }
-);
-
-// Helper function to get problems by group
-export const getProblemsByGroup = (groupId) => {
-    return problems.filter(p => p.groupId === groupId);
-};
-
-// Helper function to get problem by ID
-export const getProblemById = (id) => {
-    return problems.find(p => p.id === id);
-};
-
-// Helper function to get group by ID
-export const getGroupById = (id) => {
-    return problemGroups.find(g => g.id === id);
-};
+export const getProblemsByGroup = (groupId) => problems.filter(p => p.groupId === groupId);
+export const getProblemById = (id) => problems.find(p => p.id === id);
+export const getGroupById = (id) => problemGroups.find(g => g.id === id);
