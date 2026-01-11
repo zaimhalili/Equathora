@@ -96,7 +96,7 @@ const Profile = () => {
         const solvedFromProgress = Array.isArray(progressRow?.solved_problems)
           ? progressRow.solved_problems.map(id => String(id))
           : [];
-        
+
         // For viewing own profile, also check local storage as ultimate fallback
         let localCompletedIds = [];
         if (isSelf) {
@@ -106,13 +106,13 @@ const Profile = () => {
             .filter(s => s.isCorrect && validProblemIds.has(String(s.problemId)))
             .map(s => String(s.problemId));
         }
-        
-        const allCompletedIds = completedIds.length 
-          ? completedIds 
-          : solvedFromProgress.length 
-            ? solvedFromProgress 
+
+        const allCompletedIds = completedIds.length
+          ? completedIds
+          : solvedFromProgress.length
+            ? solvedFromProgress
             : localCompletedIds;
-        
+
         const completedProblems = problemList.filter(p => allCompletedIds.includes(String(p.id)));
 
         // Calculate stats (scope solved to current problems list)
