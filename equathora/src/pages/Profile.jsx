@@ -67,8 +67,12 @@ const Profile = () => {
         const location = profileRow?.location || meta.location || '';
         const website = profileRow?.website || meta.website || '';
 
-        // Get completed problem details
-        const completedProblems = allProblems.filter(p => completedIds.includes(String(p.id)));
+        // Get completed problem details (fallback to progress.solved_problems if completed table is empty)
+        const solvedFromProgress = Array.isArray(progressRow?.solved_problems)
+          ? progressRow.solved_problems.map(id => String(id))
+          : [];
+        const allCompletedIds = completedIds.length ? completedIds : solvedFromProgress;
+        const completedProblems = allProblems.filter(p => allCompletedIds.includes(String(p.id)));
 
         // Calculate stats (scope solved to current problems list)
         const solved = completedProblems.length;
@@ -211,13 +215,15 @@ const Profile = () => {
                       🔗 {userData.website}
                     </a>
                   )}
-                  <button
-                    type="button"
-                    className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300 cursor-pointer'
-                    onClick={() => setIsEditModalOpen(true)}
-                  >
-                    Edit Profile
-                  </button>
+                  {viewingOwnProfile && (
+                    <button
+                      type="button"
+                      className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300 cursor-pointer'
+                      onClick={() => setIsEditModalOpen(true)}
+                    >
+                      Edit Profile
+                    </button>
+                  )}
                 </div>
 
                 <hr className='border-t-2 border-[var(--french-gray)]' />

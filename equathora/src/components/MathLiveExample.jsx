@@ -224,6 +224,11 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                 </div>
 
                 <div className="ml-toolbar-sticky">
+                    {submissionFeedback && (
+                        <div className={`ml-feedback ${submissionFeedback.success ? 'success' : 'error'}`}>
+                            {submissionFeedback.message}
+                        </div>
+                    )}
                     <div className="ml-toolbar">
                         <button className="ml-btn clear flex gap-1 order-2 sm:order-1" onClick={() => setDeleteAllPopup(true)}>
                             <FaTrash />
@@ -245,11 +250,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
 
                     </div>
 
-                    {submissionFeedback && (
-                        <div className={`ml-feedback ${submissionFeedback.success ? 'success' : 'error'}`}>
-                            {submissionFeedback.message}
-                        </div>
-                    )}
+
 
                     <div className="ml-output-wrapper">
                         <button

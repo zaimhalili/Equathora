@@ -26,7 +26,7 @@ import {
   recordProblemStats
 } from '../lib/progressStorage';
 import { validateAnswer } from '../lib/answerValidation';
-import { recordSubmission } from '../lib/databaseService';
+import { recordSubmission, updateStreakData } from '../lib/databaseService';
 
 const formatDurationLabel = (seconds = 0) => {
   const safeSeconds = Math.max(0, Math.round(seconds));
@@ -436,6 +436,15 @@ const Problem = () => {
     }
 
     const streakData = updateStreak();
+    try {
+      void updateStreakData({
+        current_streak: streakData.current,
+        longest_streak: streakData.longest,
+        last_activity_date: new Date().toISOString().split('T')[0]
+      });
+    } catch {
+      // ignore background failure
+    }
     recordProblemStats(problem, {
       isCorrect: validation.isCorrect,
       timeSpentSeconds,

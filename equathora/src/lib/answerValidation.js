@@ -47,7 +47,7 @@ export const validateAnswer = (userAnswer, problem) => {
     if (!userAnswer || !problem) {
         return {
             isCorrect: false,
-            feedback: '❓ Please provide an answer in the last step before submitting.',
+            feedback: 'Please provide an answer in the last step before submitting.',
             score: 0
         };
     }
@@ -62,7 +62,7 @@ export const validateAnswer = (userAnswer, problem) => {
         if (normalizedUserAnswer === normalizedAccepted) {
             return {
                 isCorrect: true,
-                feedback: '🎉 Perfect! Your answer is correct!',
+                feedback: 'Perfect! Your answer is correct!',
                 score: 100
             };
         }
@@ -73,7 +73,7 @@ export const validateAnswer = (userAnswer, problem) => {
         if (isNumericallyEqual(normalizedUserAnswer, accepted, 0.01)) {
             return {
                 isCorrect: true,
-                feedback: '✓ Correct! (Minor rounding difference, but answer is valid)',
+                feedback: 'Correct! (Minor rounding difference, but answer is valid)',
                 score: 100
             };
         }
@@ -84,7 +84,7 @@ export const validateAnswer = (userAnswer, problem) => {
         if (isNumericallyEqual(normalizedUserAnswer, accepted, 0.5)) {
             return {
                 isCorrect: false,
-                feedback: '🤔 You\'re close! Double-check your calculations. The answer is slightly off.',
+                feedback: 'You\'re close! Double-check your calculations. The answer is slightly off.',
                 score: 50
             };
         }
@@ -93,7 +93,7 @@ export const validateAnswer = (userAnswer, problem) => {
     // Completely wrong
     return {
         isCorrect: false,
-        feedback: '❌ Not quite right. Review the problem and try again. Consider using a hint if you\'re stuck!',
+        feedback: 'Not quite right. Review the problem and try again. Consider using a hint if you\'re stuck!',
         score: 0
     };
 };

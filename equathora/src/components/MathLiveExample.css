@@ -177,6 +177,7 @@ math-field:hover {
     border: 1px solid transparent;
     font-weight: 600;
     font-size: 0.85rem;
+    margin-bottom: 10px;
 }
 
 .ml-feedback.success {
