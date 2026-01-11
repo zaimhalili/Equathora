@@ -12,6 +12,9 @@ AUTH_SETUP.md
 ToDo.txt
 SECURITY_SETUP.md
 LEADERBOARD_SETUP.md
+fts.txt
+ocr_output/
+ocr_output/**
 node_modules
 dist
 dist-ssr
@@ -71,3 +74,7 @@ backend/**/connection-strings.json
 
 # Blog system README
 BLOG_SYSTEM_README.md
+
+exercises.txt
+exercises.json
+
