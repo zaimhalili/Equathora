@@ -39,19 +39,30 @@ const formatDurationLabel = (seconds = 0) => {
 };
 
 const sanitizeLatexAnswer = (latex = '') => latex
-  .replace(/\\/g, ' ')
-  .replace(/\text\\?\{([^}]*)\}/g, '$1')
-  .replace(/[{}]/g, ' ')
-  .replace(/\,/g, '')
-  .replace(/\times/g, '*')
-  .replace(/\frac\{([^}]*)\}\{([^}]*)\}/g, '($1)/($2)')
-  .replace(/\sqrt\{([^}]*)\}/g, 'sqrt($1)')
-  .replace(/\therefore/g, '')
-  .replace(/\text/g, '')
-  .replace(/\left|\right/g, '')
-  .replace(/\,/g, '')
-  .replace(/\ /g, ' ')
-  .replace(/\=/g, '=')
+  // Handle fractions: \frac{a}{b} -> (a)/(b)
+  .replace(/\\frac\s*\{([^}]*)\}\s*\{([^}]*)\}/g, '($1)/($2)')
+  // Handle square roots: \sqrt{x} -> sqrt(x)
+  .replace(/\\sqrt\s*\{([^}]*)\}/g, 'sqrt($1)')
+  // Handle exponents: ^{2} -> ^2
+  .replace(/\^\s*\{([^}]*)\}/g, '^$1')
+  // Handle subscripts: _{n} -> _n
+  .replace(/_\s*\{([^}]*)\}/g, '_$1')
+  // Handle \cdot multiplication -> *
+  .replace(/\\cdot/g, '*')
+  // Handle \times multiplication -> *
+  .replace(/\\times/g, '*')
+  // Handle text commands: \text{abc} -> abc
+  .replace(/\\text\s*\{([^}]*)\}/g, '$1')
+  // Handle \left and \right sizing commands
+  .replace(/\\left|\\right/g, '')
+  // Handle \therefore
+  .replace(/\\therefore/g, '')
+  // Remove remaining backslashes (e.g., \, spacing)
+  .replace(/\\/g, '')
+  // Remove curly braces
+  .replace(/[{}]/g, '')
+  // Normalize spaces
+  .replace(/\s+/g, ' ')
   .trim();
 
 const hydrateStoredSubmissions = (records = []) => {
@@ -423,8 +434,8 @@ const Problem = () => {
       setShowSolutionPopup(false);
       setSolutionViewed(true);
 
-      // Reduce score if solution was viewed before solving
-      const finalScore = solutionViewed ? Math.floor(validation.score * 0.5) : validation.score;
+      // If solution was viewed before solving, give 0 points
+      const finalScore = solutionViewed ? 0 : validation.score;
       markProblemCompleted(problem.id, finalScore, timeSpentSeconds);
     }
 
@@ -451,7 +462,8 @@ const Problem = () => {
       timestamp: entry.timestamp,
       attemptNumber,
       streakData,
-      hintsUsed: hintsOpened.length
+      hintsUsed: hintsOpened.length,
+      solutionViewed
     });
 
     return {

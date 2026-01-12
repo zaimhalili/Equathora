@@ -139,7 +139,8 @@ export async function getCompletedProblems() {
 }
 
 export async function recordSubmission(problemId, submittedAnswer, isCorrect, timeSpentSeconds) {
-    // Best-effort: persist the submission and increment progress counters.
+    // Best-effort: persist the submission only.
+    // Counter increments are handled by recordProblemStats in progressStorage.js
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
@@ -153,21 +154,8 @@ export async function recordSubmission(problemId, submittedAnswer, isCorrect, ti
             Number.isFinite(timeSpentSeconds) ? timeSpentSeconds : 0
         );
 
-        const current = await getUserProgress();
-
-        const nextTotalAttempts = (current?.total_attempts || 0) + 1;
-        const nextCorrect = (current?.correct_answers || 0) + (isCorrect ? 1 : 0);
-        const nextWrong = (current?.wrong_submissions || 0) + (isCorrect ? 0 : 1);
-        const nextAccuracyRate = nextTotalAttempts > 0
-            ? Math.round((nextCorrect / nextTotalAttempts) * 100)
-            : 0;
-
-        await saveUserProgress({
-            total_attempts: nextTotalAttempts,
-            correct_answers: nextCorrect,
-            wrong_submissions: nextWrong,
-            accuracy_rate: nextAccuracyRate
-        });
+        // Note: Do NOT update progress counters here.
+        // That is handled by recordProblemStats in progressStorage.js to avoid double-counting.
     } catch (error) {
         console.error('Error recording submission:', error);
     }

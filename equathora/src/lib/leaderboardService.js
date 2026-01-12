@@ -57,8 +57,27 @@ export function calculateUserXP(userProgress, streakData) {
 
 /**
  * Calculate XP for a specific problem completion
+ * @param {string} difficulty - 'Easy', 'Medium', or 'Hard'
+ * @param {number} timeSpentSeconds - Time spent solving the problem
+ * @param {boolean} isFirstAttempt - Whether this is the first attempt
+ * @param {number} hintsUsed - Number of hints opened (0-3 typically)
+ * @param {boolean} solutionViewed - Whether the solution was viewed before solving
  */
-export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt) {
+export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt, hintsUsed = 0, solutionViewed = false) {
+    // If solution was viewed before solving, give 0 XP
+    if (solutionViewed) {
+        return {
+            totalXP: 0,
+            breakdown: {
+                baseXP: 0,
+                firstAttemptBonus: 0,
+                speedBonus: 0,
+                hintPenalty: 0,
+                note: 'Solution viewed - no XP awarded'
+            }
+        };
+    }
+
     let baseXP = 0;
 
     // Base XP by difficulty
@@ -79,18 +98,36 @@ export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt)
     // First attempt bonus (50% extra)
     const firstAttemptBonus = isFirstAttempt ? Math.round(baseXP * 0.5) : 0;
 
-    // Speed bonus (if completed quickly)
+    // Speed bonus based on time spent (tiered system)
     let speedBonus = 0;
-    if (timeSpentSeconds && timeSpentSeconds < 300) { // Under 5 minutes
-        speedBonus = 25;
+    if (timeSpentSeconds && timeSpentSeconds > 0) {
+        if (timeSpentSeconds < 60) { // Under 1 minute
+            speedBonus = 50;
+        } else if (timeSpentSeconds < 120) { // Under 2 minutes
+            speedBonus = 35;
+        } else if (timeSpentSeconds < 180) { // Under 3 minutes
+            speedBonus = 25;
+        } else if (timeSpentSeconds < 300) { // Under 5 minutes
+            speedBonus = 15;
+        } else if (timeSpentSeconds < 600) { // Under 10 minutes
+            speedBonus = 5;
+        }
     }
 
+    // Hint penalty: -15 XP per hint used (max 3 hints = -45 XP)
+    const hintPenalty = Math.min(hintsUsed, 3) * 15;
+
+    // Calculate total, ensuring minimum of 10 XP for correct answer
+    const rawTotal = baseXP + firstAttemptBonus + speedBonus - hintPenalty;
+    const totalXP = Math.max(10, rawTotal);
+
     return {
-        totalXP: baseXP + firstAttemptBonus + speedBonus,
+        totalXP,
         breakdown: {
             baseXP,
             firstAttemptBonus,
-            speedBonus
+            speedBonus,
+            hintPenalty: -hintPenalty
         }
     };
 }

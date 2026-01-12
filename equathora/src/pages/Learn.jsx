@@ -18,9 +18,19 @@ const Learn = () => {
   const { groupId } = useParams();
   const location = useLocation();
   const [filter, setFilter] = useState(location.state?.filter || 'all');
+  const [gradeFilter, setGradeFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Grade to group mapping
+  const gradeGroups = {
+    '8': [1],
+    '9': [2, 3],
+    '10': [4, 5],
+    '11': [6, 7],
+    '12': [8, 9, 10]
+  };
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -58,7 +68,13 @@ const Learn = () => {
   const filteredProblems = useMemo(() => {
     let filtered = problems;
 
-    // Apply filter
+    // Apply grade filter first
+    if (gradeFilter !== 'all') {
+      const allowedGroups = gradeGroups[gradeFilter] || [];
+      filtered = filtered.filter(p => allowedGroups.includes(p.groupId));
+    }
+
+    // Apply status filter
     switch (filter) {
       case 'completed':
         filtered = filtered.filter(p => p.completed);
@@ -87,7 +103,7 @@ const Learn = () => {
     }
 
     return filtered;
-  }, [filter, searchQuery, problems]);
+  }, [filter, gradeFilter, searchQuery, problems, gradeGroups]);
 
   return (
     <>
@@ -132,6 +148,29 @@ const Learn = () => {
               />
             </div>
 
+
+            {/* Grade Filter Buttons */}
+            <div id="grade-filters-container" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+              <button
+                type="button"
+                onClick={() => setGradeFilter('all')}
+                className={`filtering ${gradeFilter === 'all' ? 'active' : ''}`}
+                style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}
+              >
+                All Grades
+              </button>
+              {['8', '9', '10', '11', '12'].map(grade => (
+                <button
+                  key={grade}
+                  type="button"
+                  onClick={() => setGradeFilter(grade)}
+                  className={`filtering ${gradeFilter === grade ? 'active' : ''}`}
+                  style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}
+                >
+                  Grade {grade}
+                </button>
+              ))}
+            </div>
 
             <div id="filters-container">
               <button

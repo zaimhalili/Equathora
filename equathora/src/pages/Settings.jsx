@@ -1,15 +1,49 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { resetAllUserProgress } from '../lib/progressStorage';
 
 const Settings = () => {
+    const navigate = useNavigate();
     // Use state to manage input values
     const [userName, setUserName] = useState("MyPotential");
     const [userHandle, setUserHandle] = useState("MyPotential");
     const [userLocation, setUserLocation] = useState("");
     const [userBio, setUserBio] = useState("");
     const [seniority, setSeniority] = useState("absBeginner");
+    const [isResetting, setIsResetting] = useState(false);
+    const [resetMessage, setResetMessage] = useState('');
+
+    const handleResetAccount = async () => {
+        if (!window.confirm('Are you sure you want to reset all your progress? This action cannot be undone.')) {
+            return;
+        }
+
+        if (!window.confirm('This will delete all your solved problems, streaks, XP, and achievements. Are you absolutely sure?')) {
+            return;
+        }
+
+        setIsResetting(true);
+        setResetMessage('Resetting progress...');
+
+        try {
+            const result = await resetAllUserProgress();
+            if (result.success) {
+                setResetMessage('✅ Progress reset successfully! Redirecting...');
+                setTimeout(() => {
+                    navigate('/dashboard');
+                    window.location.reload();
+                }, 1500);
+            } else {
+                setResetMessage(`❌ Reset failed: ${result.message}`);
+            }
+        } catch (error) {
+            setResetMessage(`❌ Error: ${error.message}`);
+        } finally {
+            setIsResetting(false);
+        }
+    };
 
     return (
         <div >
@@ -120,10 +154,21 @@ const Settings = () => {
                 <section className='flex gap-4 flex-col lg:flex-row pt-4 pb-7 max-w-[800px]'>
                     <div className='w-full lg:w-1/2 border-2 border-[var(--dark-accent-color)] rounded-md 
                     bg-[var(--really-light-accent)] px-5 py-5 gap-3 flex flex-col shadow-lg shadow-gray-600'>
-                        <h4 className='font-[Inter,cursive] font-bold text-[var(--secondary-color)] text-lg lg:text-2xl'>Reset Account</h4>
-                        <p className='text-md'>Resetting your account will reset your progress on all tracks,
-                            reset all exercises and remove access to all your previous mentoring.</p>
-                        <button type="submit" className='cursor-pointer py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all rounded-xs duration-200 lg:max-w-[180px] hover:-translate-y-1'>Reset account</button>
+                        <h4 className='font-[Inter,cursive] font-bold text-[var(--secondary-color)] text-lg lg:text-2xl'>Reset Progress</h4>
+                        <p className='text-md'>Resetting your progress will clear all solved problems, streaks, XP, and achievements. This cannot be undone.</p>
+                        {resetMessage && (
+                            <p className={`text-sm ${resetMessage.includes('✅') ? 'text-green-600' : resetMessage.includes('❌') ? 'text-red-600' : 'text-gray-600'}`}>
+                                {resetMessage}
+                            </p>
+                        )}
+                        <button
+                            type="button"
+                            onClick={handleResetAccount}
+                            disabled={isResetting}
+                            className='cursor-pointer py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all rounded-xs duration-200 lg:max-w-[180px] hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed'
+                        >
+                            {isResetting ? 'Resetting...' : 'Reset Progress'}
+                        </button>
                     </div>
 
                     <div className='w-full border-2 border-[var(--dark-accent-color)] rounded-md lg:w-1/2

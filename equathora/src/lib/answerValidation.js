@@ -6,6 +6,7 @@
  * - Remove spaces
  * - Convert to lowercase
  * - Remove common variations
+ * - Handle LaTeX output from MathLive
  */
 const normalizeAnswer = (answer) => {
     if (!answer) return '';
@@ -14,15 +15,39 @@ const normalizeAnswer = (answer) => {
         .toString()
         .toLowerCase()
         .trim()
-        .replace(/\s+/g, '') // Remove all spaces
-        .replace(/,/g, '') // Remove commas
-        .replace(/\$/g, '') // Remove dollar signs
-        .replace(/°/g, '') // Remove degree symbols
-        .replace(/−|–|—/g, '-') // Normalize Unicode minus/dash to hyphen
-        .replace(/×|·/g, '*') // Normalize common multiply symbols
-        .replace(/left|right/gi, '') // Drop LaTeX sizing markers
-        .replace(/²/g, '^2') // Normalize superscripts
-        .replace(/³/g, '^3');
+        // Handle fractions in various formats: (a)/(b) -> a/b
+        .replace(/\(([^()]+)\)\/\(([^()]+)\)/g, '$1/$2')
+        // Handle sqrt variations
+        .replace(/sqrt\(([^)]+)\)/g, 'sqrt($1)')
+        .replace(/√/g, 'sqrt')
+        // Handle exponents
+        .replace(/\^(\d+)/g, '^$1')
+        .replace(/\*\*/g, '^')
+        .replace(/²/g, '^2')
+        .replace(/³/g, '^3')
+        // Normalize spacing around operators
+        .replace(/\s*\+\s*/g, '+')
+        .replace(/\s*-\s*/g, '-')
+        .replace(/\s*\*\s*/g, '*')
+        .replace(/\s*\/\s*/g, '/')
+        .replace(/\s*\^\s*/g, '^')
+        // Normalize multiplication symbols
+        .replace(/×|·|⋅/g, '*')
+        // Normalize minus/dash symbols to hyphen
+        .replace(/−|–|—/g, '-')
+        // Remove spaces
+        .replace(/\s+/g, '')
+        // Remove commas (thousands separator)
+        .replace(/,/g, '')
+        // Remove dollar signs
+        .replace(/\$/g, '')
+        // Remove degree symbols
+        .replace(/°/g, '')
+        // Remove parentheses around single terms: (x) -> x
+        .replace(/\(([a-z0-9]+)\)/g, '$1')
+        // Handle implicit multiplication like 2x -> 2*x for comparison (optional)
+        // Note: leaving as-is for now since accepted answers handle this
+        ;
 };
 
 /**

@@ -4,6 +4,7 @@
 import { markProblemComplete as dbMarkProblemComplete } from './databaseService';
 import { getAllProblems } from './problemService';
 import { supabase } from './supabaseClient';
+import { calculateProblemXP } from './leaderboardService';
 
 // Generate a unique device ID to prevent cross-device sync issues
 // Using sessionStorage to ensure it NEVER syncs between devices
@@ -351,7 +352,8 @@ export const recordProblemStats = async (
         timestamp = new Date().toISOString(),
         attemptNumber = 1,
         streakData = null,
-        hintsUsed = 0
+        hintsUsed = 0,
+        solutionViewed = false
     } = {}
 ) => {
     if (!problem) return null;
@@ -413,7 +415,25 @@ export const recordProblemStats = async (
         ? Math.round((correctCount / totalCount) * 100)
         : 0;
 
-    // Update database with accuracy stats
+    // Calculate total XP for leaderboard using the new XP system
+    let problemXP = 0;
+    if (isCorrect && !alreadySolved) {
+        const xpResult = calculateProblemXP(
+            problem.difficulty,
+            timeSpentSeconds,
+            attemptNumber === 1,
+            hintsUsed,
+            solutionViewed
+        );
+        problemXP = xpResult.totalXP;
+        console.log('🎯 XP Breakdown:', xpResult.breakdown);
+    }
+
+    // Get current total XP from database or progress
+    const currentTotalXP = dbProgress?.total_xp || progress.totalXP || 0;
+    const totalXP = currentTotalXP + problemXP;
+
+    // Update database with accuracy stats and XP
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
@@ -424,7 +444,9 @@ export const recordProblemStats = async (
                 wrong_submissions: progress.wrongSubmissions,
                 accuracy: progress.accuracyRate,
                 reputation: progress.reputation || 0,
-                solved_problems: progress.solvedProblems
+                solved_problems: progress.solvedProblems,
+                perfect_streak: progress.perfectStreak || 0,
+                total_xp: totalXP
             };
             console.log('📊 Updating database with:', updateData);
 
@@ -447,9 +469,9 @@ export const recordProblemStats = async (
     progress.totalTimeMinutes = (progress.totalTimeMinutes || 0) + minutesSpent;
     progress.totalTimeSpent = formatHoursMinutes(progress.totalTimeMinutes);
 
-    const solvedCount = (progress.solvedProblems || []).length;
-    if (solvedCount > 0) {
-        const avgSeconds = Math.round((progress.totalTimeMinutes * 60) / solvedCount);
+    const solvedCountForAvg = (progress.solvedProblems || []).length;
+    if (solvedCountForAvg > 0) {
+        const avgSeconds = Math.round((progress.totalTimeMinutes * 60) / solvedCountForAvg);
         progress.averageTime = formatMinutesSeconds(avgSeconds);
     }
 
@@ -544,4 +566,53 @@ export const clearAllProgress = () => {
         localStorage.removeItem(key);
     });
     localStorage.removeItem(ACHIEVEMENTS_KEY);
+};
+
+// Reset all user progress (localStorage + database)
+export const resetAllUserProgress = async () => {
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+            console.error('No session found, cannot reset database progress');
+            return { success: false, message: 'Not logged in' };
+        }
+
+        const userId = session.user.id;
+
+        // Clear localStorage first
+        clearAllProgress();
+
+        // Clear database tables for this user
+        const tables = [
+            'user_progress',
+            'user_completed_problems',
+            'user_streak_data',
+            'user_submissions',
+            'user_favorites',
+            'user_difficulty_breakdown',
+            'user_weekly_progress',
+            'user_topic_frequency'
+        ];
+
+        for (const table of tables) {
+            try {
+                await supabase.from(table).delete().eq('user_id', userId);
+            } catch (err) {
+                console.warn(`Could not clear ${table}:`, err.message);
+            }
+        }
+
+        // Refresh leaderboard view (best-effort)
+        try {
+            await supabase.rpc('refresh_leaderboard_view');
+        } catch (err) {
+            console.warn('Could not refresh leaderboard view:', err.message);
+        }
+
+        console.log('✅ All user progress reset successfully');
+        return { success: true, message: 'All progress reset successfully' };
+    } catch (error) {
+        console.error('Failed to reset user progress:', error);
+        return { success: false, message: error.message };
+    }
 };
