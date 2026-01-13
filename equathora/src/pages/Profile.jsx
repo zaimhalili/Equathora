@@ -70,7 +70,7 @@ const Profile = () => {
             .from('user_completed_problems')
             .select('problem_id')
             .eq('user_id', targetUserId);
-          
+
           completedIds = (completedRows || []).map(r => {
             const pid = r.problem_id;
             if (typeof pid === 'string' && pid.startsWith('{')) {

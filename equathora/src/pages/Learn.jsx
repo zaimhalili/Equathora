@@ -161,18 +161,18 @@ const Learn = () => {
 
             {/* Grade Filter - Modern Pill Design */}
             <div className="grade-filter-section" style={{ marginBottom: '1.5rem' }}>
-              <p className="filter-label" style={{ 
-                fontSize: '0.85rem', 
-                fontWeight: '600', 
-                marginBottom: '0.75rem', 
+              <p className="filter-label" style={{
+                fontSize: '0.85rem',
+                fontWeight: '600',
+                marginBottom: '0.75rem',
                 color: 'var(--secondary-color)',
-                opacity: 0.8 
+                opacity: 0.8
               }}>
                 Filter by Grade
               </p>
-              <div style={{ 
-                display: 'inline-flex', 
-                gap: '0.25rem', 
+              <div style={{
+                display: 'inline-flex',
+                gap: '0.25rem',
                 backgroundColor: 'var(--secondary-color)',
                 padding: '0.25rem',
                 borderRadius: '12px',
@@ -181,8 +181,8 @@ const Learn = () => {
                 <button
                   type="button"
                   onClick={() => setGradeFilter('all')}
-                  style={{ 
-                    fontSize: '0.85rem', 
+                  style={{
+                    fontSize: '0.85rem',
                     padding: '0.5rem 1rem',
                     borderRadius: '10px',
                     border: 'none',
@@ -200,8 +200,8 @@ const Learn = () => {
                     key={grade}
                     type="button"
                     onClick={() => setGradeFilter(grade)}
-                    style={{ 
-                      fontSize: '0.85rem', 
+                    style={{
+                      fontSize: '0.85rem',
                       padding: '0.5rem 1rem',
                       borderRadius: '10px',
                       border: 'none',

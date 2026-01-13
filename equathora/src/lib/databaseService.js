@@ -142,14 +142,14 @@ export async function getCompletedProblems() {
             if (progressRow && Array.isArray(progressRow.solved_problems) && progressRow.solved_problems.length > 0) {
                 uniqueProblemIds = progressRow.solved_problems.map(id => String(id));
                 console.log(`Loaded ${uniqueProblemIds.length} solved problems from user_progress fallback`);
-                
+
                 // Migrate this data to user_completed_problems for consistency
                 const entries = uniqueProblemIds.map(pid => ({
                     user_id: session.user.id,
                     problem_id: pid,
                     completed_at: new Date().toISOString()
                 }));
-                
+
                 await supabase
                     .from('user_completed_problems')
                     .upsert(entries, { onConflict: 'user_id,problem_id' });

@@ -27,7 +27,7 @@ export async function getDailyProblemId() {
 
     const allProblems = await getAllProblems();
     const TOTAL_PROBLEMS = allProblems.length;
-    
+
     if (TOTAL_PROBLEMS === 0) return 1;
 
     const shownProblems = stored ? JSON.parse(stored).shownProblems || [] : [];

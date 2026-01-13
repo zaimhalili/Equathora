@@ -60,6 +60,7 @@ const buildDataSnapshot = async () => {
         totalSessions,
         avgProblemsPerSession,
         totalSubmissions: allSubmissions.length,
+        totalProblems: allProblems.length,
         easyTotal: allProblems.filter(p => p.difficulty === 'Easy').length,
         mediumTotal: allProblems.filter(p => p.difficulty === 'Medium').length,
         hardTotal: allProblems.filter(p => p.difficulty === 'Hard').length
@@ -96,7 +97,7 @@ const ProfileExportButtons = () => {
     const {
         stats, completed, completedCount, totalTimeSeconds, latestCompletion, firstCompletion,
         difficulty, favoriteTopics, avgTimePerProblem, totalSessions, avgProblemsPerSession,
-        totalSubmissions, easyTotal, mediumTotal, hardTotal
+        totalSubmissions, totalProblems, easyTotal, mediumTotal, hardTotal
     } = snapshot;
 
     const comprehensiveData = [
@@ -111,7 +112,7 @@ const ProfileExportButtons = () => {
         },
         {
             section: 'Performance Metrics', items: [
-                ['Problems Solved', `${stats.problemsSolved || 0} / ${allProblems.length}`],
+                ['Problems Solved', `${stats.problemsSolved || 0} / ${totalProblems}`],
                 ['Overall Accuracy Rate', `${stats.accuracy || 0}%`],
                 ['Correct Submissions', stats.accuracyBreakdown?.correct || 0],
                 ['Incorrect Submissions', stats.accuracyBreakdown?.wrong || 0],

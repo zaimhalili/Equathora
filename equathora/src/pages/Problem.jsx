@@ -98,12 +98,12 @@ const Problem = () => {
   const { groupId, problemId } = useParams();
   const navigate = useNavigate();
   const numericProblemId = parseInt(problemId, 10);
-  
+
   // State for problem data from database
   const [problem, setProblem] = useState(null);
   const [allProblems, setAllProblems] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Load problem and all problems from database
   useEffect(() => {
     const loadProblems = async () => {
@@ -115,7 +115,7 @@ const Problem = () => {
         ]);
         setProblem(problemData);
         setAllProblems(problemsList);
-        
+
         // Mark problem as in-progress when viewing
         if (problemData) {
           markProblemInProgress(numericProblemId);
@@ -136,7 +136,7 @@ const Problem = () => {
     if (aGroup !== bGroup) return aGroup - bGroup;
     return a.id - b.id;
   });
-  
+
   // Find current problem index in the sorted list for cross-group navigation
   const currentIndex = sortedProblems.findIndex(p => p.id === numericProblemId);
   const hasProblems = sortedProblems.length > 0 && currentIndex !== -1;
@@ -472,7 +472,7 @@ const Problem = () => {
       // If solution was viewed before solving, give 0 points
       const finalScore = solutionViewed ? 0 : validation.score;
       markProblemCompleted(problem.id, finalScore, timeSpentSeconds);
-      
+
       // Remove from in-progress since it's now completed
       removeProblemFromInProgress(problem.id);
     }
