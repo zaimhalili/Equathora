@@ -8,7 +8,7 @@ import EditProfileModal from '../components/EditProfileModal';
 import Autumn from '../assets/images/autumn.jpg';
 import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 import { getAllProblems } from '../lib/problemService';
-import { problems as localProblems } from '../data/problems';
+import { getCompletedProblems } from '../lib/databaseService';
 import { supabase } from '../lib/supabaseClient';
 import ProfileExportButtons from '../components/ProfileExportButtons';
 import { getSubmissions } from '../lib/progressStorage';
@@ -44,45 +44,55 @@ const Profile = () => {
 
         const isMyProfileAlias = profile === 'myprofile' || profile === 'me';
         const targetUserId = isMyProfileAlias || !profile ? session.user.id : profile;
+        const isSelf = targetUserId === session.user.id;
+        setViewingOwnProfile(isSelf);
 
-        // Pull profile, progress, streak, completed problems, and leaderboard data for the target user
+        // Pull profile, progress, streak, and leaderboard data for the target user
         const [
           { data: profileRow },
           { data: progressRow },
           { data: streakRow },
-          { data: completedRows },
           { data: leaderboardRow }
         ] = await Promise.all([
           supabase.from('profiles').select('*').eq('id', targetUserId).maybeSingle(),
           supabase.from('user_progress').select('*').eq('user_id', targetUserId).maybeSingle(),
           supabase.from('user_streak_data').select('*').eq('user_id', targetUserId).maybeSingle(),
-          supabase.from('user_completed_problems').select('problem_id').eq('user_id', targetUserId),
           supabase.from('leaderboard_view').select('*').eq('user_id', targetUserId).maybeSingle()
         ]);
 
-        const completedIds = (completedRows || []).map(r => {
-          const pid = r.problem_id;
-          if (typeof pid === 'string' && pid.startsWith('{')) {
-            try {
-              const parsed = JSON.parse(pid);
-              return String(parsed.problemId ?? parsed.id ?? '');
-            } catch {
-              return '';
+        // For own profile, use getCompletedProblems() which has fallback logic
+        // For other users, query their completed problems directly
+        let completedIds;
+        if (isSelf) {
+          completedIds = await getCompletedProblems();
+        } else {
+          const { data: completedRows } = await supabase
+            .from('user_completed_problems')
+            .select('problem_id')
+            .eq('user_id', targetUserId);
+          
+          completedIds = (completedRows || []).map(r => {
+            const pid = r.problem_id;
+            if (typeof pid === 'string' && pid.startsWith('{')) {
+              try {
+                const parsed = JSON.parse(pid);
+                return String(parsed.problemId ?? parsed.id ?? '');
+              } catch {
+                return '';
+              }
             }
-          }
-          return String(pid);
-        }).filter(Boolean);
+            return String(pid);
+          }).filter(Boolean);
+        }
 
         const allProblems = await getAllProblems().catch(err => {
           console.error('Error fetching all problems:', err);
           return [];
         });
 
-        // Fall back to bundled problems if Supabase returns none
-        const problemList = allProblems.length ? allProblems : (localProblems || []);
+        // Use problems from database only (no local fallback)
+        const problemList = allProblems;
 
-        const isSelf = targetUserId === session.user.id;
-        setViewingOwnProfile(isSelf);
         const meta = isSelf ? session.user.user_metadata : {};
 
         const displayName = profileRow?.full_name || profileRow?.username || meta.full_name || meta.name || session.user.email?.split('@')[0] || 'Student';
@@ -92,28 +102,10 @@ const Profile = () => {
         const location = profileRow?.location || meta.location || '';
         const website = profileRow?.website || meta.website || '';
 
-        // Get completed problem details (fallback to progress.solved_problems if completed table is empty)
-        const solvedFromProgress = Array.isArray(progressRow?.solved_problems)
-          ? progressRow.solved_problems.map(id => String(id))
-          : [];
-
-        // For viewing own profile, also check local storage as ultimate fallback
-        let localCompletedIds = [];
-        if (isSelf) {
-          const localSubmissions = getSubmissions() || [];
-          const validProblemIds = new Set((problemList || []).map(p => String(p.id)));
-          localCompletedIds = localSubmissions
-            .filter(s => s.isCorrect && validProblemIds.has(String(s.problemId)))
-            .map(s => String(s.problemId));
-        }
-
-        const allCompletedIds = completedIds.length
-          ? completedIds
-          : solvedFromProgress.length
-            ? solvedFromProgress
-            : localCompletedIds;
-
-        const completedProblems = problemList.filter(p => allCompletedIds.includes(String(p.id)));
+        // Filter completed problems by valid problem IDs (consistent with Statistics and YourTrack)
+        const validProblemIds = new Set((problemList || []).map(p => String(p.id)));
+        const validCompletedIds = completedIds.filter(id => validProblemIds.has(String(id)));
+        const completedProblems = problemList.filter(p => validCompletedIds.includes(String(p.id)));
 
         // Calculate stats (scope solved to current problems list)
         const solved = completedProblems.length;
@@ -133,25 +125,13 @@ const Profile = () => {
           }
         }
 
-        // Use leaderboard data as fallback for accuracy and solved count
+        // Use leaderboard data as fallback for accuracy only (not solved count)
         const accuracyFromLeaderboard = leaderboardRow?.accuracy_percentage;
-        const solvedFromLeaderboard = typeof leaderboardRow?.problems_solved_count === 'number'
-          ? leaderboardRow.problems_solved_count
-          : null;
 
         const accuracy = accuracyFromLeaderboard ?? (totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0);
 
-        const solvedFromProgressCount = Array.isArray(progressRow?.solved_problems)
-          ? progressRow.solved_problems.length
-          : null;
-        const completedTableCount = completedIds.length ? completedIds.length : null;
-        const localCompletedCount = isSelf && localCompletedIds.length ? localCompletedIds.length : null;
-
-        const finalSolved = solvedFromLeaderboard
-          ?? solvedFromProgressCount
-          ?? completedTableCount
-          ?? localCompletedCount
-          ?? solved;
+        // Use solved count from completedProblems filtered by valid IDs (consistent with YourTrack and Statistics)
+        const finalSolved = solved;
 
         // Calculate difficulty breakdowns
         const easyProblems = problemList.filter(p => p.difficulty === 'Easy');
@@ -246,9 +226,13 @@ const Profile = () => {
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
                     <img
-                      src={userData.avatar_url || Autumn}
+                      src={userData.avatar_url && userData.avatar_url.trim() !== '' ? userData.avatar_url : Autumn}
                       alt="Profile Picture"
                       className='rounded-md h-20 w-20 md:h-24 md:w-24 object-cover'
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = Autumn;
+                      }}
                     />
                     <div className='text-[var(--secondary-color)] font-[Inter] flex flex-col justify-between gap-1'>
                       <div>
@@ -461,7 +445,7 @@ const Profile = () => {
                       animate={{ opacity: 1, x: 0 }}
                     >
                       <Link
-                        to={`/problems/${problem.groupId}/${problem.id}`}
+                        to={`/problems/${problem.group_id ?? problem.groupId}/${problem.id}`}
                         className={`w-full px-5 py-4 transition-all hover:-translate-x-1 text-[var(--secondary-color)] duration-150 rounded-md text-md block ${i % 2 === 0 ? 'bg-[var(--french-gray)]' : 'bg-[var(--main-color)]'}`}>{problem.title}</Link>
                     </motion.div>
                   ))}

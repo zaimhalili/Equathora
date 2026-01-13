@@ -14,7 +14,7 @@ import {
   SubmissionDetailModal
 } from '../components/ProblemModals';
 import { FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaRegStar, FaPencilAlt } from 'react-icons/fa';
-import { getProblemById, problems as allProblems } from '../data/problems';
+import { getProblem, getAllProblems } from '../lib/problemService';
 import {
   isProblemCompleted,
   isFavorite as checkFavorite,
@@ -23,7 +23,9 @@ import {
   addSubmission,
   markProblemCompleted,
   updateStreak,
-  recordProblemStats
+  recordProblemStats,
+  markProblemInProgress,
+  removeProblemFromInProgress
 } from '../lib/progressStorage';
 import { validateAnswer } from '../lib/answerValidation';
 import { recordSubmission, updateStreakData } from '../lib/databaseService';
@@ -96,20 +98,53 @@ const Problem = () => {
   const { groupId, problemId } = useParams();
   const navigate = useNavigate();
   const numericProblemId = parseInt(problemId, 10);
-  // Get real problem data
-  const problem = getProblemById(numericProblemId);
+  
+  // State for problem data from database
+  const [problem, setProblem] = useState(null);
+  const [allProblems, setAllProblems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  // Load problem and all problems from database
+  useEffect(() => {
+    const loadProblems = async () => {
+      setLoading(true);
+      try {
+        const [problemData, problemsList] = await Promise.all([
+          getProblem(numericProblemId),
+          getAllProblems()
+        ]);
+        setProblem(problemData);
+        setAllProblems(problemsList);
+        
+        // Mark problem as in-progress when viewing
+        if (problemData) {
+          markProblemInProgress(numericProblemId);
+        }
+      } catch (error) {
+        console.error('Failed to load problem:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProblems();
+  }, [numericProblemId]);
 
-  // Find current problem index and get prev/next problems within the same group (circular navigation)
-  const currentGroupProblems = problem
-    ? allProblems.filter(p => p.groupId === problem.groupId)
-    : [];
-  const currentIndex = currentGroupProblems.findIndex(p => p.id === numericProblemId);
-  const hasGroupProblems = currentGroupProblems.length > 0 && currentIndex !== -1;
-  const prevProblem = hasGroupProblems
-    ? currentGroupProblems[(currentIndex - 1 + currentGroupProblems.length) % currentGroupProblems.length]
+  // Sort all problems by group_id first, then by id for consistent navigation across all groups
+  const sortedProblems = [...allProblems].sort((a, b) => {
+    const aGroup = a.group_id ?? a.groupId ?? 0;
+    const bGroup = b.group_id ?? b.groupId ?? 0;
+    if (aGroup !== bGroup) return aGroup - bGroup;
+    return a.id - b.id;
+  });
+  
+  // Find current problem index in the sorted list for cross-group navigation
+  const currentIndex = sortedProblems.findIndex(p => p.id === numericProblemId);
+  const hasProblems = sortedProblems.length > 0 && currentIndex !== -1;
+  const prevProblem = hasProblems
+    ? sortedProblems[(currentIndex - 1 + sortedProblems.length) % sortedProblems.length]
     : null;
-  const nextProblem = hasGroupProblems
-    ? currentGroupProblems[(currentIndex + 1) % currentGroupProblems.length]
+  const nextProblem = hasProblems
+    ? sortedProblems[(currentIndex + 1) % sortedProblems.length]
     : null;
 
   const [openHints, setOpenHints] = useState({});
@@ -437,6 +472,9 @@ const Problem = () => {
       // If solution was viewed before solving, give 0 points
       const finalScore = solutionViewed ? 0 : validation.score;
       markProblemCompleted(problem.id, finalScore, timeSpentSeconds);
+      
+      // Remove from in-progress since it's now completed
+      removeProblemFromInProgress(problem.id);
     }
 
     // Persist attempt to backend (best-effort; does not block UI)
@@ -472,6 +510,18 @@ const Problem = () => {
     };
   };
 
+  // Handle loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--main-color)]">
+        <div className="text-center text-[var(--secondary-color)]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--accent-color)] mx-auto mb-4"></div>
+          <p>Loading problem...</p>
+        </div>
+      </div>
+    );
+  }
+
   // Handle problem not found
   if (!problem) {
     return (
@@ -486,16 +536,23 @@ const Problem = () => {
     );
   }
 
+  // Get the current problem's group ID (handle both naming conventions)
+  const currentGroupId = problem.group_id ?? problem.groupId;
+
   // Generate similar questions from the same group
   const similarQuestions = allProblems
-    .filter(p => p.groupId === problem.groupId && p.id !== problem.id)
+    .filter(p => (p.group_id ?? p.groupId) === currentGroupId && p.id !== problem.id)
     .slice(0, 3)
     .map(p => ({
       id: p.id,
-      groupId: p.groupId,
+      groupId: p.group_id ?? p.groupId,
       title: p.title,
       difficulty: p.difficulty
     }));
+
+  // Get hints and accepted answers from database format
+  const hints = problem.hints || [];
+  const acceptedAnswers = problem.accepted_answers || problem.acceptedAnswers || [problem.answer];
 
   const examples = Array.isArray(problem.examples) ? problem.examples : [];
 
@@ -533,14 +590,14 @@ const Problem = () => {
             </Link>
             <div className="flex items-center gap-1.5">
               <button
-                onClick={() => prevProblem && navigate(`/problems/${prevProblem.groupId}/${prevProblem.id}`)}
+                onClick={() => prevProblem && navigate(`/problems/${prevProblem.group_id ?? prevProblem.groupId}/${prevProblem.id}`)}
                 className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                 title={prevProblem ? `Previous: ${prevProblem.title}` : ''}
               >
                 <FaChevronLeft className="text-sm" />
               </button>
               <button
-                onClick={() => nextProblem && navigate(`/problems/${nextProblem.groupId}/${nextProblem.id}`)}
+                onClick={() => nextProblem && navigate(`/problems/${nextProblem.group_id ?? nextProblem.groupId}/${nextProblem.id}`)}
                 className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                 title={nextProblem ? `Next: ${nextProblem.title}` : ''}
               >
@@ -988,7 +1045,7 @@ const Problem = () => {
             <MathLiveExample
               key={`ml-${problem?.id}-${timerResetSeq}`}
               onSubmit={handleNewSubmission}
-              nextProblemPath={nextProblem ? `/problems/${nextProblem.groupId}/${nextProblem.id}` : null}
+              nextProblemPath={nextProblem ? `/problems/${nextProblem.group_id ?? nextProblem.groupId}/${nextProblem.id}` : null}
               isSolved={isCompleted}
             />
           </article>

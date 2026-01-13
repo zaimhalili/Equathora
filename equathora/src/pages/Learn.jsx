@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { getAllProblems } from '../lib/problemService';
 import { getCompletedProblems, getFavoriteProblems } from '../lib/databaseService';
+import { getInProgressProblems } from '../lib/progressStorage';
 
 
 const Learn = () => {
@@ -41,12 +42,20 @@ const Learn = () => {
           getFavoriteProblems()
         ]);
 
-        const problemsWithStatus = allProblems.map(problem => ({
-          ...problem,
-          completed: completedIds.includes(String(problem.id)),
-          favourite: favoriteIds.includes(String(problem.id)),
-          inProgress: false
-        }));
+        // Get in-progress problems from local storage
+        const inProgressIds = getInProgressProblems();
+
+        const problemsWithStatus = allProblems.map(problem => {
+          const problemIdStr = String(problem.id);
+          const isCompleted = completedIds.includes(problemIdStr);
+          return {
+            ...problem,
+            completed: isCompleted,
+            favourite: favoriteIds.includes(problemIdStr),
+            // A problem is in progress if it's been started but not completed
+            inProgress: !isCompleted && inProgressIds.includes(problemIdStr)
+          };
+        });
 
         setProblems(problemsWithStatus);
       } catch (error) {
@@ -71,7 +80,8 @@ const Learn = () => {
     // Apply grade filter first
     if (gradeFilter !== 'all') {
       const allowedGroups = gradeGroups[gradeFilter] || [];
-      filtered = filtered.filter(p => allowedGroups.includes(p.groupId));
+      // Handle both Supabase (group_id) and local (groupId) field naming
+      filtered = filtered.filter(p => allowedGroups.includes(p.group_id ?? p.groupId));
     }
 
     // Apply status filter
@@ -149,27 +159,63 @@ const Learn = () => {
             </div>
 
 
-            {/* Grade Filter Buttons */}
-            <div id="grade-filters-container" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-              <button
-                type="button"
-                onClick={() => setGradeFilter('all')}
-                className={`filtering ${gradeFilter === 'all' ? 'active' : ''}`}
-                style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}
-              >
-                All Grades
-              </button>
-              {['8', '9', '10', '11', '12'].map(grade => (
+            {/* Grade Filter - Modern Pill Design */}
+            <div className="grade-filter-section" style={{ marginBottom: '1.5rem' }}>
+              <p className="filter-label" style={{ 
+                fontSize: '0.85rem', 
+                fontWeight: '600', 
+                marginBottom: '0.75rem', 
+                color: 'var(--secondary-color)',
+                opacity: 0.8 
+              }}>
+                Filter by Grade
+              </p>
+              <div style={{ 
+                display: 'inline-flex', 
+                gap: '0.25rem', 
+                backgroundColor: 'var(--secondary-color)',
+                padding: '0.25rem',
+                borderRadius: '12px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              }}>
                 <button
-                  key={grade}
                   type="button"
-                  onClick={() => setGradeFilter(grade)}
-                  className={`filtering ${gradeFilter === grade ? 'active' : ''}`}
-                  style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}
+                  onClick={() => setGradeFilter('all')}
+                  style={{ 
+                    fontSize: '0.85rem', 
+                    padding: '0.5rem 1rem',
+                    borderRadius: '10px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                    transition: 'all 0.2s ease',
+                    backgroundColor: gradeFilter === 'all' ? 'var(--accent-color)' : 'transparent',
+                    color: gradeFilter === 'all' ? 'var(--secondary-color)' : 'var(--main-color)'
+                  }}
                 >
-                  Grade {grade}
+                  All
                 </button>
-              ))}
+                {['8', '9', '10', '11', '12'].map(grade => (
+                  <button
+                    key={grade}
+                    type="button"
+                    onClick={() => setGradeFilter(grade)}
+                    style={{ 
+                      fontSize: '0.85rem', 
+                      padding: '0.5rem 1rem',
+                      borderRadius: '10px',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontWeight: '500',
+                      transition: 'all 0.2s ease',
+                      backgroundColor: gradeFilter === grade ? 'var(--accent-color)' : 'transparent',
+                      color: gradeFilter === grade ? 'var(--secondary-color)' : 'var(--main-color)'
+                    }}
+                  >
+                    {grade}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div id="filters-container">

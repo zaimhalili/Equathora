@@ -89,7 +89,7 @@ export async function getCompletedProblems() {
         if (error) throw error;
 
         // Clean corrupted data: extract IDs from both simple strings and JSON objects
-        const cleanedIds = data.map(item => {
+        const cleanedIds = (data || []).map(item => {
             const pid = item.problem_id;
             // If it's a JSON string, parse it and extract problemId
             if (typeof pid === 'string' && pid.startsWith('{')) {
@@ -106,7 +106,7 @@ export async function getCompletedProblems() {
         }).filter(id => id !== null && id !== '');
 
         // Ensure we only return UNIQUE problem IDs to prevent duplicate counts
-        const uniqueProblemIds = [...new Set(cleanedIds)];
+        let uniqueProblemIds = [...new Set(cleanedIds)];
 
         // If we found duplicates, clean them up in the database
         if (cleanedIds.length > uniqueProblemIds.length) {
@@ -128,6 +128,31 @@ export async function getCompletedProblems() {
                 await supabase
                     .from('user_completed_problems')
                     .insert(uniqueEntries);
+            }
+        }
+
+        // Fallback: If user_completed_problems is empty, check user_progress.solved_problems for legacy data
+        if (uniqueProblemIds.length === 0) {
+            const { data: progressRow } = await supabase
+                .from('user_progress')
+                .select('solved_problems')
+                .eq('user_id', session.user.id)
+                .maybeSingle();
+
+            if (progressRow && Array.isArray(progressRow.solved_problems) && progressRow.solved_problems.length > 0) {
+                uniqueProblemIds = progressRow.solved_problems.map(id => String(id));
+                console.log(`Loaded ${uniqueProblemIds.length} solved problems from user_progress fallback`);
+                
+                // Migrate this data to user_completed_problems for consistency
+                const entries = uniqueProblemIds.map(pid => ({
+                    user_id: session.user.id,
+                    problem_id: pid,
+                    completed_at: new Date().toISOString()
+                }));
+                
+                await supabase
+                    .from('user_completed_problems')
+                    .upsert(entries, { onConflict: 'user_id,problem_id' });
             }
         }
 

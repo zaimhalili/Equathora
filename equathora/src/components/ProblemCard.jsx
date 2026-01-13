@@ -19,7 +19,7 @@ const ProblemCard = ({ problem }) => {
 
     return (
         <Link
-            to={`/problems/${problem.groupId}/${problem.id}`}
+            to={`/problems/${problem.group_id ?? problem.groupId}/${problem.id}`}
             className={`problem-card ${problem.completed ? 'completed' : ''}`}
         >
             <div className="problem-card-header">

@@ -75,5 +75,6 @@ export async function getDailyProblemId() {
 export async function getGroupIdForProblem(problemId) {
     const allProblems = await getAllProblems();
     const problem = allProblems.find(p => p.id === problemId);
-    return problem ? problem.group_id : 1;
+    // Handle both Supabase (group_id) and local (groupId) field naming
+    return problem ? (problem.group_id ?? problem.groupId ?? 1) : 1;
 }

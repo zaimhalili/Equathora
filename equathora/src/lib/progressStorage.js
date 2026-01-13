@@ -44,7 +44,8 @@ const STORAGE_KEYS = {
     FAVORITES: `equathora_favorites_${DEVICE_ID}`,
     USER_STATS: `equathora_user_stats_${DEVICE_ID}`,
     STREAK_DATA: `equathora_streak_${DEVICE_ID}`,
-    SUBMISSIONS: `equathora_submissions_${DEVICE_ID}`
+    SUBMISSIONS: `equathora_submissions_${DEVICE_ID}`,
+    IN_PROGRESS: `equathora_in_progress_${DEVICE_ID}`
 };
 
 const ACHIEVEMENTS_KEY = `equathoraProgress_${DEVICE_ID}`;
@@ -242,6 +243,33 @@ export const toggleFavorite = (problemId) => {
 export const isFavorite = (problemId) => {
     const favorites = getFavorites();
     return favorites.includes(problemId);
+};
+
+// In-progress tracking (problems user has visited but not completed)
+export const getInProgressProblems = () => {
+    const data = localStorage.getItem(STORAGE_KEYS.IN_PROGRESS);
+    return data ? JSON.parse(data) : [];
+};
+
+export const markProblemInProgress = (problemId) => {
+    const inProgress = getInProgressProblems();
+    const normalizedId = String(problemId);
+    if (!inProgress.includes(normalizedId)) {
+        inProgress.push(normalizedId);
+        localStorage.setItem(STORAGE_KEYS.IN_PROGRESS, JSON.stringify(inProgress));
+    }
+};
+
+export const removeProblemFromInProgress = (problemId) => {
+    const inProgress = getInProgressProblems();
+    const normalizedId = String(problemId);
+    const updated = inProgress.filter(id => id !== normalizedId);
+    localStorage.setItem(STORAGE_KEYS.IN_PROGRESS, JSON.stringify(updated));
+};
+
+export const isProblemInProgress = (problemId) => {
+    const inProgress = getInProgressProblems();
+    return inProgress.includes(String(problemId));
 };
 
 // Streak management

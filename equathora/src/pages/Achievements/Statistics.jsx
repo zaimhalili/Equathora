@@ -4,6 +4,7 @@ import './Statistics.css';
 import { getUserProgress, getStreakData, getWeeklyProgress, getDifficultyBreakdown, getTopicFrequency, getCompletedProblems } from '../../lib/databaseService';
 import { getAllProblems } from '../../lib/problemService';
 import { supabase } from '../../lib/supabaseClient';
+import { getSubmissions } from '../../lib/progressStorage';
 
 const Statistics = () => {
   const [progress, setProgress] = useState({
@@ -37,16 +38,34 @@ const Statistics = () => {
         ]);
 
         const totalProblems = allProblems.length || 0;
-        const solved = completedIds?.length || 0;
-        const totalTimeSec = completedIds.length > 0 ? (userProgress?.total_time_minutes || 0) * 60 : 0;
+        // Filter completed IDs to only count valid current problems (same as YourTrack)
+        const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
+        const solved = (completedIds || []).filter(id => validProblemIds.has(String(id))).length;
+        const totalTimeSec = solved > 0 ? (userProgress?.total_time_minutes || 0) * 60 : 0;
         const avgTimeSec = solved > 0 ? totalTimeSec / solved : 0;
 
         const topTopics = (topicData || []).sort((a, b) => b.count - a.count).slice(0, 5).map(t => t.topic);
 
+        // Get correct/wrong from database, with local fallback (same as YourTrack)
+        let correctAnswers = userProgress?.correct_answers || 0;
+        let wrongSubmissions = userProgress?.wrong_submissions || 0;
+        let totalAttempts = userProgress?.total_attempts || 0;
+
+        // If backend counters aren't being maintained yet, fall back to local submissions.
+        if (totalAttempts > 0 && correctAnswers === 0 && wrongSubmissions === 0) {
+          const local = (getSubmissions() || []).filter(s => validProblemIds.has(String(s.problemId)));
+          if (local.length > 0) {
+            const localCorrect = local.filter(s => s.isCorrect).length;
+            correctAnswers = localCorrect;
+            wrongSubmissions = local.length - localCorrect;
+            totalAttempts = local.length;
+          }
+        }
+
         setProgress({
-          correctAnswers: userProgress?.correct_answers || 0,
-          wrongSubmissions: userProgress?.wrong_submissions || 0,
-          totalAttempts: userProgress?.total_attempts || 0,
+          correctAnswers: correctAnswers,
+          wrongSubmissions: wrongSubmissions,
+          totalAttempts: totalAttempts,
           totalProblems,
           solvedProblems: solved,
           streakDays: streakData?.current_streak || 0,

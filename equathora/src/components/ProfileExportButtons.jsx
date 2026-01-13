@@ -4,7 +4,7 @@ import { jsPDF } from 'jspdf';
 import Logo from '../assets/logo/EquathoraSymbolIcon.png';
 import { getUserStats, getSubmissions } from '../lib/progressStorage';
 import { getCompletedProblems, getUserProgress } from '../lib/databaseService';
-import { problems as allProblems } from '../data/problems';
+import { getAllProblems } from '../lib/problemService';
 
 const formatDuration = (totalSeconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(totalSeconds));
@@ -28,7 +28,10 @@ const formatDate = (iso, includeTime = false) => {
 
 const buildDataSnapshot = async () => {
     const stats = getUserStats();
-    const completedIds = await getCompletedProblems();
+    const [completedIds, allProblems] = await Promise.all([
+        getCompletedProblems(),
+        getAllProblems()
+    ]);
     const completed = allProblems.filter(p => completedIds.includes(String(p.id)));
     const allSubmissions = getSubmissions();
 
