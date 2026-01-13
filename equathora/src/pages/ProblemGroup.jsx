@@ -25,7 +25,7 @@ const ProblemGroup = () => {
         ]);
         setGroup(groupData);
         setProblems(problemsData);
-        
+
         // Initialize favorite states
         const favStates = {};
         problemsData.forEach(p => {
