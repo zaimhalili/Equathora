@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ReputationBadge from '../components/ReputationBadge';
 import EditProfileModal from '../components/EditProfileModal';
+import LoadingSpinner from '../components/LoadingSpinner';
 import Autumn from '../assets/images/autumn.jpg';
 import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 import { getAllProblems } from '../lib/problemService';
@@ -182,15 +183,7 @@ const Profile = () => {
   }, [profile]);
 
   if (loading || !userData) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className='bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] px-3 md:px-[30px] [@media(min-width:1600px)]:px-[12vw] pt-5 pb-20 flex items-center justify-center'>
-          <div className='text-[var(--secondary-color)] text-xl'>Loading profile...</div>
-        </main>
-        <Footer />
-      </div>
-    );
+    return <LoadingSpinner message="Loading profile..." />;
   }
 
   const totalProblems = userData.stats.easy.total + userData.stats.medium.total + userData.stats.hard.total;

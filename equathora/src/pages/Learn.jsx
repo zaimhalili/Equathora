@@ -1,12 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import './Learn.css';
 import Idea from '../assets/images/idea.svg';
-import { FaSearch, FaTimes, FaFilter, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaSearch, FaTimes } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -25,7 +25,6 @@ const Learn = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   // Grade to group mapping
   const gradeGroups = {
@@ -116,7 +115,7 @@ const Learn = () => {
 
     // Apply difficulty filter
     if (difficultyFilter !== 'all') {
-      filtered = filtered.filter(p => 
+      filtered = filtered.filter(p =>
         p.difficulty?.toLowerCase() === difficultyFilter.toLowerCase()
       );
     }
@@ -186,7 +185,7 @@ const Learn = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            {/* Search Bar Row */}
+            {/* Search Bar */}
             <div className="search-row">
               <div id="searchbar-and-icon">
                 <FaSearch
@@ -213,130 +212,104 @@ const Learn = () => {
                   </button>
                 )}
               </div>
-              
-              {/* Advanced Filters Toggle */}
-              <button
-                type="button"
-                className={`advanced-filters-toggle ${showAdvancedFilters ? 'active' : ''} ${activeFilterCount > 0 ? 'has-filters' : ''}`}
-                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-              >
-                <FaFilter />
-                <span>Filters</span>
-                {activeFilterCount > 0 && (
-                  <span className="filter-count-badge">{activeFilterCount}</span>
-                )}
-                {showAdvancedFilters ? <FaChevronUp /> : <FaChevronDown />}
-              </button>
+              {activeFilterCount > 0 && (
+                <button
+                  type="button"
+                  className="clear-all-btn"
+                  onClick={clearAllFilters}
+                >
+                  <FaTimes /> Clear filters
+                </button>
+              )}
             </div>
 
-            {/* Advanced Filters Panel */}
-            <AnimatePresence>
-              {showAdvancedFilters && (
-                <motion.div
-                  className="advanced-filters-panel"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {/* Grade Filter */}
-                  <div className="filter-group">
-                    <p className="filter-label">Grade Level</p>
-                    <div className="filter-pills">
-                      <button
-                        type="button"
-                        onClick={() => setGradeFilter('all')}
-                        className={`filter-pill ${gradeFilter === 'all' ? 'active' : ''}`}
-                      >
-                        All Grades
-                      </button>
-                      {['8', '9', '10', '11', '12'].map(grade => (
-                        <button
-                          key={grade}
-                          type="button"
-                          onClick={() => setGradeFilter(grade)}
-                          className={`filter-pill ${gradeFilter === grade ? 'active' : ''}`}
-                        >
-                          Grade {grade}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+            {/* Filter Rows - Horizontal Scrollable */}
+            <div className="filter-rows-container">
+              {/* Grade Filter */}
+              <div className="filter-row">
+                <span className="filter-row-label">Grade</span>
+                <div className="filter-pills-scroll">
+                  <button
+                    type="button"
+                    onClick={() => setGradeFilter('all')}
+                    className={`filter-chip ${gradeFilter === 'all' ? 'active' : ''}`}
+                  >
+                    All
+                  </button>
+                  {['8', '9', '10', '11', '12'].map(grade => (
+                    <button
+                      key={grade}
+                      type="button"
+                      onClick={() => setGradeFilter(grade)}
+                      className={`filter-chip ${gradeFilter === grade ? 'active' : ''}`}
+                    >
+                      {grade}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-                  {/* Difficulty Filter */}
-                  <div className="filter-group">
-                    <p className="filter-label">Difficulty</p>
-                    <div className="filter-pills">
-                      <button
-                        type="button"
-                        onClick={() => setDifficultyFilter('all')}
-                        className={`filter-pill ${difficultyFilter === 'all' ? 'active' : ''}`}
-                      >
-                        All Levels
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setDifficultyFilter('easy')}
-                        className={`filter-pill difficulty-easy ${difficultyFilter === 'easy' ? 'active' : ''}`}
-                      >
-                        🟢 Easy ({problems.filter(p => p.difficulty?.toLowerCase() === 'easy').length})
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setDifficultyFilter('medium')}
-                        className={`filter-pill difficulty-medium ${difficultyFilter === 'medium' ? 'active' : ''}`}
-                      >
-                        🟡 Medium ({problems.filter(p => p.difficulty?.toLowerCase() === 'medium').length})
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setDifficultyFilter('hard')}
-                        className={`filter-pill difficulty-hard ${difficultyFilter === 'hard' ? 'active' : ''}`}
-                      >
-                        🔴 Hard ({problems.filter(p => p.difficulty?.toLowerCase() === 'hard').length})
-                      </button>
-                    </div>
-                  </div>
+              {/* Difficulty Filter */}
+              <div className="filter-row">
+                <span className="filter-row-label">Difficulty</span>
+                <div className="filter-pills-scroll">
+                  <button
+                    type="button"
+                    onClick={() => setDifficultyFilter('all')}
+                    className={`filter-chip ${difficultyFilter === 'all' ? 'active' : ''}`}
+                  >
+                    All
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDifficultyFilter('easy')}
+                    className={`filter-chip easy ${difficultyFilter === 'easy' ? 'active' : ''}`}
+                  >
+                    Easy
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDifficultyFilter('medium')}
+                    className={`filter-chip medium ${difficultyFilter === 'medium' ? 'active' : ''}`}
+                  >
+                    Medium
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDifficultyFilter('hard')}
+                    className={`filter-chip hard ${difficultyFilter === 'hard' ? 'active' : ''}`}
+                  >
+                    Hard
+                  </button>
+                </div>
+              </div>
 
-                  {/* Topic Filter */}
-                  {availableTopics.length > 0 && (
-                    <div className="filter-group">
-                      <p className="filter-label">Topic</p>
-                      <div className="filter-pills topics-grid">
-                        <button
-                          type="button"
-                          onClick={() => setTopicFilter('all')}
-                          className={`filter-pill ${topicFilter === 'all' ? 'active' : ''}`}
-                        >
-                          All Topics
-                        </button>
-                        {availableTopics.map(topic => (
-                          <button
-                            key={topic}
-                            type="button"
-                            onClick={() => setTopicFilter(topic)}
-                            className={`filter-pill topic-pill ${topicFilter === topic ? 'active' : ''}`}
-                          >
-                            {topic} ({problems.filter(p => p.topic === topic).length})
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Clear All Filters */}
-                  {activeFilterCount > 0 && (
+              {/* Topic Filter */}
+              {availableTopics.length > 0 && (
+                <div className="filter-row">
+                  <span className="filter-row-label">Topic</span>
+                  <div className="filter-pills-scroll">
                     <button
                       type="button"
-                      className="clear-all-filters-btn"
-                      onClick={clearAllFilters}
+                      onClick={() => setTopicFilter('all')}
+                      className={`filter-chip ${topicFilter === 'all' ? 'active' : ''}`}
                     >
-                      <FaTimes /> Clear All Filters
+                      All
                     </button>
-                  )}
-                </motion.div>
+                    {availableTopics.map(topic => (
+                      <button
+                        key={topic}
+                        type="button"
+                        onClick={() => setTopicFilter(topic)}
+                        className={`filter-chip topic ${topicFilter === topic ? 'active' : ''}`}
+                      >
+                        {topic}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               )}
-            </AnimatePresence>
+            </div>
 
             {/* Status Filters */}
             <div id="filters-container">
@@ -345,9 +318,8 @@ const Learn = () => {
                 onClick={() => setFilter('all')}
                 className={`filtering ${filter === 'all' ? 'active' : ''}`}
               >
-                All Exercises ({problems.length})
+                All ({problems.length})
               </button>
-
               <button
                 type="button"
                 onClick={() => setFilter('completed')}
@@ -355,7 +327,6 @@ const Learn = () => {
               >
                 Completed ({problems.filter(p => p.completed).length})
               </button>
-
               <button
                 type="button"
                 onClick={() => setFilter('in-progress')}
@@ -363,7 +334,6 @@ const Learn = () => {
               >
                 In Progress ({problems.filter(p => p.inProgress).length})
               </button>
-
               <button
                 type="button"
                 onClick={() => setFilter('favourite')}
@@ -372,54 +342,11 @@ const Learn = () => {
                 Favourite ({problems.filter(p => p.favourite).length})
               </button>
             </div>
-
-            {/* Active Filters Summary */}
-            {(activeFilterCount > 0 || searchQuery) && (
-              <div className="active-filters-summary">
-                <span className="summary-label">Active filters:</span>
-                {searchQuery && (
-                  <span className="active-filter-tag">
-                    Search: "{searchQuery}"
-                    <button onClick={() => setSearchQuery('')}><FaTimes /></button>
-                  </span>
-                )}
-                {gradeFilter !== 'all' && (
-                  <span className="active-filter-tag">
-                    Grade {gradeFilter}
-                    <button onClick={() => setGradeFilter('all')}><FaTimes /></button>
-                  </span>
-                )}
-                {difficultyFilter !== 'all' && (
-                  <span className="active-filter-tag">
-                    {difficultyFilter.charAt(0).toUpperCase() + difficultyFilter.slice(1)}
-                    <button onClick={() => setDifficultyFilter('all')}><FaTimes /></button>
-                  </span>
-                )}
-                {topicFilter !== 'all' && (
-                  <span className="active-filter-tag">
-                    {topicFilter}
-                    <button onClick={() => setTopicFilter('all')}><FaTimes /></button>
-                  </span>
-                )}
-              </div>
-            )}
-
           </motion.article>
 
-          {/* Results Count */}
-          <div className="results-count">
-            <p>
-              Showing <strong>{filteredProblems.length}</strong> of <strong>{problems.length}</strong> exercises
-              {filteredProblems.length === 0 && problems.length > 0 && (
-                <button 
-                  type="button" 
-                  className="reset-filters-link"
-                  onClick={clearAllFilters}
-                >
-                  Reset filters
-                </button>
-              )}
-            </p>
+          {/* Results Summary */}
+          <div className="results-summary">
+            Showing <strong>{filteredProblems.length}</strong> of <strong>{problems.length}</strong> exercises
           </div>
 
           <motion.article
