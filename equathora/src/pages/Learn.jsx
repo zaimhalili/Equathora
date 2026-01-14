@@ -8,6 +8,7 @@ import './Learn.css';
 import Idea from '../assets/images/idea.svg';
 import { FaSearch, FaTimes } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { getAllProblems } from '../lib/problemService';
@@ -158,6 +159,10 @@ const Learn = () => {
 
     return filtered;
   }, [filter, gradeFilter, difficultyFilter, topicFilter, searchQuery, problems, gradeGroups]);
+
+  if (loading) {
+    return <LoadingSpinner message="Loading exercises..." />;
+  }
 
   return (
     <>

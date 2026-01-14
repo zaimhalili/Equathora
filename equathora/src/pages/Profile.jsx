@@ -6,7 +6,6 @@ import Footer from '../components/Footer';
 import ReputationBadge from '../components/ReputationBadge';
 import EditProfileModal from '../components/EditProfileModal';
 import LoadingSpinner from '../components/LoadingSpinner';
-import Autumn from '../assets/images/autumn.jpg';
 import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 import { getAllProblems } from '../lib/problemService';
 import { getCompletedProblems } from '../lib/databaseService';
@@ -154,7 +153,7 @@ const Profile = () => {
             problemsSolved: finalSolved,
             accuracy: accuracy,
             accuracyDetail: {
-              correct: correctAnswers,
+              correct: correctSubmissions,
               wrong: wrongSubmissions,
               total: totalAttempts
             },
@@ -217,12 +216,14 @@ const Profile = () => {
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
                     <img
-                      src={userData.avatar_url && userData.avatar_url.trim() !== '' ? userData.avatar_url : Autumn}
+                      src={userData.avatar_url && userData.avatar_url.trim() !== '' 
+                        ? userData.avatar_url 
+                        : `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name || 'User')}&background=d90429&color=fff&size=128&bold=true`}
                       alt="Profile Picture"
                       className='rounded-md h-20 w-20 md:h-24 md:w-24 object-cover'
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = Autumn;
+                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name || 'User')}&background=d90429&color=fff&size=128&bold=true`;
                       }}
                     />
                     <div className='text-[var(--secondary-color)] font-[Inter] flex flex-col justify-between gap-1'>
