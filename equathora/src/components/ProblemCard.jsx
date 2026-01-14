@@ -1,7 +1,7 @@
 import React from 'react';
 import './ProblemCard.css';
 import { Link } from 'react-router-dom';
-import { FaStar, FaRegStar, FaCrown, FaCheckCircle, FaClock } from 'react-icons/fa';
+import { FaStar, FaRegStar, FaCrown, FaCheckCircle, FaClock, FaTag } from 'react-icons/fa';
 
 const ProblemCard = ({ problem }) => {
     const getDifficultyColor = (difficulty) => {
@@ -37,15 +37,23 @@ const ProblemCard = ({ problem }) => {
             <p className="problem-description">{problem.description}</p>
 
             <div className="problem-footer">
-                <span
-                    className="difficulty-badge"
-                    style={{
-                        backgroundColor: `${getDifficultyColor(problem.difficulty)}20`,
-                        color: getDifficultyColor(problem.difficulty)
-                    }}
-                >
-                    {problem.difficulty}
-                </span>
+                <div className="footer-left">
+                    <span
+                        className="difficulty-badge"
+                        style={{
+                            backgroundColor: `${getDifficultyColor(problem.difficulty)}20`,
+                            color: getDifficultyColor(problem.difficulty)
+                        }}
+                    >
+                        {problem.difficulty}
+                    </span>
+                    {problem.topic && (
+                        <span className="topic-badge">
+                            <FaTag className="topic-icon" />
+                            {problem.topic}
+                        </span>
+                    )}
+                </div>
 
                 <div className="status-badge">
                     {problem.completed && (

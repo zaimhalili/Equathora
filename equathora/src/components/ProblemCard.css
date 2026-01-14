@@ -99,6 +99,14 @@
     align-items: center;
     gap: 1rem;
     margin-top: auto;
+    flex-wrap: wrap;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .difficulty-badge {
@@ -108,6 +116,23 @@
     font-weight: 700;
     white-space: nowrap;
     flex-shrink: 0;
+}
+
+.topic-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    white-space: nowrap;
+}
+
+.topic-icon {
+    font-size: 0.65rem;
 }
 
 .status-badge {
