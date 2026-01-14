@@ -216,8 +216,8 @@ const Profile = () => {
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
                     <img
-                      src={userData.avatar_url && userData.avatar_url.trim() !== '' 
-                        ? userData.avatar_url 
+                      src={userData.avatar_url && userData.avatar_url.trim() !== ''
+                        ? userData.avatar_url
                         : `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name || 'User')}&background=d90429&color=fff&size=128&bold=true`}
                       alt="Profile Picture"
                       className='rounded-md h-20 w-20 md:h-24 md:w-24 object-cover'
