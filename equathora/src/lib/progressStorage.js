@@ -416,31 +416,34 @@ export const recordProblemStats = async (
     const solved = new Set(currentSolvedProblems);
     const alreadySolved = solved.has(problem.id);
 
-    if (isCorrect && !alreadySolved) {
-        solved.add(problem.id);
-        progress.solvedProblems = Array.from(solved);
-        progress.correctAnswers = currentCorrectAnswers + 1;
+    if (isCorrect) {
+        if (!alreadySolved) {
+            solved.add(problem.id);
+            progress.solvedProblems = Array.from(solved);
+            progress.correctAnswers = currentCorrectAnswers + 1;
 
-        const difficultyKey = (problem.difficulty || 'easy').toLowerCase();
-        if (!progress.difficultyBreakdown) {
-            progress.difficultyBreakdown = { easy: 0, medium: 0, hard: 0 };
+            const difficultyKey = (problem.difficulty || 'easy').toLowerCase();
+            if (!progress.difficultyBreakdown) {
+                progress.difficultyBreakdown = { easy: 0, medium: 0, hard: 0 };
+            }
+            if (progress.difficultyBreakdown[difficultyKey] !== undefined) {
+                progress.difficultyBreakdown[difficultyKey] += 1;
+            }
+        } else {
+            // Already solved - still count as correct for accuracy, keep unique solve count same
+            progress.correctAnswers = currentCorrectAnswers;
         }
-        if (progress.difficultyBreakdown[difficultyKey] !== undefined) {
-            progress.difficultyBreakdown[difficultyKey] += 1;
-        }
-    } else if (!isCorrect) {
-        progress.wrongSubmissions = currentWrongSubmissions + 1;
-    } else {
-        // Already solved, keep existing counts
-        progress.correctAnswers = currentCorrectAnswers;
         progress.wrongSubmissions = currentWrongSubmissions;
+    } else {
+        progress.wrongSubmissions = currentWrongSubmissions + 1;
+        progress.correctAnswers = currentCorrectAnswers;
     }
 
-    const correctCount = progress.correctAnswers;
-    const wrongCount = progress.wrongSubmissions;
-    const totalCount = correctCount + wrongCount;
-    progress.accuracyRate = totalCount > 0
-        ? Math.round((correctCount / totalCount) * 100)
+    // Accuracy = (total attempts - wrong submissions) / total attempts
+    // This counts all correct submissions including re-solves
+    const correctSubmissions = progress.totalAttempts - progress.wrongSubmissions;
+    progress.accuracyRate = progress.totalAttempts > 0
+        ? Math.round((correctSubmissions / progress.totalAttempts) * 100)
         : 0;
 
     // Calculate total XP for leaderboard using the new XP system

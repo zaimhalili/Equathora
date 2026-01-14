@@ -240,15 +240,20 @@ async function computeLeaderboardFromTables(limit = 100) {
                 ? progress.solved_problems.length
                 : 0;
 
+            // Accuracy = (total_attempts - wrong_submissions) / total_attempts
+            // This counts all correct submissions including re-solves
+            const correctSubmissions = progress.total_attempts - (progress.wrong_submissions || 0);
+            const accuracy = progress.total_attempts > 0
+                ? Math.round((correctSubmissions / progress.total_attempts) * 100)
+                : 0;
+
             return {
                 userId: userId,
                 name: profile.name || `Student-${String(userId).slice(0, 6)}`,
                 avatarUrl: profile.avatarUrl || '',
                 xp: progress.total_xp || xpData.totalXP || 0,
                 problemsSolved: solvedCount,
-                accuracy: progress.total_attempts > 0
-                    ? Math.round((progress.correct_answers / progress.total_attempts) * 100)
-                    : 0,
+                accuracy: accuracy,
                 reputation: progress.reputation || 0,
                 currentStreak: streakMap[userId] || 0,
                 rank: 0
@@ -304,15 +309,19 @@ async function computeLeaderboardFromProgressOnly(limit = 100) {
                 ? progress.solved_problems.length
                 : 0;
 
+            // Accuracy = (total_attempts - wrong_submissions) / total_attempts
+            const correctSubmissions = progress.total_attempts - (progress.wrong_submissions || 0);
+            const accuracy = progress.total_attempts > 0
+                ? Math.round((correctSubmissions / progress.total_attempts) * 100)
+                : 0;
+
             return {
                 userId: progress.user_id,
                 name: profile.name || `Student-${String(progress.user_id).slice(0, 6)}`,
                 avatarUrl: profile.avatarUrl || '',
                 xp: progress.total_xp || xpData.totalXP || 0,
                 problemsSolved: solvedCount,
-                accuracy: progress.total_attempts > 0
-                    ? Math.round((progress.correct_answers / progress.total_attempts) * 100)
-                    : 0,
+                accuracy: accuracy,
                 reputation: progress.reputation || 0,
                 currentStreak: streakMap[progress.user_id] || 0,
                 rank: 0
@@ -356,9 +365,16 @@ export async function getGlobalLeaderboard(limit = 100) {
             .order('total_xp', { ascending: false })
             .limit(limit * 2);
 
+        // Also get users who have completed problems but might not have user_progress entry yet
+        const { data: completedData } = await supabase
+            .from('user_completed_problems')
+            .select('user_id')
+            .limit(limit * 3);
+
+        const completedUserIds = [...new Set((completedData || []).map(c => c.user_id))];
         const progressIds = (progressData || []).map(p => p.user_id);
         const viewIds = rows.map(r => r.user_id).filter(Boolean);
-        const allIds = Array.from(new Set([...viewIds, ...progressIds]));
+        const allIds = Array.from(new Set([...viewIds, ...progressIds, ...completedUserIds]));
 
         if (!allIds.length) {
             return [];
@@ -381,11 +397,18 @@ export async function getGlobalLeaderboard(limit = 100) {
             return acc;
         }, {});
 
-        // Build combined entries, preferring view data but filling gaps with progress
+        // Count solved problems from user_completed_problems for users without progress entry
+        const completedCountMap = {};
+        (completedData || []).forEach(row => {
+            completedCountMap[row.user_id] = (completedCountMap[row.user_id] || 0) + 1;
+        });
+
+        // Build combined entries, preferring view data but filling gaps with progress or completed counts
         const combined = allIds.map((userId) => {
             const viewRow = rows.find(r => r.user_id === userId);
             const progress = progressMap[userId];
             const profile = profileMap[userId] || {};
+            const completedCount = completedCountMap[userId] || 0;
 
             const problemsFromView = typeof viewRow?.problems_solved_count === 'number'
                 ? viewRow.problems_solved_count
@@ -393,18 +416,35 @@ export async function getGlobalLeaderboard(limit = 100) {
                     ? viewRow.solved_problems.length
                     : 0;
 
-            const solvedFallback = Array.isArray(progress?.solved_problems) ? progress.solved_problems.length : problemsFromView;
+            // Use progress solved_problems, then view, then completed count from user_completed_problems
+            const solvedCount = Array.isArray(progress?.solved_problems)
+                ? progress.solved_problems.length
+                : (problemsFromView || completedCount);
 
             const shouldRecompute = (!viewRow?.total_xp && progress) || (problemsFromView === 0 && progress && Array.isArray(progress.solved_problems));
             const xpData = shouldRecompute ? calculateUserXP(progress, { current_streak: streakMap[userId] }) : null;
 
-            const xpValue = shouldRecompute
-                ? (progress?.total_xp || xpData?.totalXP || 0)
-                : (viewRow?.total_xp || progress?.total_xp || 0);
+            // Calculate XP - for users with only completed problems but no progress, give base XP
+            let xpValue = 0;
+            if (shouldRecompute) {
+                xpValue = progress?.total_xp || xpData?.totalXP || 0;
+            } else if (viewRow?.total_xp) {
+                xpValue = viewRow.total_xp;
+            } else if (progress?.total_xp) {
+                xpValue = progress.total_xp;
+            } else if (completedCount > 0) {
+                // No progress entry, but has completed problems - give base XP
+                xpValue = completedCount * 50;
+            }
 
-            const accuracyVal = viewRow?.accuracy_percentage
-                || (progress?.total_attempts ? Math.round((progress.correct_answers / progress.total_attempts) * 100) : 0)
-                || 0;
+            // Accuracy = (total_attempts - wrong_submissions) / total_attempts
+            let accuracyVal = 0;
+            if (viewRow?.accuracy_percentage) {
+                accuracyVal = viewRow.accuracy_percentage;
+            } else if (progress?.total_attempts) {
+                const correctSubs = progress.total_attempts - (progress.wrong_submissions || 0);
+                accuracyVal = Math.round((correctSubs / progress.total_attempts) * 100);
+            }
 
             return {
                 userId,
@@ -412,7 +452,7 @@ export async function getGlobalLeaderboard(limit = 100) {
                 avatarUrl: profile.avatarUrl || '',
                 xp: xpValue,
                 xpBreakdown: {},
-                problemsSolved: shouldRecompute ? solvedFallback : (problemsFromView || solvedFallback),
+                problemsSolved: solvedCount,
                 accuracy: accuracyVal,
                 reputation: viewRow?.reputation || progress?.reputation || 0,
                 currentStreak: viewRow?.current_streak || streakMap[userId] || 0,

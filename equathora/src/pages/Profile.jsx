@@ -109,26 +109,24 @@ const Profile = () => {
 
         // Calculate stats (scope solved to current problems list)
         const solved = completedProblems.length;
-        let correctAnswers = progressRow?.correct_answers || 0;
         let wrongSubmissions = progressRow?.wrong_submissions || 0;
         let totalAttempts = progressRow?.total_attempts || 0;
 
-        // If backend counters aren't being maintained yet, fall back to local submissions for self only.
-        if (isSelf && (totalAttempts === 0 || (totalAttempts > 0 && correctAnswers === 0 && wrongSubmissions === 0))) {
-          const validProblemIds = new Set((problemList || []).map(p => String(p.id)));
-          const local = (getSubmissions() || []).filter(s => validProblemIds.has(String(s.problemId)));
+        // If backend counters aren't populated, fall back to local submissions for self only.
+        if (isSelf && totalAttempts === 0) {
+          const validProblemIdsSet = new Set((problemList || []).map(p => String(p.id)));
+          const local = (getSubmissions() || []).filter(s => validProblemIdsSet.has(String(s.problemId)));
           if (local.length > 0) {
             const localCorrect = local.filter(s => s.isCorrect).length;
-            correctAnswers = localCorrect;
             wrongSubmissions = local.length - localCorrect;
             totalAttempts = local.length;
           }
         }
 
-        // Use leaderboard data as fallback for accuracy only (not solved count)
-        const accuracyFromLeaderboard = leaderboardRow?.accuracy_percentage;
-
-        const accuracy = accuracyFromLeaderboard ?? (totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0);
+        // Calculate accuracy = (totalAttempts - wrongSubmissions) / totalAttempts
+        // This matches the progressStorage.js formula and counts all correct submissions
+        const correctSubmissions = totalAttempts - wrongSubmissions;
+        const accuracy = totalAttempts > 0 ? Math.round((correctSubmissions / totalAttempts) * 100) : 0;
 
         // Use solved count from completedProblems filtered by valid IDs (consistent with YourTrack and Statistics)
         const finalSolved = solved;
