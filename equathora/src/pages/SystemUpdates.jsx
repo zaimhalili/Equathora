@@ -9,11 +9,151 @@ import { FaRocket, FaBug, FaStar, FaPalette, FaCode, FaCheckCircle } from 'react
 const SystemUpdates = () => {
     const updates = [
         {
-            version: "1.3.0",
-            date: "December 28, 2025",
+            version: "1.4.5",
+            date: "January 15, 2026",
             type: "feature",
             icon: <FaRocket className="text-xl" />,
             color: "from-blue-500 to-cyan-500",
+            title: "Better Filtering & Problem Discovery",
+            changes: [
+                "Added new dropdown filter system to find problems faster",
+                "Filter by difficulty, topic, and grade level all at once",
+                "Fixed filter dropdowns appearing correctly on mobile",
+                "Improved search and filtering layout on all devices"
+            ]
+        },
+        {
+            version: "1.4.3",
+            date: "January 14-15, 2026",
+            type: "improvement",
+            icon: <FaStar className="text-xl" />,
+            color: "from-purple-500 to-pink-500",
+            title: "Achievements & Loading Experience",
+            changes: [
+                "Fixed achievement unlocking logic - Quick Starter now works correctly",
+                "Added smooth loading spinners across the entire platform",
+                "Made achievements page more mobile-friendly with better spacing",
+                "Statistics page now shows accurate data matching your profile"
+            ]
+        },
+        {
+            version: "1.4.0",
+            date: "January 13-14, 2026",
+            type: "feature",
+            icon: <FaCode className="text-xl" />,
+            color: "from-indigo-500 to-blue-500",
+            title: "Track Your Progress Better",
+            changes: [
+                "Added in-progress tracking - continue where you left off",
+                "Improved problem navigation with better group handling",
+                "Added grade filtering to find problems for your level",
+                "Enhanced accuracy calculation across all pages"
+            ]
+        },
+        {
+            version: "1.3.8",
+            date: "January 11-12, 2026",
+            type: "feature",
+            icon: <FaRocket className="text-xl" />,
+            color: "from-green-500 to-teal-500",
+            title: "50 New Problems & Feedback Updates",
+            changes: [
+                "Added 50 brand new problems from OCR extraction",
+                "Python script created to automatically extract problems from books",
+                "Simplified feedback messages - cleaner and easier to understand",
+                "Improved feedback display spacing in the math editor"
+            ]
+        },
+        {
+            version: "1.3.5",
+            date: "January 9-10, 2026",
+            type: "improvement",
+            icon: <FaPalette className="text-xl" />,
+            color: "from-purple-500 to-pink-500",
+            title: "Leaderboard & Profile Updates",
+            changes: [
+                "Enhanced leaderboard with better accuracy calculations",
+                "Improved how profile pictures appear on leaderboards",
+                "Updated problem descriptions for better clarity",
+                "Added detailed instructions for resetting user data"
+            ]
+        },
+        {
+            version: "1.3.2",
+            date: "January 5, 2026",
+            type: "feature",
+            icon: <FaCode className="text-xl" />,
+            color: "from-blue-500 to-cyan-500",
+            title: "Cookie Consent & Leaderboard Polish",
+            changes: [
+                "Added cookie consent banner with full policy page",
+                "Improved leaderboard with recent top solvers section",
+                "Better data handling in profile exports",
+                "Cleaned up localStorage and improved data management"
+            ]
+        },
+        {
+            version: "1.3.1",
+            date: "January 4-5, 2026",
+            type: "feature",
+            icon: <FaRocket className="text-xl" />,
+            color: "from-amber-500 to-orange-500",
+            title: "Complete Leaderboard System",
+            changes: [
+                "Launched full leaderboard with XP calculation",
+                "Ranking algorithms to show your progress vs others",
+                "Database policies for secure leaderboard data",
+                "Profile editing with avatar upload and compression"
+            ]
+        },
+        {
+            version: "1.3.0",
+            date: "January 2-3, 2026",
+            type: "feature",
+            icon: <FaStar className="text-xl" />,
+            color: "from-indigo-500 to-purple-500",
+            title: "Authentication & Password Reset",
+            changes: [
+                "Full Supabase integration for user authentication",
+                "Password reset functionality with email verification",
+                "Enhanced login and signup with better error messages",
+                "Database integration for tracking your progress permanently"
+            ]
+        },
+        {
+            version: "1.2.9",
+            date: "December 30, 2025 - January 2, 2026",
+            type: "feature",
+            icon: <FaCode className="text-xl" />,
+            color: "from-blue-500 to-cyan-500",
+            title: "Privacy & Legal Pages",
+            changes: [
+                "Added Privacy Policy and Terms of Service pages",
+                "User synchronization with secure backend",
+                "API rate limiting for better security",
+                "Daily problem fetching system for practice"
+            ]
+        },
+        {
+            version: "1.2.8",
+            date: "December 29, 2025",
+            type: "feature",
+            icon: <FaRocket className="text-xl" />,
+            color: "from-green-500 to-teal-500",
+            title: "Backend & Authentication Setup",
+            changes: [
+                "Set up .NET backend with database support",
+                "Implemented JWT authentication system",
+                "User registration and login endpoints",
+                "Problem attempt validation and tracking"
+            ]
+        },
+        {
+            version: "1.2.7",
+            date: "December 28, 2025",
+            type: "feature",
+            icon: <FaPalette className="text-xl" />,
+            color: "from-purple-500 to-pink-500",
             title: "Blog & Sharing Features",
             changes: [
                 "Added new blog section to share updates and insights",
@@ -23,7 +163,7 @@ const SystemUpdates = () => {
             ]
         },
         {
-            version: "1.2.9",
+            version: "1.2.6",
             date: "December 27, 2025",
             type: "improvement",
             icon: <FaPalette className="text-xl" />,
@@ -37,7 +177,7 @@ const SystemUpdates = () => {
             ]
         },
         {
-            version: "1.2.8",
+            version: "1.2.5",
             date: "December 25, 2025",
             type: "feature",
             icon: <FaCode className="text-xl" />,
@@ -51,7 +191,7 @@ const SystemUpdates = () => {
             ]
         },
         {
-            version: "1.2.6",
+            version: "1.2.3",
             date: "December 20, 2025",
             type: "feature",
             icon: <FaRocket className="text-xl" />,
@@ -65,7 +205,7 @@ const SystemUpdates = () => {
             ]
         },
         {
-            version: "1.2.3",
+            version: "1.2.2",
             date: "December 17, 2025",
             type: "improvement",
             icon: <FaStar className="text-xl" />,
@@ -78,7 +218,7 @@ const SystemUpdates = () => {
             ]
         },
         {
-            version: "1.2.2",
+            version: "1.2.1",
             date: "December 16, 2025",
             type: "feature",
             icon: <FaRocket className="text-xl" />,
@@ -92,7 +232,7 @@ const SystemUpdates = () => {
             ]
         },
         {
-            version: "1.2.1",
+            version: "1.2.0",
             date: "December 14, 2025",
             type: "improvement",
             icon: <FaCode className="text-xl" />,
@@ -106,7 +246,7 @@ const SystemUpdates = () => {
             ]
         },
         {
-            version: "1.2.0",
+            version: "1.1.5",
             date: "December 8, 2025",
             type: "feature",
             icon: <FaRocket className="text-xl" />,
@@ -120,7 +260,7 @@ const SystemUpdates = () => {
             ]
         },
         {
-            version: "1.1.5",
+            version: "1.1.4",
             date: "December 5, 2025",
             type: "improvement",
             icon: <FaStar className="text-xl" />,
@@ -134,7 +274,7 @@ const SystemUpdates = () => {
             ]
         },
         {
-            version: "1.1.4",
+            version: "1.1.3",
             date: "December 1, 2025",
             type: "bugfix",
             icon: <FaBug className="text-xl" />,

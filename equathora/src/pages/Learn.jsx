@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
 import { useSearchParams } from 'react-router-dom';
@@ -12,31 +13,74 @@ import { getAllProblems } from '../lib/problemService';
 import { getCompletedProblems, getFavoriteProblems } from '../lib/databaseService';
 import { getInProgressProblems } from '../lib/progressStorage';
 
-// Custom Dropdown Component
+// Custom Dropdown Component with Portal
 const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0, width: 0 });
+  const triggerRef = useRef(null);
   
   const selectedOption = options.find(opt => opt.value === value);
   const displayText = selectedOption ? selectedOption.label : placeholder;
+
+  const updatePosition = () => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setMenuPosition({
+        top: rect.bottom + window.scrollY + 4,
+        left: rect.left + window.scrollX,
+        width: rect.width
+      });
+    }
+  };
+
+  const handleOpen = () => {
+    if (isOpen) {
+      setIsOpen(false);
+    } else {
+      setIsOpen(true);
+      updatePosition();
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      updatePosition();
+      window.addEventListener('scroll', updatePosition);
+      window.addEventListener('resize', updatePosition);
+      return () => {
+        window.removeEventListener('scroll', updatePosition);
+        window.removeEventListener('resize', updatePosition);
+      };
+    }
+  }, [isOpen]);
 
   return (
     <div className="filter-dropdown">
       <label className="filter-dropdown-label">{label}</label>
       <button
+        ref={triggerRef}
         type="button"
         className={`filter-dropdown-trigger ${isOpen ? 'open' : ''} ${value ? 'has-value' : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
-        onBlur={() => setTimeout(() => setIsOpen(false), 150)}
+        onClick={handleOpen}
+        onBlur={() => setTimeout(() => setIsOpen(false), 200)}
       >
         <span className="filter-dropdown-text">{displayText}</span>
         <FaChevronDown className={`filter-dropdown-icon ${isOpen ? 'rotated' : ''}`} />
       </button>
-      {isOpen && (
-        <div className="filter-dropdown-menu">
+      {isOpen && createPortal(
+        <div 
+          className="filter-dropdown-menu filter-dropdown-portal"
+          style={{
+            position: 'absolute',
+            top: `${menuPosition.top}px`,
+            left: `${menuPosition.left}px`,
+            width: `${menuPosition.width}px`
+          }}
+        >
           <button
             type="button"
             className={`filter-dropdown-option ${!value ? 'selected' : ''}`}
-            onClick={() => { onChange(''); setIsOpen(false); }}
+            onMouseDown={(e) => { e.preventDefault(); onChange(''); setIsOpen(false); }}
           >
             {placeholder}
           </button>
@@ -45,7 +89,7 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }
               key={option.value}
               type="button"
               className={`filter-dropdown-option ${value === option.value ? 'selected' : ''}`}
-              onClick={() => { onChange(option.value); setIsOpen(false); }}
+              onMouseDown={(e) => { e.preventDefault(); onChange(option.value); setIsOpen(false); }}
             >
               {option.label}
               {option.count !== undefined && (
@@ -53,7 +97,8 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }
               )}
             </button>
           ))}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
