@@ -732,7 +732,7 @@
     border: 1.5px solid rgba(43, 45, 66, 0.15);
     border-radius: 8px;
     box-shadow: 0 10px 40px rgba(43, 45, 66, 0.15);
-    z-index: 100;
+    z-index: 1000;
     max-height: 280px;
     overflow-y: auto;
     animation: dropdownFadeIn 0.15s ease;

@@ -204,7 +204,7 @@ export default function App() {
             </Route>
 
             {/* Protected Dynamic Routes */}
-            <Route path="/problems/:groupId" element={<ProtectedRoute><ProblemGroup /></ProtectedRoute>} />
+            <Route path="/problem-groups/:groupId" element={<ProtectedRoute><ProblemGroup /></ProtectedRoute>} />
             <Route path="/problems/:slug" element={<ProtectedRoute><Problem /></ProtectedRoute>} />
             <Route path="/profile/:profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 

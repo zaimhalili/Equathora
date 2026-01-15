@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './RecentAchievements.css';
-import { FaTrophy, FaFire, FaBolt, FaGem, FaStar, FaRocket, FaBrain, FaHeart, FaCrown, FaMedal } from 'react-icons/fa';
+import { FaTrophy, FaFire, FaBolt, FaGem, FaStar, FaRocket, FaBrain, FaHeart, FaCrown, FaMedal, FaCalculator, FaGraduationCap, FaMountain, FaInfinity, FaAward, FaLightbulb, FaChartLine, FaClock, FaBalanceScale, FaAtom, FaPuzzlePiece, FaFeather, FaDragon, FaSnowflake, FaSun, FaMoon, FaLeaf, FaGlobe, FaShieldAlt, FaBook } from 'react-icons/fa';
 import { getUserStats } from '../../lib/progressStorage';
 
 const RecentAchievements = () => {
@@ -12,23 +12,44 @@ const RecentAchievements = () => {
     conceptsLearned: Object.keys(userStats.favoriteTopics || {}).length || 0,
     totalTimeMinutes: Math.floor(userStats.totalTime / 60) || 0,
     difficultyBreakdown: userStats.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 },
-    perfectStreak: 0, // Will be tracked in future
+    perfectStreak: userStats.perfectStreak || 0,
     accountCreated: userStats.joinDate ? new Date(userStats.joinDate).getTime() : Date.now(),
     achievementsUnlocked: [],
-    achievementsEarned: 0
+    achievementsEarned: 0,
+    // Extended stats for more achievements
+    mediumProblems: userStats.difficultyBreakdown?.medium || 0,
+    easyProblems: userStats.difficultyBreakdown?.easy || 0,
+    totalAttempts: userStats.totalAttempts || 0,
+    weekendProblems: userStats.weekendProblems || 0,
+    nightProblems: userStats.nightProblems || 0,
+    topicsExplored: Object.keys(userStats.favoriteTopics || {}).length || 0,
+    longestSession: userStats.longestSession || 0,
+    bestStreak: userStats.bestStreak || userStats.currentStreak || 0,
   };
   const solvedProblems = progress.solvedProblems;
   const streakDays = progress.streakDays;
   const conceptsLearned = progress.conceptsLearned;
   const totalTimeSpent = progress.totalTimeMinutes;
   const hardProblems = progress.difficultyBreakdown?.hard || 0;
+  const mediumProblems = progress.difficultyBreakdown?.medium || 0;
+  const easyProblems = progress.difficultyBreakdown?.easy || 0;
   const perfectStreak = progress.perfectStreak;
+  const totalAttempts = progress.totalAttempts;
+  const topicsExplored = progress.topicsExplored;
+  const longestSession = progress.longestSession;
+  const bestStreak = progress.bestStreak;
 
   // Check if user is an early user (created account before a certain date)
   const accountCreated = progress.accountCreated || Date.now();
   const isEarlyUser = accountCreated < new Date('2025-01-01').getTime();
+  
+  // Time-based checks
+  const currentHour = new Date().getHours();
+  const isNightOwl = currentHour >= 22 || currentHour < 5;
+  const isEarlyBird = currentHour >= 5 && currentHour < 8;
 
   const achievements = [
+    // Original 10 achievements
     {
       id: 'early-bird',
       icon: <FaCrown />,
@@ -119,6 +140,187 @@ const RecentAchievements = () => {
       color: '#FFD700',
       unlocked: perfectStreak >= 10,
       rarity: 'Legendary'
+    },
+    // 20 NEW achievements
+    {
+      id: 'century',
+      icon: <FaCalculator />,
+      title: 'Century Club',
+      description: 'Solved 100 problems',
+      color: '#8E44AD',
+      unlocked: solvedProblems >= 100,
+      rarity: 'Epic'
+    },
+    {
+      id: 'marathon',
+      icon: <FaMountain />,
+      title: 'Marathon Runner',
+      description: 'Maintained a 60-day streak',
+      color: '#1ABC9C',
+      unlocked: streakDays >= 60,
+      rarity: 'Legendary'
+    },
+    {
+      id: 'balanced',
+      icon: <FaBalanceScale />,
+      title: 'Perfectly Balanced',
+      description: 'Solved at least 5 problems of each difficulty',
+      color: '#3498DB',
+      unlocked: easyProblems >= 5 && mediumProblems >= 5 && hardProblems >= 5,
+      rarity: 'Rare'
+    },
+    {
+      id: 'explorer',
+      icon: <FaGlobe />,
+      title: 'Explorer',
+      description: 'Explored problems from 5 different topics',
+      color: '#27AE60',
+      unlocked: topicsExplored >= 5,
+      rarity: 'Uncommon'
+    },
+    {
+      id: 'scholar',
+      icon: <FaGraduationCap />,
+      title: 'Math Scholar',
+      description: 'Explored problems from 10 different topics',
+      color: '#9B59B6',
+      unlocked: topicsExplored >= 10,
+      rarity: 'Rare'
+    },
+    {
+      id: 'night-owl',
+      icon: <FaMoon />,
+      title: 'Night Owl',
+      description: 'Solved a problem between 10 PM and 5 AM',
+      color: '#2C3E50',
+      unlocked: isNightOwl && solvedProblems >= 1,
+      rarity: 'Uncommon'
+    },
+    {
+      id: 'early-riser',
+      icon: <FaSun />,
+      title: 'Early Riser',
+      description: 'Solved a problem between 5 AM and 8 AM',
+      color: '#F1C40F',
+      unlocked: isEarlyBird && solvedProblems >= 1,
+      rarity: 'Uncommon'
+    },
+    {
+      id: 'warm-up',
+      icon: <FaLeaf />,
+      title: 'Warm Up Champion',
+      description: 'Solved 20 easy problems',
+      color: '#2ECC71',
+      unlocked: easyProblems >= 20,
+      rarity: 'Uncommon'
+    },
+    {
+      id: 'middle-ground',
+      icon: <FaPuzzlePiece />,
+      title: 'Middle Ground Master',
+      description: 'Solved 20 medium problems',
+      color: '#E67E22',
+      unlocked: mediumProblems >= 20,
+      rarity: 'Rare'
+    },
+    {
+      id: 'hard-core',
+      icon: <FaDragon />,
+      title: 'Hardcore Mathematician',
+      description: 'Solved 20 hard problems',
+      color: '#C0392B',
+      unlocked: hardProblems >= 20,
+      rarity: 'Legendary'
+    },
+    {
+      id: 'time-master',
+      icon: <FaClock />,
+      title: 'Time Master',
+      description: 'Spent over 24 hours learning in total',
+      color: '#16A085',
+      unlocked: totalTimeSpent >= 1440,
+      rarity: 'Epic'
+    },
+    {
+      id: 'infinity',
+      icon: <FaInfinity />,
+      title: 'To Infinity',
+      description: 'Solved 200 problems',
+      color: '#8E44AD',
+      unlocked: solvedProblems >= 200,
+      rarity: 'Legendary'
+    },
+    {
+      id: 'quick-starter',
+      icon: <FaFeather />,
+      title: 'Quick Starter',
+      description: 'Solved 3 problems on your first day',
+      color: '#1ABC9C',
+      unlocked: solvedProblems >= 3 && streakDays <= 1,
+      rarity: 'Uncommon'
+    },
+    {
+      id: 'comeback',
+      icon: <FaShieldAlt />,
+      title: 'Comeback King',
+      description: 'Reached a 14-day streak after a break',
+      color: '#E74C3C',
+      unlocked: streakDays >= 14 && bestStreak > streakDays,
+      rarity: 'Rare'
+    },
+    {
+      id: 'bookworm',
+      icon: <FaBook />,
+      title: 'Bookworm',
+      description: 'Spent over 50 hours learning',
+      color: '#6C5B7B',
+      unlocked: totalTimeSpent >= 3000,
+      rarity: 'Legendary'
+    },
+    {
+      id: 'rising-star',
+      icon: <FaChartLine />,
+      title: 'Rising Star',
+      description: 'Solved 25 problems',
+      color: '#F39C12',
+      unlocked: solvedProblems >= 25,
+      rarity: 'Uncommon'
+    },
+    {
+      id: 'lightbulb',
+      icon: <FaLightbulb />,
+      title: 'Eureka Moment',
+      description: 'Solved 5 problems in a single session',
+      color: '#F7DC6F',
+      unlocked: longestSession >= 5,
+      rarity: 'Rare'
+    },
+    {
+      id: 'atomic',
+      icon: <FaAtom />,
+      title: 'Atomic Precision',
+      description: 'Got 20 problems correct on first try',
+      color: '#5DADE2',
+      unlocked: perfectStreak >= 20,
+      rarity: 'Legendary'
+    },
+    {
+      id: 'grandmaster',
+      icon: <FaAward />,
+      title: 'Grand Master',
+      description: 'Reached an all-time best streak of 90 days',
+      color: '#FFD700',
+      unlocked: bestStreak >= 90,
+      rarity: 'Legendary'
+    },
+    {
+      id: 'snowflake',
+      icon: <FaSnowflake />,
+      title: 'Cool Under Pressure',
+      description: 'Solved 10 hard problems without hints',
+      color: '#85C1E9',
+      unlocked: hardProblems >= 10,
+      rarity: 'Epic'
     }
   ];
 
