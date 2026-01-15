@@ -188,7 +188,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                         <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Inter]">Edit Profile</h2>
                         <button
                             onClick={onClose}
-                            className="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-lg"
+                            className="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
                             aria-label="Close modal"
                         >
                             <FaTimes size={20} />
@@ -214,7 +214,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                 <button
                                     type="button"
                                     onClick={handleAvatarClick}
-                                    className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                                 >
                                     <FaCamera className="text-white text-2xl" />
                                 </button>

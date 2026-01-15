@@ -19,22 +19,19 @@ import Updates from '../../assets/images/updates.svg';
 import Notifications from '../../assets/images/notificationsDD.svg';
 import Achievements from '../../assets/images/achievementsDD.svg';
 import Events from '../../assets/images/specialEvents.svg';
-import { getDailyProblemId, getGroupIdForProblem } from '../../lib/utils';
+import { getDailyProblemSlug } from '../../lib/utils';
 import Books from '../../assets/images/learningBooks.svg';
 
 const NavigationBar = () => {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [dailyProblemId, setDailyProblemId] = useState(1);
-    const [dailyGroupId, setDailyGroupId] = useState(1);
+    const [dailyProblemSlug, setDailyProblemSlug] = useState('');
 
     useEffect(() => {
         const loadDailyProblem = async () => {
             try {
-                const problemId = await getDailyProblemId();
-                const groupId = await getGroupIdForProblem(problemId);
-                setDailyProblemId(problemId);
-                setDailyGroupId(groupId);
+                const slug = await getDailyProblemSlug();
+                setDailyProblemSlug(slug);
             } catch (error) {
                 console.error('Failed to load daily problem:', error);
             }
@@ -44,7 +41,7 @@ const NavigationBar = () => {
 
     const learnItems = [
         {
-            to: `/problems/${dailyGroupId}/${dailyProblemId}`,
+            to: `/problems/${dailyProblemSlug}`,
             text: "Daily Problem",
             description: "Solve a fresh daily challenge.",
             image: Daily

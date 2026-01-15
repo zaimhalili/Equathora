@@ -12,6 +12,7 @@ import { getCompletedProblems } from '../lib/databaseService';
 import { supabase } from '../lib/supabaseClient';
 import ProfileExportButtons from '../components/ProfileExportButtons';
 import { getSubmissions } from '../lib/progressStorage';
+import { generateProblemSlug } from '../lib/slugify';
 
 const Profile = () => {
   const { profile } = useParams();
@@ -437,7 +438,7 @@ const Profile = () => {
                       animate={{ opacity: 1, x: 0 }}
                     >
                       <Link
-                        to={`/problems/${problem.group_id ?? problem.groupId}/${problem.id}`}
+                        to={`/problems/${problem.slug || generateProblemSlug(problem.title, problem.id)}`}
                         className={`w-full px-5 py-4 transition-all hover:-translate-x-1 text-[var(--secondary-color)] duration-150 rounded-md text-md block ${i % 2 === 0 ? 'bg-[var(--french-gray)]' : 'bg-[var(--main-color)]'}`}>{problem.title}</Link>
                     </motion.div>
                   ))}

@@ -21,21 +21,18 @@ import Faq from '../assets/images/faq.svg';
 import AboutUs from '../assets/images/about.svg';
 import Premium from '../assets/images/Premium.svg';
 import Settings from '../assets/images/settings.svg';
-import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
+import { getDailyProblemSlug } from '../lib/utils';
 
 const Sidebar = ({ isOpen, onClose }) => {
     const [moreExpanded, setMoreExpanded] = useState(false);
-    const [dailyProblemId, setDailyProblemId] = useState(1);
-    const [dailyGroupId, setDailyGroupId] = useState(1);
+    const [dailyProblemSlug, setDailyProblemSlug] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
         const loadDailyProblem = async () => {
             try {
-                const problemId = await getDailyProblemId();
-                const groupId = await getGroupIdForProblem(problemId);
-                setDailyProblemId(problemId);
-                setDailyGroupId(groupId);
+                const slug = await getDailyProblemSlug();
+                setDailyProblemSlug(slug);
             } catch (error) {
                 console.error('Failed to load daily problem:', error);
             }
@@ -52,7 +49,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     const sidebarItems = [
         {
-            to: `/problems/${dailyGroupId}/${dailyProblemId}`,
+            to: `/problems/${dailyProblemSlug}`,
             text: 'Daily Challenge',
             description: 'Solve today\'s problem',
             image: Dashboard

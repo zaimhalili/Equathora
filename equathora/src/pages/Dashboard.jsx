@@ -13,23 +13,20 @@ import Leaderboards from '../assets/images/leaderboards.svg'
 import { Link } from 'react-router-dom';
 import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
-import { getDailyProblemId, getGroupIdForProblem } from '../lib/utils';
+import { getDailyProblemSlug } from '../lib/utils';
 import { migrateLocalStorageToDatabase, needsMigration } from '../lib/migrateStorage';
 import { supabase } from '../lib/supabaseClient';
 
 const Dashboard = () => {
   const [migrationStatus, setMigrationStatus] = useState(null);
   const [username, setUsername] = useState("Friend");
-  const [dailyProblemId, setDailyProblemId] = useState(1);
-  const [dailyGroupId, setDailyGroupId] = useState(1);
+  const [dailyProblemSlug, setDailyProblemSlug] = useState('');
 
   useEffect(() => {
     const loadDailyProblem = async () => {
       try {
-        const problemId = await getDailyProblemId();
-        const groupId = await getGroupIdForProblem(problemId);
-        setDailyProblemId(problemId);
-        setDailyGroupId(groupId);
+        const slug = await getDailyProblemSlug();
+        setDailyProblemSlug(slug);
       } catch (error) {
         console.error('Failed to load daily problem:', error);
       }
@@ -126,7 +123,7 @@ const Dashboard = () => {
                       animate={{ opacity: 1, scale: 1 }}
                     >
                       <Link
-                        to={`/problems/${dailyGroupId}/${dailyProblemId}`}
+                        to={`/problems/${dailyProblemSlug}`}
                         className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105"
                       >
                         <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />

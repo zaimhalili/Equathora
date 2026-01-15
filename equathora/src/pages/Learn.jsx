@@ -1,31 +1,77 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
-import { Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
-import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import './Learn.css';
 import Idea from '../assets/images/idea.svg';
-import { FaSearch, FaTimes } from 'react-icons/fa';
+import { FaSearch, FaTimes, FaChevronDown, FaFilter } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import { getAllProblems } from '../lib/problemService';
 import { getCompletedProblems, getFavoriteProblems } from '../lib/databaseService';
 import { getInProgressProblems } from '../lib/progressStorage';
 
+// Custom Dropdown Component
+const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const selectedOption = options.find(opt => opt.value === value);
+  const displayText = selectedOption ? selectedOption.label : placeholder;
+
+  return (
+    <div className="filter-dropdown">
+      <label className="filter-dropdown-label">{label}</label>
+      <button
+        type="button"
+        className={`filter-dropdown-trigger ${isOpen ? 'open' : ''} ${value ? 'has-value' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+        onBlur={() => setTimeout(() => setIsOpen(false), 150)}
+      >
+        <span className="filter-dropdown-text">{displayText}</span>
+        <FaChevronDown className={`filter-dropdown-icon ${isOpen ? 'rotated' : ''}`} />
+      </button>
+      {isOpen && (
+        <div className="filter-dropdown-menu">
+          <button
+            type="button"
+            className={`filter-dropdown-option ${!value ? 'selected' : ''}`}
+            onClick={() => { onChange(''); setIsOpen(false); }}
+          >
+            {placeholder}
+          </button>
+          {options.map(option => (
+            <button
+              key={option.value}
+              type="button"
+              className={`filter-dropdown-option ${value === option.value ? 'selected' : ''}`}
+              onClick={() => { onChange(option.value); setIsOpen(false); }}
+            >
+              {option.label}
+              {option.count !== undefined && (
+                <span className="option-count">({option.count})</span>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Learn = () => {
-  const { groupId } = useParams();
-  const location = useLocation();
-  const [filter, setFilter] = useState(location.state?.filter || 'all');
-  const [gradeFilter, setGradeFilter] = useState('all');
-  const [difficultyFilter, setDifficultyFilter] = useState('all');
-  const [topicFilter, setTopicFilter] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Read filters from URL query params
+  const searchQuery = searchParams.get('q') || '';
+  const gradeFilter = searchParams.get('grade') || '';
+  const difficultyFilter = searchParams.get('difficulty') || '';
+  const statusFilter = searchParams.get('status') || '';
+  const progressFilter = searchParams.get('progress') || '';
+  const topicFilter = searchParams.get('topic') || '';
+  const sortBy = searchParams.get('sort') || 'default';
 
   // Grade to group mapping
   const gradeGroups = {
@@ -36,31 +82,46 @@ const Learn = () => {
     '12': [8, 9, 10]
   };
 
+  // Update URL params helper
+  const updateFilters = useCallback((updates) => {
+    const newParams = new URLSearchParams(searchParams);
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value) {
+        newParams.set(key, value);
+      } else {
+        newParams.delete(key);
+      }
+    });
+    setSearchParams(newParams, { replace: true });
+  }, [searchParams, setSearchParams]);
+
   // Extract unique topics from problems
   const availableTopics = useMemo(() => {
-    const topics = problems
-      .map(p => p.topic)
-      .filter(Boolean)
-      .filter((topic, index, self) => self.indexOf(topic) === index)
-      .sort();
-    return topics;
+    const topicCounts = {};
+    problems.forEach(p => {
+      if (p.topic) {
+        topicCounts[p.topic] = (topicCounts[p.topic] || 0) + 1;
+      }
+    });
+    return Object.entries(topicCounts)
+      .map(([topic, count]) => ({ value: topic, label: topic, count }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }, [problems]);
 
   // Count active filters
   const activeFilterCount = useMemo(() => {
     let count = 0;
-    if (gradeFilter !== 'all') count++;
-    if (difficultyFilter !== 'all') count++;
-    if (topicFilter !== 'all') count++;
+    if (gradeFilter) count++;
+    if (difficultyFilter) count++;
+    if (statusFilter) count++;
+    if (progressFilter) count++;
+    if (topicFilter) count++;
+    if (sortBy !== 'default') count++;
     return count;
-  }, [gradeFilter, difficultyFilter, topicFilter]);
+  }, [gradeFilter, difficultyFilter, statusFilter, progressFilter, topicFilter, sortBy]);
 
   const clearAllFilters = () => {
-    setFilter('all');
-    setGradeFilter('all');
-    setDifficultyFilter('all');
-    setTopicFilter('all');
-    setSearchQuery('');
+    setSearchParams({}, { replace: true });
   };
 
   useEffect(() => {
@@ -82,7 +143,6 @@ const Learn = () => {
             ...problem,
             completed: isCompleted,
             favourite: favoriteIds.includes(problemIdStr),
-            // A problem is in progress if it's been started but not completed
             inProgress: !isCompleted && inProgressIds.includes(problemIdStr)
           };
         });
@@ -107,47 +167,41 @@ const Learn = () => {
   const filteredProblems = useMemo(() => {
     let filtered = problems;
 
-    // Apply grade filter first
-    if (gradeFilter !== 'all') {
+    // Apply grade filter
+    if (gradeFilter) {
       const allowedGroups = gradeGroups[gradeFilter] || [];
-      // Handle both Supabase (group_id) and local (groupId) field naming
       filtered = filtered.filter(p => allowedGroups.includes(p.group_id ?? p.groupId));
     }
 
     // Apply difficulty filter
-    if (difficultyFilter !== 'all') {
+    if (difficultyFilter) {
       filtered = filtered.filter(p =>
         p.difficulty?.toLowerCase() === difficultyFilter.toLowerCase()
       );
     }
 
     // Apply topic filter
-    if (topicFilter !== 'all') {
+    if (topicFilter) {
       filtered = filtered.filter(p => p.topic === topicFilter);
     }
 
-    // Apply status filter
-    switch (filter) {
-      case 'completed':
-        filtered = filtered.filter(p => p.completed);
-        break;
-      case 'incomplete':
-        filtered = filtered.filter(p => !p.completed);
-        break;
-      case 'premium':
-        filtered = filtered.filter(p => p.premium);
-        break;
-      case 'in-progress':
-        filtered = filtered.filter(p => p.inProgress);
-        break;
-      case 'favourite':
-        filtered = filtered.filter(p => p.favourite);
-        break;
-      default:
-        break;
+    // Apply status filter (completed/not started)
+    if (statusFilter === 'completed') {
+      filtered = filtered.filter(p => p.completed);
+    } else if (statusFilter === 'not-started') {
+      filtered = filtered.filter(p => !p.completed && !p.inProgress);
     }
 
-    // Apply search - enhanced to search title, description, and topic
+    // Apply progress filter
+    if (progressFilter === 'in-progress') {
+      filtered = filtered.filter(p => p.inProgress);
+    } else if (progressFilter === 'favourite') {
+      filtered = filtered.filter(p => p.favourite);
+    } else if (progressFilter === 'premium') {
+      filtered = filtered.filter(p => p.premium || p.is_premium);
+    }
+
+    // Apply search
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(p =>
@@ -157,8 +211,75 @@ const Learn = () => {
       );
     }
 
+    // Apply sorting
+    switch (sortBy) {
+      case 'title-asc':
+        filtered = [...filtered].sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+        break;
+      case 'title-desc':
+        filtered = [...filtered].sort((a, b) => (b.title || '').localeCompare(a.title || ''));
+        break;
+      case 'difficulty-asc':
+        filtered = [...filtered].sort((a, b) => {
+          const order = { 'easy': 1, 'medium': 2, 'hard': 3 };
+          return (order[a.difficulty?.toLowerCase()] || 0) - (order[b.difficulty?.toLowerCase()] || 0);
+        });
+        break;
+      case 'difficulty-desc':
+        filtered = [...filtered].sort((a, b) => {
+          const order = { 'easy': 1, 'medium': 2, 'hard': 3 };
+          return (order[b.difficulty?.toLowerCase()] || 0) - (order[a.difficulty?.toLowerCase()] || 0);
+        });
+        break;
+      case 'newest':
+        filtered = [...filtered].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        break;
+      case 'oldest':
+        filtered = [...filtered].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        break;
+      default:
+        // Keep original order (by group_id and display_order)
+        break;
+    }
+
     return filtered;
-  }, [filter, gradeFilter, difficultyFilter, topicFilter, searchQuery, problems, gradeGroups]);
+  }, [gradeFilter, difficultyFilter, topicFilter, statusFilter, progressFilter, searchQuery, sortBy, problems, gradeGroups]);
+
+  // Dropdown options
+  const gradeOptions = [
+    { value: '8', label: 'Grade 8' },
+    { value: '9', label: 'Grade 9' },
+    { value: '10', label: 'Grade 10' },
+    { value: '11', label: 'Grade 11' },
+    { value: '12', label: 'Grade 12' }
+  ];
+
+  const difficultyOptions = [
+    { value: 'easy', label: 'Easy', count: problems.filter(p => p.difficulty?.toLowerCase() === 'easy').length },
+    { value: 'medium', label: 'Medium', count: problems.filter(p => p.difficulty?.toLowerCase() === 'medium').length },
+    { value: 'hard', label: 'Hard', count: problems.filter(p => p.difficulty?.toLowerCase() === 'hard').length }
+  ];
+
+  const statusOptions = [
+    { value: 'completed', label: 'Completed', count: problems.filter(p => p.completed).length },
+    { value: 'not-started', label: 'Not Started', count: problems.filter(p => !p.completed && !p.inProgress).length }
+  ];
+
+  const progressOptions = [
+    { value: 'in-progress', label: 'In Progress', count: problems.filter(p => p.inProgress).length },
+    { value: 'favourite', label: 'Favourite', count: problems.filter(p => p.favourite).length },
+    { value: 'premium', label: 'Premium', count: problems.filter(p => p.premium || p.is_premium).length }
+  ];
+
+  const sortOptions = [
+    { value: 'default', label: 'Default Order' },
+    { value: 'title-asc', label: 'Title (A-Z)' },
+    { value: 'title-desc', label: 'Title (Z-A)' },
+    { value: 'difficulty-asc', label: 'Difficulty (Easy First)' },
+    { value: 'difficulty-desc', label: 'Difficulty (Hard First)' },
+    { value: 'newest', label: 'Newest First' },
+    { value: 'oldest', label: 'Oldest First' }
+  ];
 
   if (loading) {
     return <LoadingSpinner message="Loading exercises..." />;
@@ -168,7 +289,7 @@ const Learn = () => {
     <>
       <main id='body-learn'>
         <header>
-          <Navbar></Navbar>
+          <Navbar />
         </header>
         <section id='hero-learn'>
           <motion.article
@@ -204,13 +325,13 @@ const Learn = () => {
                   placeholder='Search by title, topic, or description...'
                   aria-label='searchbar'
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => updateFilters({ q: e.target.value })}
                 />
                 {searchQuery && (
                   <button
                     type="button"
                     className="clear-search-btn"
-                    onClick={() => setSearchQuery('')}
+                    onClick={() => updateFilters({ q: '' })}
                     aria-label="Clear search"
                   >
                     <FaTimes />
@@ -223,135 +344,118 @@ const Learn = () => {
                   className="clear-all-btn"
                   onClick={clearAllFilters}
                 >
-                  <FaTimes /> Clear filters
+                  <FaTimes /> Clear all ({activeFilterCount})
                 </button>
               )}
             </div>
 
-            {/* Filter Rows - Horizontal Scrollable */}
-            <div className="filter-rows-container">
-              {/* Grade Filter */}
-              <div className="filter-row">
-                <span className="filter-row-label">Grade</span>
-                <div className="filter-pills-scroll">
-                  <button
-                    type="button"
-                    onClick={() => setGradeFilter('all')}
-                    className={`filter-chip ${gradeFilter === 'all' ? 'active' : ''}`}
-                  >
-                    All
-                  </button>
-                  {['8', '9', '10', '11', '12'].map(grade => (
-                    <button
-                      key={grade}
-                      type="button"
-                      onClick={() => setGradeFilter(grade)}
-                      className={`filter-chip ${gradeFilter === grade ? 'active' : ''}`}
-                    >
-                      {grade}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            {/* Filter Dropdowns Grid */}
+            <div className="filter-dropdowns-container">
+              <FilterDropdown
+                label="Sort By"
+                value={sortBy === 'default' ? '' : sortBy}
+                options={sortOptions.filter(o => o.value !== 'default')}
+                onChange={(val) => updateFilters({ sort: val || 'default' })}
+                placeholder="Default Order"
+              />
+              
+              <FilterDropdown
+                label="Grade"
+                value={gradeFilter}
+                options={gradeOptions}
+                onChange={(val) => updateFilters({ grade: val })}
+                placeholder="All Grades"
+              />
 
-              {/* Difficulty Filter */}
-              <div className="filter-row">
-                <span className="filter-row-label">Difficulty</span>
-                <div className="filter-pills-scroll">
-                  <button
-                    type="button"
-                    onClick={() => setDifficultyFilter('all')}
-                    className={`filter-chip ${difficultyFilter === 'all' ? 'active' : ''}`}
-                  >
-                    All
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setDifficultyFilter('easy')}
-                    className={`filter-chip easy ${difficultyFilter === 'easy' ? 'active' : ''}`}
-                  >
-                    Easy
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setDifficultyFilter('medium')}
-                    className={`filter-chip medium ${difficultyFilter === 'medium' ? 'active' : ''}`}
-                  >
-                    Medium
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setDifficultyFilter('hard')}
-                    className={`filter-chip hard ${difficultyFilter === 'hard' ? 'active' : ''}`}
-                  >
-                    Hard
-                  </button>
-                </div>
-              </div>
+              <FilterDropdown
+                label="Difficulty"
+                value={difficultyFilter}
+                options={difficultyOptions}
+                onChange={(val) => updateFilters({ difficulty: val })}
+                placeholder="All Difficulties"
+              />
 
-              {/* Topic Filter */}
+              <FilterDropdown
+                label="Status"
+                value={statusFilter}
+                options={statusOptions}
+                onChange={(val) => updateFilters({ status: val })}
+                placeholder="All Status"
+              />
+
+              <FilterDropdown
+                label="Progress"
+                value={progressFilter}
+                options={progressOptions}
+                onChange={(val) => updateFilters({ progress: val })}
+                placeholder="All Progress"
+              />
+
               {availableTopics.length > 0 && (
-                <div className="filter-row">
-                  <span className="filter-row-label">Topic</span>
-                  <div className="filter-pills-scroll">
-                    <button
-                      type="button"
-                      onClick={() => setTopicFilter('all')}
-                      className={`filter-chip ${topicFilter === 'all' ? 'active' : ''}`}
-                    >
-                      All
-                    </button>
-                    {availableTopics.map(topic => (
-                      <button
-                        key={topic}
-                        type="button"
-                        onClick={() => setTopicFilter(topic)}
-                        className={`filter-chip topic ${topicFilter === topic ? 'active' : ''}`}
-                      >
-                        {topic}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                <FilterDropdown
+                  label="Tags"
+                  value={topicFilter}
+                  options={availableTopics}
+                  onChange={(val) => updateFilters({ topic: val })}
+                  placeholder="All Topics"
+                />
               )}
             </div>
 
-            {/* Status Filters */}
-            <div id="filters-container">
-              <button
-                type="button"
-                onClick={() => setFilter('all')}
-                className={`filtering ${filter === 'all' ? 'active' : ''}`}
-              >
-                All ({problems.length})
-              </button>
-              <button
-                type="button"
-                onClick={() => setFilter('completed')}
-                className={`filtering ${filter === 'completed' ? 'active' : ''}`}
-              >
-                Completed ({problems.filter(p => p.completed).length})
-              </button>
-              <button
-                type="button"
-                onClick={() => setFilter('in-progress')}
-                className={`filtering ${filter === 'in-progress' ? 'active' : ''}`}
-              >
-                In Progress ({problems.filter(p => p.inProgress).length})
-              </button>
-              <button
-                type="button"
-                onClick={() => setFilter('favourite')}
-                className={`filtering ${filter === 'favourite' ? 'active' : ''}`}
-              >
-                Favourite ({problems.filter(p => p.favourite).length})
-              </button>
-            </div>
+            {/* Active Filters Pills */}
+            {activeFilterCount > 0 && (
+              <div className="active-filters-row">
+                <span className="active-filters-label">
+                  <FaFilter /> Active filters:
+                </span>
+                <div className="active-filters-pills">
+                  {gradeFilter && (
+                    <span className="active-filter-pill">
+                      Grade {gradeFilter}
+                      <button onClick={() => updateFilters({ grade: '' })}><FaTimes /></button>
+                    </span>
+                  )}
+                  {difficultyFilter && (
+                    <span className={`active-filter-pill ${difficultyFilter}`}>
+                      {difficultyFilter.charAt(0).toUpperCase() + difficultyFilter.slice(1)}
+                      <button onClick={() => updateFilters({ difficulty: '' })}><FaTimes /></button>
+                    </span>
+                  )}
+                  {statusFilter && (
+                    <span className="active-filter-pill">
+                      {statusFilter === 'completed' ? 'Completed' : 'Not Started'}
+                      <button onClick={() => updateFilters({ status: '' })}><FaTimes /></button>
+                    </span>
+                  )}
+                  {progressFilter && (
+                    <span className="active-filter-pill">
+                      {progressFilter === 'in-progress' ? 'In Progress' : 
+                       progressFilter === 'favourite' ? 'Favourite' : 'Premium'}
+                      <button onClick={() => updateFilters({ progress: '' })}><FaTimes /></button>
+                    </span>
+                  )}
+                  {topicFilter && (
+                    <span className="active-filter-pill topic">
+                      {topicFilter}
+                      <button onClick={() => updateFilters({ topic: '' })}><FaTimes /></button>
+                    </span>
+                  )}
+                  {sortBy !== 'default' && (
+                    <span className="active-filter-pill sort">
+                      {sortOptions.find(o => o.value === sortBy)?.label}
+                      <button onClick={() => updateFilters({ sort: '' })}><FaTimes /></button>
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
           </motion.article>
 
           {/* Results Summary */}
           <div className="results-summary">
-            Showing <strong>{filteredProblems.length}</strong> of <strong>{problems.length}</strong> exercises
+            <span>
+              Showing <strong>{filteredProblems.length}</strong> of <strong>{problems.length}</strong> exercises
+            </span>
           </div>
 
           <motion.article
@@ -360,18 +464,26 @@ const Learn = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            {filteredProblems.map((problem, index) => (
-              <motion.div
-                key={problem.id}
-              >
-                <ProblemCard problem={problem} />
-              </motion.div>
-            ))}
+            {filteredProblems.length === 0 ? (
+              <div className="no-results">
+                <h3>No exercises found</h3>
+                <p>Try adjusting your filters or search query</p>
+                <button onClick={clearAllFilters} className="reset-filters-btn">
+                  Reset all filters
+                </button>
+              </div>
+            ) : (
+              filteredProblems.map((problem) => (
+                <motion.div key={problem.id}>
+                  <ProblemCard problem={problem} />
+                </motion.div>
+              ))
+            )}
           </motion.article>
         </section>
 
         <footer>
-          <Footer></Footer>
+          <Footer />
         </footer>
       </main>
     </>

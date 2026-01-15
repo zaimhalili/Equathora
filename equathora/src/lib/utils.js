@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { getAllProblems } from './problemService';
+import { generateProblemSlug } from './slugify';
 
 export function cn(...inputs) {
     return twMerge(clsx(inputs));
@@ -77,4 +78,20 @@ export async function getGroupIdForProblem(problemId) {
     const problem = allProblems.find(p => p.id === problemId);
     // Handle both Supabase (group_id) and local (groupId) field naming
     return problem ? (problem.group_id ?? problem.groupId ?? 1) : 1;
+}
+
+/**
+ * Gets the daily problem slug for URL navigation
+ * @returns {Promise<string>} Problem slug
+ */
+export async function getDailyProblemSlug() {
+    const problemId = await getDailyProblemId();
+    const allProblems = await getAllProblems();
+    const problem = allProblems.find(p => p.id === problemId);
+    
+    if (problem) {
+        return problem.slug || generateProblemSlug(problem.title, problem.id);
+    }
+    
+    return `problem-${problemId}`;
 }

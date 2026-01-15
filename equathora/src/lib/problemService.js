@@ -1,4 +1,5 @@
 import { supabase } from './supabaseClient';
+import { generateProblemSlug, extractIdFromSlug } from './slugify';
 
 /**
  * Service for managing problems from Supabase database
@@ -108,6 +109,40 @@ export async function getProblem(problemId) {
         return data;
     } catch (error) {
         console.error('Error fetching problem:', error);
+        return null;
+    }
+}
+
+/**
+ * Get a single problem by slug
+ * Falls back to ID extraction if direct slug lookup fails
+ */
+export async function getProblemBySlug(slug) {
+    try {
+        // First try direct slug lookup
+        const { data, error } = await supabase
+            .from('problems')
+            .select('*')
+            .eq('slug', slug)
+            .eq('is_active', true)
+            .single();
+
+        if (!error && data) return data;
+
+        // Fallback: extract ID from slug and lookup by ID
+        const extractedId = extractIdFromSlug(slug);
+        if (extractedId) {
+            return await getProblem(extractedId);
+        }
+
+        return null;
+    } catch (error) {
+        // Try fallback extraction
+        const extractedId = extractIdFromSlug(slug);
+        if (extractedId) {
+            return await getProblem(extractedId);
+        }
+        console.error('Error fetching problem by slug:', error);
         return null;
     }
 }

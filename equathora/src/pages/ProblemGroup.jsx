@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import { getProblemGroup, getProblemsByGroup } from '../lib/problemService';
 import { isProblemCompleted, getProblemScore, isFavorite, toggleFavorite } from '../lib/progressStorage';
+import { generateProblemSlug } from '../lib/slugify';
 import { FaStar, FaRegStar, FaCheckCircle, FaClock, FaArrowLeft } from 'react-icons/fa';
 
 const ProblemGroup = () => {
@@ -147,12 +148,12 @@ const ProblemGroup = () => {
                 const completed = isProblemCompleted(problem.id);
                 const score = getProblemScore(problem.id);
                 const favorite = favoriteStates[problem.id];
-                const problemGroupId = problem.group_id ?? problem.groupId ?? groupId;
+                const problemSlug = problem.slug || generateProblemSlug(problem.title, problem.id);
 
                 return (
                   <Link
                     key={problem.id}
-                    to={`/problems/${problemGroupId}/${problem.id}`}
+                    to={`/problems/${problemSlug}`}
                     className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 p-4 flex flex-col gap-3 relative"
                   >
                     {/* Favorite Button */}

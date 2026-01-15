@@ -2,6 +2,7 @@ import React from 'react';
 import './ProblemCard.css';
 import { Link } from 'react-router-dom';
 import { FaStar, FaRegStar, FaCrown, FaCheckCircle, FaClock, FaTag } from 'react-icons/fa';
+import { generateProblemSlug } from '../lib/slugify';
 
 const ProblemCard = ({ problem }) => {
     const getDifficultyColor = (difficulty) => {
@@ -17,9 +18,12 @@ const ProblemCard = ({ problem }) => {
         }
     };
 
+    // Generate slug for the problem URL
+    const problemSlug = problem.slug || generateProblemSlug(problem.title, problem.id);
+
     return (
         <Link
-            to={`/problems/${problem.group_id ?? problem.groupId}/${problem.id}`}
+            to={`/problems/${problemSlug}`}
             className={`problem-card ${problem.completed ? 'completed' : ''}`}
         >
             <div className="problem-card-header">

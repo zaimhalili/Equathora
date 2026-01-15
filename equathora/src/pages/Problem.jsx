@@ -14,7 +14,8 @@ import {
   SubmissionDetailModal
 } from '../components/ProblemModals';
 import { FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaRegStar, FaPencilAlt } from 'react-icons/fa';
-import { getProblem, getAllProblems } from '../lib/problemService';
+import { getProblemBySlug, getAllProblems } from '../lib/problemService';
+import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
 import {
   isProblemCompleted,
   isFavorite as checkFavorite,
@@ -95,9 +96,11 @@ const hydrateStoredSubmissions = (records = []) => {
 };
 
 const Problem = () => {
-  const { groupId, problemId } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
-  const numericProblemId = parseInt(problemId, 10);
+  
+  // Extract problem ID from slug for backwards compatibility
+  const numericProblemId = extractIdFromSlug(slug);
 
   // State for problem data from database
   const [problem, setProblem] = useState(null);
@@ -110,7 +113,7 @@ const Problem = () => {
       setLoading(true);
       try {
         const [problemData, problemsList] = await Promise.all([
-          getProblem(numericProblemId),
+          getProblemBySlug(slug),
           getAllProblems()
         ]);
         setProblem(problemData);
@@ -118,7 +121,7 @@ const Problem = () => {
 
         // Mark problem as in-progress when viewing
         if (problemData) {
-          markProblemInProgress(numericProblemId);
+          markProblemInProgress(problemData.id);
         }
       } catch (error) {
         console.error('Failed to load problem:', error);
@@ -127,7 +130,7 @@ const Problem = () => {
       }
     };
     loadProblems();
-  }, [numericProblemId]);
+  }, [slug]);
 
   // Sort all problems by group_id first, then by id for consistent navigation across all groups
   const sortedProblems = [...allProblems].sort((a, b) => {
@@ -138,7 +141,7 @@ const Problem = () => {
   });
 
   // Find current problem index in the sorted list for cross-group navigation
-  const currentIndex = sortedProblems.findIndex(p => p.id === numericProblemId);
+  const currentIndex = sortedProblems.findIndex(p => p.id === problem?.id);
   const hasProblems = sortedProblems.length > 0 && currentIndex !== -1;
   const prevProblem = hasProblems
     ? sortedProblems[(currentIndex - 1 + sortedProblems.length) % sortedProblems.length]
@@ -146,9 +149,13 @@ const Problem = () => {
   const nextProblem = hasProblems
     ? sortedProblems[(currentIndex + 1) % sortedProblems.length]
     : null;
+  
+  // Generate slug paths for navigation
+  const prevProblemSlug = prevProblem ? (prevProblem.slug || generateProblemSlug(prevProblem.title, prevProblem.id)) : null;
+  const nextProblemSlug = nextProblem ? (nextProblem.slug || generateProblemSlug(nextProblem.title, nextProblem.id)) : null;
 
   const [openHints, setOpenHints] = useState({});
-  const [isFavorite, setIsFavorite] = useState(checkFavorite(numericProblemId));
+  const [isFavorite, setIsFavorite] = useState(false);
   const [showDescription, setShowDescription] = useState(true);
   const [showSolutionPopup, setShowSolutionPopup] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
@@ -170,7 +177,7 @@ const Problem = () => {
   const [strokes, setStrokes] = useState([]);
   const [timerResetSeq, setTimerResetSeq] = useState(0);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const prevProblemIdRef = useRef(numericProblemId);
+  const prevProblemIdRef = useRef(problem?.id);
   const canvasRef = useRef(null);
   const isDrawingRef = useRef(false);
   const currentStrokeRef = useRef([]);
@@ -290,28 +297,29 @@ const Problem = () => {
 
   useEffect(() => {
     setTimerRunning(!isCompleted);
-  }, [problemId, isCompleted]);
+  }, [slug, isCompleted]);
 
   useEffect(() => {
     sessionStartRef.current = Date.now();
     setSubmissionFeedback(null);
 
     // Load cached strokes for this problem if they exist
-    if (strokesCacheRef.current[numericProblemId]) {
-      setStrokes(strokesCacheRef.current[numericProblemId]);
+    const problemId = problem?.id;
+    if (problemId && strokesCacheRef.current[problemId]) {
+      setStrokes(strokesCacheRef.current[problemId]);
     } else {
       setStrokes([]);
     }
 
     // Only reset timer when navigating to a different problem (not on first load/refresh)
     const prevId = prevProblemIdRef.current;
-    if (typeof window !== 'undefined' && problem && prevId !== null && prevId !== numericProblemId) {
+    if (typeof window !== 'undefined' && problem && prevId !== null && prevId !== problemId) {
       const storageKey = `eq:problemTime:${problem.id}`;
       window.localStorage.setItem(storageKey, '0');
       setTimerResetSeq(prev => prev + 1);
     }
-    prevProblemIdRef.current = numericProblemId;
-  }, [problemId, numericProblemId, problem]);
+    prevProblemIdRef.current = problemId;
+  }, [slug, problem]);
 
   // Reset transient UI state when navigating between problems
   useEffect(() => {
@@ -330,12 +338,12 @@ const Problem = () => {
     setReportDetails('');
     setShowReportModal(false);
     setShowHelpModal(false);
-    setIsFavorite(checkFavorite(numericProblemId));
+    setIsFavorite(problem ? checkFavorite(problem.id) : false);
     setShowDrawingPad(false);
     setDrawingColor('black');
     setShowMobileMenu(false);
     // Strokes are now loaded from cache in the other useEffect
-  }, [numericProblemId]);
+  }, [problem, slug]);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -377,10 +385,10 @@ const Problem = () => {
       redrawCanvas();
     }
     // Cache strokes for this problem
-    if (strokes.length > 0) {
-      strokesCacheRef.current[numericProblemId] = strokes;
+    if (strokes.length > 0 && problem?.id) {
+      strokesCacheRef.current[problem.id] = strokes;
     }
-  }, [strokes, showDrawingPad, redrawCanvas, numericProblemId]);
+  }, [strokes, showDrawingPad, redrawCanvas, problem?.id]);
 
   // Warn user before refresh/close if drawings exist
   useEffect(() => {
@@ -590,14 +598,14 @@ const Problem = () => {
             </Link>
             <div className="flex items-center gap-1.5">
               <button
-                onClick={() => prevProblem && navigate(`/problems/${prevProblem.group_id ?? prevProblem.groupId}/${prevProblem.id}`)}
+                onClick={() => prevProblemSlug && navigate(`/problems/${prevProblemSlug}`)}
                 className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                 title={prevProblem ? `Previous: ${prevProblem.title}` : ''}
               >
                 <FaChevronLeft className="text-sm" />
               </button>
               <button
-                onClick={() => nextProblem && navigate(`/problems/${nextProblem.group_id ?? nextProblem.groupId}/${nextProblem.id}`)}
+                onClick={() => nextProblemSlug && navigate(`/problems/${nextProblemSlug}`)}
                 className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                 title={nextProblem ? `Next: ${nextProblem.title}` : ''}
               >
@@ -1011,7 +1019,7 @@ const Problem = () => {
                                   {similarQuestions.map((question, index) => (
                                     <Link
                                       key={index}
-                                      to={`/problems/${question.groupId}/${question.id}`}
+                                      to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
                                       className="flex items-center justify-between p-2 md:p-3 rounded-lg group"
                                     >
                                       <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Inter] group-hover:text-[var(--dark-accent-color)]">
@@ -1045,7 +1053,7 @@ const Problem = () => {
             <MathLiveExample
               key={`ml-${problem?.id}-${timerResetSeq}`}
               onSubmit={handleNewSubmission}
-              nextProblemPath={nextProblem ? `/problems/${nextProblem.group_id ?? nextProblem.groupId}/${nextProblem.id}` : null}
+              nextProblemPath={nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
               isSolved={isCompleted}
             />
           </article>
