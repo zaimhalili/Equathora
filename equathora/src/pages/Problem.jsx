@@ -293,7 +293,7 @@ const Problem = () => {
     if (!problem) return;
     const existing = hydrateStoredSubmissions(getSubmissions(problem.id));
     setSubmissions(existing);
-  }, [problem, problemId]);
+  }, [problem]);
 
   useEffect(() => {
     setTimerRunning(!isCompleted);

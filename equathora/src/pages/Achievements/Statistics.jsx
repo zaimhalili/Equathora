@@ -40,19 +40,31 @@ const Statistics = () => {
         const totalProblems = allProblems.length || 0;
         // Filter completed IDs to only count valid current problems (same as YourTrack)
         const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
-        const solved = (completedIds || []).filter(id => validProblemIds.has(String(id))).length;
-        const totalTimeSec = solved > 0 ? (userProgress?.total_time_minutes || 0) * 60 : 0;
-        const avgTimeSec = solved > 0 ? totalTimeSec / solved : 0;
+        const validCompletedIds = (completedIds || []).filter(id => validProblemIds.has(String(id)));
+        const solved = validCompletedIds.length;
+        
+        // Calculate difficulty breakdown from completed problems (same as Profile)
+        const completedProblems = allProblems.filter(p => validCompletedIds.includes(String(p.id)));
+        const easySolved = completedProblems.filter(p => p.difficulty === 'Easy').length;
+        const mediumSolved = completedProblems.filter(p => p.difficulty === 'Medium').length;
+        const hardSolved = completedProblems.filter(p => p.difficulty === 'Hard').length;
+        
+        // Use calculated breakdown if database breakdown is empty
+        const calculatedBreakdown = { easy: easySolved, medium: mediumSolved, hard: hardSolved };
+        const finalDifficultyBreakdown = (difficultyData?.easy || difficultyData?.medium || difficultyData?.hard)
+          ? difficultyData
+          : calculatedBreakdown;
 
         const topTopics = (topicData || []).sort((a, b) => b.count - a.count).slice(0, 5).map(t => t.topic);
 
-        // Get correct/wrong from database, with local fallback (same as YourTrack)
+        // Get correct/wrong from database
         let correctAnswers = userProgress?.correct_answers || 0;
         let wrongSubmissions = userProgress?.wrong_submissions || 0;
         let totalAttempts = userProgress?.total_attempts || 0;
+        let totalTimeMinutes = userProgress?.total_time_minutes || 0;
 
-        // If backend counters aren't being maintained yet, fall back to local submissions.
-        if (totalAttempts > 0 && correctAnswers === 0 && wrongSubmissions === 0) {
+        // If backend counters aren't populated, fall back to local submissions (same as Profile)
+        if (totalAttempts === 0) {
           const local = (getSubmissions() || []).filter(s => validProblemIds.has(String(s.problemId)));
           if (local.length > 0) {
             const localCorrect = local.filter(s => s.isCorrect).length;
@@ -61,6 +73,10 @@ const Statistics = () => {
             totalAttempts = local.length;
           }
         }
+
+        // Calculate time spent from completed problems if database doesn't have it
+        const totalTimeSec = totalTimeMinutes * 60;
+        const avgTimeSec = solved > 0 ? totalTimeSec / solved : 0;
 
         setProgress({
           correctAnswers: correctAnswers,
@@ -73,7 +89,7 @@ const Statistics = () => {
           averageTime: `${Math.floor(avgTimeSec / 60)}m ${Math.floor(avgTimeSec % 60)}s`,
           favoriteTopics: topTopics.length > 0 ? topTopics : ['No data yet'],
           weeklyProgress: weeklyData,
-          difficultyBreakdown: difficultyData || { easy: 0, medium: 0, hard: 0 }
+          difficultyBreakdown: finalDifficultyBreakdown
         });
       } catch (error) {
         console.error('Error fetching statistics:', error);
@@ -185,8 +201,9 @@ const Statistics = () => {
         <div className="activity-chart">
           {stats.weeklyProgress.map((problems, index) => {
             const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const maxHeight = Math.max(...stats.weeklyProgress, 1); // Prevent division by zero
-            const heightPercentage = maxHeight > 0 ? (problems / maxHeight) * 100 : 0;
+            // Bar height maxes out at 5 problems (100% height), then only number increases
+            const maxProblemsForFullHeight = 5;
+            const heightPercentage = Math.min((problems / maxProblemsForFullHeight) * 100, 100);
 
             return (
               <div key={index} className="activity-day">
