@@ -193,7 +193,7 @@ const RecentAchievements = () => {
       title: 'Night Owl',
       description: 'Solved a problem between 10 PM and 5 AM',
       color: '#2C3E50',
-      unlocked: isNightOwl && solvedProblems >= 1,
+      unlocked: solvedProblems >= 1 && (isNightOwl || false),
       rarity: 'Uncommon'
     },
     {
@@ -202,7 +202,7 @@ const RecentAchievements = () => {
       title: 'Early Riser',
       description: 'Solved a problem between 5 AM and 8 AM',
       color: '#F1C40F',
-      unlocked: isEarlyBird && solvedProblems >= 1,
+      unlocked: solvedProblems >= 1 && (isEarlyBird || false),
       rarity: 'Uncommon'
     },
     {
@@ -256,7 +256,7 @@ const RecentAchievements = () => {
       title: 'Quick Starter',
       description: 'Solved 3 problems on your first day',
       color: '#1ABC9C',
-      unlocked: solvedProblems >= 3 && streakDays <= 1,
+      unlocked: solvedProblems >= 3 && (Date.now() - accountCreated) < (24 * 60 * 60 * 1000),
       rarity: 'Uncommon'
     },
     {

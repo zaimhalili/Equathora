@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Navbar from '@/components/Navbar.jsx';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
+import LoadingSpinner from '../components/LoadingSpinner';
 import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
 import Timer from '../components/Timer.jsx';
@@ -520,14 +521,7 @@ const Problem = () => {
 
   // Handle loading state
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--main-color)]">
-        <div className="text-center text-[var(--secondary-color)]">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--accent-color)] mx-auto mb-4"></div>
-          <p>Loading problem...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading problem..." />;
   }
 
   // Handle problem not found
