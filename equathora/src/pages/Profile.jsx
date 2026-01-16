@@ -204,6 +204,7 @@ const Profile = () => {
         <div className='mx-auto px-[4vw] xl:px-[6vw] max-w-[1500px]'>
           {/* Two Column Layout */}
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
+            
             {/* Left Column - Combined Profile, Stats, and Topics */}
             <motion.div
               className='lg:col-span-1 flex flex-col gap-4'
