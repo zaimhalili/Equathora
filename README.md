@@ -1,128 +1,131 @@
-<div align="center">
+# Equathora
 
-# 📐 equathora
+Equathora is a modern mathematics learning platform focused on daily practice, progress tracking, and a polished student experience.
 
-[![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-5.0.0-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
+This repository contains:
+- A React + Vite frontend (in `equathora/`)
+- An ASP.NET Core backend (in `equathora/backend/EquathoraBackend/`)
 
-🧮 An interactive mathematics learning platform that makes education engaging and accessible.
+![Equathora](equathora/src/assets/logo/EquathoraLogoFull.png)
 
-[Explore Demo](https://equathora.com) • [Report Bug](https://github.com/zaimhalili/equathora/issues) • [Request Feature](https://github.com/zaimhalili/equathora/issues)
+## Product highlights
 
-![equathora Preview](src/assets/logo/EquathoraFullLogo.png)
+- Authentication and profiles (Supabase Auth)
+- Daily practice problems with structured progress tracking
+- Math input via MathLive
+- Dashboards, achievements, and leaderboards
+- Responsive UI with a component-driven layout
 
-</div>
+## Architecture
 
----
+- Frontend: React + Vite + Tailwind CSS
+- Backend: ASP.NET Core (.NET 9)
+- Data/Auth: Supabase (Auth + Postgres)
 
-## ✨ Features
+The frontend talks to Supabase directly for user/session and core data. A separate ASP.NET backend is included for API-style endpoints and can be used for server-side logic.
 
-### 🔐 Authentication & Profile
-- 📧 Custom email/password authentication
-- <img src="https://img.shields.io/badge/Google-4285F4?logo=google&logoColor=fff" height="20"/> OAuth integration
-- 🔄 Password recovery system
-- 👤 User profile customization
-- 🎭 Avatar support
+## Repository layout
 
-### 📚 Learning
-- 📅 Daily mathematical problems
-- 🎯 Personalized learning tracks
-- 🏷️ Problem categories and difficulty levels
-- ⌨️ MathLive integration for mathematical input
-- 📊 Progress tracking and statistics
-
-### 🤝 Community
-- 👨‍🏫 Teacher/Mentor mode
-- 🏆 Leaderboards
-- 🌟 Achievement system
-- 🔔 Notifications system
-- 📱 Learning path sharing
-
-### 🎨 UI/UX
-- 📱 Responsive design
-- 🌗 Dark mode support
-- 📊 Interactive dashboards
-- 🚀 Real-time updates
-
-## 🛠️ Tech Stack
-
-### Frontend
-```javascript
-{
-  "framework": "React.js",
-  "buildTool": "Vite",
-  "styling": "CSS3",
-  "routing": "React Router"
-}
+```
+.
+├─ README.md
+└─ equathora/
+   ├─ src/                          # Frontend source
+   ├─ public/
+   ├─ vite.config.js                # Dev server + proxy config
+   ├─ package.json
+   └─ backend/
+      └─ EquathoraBackend/          # ASP.NET Core backend
 ```
 
-### Key Dependencies
-```javascript
-{
-  "mathInput": "MathLive",
-  "icons": "React Icons",
-  "auth": "Google OAuth API"
-}
-```
-
-## 📁 Project Structure
-```bash
-equathora/
-├── 📂 src/
-│   ├── 🎨 assets/      # Images and SVGs
-│   ├── 🧩 components/  # Reusable UI components
-│   └── 📄 pages/       # Main application views
-```
-
-## 🚀 Getting Started
+## Getting started (local development)
 
 ### Prerequisites
-- Node.js (v14 or higher)
-- npm or yarn
 
-### Quick Start
+- Node.js 18+ (recommended)
+- .NET SDK 9.0+ (for the backend)
+
+### 1) Frontend
+
+From the repo root:
+
 ```bash
-# Clone repository
-git clone https://github.com/username/equathora.git
+cd equathora
+npm install
+```
 
-# Install dependencies
-cd equathora && npm install
+Create `equathora/.env.local`:
 
-# Start development server
+```bash
+VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+VITE_SUPABASE_ANON_KEY=YOUR_ANON_PUBLIC_KEY
+```
+
+Run the dev server:
+
+```bash
 npm run dev
 ```
 
-## 🤝 Contributing
+### 2) Backend (optional)
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+From the repo root:
 
-## 📄 License
+```bash
+cd equathora/backend/EquathoraBackend
+dotnet restore
+dotnet run
+```
 
-Distributed under the MIT License. See `LICENSE` for more information.
+The backend is configured to run on `http://localhost:5104` by default. The Vite dev server proxies `/api` and `/mathproblem` to that backend (see `equathora/vite.config.js`).
 
-## 👥 Team
+## Configuration
 
-- **Lead Developer** - [@zaimhalili](https://github.com/zaimhalili)
-- **UI/UX Designer** - [@zaimhalili](https://github.com/zaimhalili)
+### Supabase
 
-## 🙏 Acknowledgments
+Frontend configuration is read from:
 
-- [React Documentation](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
-- [MathLive](https://mathlive.io/)
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
 
----
+For authentication behavior and production setup guidance (SMTP, redirect URLs, templates), see `equathora/AUTH_SETUP.md`.
 
-<div align="center">
-  
-### ⭐ Star us on GitHub , it helps!
+### Backend settings
 
-[equathora.dev](https://equathora.dev) • [@equathora](https://twitter.com/equathora)
+Backend settings live under `equathora/backend/EquathoraBackend/appsettings*.json`.
 
-</div>
+For production, avoid committing secrets and prefer environment variables or .NET user-secrets for:
+- Database connection strings
+- JWT signing keys
+
+## Common operations
+
+### Frontend scripts
+
+```bash
+cd equathora
+npm run dev
+npm run build
+npm run preview
+npm run lint
+```
+
+### Resetting user progress data (Supabase)
+
+If you need to reset user problem-solving state (duplicates, incorrect stats), follow:
+
+- `equathora/backend/EquathoraBackend/RESET_INSTRUCTIONS.md`
+
+## Deployment
+
+- Frontend: build with `npm run build` and deploy the `equathora/dist/` output (Vercel is supported; see `equathora/vercel.json`).
+- Backend: deploy as a standard ASP.NET Core app (Azure App Service, container, or any .NET host). Ensure CORS, connection strings, and JWT configuration are set via environment variables.
+
+## Support & troubleshooting
+
+- If the app fails on startup with “Missing Supabase environment variables”, ensure `equathora/.env.local` is present and restart the dev server.
+- Auth setup and email verification behavior: see `equathora/AUTH_SETUP.md`.
+
+## License
+
+No license file is currently included in this repository. If you intend to open-source the project, add a license file at the repo root.
