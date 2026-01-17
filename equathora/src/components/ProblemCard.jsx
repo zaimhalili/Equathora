@@ -39,8 +39,8 @@ const ProblemCard = ({ problem }) => {
                 </div>
             </div>
 
-            <MathJaxRenderer 
-                content={problem.description} 
+            <MathJaxRenderer
+                content={problem.description}
                 className="problem-description"
                 as="p"
             />

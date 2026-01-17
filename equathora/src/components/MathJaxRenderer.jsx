@@ -7,30 +7,30 @@ import React, { useEffect, useRef } from 'react';
  * @param {string} as - HTML element to use (default: 'div')
  */
 const MathJaxRenderer = ({ content, className = '', as = 'div' }) => {
-  const containerRef = useRef(null);
-  const Component = as;
+    const containerRef = useRef(null);
+    const Component = as;
 
-  useEffect(() => {
-    if (!containerRef.current || !content) return;
+    useEffect(() => {
+        if (!containerRef.current || !content) return;
 
-    // Set the content
-    containerRef.current.textContent = content;
+        // Set the content
+        containerRef.current.textContent = content;
 
-    // Typeset math expressions with MathJax
-    const typesetMath = async () => {
-      if (window.MathJax && window.MathJax.typesetPromise) {
-        try {
-          await window.MathJax.typesetPromise([containerRef.current]);
-        } catch (err) {
-          console.error('MathJax typeset error:', err);
-        }
-      }
-    };
+        // Typeset math expressions with MathJax
+        const typesetMath = async () => {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                try {
+                    await window.MathJax.typesetPromise([containerRef.current]);
+                } catch (err) {
+                    console.error('MathJax typeset error:', err);
+                }
+            }
+        };
 
-    typesetMath();
-  }, [content]);
+        typesetMath();
+    }, [content]);
 
-  return <Component ref={containerRef} className={className} />;
+    return <Component ref={containerRef} className={className} />;
 };
 
 export default MathJaxRenderer;

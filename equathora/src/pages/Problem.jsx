@@ -100,7 +100,7 @@ const hydrateStoredSubmissions = (records = []) => {
 const Problem = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  
+
   // Extract problem ID from slug for backwards compatibility
   const numericProblemId = extractIdFromSlug(slug);
 
@@ -151,7 +151,7 @@ const Problem = () => {
   const nextProblem = hasProblems
     ? sortedProblems[(currentIndex + 1) % sortedProblems.length]
     : null;
-  
+
   // Generate slug paths for navigation
   const prevProblemSlug = prevProblem ? (prevProblem.slug || generateProblemSlug(prevProblem.title, prevProblem.id)) : null;
   const nextProblemSlug = nextProblem ? (nextProblem.slug || generateProblemSlug(nextProblem.title, nextProblem.id)) : null;
@@ -877,8 +877,8 @@ const Problem = () => {
                   <>
                     {/* Problem Description */}
                     <div>
-                      <MathJaxRenderer 
-                        content={problem.description} 
+                      <MathJaxRenderer
+                        content={problem.description}
                         className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Inter,sans-serif] m-0"
                         as="p"
                       />

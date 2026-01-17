@@ -127,8 +127,8 @@ const ProblemGroup = () => {
               <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[DynaPuff]">
                 {group.name}
               </h1>
-              <MathJaxRenderer 
-                content={group.description} 
+              <MathJaxRenderer
+                content={group.description}
                 className="text-lg text-gray-600"
                 as="p"
               />
@@ -173,8 +173,8 @@ const ProblemGroup = () => {
                     </h3>
 
                     {/* Problem Description */}
-                    <MathJaxRenderer 
-                      content={problem.description} 
+                    <MathJaxRenderer
+                      content={problem.description}
                       className="text-sm text-gray-600 line-clamp-2"
                       as="p"
                     />
