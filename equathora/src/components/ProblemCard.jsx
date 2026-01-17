@@ -3,6 +3,7 @@ import './ProblemCard.css';
 import { Link } from 'react-router-dom';
 import { FaStar, FaRegStar, FaCrown, FaCheckCircle, FaClock, FaTag } from 'react-icons/fa';
 import { generateProblemSlug } from '../lib/slugify';
+import MathJaxRenderer from './MathJaxRenderer';
 
 const ProblemCard = ({ problem }) => {
     const getDifficultyColor = (difficulty) => {
@@ -38,7 +39,11 @@ const ProblemCard = ({ problem }) => {
                 </div>
             </div>
 
-            <p className="problem-description">{problem.description}</p>
+            <MathJaxRenderer 
+                content={problem.description} 
+                className="problem-description"
+                as="p"
+            />
 
             <div className="problem-footer">
                 <div className="footer-left">

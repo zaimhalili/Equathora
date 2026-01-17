@@ -6,6 +6,7 @@ import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
 import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
+import MathJaxRenderer from '../components/MathJaxRenderer';
 import Timer from '../components/Timer.jsx';
 import ProblemMobileMenu from '../components/ProblemMobileMenu.jsx';
 import {
@@ -876,7 +877,11 @@ const Problem = () => {
                   <>
                     {/* Problem Description */}
                     <div>
-                      <p className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Inter,sans-serif] m-0">{problem.description}</p>
+                      <MathJaxRenderer 
+                        content={problem.description} 
+                        className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Inter,sans-serif] m-0"
+                        as="p"
+                      />
                     </div>
 
                     {showDrawingPad && (

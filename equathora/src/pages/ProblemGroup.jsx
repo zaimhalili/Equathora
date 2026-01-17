@@ -7,6 +7,7 @@ import { getProblemGroup, getProblemsByGroup } from '../lib/problemService';
 import { isProblemCompleted, getProblemScore, isFavorite, toggleFavorite } from '../lib/progressStorage';
 import { generateProblemSlug } from '../lib/slugify';
 import { FaStar, FaRegStar, FaCheckCircle, FaClock, FaArrowLeft } from 'react-icons/fa';
+import MathJaxRenderer from '../components/MathJaxRenderer';
 
 const ProblemGroup = () => {
   const { groupId } = useParams();
@@ -126,9 +127,11 @@ const ProblemGroup = () => {
               <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[DynaPuff]">
                 {group.name}
               </h1>
-              <p className="text-lg text-gray-600">
-                {group.description}
-              </p>
+              <MathJaxRenderer 
+                content={group.description} 
+                className="text-lg text-gray-600"
+                as="p"
+              />
               <div className="flex items-center gap-4 pt-2">
                 <span className="text-sm text-gray-600">
                   Progress: {completedCount}/{totalCount} completed
@@ -170,9 +173,11 @@ const ProblemGroup = () => {
                     </h3>
 
                     {/* Problem Description */}
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {problem.description}
-                    </p>
+                    <MathJaxRenderer 
+                      content={problem.description} 
+                      className="text-sm text-gray-600 line-clamp-2"
+                      as="p"
+                    />
 
                     {/* Metadata */}
                     <div className="flex items-center gap-2 flex-wrap pt-2">
