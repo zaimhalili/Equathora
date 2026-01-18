@@ -188,13 +188,13 @@ const NavigationBar = () => {
     return (
         <>
             <OverflowChecker></OverflowChecker>
-            <header className='w-full bg-[var(--main-color)] h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
+            <header className='w-full bg-[var(--main-color)] h-[60px] sm:h-[70px] md:h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
                 <nav aria-label="Primary" className='w-full h-full flex justify-center'>
-                    <div className='w-full h-full mx-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
+                    <div className='w-full h-full mx-auto flex items-center justify-between px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] max-w-[1500px]'>
                         <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
                             <li>
                                 <Link to="/dashboard" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
-                                    <img src={Logo} alt="Logo" className='w-40 object-scale-down object-center scale-110' />
+                                    <img src={Logo} alt="Logo" className='w-28 sm:w-32 md:w-36 lg:w-40 object-scale-down object-center scale-110' />
                                 </Link>
                             </li>
                             <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
@@ -216,13 +216,13 @@ const NavigationBar = () => {
 
                         <div className='flex justify-end items-center shrink-0'>
                             <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
-                                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
                                     <Link to="/about"
-                                        className="rounded-md border border-gray-300 px-5 py-2 text-center text-gray-700 transition-colors hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]">Learn More</Link>
+                                        className="rounded-md border border-gray-300 px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center text-gray-700 transition-colors hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]">Learn More</Link>
                                 </li>
-                                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
                                     <Link to="/dashboard"
-                                        className="rounded-md bg-[var(--accent-color)] px-5 py-2 text-center !text-white transition-colors hover:bg-[var(--dark-accent-color)]">Start Learning</Link>
+                                        className="rounded-md bg-[var(--accent-color)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center !text-white transition-colors hover:bg-[var(--dark-accent-color)]">Start Learning</Link>
                                 </li>
                                 <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
 

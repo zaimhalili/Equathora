@@ -52,37 +52,37 @@ const HowItWorksSection = () => {
                 <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px]" />
             </div>
 
-            <div className="max-w-[1400px] px-[4vw] xl:px-[6vw] py-24 relative z-10 mx-auto">
-                <div className="flex flex-col gap-16">
+            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 relative z-10 mx-auto">
+                <div className="flex flex-col gap-12 sm:gap-14 md:gap-16">
                     {/* Section header - Centered */}
                     <motion.div
-                        className="flex flex-col gap-4 text-center items-center"
+                        className="flex flex-col gap-3 sm:gap-4 text-center items-center"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-sm font-semibold uppercase tracking-wider">
-                            <span className="w-8 h-[2px] bg-[var(--accent-color)]"></span>
+                        <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
+                            <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                             Simple process
-                            <span className="w-8 h-[2px] bg-[var(--accent-color)]"></span>
+                            <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                         </span>
-                        <h2 className="text-4xl md:text-5xl font-bold text-[var(--secondary-color)]">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--secondary-color)] px-4">
                             How it works
                         </h2>
-                        <p className="text-[var(--mid-main-secondary)] text-lg max-w-xl">
+                        <p className="text-[var(--mid-main-secondary)] text-base sm:text-lg max-w-xl px-4">
                             Four simple steps to transform your math skills
                         </p>
                     </motion.div>
 
                     {/* Steps grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
                         {steps.map((item, index) => {
                             const IconComponent = item.icon;
                             return (
                                 <motion.div
                                     key={item.step}
-                                    className="relative flex flex-col gap-5 p-8 bg-white rounded-3xl border border-gray-100 shadow-sm transition-all"
+                                    className="relative flex flex-col gap-4 sm:gap-5 p-6 sm:p-7 md:p-8 bg-white rounded-3xl border border-gray-100 shadow-sm transition-all"
                                     initial={{ opacity: 0, y: 30 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
@@ -95,16 +95,16 @@ const HowItWorksSection = () => {
 
                                     {/* Step number */}
                                     <div className="flex items-center justify-between">
-                                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg`}>
-                                            <IconComponent className="text-2xl text-white" />
+                                        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg`}>
+                                            <IconComponent className="text-xl sm:text-2xl text-white" />
                                         </div>
-                                        <span className="text-4xl font-bold text-gray-100">{item.step}</span>
+                                        <span className="text-3xl sm:text-4xl font-bold text-gray-100">{item.step}</span>
                                     </div>
 
                                     {/* Content */}
                                     <div className="flex flex-col gap-2">
-                                        <h3 className="text-xl font-bold text-[var(--secondary-color)]">{item.title}</h3>
-                                        <p className="text-[var(--mid-main-secondary)] text-sm leading-relaxed">{item.description}</p>
+                                        <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)]">{item.title}</h3>
+                                        <p className="text-[var(--mid-main-secondary)] text-xs sm:text-sm leading-relaxed">{item.description}</p>
                                     </div>
                                 </motion.div>
                             );

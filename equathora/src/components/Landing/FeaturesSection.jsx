@@ -31,33 +31,33 @@ const FeaturesSection = () => {
             <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
 
-            <div className="max-w-[1400px] px-[4vw] xl:px-[6vw] py-24 mx-auto relative z-10">
+            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 mx-auto relative z-10">
 
                 {/* Section header - CENTERED */}
                 <motion.div
-                    className="text-center mb-16 flex flex-col items-center justify-center"
+                    className="text-center mb-12 sm:mb-14 md:mb-16 flex flex-col items-center justify-center"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
                 >
-                    <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-sm font-semibold uppercase tracking-wider mb-4">
-                        <span className="w-8 h-[2px] bg-[var(--accent-color)]"></span>
+                    <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3 sm:mb-4">
+                        <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                         What we offer
                     </span>
-                    <h2 className="text-3xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight mb-4">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight mb-3 sm:mb-4 px-4">
                         Built for real learning
                     </h2>
-                    <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-2xl text-base">
+                    <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-2xl text-sm sm:text-base px-4">
                         Equathora gives you the tools to master mathematics at your own pace, with features designed for genuine understanding.
                     </p>
                 </motion.div>
 
-                <div className="flex flex-col lg:flex-row gap-12 items-center justify-center">
+                <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 items-center justify-center">
 
                     {/* Left side - Image with tilt on hover */}
                     <motion.div
-                        className="flex-1 relative flex items-center justify-center"
+                        className="flex-1 relative flex items-center justify-center max-lg:hidden"
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -94,11 +94,11 @@ const FeaturesSection = () => {
                     </motion.div>
 
                     {/* Right side - Feature cards (CENTERED) */}
-                    <div className="flex-1 flex flex-col gap-6 items-center justify-center">
+                    <div className="flex-1 flex flex-col gap-4 sm:gap-5 md:gap-6 items-center justify-center w-full">
                         {features.map((feature, index) => (
                             <motion.div
                                 key={feature.number}
-                                className="group relative bg-white border border-gray-100 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all cursor-pointer w-full max-w-md"
+                                className="group relative bg-white border border-gray-100 rounded-2xl p-6 sm:p-7 md:p-8 shadow-md hover:shadow-xl transition-all cursor-pointer w-full max-w-md"
                                 initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
@@ -119,20 +119,20 @@ const FeaturesSection = () => {
                                 }}
                             >
                                 {/* Number badge */}
-                                <div className="absolute -top-4 -left-4 w-12 h-12 bg-[var(--accent-color)] rounded-full flex items-center justify-center text-white font-bold text-base shadow-lg group-hover:scale-110 transition-transform">
+                                <div className="absolute -top-3 sm:-top-4 -left-3 sm:-left-4 w-10 h-10 sm:w-12 sm:h-12 bg-[var(--accent-color)] rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base shadow-lg group-hover:scale-110 transition-transform">
                                     {feature.number}
                                 </div>
 
                                 {/* Icon */}
-                                <div className="text-[var(--secondary-color)] mb-3">
+                                <div className="text-[var(--secondary-color)] mb-2 sm:mb-3 text-2xl sm:text-3xl">
                                     {feature.icon}
                                 </div>
 
                                 {/* Content */}
-                                <h3 className="text-xl font-bold text-[var(--secondary-color)] mb-2">
+                                <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)] mb-1.5 sm:mb-2">
                                     {feature.title}
                                 </h3>
-                                <p className="text-[var(--mid-main-secondary)] leading-relaxed">
+                                <p className="text-[var(--mid-main-secondary)] leading-relaxed text-sm sm:text-base">
                                     {feature.description}
                                 </p>
 

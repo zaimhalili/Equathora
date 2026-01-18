@@ -54,23 +54,23 @@ const CTASection = () => {
                 <div className="absolute bottom-20 left-20 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
             </div>
 
-            <div className="max-w-[1400px] px-[4vw] xl:px-[6vw] py-24 mx-auto relative z-10">
-                <div className="flex flex-col lg:flex-row items-center gap-16">
+            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 mx-auto relative z-10">
+                <div className="flex flex-col lg:flex-row items-center gap-12 sm:gap-14 md:gap-16">
 
                     {/* Left side - Content */}
-                    <div className="flex-1 flex flex-col gap-6 text-center lg:text-left items-center lg:items-start">
+                    <div className="flex-1 flex flex-col gap-5 sm:gap-6 text-center lg:text-left items-center lg:items-start w-full">
                         <motion.span
-                            className="inline-flex items-center gap-2 text-[var(--accent-color)] text-sm font-semibold uppercase tracking-wider"
+                            className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                         >
-                            <span className="w-8 h-[2px] bg-[var(--accent-color)]"></span>
+                            <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                             Start today
                         </motion.span>
 
                         <motion.h2
-                            className="text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--secondary-color)] leading-tight"
+                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--secondary-color)] leading-tight px-4 lg:px-0"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -81,7 +81,7 @@ const CTASection = () => {
                         </motion.h2>
 
                         <motion.p
-                            className="text-lg text-[var(--mid-main-secondary)] max-w-xl"
+                            className="text-base sm:text-lg text-[var(--mid-main-secondary)] max-w-xl px-4 lg:px-0"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -91,7 +91,7 @@ const CTASection = () => {
                         </motion.p>
 
                         <motion.div
-                            className="flex flex-wrap gap-4 justify-center lg:justify-start mt-4"
+                            className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start mt-3 sm:mt-4"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -99,7 +99,7 @@ const CTASection = () => {
                         >
                             <Link
                                 to="/dashboard"
-                                className="group flex items-center gap-3 rounded-full bg-[var(--secondary-color)] px-10 py-4 text-lg font-semibold text-white transition-all hover:bg-[var(--accent-color)] shadow-lg"
+                                className="group flex items-center gap-2 sm:gap-3 rounded-full bg-[var(--secondary-color)] px-7 sm:px-9 md:px-10 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg font-semibold text-white transition-all hover:bg-[var(--accent-color)] shadow-lg"
                             >
                                 Get started free
                                 <motion.span
@@ -124,7 +124,7 @@ const CTASection = () => {
 
                     {/* Right side - Decorative card */}
                     <motion.div
-                        className="flex-1 relative flex justify-center items-center"
+                        className="flex-1 relative flex justify-center items-center max-lg:hidden"
                         initial={{ opacity: 0, x: 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}

@@ -77,12 +77,12 @@ const HeroSection = () => {
 
     return (
         <section
-            className="font-[Inter] w-full bg-[var(--secondary-color)] relative overflow-hidden h-[calc(100vh-80px)] flex items-center justify-center"
+            className="font-[Inter] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-[600px] sm:min-h-[700px] md:h-[calc(100vh-80px)] flex items-center justify-center"
         >
             {/* Background decorations */}
             <div className="absolute inset-0">
                 {/* Gradient orbs */}
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[var(--accent-color)]/20 rounded-full blur-[120px]" />
+                <div className="absolute top-0 right-0 w-[300px] sm:w-[400px] md:w-[600px] h-[300px] sm:h-[400px] md:h-[600px] bg-[var(--accent-color)]/20 rounded-full blur-[120px]" />
                 <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--accent-color)]/10 rounded-full blur-[100px]" />
 
                 {/* Grid lines */}
@@ -106,7 +106,7 @@ const HeroSection = () => {
             <Particles />
 
             <div className="relative z-10 w-full">
-                <div className="px-[4vw] xl:px-[6vw] max-w-[1400px] py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-center gap-12 mx-auto">
+                <div className="px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] max-w-[1400px] py-8 sm:py-12 md:py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-center gap-8 sm:gap-10 md:gap-12 mx-auto">
 
                     {/* Left Content - Centered */}
                     <motion.div
@@ -130,7 +130,7 @@ const HeroSection = () => {
 
                         {/* Main Heading */}
                         <motion.h1
-                            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] text-white"
+                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] text-white"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.15, duration: 0.5 }}
@@ -162,7 +162,7 @@ const HeroSection = () => {
 
                         {/* Description */}
                         <motion.p
-                            className="text-base md:text-lg text-white/70 leading-relaxed max-w-lg"
+                            className="text-sm sm:text-base md:text-lg text-white/70 leading-relaxed max-w-lg"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.25, duration: 0.5 }}
@@ -172,26 +172,26 @@ const HeroSection = () => {
 
                         {/* CTA Buttons */}
                         <motion.div
-                            className="flex flex-wrap gap-4 justify-center lg:justify-start items-center"
+                            className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start items-center"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.35, duration: 0.5 }}
                         >
                             <Link
                                 to="/dashboard"
-                                className="group flex items-center gap-2 rounded-full !bg-[var(--accent-color)] px-8 py-3 text-base text-center !text-white font-semibold transition-all hover:!bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
+                                className="group flex items-center gap-2 rounded-full !bg-[var(--accent-color)] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all hover:!bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
                             >
                                 Start practicing
                                 <motion.span
                                     animate={{ x: [0, 4, 0] }}
                                     transition={{ duration: 1.5, repeat: Infinity }}
                                 >
-                                    <FaArrowRight />
+                                    <FaArrowRight className="text-xs sm:text-sm" />
                                 </motion.span>
                             </Link>
                             <Link
                                 to="/about"
-                                className="px-6 py-3 text-base !text-white font-medium border border-white/20 rounded-full transition-all hover:!bg-white/10"
+                                className="px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-sm sm:text-base !text-white font-medium border border-white/20 rounded-full transition-all hover:!bg-white/10"
                             >
                                 Learn more
                             </Link>
@@ -199,7 +199,7 @@ const HeroSection = () => {
 
                         {/* Stats Row */}
                         <motion.div
-                            className="flex gap-8 pt-6 justify-center lg:justify-start"
+                            className="flex gap-4 sm:gap-6 md:gap-8 pt-4 sm:pt-6 justify-center lg:justify-start flex-wrap"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.45, duration: 0.5 }}
@@ -212,10 +212,10 @@ const HeroSection = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
                                 >
-                                    <span className="text-2xl font-bold text-[var(--accent-color)]">
+                                    <span className="text-xl sm:text-2xl font-bold text-[var(--accent-color)]">
                                         <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                                     </span>
-                                    <span className="text-xs text-white/60">
+                                    <span className="text-[10px] sm:text-xs text-white/60">
                                         {stat.label}
                                     </span>
                                 </motion.div>
@@ -225,7 +225,7 @@ const HeroSection = () => {
 
                     {/* Right Side - Student PNG with 3D tilt effect */}
                     <motion.div
-                        className="flex-1 relative flex justify-center items-end h-full"
+                        className="flex-1 relative flex justify-center items-end h-full max-lg:hidden"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}

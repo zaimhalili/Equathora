@@ -52,34 +52,34 @@ const WhyChooseSection = () => {
             <div className="absolute top-20 right-20 w-32 h-32 border border-gray-100 rounded-full" />
             <div className="absolute bottom-20 left-10 w-20 h-20 border border-[var(--accent-color)]/10 rounded-full" />
 
-            <div className="max-w-[1400px] px-[4vw] xl:px-[6vw] py-24 mx-auto relative z-10">
-                <div className="flex flex-col lg:flex-row gap-16 items-center">
+            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 mx-auto relative z-10">
+                <div className="flex flex-col lg:flex-row gap-10 sm:gap-12 md:gap-16 items-center">
 
                     {/* Left side - Content (Centered) */}
-                    <div className="flex-1 flex flex-col gap-8 text-center lg:text-left items-center lg:items-start">
+                    <div className="flex-1 flex flex-col gap-6 sm:gap-7 md:gap-8 text-center lg:text-left items-center lg:items-start w-full">
                         {/* Section header */}
                         <motion.div
-                            className="flex flex-col gap-4 items-center lg:items-start"
+                            className="flex flex-col gap-3 sm:gap-4 items-center lg:items-start"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-sm font-semibold uppercase tracking-wider">
-                                <span className="w-8 h-[2px] bg-[var(--accent-color)]"></span>
+                            <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
+                                <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                                 Premium experience
                             </span>
-                            <h2 className="text-3xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight px-4 lg:px-0">
                                 Why choose Equathora?
                             </h2>
-                            <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-lg text-base">
+                            <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-lg text-sm sm:text-base px-4 lg:px-0">
                                 We focus on what matters: helping you build lasting problem-solving skills through thoughtful practice.
                             </p>
                         </motion.div>
 
                         {/* Benefits list */}
                         <motion.div
-                            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                            className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -88,16 +88,16 @@ const WhyChooseSection = () => {
                             {benefits.map((benefit, index) => (
                                 <motion.div
                                     key={benefit}
-                                    className="flex items-center gap-3"
+                                    className="flex items-center gap-2 sm:gap-3"
                                     initial={{ opacity: 0, x: -20 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: 0.1 * index, duration: 0.3 }}
                                 >
-                                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[var(--accent-color)] text-white">
-                                        <FaCheck className="text-xs" />
+                                    <span className="flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[var(--accent-color)] text-white flex-shrink-0">
+                                        <FaCheck className="text-[10px] sm:text-xs" />
                                     </span>
-                                    <span className="text-[var(--secondary-color)] font-medium">{benefit}</span>
+                                    <span className="text-[var(--secondary-color)] font-medium text-sm sm:text-base">{benefit}</span>
                                 </motion.div>
                             ))}
                         </motion.div>
@@ -111,7 +111,7 @@ const WhyChooseSection = () => {
                         >
                             <Link
                                 to="/learn"
-                                className="group inline-flex items-center gap-2 rounded-full !bg-[var(--secondary-color)] px-6 py-3 !text-white text-base font-semibold transition-all hover:!bg-[var(--accent-color)] shadow-lg"
+                                className="group inline-flex items-center gap-2 rounded-full !bg-[var(--secondary-color)] px-5 sm:px-6 py-2.5 sm:py-3 !text-white text-sm sm:text-base font-semibold transition-all hover:!bg-[var(--accent-color)] shadow-lg"
                             >
                                 Explore problems
                                 <FaArrowRight className="transition-transform group-hover:translate-x-1" />
@@ -121,7 +121,7 @@ const WhyChooseSection = () => {
 
                     {/* Right side - Images with 3D tilt effect on hover */}
                     <motion.div
-                        className="flex-1 relative min-h-[450px]"
+                        className="flex-1 relative min-h-[350px] sm:min-h-[400px] md:min-h-[450px] max-lg:hidden"
                         initial={{ opacity: 0, x: 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
