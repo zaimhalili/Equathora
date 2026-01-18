@@ -111,7 +111,7 @@ const HelpCenter = () => {
                             <div className="flex-1 flex flex-col gap-4">
                                 <div className="flex items-center gap-2">
                                     <span className="text-3xl">👋</span>
-                                    <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[DynaPuff]">
+                                    <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[Inter]">
                                         Help Center
                                     </h1>
                                 </div>
@@ -184,11 +184,11 @@ const HelpCenter = () => {
                     </div>
                 </section>
 
-            {/* FAQ Section with Icons */}
+                {/* FAQ Section with Icons */}
                 <section className="w-full flex justify-center">
                     <div className="px-[4vw] xl:px-[6vw] py-8 max-w-[1500px] w-full">
                         <div className="flex flex-col items-center gap-2 pb-6">
-                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[DynaPuff] text-center">
+                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Inter] text-center">
                                 Frequently Asked Questions
                             </h2>
                             <p className="text-gray-600 text-center text-base">Everything you need to know about Equathora</p>
@@ -241,7 +241,7 @@ const HelpCenter = () => {
                                 <div className="flex-1 p-8 flex flex-col gap-4 text-white">
                                     <div className="flex items-center gap-2">
                                         <span className="text-3xl">💌</span>
-                                        <h2 className="text-2xl font-bold font-[DynaPuff]">Still Need Help?</h2>
+                                        <h2 className="text-2xl font-bold font-[Inter]">Still Need Help?</h2>
                                     </div>
                                     <p className="text-gray-300 text-base">
                                         Can't find your answer? Our support team responds within 3 hours (usually) !

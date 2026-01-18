@@ -124,7 +124,7 @@ const ProblemGroup = () => {
             </Link>
 
             <div className="flex flex-col gap-2 pb-4">
-              <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[DynaPuff]">
+              <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[Inter]">
                 {group.name}
               </h1>
               <MathJaxRenderer

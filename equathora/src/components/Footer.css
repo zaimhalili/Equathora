@@ -74,7 +74,7 @@
 }
 
 #center h2 {
-    font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: 'Inter', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: var(--really-light-accent);
     font-size: clamp(1.2rem, 5vw, 2.4rem);
     letter-spacing: 1px;
@@ -231,12 +231,14 @@
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (max-width: 768px) {
-    #socialMedia-container{
+    #socialMedia-container {
         margin: 1rem 0;
     }
-    .footer-column-title{
+
+    .footer-column-title {
         margin-bottom: 0.5rem;
     }
+
     #center {
         width: 100%;
         padding: 2vh 1.5rem 2vh 1.5rem;
@@ -246,7 +248,7 @@
         flex-direction: column;
     }
 
-    .links{
+    .links {
         gap: 0.2rem;
     }
 
@@ -271,7 +273,7 @@
         width: auto;
     }
 
-    #social-media-container{
+    #social-media-container {
         margin: 1rem;
     }
 }

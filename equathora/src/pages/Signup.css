@@ -37,7 +37,7 @@
 #signup-name {
     display: flex;
     align-items: center;
-    font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: 'Inter', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: var(--secondary-color);
     margin: 0;
     height: 100%;

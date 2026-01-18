@@ -74,7 +74,7 @@ const BlogPost = () => {
                         {/* Header and Profile Picture */}
                         <div className='flex w-full flex-col md:flex-row justify-between items-start md:items-center pt-8 gap-4'>
                             <div className='gap-2 flex flex-col flex-1'>
-                                <h1 className='text-3xl sm:text-3xl md:text-3xl lg:text-4xl font-medium font-[DynaPuff] text-white'>
+                                <h1 className='text-3xl sm:text-3xl md:text-3xl lg:text-4xl font-medium font-[Inter] text-white'>
                                     {post.title}
                                 </h1>
                                 <div className='flex flex-wrap gap-2 font-medium text-base sm:text-lg md:text-xl text-[var(--french-gray)]'>

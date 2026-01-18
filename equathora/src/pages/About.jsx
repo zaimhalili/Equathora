@@ -21,7 +21,7 @@ const About = () => {
                             transition={{ duration: 0.5 }}
                             className="w-full flex flex-col items-center text-center"
                         >
-                            <h1 className="text-4xl md:text-5xl font-bold font-[DynaPuff] pb-4">
+                            <h1 className="text-4xl md:text-5xl font-bold font-[Inter] pb-4">
                                 <span className="bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] bg-clip-text text-transparent">About Equathora</span>
                             </h1>
                             <p className="text-base text-gray-600 font-[Inter] max-w-2xl leading-relaxed">
@@ -208,7 +208,7 @@ const About = () => {
                             transition={{ duration: 0.5, delay: 0.5 }}
                             className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
                         >
-                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[DynaPuff] pb-6 text-center">
+                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6 text-center">
                                 What Makes Us Different
                             </h2>
                             <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -246,7 +246,7 @@ const About = () => {
                             className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
                         >
                             <div className="w-full flex flex-col items-center text-center">
-                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[DynaPuff] pb-4">
+                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-4">
                                     Ready to Start Learning?
                                 </h2>
                                 <p className="text-base text-gray-600 pb-6 max-w-2xl">

@@ -29,7 +29,7 @@ const Waitlist = () => {
                             </div>
 
                             {/* Main Headline */}
-                            <h1 className="flex flex-col items-center justify-center text-5xl md:text-7xl font-black text-[var(--secondary-color)] font-[DynaPuff] leading-tight">
+                            <h1 className="flex flex-col items-center justify-center text-5xl md:text-7xl font-black text-[var(--secondary-color)] font-[Inter] leading-tight">
                                 <span>Master Math.</span>
                                 <span className="text-[var(--accent-color)]">Get Early Access.</span>
                             </h1>

@@ -50,7 +50,7 @@
 }
 
 #learn-explore h1 {
-    font-family: 'DynaPuff', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family: 'Inter', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: clamp(2rem, 5vw, 2.25rem);
     font-weight: 500;
     line-height: 1.2;

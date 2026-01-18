@@ -40,10 +40,10 @@ const Dashboard = () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
-          const displayName = session.user.user_metadata?.full_name || 
-                             session.user.user_metadata?.name || 
-                             session.user.email?.split('@')[0] || 
-                             "Friend";
+          const displayName = session.user.user_metadata?.full_name ||
+            session.user.user_metadata?.name ||
+            session.user.email?.split('@')[0] ||
+            "Friend";
           setUsername(displayName);
         }
       } catch (error) {
@@ -92,7 +92,7 @@ const Dashboard = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-4xl text-center md:text-left pb-2 cursor-default font-[DynaPuff] font-medium"
+                  className="text-4xl text-center md:text-left pb-2 cursor-default font-[Inter] font-medium"
                 >
                   Welcome Back, <span className="text-[var(--secondary-color)]">{username}</span>!
                 </motion.h1>

@@ -14,7 +14,7 @@ const BlogList = () => {
             <Navbar />
             <main className='flex bg-[var(--main-color)] font-[Inter] flex-col min-h-screen w-full items-center py-12'>
                 <section className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px]'>
-                    <h1 className='text-4xl font-bold font-[DynaPuff] text-[var(--secondary-color)] mb-8'>
+                    <h1 className='text-4xl font-bold font-[Inter] text-[var(--secondary-color)] mb-8'>
                         Equathora Blog
                     </h1>
                     <p className='text-lg text-gray-600 mb-12'>

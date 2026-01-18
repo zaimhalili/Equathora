@@ -17,7 +17,7 @@ const Blog = () => {
                 {/* Header Section */}
                 <section className='w-full flex flex-col items-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)110%)] shadow-2xl shadow-black/20 py-12 md:py-16'>
                     <div className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] flex flex-col items-center'>
-                        <h1 className='text-4xl font-bold font-[DynaPuff] text-white'>
+                        <h1 className='text-4xl font-bold font-[Inter] text-white'>
                             Equathora Blog
                         </h1>
                         <p className='text-lg text-[var(--french-gray)] pt-2'>
