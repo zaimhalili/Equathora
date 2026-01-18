@@ -1,63 +1,145 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FaPlay, FaArrowRight } from 'react-icons/fa';
-import MouseFollower, { FloatingElement, ParallaxLayer } from './MouseFollower';
-import FloatingShapes from './FloatingShapes';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { FaArrowRight } from 'react-icons/fa';
+import YoungStudent from '../../assets/images/yng_student.png'
+
+// Particle system - RED particles, fewer, faster
+const Particles = () => {
+    const particles = Array.from({ length: 12 }, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 6 + 3,
+        duration: Math.random() * 4 + 3, // Faster: 3-7s instead of 10-25s
+        delay: Math.random() * 2,
+    }));
+
+    return (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {particles.map((particle) => (
+                <motion.div
+                    key={particle.id}
+                    className="absolute rounded-full bg-[var(--accent-color)]"
+                    style={{
+                        left: `${particle.x}%`,
+                        top: `${particle.y}%`,
+                        width: particle.size,
+                        height: particle.size,
+                    }}
+                    animate={{
+                        y: [-30, 30, -30],
+                        x: [-20, 20, -20],
+                        opacity: [0.3, 0.7, 0.3],
+                    }}
+                    transition={{
+                        duration: particle.duration,
+                        repeat: Infinity,
+                        delay: particle.delay,
+                        ease: "easeInOut",
+                    }}
+                />
+            ))}
+        </div>
+    );
+};
 
 const HeroSection = () => {
+    const containerRef = useRef(null);
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    const springConfig = { damping: 25, stiffness: 100 };
+    const x = useSpring(mouseX, springConfig);
+    const y = useSpring(mouseY, springConfig);
+
+    const imageX = useTransform(x, [-500, 500], [40, -40]);
+    const imageY = useTransform(y, [-500, 500], [40, -40]);
+    const floatX = useTransform(x, [-500, 500], [-30, 30]);
+    const floatY = useTransform(y, [-500, 500], [-30, 30]);
+
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            const rect = containerRef.current?.getBoundingClientRect();
+            if (rect) {
+                mouseX.set(e.clientX - rect.left - rect.width / 2);
+                mouseY.set(e.clientY - rect.top - rect.height / 2);
+            }
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, [mouseX, mouseY]);
+
     const stats = [
-        { value: '100+', label: 'Problems', suffix: '' },
-        { value: '30+', label: 'Achievements', suffix: '' },
-        { value: '5+', label: 'Topics', suffix: '' },
+        { value: '100+', label: 'Practice Problems' },
+        { value: '30+', label: 'Achievements' },
+        { value: '5+', label: 'Math Topics' },
     ];
 
     return (
-        <section className="font-[Inter] w-full bg-white relative overflow-hidden min-h-[90vh] flex items-center">
-            {/* Floating Background Shapes */}
-            <FloatingShapes variant="hero" />
-            
-            {/* Subtle grid pattern */}
-            <div 
-                className="absolute inset-0 opacity-[0.02]"
-                style={{
-                    backgroundImage: 'linear-gradient(var(--secondary-color) 1px, transparent 1px), linear-gradient(90deg, var(--secondary-color) 1px, transparent 1px)',
-                    backgroundSize: '60px 60px'
-                }}
-            />
+        <section
+            ref={containerRef}
+            className="font-[Inter] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-[100vh] flex items-center justify-center"
+        >
+            {/* Background decorations */}
+            <div className="absolute inset-0">
+                {/* Gradient orbs */}
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[var(--accent-color)]/20 rounded-full blur-[120px]" />
+                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--accent-color)]/10 rounded-full blur-[100px]" />
+
+                {/* Grid lines */}
+                <div
+                    className="absolute inset-0 opacity-[0.03]"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+                        `,
+                        backgroundSize: '80px 80px'
+                    }}
+                />
+
+                {/* Half circle decoration */}
+                <div className="absolute -right-32 top-1/2 -translate-y-1/2 w-64 h-[500px] border border-white/10 rounded-l-full" />
+                <div className="absolute -left-20 bottom-20 w-40 h-40 border border-white/5 rounded-full" />
+            </div>
+
+            {/* Red Particles */}
+            <Particles />
 
             <div className="relative z-10 w-full">
-                <div className="px-[4vw] xl:px-[6vw] max-w-[1400px] py-8 lg:py-16 gap-12 flex flex-col lg:flex-row items-center justify-between mx-auto">
-                    
-                    {/* Left Content */}
+                <div className="px-[4vw] xl:px-[6vw] max-w-[1400px] py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-center gap-12 mx-auto">
+
+                    {/* Left Content - Centered */}
                     <motion.div
-                        className="flex flex-col gap-6 flex-1 text-center lg:text-left max-w-xl"
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        className="flex flex-col gap-8 flex-1 text-center lg:text-left items-center lg:items-start max-w-2xl"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
                         {/* Badge */}
                         <motion.div
-                            className="flex items-center gap-2 justify-center lg:justify-start"
+                            className="flex items-center justify-center lg:justify-start"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1, duration: 0.4 }}
                         >
-                            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent-color)]/10 text-[var(--accent-color)] text-sm font-medium">
+                            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 text-white text-sm font-medium border border-white/20 backdrop-blur-sm">
                                 <span className="w-2 h-2 rounded-full bg-[var(--accent-color)] animate-pulse"></span>
-                                Built for students
+                                Practice-focused learning
                             </span>
                         </motion.div>
 
                         {/* Main Heading */}
                         <motion.h1
-                            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] text-[var(--secondary-color)]"
+                            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] text-white"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.15, duration: 0.5 }}
                         >
-                            Best platform for{' '}
-                            <span className="text-[var(--accent-color)] relative">
+                            Master{' '}
+                            <span className="text-[var(--accent-color)] relative inline-block">
                                 mathematics
                                 <motion.svg
                                     className="absolute -bottom-2 left-0 w-full"
@@ -78,17 +160,17 @@ const HeroSection = () => {
                                     />
                                 </motion.svg>
                             </span>
-                            {' '}learning.
+                            <br />with focused practice.
                         </motion.h1>
 
                         {/* Description */}
                         <motion.p
-                            className="text-lg text-[var(--mid-main-secondary)] leading-relaxed"
+                            className="text-xl text-white/70 leading-relaxed max-w-lg"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.25, duration: 0.5 }}
                         >
-                            Master math through focused practice, step-by-step guidance, and a distraction-free environment designed for your success.
+                            Build real problem-solving skills through carefully crafted challenges. No distractions, just thoughtful practice.
                         </motion.p>
 
                         {/* CTA Buttons */}
@@ -100,25 +182,27 @@ const HeroSection = () => {
                         >
                             <Link
                                 to="/dashboard"
-                                className="group flex items-center gap-2 rounded-full bg-[var(--accent-color)] px-8 py-3.5 text-center !text-white font-medium transition-all hover:bg-[var(--dark-accent-color)] hover:shadow-lg hover:shadow-[var(--accent-color)]/25 hover:scale-105"
+                                className="group flex items-center gap-2 rounded-full bg-[var(--accent-color)] px-10 py-4 text-lg text-center !text-white font-semibold transition-all hover:bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
                             >
-                                Get started
-                                <FaArrowRight className="transition-transform group-hover:translate-x-1" />
+                                Start practicing
+                                <motion.span
+                                    animate={{ x: [0, 4, 0] }}
+                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                >
+                                    <FaArrowRight />
+                                </motion.span>
                             </Link>
                             <Link
                                 to="/about"
-                                className="group flex items-center gap-3 px-6 py-3.5 text-[var(--secondary-color)] font-medium transition-all hover:text-[var(--accent-color)]"
+                                className="px-8 py-4 text-lg !text-white font-medium border border-white/20 rounded-full transition-all hover:bg-white/10"
                             >
-                                <span className="flex items-center justify-center w-10 h-10 rounded-full bg-white border border-gray-200 shadow-sm group-hover:border-[var(--accent-color)] group-hover:shadow-md transition-all">
-                                    <FaPlay className="text-xs text-[var(--accent-color)] ml-0.5" />
-                                </span>
-                                How it works
+                                Learn more
                             </Link>
                         </motion.div>
 
                         {/* Stats Row */}
                         <motion.div
-                            className="flex gap-8 pt-6 justify-center lg:justify-start"
+                            className="flex gap-12 pt-8 justify-center lg:justify-start"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.45, duration: 0.5 }}
@@ -126,15 +210,15 @@ const HeroSection = () => {
                             {stats.map((stat, index) => (
                                 <motion.div
                                     key={stat.label}
-                                    className="flex flex-col"
+                                    className="flex flex-col items-center lg:items-start"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
                                 >
-                                    <span className="text-3xl font-bold text-[var(--accent-color)]">
+                                    <span className="text-4xl font-bold text-[var(--accent-color)]">
                                         {stat.value}
                                     </span>
-                                    <span className="text-sm text-[var(--mid-main-secondary)]">
+                                    <span className="text-sm text-white/60">
                                         {stat.label}
                                     </span>
                                 </motion.div>
@@ -142,101 +226,87 @@ const HeroSection = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* Right Side - Image Composition */}
+                    {/* Right Side - Student PNG with 3D effect */}
                     <motion.div
-                        className="flex-1 relative flex justify-center items-center min-h-[400px] lg:min-h-[500px]"
+                        className="flex-1 relative flex justify-center items-end min-h-[500px] lg:min-h-[600px]"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        {/* Main Hero Image with Mouse Follow */}
-                        <MouseFollower 
-                            intensity={8} 
-                            className="relative z-10"
-                            scale={1.02}
+                        {/* Main student image */}
+                        <motion.div
+                            className="relative z-20"
+                            style={{ x: imageX, y: imageY }}
                         >
-                            <div className="relative">
-                                {/* Main image container */}
-                                <motion.div
-                                    className="relative rounded-3xl overflow-hidden shadow-2xl"
-                                    whileHover={{ boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)" }}
-                                >
-                                    <img
-                                        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=500&fit=crop"
-                                        alt="Students learning together"
-                                        className="w-full max-w-md object-cover rounded-3xl"
-                                        loading="lazy"
-                                    />
-                                    {/* Gradient overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--secondary-color)]/20 to-transparent"></div>
-                                </motion.div>
-
-                                {/* Floating badge - top left */}
-                                <FloatingElement
-                                    className="absolute -top-4 -left-4 z-20"
-                                    floatRange={8}
-                                    duration={3}
-                                    cursorIntensity={15}
-                                >
-                                    <div className="flex items-center gap-2 px-4 py-2.5 bg-white rounded-xl shadow-lg border border-gray-100">
-                                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                                        <span className="text-sm font-semibold text-[var(--secondary-color)]">Live Practice</span>
-                                    </div>
-                                </FloatingElement>
-
-                                {/* Floating badge - bottom right */}
-                                <FloatingElement
-                                    className="absolute -bottom-6 -right-6 z-20"
-                                    floatRange={10}
-                                    duration={4}
-                                    delay={1}
-                                    cursorIntensity={20}
-                                >
-                                    <div className="flex flex-col items-center gap-1 px-5 py-3 bg-[var(--accent-color)] rounded-2xl shadow-lg text-white">
-                                        <span className="text-2xl font-bold">98%</span>
-                                        <span className="text-xs opacity-90">Success Rate</span>
-                                    </div>
-                                </FloatingElement>
-                            </div>
-                        </MouseFollower>
-
-                        {/* Secondary floating image */}
-                        <ParallaxLayer depth={1.5} className="absolute -bottom-8 -left-16 z-5 hidden lg:block">
-                            <motion.div
-                                className="rounded-2xl overflow-hidden shadow-xl border-4 border-white"
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.6, duration: 0.5 }}
-                            >
-                                <img
-                                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=200&h=150&fit=crop"
-                                    alt="Student studying"
-                                    className="w-36 h-28 object-cover"
-                                    loading="lazy"
-                                />
-                            </motion.div>
-                        </ParallaxLayer>
-
-                        {/* Decorative elements */}
-                        <ParallaxLayer depth={2} className="absolute top-0 right-0 z-0">
-                            <motion.div
-                                className="w-72 h-72 rounded-full bg-[var(--accent-color)]/10 blur-3xl"
-                                animate={{ scale: [1, 1.1, 1] }}
-                                transition={{ duration: 8, repeat: Infinity }}
+                            <img
+                                src={YoungStudent}
+                                alt="Student with books"
+                                className="w-[320px] md:w-[380px] lg:w-[420px] h-auto object-contain drop-shadow-2xl"
+                                loading="eager"
                             />
-                        </ParallaxLayer>
+                        </motion.div>
 
-                        {/* Small accent dots */}
+                        {/* Floating badge - top right */}
                         <motion.div
-                            className="absolute top-10 right-10 w-3 h-3 rounded-full bg-[var(--accent-color)]"
-                            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-                            transition={{ duration: 2, repeat: Infinity }}
+                            className="absolute top-16 right-4 lg:right-8 z-30"
+                            style={{ x: floatX, y: floatY }}
+                            animate={{ y: [0, -10, 0] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            <div className="flex items-center gap-3 px-5 py-3 bg-white rounded-2xl shadow-2xl">
+                                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-500 text-lg">
+                                    ✓
+                                </div>
+                                <div>
+                                    <p className="text-xs text-gray-500">Active learners</p>
+                                    <p className="font-bold text-[var(--secondary-color)]">2,500+</p>
+                                </div>
+                            </div>
+                        </motion.div>
+
+                        {/* Floating badge - left side */}
+                        <motion.div
+                            className="absolute top-32 left-0 lg:-left-8 z-30"
+                            style={{
+                                x: useTransform(floatX, v => -v),
+                                y: useTransform(floatY, v => -v)
+                            }}
+                            animate={{ y: [0, -8, 0] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                        >
+                            <div className="px-5 py-4 bg-[var(--accent-color)] rounded-2xl shadow-2xl text-white">
+                                <p className="text-3xl font-bold">98%</p>
+                                <p className="text-xs opacity-90">Success Rate</p>
+                            </div>
+                        </motion.div>
+
+                        {/* Decorative circle behind */}
+                        <motion.div
+                            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[350px] h-[350px] rounded-full border-2 border-white/10 z-10"
+                            style={{ x: useTransform(imageX, v => v * 0.3), y: useTransform(imageY, v => v * 0.3) }}
                         />
                         <motion.div
-                            className="absolute bottom-20 right-32 w-2 h-2 rounded-full bg-[var(--french-gray)]"
-                            animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.7, 0.3] }}
-                            transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+                            className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[280px] h-[280px] rounded-full border border-[var(--accent-color)]/20 z-10"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
                         />
+
+                        {/* Floating math symbols */}
+                        <motion.div
+                            className="absolute top-20 left-20 text-4xl text-white/20 font-light z-10"
+                            animate={{ rotate: [0, 10, -10, 0], y: [0, -5, 0] }}
+                            transition={{ duration: 6, repeat: Infinity }}
+                            style={{ x: floatX, y: floatY }}
+                        >
+                            ∑
+                        </motion.div>
+                        <motion.div
+                            className="absolute bottom-32 right-16 text-3xl text-white/15 font-light z-10"
+                            animate={{ rotate: [0, -10, 10, 0], y: [0, -8, 0] }}
+                            transition={{ duration: 8, repeat: Infinity, delay: 1 }}
+                        >
+                            π
+                        </motion.div>
                     </motion.div>
                 </div>
             </div>

@@ -1,150 +1,114 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import GradientText from '../ui/GradientText.jsx';
-import Journey from '../../assets/images/journey.svg';
-import Achievements from '../../assets/images/achievements.svg';
-import Choice from '../../assets/images/choice.svg';
-import LearningBooks from '../../assets/images/learningBooks.svg';
-import Progress from '../../assets/images/Progress.svg';
-import Race from '../../assets/images/race.svg';
+import { FaBookOpen, FaPencilAlt, FaChartLine, FaTrophy } from 'react-icons/fa';
 
 const HowItWorksSection = () => {
     const steps = [
         {
             step: '01',
-            title: 'Choose your track',
-            description: 'Browse through various math topics and select a track that matches your current level and learning goals. From basic algebra to advanced calculus.',
-            image: Choice,
-            direction: 'left',
-            tags: ['Multiple Topics', 'Skill Levels', 'Curated Content']
+            title: 'Choose your topic',
+            description: 'Browse through algebra, calculus, logic, and more. Pick what matches your current goals.',
+            icon: FaBookOpen,
+            color: 'from-blue-500 to-blue-600',
         },
         {
             step: '02',
             title: 'Solve problems',
-            description: 'Work through carefully crafted problems at your own pace. Use hints when stuck, and receive detailed explanations for every solution.',
-            image: LearningBooks,
-            direction: 'right',
-            tags: ['Step-by-Step', 'Hints Available', 'Detailed Solutions']
+            description: 'Work through carefully crafted challenges. Use hints when stuck, learn from solutions.',
+            icon: FaPencilAlt,
+            color: 'from-[var(--accent-color)] to-[var(--dark-accent-color)]',
         },
         {
             step: '03',
             title: 'Track progress',
-            description: 'Monitor your improvement with statistics, achievements, and leaderboards. Celebrate milestones and maintain your learning streak.',
-            image: Progress,
-            direction: 'left',
-            tags: ['Statistics', 'Achievements', 'Leaderboards']
+            description: 'Watch your stats grow. Maintain streaks, earn achievements, see improvement over time.',
+            icon: FaChartLine,
+            color: 'from-green-500 to-green-600',
         },
         {
             step: '04',
             title: 'Master concepts',
-            description: 'Build solid understanding through repetition and progressive difficulty. Watch your confidence grow as math becomes your superpower.',
-            image: Race,
-            direction: 'right',
-            tags: ['Practice', 'Build Confidence', 'Grow Skills']
+            description: 'Build real intuition through consistent practice. Math becomes your strength.',
+            icon: FaTrophy,
+            color: 'from-yellow-500 to-orange-500',
         },
     ];
 
     return (
-        <section className="w-full bg-white relative overflow-hidden">
-            {/* Animated Background Elements */}
-            <div className="absolute inset-0 pointer-events-none">
-                <motion.div
-                    className="absolute top-20 right-10 w-32 h-32 opacity-5"
-                    animate={{
-                        y: [0, -20, 0],
-                        rotate: [0, 10, 0]
+        <section className="w-full bg-[#fafbfc] relative overflow-hidden">
+            {/* Background decorations */}
+            <div className="absolute inset-0">
+                {/* Dot pattern */}
+                <div
+                    className="absolute inset-0 opacity-[0.03]"
+                    style={{
+                        backgroundImage: 'radial-gradient(circle, var(--secondary-color) 1px, transparent 1px)',
+                        backgroundSize: '30px 30px'
                     }}
-                    transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                >
-                    <img src={Journey} alt="" className="w-full h-full" />
-                </motion.div>
-                <motion.div
-                    className="absolute bottom-20 left-10 w-40 h-40 opacity-5"
-                    animate={{
-                        y: [0, 20, 0],
-                        rotate: [0, -10, 0]
-                    }}
-                    transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                >
-                    <img src={Achievements} alt="" className="w-full h-full" />
-                </motion.div>
+                />
+
+                {/* Gradient orbs */}
+                <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-[var(--accent-color)]/5 rounded-full blur-[120px]" />
+                <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px]" />
             </div>
 
-            <div className="max-w-6xl px-8 py-24 relative z-10" style={{ margin: '0 auto' }}>
+            <div className="max-w-[1400px] px-[4vw] xl:px-[6vw] py-24 relative z-10 mx-auto">
                 <div className="flex flex-col gap-16">
+                    {/* Section header - Centered */}
                     <motion.div
-                        className="flex flex-col gap-4 text-center text-3xl font-bold sm:text-4xl text-[var(--secondary-color)]"
+                        className="flex flex-col gap-4 text-center items-center"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        How it works
-                        <p className="text-gray-600 text-lg">Your journey to math mastery in four simple steps</p>
+                        <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-sm font-semibold uppercase tracking-wider">
+                            <span className="w-8 h-[2px] bg-[var(--accent-color)]"></span>
+                            Simple process
+                            <span className="w-8 h-[2px] bg-[var(--accent-color)]"></span>
+                        </span>
+                        <h2 className="text-4xl md:text-5xl font-bold text-[var(--secondary-color)]">
+                            How it works
+                        </h2>
+                        <p className="text-[var(--mid-main-secondary)] text-lg max-w-xl">
+                            Four simple steps to transform your math skills
+                        </p>
                     </motion.div>
 
-                    <div className="flex flex-col gap-12">
-                        {steps.map((item, index) => (
-                            <motion.div
-                                key={item.step}
-                                className={`flex flex-col ${item.direction === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-8 items-center`}
-                                initial={{ opacity: 0, x: item.direction === 'left' ? -50 : 50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 0.4, delay: index * 0.05 }}
-                            >
-                                {/* Image Side */}
+                    {/* Steps grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {steps.map((item, index) => {
+                            const IconComponent = item.icon;
+                            return (
                                 <motion.div
-                                    className="flex-1 flex justify-center"
-                                    transition={{ type: "spring", stiffness: 300 }}
+                                    key={item.step}
+                                    className="relative flex flex-col gap-5 p-8 bg-white rounded-3xl border border-gray-100 shadow-sm transition-all"
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.4, delay: index * 0.1 }}
                                 >
-                                    <div className="relative">
-                                        <div className="absolute inset-0 l rounded-full"></div>
-                                        <div className="relativ p-8 rounded-3xl">
-                                            <img src={item.image} alt={item.title} className="w-80 h-80 object-contain" />
+                                    {/* Connector line */}
+                                    {index < steps.length - 1 && (
+                                        <div className="hidden lg:block absolute top-16 -right-3 w-6 h-[2px] bg-gray-200 z-10" />
+                                    )}
+
+                                    {/* Step number */}
+                                    <div className="flex items-center justify-between">
+                                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg`}>
+                                            <IconComponent className="text-2xl text-white" />
                                         </div>
+                                        <span className="text-4xl font-bold text-gray-100">{item.step}</span>
+                                    </div>
+
+                                    {/* Content */}
+                                    <div className="flex flex-col gap-2">
+                                        <h3 className="text-xl font-bold text-[var(--secondary-color)]">{item.title}</h3>
+                                        <p className="text-[var(--mid-main-secondary)] text-sm leading-relaxed">{item.description}</p>
                                     </div>
                                 </motion.div>
-
-                                {/* Content Side */}
-                                <div className="flex-1 flex flex-col gap-6">
-                                    <div className="flex items-center gap-4">
-                                        <motion.div
-                                            className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] shadow-lg"
-                                            whileHover={{ rotate: 360 }}
-                                            transition={{ duration: 0.5 }}
-                                        >
-                                            <span className="text-2xl font-bold text-white">{item.step}</span>
-                                        </motion.div>
-                                        <h3 className="text-3xl font-bold text-[var(--secondary-color)]">{item.title}</h3>
-                                    </div>
-                                    <p className="text-gray-600 leading-relaxed text-lg">{item.description}</p>
-
-                                    {/* Feature highlights */}
-                                    <motion.div
-                                        className="flex flex-wrap gap-2"
-                                        initial={{ opacity: 0 }}
-                                        whileInView={{ opacity: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.15, duration: 0.3 }}
-                                    >
-                                        {item.tags.map((tag) => (
-                                            <span key={tag} className="px-4 py-2 bg-gray-100 text-gray-700 text-sm rounded-full border border-gray-200">
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </motion.div>
-                                </div>
-                            </motion.div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </div>

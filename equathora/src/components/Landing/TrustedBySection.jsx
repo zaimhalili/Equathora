@@ -32,36 +32,39 @@ const TrustedBySection = () => {
     ];
 
     return (
-        <section className="w-full bg-white border-b border-gray-100">
-            <div className="max-w-6xl px-8 py-16" style={{ margin: '0 auto' }}>
+        <section className="w-full bg-white relative overflow-hidden">
+            {/* Subtle background */}
+            <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white" />
+
+            <div className="max-w-[1400px] px-[4vw] xl:px-[6vw] py-16 mx-auto relative z-10">
                 <motion.div
-                    className="flex flex-col gap-8 items-center"
+                    className="flex flex-col gap-8 items-center text-center"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.5 }}
                 >
-                    <p className="text-sm font-semibold uppercase tracking-wider text-gray-500">
+                    <p className="text-sm font-semibold uppercase tracking-wider text-[var(--mid-main-secondary)]">
                         Inspired by industry leaders
                     </p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full">
+                    <div className="flex flex-wrap justify-center gap-8 md:gap-12 w-full">
                         {organizations.map((org, index) => {
                             const IconComponent = org.icon;
                             return (
                                 <motion.div
                                     key={org.name}
-                                    className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-gray-50 transition-all hover:scale-103"
+                                    className="flex flex-col items-center gap-3 p-6 rounded-2xl transition-all"
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: index * 0.05, duration: 0.3 }}
+                                    transition={{ delay: index * 0.1, duration: 0.4 }}
                                 >
                                     <IconComponent
                                         className="text-5xl"
                                         style={{ color: org.color }}
                                     />
-                                    <p className="text-sm font-semibold text-gray-700 text-center">{org.name}</p>
-                                    <p className="text-xs text-gray-500 text-center">{org.description}</p>
+                                    <p className="text-base font-semibold text-[var(--secondary-color)]">{org.name}</p>
+                                    <p className="text-sm text-[var(--mid-main-secondary)]">{org.description}</p>
                                 </motion.div>
                             );
                         })}

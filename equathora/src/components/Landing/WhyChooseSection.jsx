@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaCheck } from 'react-icons/fa';
-import MouseFollower, { FloatingElement, ParallaxLayer } from './MouseFollower';
 
 // Animated counter component
 const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
@@ -12,7 +11,7 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
 
     useEffect(() => {
         if (!isInView) return;
-        
+
         let startTime;
         const animate = (timestamp) => {
             if (!startTime) startTime = timestamp;
@@ -29,34 +28,62 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
 };
 
 const WhyChooseSection = () => {
+    const containerRef = useRef(null);
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    const springConfig = { damping: 30, stiffness: 100 };
+    const x = useSpring(mouseX, springConfig);
+    const y = useSpring(mouseY, springConfig);
+
+    const imageX = useTransform(x, [-400, 400], [25, -25]);
+    const imageY = useTransform(y, [-400, 400], [25, -25]);
+
+    useEffect(() => {
+        const handleMouseMove = (e) => {
+            const rect = containerRef.current?.getBoundingClientRect();
+            if (rect) {
+                mouseX.set(e.clientX - rect.left - rect.width / 2);
+                mouseY.set(e.clientY - rect.top - rect.height / 2);
+            }
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, [mouseX, mouseY]);
+
     const benefits = [
-        'Connect with effective methods',
-        'Increase your learning skills',
-        'Track progress automatically',
-        'Learn at your own pace',
+        'Structured problem sets',
+        'Detailed step-by-step solutions',
+        'Progress tracking & streaks',
+        'Distraction-free environment',
     ];
 
     return (
-        <section className="w-full bg-white relative overflow-hidden">
-            {/* Background text decoration */}
+        <section ref={containerRef} className="w-full bg-white relative overflow-hidden">
+            {/* Background scrolling text - FASTER */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
                 <motion.div
-                    className="text-[15vw] font-bold text-[var(--french-gray)]/5 whitespace-nowrap select-none"
-                    animate={{ x: [0, -100, 0] }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    className="text-[12vw] font-bold text-[var(--french-gray)]/[0.04] whitespace-nowrap select-none"
+                    animate={{ x: [0, -1500] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                 >
-                    providing amazing online courses bringing you outstanding online learning
+                    PRACTICE LEARN GROW PRACTICE LEARN GROW
                 </motion.div>
             </div>
 
+            {/* Decorations */}
+            <div className="absolute top-20 right-20 w-32 h-32 border border-gray-100 rounded-full" />
+            <div className="absolute bottom-20 left-10 w-20 h-20 border border-[var(--accent-color)]/10 rounded-full" />
+
             <div className="max-w-[1400px] px-[4vw] xl:px-[6vw] py-24 mx-auto relative z-10">
                 <div className="flex flex-col lg:flex-row gap-16 items-center">
-                    
-                    {/* Left side - Content */}
-                    <div className="flex-1 flex flex-col gap-8">
+
+                    {/* Left side - Content (Centered) */}
+                    <div className="flex-1 flex flex-col gap-8 text-center lg:text-left items-center lg:items-start">
                         {/* Section header */}
                         <motion.div
-                            className="flex flex-col gap-4"
+                            className="flex flex-col gap-4 items-center lg:items-start"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -64,13 +91,13 @@ const WhyChooseSection = () => {
                         >
                             <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-sm font-semibold uppercase tracking-wider">
                                 <span className="w-8 h-[2px] bg-[var(--accent-color)]"></span>
-                                Premium learning experience
+                                Premium experience
                             </span>
-                            <h2 className="text-3xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight">
-                                Providing amazing online courses.
+                            <h2 className="text-4xl md:text-5xl font-bold text-[var(--secondary-color)] leading-tight">
+                                Why choose Equathora?
                             </h2>
-                            <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-lg">
-                                Master the skills that matter to you. Web-based training you can consume at your own pace. Courses are interactive and engaging.
+                            <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-lg text-lg">
+                                We focus on what matters: helping you build lasting problem-solving skills through thoughtful practice.
                             </p>
                         </motion.div>
 
@@ -91,7 +118,7 @@ const WhyChooseSection = () => {
                                     viewport={{ once: true }}
                                     transition={{ delay: 0.1 * index, duration: 0.3 }}
                                 >
-                                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[var(--accent-color)]/10 text-[var(--accent-color)]">
+                                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-[var(--accent-color)] text-white">
                                         <FaCheck className="text-xs" />
                                     </span>
                                     <span className="text-[var(--secondary-color)] font-medium">{benefit}</span>
@@ -108,82 +135,79 @@ const WhyChooseSection = () => {
                         >
                             <Link
                                 to="/learn"
-                                className="group inline-flex items-center gap-2 rounded-full bg-[var(--secondary-color)] px-8 py-3.5 text-white font-medium transition-all hover:bg-[var(--accent-color)] hover:shadow-lg"
+                                className="group inline-flex items-center gap-2 rounded-full bg-[var(--secondary-color)] px-8 py-4 text-white text-lg font-semibold transition-all hover:bg-[var(--accent-color)] shadow-lg"
                             >
-                                Explore courses
+                                Explore problems
                                 <FaArrowRight className="transition-transform group-hover:translate-x-1" />
                             </Link>
                         </motion.div>
                     </div>
 
-                    {/* Right side - Images composition */}
+                    {/* Right side - Images with 3D effect */}
                     <motion.div
-                        className="flex-1 relative"
+                        className="flex-1 relative min-h-[450px]"
                         initial={{ opacity: 0, x: 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <div className="relative flex gap-4">
+                        <div className="relative flex justify-center items-center">
                             {/* Main image */}
-                            <MouseFollower intensity={5} className="flex-1">
-                                <motion.div
-                                    className="rounded-3xl overflow-hidden shadow-xl"
-                                    whileHover={{ scale: 1.02 }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <img
-                                        src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=350&h=450&fit=crop"
-                                        alt="Student with laptop"
-                                        className="w-full h-[400px] object-cover"
-                                        loading="lazy"
-                                    />
-                                </motion.div>
-                            </MouseFollower>
+                            <motion.div
+                                className="relative z-20"
+                                style={{ x: imageX, y: imageY }}
+                            >
+                                <img
+                                    src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=500&fit=crop"
+                                    alt="Student learning"
+                                    className="w-[280px] lg:w-[340px] h-auto rounded-3xl shadow-2xl object-cover"
+                                    loading="lazy"
+                                />
+                            </motion.div>
 
-                            {/* Secondary image */}
-                            <MouseFollower intensity={7} className="flex-1 mt-12">
-                                <motion.div
-                                    className="rounded-3xl overflow-hidden shadow-xl"
-                                    whileHover={{ scale: 1.02 }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <img
-                                        src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=350&h=350&fit=crop"
-                                        alt="Online learning"
-                                        className="w-full h-[320px] object-cover"
-                                        loading="lazy"
-                                    />
-                                </motion.div>
-                            </MouseFollower>
+                            {/* Secondary image - offset */}
+                            <motion.div
+                                className="absolute -bottom-8 -left-8 lg:-left-16 z-10"
+                                style={{
+                                    x: useTransform(imageX, v => -v * 0.6),
+                                    y: useTransform(imageY, v => -v * 0.6)
+                                }}
+                            >
+                                <img
+                                    src="https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=200&h=250&fit=crop"
+                                    alt="Taking notes"
+                                    className="w-[160px] lg:w-[200px] h-auto rounded-2xl shadow-xl object-cover border-4 border-white"
+                                    loading="lazy"
+                                />
+                            </motion.div>
 
                             {/* Stats floating card */}
-                            <FloatingElement
-                                className="absolute -bottom-8 left-1/2 -translate-x-1/2"
-                                floatRange={10}
-                                duration={4}
-                                cursorIntensity={15}
+                            <motion.div
+                                className="absolute -bottom-6 right-0 lg:-right-8 z-30"
+                                animate={{ y: [0, -10, 0] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                style={{
+                                    x: useTransform(imageX, v => -v * 0.5),
+                                }}
                             >
-                                <div className="bg-white rounded-2xl shadow-2xl p-6 border border-gray-100 min-w-[200px]">
-                                    <div className="flex flex-col items-center gap-2">
-                                        <span className="text-5xl font-bold text-[var(--accent-color)]">
+                                <div className="bg-white rounded-2xl shadow-2xl p-5 border border-gray-100">
+                                    <div className="flex flex-col items-center gap-1">
+                                        <span className="text-4xl font-bold text-[var(--accent-color)]">
                                             <AnimatedCounter end={99} suffix="%" />
                                         </span>
                                         <span className="text-sm text-[var(--mid-main-secondary)] text-center">
-                                            Students complete<br />course successfully
+                                            Completion rate
                                         </span>
                                     </div>
                                 </div>
-                            </FloatingElement>
+                            </motion.div>
 
-                            {/* Decorative ring */}
-                            <ParallaxLayer depth={1} className="absolute -top-8 -right-8 pointer-events-none">
-                                <motion.div
-                                    className="w-24 h-24 rounded-full border-4 border-[var(--accent-color)]/20"
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                                />
-                            </ParallaxLayer>
+                            {/* Background decorative circle */}
+                            <motion.div
+                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full border-2 border-[var(--accent-color)]/10 z-0"
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                            />
                         </div>
                     </motion.div>
                 </div>
