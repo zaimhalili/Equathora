@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaBrain, FaChartLine, FaTrophy } from 'react-icons/fa';
-import MaleStudent from '../../assets/images/male-student-03.png';
+import MaleStudent from '../../assets/images/yng_student.png';
 
 const FeaturesSection = () => {
     const features = [
