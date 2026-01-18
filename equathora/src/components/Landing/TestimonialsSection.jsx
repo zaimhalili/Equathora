@@ -65,9 +65,9 @@ const TestimonialsSection = () => {
             <div className="absolute inset-0">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--accent-color)]/10 rounded-full blur-[150px]" />
                 <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[100px]" />
-                
+
                 {/* Grid pattern */}
-                <div 
+                <div
                     className="absolute inset-0 opacity-[0.02]"
                     style={{
                         backgroundImage: `
@@ -81,7 +81,7 @@ const TestimonialsSection = () => {
 
             <div className="max-w-[1400px] px-[4vw] xl:px-[6vw] py-24 mx-auto relative z-10">
                 <div className="flex flex-col gap-16 items-center justify-center">
-                    
+
                     {/* Section header - Centered */}
                     <motion.div
                         className="flex flex-col gap-4 text-center items-center"
@@ -181,11 +181,10 @@ const TestimonialsSection = () => {
                                         setDirection(index > currentIndex ? 1 : -1);
                                         setCurrentIndex(index);
                                     }}
-                                    className={`w-3 h-3 rounded-full transition-all ${
-                                        currentIndex === index 
-                                            ? 'bg-[var(--accent-color)] w-8' 
+                                    className={`w-3 h-3 rounded-full transition-all ${currentIndex === index
+                                            ? 'bg-[var(--accent-color)] w-8'
                                             : 'bg-white/30 hover:bg-white/50'
-                                    }`}
+                                        }`}
                                 />
                             ))}
                         </div>

@@ -32,7 +32,7 @@ const FeaturesSection = () => {
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
 
             <div className="max-w-[1400px] px-[4vw] xl:px-[6vw] py-24 mx-auto relative z-10">
-                
+
                 {/* Section header - CENTERED */}
                 <motion.div
                     className="text-center mb-16 flex flex-col items-center justify-center"
@@ -45,16 +45,16 @@ const FeaturesSection = () => {
                         <span className="w-8 h-[2px] bg-[var(--accent-color)]"></span>
                         What we offer
                     </span>
-                    <h2 className="text-4xl md:text-5xl font-bold text-[var(--secondary-color)] leading-tight mb-4">
+                    <h2 className="text-3xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight mb-4">
                         Built for real learning
                     </h2>
-                    <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-2xl text-lg">
+                    <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-2xl text-base">
                         Equathora gives you the tools to master mathematics at your own pace, with features designed for genuine understanding.
                     </p>
                 </motion.div>
 
                 <div className="flex flex-col lg:flex-row gap-12 items-center justify-center">
-                    
+
                     {/* Left side - Image with tilt on hover */}
                     <motion.div
                         className="flex-1 relative flex items-center justify-center"
@@ -75,7 +75,7 @@ const FeaturesSection = () => {
                                 const rect = e.currentTarget.getBoundingClientRect();
                                 const x = (e.clientX - rect.left) / rect.width - 0.5;
                                 const y = (e.clientY - rect.top) / rect.height - 0.5;
-                                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 15}deg) rotateX(${-y * 15}deg) scale(1.05)`;
+                                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 30}deg) rotateX(${-y * 30}deg) scale(1.05)`;
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
@@ -112,24 +112,24 @@ const FeaturesSection = () => {
                                     const rect = e.currentTarget.getBoundingClientRect();
                                     const x = (e.clientX - rect.left) / rect.width - 0.5;
                                     const y = (e.clientY - rect.top) / rect.height - 0.5;
-                                    e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.02)`;
+                                    e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 20}deg) rotateX(${-y * 20}deg) scale(1.02)`;
                                 }}
                                 onMouseLeave={(e) => {
                                     e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
                                 }}
                             >
                                 {/* Number badge */}
-                                <div className="absolute -top-4 -left-4 w-14 h-14 bg-[var(--accent-color)] rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-transform">
+                                <div className="absolute -top-4 -left-4 w-12 h-12 bg-[var(--accent-color)] rounded-full flex items-center justify-center text-white font-bold text-base shadow-lg group-hover:scale-110 transition-transform">
                                     {feature.number}
                                 </div>
 
                                 {/* Icon */}
-                                <div className="text-[var(--secondary-color)] mb-4">
+                                <div className="text-[var(--secondary-color)] mb-3">
                                     {feature.icon}
                                 </div>
 
                                 {/* Content */}
-                                <h3 className="text-2xl font-bold text-[var(--secondary-color)] mb-3">
+                                <h3 className="text-xl font-bold text-[var(--secondary-color)] mb-2">
                                     {feature.title}
                                 </h3>
                                 <p className="text-[var(--mid-main-secondary)] leading-relaxed">

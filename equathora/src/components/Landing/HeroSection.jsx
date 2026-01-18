@@ -77,7 +77,7 @@ const HeroSection = () => {
 
     return (
         <section
-            className="font-[Inter] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-[100vh] flex items-center justify-center"
+            className="font-[Inter] w-full bg-[var(--secondary-color)] relative overflow-hidden h-[calc(100vh-80px)] flex items-center justify-center"
         >
             {/* Background decorations */}
             <div className="absolute inset-0">
@@ -130,7 +130,7 @@ const HeroSection = () => {
 
                         {/* Main Heading */}
                         <motion.h1
-                            className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] text-white"
+                            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] text-white"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.15, duration: 0.5 }}
@@ -162,7 +162,7 @@ const HeroSection = () => {
 
                         {/* Description */}
                         <motion.p
-                            className="text-xl text-white/70 leading-relaxed max-w-lg"
+                            className="text-base md:text-lg text-white/70 leading-relaxed max-w-lg"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.25, duration: 0.5 }}
@@ -179,7 +179,7 @@ const HeroSection = () => {
                         >
                             <Link
                                 to="/dashboard"
-                                className="group flex items-center gap-2 rounded-full bg-[var(--accent-color)] px-10 py-4 text-lg text-center !text-white font-semibold transition-all hover:bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
+                                className="group flex items-center gap-2 rounded-full !bg-[var(--accent-color)] px-8 py-3 text-base text-center !text-white font-semibold transition-all hover:!bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
                             >
                                 Start practicing
                                 <motion.span
@@ -191,7 +191,7 @@ const HeroSection = () => {
                             </Link>
                             <Link
                                 to="/about"
-                                className="px-8 py-4 text-lg !text-white font-medium border border-white/20 rounded-full transition-all hover:bg-white/10"
+                                className="px-6 py-3 text-base !text-white font-medium border border-white/20 rounded-full transition-all hover:!bg-white/10"
                             >
                                 Learn more
                             </Link>
@@ -199,7 +199,7 @@ const HeroSection = () => {
 
                         {/* Stats Row */}
                         <motion.div
-                            className="flex gap-12 pt-8 justify-center lg:justify-start"
+                            className="flex gap-8 pt-6 justify-center lg:justify-start"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.45, duration: 0.5 }}
@@ -212,10 +212,10 @@ const HeroSection = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
                                 >
-                                    <span className="text-4xl font-bold text-[var(--accent-color)]">
+                                    <span className="text-2xl font-bold text-[var(--accent-color)]">
                                         <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                                     </span>
-                                    <span className="text-sm text-white/60">
+                                    <span className="text-xs text-white/60">
                                         {stat.label}
                                     </span>
                                 </motion.div>
@@ -225,14 +225,14 @@ const HeroSection = () => {
 
                     {/* Right Side - Student PNG with 3D tilt effect */}
                     <motion.div
-                        className="flex-1 relative flex justify-center items-end min-h-[500px] lg:min-h-[90vh]"
+                        className="flex-1 relative flex justify-center items-end h-full"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         {/* Main student image with tilt on hover */}
                         <motion.div
-                            className="relative z-20 cursor-pointer"
+                            className="relative z-20 cursor-pointer h-full flex items-end"
                             whileHover={{
                                 rotateY: 0,
                                 rotateX: 0,
@@ -242,7 +242,7 @@ const HeroSection = () => {
                                 const rect = e.currentTarget.getBoundingClientRect();
                                 const x = (e.clientX - rect.left) / rect.width - 0.5;
                                 const y = (e.clientY - rect.top) / rect.height - 0.5;
-                                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 15}deg) rotateX(${-y * 15}deg) scale(1.05)`;
+                                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 25}deg) rotateX(${-y * 25}deg) scale(1.05)`;
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
@@ -252,7 +252,7 @@ const HeroSection = () => {
                             <img
                                 src={YoungStudent}
                                 alt="Student with books"
-                                className="w-[450px] md:w-[550px] lg:w-[650px] h-auto object-contain drop-shadow-2xl"
+                                className="h-[85%] w-auto object-contain drop-shadow-2xl"
                                 loading="eager"
                             />
                         </motion.div>
@@ -263,13 +263,13 @@ const HeroSection = () => {
                             animate={{ y: [0, -10, 0] }}
                             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                         >
-                            <div className="flex items-center gap-3 px-5 py-3 bg-white rounded-2xl shadow-2xl">
-                                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-500 text-lg">
+                            <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-2xl shadow-2xl">
+                                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-500 text-sm">
                                     ✓
                                 </div>
                                 <div>
-                                    <p className="text-xs text-gray-500">Active learners</p>
-                                    <p className="font-bold text-[var(--secondary-color)]">2,500+</p>
+                                    <p className="text-[10px] text-gray-500">Active learners</p>
+                                    <p className="font-bold text-sm text-[var(--secondary-color)]">2,500+</p>
                                 </div>
                             </div>
                         </motion.div>
@@ -280,9 +280,9 @@ const HeroSection = () => {
                             animate={{ y: [0, -8, 0] }}
                             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                         >
-                            <div className="px-5 py-4 bg-[var(--accent-color)] rounded-2xl shadow-2xl text-white">
-                                <p className="text-3xl font-bold">98%</p>
-                                <p className="text-xs opacity-90">Success Rate</p>
+                            <div className="px-4 py-3 bg-[var(--accent-color)] rounded-2xl shadow-2xl text-white">
+                                <p className="text-2xl font-bold">98%</p>
+                                <p className="text-[10px] opacity-90">Success Rate</p>
                             </div>
                         </motion.div>
 

@@ -69,10 +69,10 @@ const WhyChooseSection = () => {
                                 <span className="w-8 h-[2px] bg-[var(--accent-color)]"></span>
                                 Premium experience
                             </span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-[var(--secondary-color)] leading-tight">
+                            <h2 className="text-3xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight">
                                 Why choose Equathora?
                             </h2>
-                            <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-lg text-lg">
+                            <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-lg text-base">
                                 We focus on what matters: helping you build lasting problem-solving skills through thoughtful practice.
                             </p>
                         </motion.div>
@@ -111,7 +111,7 @@ const WhyChooseSection = () => {
                         >
                             <Link
                                 to="/learn"
-                                className="group inline-flex items-center gap-2 rounded-full bg-[var(--secondary-color)] px-8 py-4 text-white text-lg font-semibold transition-all hover:bg-[var(--accent-color)] shadow-lg"
+                                className="group inline-flex items-center gap-2 rounded-full !bg-[var(--secondary-color)] px-6 py-3 !text-white text-base font-semibold transition-all hover:!bg-[var(--accent-color)] shadow-lg"
                             >
                                 Explore problems
                                 <FaArrowRight className="transition-transform group-hover:translate-x-1" />
@@ -140,7 +140,7 @@ const WhyChooseSection = () => {
                                     const rect = e.currentTarget.getBoundingClientRect();
                                     const x = (e.clientX - rect.left) / rect.width - 0.5;
                                     const y = (e.clientY - rect.top) / rect.height - 0.5;
-                                    e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 15}deg) rotateX(${-y * 15}deg) scale(1.05)`;
+                                    e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 30}deg) rotateX(${-y * 30}deg) scale(1.05)`;
                                 }}
                                 onMouseLeave={(e) => {
                                     e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
@@ -167,7 +167,7 @@ const WhyChooseSection = () => {
                                     const rect = e.currentTarget.getBoundingClientRect();
                                     const x = (e.clientX - rect.left) / rect.width - 0.5;
                                     const y = (e.clientY - rect.top) / rect.height - 0.5;
-                                    e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.05)`;
+                                    e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 25}deg) rotateX(${-y * 25}deg) scale(1.05)`;
                                 }}
                                 onMouseLeave={(e) => {
                                     e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
@@ -188,12 +188,12 @@ const WhyChooseSection = () => {
                                 animate={{ y: [0, -10, 0] }}
                                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                             >
-                                <div className="bg-white rounded-2xl shadow-2xl p-5 border border-gray-100">
+                                <div className="bg-white rounded-2xl shadow-2xl p-4 border border-gray-100">
                                     <div className="flex flex-col items-center gap-1">
-                                        <span className="text-4xl font-bold text-[var(--accent-color)]">
+                                        <span className="text-3xl font-bold text-[var(--accent-color)]">
                                             <AnimatedCounter end={99} suffix="%" />
                                         </span>
-                                        <span className="text-sm text-[var(--mid-main-secondary)] text-center">
+                                        <span className="text-xs text-[var(--mid-main-secondary)] text-center">
                                             Completion rate
                                         </span>
                                     </div>
