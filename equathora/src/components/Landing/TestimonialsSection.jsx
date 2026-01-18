@@ -9,23 +9,23 @@ const TestimonialsSection = () => {
     const testimonials = [
         {
             quote: "The problem explanations are really clear and the hints help when I get stuck. It's been great for my algebra practice.",
-            author: "Sarah Mitchell",
+            author: "Michael Chen",
             role: "High School Student",
-            avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-            rating: 5
-        },
-        {
-            quote: "I like how straightforward everything is. No unnecessary features, just solving problems and tracking my progress.",
-            author: "Alex Kim",
-            role: "College Freshman",
             avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
             rating: 5
         },
         {
+            quote: "I like how straightforward everything is. No unnecessary features, just solving problems and tracking my progress.",
+            author: "Alex Rivera",
+            role: "College Freshman",
+            avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
+            rating: 5
+        },
+        {
             quote: "Clean interface and well-structured problems. Looking forward to seeing more content added as the platform grows.",
-            author: "Jordan Parker",
+            author: "Jordan Williams",
             role: "Math Enthusiast",
-            avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
+            avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop",
             rating: 5
         }
     ];
@@ -65,9 +65,9 @@ const TestimonialsSection = () => {
             <div className="absolute inset-0">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--accent-color)]/10 rounded-full blur-[150px]" />
                 <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[100px]" />
-
+                
                 {/* Grid pattern */}
-                <div
+                <div 
                     className="absolute inset-0 opacity-[0.02]"
                     style={{
                         backgroundImage: `
@@ -80,8 +80,8 @@ const TestimonialsSection = () => {
             </div>
 
             <div className="max-w-[1400px] px-[4vw] xl:px-[6vw] py-24 mx-auto relative z-10">
-                <div className="flex flex-col gap-16">
-
+                <div className="flex flex-col gap-16 items-center justify-center">
+                    
                     {/* Section header - Centered */}
                     <motion.div
                         className="flex flex-col gap-4 text-center items-center"
@@ -181,10 +181,11 @@ const TestimonialsSection = () => {
                                         setDirection(index > currentIndex ? 1 : -1);
                                         setCurrentIndex(index);
                                     }}
-                                    className={`w-3 h-3 rounded-full transition-all ${currentIndex === index
-                                            ? 'bg-[var(--accent-color)] w-8'
+                                    className={`w-3 h-3 rounded-full transition-all ${
+                                        currentIndex === index 
+                                            ? 'bg-[var(--accent-color)] w-8' 
                                             : 'bg-white/30 hover:bg-white/50'
-                                        }`}
+                                    }`}
                                 />
                             ))}
                         </div>

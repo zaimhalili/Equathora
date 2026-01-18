@@ -1,8 +1,32 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
 import YoungStudent from '../../assets/images/yng_student.png'
+
+// Animated counter component
+const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
+    const [count, setCount] = useState(0);
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true });
+
+    useEffect(() => {
+        if (!isInView) return;
+
+        let startTime;
+        const animate = (timestamp) => {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+            setCount(Math.floor(progress * end));
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+        requestAnimationFrame(animate);
+    }, [isInView, end, duration]);
+
+    return <span ref={ref}>{prefix}{count}{suffix}</span>;
+};
 
 // Particle system - RED particles, fewer, faster
 const Particles = () => {
@@ -45,41 +69,14 @@ const Particles = () => {
 };
 
 const HeroSection = () => {
-    const containerRef = useRef(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    const springConfig = { damping: 25, stiffness: 100 };
-    const x = useSpring(mouseX, springConfig);
-    const y = useSpring(mouseY, springConfig);
-
-    const imageX = useTransform(x, [-500, 500], [40, -40]);
-    const imageY = useTransform(y, [-500, 500], [40, -40]);
-    const floatX = useTransform(x, [-500, 500], [-30, 30]);
-    const floatY = useTransform(y, [-500, 500], [-30, 30]);
-
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            const rect = containerRef.current?.getBoundingClientRect();
-            if (rect) {
-                mouseX.set(e.clientX - rect.left - rect.width / 2);
-                mouseY.set(e.clientY - rect.top - rect.height / 2);
-            }
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, [mouseX, mouseY]);
-
     const stats = [
-        { value: '100+', label: 'Practice Problems' },
-        { value: '30+', label: 'Achievements' },
-        { value: '5+', label: 'Math Topics' },
+        { value: 100, label: 'Practice Problems', suffix: '+' },
+        { value: 30, label: 'Achievements', suffix: '+' },
+        { value: 5, label: 'Math Topics', suffix: '+' },
     ];
 
     return (
         <section
-            ref={containerRef}
             className="font-[Inter] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-[100vh] flex items-center justify-center"
         >
             {/* Background decorations */}
@@ -216,7 +213,7 @@ const HeroSection = () => {
                                     transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
                                 >
                                     <span className="text-4xl font-bold text-[var(--accent-color)]">
-                                        {stat.value}
+                                        <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                                     </span>
                                     <span className="text-sm text-white/60">
                                         {stat.label}
@@ -226,22 +223,36 @@ const HeroSection = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* Right Side - Student PNG with 3D effect */}
+                    {/* Right Side - Student PNG with 3D tilt effect */}
                     <motion.div
-                        className="flex-1 relative flex justify-center items-end min-h-[500px] lg:min-h-[600px]"
+                        className="flex-1 relative flex justify-center items-end min-h-[500px] lg:min-h-[90vh]"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        {/* Main student image */}
+                        {/* Main student image with tilt on hover */}
                         <motion.div
-                            className="relative z-20"
-                            style={{ x: imageX, y: imageY }}
+                            className="relative z-20 cursor-pointer"
+                            whileHover={{
+                                rotateY: 0,
+                                rotateX: 0,
+                                scale: 1.05,
+                            }}
+                            onMouseMove={(e) => {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 15}deg) rotateX(${-y * 15}deg) scale(1.05)`;
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
+                            }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
                         >
                             <img
                                 src={YoungStudent}
                                 alt="Student with books"
-                                className="w-[320px] md:w-[380px] lg:w-[420px] h-auto object-contain drop-shadow-2xl"
+                                className="w-[450px] md:w-[550px] lg:w-[650px] h-auto object-contain drop-shadow-2xl"
                                 loading="eager"
                             />
                         </motion.div>
@@ -249,7 +260,6 @@ const HeroSection = () => {
                         {/* Floating badge - top right */}
                         <motion.div
                             className="absolute top-16 right-4 lg:right-8 z-30"
-                            style={{ x: floatX, y: floatY }}
                             animate={{ y: [0, -10, 0] }}
                             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                         >
@@ -267,10 +277,6 @@ const HeroSection = () => {
                         {/* Floating badge - left side */}
                         <motion.div
                             className="absolute top-32 left-0 lg:-left-8 z-30"
-                            style={{
-                                x: useTransform(floatX, v => -v),
-                                y: useTransform(floatY, v => -v)
-                            }}
                             animate={{ y: [0, -8, 0] }}
                             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                         >
@@ -283,7 +289,6 @@ const HeroSection = () => {
                         {/* Decorative circle behind */}
                         <motion.div
                             className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[350px] h-[350px] rounded-full border-2 border-white/10 z-10"
-                            style={{ x: useTransform(imageX, v => v * 0.3), y: useTransform(imageY, v => v * 0.3) }}
                         />
                         <motion.div
                             className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[280px] h-[280px] rounded-full border border-[var(--accent-color)]/20 z-10"
@@ -296,7 +301,6 @@ const HeroSection = () => {
                             className="absolute top-20 left-20 text-4xl text-white/20 font-light z-10"
                             animate={{ rotate: [0, 10, -10, 0], y: [0, -5, 0] }}
                             transition={{ duration: 6, repeat: Infinity }}
-                            style={{ x: floatX, y: floatY }}
                         >
                             ∑
                         </motion.div>

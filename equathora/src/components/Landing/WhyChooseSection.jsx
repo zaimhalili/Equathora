@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useInView, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaCheck } from 'react-icons/fa';
 
@@ -28,30 +28,6 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
 };
 
 const WhyChooseSection = () => {
-    const containerRef = useRef(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    const springConfig = { damping: 30, stiffness: 100 };
-    const x = useSpring(mouseX, springConfig);
-    const y = useSpring(mouseY, springConfig);
-
-    const imageX = useTransform(x, [-400, 400], [25, -25]);
-    const imageY = useTransform(y, [-400, 400], [25, -25]);
-
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            const rect = containerRef.current?.getBoundingClientRect();
-            if (rect) {
-                mouseX.set(e.clientX - rect.left - rect.width / 2);
-                mouseY.set(e.clientY - rect.top - rect.height / 2);
-            }
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, [mouseX, mouseY]);
-
     const benefits = [
         'Structured problem sets',
         'Detailed step-by-step solutions',
@@ -60,7 +36,7 @@ const WhyChooseSection = () => {
     ];
 
     return (
-        <section ref={containerRef} className="w-full bg-white relative overflow-hidden">
+        <section className="w-full bg-white relative overflow-hidden">
             {/* Background scrolling text - FASTER */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
                 <motion.div
@@ -143,7 +119,7 @@ const WhyChooseSection = () => {
                         </motion.div>
                     </div>
 
-                    {/* Right side - Images with 3D effect */}
+                    {/* Right side - Images with 3D tilt effect on hover */}
                     <motion.div
                         className="flex-1 relative min-h-[450px]"
                         initial={{ opacity: 0, x: 50 }}
@@ -152,30 +128,55 @@ const WhyChooseSection = () => {
                         transition={{ duration: 0.6 }}
                     >
                         <div className="relative flex justify-center items-center">
-                            {/* Main image */}
+                            {/* Main image with tilt on hover - MALE */}
                             <motion.div
-                                className="relative z-20"
-                                style={{ x: imageX, y: imageY }}
+                                className="relative z-20 cursor-pointer"
+                                whileHover={{
+                                    rotateY: 0,
+                                    rotateX: 0,
+                                    scale: 1.05,
+                                }}
+                                onMouseMove={(e) => {
+                                    const rect = e.currentTarget.getBoundingClientRect();
+                                    const x = (e.clientX - rect.left) / rect.width - 0.5;
+                                    const y = (e.clientY - rect.top) / rect.height - 0.5;
+                                    e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 15}deg) rotateX(${-y * 15}deg) scale(1.05)`;
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
+                                }}
+                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                             >
                                 <img
-                                    src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=500&fit=crop"
-                                    alt="Student learning"
+                                    src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=500&fit=crop"
+                                    alt="Male student learning"
                                     className="w-[280px] lg:w-[340px] h-auto rounded-3xl shadow-2xl object-cover"
                                     loading="lazy"
                                 />
                             </motion.div>
 
-                            {/* Secondary image - offset */}
+                            {/* Secondary image - offset with tilt - MALE */}
                             <motion.div
-                                className="absolute -bottom-8 -left-8 lg:-left-16 z-10"
-                                style={{
-                                    x: useTransform(imageX, v => -v * 0.6),
-                                    y: useTransform(imageY, v => -v * 0.6)
+                                className="absolute -bottom-8 -left-8 lg:-left-16 z-10 cursor-pointer"
+                                whileHover={{
+                                    rotateY: 0,
+                                    rotateX: 0,
+                                    scale: 1.05,
                                 }}
+                                onMouseMove={(e) => {
+                                    const rect = e.currentTarget.getBoundingClientRect();
+                                    const x = (e.clientX - rect.left) / rect.width - 0.5;
+                                    const y = (e.clientY - rect.top) / rect.height - 0.5;
+                                    e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.05)`;
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
+                                }}
+                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                             >
                                 <img
-                                    src="https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=200&h=250&fit=crop"
-                                    alt="Taking notes"
+                                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=250&fit=crop"
+                                    alt="Male student taking notes"
                                     className="w-[160px] lg:w-[200px] h-auto rounded-2xl shadow-xl object-cover border-4 border-white"
                                     loading="lazy"
                                 />
@@ -186,9 +187,6 @@ const WhyChooseSection = () => {
                                 className="absolute -bottom-6 right-0 lg:-right-8 z-30"
                                 animate={{ y: [0, -10, 0] }}
                                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                style={{
-                                    x: useTransform(imageX, v => -v * 0.5),
-                                }}
                             >
                                 <div className="bg-white rounded-2xl shadow-2xl p-5 border border-gray-100">
                                     <div className="flex flex-col items-center gap-1">
