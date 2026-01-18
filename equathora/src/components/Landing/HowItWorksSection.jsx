@@ -45,7 +45,7 @@ const HowItWorksSection = () => {
     ];
 
     return (
-        <section className="w-full bg-white border-b border-gray-100 relative overflow-hidden">
+        <section className="w-full bg-white relative overflow-hidden">
             {/* Animated Background Elements */}
             <div className="absolute inset-0 pointer-events-none">
                 <motion.div
@@ -104,12 +104,11 @@ const HowItWorksSection = () => {
                                 {/* Image Side */}
                                 <motion.div
                                     className="flex-1 flex justify-center"
-                                    whileHover={{ scale: 1.05 }}
                                     transition={{ type: "spring", stiffness: 300 }}
                                 >
                                     <div className="relative">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] opacity-10 blur-2xl rounded-full"></div>
-                                        <div className="relative bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl border border-gray-200 shadow-xl hover:shadow-2xl transition-shadow">
+                                        <div className="absolute inset-0 l rounded-full"></div>
+                                        <div className="relativ p-8 rounded-3xl">
                                             <img src={item.image} alt={item.title} className="w-80 h-80 object-contain" />
                                         </div>
                                     </div>

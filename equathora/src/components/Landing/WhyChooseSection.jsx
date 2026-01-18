@@ -29,7 +29,7 @@ const WhyChooseSection = () => {
     ];
 
     return (
-        <section className="w-full bg-gray-50 border-b border-gray-100 relative overflow-hidden">
+        <section className="w-full bg-gray-50 relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-[var(--accent-color)] to-transparent opacity-5 rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[var(--secondary-color)] to-transparent opacity-5 rounded-full blur-3xl"></div>

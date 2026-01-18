@@ -17,8 +17,28 @@ def convert_to_proper_latex(text):
     4. Fix exponent notation with braces
     """
     
-    # Remove any existing $ signs first (clean slate)
-    text = text.replace('$', '')
+    # Protect escaped dollars and existing math blocks; convert currency to math blocks
+    placeholders = []
+
+    def placeholder_token():
+        return chr(0xE000 + len(placeholders))
+
+    def protect(match):
+        placeholders.append(match.group(0))
+        return placeholder_token()
+
+    # Preserve already-escaped dollar signs (e.g., \$50)
+    text = re.sub(r'\\\$', protect, text)
+    # Preserve existing math blocks ($...$)
+    text = re.sub(r'\$[^$]+\$', protect, text)
+
+    # Convert currency dollars like $1,280 or $50 into math blocks with \$
+    def convert_currency(match):
+        amount = match.group(1)
+        placeholders.append(f'$\\${amount}$')
+        return placeholder_token()
+
+    text = re.sub(r'\$(\d[\d,]*(?:\.\d+)?)\b', convert_currency, text)
     
     result = text
     
@@ -47,15 +67,40 @@ def convert_to_proper_latex(text):
     parts = result.split('$')
     for i in range(0, len(parts), 2):  # Even indices = unwrapped
         segment = parts[i]
-        
-        # Wrap: coefficient + variable + exponent (2x^3)
-        segment = re.sub(r'\b(\d+\.?\d*[a-zA-Z]+\^\d+)\b', r'$\1$', segment)
-        # Wrap: variable + exponent (x^2)
-        segment = re.sub(r'\b([a-zA-Z]+\^\d+)\b', r'$\1$', segment)
-        # Wrap: coefficient + variable (2x, 3ab)
-        segment = re.sub(r'\b(\d+\.?\d*[a-zA-Z]+)\b', r'$\1$', segment)
-        
-        parts[i] = segment
+
+        # Wrap function-like expressions: h(t), R(p), C(t)
+        segment = re.sub(r'\b[a-zA-Z]+\([^()]*\)', r'$\g<0>$', segment)
+
+        # Apply token wrapping on unwrapped subsegments only
+        subparts = segment.split('$')
+        for j in range(0, len(subparts), 2):
+            subsegment = subparts[j]
+
+            num = r'-?\d[\d,]*(?:\.\d+)?'
+            token_pattern = (
+                r'(?<![\w^])('  # avoid adjacent word chars
+                r'\d*\.\d+[a-zA-Z]+\^\d+'         # 0.5x^2
+                r'|\d+[a-zA-Z]+\^\d+'              # 2x^3
+                r'|[a-zA-Z]+\^\d+'                  # x^2
+                r'|\d*\.\d+[a-zA-Z]+'               # 0.5xy
+                r'|\d+[a-zA-Z]+'                     # 2x
+                r'|' + num + r'/' + num +            # 5/2
+                r'|' + num + r'%' +                  # 12%
+                r'|' + num +                         # 12, 12.5
+                r')'
+                r'(?![\w^])'
+            )
+
+            def wrap_token(match):
+                token = match.group(1)
+                if token.endswith('%'):
+                    return f'${token[:-1]}\\%$'
+                return f'${token}$'
+
+            subsegment = re.sub(token_pattern, wrap_token, subsegment)
+            subparts[j] = subsegment
+
+        parts[i] = '$'.join(subparts)
     
     result = '$'.join(parts)
     
@@ -63,21 +108,13 @@ def convert_to_proper_latex(text):
     for _ in range(20):
         old = result
         # Merge with operators
-        result = re.sub(r'\$([^$]+)\$\s*([-+*/=×÷])\s*\$([^$]+)\$', r'$\1 \2 \3$', result)
+        result = re.sub(r'\$([^$]+)\$\s*([-+*/=^×÷])\s*\$([^$]+)\$', r'$\1 \2 \3$', result)
         # Merge adjacent
         result = re.sub(r'\$([^$]+)\$\s+\$([^$]+)\$', r'$\1 \2$', result)
         if result == old:
             break
     
-    # Step 5: Fix exponents to use braces
-    def fix_exponents(match):
-        content = match.group(1)
-        content = re.sub(r'([a-zA-Z0-9])\^(\d+)(?!\})', r'\1^{\2}', content)
-        return f'${content}$'
-    
-    result = re.sub(r'\$([^$]+)\$', fix_exponents, result)
-    
-    # Step 6: Remove $ from non-math words
+    # Step 5: Remove $ from non-math words
     common_words = [
         'Add', 'Compute', 'Take', 'Find', 'Simplify', 'What', 'Where', 'When',
         'from', 'and', 'or', 'the', 'to', 'then', 'than', 'that', 'this', 'these', 'those',
@@ -99,13 +136,15 @@ def convert_to_proper_latex(text):
     # Remove empty $$
     result = result.replace('$$', '')
     
-    # Step 7: Proper spacing
-    result = re.sub(r'([a-z])(\$)', r'\1 \2', result)
-    result = re.sub(r'(\$)([a-z])', r'\1 \2', result)
+    # Step 6: Proper spacing
     result = re.sub(r'\$([^$]+)([.,;:?!])\$', r'$\1$\2', result)
     result = re.sub(r'\s+', ' ', result)
     result = re.sub(r'\s+([.,;:?!])', r'\1', result)
     
+    # Restore placeholders (math blocks and escaped/currency dollars)
+    for i, original in enumerate(placeholders):
+        result = result.replace(chr(0xE000 + i), original)
+
     return result.strip()
 
 
