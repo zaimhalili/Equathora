@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaChevronLeft, FaChevronRight, FaStar, FaQuoteLeft } from 'react-icons/fa';
+import GuestAvatar from '../../assets/images/GuestAvatar.png';
+
 
 const TestimonialsSection = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -9,23 +11,23 @@ const TestimonialsSection = () => {
     const testimonials = [
         {
             quote: "The problem explanations are really clear and the hints help when I get stuck. It's been great for my algebra practice.",
-            author: "Michael Chen",
+            author: "Alessandro Rinaldi",
             role: "High School Student",
-            avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+            avatar: GuestAvatar,
             rating: 5
         },
         {
             quote: "I like how straightforward everything is. No unnecessary features, just solving problems and tracking my progress.",
-            author: "Alex Rivera",
+            author: "Marco Olivieri",
             role: "College Freshman",
-            avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
+            avatar: GuestAvatar,
             rating: 5
         },
         {
             quote: "Clean interface and well-structured problems. Looking forward to seeing more content added as the platform grows.",
-            author: "Jordan Williams",
+            author: "Sofia Gasparov",
             role: "Math Enthusiast",
-            avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop",
+            avatar: GuestAvatar,
             rating: 5
         }
     ];
@@ -182,8 +184,8 @@ const TestimonialsSection = () => {
                                         setCurrentIndex(index);
                                     }}
                                     className={`w-3 h-3 rounded-full transition-all ${currentIndex === index
-                                            ? 'bg-[var(--accent-color)] w-8'
-                                            : 'bg-white/30 hover:bg-white/50'
+                                        ? 'bg-[var(--accent-color)] w-8'
+                                        : 'bg-white/30 hover:bg-white/50'
                                         }`}
                                 />
                             ))}

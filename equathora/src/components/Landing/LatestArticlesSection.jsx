@@ -17,7 +17,7 @@ const LatestArticlesSection = () => {
             <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 mx-auto relative z-10">
                 <div className="flex flex-col gap-10 sm:gap-12">
 
-                    {/* Section header - Centered */}
+                {/* Section header - Centered */}
                     <motion.div
                         className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 sm:gap-6"
                         initial={{ opacity: 0, y: 20 }}
