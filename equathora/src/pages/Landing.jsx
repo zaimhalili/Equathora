@@ -27,7 +27,7 @@ const Landing = () => {
     }, [navigate]);
     return (
         <>
-            <FeedbackBanner />
+            {/* <FeedbackBanner /> */}
             <div className="min-h-screen bg-white text-[var(--secondary-color)]">
                 <NavigationBar></NavigationBar>
                 <HeroSection />

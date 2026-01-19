@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaChevronLeft, FaChevronRight, FaStar, FaQuoteLeft } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
 
 
@@ -81,8 +81,8 @@ const TestimonialsSection = () => {
                 />
             </div>
 
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 mx-auto relative z-10">
-                <div className="flex flex-col gap-12 sm:gap-14 md:gap-16 items-center justify-center">
+            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-12 sm:py-14 md:py-16 mx-auto relative z-10">
+                <div className="flex flex-col gap-10 sm:gap-12 items-center justify-center">
 
                     {/* Section header - Centered */}
                     <motion.div
@@ -105,90 +105,74 @@ const TestimonialsSection = () => {
                         </p>
                     </motion.div>
 
-                    {/* Testimonials carousel */}
-                    <div className="relative max-w-3xl mx-auto w-full px-8 sm:px-12">
-                        {/* Navigation buttons */}
-                        <button
-                            onClick={() => paginate(-1)}
-                            className="absolute left-0 sm:left-4 md:left-0 top-1/2 -translate-y-1/2 -translate-x-0 sm:-translate-x-4 lg:-translate-x-16 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-all hover:bg-white/20 z-10"
-                        >
-                            <FaChevronLeft className="text-sm sm:text-base" />
-                        </button>
-                        <button
-                            onClick={() => paginate(1)}
-                            className="absolute right-0 sm:right-4 md:right-0 top-1/2 -translate-y-1/2 translate-x-0 sm:translate-x-4 lg:translate-x-16 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-all hover:bg-white/20 z-10"
-                        >
-                            <FaChevronRight className="text-sm sm:text-base" />
-                        </button>
-
-                        {/* Testimonial card */}
-                        <div className="relative min-h-[320px] sm:min-h-[300px] overflow-hidden">
-                            <AnimatePresence initial={false} custom={direction}>
-                                <motion.div
-                                    key={currentIndex}
-                                    custom={direction}
-                                    variants={slideVariants}
-                                    initial="enter"
-                                    animate="center"
-                                    exit="exit"
-                                    transition={{
-                                        x: { type: "spring", stiffness: 300, damping: 30 },
-                                        opacity: { duration: 0.2 }
-                                    }}
-                                    className="absolute w-full"
-                                >
-                                    <div className="flex flex-col items-center gap-4 sm:gap-5 md:gap-6 p-6 sm:p-8 md:p-12 bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10">
-                                        {/* Quote icon */}
-                                        <FaQuoteLeft className="text-2xl sm:text-3xl md:text-4xl text-[var(--accent-color)]/30" />
-
-                                        {/* Rating stars */}
-                                        <div className="flex gap-1">
-                                            {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                                                <FaStar key={i} className="text-yellow-400 text-base sm:text-lg" />
-                                            ))}
-                                        </div>
-
-                                        {/* Quote */}
-                                        <p className="text-base sm:text-lg md:text-xl text-center text-white leading-relaxed max-w-xl px-2">
-                                            "{testimonials[currentIndex].quote}"
-                                        </p>
-
-                                        {/* Author */}
-                                        <div className="flex items-center gap-3 sm:gap-4">
-                                            <img
-                                                src={testimonials[currentIndex].avatar}
-                                                alt={testimonials[currentIndex].author}
-                                                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-[var(--accent-color)]/30"
-                                            />
-                                            <div className="text-left">
-                                                <p className="font-bold text-white text-sm sm:text-base">
-                                                    {testimonials[currentIndex].author}
-                                                </p>
-                                                <p className="text-xs sm:text-sm text-white/60">
-                                                    {testimonials[currentIndex].role}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            </AnimatePresence>
+                    {/* Testimonials layout - Crafto style */}
+                    <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-10 lg:gap-16 items-center">
+                        {/* Left column - big stat */}
+                        <div className="lg:w-1/3 text-center lg:text-left">
+                            <div className="text-7xl sm:text-8xl lg:text-9xl font-bold text-[var(--accent-color)]">
+                                99%
+                            </div>
+                            <p className="text-white/80 text-lg sm:text-xl mt-4 leading-relaxed">
+                                Students complete their practice successfully.
+                            </p>
                         </div>
 
-                        {/* Dots indicator */}
-                        <div className="flex justify-center gap-2 mt-8">
-                            {testimonials.map((_, index) => (
+                        {/* Right column - testimonial cards */}
+                        <div className="lg:w-2/3 relative">
+                            <div className="relative min-h-[280px]">
+                                <AnimatePresence initial={false} custom={direction} mode="wait">
+                                    <motion.div
+                                        key={currentIndex}
+                                        custom={direction}
+                                        variants={slideVariants}
+                                        initial="enter"
+                                        animate="center"
+                                        exit="exit"
+                                        transition={{
+                                            x: { type: "spring", stiffness: 300, damping: 30 },
+                                            opacity: { duration: 0.2 }
+                                        }}
+                                    >
+                                        <div className="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-8 sm:p-10">
+                                            <p className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed mb-8">
+                                                "{testimonials[currentIndex].quote}"
+                                            </p>
+
+                                            <div className="flex items-center gap-4">
+                                                <img
+                                                    src={testimonials[currentIndex].avatar}
+                                                    alt={testimonials[currentIndex].author}
+                                                    className="w-14 h-14 rounded-full object-cover border-2 border-[var(--accent-color)]/40"
+                                                />
+                                                <div>
+                                                    <p className="font-bold text-white text-base sm:text-lg">
+                                                        {testimonials[currentIndex].author}
+                                                    </p>
+                                                    <p className="text-sm text-white/60">
+                                                        {testimonials[currentIndex].role}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                </AnimatePresence>
+                            </div>
+
+                            {/* Navigation */}
+                            <div className="flex items-center gap-4 mt-8">
                                 <button
-                                    key={index}
-                                    onClick={() => {
-                                        setDirection(index > currentIndex ? 1 : -1);
-                                        setCurrentIndex(index);
-                                    }}
-                                    className={`w-3 h-3 rounded-full transition-all ${currentIndex === index
-                                        ? 'bg-[var(--accent-color)] w-8'
-                                        : 'bg-white/30 hover:bg-white/50'
-                                        }`}
-                                />
-                            ))}
+                                    onClick={() => paginate(-1)}
+                                    className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-all hover:bg-[var(--accent-color)] hover:border-[var(--accent-color)]"
+                                >
+                                    <FaChevronLeft className="text-base" />
+                                </button>
+                                <button
+                                    onClick={() => paginate(1)}
+                                    className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-all hover:bg-[var(--accent-color)] hover:border-[var(--accent-color)]"
+                                >
+                                    <FaChevronRight className="text-base" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

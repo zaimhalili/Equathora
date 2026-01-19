@@ -6,20 +6,17 @@ import MaleStudent from '../../assets/images/yng_student.png';
 const FeaturesSection = () => {
     const features = [
         {
-            icon: <FaBrain className="text-3xl" />,
-            number: '01',
+            icon: <FaBrain className="text-3xl text-[var(--accent-color)]" />,
             title: 'Adaptive Learning',
             description: 'Problems that evolve with your skill level. Practice at your own pace with intelligent problem selection.',
         },
         {
-            icon: <FaChartLine className="text-3xl" />,
-            number: '02',
+            icon: <FaChartLine className="text-3xl text-[var(--accent-color)]" />,
             title: 'Track Progress',
             description: 'Monitor your improvement with detailed statistics and insights. See where you excel and where to focus.',
         },
         {
-            icon: <FaTrophy className="text-3xl" />,
-            number: '03',
+            icon: <FaTrophy className="text-3xl text-[var(--accent-color)]" />,
             title: 'Earn Achievements',
             description: 'Unlock badges and milestones as you master new concepts. Celebrate your learning journey.',
         },
@@ -97,7 +94,7 @@ const FeaturesSection = () => {
                     <div className="flex-1 flex flex-col gap-4 sm:gap-5 md:gap-6 items-center justify-center w-full">
                         {features.map((feature, index) => (
                             <motion.div
-                                key={feature.number}
+                                key={feature.title}
                                 className="group relative bg-white border border-gray-100 rounded-2xl p-6 sm:p-7 md:p-8 shadow-md hover:shadow-xl transition-all cursor-pointer w-full max-w-md"
                                 initial={{ opacity: 0, x: 50 }}
                                 whileInView={{ opacity: 1, x: 0 }}
@@ -118,13 +115,8 @@ const FeaturesSection = () => {
                                     e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
                                 }}
                             >
-                                {/* Number badge */}
-                                <div className="absolute -top-3 sm:-top-4 -left-3 sm:-left-4 w-10 h-10 sm:w-12 sm:h-12 bg-[var(--accent-color)] rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base shadow-lg group-hover:scale-110 transition-transform">
-                                    {feature.number}
-                                </div>
-
                                 {/* Icon */}
-                                <div className="text-[var(--secondary-color)] mb-2 sm:mb-3 text-2xl sm:text-3xl">
+                                <div className="mb-3 sm:mb-4 text-2xl sm:text-3xl">
                                     {feature.icon}
                                 </div>
 

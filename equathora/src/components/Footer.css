@@ -18,7 +18,7 @@
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    padding: 6vh 2rem 4vh;
+    padding: 3rem 2rem;
     color: var(--main-color);
 }
 
@@ -87,12 +87,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem 1.5rem;
+    padding: 2rem 2rem;
 }
 
 @media only screen and (min-width: 769px) {
     .links-column {
-        padding: 2.5rem 3rem;
+        padding: 2rem 2rem;
     }
 }
 
@@ -147,7 +147,7 @@
     justify-content: center;
     align-items: center;
     gap: 1.5rem;
-    padding: 2rem 2rem;
+    padding: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     font-family: 'Inter', sans-serif;
     font-size: 0.875rem;

@@ -10,7 +10,7 @@ const About = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full bg-gradient-to-b from-blue-50 via-white to-purple-50 min-h-screen">
+            <div className="w-full bg-white min-h-screen">
                 <Navbar />
                 <main className="w-full flex flex-col items-center">
                     {/* Hero - Full Width Clean */}
@@ -38,18 +38,18 @@ const About = () => {
                             transition={{ duration: 0.5, delay: 0.1 }}
                             className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-4"
                         >
-                            <div className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-md p-6 flex flex-wrap justify-around items-center gap-4 text-white shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
+                            <div className="w-full bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] rounded-2xl p-6 flex flex-wrap justify-around items-center gap-4 text-white shadow-lg">
+                                <div className="flex flex-col items-center gap-1">
+                                    <div className="text-2xl font-bold text-white">100+</div>
+                                    <div className="text-sm text-white opacity-90">Practice Problems</div>
+                                </div>
                                 <div className="flex flex-col items-center gap-1">
                                     <div className="text-2xl font-bold text-white">30+</div>
-                                    <div className="text-sm text-white opacity-90">Curated Problems</div>
+                                    <div className="text-sm text-white opacity-90">Achievements</div>
                                 </div>
                                 <div className="flex flex-col items-center gap-1">
-                                    <div className="text-2xl font-bold text-white">20+</div>
-                                    <div className="text-sm text-white opacity-90">Topics Covered</div>
-                                </div>
-                                <div className="flex flex-col items-center gap-1">
-                                    <div className="text-2xl font-bold text-white">2025</div>
-                                    <div className="text-sm text-white opacity-90">Year Launched</div>
+                                    <div className="text-2xl font-bold text-white">10+</div>
+                                    <div className="text-sm text-white opacity-90">Math Topics</div>
                                 </div>
                             </div>
                         </motion.div>
@@ -95,13 +95,13 @@ const About = () => {
                                     </h2>
                                     <div className="space-y-4 text-gray-700 text-base leading-relaxed">
                                         <p>
-                                            Every math teacher has a <span className="font-semibold text-[var(--accent-color)]">red pen</span>. Not to punish mistakes, but to illuminate the path forward. Red marks showed where learning happened.
+                                            Red is the color of <span className="font-semibold text-[var(--accent-color)]">focus and urgency</span>. In mathematics, red marks highlight what matters most: the key concepts, critical steps, and important corrections that drive learning <strong>forward.</strong>
                                         </p>
                                         <p>
-                                            Textbooks marked important theorems in red. Corrections came in red. Red commanded attention and clarity. It became the color of mathematical discovery itself.
+                                            Throughout history, red has signaled <strong>importance</strong>: from red ink in ancient manuscripts to the red pen every teacher uses. It draws attention, demands <strong>precision</strong>, and marks the moments where understanding crystallizes.
                                         </p>
                                         <p className="font-medium text-[var(--secondary-color)] border-l-2 border-[var(--accent-color)] pl-4">
-                                            Red represents guidance, emphasis, and the bold moments of understanding.
+                                            Red represents <strong>clarity</strong>, emphasis, and the decisive moments of mathematical insight.
                                         </p>
                                     </div>
                                 </div>
@@ -109,73 +109,50 @@ const About = () => {
                         </motion.div>
                     </section>
 
-                    {/* Developer - Split Screen */}
-                    <section className="w-full flex justify-center bg-gradient-to-b from-white to-gray-50">
+                    {/* Platform strengths */}
+                    <section className="w-full flex justify-center bg-[#fafbfc]">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.3 }}
-                            className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
+                            className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-10"
                         >
-                            <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-12">
-                                Built by a Developer Who Understands Learning
-                            </h2>
-                            <div className="w-full flex flex-col lg:flex-row gap-12">
-                                {/* Developer Info */}
-                                <div className="lg:w-1/3">
-                                    <div className="flex items-center gap-4 pb-6">
-                                        <div className="w-16 h-16 bg-[var(--secondary-color)] rounded-full flex items-center justify-center text-3xl">
-                                            👨‍💻
-                                        </div>
-                                        <div>
-                                            <h3 className="text-2xl font-bold text-[var(--secondary-color)]">Zaim Halili</h3>
-                                            <p className="text-gray-600">Full-Stack Developer</p>
-                                        </div>
-                                    </div>
-                                    <p className="text-gray-700 leading-relaxed pb-6">
-                                        Built Equathora to bridge the gap between traditional math education and modern learning needs.
+                            <div className="text-center max-w-3xl mx-auto pb-8">
+                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-3">
+                                    What Equathora does best
+                                </h2>
+                                <p className="text-base text-gray-600 leading-relaxed">
+                                    Practice-first learning designed to build real mathematical confidence. The platform focuses on clarity, progression, and measurable improvement.
+                                </p>
+                            </div>
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-200 hover:shadow-xl">
+                                    <FaChartLine className="text-3xl text-[var(--accent-color)]" />
+                                    <h3 className="text-lg font-bold text-[var(--secondary-color)] mt-4">Adaptive practice</h3>
+                                    <p className="text-sm text-gray-600 leading-relaxed mt-2">
+                                        Problems evolve with your skill level so you always train at the right difficulty.
                                     </p>
-                                    <a
-                                        href="https://github.com/zaimhalili"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 px-5 py-3 bg-[var(--secondary-color)] text-white rounded font-semibold text-sm hover:bg-[var(--secondary-color)]/90 transition-all duration-200"
-                                    >
-                                        <FaGithub className="text-lg" />
-                                        <span>View on GitHub</span>
-                                    </a>
                                 </div>
-
-                                {/* Tech Stack Grid */}
-                                <div className="lg:w-2/3 grid sm:grid-cols-2 gap-6">
-                                    <div className="flex items-start gap-4">
-                                        <FaCode className="text-3xl text-[var(--accent-color)] flex-shrink-0 pt-1" />
-                                        <div>
-                                            <h4 className="font-bold text-[var(--secondary-color)] text-lg pb-2">Frontend</h4>
-                                            <p className="text-gray-600">React for dynamic UI, Tailwind CSS for modern styling</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-4">
-                                        <FaRocket className="text-3xl text-[var(--accent-color)] flex-shrink-0 pt-1" />
-                                        <div>
-                                            <h4 className="font-bold text-[var(--secondary-color)] text-lg pb-2">Backend</h4>
-                                            <p className="text-gray-600">ASP.NET Core for robust server-side logic</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-4">
-                                        <FaLightbulb className="text-3xl text-[var(--accent-color)] flex-shrink-0 pt-1" />
-                                        <div>
-                                            <h4 className="font-bold text-[var(--secondary-color)] text-lg pb-2">Math Engine</h4>
-                                            <p className="text-gray-600">MathLive for real-time LaTeX rendering</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-4">
-                                        <FaUsers className="text-3xl text-[var(--accent-color)] flex-shrink-0 pt-1" />
-                                        <div>
-                                            <h4 className="font-bold text-[var(--secondary-color)] text-lg pb-2">Community</h4>
-                                            <p className="text-gray-600">Achievements, mentorship, leaderboards</p>
-                                        </div>
-                                    </div>
+                                <div className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-200 hover:shadow-xl">
+                                    <FaLightbulb className="text-3xl text-[var(--accent-color)]" />
+                                    <h3 className="text-lg font-bold text-[var(--secondary-color)] mt-4">Guided solutions</h3>
+                                    <p className="text-sm text-gray-600 leading-relaxed mt-2">
+                                        Clear explanations and structured hints help you learn the method, not just the answer.
+                                    </p>
+                                </div>
+                                <div className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-200 hover:shadow-xl">
+                                    <FaRocket className="text-3xl text-[var(--accent-color)]" />
+                                    <h3 className="text-lg font-bold text-[var(--secondary-color)] mt-4">Progress insights</h3>
+                                    <p className="text-sm text-gray-600 leading-relaxed mt-2">
+                                        Track growth, spot weak areas, and stay motivated with focused progress metrics.
+                                    </p>
+                                </div>
+                                <div className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-200 hover:shadow-xl">
+                                    <FaUsers className="text-3xl text-[var(--accent-color)]" />
+                                    <h3 className="text-lg font-bold text-[var(--secondary-color)] mt-4">Achievement flow</h3>
+                                    <p className="text-sm text-gray-600 leading-relaxed mt-2">
+                                        Earn badges and milestones that celebrate consistency and mastery.
+                                    </p>
                                 </div>
                             </div>
                         </motion.div>
@@ -213,12 +190,12 @@ const About = () => {
                             </h2>
                             <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {[
-                                    { icon: '✏️', title: 'Math Editor', desc: 'Natural LaTeX input with real-time preview' },
-                                    { icon: '💡', title: 'Smart Hints', desc: 'Progressive guidance that adapts to your level' },
-                                    { icon: '🏆', title: 'Achievements', desc: 'Track progress with meaningful milestones' },
-                                    { icon: '👥', title: 'Mentorship', desc: 'Expert support when you need it most' },
-                                    { icon: '📚', title: '30+ Problems', desc: 'Curated library across many topics' },
-                                    { icon: '🎯', title: 'Leaderboards', desc: 'Compete globally, grow together' }
+                                    { icon: <FaCode className="text-4xl text-[var(--accent-color)]" />, title: 'Math Editor', desc: 'Natural LaTeX input with real-time preview' },
+                                    { icon: <FaLightbulb className="text-4xl text-[var(--accent-color)]" />, title: 'Smart Hints', desc: 'Progressive guidance that adapts to your level' },
+                                    { icon: <FaRocket className="text-4xl text-[var(--accent-color)]" />, title: 'Achievements', desc: 'Track progress with meaningful milestones' },
+                                    { icon: <FaUsers className="text-4xl text-[var(--accent-color)]" />, title: 'Mentorship', desc: 'Expert support when you need it most' },
+                                    { icon: <FaChartLine className="text-4xl text-[var(--accent-color)]" />, title: '100+ Problems', desc: 'Curated library across many topics' },
+                                    { icon: <FaRocket className="text-4xl text-[var(--accent-color)]" />, title: 'Leaderboards', desc: 'Compete globally, grow together' }
                                 ].map((feature, idx) => (
                                     <motion.div
                                         key={idx}
@@ -226,9 +203,9 @@ const About = () => {
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ duration: 0.3, delay: 0.6 + idx * 0.05 }}
                                         whileHover={{ scale: 1.02 }}
-                                        className="p-6 bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] transition-all duration-200"
+                                        className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-200 hover:shadow-xl"
                                     >
-                                        <div className="text-4xl pb-3">{feature.icon}</div>
+                                        <div className="pb-3">{feature.icon}</div>
                                         <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-2">{feature.title}</h3>
                                         <p className="text-sm text-gray-600 leading-relaxed">{feature.desc}</p>
                                     </motion.div>
@@ -255,13 +232,13 @@ const About = () => {
                                 <div className="flex flex-col sm:flex-row gap-4">
                                     <Link
                                         to="/signup"
-                                        className="px-6 py-3 bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] text-white rounded-md font-semibold hover:shadow-[0_10px_10px_rgba(141,153,174,0.3)] transition-all duration-200 no-underline text-center text-base"
+                                        className="px-8 py-3 bg-[var(--accent-color)] text-white rounded-full font-semibold hover:bg-[var(--dark-accent-color)] transition-all duration-200 shadow-lg shadow-[var(--accent-color)]/30 no-underline text-center text-base"
                                     >
                                         Get Started Free
                                     </Link>
                                     <Link
                                         to="/learn"
-                                        className="px-6 py-3 bg-white !text-[var(--secondary-color)] border-2 rounded-md font-semibold  transition-shadows duration-200 hover:shadow-[0_10px_10px_rgba(141,153,174,0.3)] no-underline text-center text-base"
+                                        className="px-8 py-3 bg-white !text-[var(--secondary-color)] border-2 border-[var(--secondary-color)] rounded-full font-semibold transition-all duration-200 hover:bg-[var(--secondary-color)] hover:!text-white no-underline text-center text-base"
                                     >
                                         Explore Problems
                                     </Link>

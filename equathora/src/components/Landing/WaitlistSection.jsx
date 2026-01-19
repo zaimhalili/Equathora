@@ -34,7 +34,7 @@ const WaitlistSection = () => {
                     {/* CTA */}
                     <Link
                         to="/waitlist"
-                        className="flex-shrink-0 group flex items-center gap-2 rounded-full bg-[var(--accent-color)] px-6 sm:px-7 md:px-8 py-3 sm:py-3.5 md:py-4 text-white text-sm sm:text-base font-semibold transition-all hover:bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
+                        className="flex-shrink-0 group flex items-center gap-2 rounded-full bg-[var(--accent-color)] px-6 sm:px-7 md:px-8 py-3 sm:py-3.5 md:py-4 !text-white text-sm sm:text-base font-semibold transition-all hover:bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
                     >
                         Subscribe now
                         <motion.span

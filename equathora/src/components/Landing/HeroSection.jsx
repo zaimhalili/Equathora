@@ -72,7 +72,7 @@ const HeroSection = () => {
     const stats = [
         { value: 100, label: 'Practice Problems', suffix: '+' },
         { value: 30, label: 'Achievements', suffix: '+' },
-        { value: 5, label: 'Math Topics', suffix: '+' },
+        { value: 10, label: 'Math Topics', suffix: '+' },
     ];
 
     return (
@@ -223,39 +223,59 @@ const HeroSection = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* Right Side - Student PNG with 3D tilt effect */}
+                    {/* Right Side - Student PNG with rounded bottom */}
                     <motion.div
-                        className="flex-1 relative flex justify-center items-end h-full max-lg:hidden"
+                        className="flex-1 relative flex justify-center items-center h-full max-lg:hidden"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        {/* Main student image with tilt on hover */}
-                        <motion.div
-                            className="relative z-20 cursor-pointer h-full flex items-end"
-                            whileHover={{
-                                rotateY: 0,
-                                rotateX: 0,
-                                scale: 1.05,
-                            }}
-                            onMouseMove={(e) => {
-                                const rect = e.currentTarget.getBoundingClientRect();
-                                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                                e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 25}deg) rotateX(${-y * 25}deg) scale(1.05)`;
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
-                            }}
-                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        >
-                            <img
-                                src={YoungStudent}
-                                alt="Student with books"
-                                className="h-[85%] w-auto object-contain drop-shadow-2xl"
-                                loading="eager"
-                            />
-                        </motion.div>
+                        {/* Student with rounded bottom */}
+                        <div className="relative z-20">
+                            <div className="relative w-[400px] h-[500px]">
+                                {/* Bottom half circle backdrop */}
+                                <div
+                                    className="absolute left-1/2 -translate-x-1/2 bg-white/5 backdrop-blur-sm border-2 border-white/10"
+                                    style={{
+                                        bottom: 0,
+                                        width: '400px',
+                                        height: '200px',
+                                        borderRadius: '0 0 200px 200px',
+                                        borderTop: 'none'
+                                    }}
+                                />
+
+                                {/* Main student image - full top, rounded bottom */}
+                                <motion.div
+                                    className="absolute inset-0 overflow-hidden"
+                                    style={{
+                                        borderRadius: '0 0 200px 200px'
+                                    }}
+                                    whileHover={{
+                                        rotateY: 0,
+                                        rotateX: 0,
+                                        scale: 1.05,
+                                    }}
+                                    onMouseMove={(e) => {
+                                        const rect = e.currentTarget.getBoundingClientRect();
+                                        const x = (e.clientX - rect.left) / rect.width - 0.5;
+                                        const y = (e.clientY - rect.top) / rect.height - 0.5;
+                                        e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 25}deg) rotateX(${-y * 25}deg) scale(1.05)`;
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
+                                    }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                >
+                                    <img
+                                        src={YoungStudent}
+                                        alt="Student with books"
+                                        className="w-full h-full object-cover object-top drop-shadow-2xl"
+                                        loading="eager"
+                                    />
+                                </motion.div>
+                            </div>
+                        </div>
 
                         {/* Floating badge - top right */}
                         <motion.div
@@ -288,10 +308,10 @@ const HeroSection = () => {
 
                         {/* Decorative circle behind */}
                         <motion.div
-                            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[350px] h-[350px] rounded-full border-2 border-white/10 z-10"
+                            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full border-2 border-white/10 z-10"
                         />
                         <motion.div
-                            className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[280px] h-[280px] rounded-full border border-[var(--accent-color)]/20 z-10"
+                            className="absolute bottom-8 left-1/2 -translate-x-1/2 w-[320px] h-[320px] rounded-full border border-[var(--accent-color)]/20 z-10"
                             animate={{ rotate: 360 }}
                             transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
                         />
