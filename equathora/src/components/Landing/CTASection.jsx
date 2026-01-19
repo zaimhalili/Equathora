@@ -54,13 +54,13 @@ const CTASection = () => {
                 <div className="absolute bottom-20 left-20 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
             </div>
 
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-                <div className="flex flex-col lg:flex-row items-center gap-12 sm:gap-14 md:gap-16">
+            <div className="max-w-[1400px] px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-20 sm:py-24 md:py-28 lg:py-32 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div className="flex flex-col lg:flex-row items-center gap-16 sm:gap-18 md:gap-20">
 
                     {/* Left side - Content */}
-                    <div className="flex-1 flex flex-col gap-5 sm:gap-6 text-center lg:text-left items-center lg:items-start w-full">
+                    <div className="flex-1 flex flex-col gap-6 sm:gap-7 text-center lg:text-left items-center lg:items-start w-full">
                         <motion.span
-                            className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider"
+                            className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs font-semibold uppercase tracking-wider"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -70,7 +70,7 @@ const CTASection = () => {
                         </motion.span>
 
                         <motion.h2
-                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--secondary-color)] leading-tight px-4 lg:px-0"
+                            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--secondary-color)] leading-tight px-6 lg:px-0"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -81,7 +81,7 @@ const CTASection = () => {
                         </motion.h2>
 
                         <motion.p
-                            className="text-base sm:text-lg text-[var(--mid-main-secondary)] max-w-xl px-4 lg:px-0"
+                            className="text-xs sm:text-sm text-[var(--mid-main-secondary)] max-w-xl px-6 lg:px-0"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}

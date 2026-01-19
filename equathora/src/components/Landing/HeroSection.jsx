@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
 import YoungStudent from '../../assets/images/yng_student.png'
+import MouseFollower from './MouseFollower';
 
 // Animated counter component
 const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
@@ -106,7 +107,7 @@ const HeroSection = () => {
             <Particles />
 
             <div className="relative z-10 w-full">
-                <div className="px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] max-w-[1400px] py-8 sm:py-12 md:py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-center gap-8 sm:gap-10 md:gap-12 w-full" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div className="px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 max-w-[1400px] py-16 sm:py-20 md:py-24 lg:py-32 flex flex-col lg:flex-row items-center justify-center gap-12 sm:gap-14 md:gap-16 w-full" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 
                     {/* Left Content - Centered */}
                     <motion.div
@@ -130,7 +131,7 @@ const HeroSection = () => {
 
                         {/* Main Heading */}
                         <motion.h1
-                            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] text-white"
+                            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] text-white"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.15, duration: 0.5 }}
@@ -162,7 +163,7 @@ const HeroSection = () => {
 
                         {/* Description */}
                         <motion.p
-                            className="text-sm sm:text-base md:text-lg text-white/70 leading-relaxed max-w-lg"
+                            className="text-xs sm:text-sm md:text-base text-white/70 leading-relaxed max-w-lg"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.25, duration: 0.5 }}
@@ -223,38 +224,49 @@ const HeroSection = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* Right Side - Student PNG with floating circle */}
-                    <motion.div
-                        className="flex-1 relative flex justify-center items-center h-full max-lg:hidden"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        {/* Floating group - circle and student together */}
-                        <motion.div
-                            className="relative z-20 cursor-pointer"
-                            animate={{ y: [0, -15, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                            whileHover={{ y: 10, transition: { duration: 0.2 } }}
+                    {/* Right Side - Student PNG with floating circle and MouseFollower */}
+                    <div className="flex-1 relative flex justify-center items-center h-full max-lg:hidden">
+                        {/* Invisible hover area covering the entire right side */}
+                        <MouseFollower
+                            intensity={25}
+                            scale={1.05}
+                            rotateEnabled={true}
+                            translateEnabled={true}
+                            className="relative z-20 w-full h-full flex items-center justify-center"
                         >
-                            {/* Full circle backdrop with inner ring */}
-                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border-2 border-white/15 bg-white/5 backdrop-blur-sm" />
-                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-white/10" />
-                            
-                            {/* Student image - rounded bottom */}
-                            <div className="relative w-[400px] h-[480px] overflow-hidden" style={{ borderRadius: '0 0 200px 200px' }}>
-                                <img
-                                    src={YoungStudent}
-                                    alt="Student with books"
-                                    className="w-full h-full object-cover object-top drop-shadow-2xl"
-                                    loading="eager"
-                                />
-                            </div>
-                        </motion.div>
+                            <motion.div
+                                className="relative"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.6, delay: 0.2 }}
+                            >
+                                <motion.div
+                                    className="relative"
+                                    animate={{ y: [0, -15, 0] }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                >
+                                    {/* Full circle backdrop */}
+                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border-2 border-white/15 bg-white/5 backdrop-blur-sm z-0" />
+                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-white/10 z-0" />
+
+                                    {/* Student image positioned inside/aligned with circle */}
+                                    <div className="relative w-[360px] h-[440px] flex items-end justify-center z-10">
+                                        <div className="w-full h-[400px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px' }}>
+                                            <img
+                                                src={YoungStudent}
+                                                alt="Student with books"
+                                                className="w-full h-full object-cover object-top drop-shadow-2xl"
+                                                loading="eager"
+                                            />
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            </motion.div>
+                        </MouseFollower>
 
                         {/* Floating badge - top right */}
                         <motion.div
-                            className="absolute top-16 right-4 lg:right-8 z-30"
+                            className="absolute top-16 right-4 lg:right-8 z-30 pointer-events-none"
                             animate={{ y: [0, -10, 0] }}
                             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                         >
@@ -271,7 +283,7 @@ const HeroSection = () => {
 
                         {/* Floating badge - left side */}
                         <motion.div
-                            className="absolute top-32 left-0 lg:-left-8 z-30"
+                            className="absolute top-32 left-0 lg:-left-8 z-30 pointer-events-none"
                             animate={{ y: [0, -8, 0] }}
                             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                         >
@@ -283,20 +295,20 @@ const HeroSection = () => {
 
                         {/* Floating math symbols */}
                         <motion.div
-                            className="absolute top-20 left-20 text-4xl text-white/20 font-light z-10"
+                            className="absolute top-20 left-20 text-4xl text-white/20 font-light z-10 pointer-events-none"
                             animate={{ rotate: [0, 10, -10, 0], y: [0, -5, 0] }}
                             transition={{ duration: 6, repeat: Infinity }}
                         >
                             ∑
                         </motion.div>
                         <motion.div
-                            className="absolute bottom-32 right-16 text-3xl text-white/15 font-light z-10"
+                            className="absolute bottom-32 right-16 text-3xl text-white/15 font-light z-10 pointer-events-none"
                             animate={{ rotate: [0, -10, 10, 0], y: [0, -8, 0] }}
                             transition={{ duration: 8, repeat: Infinity, delay: 1 }}
                         >
                             π
                         </motion.div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>

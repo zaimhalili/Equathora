@@ -81,26 +81,26 @@ const TestimonialsSection = () => {
                 />
             </div>
 
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-12 sm:py-14 md:py-16 w-full relative z-10\" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-                <div className="flex flex-col gap-10 sm:gap-12 items-center justify-center w-full">
+            <div className="max-w-[1400px] px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-20 sm:py-24 md:py-28 lg:py-32 w-full relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div className="flex flex-col gap-14 sm:gap-16 items-center justify-center w-full">
 
                     {/* Section header - Centered */}
                     <motion.div
-                        className="flex flex-col gap-3 sm:gap-4 text-center items-center"
+                        className="flex flex-col gap-4 sm:gap-5 text-center items-center"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
                     >
-                        <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
+                        <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs font-semibold uppercase tracking-wider">
                             <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                             Student feedback
                             <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                         </span>
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white px-4">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-6">
                             Trusted by genius people
                         </h2>
-                        <p className="text-white/60 max-w-lg text-base sm:text-lg px-4">
+                        <p className="text-white/60 max-w-lg text-xs sm:text-sm px-6">
                             Hear from students who are building their math skills with us.
                         </p>
                     </motion.div>
