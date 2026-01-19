@@ -52,7 +52,7 @@ const HowItWorksSection = () => {
                 <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px]" />
             </div>
 
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 relative z-10 mx-auto">
+            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                 <div className="flex flex-col gap-12 sm:gap-14 md:gap-16">
                     {/* Section header - Centered */}
                     <motion.div

@@ -16,7 +16,8 @@ const Footer = () => {
 
         <div id="center">
           <h1>
-            Your contribution helps us keep this learning platform available for <span className='rotated-bg'>students worldwide</span>
+            Your contribution helps us keep this learning platform available for{' '}
+            <span className='rotated-bg'>students</span> <span className='rotated-bg'>worldwide</span>
           </h1>
           <div id="socialMedia-container">
             <a

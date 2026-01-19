@@ -190,7 +190,7 @@ const NavigationBar = () => {
             <OverflowChecker></OverflowChecker>
             <header className='w-full bg-[var(--main-color)] h-[60px] sm:h-[70px] md:h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
                 <nav aria-label="Primary" className='w-full h-full flex justify-center'>
-                    <div className='w-full h-full mx-auto flex items-center justify-between px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] max-w-[1500px]'>
+                    <div className='w-full h-full flex items-center justify-between px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] max-w-[1500px]' style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                         <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
                             <li>
                                 <Link to="/dashboard" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>

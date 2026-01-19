@@ -28,21 +28,21 @@ const FeaturesSection = () => {
             <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
 
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 mx-auto relative z-10">
+            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 
                 {/* Section header - CENTERED */}
                 <motion.div
-                    className="text-center mb-12 sm:mb-14 md:mb-16 flex flex-col items-center justify-center"
+                    className="text-center pb-12 sm:pb-14 md:pb-16 flex flex-col items-center justify-center"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
                 >
-                    <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3 sm:mb-4">
+                    <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider pb-3 sm:pb-4">
                         <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                         What we offer
                     </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight mb-3 sm:mb-4 px-4">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight pb-3 sm:pb-4 px-4">
                         Built for real learning
                     </h2>
                     <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-2xl text-sm sm:text-base px-4">
@@ -116,12 +116,12 @@ const FeaturesSection = () => {
                                 }}
                             >
                                 {/* Icon */}
-                                <div className="mb-3 sm:mb-4 text-2xl sm:text-3xl">
+                                <div className="pb-3 sm:pb-4 text-2xl sm:text-3xl">
                                     {feature.icon}
                                 </div>
 
                                 {/* Content */}
-                                <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)] mb-1.5 sm:mb-2">
+                                <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)] pb-1.5 sm:pb-2">
                                     {feature.title}
                                 </h3>
                                 <p className="text-[var(--mid-main-secondary)] leading-relaxed text-sm sm:text-base">

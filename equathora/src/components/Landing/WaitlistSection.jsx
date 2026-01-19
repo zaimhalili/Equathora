@@ -6,7 +6,7 @@ import { FaEnvelope, FaArrowRight } from 'react-icons/fa';
 const WaitlistSection = () => {
     return (
         <section className="w-full bg-[#fafbfc] relative overflow-hidden">
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-12 sm:py-14 md:py-16 mx-auto relative z-10">
+            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-12 sm:py-14 md:py-16 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                 <motion.div
                     className="flex flex-col md:flex-row items-center gap-6 sm:gap-7 md:gap-8 p-6 sm:p-8 md:p-12 bg-gradient-to-r from-[var(--secondary-color)] to-[#1a1a2e] rounded-3xl shadow-xl"
                     initial={{ opacity: 0, y: 30 }}
@@ -23,7 +23,7 @@ const WaitlistSection = () => {
 
                     {/* Content */}
                     <div className="flex-1 text-center md:text-left">
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1.5 sm:mb-2">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white pb-1.5 sm:pb-2">
                             Join our waitlist
                         </h3>
                         <p className="text-white/70 text-base sm:text-lg">

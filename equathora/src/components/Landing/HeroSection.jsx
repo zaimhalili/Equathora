@@ -28,14 +28,14 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
     return <span ref={ref}>{prefix}{count}{suffix}</span>;
 };
 
-// Particle system - RED particles, fewer, faster
+// Particle system - RED particles, varied sizes
 const Particles = () => {
-    const particles = Array.from({ length: 12 }, (_, i) => ({
+    const particles = Array.from({ length: 15 }, (_, i) => ({
         id: i,
         x: Math.random() * 100,
         y: Math.random() * 100,
-        size: Math.random() * 6 + 3,
-        duration: Math.random() * 4 + 3, // Faster: 3-7s instead of 10-25s
+        size: i < 3 ? Math.random() * 20 + 15 : (i < 7 ? Math.random() * 12 + 8 : Math.random() * 6 + 3),
+        duration: Math.random() * 4 + 3,
         delay: Math.random() * 2,
     }));
 
@@ -106,7 +106,7 @@ const HeroSection = () => {
             <Particles />
 
             <div className="relative z-10 w-full">
-                <div className="px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] max-w-[1400px] py-8 sm:py-12 md:py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-center gap-8 sm:gap-10 md:gap-12 mx-auto">
+                <div className="px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] max-w-[1400px] py-8 sm:py-12 md:py-16 lg:py-24 flex flex-col lg:flex-row items-center justify-center gap-8 sm:gap-10 md:gap-12 w-full" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 
                     {/* Left Content - Centered */}
                     <motion.div
@@ -223,59 +223,34 @@ const HeroSection = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* Right Side - Student PNG with rounded bottom */}
+                    {/* Right Side - Student PNG with floating circle */}
                     <motion.div
                         className="flex-1 relative flex justify-center items-center h-full max-lg:hidden"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        {/* Student with rounded bottom */}
-                        <div className="relative z-20">
-                            <div className="relative w-[400px] h-[500px]">
-                                {/* Bottom half circle backdrop */}
-                                <div
-                                    className="absolute left-1/2 -translate-x-1/2 bg-white/5 backdrop-blur-sm border-2 border-white/10"
-                                    style={{
-                                        bottom: 0,
-                                        width: '400px',
-                                        height: '200px',
-                                        borderRadius: '0 0 200px 200px',
-                                        borderTop: 'none'
-                                    }}
+                        {/* Floating group - circle and student together */}
+                        <motion.div
+                            className="relative z-20 cursor-pointer"
+                            animate={{ y: [0, -15, 0] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                            whileHover={{ y: 10, transition: { duration: 0.2 } }}
+                        >
+                            {/* Full circle backdrop with inner ring */}
+                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border-2 border-white/15 bg-white/5 backdrop-blur-sm" />
+                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-white/10" />
+                            
+                            {/* Student image - rounded bottom */}
+                            <div className="relative w-[400px] h-[480px] overflow-hidden" style={{ borderRadius: '0 0 200px 200px' }}>
+                                <img
+                                    src={YoungStudent}
+                                    alt="Student with books"
+                                    className="w-full h-full object-cover object-top drop-shadow-2xl"
+                                    loading="eager"
                                 />
-
-                                {/* Main student image - full top, rounded bottom */}
-                                <motion.div
-                                    className="absolute inset-0 overflow-hidden"
-                                    style={{
-                                        borderRadius: '0 0 200px 200px'
-                                    }}
-                                    whileHover={{
-                                        rotateY: 0,
-                                        rotateX: 0,
-                                        scale: 1.05,
-                                    }}
-                                    onMouseMove={(e) => {
-                                        const rect = e.currentTarget.getBoundingClientRect();
-                                        const x = (e.clientX - rect.left) / rect.width - 0.5;
-                                        const y = (e.clientY - rect.top) / rect.height - 0.5;
-                                        e.currentTarget.style.transform = `perspective(1000px) rotateY(${x * 25}deg) rotateX(${-y * 25}deg) scale(1.05)`;
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)';
-                                    }}
-                                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                                >
-                                    <img
-                                        src={YoungStudent}
-                                        alt="Student with books"
-                                        className="w-full h-full object-cover object-top drop-shadow-2xl"
-                                        loading="eager"
-                                    />
-                                </motion.div>
                             </div>
-                        </div>
+                        </motion.div>
 
                         {/* Floating badge - top right */}
                         <motion.div
@@ -305,16 +280,6 @@ const HeroSection = () => {
                                 <p className="text-[10px] opacity-90">Success Rate</p>
                             </div>
                         </motion.div>
-
-                        {/* Decorative circle behind */}
-                        <motion.div
-                            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full border-2 border-white/10 z-10"
-                        />
-                        <motion.div
-                            className="absolute bottom-8 left-1/2 -translate-x-1/2 w-[320px] h-[320px] rounded-full border border-[var(--accent-color)]/20 z-10"
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                        />
 
                         {/* Floating math symbols */}
                         <motion.div

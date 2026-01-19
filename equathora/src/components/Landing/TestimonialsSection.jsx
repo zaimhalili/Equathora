@@ -81,8 +81,8 @@ const TestimonialsSection = () => {
                 />
             </div>
 
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-12 sm:py-14 md:py-16 mx-auto relative z-10">
-                <div className="flex flex-col gap-10 sm:gap-12 items-center justify-center">
+            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-12 sm:py-14 md:py-16 w-full relative z-10\" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div className="flex flex-col gap-10 sm:gap-12 items-center justify-center w-full">
 
                     {/* Section header - Centered */}
                     <motion.div
@@ -98,28 +98,34 @@ const TestimonialsSection = () => {
                             <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                         </span>
                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white px-4">
-                            What students say
+                            Trusted by genius people
                         </h2>
                         <p className="text-white/60 max-w-lg text-base sm:text-lg px-4">
                             Hear from students who are building their math skills with us.
                         </p>
                     </motion.div>
 
-                    {/* Testimonials layout - Crafto style */}
-                    <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-10 lg:gap-16 items-center">
-                        {/* Left column - big stat */}
-                        <div className="lg:w-1/3 text-center lg:text-left">
-                            <div className="text-7xl sm:text-8xl lg:text-9xl font-bold text-[var(--accent-color)]">
+                    {/* Crafto-style layout: Big stat on left, cards on right */}
+                    <div className="w-full flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
+                        {/* Left column - big percentage */}
+                        <motion.div
+                            className="lg:w-2/5 flex flex-col items-center lg:items-start text-center lg:text-left"
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <span className="text-8xl sm:text-9xl lg:text-[10rem] font-bold text-[var(--accent-color)] leading-none">
                                 99%
-                            </div>
-                            <p className="text-white/80 text-lg sm:text-xl mt-4 leading-relaxed">
-                                Students complete their practice successfully.
+                            </span>
+                            <p className="text-white/80 text-lg sm:text-xl leading-relaxed pt-4">
+                                Student's complete their practice successfully.
                             </p>
-                        </div>
+                        </motion.div>
 
-                        {/* Right column - testimonial cards */}
-                        <div className="lg:w-2/3 relative">
-                            <div className="relative min-h-[280px]">
+                        {/* Right column - testimonial carousel */}
+                        <div className="lg:w-3/5 w-full">
+                            <div className="relative">
                                 <AnimatePresence initial={false} custom={direction} mode="wait">
                                     <motion.div
                                         key={currentIndex}
@@ -134,7 +140,7 @@ const TestimonialsSection = () => {
                                         }}
                                     >
                                         <div className="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-8 sm:p-10">
-                                            <p className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed mb-8">
+                                            <p className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed pb-8">
                                                 "{testimonials[currentIndex].quote}"
                                             </p>
 
@@ -158,8 +164,8 @@ const TestimonialsSection = () => {
                                 </AnimatePresence>
                             </div>
 
-                            {/* Navigation */}
-                            <div className="flex items-center gap-4 mt-8">
+                            {/* Navigation arrows */}
+                            <div className="flex items-center gap-3 pt-8">
                                 <button
                                     onClick={() => paginate(-1)}
                                     className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-all hover:bg-[var(--accent-color)] hover:border-[var(--accent-color)]"

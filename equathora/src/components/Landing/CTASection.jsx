@@ -54,7 +54,7 @@ const CTASection = () => {
                 <div className="absolute bottom-20 left-20 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
             </div>
 
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 mx-auto relative z-10">
+            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                 <div className="flex flex-col lg:flex-row items-center gap-12 sm:gap-14 md:gap-16">
 
                     {/* Left side - Content */}
@@ -91,7 +91,7 @@ const CTASection = () => {
                         </motion.p>
 
                         <motion.div
-                            className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start mt-3 sm:mt-4"
+                            className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
