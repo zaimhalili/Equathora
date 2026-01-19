@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaChevronLeft, FaChevronRight, FaStar, FaQuoteLeft } from 'react-icons/fa';
-import GuestAvatar from '../../assets/images/GuestAvatar.png';
+import GuestAvatar from '../../assets/images/guestAvatar.png';
 
 
 const TestimonialsSection = () => {
