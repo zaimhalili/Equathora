@@ -242,16 +242,17 @@ const HeroSection = () => {
                             >
                                 <motion.div
                                     className="relative"
-                                    animate={{ y: [0, -15, 0] }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                                 >
-                                    {/* Full circle backdrop */}
-                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border-2 border-white/15 bg-white/5 backdrop-blur-sm z-0" />
-                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-white/10 z-0" />
+                                    {/* Full circle backdrop (darker gradient) */}
+                                    <div
+                                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] rounded-full backdrop-blur-sm z-0"
+                                        style={{ backgroundImage: 'linear-gradient(180deg, var(--secondary-color) 0%, rgba(0,0,0,0.55) 100%)' }}
+                                    />
+                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full z-0 bg-[var(--secondary-color)]" />
 
                                     {/* Student image positioned inside/aligned with circle */}
-                                    <div className="relative w-[360px] h-[440px] flex items-end justify-center z-10">
-                                        <div className="w-full h-[400px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px' }}>
+                                    <div className="relative w-[410px] h-[555px] flex items-end justify-center z-10">
+                                        <div className="w-full h-[645px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px' }}>
                                             <img
                                                 src={YoungStudent}
                                                 alt="Student with books"
