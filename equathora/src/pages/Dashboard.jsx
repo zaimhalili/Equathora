@@ -86,13 +86,13 @@ const Dashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="text-[var(--secondary-color)] font-[Inter] w-full cursor-default flex flex-col items-center md:items-start"
+                className="text-[var(--secondary-color)] font-[Sansation] w-full cursor-default flex flex-col items-center md:items-start"
               >
                 <motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-4xl text-center md:text-left pb-2 cursor-default font-[Inter] font-medium"
+                  className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-medium"
                 >
                   Welcome Back, <span className="text-[var(--secondary-color)]">{username}</span>!
                 </motion.h1>
@@ -112,7 +112,7 @@ const Dashboard = () => {
                   transition={{ duration: 0.5, delay: 0.3 }}
                   className="flex flex-col text-center sm:text-left pt-8 pb-8"
                 >
-                  <h3 className="text-[var(--secondary-color)] font-[Inter] text-2xl font-bold pb-2">
+                  <h3 className="text-[var(--secondary-color)] font-[Sansation] text-2xl font-bold pb-2">
                     Where To Start...
                   </h3>
 
@@ -124,10 +124,10 @@ const Dashboard = () => {
                     >
                       <Link
                         to={`/problems/${dailyProblemSlug}`}
-                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-poSansation overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105"
                       >
                         <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                        <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center ">
+                        <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center ">
                           Solve the daily challenge
                         </h6>
                       </Link>
@@ -139,10 +139,10 @@ const Dashboard = () => {
                     >
                       <Link
                         to="/learn"
-                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-poSansation overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105"
                       >
                         <img src={Books} alt="books" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                        <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
+                        <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
                           Browse problems
                         </h6>
                       </Link>
@@ -154,10 +154,10 @@ const Dashboard = () => {
                     >
                       <Link
                         to="/applyMentor"
-                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-poSansation overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105"
                       >
                         <img src={Mentoring} alt="mentoring" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                        <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
+                        <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
                           Try mentoring
                         </h6>
                       </Link>
@@ -169,10 +169,10 @@ const Dashboard = () => {
                     >
                       <Link
                         to="/leaderboards/global"
-                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-poSansation overflow-hidden rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105"
                       >
                         <img src={Leaderboards} alt="leaderboards" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                        <h6 className="text-[var(--secondary-color)] font-[Inter] text-lg font-normal w-full text-center flex items-center justify-center">
+                        <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
                           Join the race
                         </h6>
                       </Link>
@@ -208,7 +208,7 @@ const Dashboard = () => {
                   {/* Header with Badge */}
                   <div className="flex items-start justify-between pb-4">
                     <div>
-                      <h3 className="font-[Inter] font-semibold text-xl text-[var(--secondary-color)] pb-1.5 leading-[1.3]">
+                      <h3 className="font-[Sansation] font-semibold text-xl text-[var(--secondary-color)] pb-1.5 leading-[1.3]">
                         Become a Mentor
                       </h3>
                       <div className="flex items-center gap-2">
@@ -221,7 +221,7 @@ const Dashboard = () => {
                   </div>
 
                   {/* Value Proposition */}
-                  <p className="font-[Inter] text-[0.9375rem] text-[var(--secondary-color)] leading-relaxed opacity-90 pb-6">
+                  <p className="font-[Sansation] text-[0.9375rem] text-[var(--secondary-color)] leading-relaxed opacity-90 pb-6">
                     Guide learners, reinforce your expertise, and make a meaningful impact in the mathematics community.
                   </p>
 
@@ -229,15 +229,15 @@ const Dashboard = () => {
                   <div className="flex flex-col gap-2.5 pb-6">
                     <div className="flex items-start gap-2.5">
                       <span className="text-[var(--accent-color)] font-bold text-sm pt-0.5">✓</span>
-                      <span className="font-[Inter] text-sm text-[var(--secondary-color)] opacity-80">Flexible scheduling that fits your lifestyle</span>
+                      <span className="font-[Sansation] text-sm text-[var(--secondary-color)] opacity-80">Flexible scheduling that fits your lifestyle</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <span className="text-[var(--accent-color)] font-bold text-sm pt-0.5">✓</span>
-                      <span className="font-[Inter] text-sm text-[var(--secondary-color)] opacity-80">Strengthen understanding through teaching</span>
+                      <span className="font-[Sansation] text-sm text-[var(--secondary-color)] opacity-80">Strengthen understanding through teaching</span>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <span className="text-[var(--accent-color)] font-bold text-sm pt-0.5">✓</span>
-                      <span className="font-[Inter] text-sm text-[var(--secondary-color)] opacity-80">Build your professional portfolio</span>
+                      <span className="font-[Sansation] text-sm text-[var(--secondary-color)] opacity-80">Build your professional portfolio</span>
                     </div>
                   </div>
 
@@ -245,13 +245,13 @@ const Dashboard = () => {
                   <div className="flex gap-3 max-w-[400px]">
                     <Link
                       to="/applymentor"
-                      className="flex items-center justify-center font-[Inter] font-semibold text-[0.9375rem] !text-white bg-[var(--secondary-color)] rounded-md no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-2 py-2 px-2 text-wrap"
+                      className="flex items-center justify-center font-[Sansation] font-semibold text-[0.9375rem] !text-white bg-[var(--secondary-color)] rounded-md no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-2 py-2 px-2 text-wrap"
                     >
                       Apply Now
                     </Link>
                     <Link
                       to="/applymentor"
-                      className="flex items-center justify-center font-[Inter] font-medium text-[0.9375rem] !text-[var(--secondary-color)] bg-transparent border border-[rgba(43,45,66,0.2)] rounded-md no-underline transition-all duration-200 hover:border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.02)] text-center py-2 px-2 md:flex-1"
+                      className="flex items-center justify-center font-[Sansation] font-medium text-[0.9375rem] !text-[var(--secondary-color)] bg-transparent border border-[rgba(43,45,66,0.2)] rounded-md no-underline transition-all duration-200 hover:border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.02)] text-center py-2 px-2 md:flex-1"
                     >
                       Learn More
                     </Link>

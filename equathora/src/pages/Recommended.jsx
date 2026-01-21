@@ -43,7 +43,7 @@ const Recommended = () => {
             problems: 10,
             completed: 8,
             estimatedTime: '1 hour',
-            description: 'Understand slopes, y-intercepts, and graphing linear functions with confidence.',
+            description: 'Understand slopes, y-Sansationcepts, and graphing linear functions with confidence.',
             path: '/learn?topic=linear-functions'
         },
         {
@@ -137,7 +137,7 @@ const Recommended = () => {
                         <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-[var(--secondary-color)] via-[var(--mid-main-secondary)] to-[var(--secondary-color)] bg-clip-text text-transparent leading-tight">
                             Your Learning Path
                         </h1>
-                        <p className="text-[var(--mid-main-secondary)] font-['Inter'] text-lg md:text-xl leading-relaxed max-w-2xl">
+                        <p className="text-[var(--mid-main-secondary)] font-['Sansation'] text-lg md:text-xl leading-relaxed max-w-2xl">
                             Discover mathematics topics handpicked based on your progress, strengths, and learning style. Each recommendation brings you one step closer to mastery.
                         </p>
 
@@ -188,7 +188,7 @@ const Recommended = () => {
                                     <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full -ml-8 -mb-8" />
 
                                     <div className="relative flex items-start justify-between gap-3 mb-3">
-                                        <h3 className="text-xl font-bold text-white font-['Inter'] leading-tight flex-1">
+                                        <h3 className="text-xl font-bold text-white font-['Sansation'] leading-tight flex-1">
                                             {rec.topic}
                                         </h3>
                                         <div className="flex items-center gap-2">
@@ -217,12 +217,12 @@ const Recommended = () => {
 
                                 {/* Card Body */}
                                 <div className="p-5 flex-1 flex flex-col gap-4">
-                                    <p className="text-[var(--secondary-color)] font-['Inter'] text-sm leading-relaxed">
+                                    <p className="text-[var(--secondary-color)] font-['Sansation'] text-sm leading-relaxed">
                                         {rec.description}
                                     </p>
 
                                     <div className="px-3 py-2 bg-[var(--main-color)] rounded-lg border-l-3 border-[var(--accent-color)]">
-                                        <p className="text-[var(--secondary-color)] font-['Inter'] text-xs font-medium">
+                                        <p className="text-[var(--secondary-color)] font-['Sansation'] text-xs font-medium">
                                             {rec.reason}
                                         </p>
                                     </div>
@@ -230,10 +230,10 @@ const Recommended = () => {
                                     {rec.completed > 0 ? (
                                         <div>
                                             <div className="flex items-center justify-between mb-2">
-                                                <span className="text-xs font-semibold text-[var(--secondary-color)] font-['Inter']">
+                                                <span className="text-xs font-semibold text-[var(--secondary-color)] font-['Sansation']">
                                                     Progress
                                                 </span>
-                                                <span className="text-xs font-semibold text-[var(--accent-color)] font-['Inter']">
+                                                <span className="text-xs font-semibold text-[var(--accent-color)] font-['Sansation']">
                                                     {rec.completed}/{rec.problems}
                                                 </span>
                                             </div>
@@ -246,7 +246,7 @@ const Recommended = () => {
                                         </div>
                                     ) : (
                                         <div className="py-2 px-3 bg-gray-50 rounded-md border border-dashed border-gray-300">
-                                            <p className="text-center text-xs font-medium text-[var(--mid-main-secondary)] font-['Inter']">
+                                            <p className="text-center text-xs font-medium text-[var(--mid-main-secondary)] font-['Sansation']">
                                                 Not Started
                                             </p>
                                         </div>
@@ -255,13 +255,13 @@ const Recommended = () => {
                                     <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                                         <div className="flex items-center gap-1.5">
                                             <FaClock className="text-[var(--mid-main-secondary)] text-xs" />
-                                            <span className="text-xs text-[var(--secondary-color)] font-['Inter'] font-medium">
+                                            <span className="text-xs text-[var(--secondary-color)] font-['Sansation'] font-medium">
                                                 {rec.estimatedTime}
                                             </span>
                                         </div>
                                         <div className="flex items-center gap-1.5">
                                             <FaCheckCircle className="text-[var(--mid-main-secondary)] text-xs" />
-                                            <span className="text-xs text-[var(--secondary-color)] font-['Inter'] font-medium">
+                                            <span className="text-xs text-[var(--secondary-color)] font-['Sansation'] font-medium">
                                                 {rec.problems} problems
                                             </span>
                                         </div>
@@ -271,7 +271,7 @@ const Recommended = () => {
                                 {/* Action Button */}
                                 <div className="p-5 pt-0">
                                     <div className="flex items-center justify-center gap-2 py-2.5 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-lg transition-colors duration-300">
-                                        <span className="text-white font-semibold text-sm font-['Inter']">Start Learning</span>
+                                        <span className="text-white font-semibold text-sm font-['Sansation']">Start Learning</span>
                                         <svg className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                         </svg>

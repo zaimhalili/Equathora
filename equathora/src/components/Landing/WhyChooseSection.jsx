@@ -38,7 +38,7 @@ const WhyChooseSection = () => {
     return (
         <section className="w-full bg-white relative overflow-hidden">
             {/* Background scrolling text - FASTER */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+            <div className="absolute inset-0 flex items-center justify-center poSansation-events-none overflow-hidden">
                 <motion.div
                     className="text-[12vw] font-bold text-[var(--french-gray)]/[0.04] whitespace-nowrap select-none"
                     animate={{ x: [0, -1500] }}
@@ -130,7 +130,7 @@ const WhyChooseSection = () => {
                         <div className="relative flex justify-center items-center">
                             {/* Main image with tilt on hover - MALE */}
                             <motion.div
-                                className="relative z-20 cursor-pointer"
+                                className="relative z-20 cursor-poSansation"
                                 whileHover={{
                                     rotateY: 0,
                                     rotateX: 0,
@@ -157,7 +157,7 @@ const WhyChooseSection = () => {
 
                             {/* Secondary image - offset with tilt - MALE */}
                             <motion.div
-                                className="absolute -bottom-8 -left-8 lg:-left-16 z-10 cursor-pointer"
+                                className="absolute -bottom-8 -left-8 lg:-left-16 z-10 cursor-poSansation"
                                 whileHover={{
                                     rotateY: 0,
                                     rotateX: 0,

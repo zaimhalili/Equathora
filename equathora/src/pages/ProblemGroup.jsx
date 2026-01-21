@@ -66,7 +66,7 @@ const ProblemGroup = () => {
     return (
       <>
         <FeedbackBanner />
-        <main className="w-full min-h-screen bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] font-[Inter]">
+        <main className="w-full min-h-screen bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] font-[Sansation]">
           <header>
             <Navbar />
           </header>
@@ -85,7 +85,7 @@ const ProblemGroup = () => {
     return (
       <>
         <FeedbackBanner />
-        <main className="w-full min-h-screen bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] font-[Inter]">
+        <main className="w-full min-h-screen bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] font-[Sansation]">
           <header>
             <Navbar />
           </header>
@@ -108,7 +108,7 @@ const ProblemGroup = () => {
   return (
     <>
       <FeedbackBanner />
-      <main className="w-full min-h-screen bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] font-[Inter]">
+      <main className="w-full min-h-screen bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] font-[Sansation]">
         <header>
           <Navbar />
         </header>
@@ -124,7 +124,7 @@ const ProblemGroup = () => {
             </Link>
 
             <div className="flex flex-col gap-2 pb-4">
-              <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[Inter]">
+              <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[Sansation]">
                 {group.name}
               </h1>
               <MathJaxRenderer

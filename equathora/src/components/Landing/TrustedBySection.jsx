@@ -13,7 +13,7 @@ const TrustedBySection = () => {
         },
         {
             name: "Brilliant",
-            description: "Interactive learning",
+            description: "Sansationactive learning",
             icon: FaLightbulb,
             color: "#FFB800"
         },

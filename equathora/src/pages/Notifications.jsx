@@ -61,38 +61,38 @@ const Notifications = () => {
         <div className="px-6 md:px-16 lg:px-24 pt-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl text-center lg:text-left lg:text-4xl xl:text-5xl font-bold text-[var(--secondary-color)] font-['Inter']">Notifications</h1>
+              <h1 className="text-3xl text-center lg:text-left lg:text-4xl xl:text-5xl font-bold text-[var(--secondary-color)] font-['Sansation']">Notifications</h1>
               {unreadCount > 0 && (
                 <span className="bg-[var(--accent-color)] text-white text-sm font-semibold px-3 py-1 rounded-full">{unreadCount}</span>
               )}
             </div>
             <div className="flex items-center justify-center lg:justify-start gap-3 flex-wrap pb-5">
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className="flex items-center gap-2 cursor-poSansation">
                 <input
                   type="checkbox"
                   checked={selectAll}
                   onChange={handleSelectAll}
-                  className="w-5 h-5 accent-[var(--accent-color)] cursor-pointer"
+                  className="w-5 h-5 accent-[var(--accent-color)] cursor-poSansation"
                 />
-                <span className="text-[var(--secondary-color)] font-medium font-['Inter'] text-sm">Select all</span>
+                <span className="text-[var(--secondary-color)] font-medium font-['Sansation'] text-sm">Select all</span>
               </label>
               <div className="flex items-center gap-2">
                 <button
                   onClick={markAsRead}
-                  className="px-3 py-1.5 bg-white text-[var(--secondary-color)] rounded-md border-2 border-[var(--french-gray)] font-['Inter'] font-semibold text-sm"
+                  className="px-3 py-1.5 bg-white text-[var(--secondary-color)] rounded-md border-2 border-[var(--french-gray)] font-['Sansation'] font-semibold text-sm"
                 >
                   Mark as read
                 </button>
                 <button
                   onClick={markAsUnread}
-                  className="px-3 py-1.5 bg-white text-[var(--secondary-color)] rounded-md border-2 border-[var(--french-gray)] font-['Inter'] font-semibold text-sm"
+                  className="px-3 py-1.5 bg-white text-[var(--secondary-color)] rounded-md border-2 border-[var(--french-gray)] font-['Sansation'] font-semibold text-sm"
                 >
                   Mark as unread
                 </button>
               </div>
             </div>
           </div>
-          <p className="text-[var(--mid-main-secondary)] font-['Inter'] mt-2 text-sm">Stay updated with your progress</p>
+          <p className="text-[var(--mid-main-secondary)] font-['Sansation'] mt-2 text-sm">Stay updated with your progress</p>
         </div>
 
         {/* Notifications List - Full Width with Side Spacing */}
@@ -100,10 +100,10 @@ const Notifications = () => {
           <div className="flex flex-col gap-5 md:gap-6">
             {notifications.length === 0 ? (
               <div className="bg-white rounded-xl p-16 text-center gap-20">
-                <h3 className="text-2xl font-bold text-[var(--secondary-color)] mb-2 font-['Inter']">
+                <h3 className="text-2xl font-bold text-[var(--secondary-color)] mb-2 font-['Sansation']">
                   No notifications
                 </h3>
-                <p className="text-[var(--mid-main-secondary)] font-['Inter']">
+                <p className="text-[var(--mid-main-secondary)] font-['Sansation']">
                   You're all caught up!
                 </p>
               </div>
@@ -111,7 +111,7 @@ const Notifications = () => {
               notifications.map(notification => (
                 <div
                   key={notification.id}
-                  className={`cursor-pointer rounded-lg p-4 md:p-5 flex items-start md:items-center gap-3 md:gap-5 transition-all border-l-4 bg-white hover:bg-gray-50 ${!notification.read ? 'border-[var(--accent-color)] shadow-md' : 'border-gray-200 shadow-sm'}`}
+                  className={`cursor-poSansation rounded-lg p-4 md:p-5 flex items-start md:items-center gap-3 md:gap-5 transition-all border-l-4 bg-white hover:bg-gray-50 ${!notification.read ? 'border-[var(--accent-color)] shadow-md' : 'border-gray-200 shadow-sm'}`}
                   onClick={() => handleSelectNotification(notification.id)}
                 >
                   <input
@@ -119,15 +119,15 @@ const Notifications = () => {
                     checked={selectedIds.includes(notification.id)}
                     onChange={() => handleSelectNotification(notification.id)}
                     onClick={(e) => e.stopPropagation()}
-                    className="w-4 h-4 md:w-5 md:h-5 accent-[var(--accent-color)] cursor-pointer flex-shrink-0"
+                    className="w-4 h-4 md:w-5 md:h-5 accent-[var(--accent-color)] cursor-poSansation flex-shrink-0"
                   />
 
                   <div className="flex-1 min-w-0">
                     <div className="block">
-                      <p className={`font-['Inter'] mb-1 leading-snug text-xs md:text-sm ${!notification.read ? 'text-[var(--secondary-color)] font-semibold' : 'text-[var(--secondary-color)]'}`}>
+                      <p className={`font-['Sansation'] mb-1 leading-snug text-xs md:text-sm ${!notification.read ? 'text-[var(--secondary-color)] font-semibold' : 'text-[var(--secondary-color)]'}`}>
                         {notification.message}
                       </p>
-                      <span className="text-xs text-[var(--french-gray)] font-['Inter']">
+                      <span className="text-xs text-[var(--french-gray)] font-['Sansation']">
                         {notification.time}
                       </span>
                     </div>

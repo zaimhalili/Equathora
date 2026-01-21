@@ -87,7 +87,7 @@ const Login = () => {
                 marginBottom: '16px',
                 color: '#c33',
                 fontSize: '14px',
-                fontFamily: 'Inter, sans-serif'
+                fontFamily: 'Sansation, sans-serif'
               }}>
                 {error}
               </div>

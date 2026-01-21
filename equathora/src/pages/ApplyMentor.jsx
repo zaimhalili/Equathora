@@ -13,7 +13,7 @@ import { FaCheckCircle, FaUsers, FaChalkboardTeacher, FaHeart, FaArrowRight, FaS
 
 const ApplyMentor = () => {
     return (
-        <div className='text-[var(--secondary-color)] font-[Inter] w-full bg-[var(--main-color)]'>
+        <div className='text-[var(--secondary-color)] font-[Sansation] w-full bg-[var(--main-color)]'>
             <header><Navbar /></header>
 
             {/* Hero Section */}
@@ -29,7 +29,7 @@ const ApplyMentor = () => {
                 >
                     <div className='flex flex-col items-center gap-6'>
                         <div className='text-center flex flex-col gap-2'>
-                            <h2 className='text-2xl md:text-3xl font-bold font-[Inter]'>Why Become a Mentor?</h2>
+                            <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>Why Become a Mentor?</h2>
                             <p className='text-sm md:text-base text-gray-600 max-w-2xl'>
                                 Join a vibrant community making math accessible and enjoyable for everyone
                             </p>
@@ -104,7 +104,7 @@ const ApplyMentor = () => {
                 >
                     <div className='flex flex-col items-center gap-6'>
                         <div className='text-center flex flex-col gap-2'>
-                            <h2 className='text-2xl md:text-3xl font-bold font-[Inter]'>
+                            <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>
                                 Who Can <span className='text-[var(--accent-color)]'>Apply?</span>
                             </h2>
                             <p className='text-sm md:text-base text-gray-600 max-w-2xl'>
@@ -226,7 +226,7 @@ const ApplyMentor = () => {
                             <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-[var(--secondary-color)]/20 border border-[var(--white-color)]/50 rounded-full text-white text-xs font-semibold self-center lg:self-start'>
                                 COMING SOON
                             </div>
-                            <h2 className='text-2xl md:text-3xl font-bold font-[Inter]'>
+                            <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>
                                 Applications Opening Soon!
                             </h2>
                             <p className='text-base md:text-lg text-gray-300 max-w-xl lg:max-w-none'>

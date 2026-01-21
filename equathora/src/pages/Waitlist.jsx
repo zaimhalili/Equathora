@@ -15,7 +15,7 @@ const Waitlist = () => {
                 {/* Hero Section */}
                 <section className="relative overflow-hidden">
                     {/* Animated Background Elements */}
-                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div className="absolute inset-0 overflow-hidden poSansation-events-none">
                         <div className="absolute top-20 -left-20 w-72 h-72 bg-[var(--accent-color)]/5 rounded-full blur-3xl"></div>
                         <div className="absolute bottom-20 -right-20 w-96 h-96 bg-[var(--secondary-color)]/5 rounded-full blur-3xl"></div>
                     </div>
@@ -29,7 +29,7 @@ const Waitlist = () => {
                             </div>
 
                             {/* Main Headline */}
-                            <h1 className="flex flex-col items-center justify-center text-5xl md:text-7xl font-black text-[var(--secondary-color)] font-[Inter] leading-tight">
+                            <h1 className="flex flex-col items-center justify-center text-5xl md:text-7xl font-black text-[var(--secondary-color)] font-[Sansation] leading-tight">
                                 <span>Master Math.</span>
                                 <span className="text-[var(--accent-color)]">Get Early Access.</span>
                             </h1>
@@ -43,7 +43,7 @@ const Waitlist = () => {
                             <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
                                 <button
                                     onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform', '_blank')}
-                                    className="flex items-center justify-center gap-3 px-12 py-5 bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white text-xl font-bold rounded-xl transition-all w-full cursor-pointer"
+                                    className="flex items-center justify-center gap-3 px-12 py-5 bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white text-xl font-bold rounded-xl transition-all w-full cursor-poSansation"
                                 >
                                     <span>Join the Waitlist</span>
                                     <FaArrowRight />
@@ -207,7 +207,7 @@ const Waitlist = () => {
                         <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
                             <button
                                 onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform', '_blank')}
-                                className="flex items-center justify-center gap-3 px-12 py-5 bg-white text-[var(--secondary-color)] text-xl font-bold rounded-xl hover:bg-gray-100 transition-all w-full cursor-pointer"
+                                className="flex items-center justify-center gap-3 px-12 py-5 bg-white text-[var(--secondary-color)] text-xl font-bold rounded-xl hover:bg-gray-100 transition-all w-full cursor-poSansation"
                             >
                                 <span>Secure My Spot</span>
                                 <FaRocket />

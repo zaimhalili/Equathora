@@ -151,7 +151,7 @@ const ProfileExportButtons = () => {
             section: 'Learning Focus', items: [
                 ['Favorite Topics', favoriteTopics.length > 0 ? favoriteTopics.join(', ') : 'Diverse Learning'],
                 ['Total Topics Explored', favoriteTopics.length],
-                ['Primary Skill Level', difficulty.hard > 5 ? 'Advanced' : difficulty.medium > 10 ? 'Intermediate' : 'Beginner']
+                ['Primary Skill Level', difficulty.hard > 5 ? 'Advanced' : difficulty.medium > 10 ? 'Sansationmediate' : 'Beginner']
             ]
         }
     ];
@@ -338,7 +338,7 @@ const ProfileExportButtons = () => {
         doc.text('VERIFIED BY EQUATHORA', margin + 8, yPos + 25.5);
 
         // Add page numbers to all pages
-        const totalPages = doc.internal.pages.length - 1;
+        const totalPages = doc.Sansationnal.pages.length - 1;
         for (let i = 1; i <= totalPages; i++) {
             doc.setPage(i);
             doc.setFontSize(8);
@@ -357,7 +357,7 @@ const ProfileExportButtons = () => {
             <button
                 type="button"
                 onClick={() => setShowMenu(!showMenu)}
-                className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[var(--french-gray)] rounded-lg text-[var(--secondary-color)] font-semibold text-sm transition-all duration-200 shadow-sm cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[var(--french-gray)] rounded-lg text-[var(--secondary-color)] font-semibold text-sm transition-all duration-200 shadow-sm cursor-poSansation"
                 aria-label="Export account data"
             >
                 <FaFileDownload className="text-base" />
@@ -373,7 +373,7 @@ const ProfileExportButtons = () => {
                     <button
                         type="button"
                         onClick={exportPdf}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:translate-x-1 transition-all duration-150 text-left cursor-pointer border-b border-gray-300"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:translate-x-1 transition-all duration-150 text-left cursor-poSansation border-b border-gray-300"
                     >
                         <FaFilePdf className="text-red-600 text-lg flex-shrink-0" />
                         <div>
@@ -384,7 +384,7 @@ const ProfileExportButtons = () => {
                     <button
                         type="button"
                         onClick={exportCsv}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:translate-x-1 transition-all duration-150 text-left cursor-pointer"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:translate-x-1 transition-all duration-150 text-left cursor-poSansation"
                     >
                         <FaFileCsv className="text-green-600 text-lg flex-shrink-0" />
                         <div>

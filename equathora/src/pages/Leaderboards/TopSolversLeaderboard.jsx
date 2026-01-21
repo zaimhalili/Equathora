@@ -95,7 +95,7 @@ const TopSolversLeaderboard = () => {
                     <p>{error}</p>
                     <button
                         onClick={fetchTopSolvers}
-                        style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}
+                        style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'poSansation' }}
                     >
                         Retry
                     </button>
@@ -122,7 +122,7 @@ const TopSolversLeaderboard = () => {
                                 color: category === cat ? 'white' : 'var(--secondary-color)',
                                 border: '1px solid var(--french-gray)',
                                 borderRadius: '0.5rem',
-                                cursor: 'pointer',
+                                cursor: 'poSansation',
                                 textTransform: 'capitalize',
                                 fontSize: '0.9rem'
                             }}

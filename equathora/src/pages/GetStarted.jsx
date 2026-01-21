@@ -61,7 +61,7 @@ const GetStarted = () => {
             subtitle: 'This helps us match you with appropriate content',
             options: [
                 { id: 'beginner', label: 'Beginner', icon: <FaBook />, description: 'Learning fundamentals' },
-                { id: 'intermediate', label: 'Intermediate', icon: <FaBrain />, description: 'Comfortable with basics' },
+                { id: 'Sansationmediate', label: 'Sansationmediate', icon: <FaBrain />, description: 'Comfortable with basics' },
                 { id: 'advanced', label: 'Advanced', icon: <FaChartLine />, description: 'Ready for complex problems' },
                 { id: 'expert', label: 'Expert', icon: <FaRocket />, description: 'Seeking challenges' }
             ]
@@ -186,14 +186,14 @@ const GetStarted = () => {
     };
 
     return (
-        <main className='flex flex-col w-full bg-[var(--main-color)] min-h-screen items-center justify-center px-4 sm:px-6 py-6 font-[Inter]'>
+        <main className='flex flex-col w-full bg-[var(--main-color)] min-h-screen items-center justify-center px-4 sm:px-6 py-6 font-[Sansation]'>
             {/* Progress Bar Section */}
             <div className='w-full max-w-xl flex flex-col gap-3 pb-6'>
                 <div className='flex items-center gap-3'>
                     {currentStep > 0 && (
                         <button
                             onClick={handleBack}
-                            className='p-2 rounded-lg hover:bg-[var(--french-gray)] transition-colors duration-200 text-[var(--secondary-color)] cursor-pointer'
+                            className='p-2 rounded-lg hover:bg-[var(--french-gray)] transition-colors duration-200 text-[var(--secondary-color)] cursor-poSansation'
                             aria-label="Go back"
                         >
                             <FaArrowLeft className='text-lg' />
@@ -246,7 +246,7 @@ const GetStarted = () => {
                             <button
                                 key={option.id}
                                 onClick={() => handleSelection(option.id)}
-                                className={`group flex items-center gap-2.5 p-2.5 rounded-lg border-2 transition-colors duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
+                                className={`group flex items-center gap-2.5 p-2.5 rounded-lg border-2 transition-colors duration-200 cursor-poSansation text-left ${selectedOptions[currentStep] === option.id
                                     ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
                                     : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                     }`}
@@ -277,7 +277,7 @@ const GetStarted = () => {
                                 <button
                                     key={option.id}
                                     onClick={() => handleSelection(option.id)}
-                                    className={`flex flex-row items-center justify-center gap-2 px-3 py-2 rounded-lg border-2 transition-colors duration-200 cursor-pointer ${isSelected
+                                    className={`flex flex-row items-center justify-center gap-2 px-3 py-2 rounded-lg border-2 transition-colors duration-200 cursor-poSansation ${isSelected
                                         ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
                                         : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                         }`}
@@ -297,7 +297,7 @@ const GetStarted = () => {
                     onClick={handleContinue}
                     disabled={!canContinue()}
                     className={`w-60 px-8 py-3 rounded-full font-semibold text-sm ${canContinue()
-                        ? 'bg-[var(--secondary-color)] text-white hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-pointer'
+                        ? 'bg-[var(--secondary-color)] text-white hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-poSansation'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                         }`}
                 >

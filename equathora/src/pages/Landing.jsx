@@ -40,6 +40,7 @@ const Landing = () => {
                 <CTASection />
                 <WaitlistSection />
                 <Footer />
+                <a href="https://www.vecteezy.com/free-png/student">Student PNGs by Vecteezy</a>
             </div>
         </>
     );

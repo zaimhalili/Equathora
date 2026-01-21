@@ -21,10 +21,10 @@ const About = () => {
                             transition={{ duration: 0.5 }}
                             className="w-full flex flex-col items-center text-center"
                         >
-                            <h1 className="text-4xl md:text-5xl font-bold font-[Inter] pb-4">
+                            <h1 className="text-4xl md:text-5xl font-bold font-[Sansation] pb-4">
                                 <span className="bg-gradient-to-r from-[var(--secondary-color)] to-[var(--accent-color)] bg-clip-text text-transparent">About Equathora</span>
                             </h1>
-                            <p className="text-base text-gray-600 font-[Inter] max-w-2xl leading-relaxed">
+                            <p className="text-base text-gray-600 font-[Sansation] max-w-2xl leading-relaxed">
                                 Where equations meet time, a platform built for mathematical mastery in 2025
                             </p>
                         </motion.div>
@@ -68,7 +68,7 @@ const About = () => {
                                 <div className="lg:w-1/2">
                                     <div className="flex items-center gap-3 pb-6">
                                         <FaLightbulb className="text-3xl text-[var(--accent-color)]" />
-                                        <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter]">
+                                        <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Sansation]">
                                             The Name
                                         </h2>
                                     </div>
@@ -90,7 +90,7 @@ const About = () => {
 
                                 {/* Right Column */}
                                 <div className="lg:w-1/2">
-                                    <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6">
+                                    <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Sansation] pb-6">
                                         Why <span className="text-[var(--accent-color)]">Red</span>?
                                     </h2>
                                     <div className="space-y-4 text-gray-700 text-base leading-relaxed">
@@ -118,7 +118,7 @@ const About = () => {
                             className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-10"
                         >
                             <div className="flex flex-col items-center justify-center w-full pb-8">
-                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-3">
+                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Sansation] pb-3">
                                     What Equathora does best
                                 </h2>
                                 <p className="text-base text-gray-600 leading-relaxed max-w-3xl text-center">
@@ -167,11 +167,11 @@ const About = () => {
                             className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
                         >
                             <div className="w-full flex flex-col items-center text-center">
-                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6">
+                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Sansation] pb-6">
                                     Our Mission
                                 </h2>
                                 <p className="text-lg text-gray-700 leading-relaxed max-w-3xl">
-                                    Transform how students approach mathematics, not as a subject to fear, but as a journey of discovery. We provide an interactive platform where learners build confidence through step-by-step guidance and achievement-based motivation.
+                                    Transform how students approach mathematics, not as a subject to fear, but as a journey of discovery. We provide an Sansationactive platform where learners build confidence through step-by-step guidance and achievement-based motivation.
                                 </p>
                             </div>
                         </motion.div>
@@ -185,7 +185,7 @@ const About = () => {
                             transition={{ duration: 0.5, delay: 0.5 }}
                             className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
                         >
-                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Inter] pb-6 text-center">
+                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Sansation] pb-6 text-center">
                                 What Makes Us Different
                             </h2>
                             <div className="w-full grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -223,11 +223,11 @@ const About = () => {
                             className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-8"
                         >
                             <div className="w-full flex flex-col items-center text-center">
-                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-4">
+                                <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Sansation] pb-4">
                                     Ready to Start Learning?
                                 </h2>
                                 <p className="text-base text-gray-600 pb-6 max-w-2xl">
-                                    Join students mastering mathematics through interactive problem-solving
+                                    Join students mastering mathematics through Sansationactive problem-solving
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-4">
                                     <Link

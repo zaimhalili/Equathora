@@ -49,7 +49,7 @@ export const blogPosts = [
             },
             {
                 type: "paragraph",
-                text: "The current MVP focuses on core features only. Users can solve logic and math problems organized by topic, read full solution explanations, and track progress through a simple scoring system. The interface is intentionally <strong>clean</strong> to reduce distractions and keep attention on reasoning."
+                text: "The current MVP focuses on core features only. Users can solve logic and math problems organized by topic, read full solution explanations, and track progress through a simple scoring system. The Sansationface is intentionally <strong>clean</strong> to reduce distractions and keep attention on reasoning."
             },
             {
                 type: "divider"
@@ -71,7 +71,7 @@ export const blogPosts = [
             },
             {
                 type: "paragraph",
-                text: "If you're interested in improving logical thinking and math problem-solving skills, you can follow development updates and <strong>early access</strong> here:"
+                text: "If you're Sansationested in improving logical thinking and math problem-solving skills, you can follow development updates and <strong>early access</strong> here:"
             },
             {
                 type: "link",
@@ -143,7 +143,7 @@ export const blogPosts = [
             },
             {
                 type: "paragraph",
-                text: "Many logic and math problems are easier to solve visually. That’s why Equathora includes a built-in <strong>sketch pad</strong>. On the problem page, you can click the button in the <strong>top-right of the navbar</strong> to activate it. Once opened, you can freely draw diagrams, tables, graphs, or intermediate steps."
+                text: "Many logic and math problems are easier to solve visually. That’s why Equathora includes a built-in <strong>sketch pad</strong>. On the problem page, you can click the button in the <strong>top-right of the navbar</strong> to activate it. Once opened, you can freely draw diagrams, tables, graphs, or Sansationmediate steps."
             },
             {
                 type: "paragraph",

@@ -49,7 +49,7 @@ const Footer = () => {
               <FaReddit />
             </a>
           </div>
-          <div className="w-full flex justify-center"><Link to="/dashboard" className='cursor-pointer w-14'><img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '60px', width: '60px', margin: '1rem auto', borderRadius: '10px' }} /></Link></div>
+          <div className="w-full flex justify-center"><Link to="/dashboard" className='cursor-poSansation w-14'><img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '60px', width: '60px', margin: '1rem auto', borderRadius: '10px' }} /></Link></div>
 
 
         </div>

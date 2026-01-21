@@ -12,9 +12,9 @@ const BlogList = () => {
         <div>
             <FeebackBanner />
             <Navbar />
-            <main className='flex bg-[var(--main-color)] font-[Inter] flex-col min-h-screen w-full items-center py-12'>
+            <main className='flex bg-[var(--main-color)] font-[Sansation] flex-col min-h-screen w-full items-center py-12'>
                 <section className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px]'>
-                    <h1 className='text-4xl font-bold font-[Inter] text-[var(--secondary-color)] mb-8'>
+                    <h1 className='text-4xl font-bold font-[Sansation] text-[var(--secondary-color)] mb-8'>
                         Equathora Blog
                     </h1>
                     <p className='text-lg text-gray-600 mb-12'>
@@ -26,7 +26,7 @@ const BlogList = () => {
                             <Link
                                 key={post.id}
                                 to={`/blog/${post.slug}`}
-                                className='bg-white rounded-lg shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer flex flex-col'
+                                className='bg-white rounded-lg shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-poSansation flex flex-col'
                             >
                                 <img
                                     src={post.thumbnail}
@@ -40,7 +40,7 @@ const BlogList = () => {
                                         </span>
                                         {post.readTime && <span>· {post.readTime}</span>}
                                     </div>
-                                    <h2 className='text-xl font-bold font-[Inter] text-[var(--secondary-color)] line-clamp-2'>
+                                    <h2 className='text-xl font-bold font-[Sansation] text-[var(--secondary-color)] line-clamp-2'>
                                         {post.title}
                                     </h2>
                                     <p className='text-gray-600 text-sm line-clamp-3 flex-1'>

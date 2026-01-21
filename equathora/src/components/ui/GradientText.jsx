@@ -13,13 +13,13 @@ export default function GradientText({
 
     const wrapperClass = inline
         ? `relative inline-flex flex-row items-center justify-center transition-shadow duration-500 overflow-hidden`
-        : `relative mx-auto flex max-w-fit flex-row items-center justify-center rounded-[1.25rem] backdrop-blur transition-shadow duration-500 overflow-hidden cursor-pointer`;
+        : `relative mx-auto flex max-w-fit flex-row items-center justify-center rounded-[1.25rem] backdrop-blur transition-shadow duration-500 overflow-hidden cursor-poSansation`;
 
     return (
         <div className={wrapperClass}>
             {showBorder && (
                 <div
-                    className="absolute inset-0 bg-cover z-0 pointer-events-none animate-gradient"
+                    className="absolute inset-0 bg-cover z-0 poSansation-events-none animate-gradient"
                     style={{
                         ...gradientStyle,
                         backgroundSize: '300% 100%'

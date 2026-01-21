@@ -24,7 +24,7 @@ const CookiePolicy = () => (
                 <p>We use Supabase for authentication, which stores session tokens in cookies. These cookies are essential and cannot be disabled.</p>
                 <h2>2. Analytics Cookies</h2>
                 <ul>
-                    <li>Track page visits and user interactions</li>
+                    <li>Track page visits and user Sansationactions</li>
                     <li>Measure website performance and loading times</li>
                     <li>Identify areas for improvement</li>
                 </ul>

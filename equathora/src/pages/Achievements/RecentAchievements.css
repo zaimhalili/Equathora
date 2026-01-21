@@ -15,7 +15,7 @@
     border-radius: 12px;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
     padding: 2rem 1rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     margin-bottom: 2rem;
     max-width: 1200px;
     box-sizing: border-box;
@@ -23,7 +23,7 @@
 }
 
 .rec-achievements h2 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     font-size: clamp(1.7rem, 5vw, 3.2rem);
     text-align: center;
     color: white;
@@ -52,7 +52,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     font-size: clamp(1rem, 3vw, 1.2rem);
     font-weight: 500;
     background-color: var(--secondary-color);

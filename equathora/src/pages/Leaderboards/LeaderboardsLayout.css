@@ -24,7 +24,7 @@
 
 .lb-option {
     color: rgb(0, 0, 0);
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-family: 'Sansation', Arial, Helvetica, sans-serif;
     font-size: clamp(0.85rem, 2vw, 0.95rem);
     padding: 0.6rem 1.2rem;
     border-radius: 8px;

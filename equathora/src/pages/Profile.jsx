@@ -204,7 +204,7 @@ const Profile = () => {
         <div className='mx-auto px-[4vw] xl:px-[6vw] max-w-[1500px]'>
           {/* Two Column Layout */}
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
-            
+
             {/* Left Column - Combined Profile, Stats, and Topics */}
             <motion.div
               className='lg:col-span-1 flex flex-col gap-4'
@@ -228,7 +228,7 @@ const Profile = () => {
                         e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name || 'User')}&background=d90429&color=fff&size=128&bold=true`;
                       }}
                     />
-                    <div className='text-[var(--secondary-color)] font-[Inter] flex flex-col justify-between gap-1'>
+                    <div className='text-[var(--secondary-color)] font-[Sansation] flex flex-col justify-between gap-1'>
                       <div>
                         <h5 className='font-bold text-xl md:text-2xl'>{userData.name}</h5>
                         <h5 className='font-light text-md md:text-lg'>@{userData.username}</h5>
@@ -255,7 +255,7 @@ const Profile = () => {
                   {viewingOwnProfile && (
                     <button
                       type="button"
-                      className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300 cursor-pointer'
+                      className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300 cursor-poSansation'
                       onClick={() => setIsEditModalOpen(true)}
                     >
                       Edit Profile
@@ -328,7 +328,7 @@ const Profile = () => {
                 <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
                   {/* Circular Progress Indicator */}
                   <div
-                    className='relative flex flex-col w-full md:flex-1 justify-center items-center cursor-pointer group'
+                    className='relative flex flex-col w-full md:flex-1 justify-center items-center cursor-poSansation group'
                     onMouseEnter={() => setShowAccuracy(true)}
                     onMouseLeave={() => setShowAccuracy(false)}
                   >
@@ -388,7 +388,7 @@ const Profile = () => {
                     </svg>
 
                     {/* Center Text */}
-                    <div className='absolute inset-0 flex flex-col justify-center items-center font-medium text-center pointer-events-none'>
+                    <div className='absolute inset-0 flex flex-col justify-center items-center font-medium text-center poSansation-events-none'>
                       <div className={`transition-all duration-300 ${showAccuracy ? 'opacity-0 scale-90' : 'opacity-100 scale-100'} absolute`}>
                         <p className='text-xl text-[var(--secondary-color)]'><span className='text-4xl font-bold'>{totalSolved}</span>/{totalProblems}</p>
                         <div className='flex justify-center gap-1 items-center'>

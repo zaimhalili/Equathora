@@ -1,7 +1,7 @@
 .typeOfInput {
     color: var(--secondary-color);
     font-size: 0.8rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     align-items: flex-start;
     margin-bottom: 0.6rem;
     margin-top: -5px;
@@ -27,7 +27,7 @@
 
 .inputAuth::placeholder {
     color: var(--mid-main-secondary);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     font-size: 1rem;
 }
 

@@ -34,13 +34,13 @@
 }
 
 #resend-text-container h3 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     color: var(--secondary-color);
     font-size: 1.6rem;
 }
 
 #resend-text-container h6 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     color: var(--secondary-color);
     font-size: 1.2rem;
     font-weight: 300;
@@ -63,7 +63,7 @@
     height: 50px;
     background-color: var(--dark-accent-color);
     color: white;
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-family: 'Sansation', Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: 600;
     display: flex;
@@ -75,7 +75,7 @@
     border: 1px solid var(--secondary-color);
     transition: 0.1s ease-out;
     box-shadow: 0 5px 5px 0 rgba(43, 45, 66, 0.5);
-    cursor: pointer;
+    cursor: poSansation;
 }
 
 .resend-btn:hover {
@@ -94,7 +94,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-family: 'Sansation', Arial, Helvetica, sans-serif;
     font-size: 1rem;
     gap: 10px;
 }

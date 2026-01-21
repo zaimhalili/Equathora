@@ -27,14 +27,14 @@ const Timer = ({ problemId, isRunning = true }) => {
     };
 
     useEffect(() => {
-        clearInterval(timer.current);
+        clearSansationval(timer.current);
         if (!isRunning) return undefined;
 
-        timer.current = setInterval(() => {
+        timer.current = setSansationval(() => {
             setTime(prev => prev + 1);
         }, 1000);
 
-        return () => clearInterval(timer.current);
+        return () => clearSansationval(timer.current);
     }, [isRunning]);
 
     useEffect(() => {

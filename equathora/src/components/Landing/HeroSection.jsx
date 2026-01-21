@@ -63,11 +63,11 @@ const Particles = () => {
             }));
         }, 50); // Slower update rate
 
-        return () => clearInterval(interval);
+        return () => clearSansationval(Sansationval);
     }, []);
 
     return (
-        <div className="absolute inset-0 pointer-events-none z-5 overflow-hidden">
+        <div className="absolute inset-0 poSansation-events-none z-5 overflow-hidden">
             {positions.map((p, i) => (
                 <div
                     key={i}
@@ -94,7 +94,7 @@ const HeroSection = () => {
 
     return (
         <section
-            className="font-[Inter] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-[600px] sm:min-h-[700px] md:h-[calc(100vh-80px)] flex items-center justify-center"
+            className="font-[Sansation] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-[600px] sm:min-h-[700px] md:h-[calc(100vh-80px)] flex items-center justify-center"
         >
             {/* Background decorations */}
             <div className="absolute inset-0">
@@ -288,7 +288,7 @@ const HeroSection = () => {
 
                         {/* Floating badge - top right */}
                         <motion.div
-                            className="absolute top-16 right-4 lg:right-8 z-30 pointer-events-none"
+                            className="absolute top-16 right-4 lg:right-8 z-30 poSansation-events-none"
                             animate={{ y: [0, -10, 0] }}
                             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                         >
@@ -305,7 +305,7 @@ const HeroSection = () => {
 
                         {/* Floating badge - left side */}
                         <motion.div
-                            className="absolute top-32 left-0 lg:-left-8 z-30 pointer-events-none"
+                            className="absolute top-32 left-0 lg:-left-8 z-30 poSansation-events-none"
                             animate={{ y: [0, -8, 0] }}
                             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                         >
@@ -317,14 +317,14 @@ const HeroSection = () => {
 
                         {/* Floating math symbols */}
                         <motion.div
-                            className="absolute top-20 left-20 text-4xl text-white/20 font-light z-10 pointer-events-none"
+                            className="absolute top-20 left-20 text-4xl text-white/20 font-light z-10 poSansation-events-none"
                             animate={{ rotate: [0, 10, -10, 0], y: [0, -5, 0] }}
                             transition={{ duration: 6, repeat: Infinity }}
                         >
                             ∑
                         </motion.div>
                         <motion.div
-                            className="absolute bottom-32 right-16 text-3xl text-white/15 font-light z-10 pointer-events-none"
+                            className="absolute bottom-32 right-16 text-3xl text-white/15 font-light z-10 poSansation-events-none"
                             animate={{ rotate: [0, -10, 10, 0], y: [0, -8, 0] }}
                             transition={{ duration: 8, repeat: Infinity, delay: 1 }}
                         >

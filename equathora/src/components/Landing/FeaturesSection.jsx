@@ -99,7 +99,7 @@ const FeaturesSection = () => {
                         {features.map((feature, index) => (
                             <motion.div
                                 key={feature.title}
-                                className="group relative bg-white border border-gray-100 rounded p-8 sm:p-9 md:p-10 shadow-md hover:shadow-xl transition-all cursor-pointer w-full max-w-md"
+                                className="group relative bg-white border border-gray-100 rounded p-8 sm:p-9 md:p-10 shadow-md hover:shadow-xl transition-all cursor-poSansation w-full max-w-md"
                                 initial={{ opacity: 0, x: index % 2 === 0 ? 80 : -80, y: 40 }}
                                 whileInView={{ opacity: 1, x: 0, y: 0 }}
                                 viewport={{ once: true, amount: 0.3 }}

@@ -21,7 +21,7 @@
 }
 
 .sidebar-close {
-    cursor: pointer;
+    cursor: poSansation;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -86,7 +86,7 @@
 
 .sidebar-profile-info h4 {
     margin: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--secondary-color);
@@ -94,7 +94,7 @@
 
 .sidebar-profile-info p {
     margin: 2px 0 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     font-size: 0.8rem;
     font-weight: 400;
     color: var(--french-gray);
@@ -133,7 +133,7 @@
 
 .sidebar-item-text h4 {
     margin: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     font-size: 1rem;
     font-weight: 600;
     color: var(--secondary-color);
@@ -142,7 +142,7 @@
 
 .sidebar-item-text p {
     margin: 2px 0 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     font-size: 0.75rem;
     font-weight: 400;
     color: var(--french-gray);
@@ -164,7 +164,7 @@
     width: 100%;
     background: transparent;
     border: none;
-    cursor: pointer;
+    cursor: poSansation;
     padding: 0;
     transition: all 0.2s ease;
 }
@@ -240,7 +240,7 @@
     border: none;
     border-radius: 10px;
     text-align: left;
-    cursor: pointer;
+    cursor: poSansation;
     transition: all 0.2s ease;
 }
 

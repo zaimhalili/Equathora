@@ -72,7 +72,7 @@ const HelpCenter = () => {
         },
         {
             question: "Can I use Equathora offline?",
-            answer: "Currently, Equathora requires an internet connection to sync your progress and access problems. However, we're working on an offline mode for future releases.",
+            answer: "Currently, Equathora requires an Sansationnet connection to sync your progress and access problems. However, we're working on an offline mode for future releases.",
             icon: <FaQuestionCircle />,
             color: "text-cyan-500"
         },
@@ -91,7 +91,7 @@ const HelpCenter = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full min-h-screen bg-gradient-to-b from-blue-50 via-white to-purple-50 font-[Inter]">
+            <div className="w-full min-h-screen bg-gradient-to-b from-blue-50 via-white to-purple-50 font-[Sansation]">
                 <header>
                     <Navbar />
                 </header>
@@ -99,7 +99,7 @@ const HelpCenter = () => {
                 {/* Hero Section with Illustration */}
                 <section className="w-full relative overflow-hidden flex justify-center">
                     {/* Animated background shapes */}
-                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div className="absolute inset-0 overflow-hidden poSansation-events-none">
                         <div className="absolute top-20 left-10 w-32 h-32 bg-blue-400 rounded-full opacity-10 blur-2xl"></div>
                         <div className="absolute top-40 right-20 w-40 h-40 bg-purple-400 rounded-full opacity-10 blur-2xl"></div>
                         <div className="absolute bottom-20 left-1/3 w-36 h-36 bg-pink-400 rounded-full opacity-10 blur-2xl"></div>
@@ -111,7 +111,7 @@ const HelpCenter = () => {
                             <div className="flex-1 flex flex-col gap-4">
                                 <div className="flex items-center gap-2">
                                     <span className="text-3xl">👋</span>
-                                    <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[Inter]">
+                                    <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[Sansation]">
                                         Help Center
                                     </h1>
                                 </div>
@@ -188,7 +188,7 @@ const HelpCenter = () => {
                 <section className="w-full flex justify-center">
                     <div className="px-[4vw] xl:px-[6vw] py-8 max-w-[1500px] w-full">
                         <div className="flex flex-col items-center gap-2 pb-6">
-                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Inter] text-center">
+                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Sansation] text-center">
                                 Frequently Asked Questions
                             </h2>
                             <p className="text-gray-600 text-center text-base">Everything you need to know about Equathora</p>
@@ -201,7 +201,7 @@ const HelpCenter = () => {
                                     className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
                                 >
                                     <button
-                                        className="w-full p-4 flex items-start gap-3 text-left cursor-pointer"
+                                        className="w-full p-4 flex items-start gap-3 text-left cursor-poSansation"
                                         onClick={() => toggleFaq(index)}
                                     >
                                         <div className={`${faq.color} text-xl flex-shrink-0 pt-1`}>
@@ -241,7 +241,7 @@ const HelpCenter = () => {
                                 <div className="flex-1 p-8 flex flex-col gap-4 text-white">
                                     <div className="flex items-center gap-2">
                                         <span className="text-3xl">💌</span>
-                                        <h2 className="text-2xl font-bold font-[Inter]">Still Need Help?</h2>
+                                        <h2 className="text-2xl font-bold font-[Sansation]">Still Need Help?</h2>
                                     </div>
                                     <p className="text-gray-300 text-base">
                                         Can't find your answer? Our support team responds within 3 hours (usually) !

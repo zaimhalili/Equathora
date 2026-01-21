@@ -25,7 +25,7 @@ const ReputationBadge = ({
             <div className="flex items-start justify-between">
                 <div>
                     <p className="text-xs uppercase tracking-widest text-[var(--french-gray)] font-semibold">Reputation</p>
-                    <p className="text-3xl font-[Inter] font-bold text-[var(--secondary-color)]">{value}</p>
+                    <p className="text-3xl font-[Sansation] font-bold text-[var(--secondary-color)]">{value}</p>
                 </div>
                 <div className="text-right">
                     <p className="text-sm font-semibold text-[var(--secondary-color)]">Level {level}</p>

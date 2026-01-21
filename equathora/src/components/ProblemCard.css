@@ -6,10 +6,10 @@
     border-radius: 6px;
     padding: 1rem;
     transition: all 0.3s ease;
-    cursor: pointer;
+    cursor: poSansation;
     text-decoration: none;
     color: var(--secondary-color);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Sansation', sans-serif;
     position: relative;
     overflow: hidden;
     min-height: 120px;

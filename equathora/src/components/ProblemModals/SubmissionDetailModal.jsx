@@ -38,7 +38,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                 <div className='flex justify-between items-start pb-4'>
                     <div className='flex-1'>
                         <div className='flex items-center gap-3 pb-2'>
-                            <h2 className='font-[Inter] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>
+                            <h2 className='font-[Sansation] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>
                                 Submission Details
                             </h2>
                             <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 text-center ${submission.status === 'accepted' ? 'bg-green-100 text-green-700' :
@@ -55,7 +55,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                             <span>{submission.timestamp}</span>
                         </div>
                     </div>
-                    <button onClick={onClose} className='text-gray-400 hover:text-gray-600 transition-colors duration-75 cursor-pointer'>
+                    <button onClick={onClose} className='text-gray-400 hover:text-gray-600 transition-colors duration-75 cursor-poSansation'>
                         <FaTimes className='text-xl' />
                     </button>
                 </div>
@@ -63,10 +63,10 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                 <div className='flex flex-col gap-4 py-5 '>
                     <div className='bg-[var(--french-gray)]/10 p-4 rounded-xl'>
                         <div className='flex justify-between items-center pb-3'>
-                            <h3 className='font-[Inter] font-bold text-sm text-[var(--secondary-color)]'>Your Solution Steps</h3>
+                            <h3 className='font-[Sansation] font-bold text-sm text-[var(--secondary-color)]'>Your Solution Steps</h3>
                             <button
                                 onClick={handleCopySteps}
-                                className='flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[var(--accent-color)] border border-[var(--accent-color)] rounded-lg hover:bg-[var(--accent-color)] hover:text-white transition-colors duration-75 cursor-pointer'
+                                className='flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[var(--accent-color)] border border-[var(--accent-color)] rounded-lg hover:bg-[var(--accent-color)] hover:text-white transition-colors duration-75 cursor-poSansation'
                             >
                                 <FaCopy />
                                 Copy Steps
@@ -135,7 +135,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                 <button
                     type="button"
                     onClick={onClose}
-                    className='cursor-pointer px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'
+                    className='cursor-poSansation px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'
                 >
                     Close
                 </button>

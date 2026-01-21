@@ -108,7 +108,7 @@ export const ParallaxLayer = ({
 };
 
 /**
- * FloatingElement - An element that continuously floats with optional cursor interaction
+ * FloatingElement - An element that continuously floats with optional cursor Sansationaction
  * Enhanced with stronger cursor reactivity
  */
 export const FloatingElement = ({

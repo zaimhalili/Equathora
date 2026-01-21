@@ -9,7 +9,7 @@
 	background-attachment: fixed;
 	display: flex;
 	flex-direction: column;
-	font-family: 'Inter', serif;
+	font-family: 'Sansation', serif;
 	z-index: 0;
 	align-items: center;
 	justify-content: flex-end;
@@ -27,7 +27,7 @@
 			var(--raisin-black));
 	/* Adjust opacity for darkness */
 	z-index: 1;
-	pointer-events: none;
+	poSansation-events: none;
 }
 
 .achievements-image-body>* {
@@ -73,7 +73,7 @@
 	color: rgba(255, 255, 255, 0.8);
 	font-size: 0.95rem;
 	font-weight: 500;
-	font-family: 'Inter', sans-serif;
+	font-family: 'Sansation', sans-serif;
 	text-transform: uppercase;
 	letter-spacing: 1.5px;
 }
@@ -155,7 +155,7 @@
 	width: auto;
 	font-size: 1.4rem;
 	font-weight: 400;
-	font-family: 'Inter', sans-serif;
+	font-family: 'Sansation', sans-serif;
 	padding: 0px 20px;
 	border-radius: 50px;
 	margin-top: 1rem;
@@ -191,7 +191,7 @@
 	padding: 1rem 0;
 	text-decoration: underline;
 	background-color: var(--secondary-color);
-	font-family: 'Inter', sans-serif;
+	font-family: 'Sansation', sans-serif;
 }
 
 @media (max-width: 768px) {
