@@ -177,7 +177,7 @@ export default function App() {
             {/* Protected Routes - Require Authentication */}
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
-            <Route path="/learn" element={<ProtectedRoute><Learn /></ProtectedRoute>} />
+            <Route path="/learn" element={<Learn />} />
             <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
             <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
             {/* <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} /> */}

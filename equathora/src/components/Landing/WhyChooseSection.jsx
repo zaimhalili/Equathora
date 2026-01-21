@@ -36,7 +36,7 @@ const WhyChooseSection = () => {
     ];
 
     return (
-        <section className="w-full bg-white relative overflow-hidden">
+        <section className="w-full bg-white relative overflow-hidden flex justify-center">
             {/* Background scrolling text - FASTER */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
                 <motion.div

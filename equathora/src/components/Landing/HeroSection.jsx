@@ -122,7 +122,7 @@ const HeroSection = () => {
             {/* Red Particles */}
             <Particles />
 
-            <div className="relative z-10 w-full">
+            <div className="relative z-10 w-full flex justify-center">
                 <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1400px] pt-22 pb-[28px] sm:py-24 md:py-24 lg:py-32 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-16 w-full">
 
                     {/* Left Content - Centered */}
@@ -198,7 +198,7 @@ const HeroSection = () => {
                             style={{ transformPerspective: 1000 }}
                         >
                             <Link
-                                to="/dashboard"
+                                to="/learn"
                                 className="group flex items-center gap-2 rounded-lg !bg-[var(--accent-color)] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all hover:!bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
                             >
                                 Start practicing
@@ -272,11 +272,11 @@ const HeroSection = () => {
 
                                     {/* Student image positioned inside/aligned with circle */}
                                     <div className="relative w-[300px] h-[400px] md:w-[420px] md:h-[552px] flex items-end justify-center z-10">
-                                        <div className="w-full h-[400px] md:h-[450px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px', transform: 'none', willChange: 'auto' }}>
+                                        <div className="w-full h-[400px] lg:h-[555px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px', transform: 'none', willChange: 'auto' }}>
                                             <img
                                                 src={YoungStudent}
                                                 alt="Student with books"
-                                                className="w-full h-full object-cover object-top drop-shadow-2xl"
+                                                className="w-full h-full object-cover object-top drop-shadow-2xl brightness-95"
                                                 loading="eager"
                                                 style={{ transform: 'none', willChange: 'auto' }}
                                             />

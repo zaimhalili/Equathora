@@ -24,7 +24,7 @@ const FeaturesSection = () => {
     ];
 
     return (
-        <section className="w-full bg-white relative overflow-hidden">
+        <section className="w-full bg-white relative overflow-hidden flex justify-center">
             {/* Decorative elements */}
             <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
@@ -53,7 +53,7 @@ const FeaturesSection = () => {
                 <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 items-center justify-center">
 
                     {/* Left side - Student with circle (matching hero style) */}
-                    <div className="flex-1 relative flex justify-center items-center max-lg:hidden">
+                    <div className="flex-1 relative flex justify-center items-center">
                         <MouseFollower
                             intensity={25}
                             scale={1.05}
@@ -63,28 +63,29 @@ const FeaturesSection = () => {
                         >
                             <motion.div
                                 className="relative"
-                                initial={{ opacity: 0, x: -50, y: 30 }}
-                                whileInView={{ opacity: 1, x: 0, y: 0 }}
-                                viewport={{ once: true, amount: 0.3 }}
-                                transition={{ duration: 0.8, ease: "easeOut" }}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.6, delay: 0.2 }}
                             >
                                 <motion.div
                                     className="relative"
-                                    animate={{ y: [0, -15, 0] }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                                 >
-                                    {/* Full circle backdrop */}
-                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full border-2 border-[var(--accent-color)]/15 bg-[var(--accent-color)]/5 backdrop-blur-sm z-0" />
-                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full border border-[var(--accent-color)]/10 z-0" />
+                                    {/* Full circle backdrop (darker gradient) */}
+                                    <div
+                                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] lg:w-[455px] lg:h-[455px] rounded-full backdrop-blur-sm z-0"
+                                        style={{ backgroundImage: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, var(--french-gray) 100%)' }}
+                                    />
+                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] lg:w-[320px] lg:h-[320px] rounded-full z-0 bg-white" />
 
                                     {/* Student image positioned inside/aligned with circle */}
-                                    <div className="relative w-[360px] h-[440px] flex items-end justify-center z-10">
-                                        <div className="w-full h-[400px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px' }}>
+                                    <div className="relative w-[300px] h-[350px] md:w-[355px] md:h-[350px] lg:h-[450px] lg:w-[400px] 2xl:h-[450px] 2xl:w-[400px] flex items-end justify-center z-10">
+                                        <div className="w-full h-[300px] lg:h-[495px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px', transform: 'none', willChange: 'auto' }}>
                                             <img
                                                 src={MaleStudent}
-                                                alt="Student learning"
+                                                alt="Student with books"
                                                 className="w-full h-full object-cover object-top drop-shadow-2xl"
-                                                loading="lazy"
+                                                loading="eager"
+                                                style={{ transform: 'none', willChange: 'auto' }}
                                             />
                                         </div>
                                     </div>

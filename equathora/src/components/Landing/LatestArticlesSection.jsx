@@ -9,7 +9,7 @@ const LatestArticlesSection = () => {
     const displayedPosts = blogPosts.slice(0, 3);
 
     return (
-        <section className="w-full bg-white relative overflow-hidden">
+        <section className="w-full bg-white relative overflow-hidden flex justify-center">
             {/* Background decorations */}
             <div className="absolute top-20 right-20 w-32 h-32 border border-gray-100 rounded-full opacity-50" />
             <div className="absolute bottom-10 left-10 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
