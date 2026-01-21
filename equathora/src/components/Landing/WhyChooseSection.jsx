@@ -52,7 +52,7 @@ const WhyChooseSection = () => {
             <div className="absolute top-20 right-20 w-32 h-32 border border-gray-100 rounded-full" />
             <div className="absolute bottom-20 left-10 w-20 h-20 border border-[var(--accent-color)]/10 rounded-full" />
 
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 mx-auto relative z-10">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-14 md:py-16 mx-auto relative z-10">
                 <div className="flex flex-col lg:flex-row gap-10 sm:gap-12 md:gap-16 items-center">
 
                     {/* Left side - Content (Centered) */}
@@ -60,10 +60,10 @@ const WhyChooseSection = () => {
                         {/* Section header */}
                         <motion.div
                             className="flex flex-col gap-3 sm:gap-4 items-center lg:items-start"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5 }}
+                            initial={{ opacity: 0, x: -60, y: 30 }}
+                            whileInView={{ opacity: 1, x: 0, y: 0 }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{ duration: 0.7, ease: "easeOut" }}
                         >
                             <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
                                 <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
@@ -80,19 +80,19 @@ const WhyChooseSection = () => {
                         {/* Benefits list */}
                         <motion.div
                             className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg"
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 40 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.2, duration: 0.5 }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
                         >
                             {benefits.map((benefit, index) => (
                                 <motion.div
                                     key={benefit}
                                     className="flex items-center gap-2 sm:gap-3"
-                                    initial={{ opacity: 0, x: -20 }}
+                                    initial={{ opacity: 0, x: -40 }}
                                     whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.1 * index, duration: 0.3 }}
+                                    viewport={{ once: true, amount: 0.5 }}
+                                    transition={{ delay: 0.1 * index, duration: 0.4, ease: "easeOut" }}
                                 >
                                     <span className="flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[var(--accent-color)] text-white flex-shrink-0">
                                         <FaCheck className="text-[10px] sm:text-xs" />

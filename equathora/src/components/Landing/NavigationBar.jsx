@@ -1,5 +1,6 @@
 //Imports
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import Logo from '../../assets/logo/TransparentFullLogo.png';
 import { Link } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';
@@ -188,7 +189,12 @@ const NavigationBar = () => {
     return (
         <>
             <OverflowChecker></OverflowChecker>
-            <header className='w-full bg-[var(--main-color)] h-[60px] sm:h-[70px] md:h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
+            <motion.header
+                className='w-full bg-[var(--main-color)] h-[60px] sm:h-[70px] md:h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+            >
                 <nav aria-label="Primary" className='w-full h-full flex justify-center'>
                     <div className='w-full h-full flex items-center justify-between px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] max-w-[1500px]' style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                         <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
@@ -243,7 +249,7 @@ const NavigationBar = () => {
                         </div>
                     </div>
                 </nav>
-            </header>
+            </motion.header>
 
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         </>

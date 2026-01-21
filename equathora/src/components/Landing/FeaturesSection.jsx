@@ -29,15 +29,15 @@ const FeaturesSection = () => {
             <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
 
-            <div className="max-w-[1400px] px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-20 sm:py-24 md:py-28 lg:py-32 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-14 md:py-16 lg:py-18 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 
                 {/* Section header - CENTERED */}
                 <motion.div
                     className="text-center pb-16 sm:pb-20 md:pb-24 flex flex-col items-center justify-center"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
+                    initial={{ opacity: 0, x: -100, rotateY: -15 }}
+                    whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
                 >
                     <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs font-semibold uppercase tracking-wider pb-4 sm:pb-5">
                         <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
@@ -64,10 +64,10 @@ const FeaturesSection = () => {
                         >
                             <motion.div
                                 className="relative"
-                                initial={{ opacity: 0, x: -50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.6 }}
+                                initial={{ opacity: 0, x: -50, y: 30 }}
+                                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                                viewport={{ once: true, amount: 0.3 }}
+                                transition={{ duration: 0.8, ease: "easeOut" }}
                             >
                                 <motion.div
                                     className="relative"
@@ -99,11 +99,11 @@ const FeaturesSection = () => {
                         {features.map((feature, index) => (
                             <motion.div
                                 key={feature.title}
-                                className="group relative bg-white border border-gray-100 rounded-2xl p-8 sm:p-9 md:p-10 shadow-md hover:shadow-xl transition-all cursor-pointer w-full max-w-md"
-                                initial={{ opacity: 0, x: 50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.15, duration: 0.5 }}
+                                className="group relative bg-white border border-gray-100 rounded p-8 sm:p-9 md:p-10 shadow-md hover:shadow-xl transition-all cursor-pointer w-full max-w-md"
+                                initial={{ opacity: 0, x: index % 2 === 0 ? 80 : -80, y: 40 }}
+                                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                                viewport={{ once: true, amount: 0.3 }}
+                                transition={{ delay: index * 0.15, duration: 0.6, ease: "easeOut" }}
                                 whileHover={{
                                     rotateY: 0,
                                     rotateX: 0,

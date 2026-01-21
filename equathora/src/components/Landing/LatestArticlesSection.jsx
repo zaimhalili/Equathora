@@ -14,7 +14,7 @@ const LatestArticlesSection = () => {
             <div className="absolute top-20 right-20 w-32 h-32 border border-gray-100 rounded-full opacity-50" />
             <div className="absolute bottom-10 left-10 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
 
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-16 sm:py-20 md:py-24 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-14 md:py-16 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                 <div className="flex flex-col gap-10 sm:gap-12">
 
                     {/* Section header - Centered */}

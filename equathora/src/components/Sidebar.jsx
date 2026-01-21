@@ -6,21 +6,8 @@ import GuestAvatar from '../assets/images/guestAvatar.png';
 import X from '../assets/images/x.svg';
 import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
-// Import icons for sidebar items
-import Dashboard from '../assets/logo/TransparentSymbol.png';
-import Journey from '../assets/images/journey.svg';
-import Choice from '../assets/images/choice.svg';
-import Leaderboards from '../assets/images/leaderboards.svg';
-import Notifications from '../assets/images/notificationsDD.svg';
-import Achievements from '../assets/images/achievementsDD.svg';
-import LogoutIMG from '../assets/images/logout.svg';
-import Updates from '../assets/images/updates.svg';
-
-import Mentoring from '../assets/images/mentoring.svg';
-import Faq from '../assets/images/faq.svg';
-import AboutUs from '../assets/images/about.svg';
-import Premium from '../assets/images/Premium.svg';
-import Settings from '../assets/images/settings.svg';
+// Import React Icons
+import { FaCalendarDay, FaBook, FaTrophy, FaChartBar, FaUserGraduate, FaQuestionCircle, FaBullhorn, FaInfoCircle, FaCrown, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { getDailyProblemSlug } from '../lib/utils';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -52,44 +39,25 @@ const Sidebar = ({ isOpen, onClose }) => {
             to: `/problems/${dailyProblemSlug}`,
             text: 'Daily Challenge',
             description: 'Solve today\'s problem',
-            image: Dashboard
+            icon: FaCalendarDay
         },
         {
             to: '/learn',
             text: 'Learn',
             description: 'Practice problems',
-            image: Journey
+            icon: FaBook
         },
-        // Hidden for MVP - will be added after launch
-        // {
-        //     to: '/recommended',
-        //     text: 'Recommended',
-        //     description: 'Personalized topics',
-        //     image: Choice
-        // },
-        // {
-        //     to: '/discover',
-        //     text: 'Discover',
-        //     description: 'Explore new topics',
-        //     image: Choice
-        // },
         {
             to: '/leaderboards/global',
             text: 'Leaderboards',
             description: 'View rankings',
-            image: Leaderboards
+            icon: FaChartBar
         },
-        // {
-        //     to: '/notifications',
-        //     text: 'Notifications',
-        //     description: 'Stay updated',
-        //     image: Notifications
-        // },
         {
             to: '/achievements/recent',
             text: 'Achievements',
             description: 'Track your progress',
-            image: Achievements
+            icon: FaTrophy
         }
     ];
 
@@ -98,32 +66,25 @@ const Sidebar = ({ isOpen, onClose }) => {
             to: '/applymentor',
             text: 'Become a Mentor',
             description: 'Guide students',
-            image: Mentoring
+            icon: FaUserGraduate
         },
-        // Premium hidden for MVP
-        // {
-        //     to: '/premium',
-        //     text: 'Upgrade to Premium',
-        //     description: 'Unlock all features',
-        //     image: Premium
-        // },
         {
             to: '/helpCenter',
             text: 'Help Center',
             description: 'FAQs and support',
-            image: Faq
+            icon: FaQuestionCircle
         },
         {
             to: '/systemupdates',
             text: 'System Updates',
             description: 'Latest features',
-            image: Updates
+            icon: FaBullhorn
         },
         {
             to: '/about',
             text: 'About Equathora',
             description: 'Our mission',
-            image: AboutUs
+            icon: FaInfoCircle
         }
     ];
 
@@ -159,20 +120,23 @@ const Sidebar = ({ isOpen, onClose }) => {
                     </div>
 
                     <nav className="sidebar-nav">
-                        {sidebarItems.map((item, index) => (
-                            <Link
-                                key={index}
-                                to={item.to}
-                                className="sidebar-item"
-                                onClick={onClose}
-                            >
-                                <img src={item.image} alt={item.text} className="sidebar-item-icon" />
-                                <div className="sidebar-item-text">
-                                    <h4>{item.text}</h4>
-                                    <p>{item.description}</p>
-                                </div>
-                            </Link>
-                        ))}
+                        {sidebarItems.map((item, index) => {
+                            const IconComponent = item.icon;
+                            return (
+                                <Link
+                                    key={index}
+                                    to={item.to}
+                                    className="sidebar-item"
+                                    onClick={onClose}
+                                >
+                                    <IconComponent className="sidebar-item-icon" style={{ fontSize: '24px' }} />
+                                    <div className="sidebar-item-text">
+                                        <h4>{item.text}</h4>
+                                        <p>{item.description}</p>
+                                    </div>
+                                </Link>
+                            );
+                        })}
 
                         {/* More Section - Expandable */}
                         <div className="sidebar-more-section">
@@ -204,20 +168,23 @@ const Sidebar = ({ isOpen, onClose }) => {
                             </button>
 
                             <div className={`sidebar-more-content ${moreExpanded ? 'expanded' : ''}`}>
-                                {moreItems.map((item, index) => (
-                                    <Link
-                                        key={index}
-                                        to={item.to}
-                                        className="sidebar-item sidebar-sub-item"
-                                        onClick={onClose}
-                                    >
-                                        <img src={item.image} alt={item.text} className="sidebar-item-icon" />
-                                        <div className="sidebar-item-text">
-                                            <h4>{item.text}</h4>
-                                            <p>{item.description}</p>
-                                        </div>
-                                    </Link>
-                                ))}
+                                {moreItems.map((item, index) => {
+                                    const IconComponent = item.icon;
+                                    return (
+                                        <Link
+                                            key={index}
+                                            to={item.to}
+                                            className="sidebar-item sidebar-sub-item"
+                                            onClick={onClose}
+                                        >
+                                            <IconComponent className="sidebar-item-icon" style={{ fontSize: '24px' }} />
+                                            <div className="sidebar-item-text">
+                                                <h4>{item.text}</h4>
+                                                <p>{item.description}</p>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
                             </div>
                         </div>
                     </nav>
@@ -229,7 +196,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                             }}
                             className="sidebar-logout"
                         >
-                            <img src={LogoutIMG} alt="Logout" className="sidebar-item-icon" />
+                            <FaSignOutAlt className="sidebar-item-icon" style={{ fontSize: '24px' }} />
                             <div className="sidebar-item-text">
                                 <h4>Sign Out</h4>
                                 <p>Securely log out</p>

@@ -29,39 +29,55 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
     return <span ref={ref}>{prefix}{count}{suffix}</span>;
 };
 
-// Particle system - RED particles, varied sizes
+// Particle system - DVD-style bouncing particles
 const Particles = () => {
-    const particles = Array.from({ length: 15 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: i < 3 ? Math.random() * 20 + 15 : (i < 7 ? Math.random() * 12 + 8 : Math.random() * 6 + 3),
-        duration: Math.random() * 4 + 3,
-        delay: Math.random() * 2,
-    }));
+    const [positions, setPositions] = useState(
+        Array.from({ length: 6 }, () => ({
+            x: Math.random() * 90,
+            y: Math.random() * 90,
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: (Math.random() - 0.5) * 0.3,
+            size: Math.random() * 8 + 4, // 4-12px (smaller)
+        }))
+    );
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPositions(prev => prev.map(p => {
+                let newX = p.x + p.vx;
+                let newY = p.y + p.vy;
+                let newVx = p.vx;
+                let newVy = p.vy;
+
+                // Bounce off walls
+                if (newX <= 0 || newX >= 98) {
+                    newVx = -p.vx;
+                    newX = newX <= 0 ? 0 : 98;
+                }
+                if (newY <= 0 || newY >= 98) {
+                    newVy = -p.vy;
+                    newY = newY <= 0 ? 0 : 98;
+                }
+
+                return { ...p, x: newX, y: newY, vx: newVx, vy: newVy };
+            }));
+        }, 50); // Slower update rate
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {particles.map((particle) => (
-                <motion.div
-                    key={particle.id}
-                    className="absolute rounded-full bg-[var(--accent-color)]"
+        <div className="absolute inset-0 pointer-events-none z-5 overflow-hidden">
+            {positions.map((p, i) => (
+                <div
+                    key={i}
+                    className="absolute rounded-full bg-[var(--accent-color)] transition-all duration-[50ms] ease-linear"
                     style={{
-                        left: `${particle.x}%`,
-                        top: `${particle.y}%`,
-                        width: particle.size,
-                        height: particle.size,
-                    }}
-                    animate={{
-                        y: [-30, 30, -30],
-                        x: [-20, 20, -20],
-                        opacity: [0.3, 0.7, 0.3],
-                    }}
-                    transition={{
-                        duration: particle.duration,
-                        repeat: Infinity,
-                        delay: particle.delay,
-                        ease: "easeInOut",
+                        left: `${p.x}%`,
+                        top: `${p.y}%`,
+                        width: p.size,
+                        height: p.size,
+                        opacity: 1,
                     }}
                 />
             ))}
@@ -107,7 +123,7 @@ const HeroSection = () => {
             <Particles />
 
             <div className="relative z-10 w-full">
-                <div className="px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 max-w-[1400px] py-16 sm:py-20 md:py-24 lg:py-32 flex flex-col lg:flex-row items-center justify-center gap-12 sm:gap-14 md:gap-16 w-full" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1400px] py-16 sm:py-20 md:py-24 lg:py-32 flex flex-col lg:flex-row items-center justify-center gap-12 sm:gap-14 md:gap-16 w-full" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
 
                     {/* Left Content - Centered */}
                     <motion.div
@@ -117,7 +133,7 @@ const HeroSection = () => {
                         transition={{ duration: 0.6 }}
                     >
                         {/* Badge */}
-                        <motion.div
+                        {/* <motion.div
                             className="flex items-center justify-center lg:justify-start"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -127,14 +143,15 @@ const HeroSection = () => {
                                 <span className="w-2 h-2 rounded-full bg-[var(--accent-color)] animate-pulse"></span>
                                 Practice-focused learning
                             </span>
-                        </motion.div>
+                        </motion.div> */}
 
                         {/* Main Heading */}
                         <motion.h1
                             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] text-white"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.15, duration: 0.5 }}
+                            initial={{ opacity: 0, rotateX: 45, scale: 0.8 }}
+                            animate={{ opacity: 1, rotateX: 0, scale: 1 }}
+                            transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
+                            style={{ transformPerspective: 1000 }}
                         >
                             Master{' '}
                             <span className="text-[var(--accent-color)] relative inline-block">
@@ -164,9 +181,10 @@ const HeroSection = () => {
                         {/* Description */}
                         <motion.p
                             className="text-xs sm:text-sm md:text-base text-white/70 leading-relaxed max-w-lg"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.25, duration: 0.5 }}
+                            initial={{ opacity: 0, rotateX: 30, scale: 0.9 }}
+                            animate={{ opacity: 1, rotateX: 0, scale: 1 }}
+                            transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
+                            style={{ transformPerspective: 1000 }}
                         >
                             Build real problem-solving skills through carefully crafted challenges. No distractions, just thoughtful practice.
                         </motion.p>
@@ -174,13 +192,14 @@ const HeroSection = () => {
                         {/* CTA Buttons */}
                         <motion.div
                             className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start items-center"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.35, duration: 0.5 }}
+                            initial={{ opacity: 0, rotateX: 25, scale: 0.9 }}
+                            animate={{ opacity: 1, rotateX: 0, scale: 1 }}
+                            transition={{ delay: 0.35, duration: 0.6, ease: "easeOut" }}
+                            style={{ transformPerspective: 1000 }}
                         >
                             <Link
                                 to="/dashboard"
-                                className="group flex items-center gap-2 rounded-full !bg-[var(--accent-color)] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all hover:!bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
+                                className="group flex items-center gap-2 rounded-lg !bg-[var(--accent-color)] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all hover:!bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
                             >
                                 Start practicing
                                 <motion.span
@@ -192,7 +211,7 @@ const HeroSection = () => {
                             </Link>
                             <Link
                                 to="/about"
-                                className="px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-sm sm:text-base !text-white font-medium border border-white/20 rounded-full transition-all hover:!bg-white/10"
+                                className="px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-sm sm:text-base !text-white font-medium border border-white/20 rounded-lg transition-all hover:!bg-white/10"
                             >
                                 Learn more
                             </Link>
@@ -208,15 +227,16 @@ const HeroSection = () => {
                             {stats.map((stat, index) => (
                                 <motion.div
                                     key={stat.label}
-                                    className="flex flex-col items-center lg:items-start"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
+                                    className="flex flex-col items-center lg:items-start gap-2"
+                                    initial={{ opacity: 0, rotateX: 20 }}
+                                    animate={{ opacity: 1, rotateX: 0 }}
                                     transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
+                                    style={{ transformPerspective: 1000 }}
                                 >
-                                    <span className="text-xl sm:text-2xl font-bold text-[var(--accent-color)]">
+                                    <span className="text-xl sm:text-2xl font-bold text-white">
                                         <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                                     </span>
-                                    <span className="text-[10px] sm:text-xs text-white/60">
+                                    <span className="text-[10px] sm:text-xs text-white/60 border-t-2 border-[var(--accent-color)] pt-2">
                                         {stat.label}
                                     </span>
                                 </motion.div>
@@ -252,12 +272,13 @@ const HeroSection = () => {
 
                                     {/* Student image positioned inside/aligned with circle */}
                                     <div className="relative w-[410px] h-[555px] flex items-end justify-center z-10">
-                                        <div className="w-full h-[645px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px' }}>
+                                        <div className="w-full h-[645px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px', transform: 'none', willChange: 'auto' }}>
                                             <img
                                                 src={YoungStudent}
                                                 alt="Student with books"
                                                 className="w-full h-full object-cover object-top drop-shadow-2xl"
                                                 loading="eager"
+                                                style={{ transform: 'none', willChange: 'auto' }}
                                             />
                                         </div>
                                     </div>

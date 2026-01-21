@@ -54,7 +54,7 @@ const CTASection = () => {
                 <div className="absolute bottom-20 left-20 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
             </div>
 
-            <div className="max-w-[1400px] px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 py-20 sm:py-24 md:py-28 lg:py-32 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-14 md:py-16 lg:py-18 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                 <div className="flex flex-col lg:flex-row items-center gap-16 sm:gap-18 md:gap-20">
 
                     {/* Left side - Content */}
@@ -71,10 +71,11 @@ const CTASection = () => {
 
                         <motion.h2
                             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--secondary-color)] leading-tight px-6 lg:px-0"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.1 }}
+                            initial={{ opacity: 0, x: -60, rotateY: -10 }}
+                            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{ delay: 0.1, duration: 0.7, ease: "easeOut" }}
+                            style={{ transformPerspective: 1000 }}
                         >
                             Ready to build{' '}
                             <span className="text-[var(--accent-color)]">confidence</span>?
@@ -82,24 +83,24 @@ const CTASection = () => {
 
                         <motion.p
                             className="text-xs sm:text-sm text-[var(--mid-main-secondary)] max-w-xl px-6 lg:px-0"
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.2 }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
                         >
                             Pick a track, solve at your own pace, and watch your math intuition grow. No ads. No fluff. Just thoughtful practice.
                         </motion.p>
 
                         <motion.div
                             className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.3 }}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true, amount: 0.3 }}
+                            transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
                         >
                             <Link
                                 to="/dashboard"
-                                className="group flex items-center gap-2 sm:gap-3 rounded-full bg-[var(--secondary-color)] px-7 sm:px-9 md:px-10 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg font-semibold !text-white transition-all hover:bg-[var(--accent-color)] shadow-lg"
+                                className="group flex items-center gap-2 sm:gap-3 rounded-lg bg-[var(--secondary-color)] px-7 sm:px-9 md:px-10 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg font-semibold !text-white transition-all hover:bg-[var(--accent-color)] shadow-lg"
                             >
                                 Get started
                                 <motion.span

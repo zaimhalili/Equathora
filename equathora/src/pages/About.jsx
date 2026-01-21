@@ -117,37 +117,37 @@ const About = () => {
                             transition={{ duration: 0.5, delay: 0.3 }}
                             className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] py-10"
                         >
-                            <div className="text-center max-w-3xl mx-auto pb-8">
+                            <div className="flex flex-col items-center justify-center w-full pb-8">
                                 <h2 className="text-3xl font-bold text-[var(--secondary-color)] font-[Inter] pb-3">
                                     What Equathora does best
                                 </h2>
-                                <p className="text-base text-gray-600 leading-relaxed">
+                                <p className="text-base text-gray-600 leading-relaxed max-w-3xl text-center">
                                     Practice-first learning designed to build real mathematical confidence. The platform focuses on clarity, progression, and measurable improvement.
                                 </p>
                             </div>
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                <div className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-200 hover:shadow-xl">
+                                <div className="p-6 bg-white rounded border border-gray-100 transition-all duration-200 hover:shadow-xl">
                                     <FaChartLine className="text-3xl text-[var(--accent-color)]" />
                                     <h3 className="text-lg font-bold text-[var(--secondary-color)] mt-4">Adaptive practice</h3>
                                     <p className="text-sm text-gray-600 leading-relaxed mt-2">
                                         Problems evolve with your skill level so you always train at the right difficulty.
                                     </p>
                                 </div>
-                                <div className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-200 hover:shadow-xl">
+                                <div className="p-6 bg-white rounded border border-gray-100 transition-all duration-200 hover:shadow-xl">
                                     <FaLightbulb className="text-3xl text-[var(--accent-color)]" />
                                     <h3 className="text-lg font-bold text-[var(--secondary-color)] mt-4">Guided solutions</h3>
                                     <p className="text-sm text-gray-600 leading-relaxed mt-2">
                                         Clear explanations and structured hints help you learn the method, not just the answer.
                                     </p>
                                 </div>
-                                <div className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-200 hover:shadow-xl">
+                                <div className="p-6 bg-white rounded border border-gray-100 transition-all duration-200 hover:shadow-xl">
                                     <FaRocket className="text-3xl text-[var(--accent-color)]" />
                                     <h3 className="text-lg font-bold text-[var(--secondary-color)] mt-4">Progress insights</h3>
                                     <p className="text-sm text-gray-600 leading-relaxed mt-2">
                                         Track growth, spot weak areas, and stay motivated with focused progress metrics.
                                     </p>
                                 </div>
-                                <div className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 transition-all duration-200 hover:shadow-xl">
+                                <div className="p-6 bg-white rounded border border-gray-100 transition-all duration-200 hover:shadow-xl">
                                     <FaUsers className="text-3xl text-[var(--accent-color)]" />
                                     <h3 className="text-lg font-bold text-[var(--secondary-color)] mt-4">Achievement flow</h3>
                                     <p className="text-sm text-gray-600 leading-relaxed mt-2">

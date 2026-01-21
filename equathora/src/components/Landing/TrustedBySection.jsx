@@ -36,7 +36,7 @@ const TrustedBySection = () => {
             {/* Subtle background */}
             <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white" />
 
-            <div className="max-w-[1400px] px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] py-12 sm:py-16 mx-auto relative z-10">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-8 sm:py-10 mx-auto relative z-10">
                 <motion.div
                     className="flex flex-col gap-6 sm:gap-8 items-center text-center"
                     initial={{ opacity: 0, y: 20 }}
