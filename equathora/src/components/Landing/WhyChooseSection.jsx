@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaCheck } from 'react-icons/fa';
+import Stack from "../../assets/images/stackBooks.jpeg";
+import Math from "../../assets/images/mathFormulas.jpg";
 
 // Animated counter component
 const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
@@ -40,9 +42,9 @@ const WhyChooseSection = () => {
             {/* Background scrolling text - FASTER */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
                 <motion.div
-                    className="text-[12vw] font-bold text-[var(--french-gray)]/[0.04] whitespace-nowrap select-none"
-                    animate={{ x: [0, -1500] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                    className="text-[12vw] font-bold text-[var(--french-gray)]/25 whitespace-nowrap select-none"
+                    animate={{ x: [0, 1000] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 >
                     PRACTICE LEARN GROW PRACTICE LEARN GROW
                 </motion.div>
@@ -147,9 +149,9 @@ const WhyChooseSection = () => {
                                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                             >
                                 <img
-                                    src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=500&fit=crop"
+                                    src={Math}
                                     alt="Male student learning"
-                                    className="w-[280px] lg:w-[340px] h-auto rounded-3xl shadow-2xl object-cover"
+                                    className="w-[280px] lg:w-[340px] lg:h-[340px] h-[280px] rounded-3xl shadow-2xl object-cover"
                                     loading="lazy"
                                 />
                             </motion.div>
@@ -174,37 +176,19 @@ const WhyChooseSection = () => {
                                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                             >
                                 <img
-                                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=250&fit=crop"
+                                    src={Stack}
                                     alt="Male student taking notes"
-                                    className="w-[160px] lg:w-[200px] h-auto rounded-2xl shadow-xl object-cover border-4 border-white"
+                                    className="w-[160px] lg:w-[200px] h-[160px] lg:h-[200px] rounded-2xl shadow-xl object-cover border-4 border-white"
                                     loading="lazy"
                                 />
                             </motion.div>
 
-                            {/* Stats floating card */}
-                            <motion.div
-                                className="absolute -bottom-6 right-0 lg:-right-8 z-30"
-                                animate={{ y: [0, -10, 0] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                            >
-                                <div className="bg-white rounded-2xl shadow-2xl p-4 border border-gray-100">
-                                    <div className="flex flex-col items-center gap-1">
-                                        <span className="text-3xl font-bold text-[var(--accent-color)]">
-                                            <AnimatedCounter end={99} suffix="%" />
-                                        </span>
-                                        <span className="text-xs text-[var(--mid-main-secondary)] text-center">
-                                            Completion rate
-                                        </span>
-                                    </div>
-                                </div>
-                            </motion.div>
-
                             {/* Background decorative circle */}
-                            <motion.div
+                            {/* <motion.div
                                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full border-2 border-[var(--accent-color)]/10 z-0"
-                                animate={{ rotate: 360 }}
+                                // animate={{ rotate: 360 }}
                                 transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                            />
+                            /> */}
                         </div>
                     </motion.div>
                 </div>

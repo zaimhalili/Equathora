@@ -41,6 +41,7 @@ const Landing = () => {
                 <WaitlistSection />
                 <Footer />
                 <a href="https://www.vecteezy.com/free-png/student">Student PNGs by Vecteezy</a>
+                <a href="https://www.vecteezy.com/free-photos/paper">Paper Stock photos by Vecteezy</a>
             </div>
         </>
     );
