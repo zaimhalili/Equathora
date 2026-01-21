@@ -54,7 +54,7 @@ const CTASection = () => {
                 <div className="absolute bottom-20 left-20 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
             </div>
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 pb-7 sm:py-14 md:py-16 lg:py-18 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                 <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-10 md:gap-12">
 
                     {/* Left side - Content */}
