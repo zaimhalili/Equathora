@@ -357,7 +357,7 @@ const ProfileExportButtons = () => {
             <button
                 type="button"
                 onClick={() => setShowMenu(!showMenu)}
-                className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[var(--french-gray)] rounded-lg text-[var(--secondary-color)] font-semibold text-sm transition-all duration-200 shadow-sm cursor-poSansation"
+                className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[var(--french-gray)] rounded-lg text-[var(--secondary-color)] font-semibold text-sm transition-all duration-200 shadow-sm cursor-pointeration"
                 aria-label="Export account data"
             >
                 <FaFileDownload className="text-base" />
@@ -373,7 +373,7 @@ const ProfileExportButtons = () => {
                     <button
                         type="button"
                         onClick={exportPdf}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:translate-x-1 transition-all duration-150 text-left cursor-poSansation border-b border-gray-300"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:translate-x-1 transition-all duration-150 text-left cursor-pointeration border-b border-gray-300"
                     >
                         <FaFilePdf className="text-red-600 text-lg flex-shrink-0" />
                         <div>
@@ -384,7 +384,7 @@ const ProfileExportButtons = () => {
                     <button
                         type="button"
                         onClick={exportCsv}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:translate-x-1 transition-all duration-150 text-left cursor-poSansation"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:translate-x-1 transition-all duration-150 text-left cursor-pointeration"
                     >
                         <FaFileCsv className="text-green-600 text-lg flex-shrink-0" />
                         <div>

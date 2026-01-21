@@ -12,9 +12,9 @@ const ViewSolutionModal = ({ isOpen, onClose, onConfirm }) => {
                 </div>
 
                 <div className='flex w-full justify-between gap-3 pt-5'>
-                    <button type="button" onClick={onClose} className='px-4 cursor-poSansation py-2.5 font-semibold text-center border-2 border-[var(--french-gray)] rounded-lg bg-white text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg transition-colors duration-75 flex-1 text-sm md:text-base'>Cancel</button>
+                    <button type="button" onClick={onClose} className='px-4 cursor-pointeration py-2.5 font-semibold text-center border-2 border-[var(--french-gray)] rounded-lg bg-white text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg transition-colors duration-75 flex-1 text-sm md:text-base'>Cancel</button>
 
-                    <button type="button" className='px-4 cursor-poSansation py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 flex-1 text-sm md:text-base' onClick={onConfirm}>View Solution</button>
+                    <button type="button" className='px-4 cursor-pointeration py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 flex-1 text-sm md:text-base' onClick={onConfirm}>View Solution</button>
                 </div>
             </div>
         </div>

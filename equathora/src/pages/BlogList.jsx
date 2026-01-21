@@ -26,7 +26,7 @@ const BlogList = () => {
                             <Link
                                 key={post.id}
                                 to={`/blog/${post.slug}`}
-                                className='bg-white rounded-lg shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-poSansation flex flex-col'
+                                className='bg-white rounded-lg shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointeration flex flex-col'
                             >
                                 <img
                                     src={post.thumbnail}

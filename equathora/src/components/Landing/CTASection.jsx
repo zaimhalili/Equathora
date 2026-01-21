@@ -54,8 +54,8 @@ const CTASection = () => {
                 <div className="absolute bottom-20 left-20 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
             </div>
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-14 md:py-16 lg:py-18 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-                <div className="flex flex-col lg:flex-row items-center gap-16 sm:gap-18 md:gap-20">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 pb-7 sm:py-14 md:py-16 lg:py-18 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-10 md:gap-12">
 
                     {/* Left side - Content */}
                     <div className="flex-1 flex flex-col gap-6 sm:gap-7 text-center lg:text-left items-center lg:items-start w-full">
@@ -71,11 +71,10 @@ const CTASection = () => {
 
                         <motion.h2
                             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--secondary-color)] leading-tight px-6 lg:px-0"
-                            initial={{ opacity: 0, x: -60, rotateY: -10 }}
-                            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.3 }}
-                            transition={{ delay: 0.1, duration: 0.7, ease: "easeOut" }}
-                            style={{ transformPerspective: 1000 }}
+                            transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
                         >
                             Ready to build{' '}
                             <span className="text-[var(--accent-color)]">confidence</span>?

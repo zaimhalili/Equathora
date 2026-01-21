@@ -116,7 +116,7 @@
     color: var(--mid-main-secondary);
     font-size: 1.2rem;
     z-index: 1;
-    cursor: poSansation;
+    cursor: pointeration;
     transition: color 0.2s ease;
 }
 
@@ -180,7 +180,7 @@
     /* border: 1.5px solid rgba(43, 45, 66, 0.15); */
     border-radius: 6px;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: poSansation;
+    cursor: pointeration;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -419,7 +419,7 @@
     background: none;
     border: none;
     color: var(--mid-main-secondary);
-    cursor: poSansation;
+    cursor: pointeration;
     padding: 0.5rem;
     display: flex;
     align-items: center;
@@ -443,7 +443,7 @@
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--accent-color);
-    cursor: poSansation;
+    cursor: pointeration;
     transition: all 0.2s ease;
     white-space: nowrap;
     flex-shrink: 0;
@@ -514,7 +514,7 @@
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--secondary-color);
-    cursor: poSansation;
+    cursor: pointeration;
     transition: all 0.2s ease;
     white-space: nowrap;
     flex-shrink: 0;
@@ -684,7 +684,7 @@
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--secondary-color);
-    cursor: poSansation;
+    cursor: pointeration;
     transition: all 0.2s ease;
     width: 100%;
     text-align: left;
@@ -768,7 +768,7 @@
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--secondary-color);
-    cursor: poSansation;
+    cursor: pointeration;
     transition: background-color 0.15s ease;
     text-align: left;
 }
@@ -845,7 +845,7 @@
     background: none;
     border: none;
     color: var(--mid-main-secondary);
-    cursor: poSansation;
+    cursor: pointeration;
     transition: color 0.15s ease;
     font-size: 0.6rem;
 }
@@ -911,7 +911,7 @@
     border-radius: 8px;
     font-size: 0.9rem;
     font-weight: 600;
-    cursor: poSansation;
+    cursor: pointeration;
     transition: all 0.2s ease;
 }
 

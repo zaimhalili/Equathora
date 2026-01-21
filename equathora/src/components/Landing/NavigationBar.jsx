@@ -190,7 +190,7 @@ const NavigationBar = () => {
         <>
             <OverflowChecker></OverflowChecker>
             <motion.header
-                className='w-full bg-[var(--main-color)] h-[60px] sm:h-[70px] md:h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'
+                className='w-full bg-[var(--main-color)] h-[60px] sm:h-[70px] md:h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] fixed top-0 z-[1000] overflow-visible box-border'
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
@@ -224,11 +224,17 @@ const NavigationBar = () => {
                             <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
                                 <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
                                     <Link to="/about"
-                                        className="rounded-md border border-gray-300 px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center text-gray-700 transition-colors hover:border-[var(--accent-color)] hover:text-[var(--accent-color)]">Learn More</Link>
+                                        className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center text-gray-700 transition-colors hover:border-[var(--accent-color)] hover:!text-[var(--accent-color)]">Learn More</Link>
+                                </li>
+                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                                    <Link to="/about"
+                                        className=" border-3 border-[var(--accent-color)] !text-[var(--accent-color)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center transition-all duration-150 hover:!text-[var(--dark-accent-color)]  hover:border-[var(--dark-accent-color)] ">Explore Problems</Link>
                                 </li>
                                 <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
                                     <Link to="/dashboard"
-                                        className="rounded-md bg-[var(--accent-color)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center !text-white transition-colors hover:bg-[var(--dark-accent-color)]">Start Learning</Link>
+                                        className="border-3 border-[var(--mid-main-secondary)] !text-black bg-[var(--mid-main-secondary)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center transition-all hover:border-[var(--mid-main-secondary)]/10 hover:bg-[var(--mid-main-secondary)]/70">Start Learning</Link>
+
+
                                 </li>
                                 <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
 
@@ -236,7 +242,7 @@ const NavigationBar = () => {
                                 <li className='pl-6 lg:pl-4'>
                                     <button
                                         type="button"
-                                        className='h-[7.5vh] flex items-center justify-center transition-colors duration-200 cursor-poSansation bg-transparent border-none text-[var(--secondary-color)] hover:text-[var(--accent-color)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                                        className='h-[7.5vh] flex items-center justify-center transition-colors duration-200 cursor-pointeration bg-transparent border-none text-[var(--secondary-color)] hover:text-[var(--accent-color)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
                                         onClick={() => setSidebarOpen(true)}
                                         aria-label="Open navigation menu"
                                         aria-expanded={sidebarOpen}

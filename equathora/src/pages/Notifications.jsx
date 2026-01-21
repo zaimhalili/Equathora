@@ -67,12 +67,12 @@ const Notifications = () => {
               )}
             </div>
             <div className="flex items-center justify-center lg:justify-start gap-3 flex-wrap pb-5">
-              <label className="flex items-center gap-2 cursor-poSansation">
+              <label className="flex items-center gap-2 cursor-pointeration">
                 <input
                   type="checkbox"
                   checked={selectAll}
                   onChange={handleSelectAll}
-                  className="w-5 h-5 accent-[var(--accent-color)] cursor-poSansation"
+                  className="w-5 h-5 accent-[var(--accent-color)] cursor-pointeration"
                 />
                 <span className="text-[var(--secondary-color)] font-medium font-['Sansation'] text-sm">Select all</span>
               </label>
@@ -111,7 +111,7 @@ const Notifications = () => {
               notifications.map(notification => (
                 <div
                   key={notification.id}
-                  className={`cursor-poSansation rounded-lg p-4 md:p-5 flex items-start md:items-center gap-3 md:gap-5 transition-all border-l-4 bg-white hover:bg-gray-50 ${!notification.read ? 'border-[var(--accent-color)] shadow-md' : 'border-gray-200 shadow-sm'}`}
+                  className={`cursor-pointeration rounded-lg p-4 md:p-5 flex items-start md:items-center gap-3 md:gap-5 transition-all border-l-4 bg-white hover:bg-gray-50 ${!notification.read ? 'border-[var(--accent-color)] shadow-md' : 'border-gray-200 shadow-sm'}`}
                   onClick={() => handleSelectNotification(notification.id)}
                 >
                   <input
@@ -119,7 +119,7 @@ const Notifications = () => {
                     checked={selectedIds.includes(notification.id)}
                     onChange={() => handleSelectNotification(notification.id)}
                     onClick={(e) => e.stopPropagation()}
-                    className="w-4 h-4 md:w-5 md:h-5 accent-[var(--accent-color)] cursor-poSansation flex-shrink-0"
+                    className="w-4 h-4 md:w-5 md:h-5 accent-[var(--accent-color)] cursor-pointeration flex-shrink-0"
                   />
 
                   <div className="flex-1 min-w-0">

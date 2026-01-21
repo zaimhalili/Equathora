@@ -81,17 +81,16 @@ const TestimonialsSection = () => {
                 />
             </div>
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-14 md:py-16 lg:py-18 w-full relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-                <div className="flex flex-col gap-14 sm:gap-16 items-center justify-center w-full">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 pb-7 sm:py-14 md:py-16 lg:py-18 w-full relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div className="flex flex-col gap-8 sm:gap-10 md:gap-12 items-center justify-center w-full">
 
                     {/* Section header - Centered */}
                     <motion.div
                         className="flex flex-col gap-4 sm:gap-5 text-center items-center"
-                        initial={{ opacity: 0, y: 40, rotateX: 20 }}
-                        whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.3 }}
-                        transition={{ duration: 0.7, ease: "easeOut" }}
-                        style={{ transformPerspective: 1000 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
                     >
                         <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs font-semibold uppercase tracking-wider">
                             <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
@@ -111,10 +110,10 @@ const TestimonialsSection = () => {
                         {/* Left column - big percentage */}
                         <motion.div
                             className="lg:w-2/5 flex flex-col items-center lg:items-start text-center lg:text-left"
-                            initial={{ opacity: 0, x: -60, scale: 0.8 }}
-                            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.3 }}
-                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
                         >
                             <span className="text-8xl sm:text-9xl lg:text-[10rem] font-bold text-[var(--accent-color)] leading-none">
                                 99%

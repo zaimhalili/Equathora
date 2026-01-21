@@ -594,14 +594,14 @@ const Problem = () => {
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => prevProblemSlug && navigate(`/problems/${prevProblemSlug}`)}
-                className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-poSansation"
+                className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointeration"
                 title={prevProblem ? `Previous: ${prevProblem.title}` : ''}
               >
                 <FaChevronLeft className="text-sm" />
               </button>
               <button
                 onClick={() => nextProblemSlug && navigate(`/problems/${nextProblemSlug}`)}
-                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-poSansation"
+                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointeration"
                 title={nextProblem ? `Next: ${nextProblem.title}` : ''}
               >
                 <span className="hidden sm:inline text-xs md:text-sm font-medium">Next</span>
@@ -626,7 +626,7 @@ const Problem = () => {
                   setShowSubmissions(false);
                   if (descriptionCollapsed) setDescriptionCollapsed(false);
                 }}
-                className={`bg-transparent border-1 px-3 md:px-4 rounded-lg cursor-poSansation text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)] hover:text-[var(--accent-color)]'}`}
+                className={`bg-transparent border-1 px-3 md:px-4 rounded-lg cursor-pointeration text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)] hover:text-[var(--accent-color)]'}`}
                 title={showDrawingPad ? "Hide sketch pad" : "Show sketch pad"}
               >
                 <FaPencilAlt className="text-sm md:text-base" />
@@ -634,7 +634,7 @@ const Problem = () => {
               </button>
               <button
                 onClick={() => setShowHelpModal(true)}
-                className="bg-transparent border-1 border-[var(--french-gray)] px-3 md:px-4 rounded-lg cursor-poSansation text-xs md:text-sm transition-all duration-200 hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-9 md:h-10"
+                className="bg-transparent border-1 border-[var(--french-gray)] px-3 md:px-4 rounded-lg cursor-pointeration text-xs md:text-sm transition-all duration-200 hover:text-[var(--accent-color)] text-[var(--french-gray)] flex items-center gap-1.5 h-9 md:h-10"
                 title="Help & Guide"
               >
                 <FaQuestionCircle className="text-sm md:text-base" />
@@ -642,13 +642,13 @@ const Problem = () => {
               </button>
               <Link
                 to="/feedback"
-                className="bg-transparent border-1 border-[var(--french-gray)] px-3 rounded-lg cursor-poSansation text-xs md:text-sm transition-all duration-200 hover:!text-[var(--accent-color)] !text-[var(--french-gray)] flex items-center justify-center w-9 h-9 md:w-10 md:h-10"
+                className="bg-transparent border-1 border-[var(--french-gray)] px-3 rounded-lg cursor-pointeration text-xs md:text-sm transition-all duration-200 hover:!text-[var(--accent-color)] !text-[var(--french-gray)] flex items-center justify-center w-9 h-9 md:w-10 md:h-10"
                 title="Report Problem"
               >
                 <FaFlag className="text-sm md:text-base" />
               </Link>
               <button
-                className={`bg-transparent border-1 text-xs md:text-sm px-3 rounded-lg cursor-poSansation transition-all duration-200 hover:text-[var(--accent-color)] flex items-center justify-center w-9 h-9 md:w-10 md:h-10 ${isFavorite ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
+                className={`bg-transparent border-1 text-xs md:text-sm px-3 rounded-lg cursor-pointeration transition-all duration-200 hover:text-[var(--accent-color)] flex items-center justify-center w-9 h-9 md:w-10 md:h-10 ${isFavorite ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--french-gray)] border-[var(--french-gray)]'}`}
                 onClick={handleFavoriteToggle}
                 title={isFavorite ? "Remove from favorites" : "Add to favorites"}
               >
@@ -724,7 +724,7 @@ const Problem = () => {
                   setShowTop(false);
                   setShowSubmissions(false);
                   if (descriptionCollapsed) setDescriptionCollapsed(false);
-                }} className={`cursor-poSansation px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
+                }} className={`cursor-pointeration px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
                   <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Description</span>
                   {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Description</span>}
                   <FaFileAlt className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
@@ -740,7 +740,7 @@ const Problem = () => {
                     setShowSolution(true);
                   }
                   if (descriptionCollapsed) setDescriptionCollapsed(false);
-                }} className={`cursor-poSansation px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription && showSolution && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
+                }} className={`cursor-pointeration px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription && showSolution && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
                   <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Solution</span>
                   {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Solution</span>}
                   <FaCalculator className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
@@ -752,7 +752,7 @@ const Problem = () => {
                   setShowSubmissions(true);
                   setShowTop(false);
                   if (descriptionCollapsed) setDescriptionCollapsed(false);
-                }} className={`cursor-poSansation px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
+                }} className={`cursor-pointeration px-2 py-1 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
                   <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Submissions</span>
                   {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Submissions</span>}
                   <FaList className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
@@ -762,14 +762,14 @@ const Problem = () => {
               {/* Mobile Only - Toggle Collapse/Expand */}
               <button type="button" onClick={() => {
                 setShowTop(!showTop);
-              }} className={`lg:hidden cursor-poSansation px-3 py-1.5 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Sansation] flex items-center gap-2 font-medium transition-colors duration-200`}>
+              }} className={`lg:hidden cursor-pointeration px-3 py-1.5 hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Sansation] flex items-center gap-2 font-medium transition-colors duration-200`}>
                 {showTop ? <FaChevronDown className="text-sm" /> : <FaChevronUp className="text-sm" />}
               </button>
 
               {/* Desktop Only - Horizontal Collapse Toggle */}
               <button type="button" onClick={() => {
                 setDescriptionCollapsed(!descriptionCollapsed);
-              }} className={`hidden lg:flex cursor-poSansation hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Sansation] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
+              }} className={`hidden lg:flex cursor-pointeration hover:bg-[var(--main-color)] rounded-sm text-xs md:text-sm font-[Sansation] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
                 <FaChevronRight className={`text-sm transition-transform duration-200 ${descriptionCollapsed ? 'rotate-0' : 'rotate-180'}`} />
               </button>
             </div>
@@ -830,7 +830,7 @@ const Problem = () => {
                             setSelectedSubmission(submission);
                             setShowSubmissionDetail(true);
                           }}
-                          className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-lg border-l-4 cursor-poSansation transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/30' :
+                          className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-lg border-l-4 cursor-pointeration transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/30' :
                             submission.status === 'wrong' ? 'border-red-500 hover:bg-[var(--french-gray)]/30' :
                               'border-yellow-500 hover:bg-[var(--french-gray)]/30'
                             }`}
@@ -931,10 +931,10 @@ const Problem = () => {
                             ref={canvasRef}
                             className="w-full h-48 md:h-56 bg-[var(--main-color)] cursor-crosshair"
                             style={{ touchAction: 'none' }}
-                            onPoSansationDown={(e) => { e.preventDefault(); startDrawing(e); }}
-                            onPoSansationMove={(e) => { e.preventDefault(); drawStroke(e); }}
-                            onPoSansationUp={(e) => { e.preventDefault(); endDrawing(); }}
-                            onPoSansationLeave={(e) => { e.preventDefault(); endDrawing(); }}
+                            onpointerationDown={(e) => { e.preventDefault(); startDrawing(e); }}
+                            onpointerationMove={(e) => { e.preventDefault(); drawStroke(e); }}
+                            onpointerationUp={(e) => { e.preventDefault(); endDrawing(); }}
+                            onpointerationLeave={(e) => { e.preventDefault(); endDrawing(); }}
                           />
                         </div>
                       </div>
@@ -976,7 +976,7 @@ const Problem = () => {
                             {problem.hints.map((hint, index) => (
                               <div key={index} className="border-t border-[var(--french-gray)] overflow-hidden">
                                 <button
-                                  className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-poSansation text-left transition-colors duration-200"
+                                  className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointeration text-left transition-colors duration-200"
                                   onClick={() => toggleHint(index)}
                                 >
                                   <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">
@@ -1004,7 +1004,7 @@ const Problem = () => {
                           <div className="flex flex-col">
                             <div className="border-t border-[var(--french-gray)] overflow-hidden">
                               <button
-                                className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-poSansation text-left transition-colors duration-200"
+                                className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointeration text-left transition-colors duration-200"
                                 onClick={() => toggleHint('similar')}
                               >
                                 <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">

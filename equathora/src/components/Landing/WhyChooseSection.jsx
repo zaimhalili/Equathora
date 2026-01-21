@@ -38,7 +38,7 @@ const WhyChooseSection = () => {
     return (
         <section className="w-full bg-white relative overflow-hidden">
             {/* Background scrolling text - FASTER */}
-            <div className="absolute inset-0 flex items-center justify-center poSansation-events-none overflow-hidden">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
                 <motion.div
                     className="text-[12vw] font-bold text-[var(--french-gray)]/[0.04] whitespace-nowrap select-none"
                     animate={{ x: [0, -1500] }}
@@ -52,21 +52,20 @@ const WhyChooseSection = () => {
             <div className="absolute top-20 right-20 w-32 h-32 border border-gray-100 rounded-full" />
             <div className="absolute bottom-20 left-10 w-20 h-20 border border-[var(--accent-color)]/10 rounded-full" />
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-14 md:py-16 mx-auto relative z-10">
-                <div className="flex flex-col lg:flex-row gap-10 sm:gap-12 md:gap-16 items-center">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32y-7 sm:py-14 md:py-16 lg:py-18 mx-auto relative z-10">
+                <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 items-center">
 
                     {/* Left side - Content (Centered) */}
                     <div className="flex-1 flex flex-col gap-6 sm:gap-7 md:gap-8 text-center lg:text-left items-center lg:items-start w-full">
                         {/* Section header */}
                         <motion.div
                             className="flex flex-col gap-3 sm:gap-4 items-center lg:items-start"
-                            initial={{ opacity: 0, x: -60, y: 30 }}
-                            whileInView={{ opacity: 1, x: 0, y: 0 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.3 }}
-                            transition={{ duration: 0.7, ease: "easeOut" }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
                         >
-                            <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
-                                <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
+                            <span className="flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
                                 Premium experience
                             </span>
                             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight px-4 lg:px-0">
@@ -80,19 +79,19 @@ const WhyChooseSection = () => {
                         {/* Benefits list */}
                         <motion.div
                             className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-lg"
-                            initial={{ opacity: 0, y: 40 }}
+                            initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.3 }}
-                            transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+                            transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
                         >
                             {benefits.map((benefit, index) => (
                                 <motion.div
                                     key={benefit}
                                     className="flex items-center gap-2 sm:gap-3"
-                                    initial={{ opacity: 0, x: -40 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, amount: 0.5 }}
-                                    transition={{ delay: 0.1 * index, duration: 0.4, ease: "easeOut" }}
+                                    transition={{ delay: 0.08 * index, duration: 0.35, ease: "easeOut" }}
                                 >
                                     <span className="flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[var(--accent-color)] text-white flex-shrink-0">
                                         <FaCheck className="text-[10px] sm:text-xs" />
@@ -130,7 +129,7 @@ const WhyChooseSection = () => {
                         <div className="relative flex justify-center items-center">
                             {/* Main image with tilt on hover - MALE */}
                             <motion.div
-                                className="relative z-20 cursor-poSansation"
+                                className="relative z-20 cursor-pointeration"
                                 whileHover={{
                                     rotateY: 0,
                                     rotateX: 0,
@@ -157,7 +156,7 @@ const WhyChooseSection = () => {
 
                             {/* Secondary image - offset with tilt - MALE */}
                             <motion.div
-                                className="absolute -bottom-8 -left-8 lg:-left-16 z-10 cursor-poSansation"
+                                className="absolute -bottom-8 -left-8 lg:-left-16 z-10 cursor-pointeration"
                                 whileHover={{
                                     rotateY: 0,
                                     rotateX: 0,

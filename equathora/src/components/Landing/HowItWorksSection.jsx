@@ -52,15 +52,15 @@ const HowItWorksSection = () => {
                 <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px]" />
             </div>
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-14 md:py-16 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-                <div className="flex flex-col gap-12 sm:gap-14 md:gap-16">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
                     {/* Section header - Centered */}
                     <motion.div
                         className="flex flex-col gap-3 sm:gap-4 text-center items-center"
-                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.3 }}
-                        transition={{ duration: 0.7, ease: "easeOut" }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
                     >
                         <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
                             <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
@@ -83,11 +83,10 @@ const HowItWorksSection = () => {
                                 <motion.div
                                     key={item.step}
                                     className="relative flex flex-col gap-4 sm:gap-5 p-6 sm:p-7 md:p-8 bg-white rounded border border-gray-100 shadow-sm transition-all"
-                                    initial={{ opacity: 0, y: 60, rotateX: 15 }}
-                                    whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, amount: 0.3 }}
-                                    transition={{ duration: 0.5, delay: index * 0.15, ease: "easeOut" }}
-                                    style={{ transformPerspective: 1000 }}
+                                    transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
                                 >
                                     {/* Connector line */}
                                     {index < steps.length - 1 && (

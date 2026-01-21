@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
-import YoungStudent from '../../assets/images/yng_student.png'
+import YoungStudent from '../../assets/images/holdingBooks.png'
 import MouseFollower from './MouseFollower';
 
 // Animated counter component
@@ -63,11 +63,11 @@ const Particles = () => {
             }));
         }, 50); // Slower update rate
 
-        return () => clearSansationval(Sansationval);
+        return () => clearInterval(interval);
     }, []);
 
     return (
-        <div className="absolute inset-0 poSansation-events-none z-5 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none z-5 overflow-hidden">
             {positions.map((p, i) => (
                 <div
                     key={i}
@@ -94,7 +94,7 @@ const HeroSection = () => {
 
     return (
         <section
-            className="font-[Sansation] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-[600px] sm:min-h-[700px] md:h-[calc(100vh-80px)] flex items-center justify-center"
+            className="font-[Sansation] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-[600px] sm:min-h-[700px] md:h-[calc(100vh)] flex items-center justify-center lg:pt-20"
         >
             {/* Background decorations */}
             <div className="absolute inset-0">
@@ -123,11 +123,11 @@ const HeroSection = () => {
             <Particles />
 
             <div className="relative z-10 w-full">
-                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1400px] py-16 sm:py-20 md:py-24 lg:py-32 flex flex-col lg:flex-row items-center justify-center gap-12 sm:gap-14 md:gap-16 w-full" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1400px] pt-22 pb-[28px] sm:py-24 md:py-24 lg:py-32 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-16 w-full">
 
                     {/* Left Content - Centered */}
                     <motion.div
-                        className="flex flex-col gap-8 flex-1 text-center lg:text-left items-center lg:items-start max-w-2xl"
+                        className="flex flex-col gap-6 lg:gap-8 flex-1 text-center lg:text-left items-center lg:items-start max-w-2xl"
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
@@ -147,7 +147,7 @@ const HeroSection = () => {
 
                         {/* Main Heading */}
                         <motion.h1
-                            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] text-white"
+                            className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] text-white"
                             initial={{ opacity: 0, rotateX: 45, scale: 0.8 }}
                             animate={{ opacity: 1, rotateX: 0, scale: 1 }}
                             transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
@@ -245,7 +245,7 @@ const HeroSection = () => {
                     </motion.div>
 
                     {/* Right Side - Student PNG with floating circle and MouseFollower */}
-                    <div className="flex-1 relative flex justify-center items-center h-full max-lg:hidden">
+                    <div className="flex-1 relative flex justify-center items-center h-full">
                         {/* Invisible hover area covering the entire right side */}
                         <MouseFollower
                             intensity={25}
@@ -265,14 +265,14 @@ const HeroSection = () => {
                                 >
                                     {/* Full circle backdrop (darker gradient) */}
                                     <div
-                                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] rounded-full backdrop-blur-sm z-0"
+                                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] lg:w-[555px] lg:h-[555px] rounded-full backdrop-blur-sm z-0"
                                         style={{ backgroundImage: 'linear-gradient(180deg, var(--secondary-color) 0%, rgba(0,0,0,0.55) 100%)' }}
                                     />
-                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] rounded-full z-0 bg-[var(--secondary-color)]" />
+                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] lg:w-[340px] lg:h-[340px] rounded-full z-0 bg-[var(--secondary-color)]" />
 
                                     {/* Student image positioned inside/aligned with circle */}
-                                    <div className="relative w-[410px] h-[555px] flex items-end justify-center z-10">
-                                        <div className="w-full h-[645px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px', transform: 'none', willChange: 'auto' }}>
+                                    <div className="relative w-[300px] h-[400px] md:w-[420px] md:h-[552px] flex items-end justify-center z-10">
+                                        <div className="w-full h-[400px] md:h-[450px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px', transform: 'none', willChange: 'auto' }}>
                                             <img
                                                 src={YoungStudent}
                                                 alt="Student with books"
@@ -282,49 +282,44 @@ const HeroSection = () => {
                                             />
                                         </div>
                                     </div>
+
+                                    {/* Floating badge - top right (attached to image group) */}
+                                    <motion.div
+                                        className="absolute top-6 right-4 lg:right-8 z-30"
+                                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                                    >
+                                        <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-md shadow-2xl">
+                                            <div>
+                                                <p className="font-bold text-xl text-[var(--secondary-color)]">50+</p>
+                                                <p className="text-[10px] text-gray-500">Active learners</p>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+
+                                    {/* Floating badge - left side (attached to image group) */}
+                                    <motion.div
+                                        className="absolute top-28 left-0 lg:-left-6 z-30"
+                                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                                    >
+                                        <div className="px-4 py-3 bg-[var(--accent-color)] rounded-md shadow-2xl text-white">
+                                            <p className="text-2xl font-bold">98%</p>
+                                            <p className="text-[10px] opacity-90">Success Rate</p>
+                                        </div>
+                                    </motion.div>
                                 </motion.div>
                             </motion.div>
                         </MouseFollower>
 
-                        {/* Floating badge - top right */}
-                        <motion.div
-                            className="absolute top-16 right-4 lg:right-8 z-30 poSansation-events-none"
-                            animate={{ y: [0, -10, 0] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                            <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-2xl shadow-2xl">
-                                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-500 text-sm">
-                                    ✓
-                                </div>
-                                <div>
-                                    <p className="text-[10px] text-gray-500">Active learners</p>
-                                    <p className="font-bold text-sm text-[var(--secondary-color)]">2,500+</p>
-                                </div>
-                            </div>
-                        </motion.div>
-
-                        {/* Floating badge - left side */}
-                        <motion.div
-                            className="absolute top-32 left-0 lg:-left-8 z-30 poSansation-events-none"
-                            animate={{ y: [0, -8, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                        >
-                            <div className="px-4 py-3 bg-[var(--accent-color)] rounded-2xl shadow-2xl text-white">
-                                <p className="text-2xl font-bold">98%</p>
-                                <p className="text-[10px] opacity-90">Success Rate</p>
-                            </div>
-                        </motion.div>
-
                         {/* Floating math symbols */}
                         <motion.div
-                            className="absolute top-20 left-20 text-4xl text-white/20 font-light z-10 poSansation-events-none"
+                            className="absolute top-20 left-20 text-4xl text-white/20 font-light z-10 pointer-events-none"
                             animate={{ rotate: [0, 10, -10, 0], y: [0, -5, 0] }}
                             transition={{ duration: 6, repeat: Infinity }}
                         >
                             ∑
                         </motion.div>
                         <motion.div
-                            className="absolute bottom-32 right-16 text-3xl text-white/15 font-light z-10 poSansation-events-none"
+                            className="absolute bottom-32 right-16 text-3xl text-white/15 font-light z-10 pointer-events-none"
                             animate={{ rotate: [0, -10, 10, 0], y: [0, -8, 0] }}
                             transition={{ duration: 8, repeat: Infinity, delay: 1 }}
                         >

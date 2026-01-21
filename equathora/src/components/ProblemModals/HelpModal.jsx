@@ -32,7 +32,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                         <h2 className='font-[Sansation] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>How to Use This Page</h2>
                         <p className='font-[Sansation] text-[var(--secondary-color)] text-sm opacity-70 pt-2'>Quick guide to solving math problems</p>
                     </div>
-                    <button onClick={onClose} className='text-gray-400 hover:text-gray-600 transition-colors cursor-poSansation'>
+                    <button onClick={onClose} className='text-gray-400 hover:text-gray-600 transition-colors cursor-pointeration'>
                         <FaTimes className='text-xl' />
                     </button>
                 </div>
@@ -102,7 +102,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                             <FaLightbulb className='text-[var(--accent-color)]' /> Pro Tip</h3>
                         <p className='font-[Sansation] text-sm text-green-700 leading-relaxed'>Try to solve the problem on your own before viewing hints or the solution. Use the sketch pad to visualize the problem. Learning mathematics happens best when you work through the challenge!</p>
                     </div>
-                    <button type="button" onClick={onClose} className='flex justify-center px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base cursor-poSansation'>Got It!</button>
+                    <button type="button" onClick={onClose} className='flex justify-center px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base cursor-pointeration'>Got It!</button>
                 </div>
 
 

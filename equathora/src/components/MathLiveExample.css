@@ -106,7 +106,7 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    cursor: poSansation;
+    cursor: pointeration;
     font-size: 18px;
     font-weight: 400;
     line-height: 1;
@@ -199,7 +199,7 @@ math-field:hover {
     border-radius: 8px;
     font-weight: 600;
     font-size: 13px;
-    cursor: poSansation;
+    cursor: pointeration;
     transition: all 0.150s ease;
     white-space: nowrap;
     min-width: fit-content;
@@ -304,7 +304,7 @@ math-field:hover {
     background: var(--french-gray);
     border: none;
     border-radius: 8px;
-    cursor: poSansation;
+    cursor: pointeration;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -745,7 +745,7 @@ math-field:focus-within {
     font-size: 0.75rem;
     color: var(--secondary-color);
     flex-shrink: 0;
-    cursor: poSansation;
+    cursor: pointeration;
     user-select: none;
     transition: background 0.150s ease;
 }

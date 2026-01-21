@@ -14,16 +14,16 @@ const LatestArticlesSection = () => {
             <div className="absolute top-20 right-20 w-32 h-32 border border-gray-100 rounded-full opacity-50" />
             <div className="absolute bottom-10 left-10 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-14 md:py-16 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-                <div className="flex flex-col gap-10 sm:gap-12">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 pb-7 sm:py-14 md:py-16 lg:py-18 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
 
                     {/* Section header - Centered */}
                     <motion.div
                         className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 sm:gap-6"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
                     >
                         <div className="flex flex-col gap-3 sm:gap-4 text-center md:text-left">
                             <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider justify-center md:justify-start">

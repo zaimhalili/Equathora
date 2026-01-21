@@ -13,7 +13,7 @@ const TrustedBySection = () => {
         },
         {
             name: "Brilliant",
-            description: "Sansationactive learning",
+            description: "Interactive learning",
             icon: FaLightbulb,
             color: "#FFB800"
         },
@@ -36,24 +36,24 @@ const TrustedBySection = () => {
             {/* Subtle background */}
             <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white" />
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-8 sm:py-10 mx-auto relative z-10">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10">
                 <motion.div
                     className="flex flex-col gap-6 sm:gap-8 items-center text-center"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
                 >
                     <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[var(--mid-main-secondary)]">
                         Inspired by industry leaders
                     </p>
-                    <div className="flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-12 w-full">
+                    <div className="flex flex-wrap justify-center sm:gap-8 md:gap-12 w-full">
                         {organizations.map((org, index) => {
                             const IconComponent = org.icon;
                             return (
                                 <motion.div
                                     key={org.name}
-                                    className="flex flex-col items-center gap-2 sm:gap-3 p-4 sm:p-6 rounded-2xl transition-all"
+                                    className="flex flex-col items-center justify-center gap-2 sm:gap-3 p-4 sm:p-6 rounded-2xl transition-all w-1/2"
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
