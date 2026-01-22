@@ -38,7 +38,7 @@ const LatestArticlesSection = () => {
                             </p>
                         </div>
                         <Link
-                            to="/blogs"
+                            to={blogPosts.length > 0 ? `/blog/${blogPosts[0].slug}` : "/blogs"}
                             className="group inline-flex items-center gap-2 text-[var(--secondary-color)] font-semibold transition-all justify-center md:justify-start"
                         >
                             View all articles

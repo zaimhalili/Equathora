@@ -257,7 +257,7 @@ const Navbar = () => {
                 <li className='pl-6 lg:pl-4'>
                   <button
                     type="button"
-                    className='h-[7.5vh] flex items-center justify-center transition-colors duration-200 cursor-pointeration bg-transparent border-none text-[var(--secondary-color)] hover:text-[var(--accent-color)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                    className='h-[7.5vh] flex items-center justify-center transition-colors duration-200 cursor-pointer bg-transparent border-none text-[var(--secondary-color)] hover:text-[var(--accent-color)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
                     onClick={() => setSidebarOpen(true)}
                     aria-label="Open navigation menu"
                     aria-expanded={sidebarOpen}

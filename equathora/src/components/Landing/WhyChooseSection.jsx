@@ -131,7 +131,7 @@ const WhyChooseSection = () => {
                         <div className="relative flex justify-center items-center">
                             {/* Main image with tilt on hover - MALE */}
                             <motion.div
-                                className="relative z-20 cursor-pointeration"
+                                className="relative z-20 cursor-pointer"
                                 whileHover={{
                                     rotateY: 0,
                                     rotateX: 0,
@@ -158,7 +158,7 @@ const WhyChooseSection = () => {
 
                             {/* Secondary image - offset with tilt - MALE */}
                             <motion.div
-                                className="absolute -bottom-8 -left-8 lg:-left-16 z-10 cursor-pointeration"
+                                className="absolute -bottom-8 -left-8 lg:-left-16 z-10 cursor-pointer"
                                 whileHover={{
                                     rotateY: 0,
                                     rotateX: 0,

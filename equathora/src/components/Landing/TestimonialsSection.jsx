@@ -1,9 +1,15 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
 
 
 const TestimonialsSection = () => {
+    const sectionRef = React.useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start end", "end start"]
+    });
+    const rotateValue = useTransform(scrollYProgress, [0, 1], [0, 360]);
 
     const testimonials = [
         {
@@ -30,10 +36,9 @@ const TestimonialsSection = () => {
     ];
 
     return (
-        <section className="w-full bg-[var(--secondary-color)] relative overflow-hidden">
+        <section ref={sectionRef} className="w-full bg-[var(--secondary-color)] relative overflow-hidden">
             {/* Background decorations */}
             <div className="absolute inset-0">
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--accent-color)]/10 rounded-full blur-[150px]" />
                 <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[100px]" />
 
                 {/* Grid pattern */}
@@ -66,7 +71,7 @@ const TestimonialsSection = () => {
                             <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                         </span>
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white px-6">
-                            Trusted by genius people
+                            Trusted by learners worldwide
                         </h2>
                         <p className="text-white/60 max-w-lg text-xs sm:text-sm px-6">
                             Hear from students who are building their math skills with us.
@@ -93,9 +98,13 @@ const TestimonialsSection = () => {
                         {/* First marquee row */}
                         <div className="marquee-row w-full mx-auto overflow-hidden relative">
                             <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-[var(--secondary-color)] to-transparent"></div>
-                            <div className="marquee-inner flex transform-gpu min-w-[200%] pt-10 pb-5">
-                                {[...testimonials, ...testimonials].map((testimonial, index) => (
-                                    <div key={index} className="p-4 rounded-lg mx-4 shadow-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:shadow-xl transition-all duration-200 w-72 shrink-0">
+                            <div className="marquee-inner flex transform-gpu min-w-[200%] pt-10 pb-5 gap-4">
+                                {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+                                    <motion.div
+                                        key={index}
+                                        className="p-4 rounded-lg shadow-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:shadow-xl transition-all duration-200 w-72 shrink-0"
+                                        style={{ rotate: rotateValue }}
+                                    >
                                         <div className="flex gap-2">
                                             <img className="w-11 h-11 rounded-full" src={testimonial.avatar} alt="User Image" />
                                             <div className="flex flex-col">
@@ -109,7 +118,7 @@ const TestimonialsSection = () => {
                                             </div>
                                         </div>
                                         <p className="text-sm py-4 text-white/80">{testimonial.quote}</p>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
                             <div className="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-[var(--secondary-color)] to-transparent"></div>
@@ -118,9 +127,13 @@ const TestimonialsSection = () => {
                         {/* Second marquee row (reverse direction) */}
                         <div className="marquee-row w-full mx-auto overflow-hidden relative">
                             <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-[var(--secondary-color)] to-transparent"></div>
-                            <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] pt-5 pb-10">
-                                {[...testimonials, ...testimonials].map((testimonial, index) => (
-                                    <div key={index} className="p-4 rounded-lg mx-4 shadow-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:shadow-xl transition-all duration-200 w-72 shrink-0">
+                            <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] pt-5 pb-10 gap-4">
+                                {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+                                    <motion.div
+                                        key={index}
+                                        className="p-4 rounded-lg shadow-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:shadow-xl transition-all duration-200 w-72 shrink-0"
+                                        style={{ rotate: rotateValue }}
+                                    >
                                         <div className="flex gap-2">
                                             <img className="w-11 h-11 rounded-full" src={testimonial.avatar} alt="User Image" />
                                             <div className="flex flex-col">
@@ -134,7 +147,7 @@ const TestimonialsSection = () => {
                                             </div>
                                         </div>
                                         <p className="text-sm py-4 text-white/80">{testimonial.quote}</p>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
                             <div className="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-[var(--secondary-color)] to-transparent"></div>

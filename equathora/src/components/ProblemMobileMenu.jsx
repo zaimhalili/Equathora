@@ -22,7 +22,7 @@ const ProblemMobileMenu = ({
         <div className="md:hidden relative mobile-menu-container">
             <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointeration"
+                className="flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                 title="More options"
             >
                 <FaEllipsisV className="text-sm" />
@@ -42,7 +42,7 @@ const ProblemMobileMenu = ({
                             if (descriptionCollapsed) setDescriptionCollapsed(false);
                             setShowMobileMenu(false);
                         }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-all duration-200 border-b border-[var(--french-gray)] cursor-pointeration ${showDrawingPad ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--secondary-color)] hover:bg-[var(--french-gray)]'}`}
+                        className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-all duration-200 border-b border-[var(--french-gray)] cursor-pointer ${showDrawingPad ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--secondary-color)] hover:bg-[var(--french-gray)]'}`}
                     >
                         <FaPencilAlt className="text-sm" />
                         <span>{showDrawingPad ? 'Hide Sketch Pad' : 'Show Sketch Pad'}</span>
@@ -52,7 +52,7 @@ const ProblemMobileMenu = ({
                             setShowHelpModal(true);
                             setShowMobileMenu(false);
                         }}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[var(--secondary-color)] transition-all duration-200 hover:bg-[var(--french-gray)] border-b border-[var(--french-gray)] cursor-pointeration"
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[var(--secondary-color)] transition-all duration-200 hover:bg-[var(--french-gray)] border-b border-[var(--french-gray)] cursor-pointer"
                     >
                         <FaQuestionCircle className="text-sm" />
                         <span>Help & Guide</span>
@@ -60,7 +60,7 @@ const ProblemMobileMenu = ({
                     <Link
                         to="/feedback"
                         onClick={() => setShowMobileMenu(false)}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[var(--secondary-color)] transition-all duration-200 hover:bg-[var(--french-gray)] border-b border-[var(--french-gray)] cursor-pointeration"
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[var(--secondary-color)] transition-all duration-200 hover:bg-[var(--french-gray)] border-b border-[var(--french-gray)] cursor-pointer"
                     >
                         <FaFlag className="text-sm" />
                         <span>Report Problem</span>
@@ -70,7 +70,7 @@ const ProblemMobileMenu = ({
                             handleFavoriteToggle();
                             setShowMobileMenu(false);
                         }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-all duration-200 cursor-pointeration ${isFavorite ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--secondary-color)] hover:bg-[var(--french-gray)]'}`}
+                        className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-all duration-200 cursor-pointer ${isFavorite ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--secondary-color)] hover:bg-[var(--french-gray)]'}`}
                     >
                         {isFavorite ? <FaStar className="text-sm" /> : <FaRegStar className="text-sm" />}
                         <span>{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</span>

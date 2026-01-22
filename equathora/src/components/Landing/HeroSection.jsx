@@ -94,7 +94,7 @@ const HeroSection = () => {
 
     return (
         <section
-            className="font-[Sansation] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-screen flex items-center justify-center lg:pt-20"
+            className="font-[Sansation] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-screen flex items-center justify-center"
         >
             {/* Background decorations */}
             <div className="absolute inset-0">
@@ -211,9 +211,22 @@ const HeroSection = () => {
                             </Link>
                             <Link
                                 to="/about"
-                                className="px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-sm sm:text-base !text-white font-medium transition-all"
+                                className="group relative text-sm sm:text-base !text-white font-medium transition-all overflow-hidden flex items-center gap-2"
                             >
-                                Learn more
+                                <span>Learn more</span>
+                                <motion.span
+                                    className="absolute"
+                                    initial={{ x: -20, opacity: 0 }}
+                                    whileHover={{ x: 0, opacity: 1 }}
+                                    transition={{ duration: 0.3 }}
+                                >
+                                    <FaArrowRight className="text-xs sm:text-sm" />
+                                </motion.span>
+                                <motion.span
+                                    className="opacity-100 group-hover:opacity-0 group-hover:translate-x-4 transition-all duration-300"
+                                >
+                                    <FaArrowRight className="text-xs sm:text-sm" />
+                                </motion.span>
                             </Link>
                         </motion.div>
 
@@ -278,7 +291,7 @@ const HeroSection = () => {
                                     "
                                 >
                                     {/* Inner subtle circle */}
-                                    <div className="absolute inset-[12%] rounded-full bg-[var(--secondary-color)] z-0" />
+                                    <div className="absolute inset-[18%] rounded-full bg-[var(--secondary-color)] z-0" />
 
                                     {/* Student image – clipped by the circle */}
                                     <img

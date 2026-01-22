@@ -85,7 +85,7 @@ const FeaturesSection = () => {
                                     "
                                 >
                                     {/* Inner subtle circle */}
-                                    <div className="absolute inset-[12%] rounded-full bg-white z-0" />
+                                    <div className="absolute inset-[18%] rounded-full bg-white z-0" />
 
                                     {/* Student image – clipped by the circle */}
                                     <img

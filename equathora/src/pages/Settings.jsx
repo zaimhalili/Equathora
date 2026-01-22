@@ -105,7 +105,7 @@ const Settings = () => {
                                 id=""
                                 value={seniority}
                                 onChange={(e) => setSeniority(e.target.value)}
-                                className="text-md cursor-pointeration px-3 py-2 lg:py-4 border rounded-lg border-[var(--french-gray)] appearance-none bg-white pr-10"
+                                className="text-md cursor-pointer px-3 py-2 lg:py-4 border rounded-lg border-[var(--french-gray)] appearance-none bg-white pr-10"
                                 style={{
                                     backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
                                     backgroundRepeat: 'no-repeat',
@@ -126,7 +126,7 @@ const Settings = () => {
                         </div>
                     </div>
                     <hr className='pb-3' />
-                    <button type="submit" className='cursor-pointeration py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md rounded-lg shadow-md shadow-gray-400 border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-150 max-w-[180px]'>Save profile data</button>
+                    <button type="submit" className='cursor-pointer py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md rounded-lg shadow-md shadow-gray-400 border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-150 max-w-[180px]'>Save profile data</button>
                 </section>
 
                 {/* Handle Section */}
@@ -146,7 +146,7 @@ const Settings = () => {
                         />
                     </div>
                     <div>
-                        <button type="submit" className='cursor-pointeration py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md rounded-lg shadow-md shadow-gray-400 border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-150 max-w-[180px]'>Change handle</button>
+                        <button type="submit" className='cursor-pointer py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md rounded-lg shadow-md shadow-gray-400 border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-150 max-w-[180px]'>Change handle</button>
                     </div>
                 </section>
 
@@ -165,7 +165,7 @@ const Settings = () => {
                             type="button"
                             onClick={handleResetAccount}
                             disabled={isResetting}
-                            className='cursor-pointeration py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all rounded-xs duration-200 lg:max-w-[180px] hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed'
+                            className='cursor-pointer py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all rounded-xs duration-200 lg:max-w-[180px] hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed'
                         >
                             {isResetting ? 'Resetting...' : 'Reset Progress'}
                         </button>
@@ -176,7 +176,7 @@ const Settings = () => {
                         <h4 className='font-[Sansation,cursive] font-bold text-[var(--secondary-color)] text-lg lg:text-2xl'>Delete Account</h4>
                         <p className='text-md'>This option will eliminate your account entirely with all data.
                             You’ll get a chance to confirm your choice.</p>
-                        <button type="submit" className='cursor-pointeration py-2 px-3 rounded-xs bg-[var(--accent-color)] text-white font-bold text-md border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-200 hover:-translate-y-1 lg:max-w-[180px]'>Delete account</button>
+                        <button type="submit" className='cursor-pointer py-2 px-3 rounded-xs bg-[var(--accent-color)] text-white font-bold text-md border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-200 hover:-translate-y-1 lg:max-w-[180px]'>Delete account</button>
                     </div>
                 </section>
             </main>

@@ -55,7 +55,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                             <span>{submission.timestamp}</span>
                         </div>
                     </div>
-                    <button onClick={onClose} className='text-gray-400 hover:text-gray-600 transition-colors duration-75 cursor-pointeration'>
+                    <button onClick={onClose} className='text-gray-400 hover:text-gray-600 transition-colors duration-75 cursor-pointer'>
                         <FaTimes className='text-xl' />
                     </button>
                 </div>
@@ -66,7 +66,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                             <h3 className='font-[Sansation] font-bold text-sm text-[var(--secondary-color)]'>Your Solution Steps</h3>
                             <button
                                 onClick={handleCopySteps}
-                                className='flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[var(--accent-color)] border border-[var(--accent-color)] rounded-lg hover:bg-[var(--accent-color)] hover:text-white transition-colors duration-75 cursor-pointeration'
+                                className='flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[var(--accent-color)] border border-[var(--accent-color)] rounded-lg hover:bg-[var(--accent-color)] hover:text-white transition-colors duration-75 cursor-pointer'
                             >
                                 <FaCopy />
                                 Copy Steps
@@ -135,7 +135,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                 <button
                     type="button"
                     onClick={onClose}
-                    className='cursor-pointeration px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'
+                    className='cursor-pointer px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-lg bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'
                 >
                     Close
                 </button>

@@ -49,7 +49,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             key={i}
                             onClick={item.onClick}
                             role="menuitem"
-                            className='flex w-full p-2.5 gap-2.5 border-t border-[var(--french-gray)] items-center hover:bg-white hover:rounded-[5px_5px_10px_10px] text-[var(--secondary-color)] text-left border-none bg-transparent cursor-pointeration focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                            className='flex w-full p-2.5 gap-2.5 border-t border-[var(--french-gray)] items-center hover:bg-white hover:rounded-[5px_5px_10px_10px] text-[var(--secondary-color)] text-left border-none bg-transparent cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
                         >
                             <img
                                 src={item.image}

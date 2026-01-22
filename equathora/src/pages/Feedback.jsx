@@ -171,7 +171,7 @@ const Feedback = () => {
                                         {feedbackTypes.map((type) => (
                                             <label
                                                 key={type.value}
-                                                className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointeration transition-all duration-200 ${formData.feedbackType === type.value
+                                                className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${formData.feedbackType === type.value
                                                     ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/5'
                                                     : 'border-[var(--french-gray)] hover:border-[var(--mid-main-secondary)]'
                                                     }`}
@@ -200,7 +200,7 @@ const Feedback = () => {
                                         {commonIssues[formData.feedbackType].map((issue) => (
                                             <label
                                                 key={issue}
-                                                className={`flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointeration transition-all duration-150 text-sm ${formData.commonIssue === issue
+                                                className={`flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer transition-all duration-150 text-sm ${formData.commonIssue === issue
                                                     ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/10 text-[var(--secondary-color)] font-medium'
                                                     : 'border-[var(--french-gray)] hover:border-[var(--mid-main-secondary)] text-[var(--secondary-color)]'
                                                     }`}
@@ -283,7 +283,7 @@ const Feedback = () => {
                                     <button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        className="flex-1 px-6 py-3 border-2 border-[var(--accent-color)] rounded-lg font-bold text-white bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointeration"
+                                        className="flex-1 px-6 py-3 border-2 border-[var(--accent-color)] rounded-lg font-bold text-white bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                                     >
                                         {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
                                     </button>

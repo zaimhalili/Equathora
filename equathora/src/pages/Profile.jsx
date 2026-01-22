@@ -255,7 +255,7 @@ const Profile = () => {
                   {viewingOwnProfile && (
                     <button
                       type="button"
-                      className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300 cursor-pointeration'
+                      className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300 cursor-pointer'
                       onClick={() => setIsEditModalOpen(true)}
                     >
                       Edit Profile
@@ -328,7 +328,7 @@ const Profile = () => {
                 <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
                   {/* Circular Progress Indicator */}
                   <div
-                    className='relative flex flex-col w-full md:flex-1 justify-center items-center cursor-pointeration group'
+                    className='relative flex flex-col w-full md:flex-1 justify-center items-center cursor-pointer group'
                     onMouseEnter={() => setShowAccuracy(true)}
                     onMouseLeave={() => setShowAccuracy(false)}
                   >

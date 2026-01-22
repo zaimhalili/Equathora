@@ -201,7 +201,7 @@ const HelpCenter = () => {
                                     className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
                                 >
                                     <button
-                                        className="w-full p-4 flex items-start gap-3 text-left cursor-pointeration"
+                                        className="w-full p-4 flex items-start gap-3 text-left cursor-pointer"
                                         onClick={() => toggleFaq(index)}
                                     >
                                         <div className={`${faq.color} text-xl flex-shrink-0 pt-1`}>
