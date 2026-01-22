@@ -67,29 +67,43 @@ const FeaturesSection = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.6, delay: 0.2 }}
                             >
-                                <motion.div
-                                    className="relative"
+                                {/* Circle container with image clipped inside */}
+                                <div
+                                    className="
+                                        relative
+                                        w-[320px]
+                                        sm:w-[380px]
+                                        md:w-[420px]
+                                        lg:w-[500px]
+                                        aspect-square
+                                        rounded-full
+                                        overflow-hidden
+                                        z-10
+                                        bg-gradient-to-b
+                                        from-white
+                                        to-gray-200
+                                    "
                                 >
-                                    {/* Full circle backdrop (darker gradient) */}
-                                    <div
-                                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] lg:w-[455px] lg:h-[455px] rounded-full backdrop-blur-sm z-0"
-                                        style={{ backgroundImage: 'linear-gradient(180deg, rgba(255,255,255,0.45) 0%, var(--french-gray) 100%)' }}
-                                    />
-                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] lg:w-[320px] lg:h-[320px] rounded-full z-0 bg-white" />
+                                    {/* Inner subtle circle */}
+                                    <div className="absolute inset-[12%] rounded-full bg-white z-0" />
 
-                                    {/* Student image positioned inside/aligned with circle */}
-                                    <div className="relative w-[300px] h-[350px] md:w-[355px] md:h-[350px] lg:h-[450px] lg:w-[400px] 2xl:h-[450px] 2xl:w-[400px] flex items-end justify-center z-10">
-                                        <div className="w-full h-[300px] lg:h-[495px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px', transform: 'none', willChange: 'auto' }}>
-                                            <img
-                                                src={MaleStudent}
-                                                alt="Student with books"
-                                                className="w-full h-full object-cover object-top drop-shadow-2xl"
-                                                loading="eager"
-                                                style={{ transform: 'none', willChange: 'auto' }}
-                                            />
-                                        </div>
-                                    </div>
-                                </motion.div>
+                                    {/* Student image – clipped by the circle */}
+                                    <img
+                                        src={MaleStudent}
+                                        alt="Student with books"
+                                        className="
+                                            absolute
+                                            inset-0
+                                            w-full
+                                            h-full
+                                            object-cover
+                                            object-top
+                                            drop-shadow-2xl
+                                            z-10
+                                        "
+                                        loading="eager"
+                                    />
+                                </div>
                             </motion.div>
                         </MouseFollower>
                     </div>

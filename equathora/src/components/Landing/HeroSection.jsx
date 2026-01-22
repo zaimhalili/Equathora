@@ -94,7 +94,7 @@ const HeroSection = () => {
 
     return (
         <section
-            className="font-[Sansation] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-[600px] sm:min-h-[700px] md:h-[calc(100vh)] flex items-center justify-center lg:pt-20"
+            className="font-[Sansation] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-screen flex items-center justify-center lg:pt-20"
         >
             {/* Background decorations */}
             <div className="absolute inset-0">
@@ -123,7 +123,7 @@ const HeroSection = () => {
             <Particles />
 
             <div className="relative z-10 w-full flex justify-center">
-                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1400px] pt-22 pb-[28px] sm:py-24 md:py-24 lg:py-32 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-16 w-full">
+                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1400px] pt-22 pb-[28px] sm:pt-24 md:pt-30 lg:pt-20 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-11 lg:gap-16 xl:gap-16 w-full min-h-screen">
 
                     {/* Left Content - Centered */}
                     <motion.div
@@ -147,7 +147,7 @@ const HeroSection = () => {
 
                         {/* Main Heading */}
                         <motion.h1
-                            className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] text-white"
+                            className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-bold leading-[1.1] text-white"
                             initial={{ opacity: 0, rotateX: 45, scale: 0.8 }}
                             animate={{ opacity: 1, rotateX: 0, scale: 1 }}
                             transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
@@ -199,7 +199,7 @@ const HeroSection = () => {
                         >
                             <Link
                                 to="/learn"
-                                className="group flex items-center gap-2 rounded-lg !bg-[var(--accent-color)] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all hover:!bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
+                                className="group flex items-center gap-2 rounded-full !bg-[var(--accent-color)] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all hover:!bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
                             >
                                 Start practicing
                                 <motion.span
@@ -211,7 +211,7 @@ const HeroSection = () => {
                             </Link>
                             <Link
                                 to="/about"
-                                className="px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-sm sm:text-base !text-white font-medium border border-white/20 rounded-lg transition-all hover:!bg-white/10"
+                                className="px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 text-sm sm:text-base !text-white font-medium transition-all"
                             >
                                 Learn more
                             </Link>
@@ -246,7 +246,7 @@ const HeroSection = () => {
 
                     {/* Right Side - Student PNG with floating circle and MouseFollower */}
                     <div className="flex-1 relative flex justify-center items-center h-full">
-                        {/* Invisible hover area covering the entire right side */}
+                        {/* MouseFollower wraps everything for parallax effect */}
                         <MouseFollower
                             intensity={25}
                             scale={1.05}
@@ -260,52 +260,70 @@ const HeroSection = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.6, delay: 0.2 }}
                             >
-                                <motion.div
-                                    className="relative"
+                                {/* Circle container with image clipped inside */}
+                                <div
+                                    className="
+                                        relative
+                                        w-[320px]
+                                        sm:w-[380px]
+                                        md:w-[460px]
+                                        lg:w-[560px]
+                                        aspect-square
+                                        rounded-full
+                                        overflow-hidden
+                                        z-10
+                                        bg-gradient-to-b
+                                        from-[var(--secondary-color)]
+                                        to-black/60
+                                    "
                                 >
-                                    {/* Full circle backdrop (darker gradient) */}
-                                    <div
-                                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] lg:w-[555px] lg:h-[555px] rounded-full backdrop-blur-sm z-0"
-                                        style={{ backgroundImage: 'linear-gradient(180deg, var(--secondary-color) 0%, rgba(0,0,0,0.55) 100%)' }}
-                                    />
-                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] lg:w-[340px] lg:h-[340px] rounded-full z-0 bg-[var(--secondary-color)]" />
+                                    {/* Inner subtle circle */}
+                                    <div className="absolute inset-[12%] rounded-full bg-[var(--secondary-color)] z-0" />
 
-                                    {/* Student image positioned inside/aligned with circle */}
-                                    <div className="relative w-[300px] h-[400px] md:w-[420px] md:h-[552px] flex items-end justify-center z-10">
-                                        <div className="w-full h-[400px] lg:h-[555px] overflow-hidden relative" style={{ borderRadius: '0 0 180px 180px', transform: 'none', willChange: 'auto' }}>
-                                            <img
-                                                src={YoungStudent}
-                                                alt="Student with books"
-                                                className="w-full h-full object-cover object-top drop-shadow-2xl brightness-95"
-                                                loading="eager"
-                                                style={{ transform: 'none', willChange: 'auto' }}
-                                            />
+                                    {/* Student image – clipped by the circle */}
+                                    <img
+                                        src={YoungStudent}
+                                        alt="Student with books"
+                                        className="
+                                            absolute
+                                            inset-0
+                                            w-full
+                                            h-full
+                                            object-cover
+                                            object-top
+                                            drop-shadow-2xl
+                                            brightness-95
+                                            z-10
+                                        "
+                                        loading="eager"
+                                    />
+                                </div>
+
+                                {/* Floating badges - OUTSIDE overflow:hidden but INSIDE MouseFollower */}
+                                {/* Floating badge – top right */}
+                                <motion.div
+                                    className="absolute top-[10%] right-[-3%] z-30"
+                                    animate={{ y: [0, -6, 0] }}
+                                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                                >
+                                    <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-md shadow-2xl">
+                                        <div>
+                                            <p className="font-bold text-xl text-[var(--secondary-color)]">50+</p>
+                                            <p className="text-[10px] text-gray-500">Active learners</p>
                                         </div>
                                     </div>
+                                </motion.div>
 
-                                    {/* Floating badge - top right (attached to image group) */}
-                                    <motion.div
-                                        className="absolute top-6 right-4 lg:right-8 z-30"
-                                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                                    >
-                                        <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-md shadow-2xl">
-                                            <div>
-                                                <p className="font-bold text-xl text-[var(--secondary-color)]">50+</p>
-                                                <p className="text-[10px] text-gray-500">Active learners</p>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-
-                                    {/* Floating badge - left side (attached to image group) */}
-                                    <motion.div
-                                        className="absolute top-28 left-0 lg:-left-6 z-30"
-                                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                                    >
-                                        <div className="px-4 py-3 bg-[var(--accent-color)] rounded-md shadow-2xl text-white">
-                                            <p className="text-2xl font-bold">98%</p>
-                                            <p className="text-[10px] opacity-90">Success Rate</p>
-                                        </div>
-                                    </motion.div>
+                                {/* Floating badge – left */}
+                                <motion.div
+                                    className="absolute top-[38%] left-[-5%] z-30"
+                                    animate={{ y: [0, 8, 0] }}
+                                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                                >
+                                    <div className="px-4 py-3 bg-[var(--accent-color)] rounded-md shadow-2xl text-white">
+                                        <p className="text-2xl font-bold">98%</p>
+                                        <p className="text-[10px] opacity-90">Success Rate</p>
+                                    </div>
                                 </motion.div>
                             </motion.div>
                         </MouseFollower>

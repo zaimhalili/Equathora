@@ -39,7 +39,7 @@ const LatestArticlesSection = () => {
                         </div>
                         <Link
                             to="/blogs"
-                            className="group inline-flex items-center gap-2 text-[var(--secondary-color)] font-semibold transition-all hover:text-[var(--accent-color)] justify-center md:justify-start"
+                            className="group inline-flex items-center gap-2 text-[var(--secondary-color)] font-semibold transition-all justify-center md:justify-start"
                         >
                             View all articles
                             <FaArrowRight className="transition-transform group-hover:translate-x-1" />
@@ -80,7 +80,7 @@ const LatestArticlesSection = () => {
                                             <span>{post.date}</span>
                                             {post.readTime && <span>· {post.readTime}</span>}
                                         </div>
-                                        <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)] line-clamp-2 group-hover:text-[var(--accent-color)] transition-colors">
+                                        <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)] line-clamp-2 transition-colors">
                                             {post.title}
                                         </h3>
                                         <p className="text-[var(--mid-main-secondary)] text-xs sm:text-sm line-clamp-2">

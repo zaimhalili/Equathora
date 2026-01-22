@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import React from 'react';
+import { motion } from 'framer-motion';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
 
 
 const TestimonialsSection = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [direction, setDirection] = useState(0);
 
     const testimonials = [
         {
@@ -31,35 +28,6 @@ const TestimonialsSection = () => {
             rating: 5
         }
     ];
-
-    const slideVariants = {
-        enter: (direction) => ({
-            x: direction > 0 ? 200 : -200,
-            opacity: 0
-        }),
-        center: {
-            zIndex: 1,
-            x: 0,
-            opacity: 1
-        },
-        exit: (direction) => ({
-            zIndex: 0,
-            x: direction < 0 ? 200 : -200,
-            opacity: 0
-        })
-    };
-
-    const paginate = (newDirection) => {
-        setDirection(newDirection);
-        setCurrentIndex((prev) => (prev + newDirection + testimonials.length) % testimonials.length);
-    };
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            paginate(1);
-        }, 6000);
-        return () => clearInterval(timer);
-    }, []);
 
     return (
         <section className="w-full bg-[var(--secondary-color)] relative overflow-hidden">
@@ -105,80 +73,71 @@ const TestimonialsSection = () => {
                         </p>
                     </motion.div>
 
-                    {/* Crafto-style layout: Big stat on left, cards on right */}
-                    <div className="w-full flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
-                        {/* Left column - big percentage */}
-                        <motion.div
-                            className="lg:w-2/5 flex flex-col items-center lg:items-start text-center lg:text-left"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.3 }}
-                            transition={{ duration: 0.5, ease: "easeOut" }}
-                        >
-                            <span className="text-8xl sm:text-9xl lg:text-[10rem] font-bold text-[var(--accent-color)] leading-none">
-                                99%
-                            </span>
-                            <p className="text-white/80 text-lg sm:text-xl leading-relaxed pt-4">
-                                Student's complete their practice successfully.
-                            </p>
-                        </motion.div>
+                    {/* Marquee carousel of testimonial cards */}
+                    <style>{`
+                        @keyframes marqueeScroll {
+                            0% { transform: translateX(0%); }
+                            100% { transform: translateX(-50%); }
+                        }
 
-                        {/* Right column - testimonial carousel */}
-                        <div className="lg:w-3/5 w-full">
-                            <div className="relative">
-                                <AnimatePresence initial={false} custom={direction} mode="wait">
-                                    <motion.div
-                                        key={currentIndex}
-                                        custom={direction}
-                                        variants={slideVariants}
-                                        initial="enter"
-                                        animate="center"
-                                        exit="exit"
-                                        transition={{
-                                            x: { type: "spring", stiffness: 300, damping: 30 },
-                                            opacity: { duration: 0.2 }
-                                        }}
-                                    >
-                                        <div className="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-8 sm:p-10">
-                                            <p className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed pb-8">
-                                                "{testimonials[currentIndex].quote}"
-                                            </p>
+                        .marquee-inner {
+                            animation: marqueeScroll 25s linear infinite;
+                        }
 
-                                            <div className="flex items-center gap-4">
-                                                <img
-                                                    src={testimonials[currentIndex].avatar}
-                                                    alt={testimonials[currentIndex].author}
-                                                    className="w-14 h-14 rounded-full object-cover border-2 border-[var(--accent-color)]/40"
-                                                />
-                                                <div>
-                                                    <p className="font-bold text-white text-base sm:text-lg">
-                                                        {testimonials[currentIndex].author}
-                                                    </p>
-                                                    <p className="text-sm text-white/60">
-                                                        {testimonials[currentIndex].role}
-                                                    </p>
+                        .marquee-reverse {
+                            animation-direction: reverse;
+                        }
+                    `}</style>
+
+                    <div className="w-full flex flex-col gap-0">
+                        {/* First marquee row */}
+                        <div className="marquee-row w-full mx-auto overflow-hidden relative">
+                            <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-[var(--secondary-color)] to-transparent"></div>
+                            <div className="marquee-inner flex transform-gpu min-w-[200%] pt-10 pb-5">
+                                {[...testimonials, ...testimonials].map((testimonial, index) => (
+                                    <div key={index} className="p-4 rounded-lg mx-4 shadow-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:shadow-xl transition-all duration-200 w-72 shrink-0">
+                                        <div className="flex gap-2">
+                                            <img className="w-11 h-11 rounded-full" src={testimonial.avatar} alt="User Image" />
+                                            <div className="flex flex-col">
+                                                <div className="flex items-center gap-1">
+                                                    <p className="text-white font-semibold">{testimonial.author}</p>
+                                                    <svg className="mt-0.5 fill-[var(--accent-color)]" width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M4.555.72a4 4 0 0 1-.297.24c-.179.12-.38.202-.59.244a4 4 0 0 1-.38.041c-.48.039-.721.058-.922.129a1.63 1.63 0 0 0-.992.992c-.071.2-.09.441-.129.922a4 4 0 0 1-.041.38 1.6 1.6 0 0 1-.245.59 3 3 0 0 1-.239.297c-.313.368-.47.551-.56.743-.213.444-.213.96 0 1.404.09.192.247.375.56.743.125.146.187.219.24.297.12.179.202.38.244.59.018.093.026.189.041.38.039.48.058.721.129.922.163.464.528.829.992.992.2.071.441.09.922.129.191.015.287.023.38.041.21.042.411.125.59.245.078.052.151.114.297.239.368.313.551.47.743.56.444.213.96.213 1.404 0 .192-.09.375-.247.743-.56.146-.125.219-.187.297-.24.179-.12.38-.202.59-.244a4 4 0 0 1 .38-.041c.48-.039.721-.058.922-.129.464-.163.829-.528.992-.992.071-.2.09-.441.129-.922a4 4 0 0 1 .041-.38c.042-.21.125-.411.245-.59.052-.078.114-.151.239-.297.313-.368.47-.551.56-.743.213-.444.213-.96 0-1.404-.09-.192-.247-.375-.56-.743a4 4 0 0 1-.24-.297 1.6 1.6 0 0 1-.244-.59 3 3 0 0 1-.041-.38c-.039-.48-.058-.721-.129-.922a1.63 1.63 0 0 0-.992-.992c-.2-.071-.441-.09-.922-.129a4 4 0 0 1-.38-.041 1.6 1.6 0 0 1-.59-.245A3 3 0 0 1 7.445.72C7.077.407 6.894.25 6.702.16a1.63 1.63 0 0 0-1.404 0c-.192.09-.375.247-.743.56m4.07 3.998a.488.488 0 0 0-.691-.69l-2.91 2.91-.958-.957a.488.488 0 0 0-.69.69l1.302 1.302c.19.191.5.191.69 0z" />
+                                                    </svg>
                                                 </div>
+                                                <span className="text-xs text-white/50">{testimonial.role}</span>
                                             </div>
                                         </div>
-                                    </motion.div>
-                                </AnimatePresence>
+                                        <p className="text-sm py-4 text-white/80">{testimonial.quote}</p>
+                                    </div>
+                                ))}
                             </div>
+                            <div className="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-[var(--secondary-color)] to-transparent"></div>
+                        </div>
 
-                            {/* Navigation arrows */}
-                            <div className="flex items-center gap-3 pt-8">
-                                <button
-                                    onClick={() => paginate(-1)}
-                                    className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-all hover:bg-[var(--accent-color)] hover:border-[var(--accent-color)]"
-                                >
-                                    <FaChevronLeft className="text-base" />
-                                </button>
-                                <button
-                                    onClick={() => paginate(1)}
-                                    className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white transition-all hover:bg-[var(--accent-color)] hover:border-[var(--accent-color)]"
-                                >
-                                    <FaChevronRight className="text-base" />
-                                </button>
+                        {/* Second marquee row (reverse direction) */}
+                        <div className="marquee-row w-full mx-auto overflow-hidden relative">
+                            <div className="absolute left-0 top-0 h-full w-20 z-10 pointer-events-none bg-gradient-to-r from-[var(--secondary-color)] to-transparent"></div>
+                            <div className="marquee-inner marquee-reverse flex transform-gpu min-w-[200%] pt-5 pb-10">
+                                {[...testimonials, ...testimonials].map((testimonial, index) => (
+                                    <div key={index} className="p-4 rounded-lg mx-4 shadow-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:shadow-xl transition-all duration-200 w-72 shrink-0">
+                                        <div className="flex gap-2">
+                                            <img className="w-11 h-11 rounded-full" src={testimonial.avatar} alt="User Image" />
+                                            <div className="flex flex-col">
+                                                <div className="flex items-center gap-1">
+                                                    <p className="text-white font-semibold">{testimonial.author}</p>
+                                                    <svg className="mt-0.5 fill-[var(--accent-color)]" width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fillRule="evenodd" clipRule="evenodd" d="M4.555.72a4 4 0 0 1-.297.24c-.179.12-.38.202-.59.244a4 4 0 0 1-.38.041c-.48.039-.721.058-.922.129a1.63 1.63 0 0 0-.992.992c-.071.2-.09.441-.129.922a4 4 0 0 1-.041.38 1.6 1.6 0 0 1-.245.59 3 3 0 0 1-.239.297c-.313.368-.47.551-.56.743-.213.444-.213.96 0 1.404.09.192.247.375.56.743.125.146.187.219.24.297.12.179.202.38.244.59.018.093.026.189.041.38.039.48.058.721.129.922.163.464.528.829.992.992.2.071.441.09.922.129.191.015.287.023.38.041.21.042.411.125.59.245.078.052.151.114.297.239.368.313.551.47.743.56.444.213.96.213 1.404 0 .192-.09.375-.247.743-.56.146-.125.219-.187.297-.24.179-.12.38-.202.59-.244a4 4 0 0 1 .38-.041c.48-.039.721-.058.922-.129.464-.163.829-.528.992-.992.071-.2.09-.441.129-.922a4 4 0 0 1 .041-.38c.042-.21.125-.411.245-.59.052-.078.114-.151.239-.297.313-.368.47-.551.56-.743.213-.444.213-.96 0-1.404-.09-.192-.247-.375-.56-.743a4 4 0 0 1-.24-.297 1.6 1.6 0 0 1-.244-.59 3 3 0 0 1-.041-.38c-.039-.48-.058-.721-.129-.922a1.63 1.63 0 0 0-.992-.992c-.2-.071-.441-.09-.922-.129a4 4 0 0 1-.38-.041 1.6 1.6 0 0 1-.59-.245A3 3 0 0 1 7.445.72C7.077.407 6.894.25 6.702.16a1.63 1.63 0 0 0-1.404 0c-.192.09-.375.247-.743.56m4.07 3.998a.488.488 0 0 0-.691-.69l-2.91 2.91-.958-.957a.488.488 0 0 0-.69.69l1.302 1.302c.19.191.5.191.69 0z" />
+                                                    </svg>
+                                                </div>
+                                                <span className="text-xs text-white/50">{testimonial.role}</span>
+                                            </div>
+                                        </div>
+                                        <p className="text-sm py-4 text-white/80">{testimonial.quote}</p>
+                                    </div>
+                                ))}
                             </div>
+                            <div className="absolute right-0 top-0 h-full w-20 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-[var(--secondary-color)] to-transparent"></div>
                         </div>
                     </div>
                 </div>
