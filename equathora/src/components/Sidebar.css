@@ -21,7 +21,7 @@
 }
 
 .sidebar-close {
-    cursor: pointeration;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -164,7 +164,7 @@
     width: 100%;
     background: transparent;
     border: none;
-    cursor: pointeration;
+    cursor: pointer;
     padding: 0;
     transition: all 0.2s ease;
 }
@@ -240,7 +240,7 @@
     border: none;
     border-radius: 10px;
     text-align: left;
-    cursor: pointeration;
+    cursor: pointer;
     transition: all 0.2s ease;
 }
 

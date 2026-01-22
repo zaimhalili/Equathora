@@ -330,7 +330,7 @@
     font-size: 14px;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.9);
-    cursor: pointeration;
+    cursor: pointer;
     transition: all 0.2s ease;
     backdrop-filter: blur(10px);
 }

@@ -93,7 +93,7 @@
     border: 1px solid var(--secondary-color);
     transition: 0.1s ease-out;
     box-shadow: 0 5px 5px 0 rgba(43, 45, 66, 0.5);
-    cursor: pointeration;
+    cursor: pointer;
 }
 
 #signup-btn:hover {

@@ -103,7 +103,7 @@
     border-radius: 10px;
     text-decoration: none;
     transition: all 0.3s ease;
-    cursor: pointeration;
+    cursor: pointer;
     border: 2px solid transparent;
     display: inline-block;
 }
