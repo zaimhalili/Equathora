@@ -99,7 +99,7 @@ const CTASection = () => {
                         >
                             <Link
                                 to="/learn"
-                                className="group flex items-center gap-2 sm:gap-3 rounded-lg bg-[var(--secondary-color)] px-7 sm:px-9 md:px-10 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg font-semibold !text-white transition-all hover:bg-[var(--accent-color)] shadow-lg"
+                                className="group flex items-center gap-2 sm:gap-3 rounded-full bg-[var(--secondary-color)] px-7 sm:px-9 md:px-10 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg font-semibold !text-white transition-all hover:bg-[var(--accent-color)] shadow-lg"
                             >
                                 Get started
                                 <motion.span

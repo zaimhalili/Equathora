@@ -35,9 +35,11 @@ const HowItWorksSection = () => {
     ];
 
     return (
-        <section className="w-full bg-[#fafbfc] relative overflow-hidden">
+        <section className="w-full bg-[#fafbfc] relative overflow-hidden" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/dark-matter.png")' }}>
             {/* Background decorations */}
             <div className="absolute inset-0">
+                {/* Additional texture overlay */}
+                <div className="absolute inset-0 opacity-[0.4]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/dark-matter.png")' }}></div>
                 {/* Dot pattern */}
                 <div
                     className="absolute inset-0 opacity-[0.03]"

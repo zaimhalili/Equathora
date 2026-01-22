@@ -95,9 +95,12 @@ const HeroSection = () => {
     return (
         <section
             className="font-[Sansation] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-screen flex items-center justify-center"
+            style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay', opacity: 0.98 }}
         >
             {/* Background decorations */}
             <div className="absolute inset-0">
+                {/* Subtle texture overlay for depth */}
+                <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")' }}></div>
                 {/* Gradient orbs */}
                 <div className="absolute top-0 right-0 w-[300px] sm:w-[400px] md:w-[600px] h-[300px] sm:h-[400px] md:h-[600px] bg-[var(--accent-color)]/20 rounded-full blur-[120px]" />
                 <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--accent-color)]/10 rounded-full blur-[100px]" />
@@ -211,22 +214,11 @@ const HeroSection = () => {
                             </Link>
                             <Link
                                 to="/about"
-                                className="group relative text-sm sm:text-base !text-white font-medium transition-all overflow-hidden flex items-center gap-2"
+                                className="group relative text-sm sm:text-base !text-white font-medium transition-all flex items-center gap-2 min-w-[140px]"
                             >
-                                <span>Learn more</span>
-                                <motion.span
-                                    className="absolute"
-                                    initial={{ x: -20, opacity: 0 }}
-                                    whileHover={{ x: 0, opacity: 1 }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <FaArrowRight className="text-xs sm:text-sm" />
-                                </motion.span>
-                                <motion.span
-                                    className="opacity-100 group-hover:opacity-0 group-hover:translate-x-4 transition-all duration-300"
-                                >
-                                    <FaArrowRight className="text-xs sm:text-sm" />
-                                </motion.span>
+                                <FaArrowRight className="text-xs sm:text-sm opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
+                                <span className="transition-transform duration-300">Learn more</span>
+                                <FaArrowRight className="text-xs sm:text-sm opacity-100 group-hover:translate-x-4 group-hover:opacity-0 transition-all duration-300" />
                             </Link>
                         </motion.div>
 

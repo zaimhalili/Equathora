@@ -24,8 +24,6 @@
     --french-gray: #bdc6d1ff;
     --main-color: #edf2f4;
     /*Main Color*/
-    --really-light-accent: #ee8b98ff;
-    /*Really Light Accent Color*/
     --light-accent-color: #ef233c;
     /*Light Accent Color*/
     --accent-color: rgb(215, 4, 39);
@@ -67,6 +65,7 @@
   margin: 0;
   /* This is for debugging */
   /* border: 2px solid skyblue; */
+  font-family: Sansation;
 }
 
 @keyframes gradient {

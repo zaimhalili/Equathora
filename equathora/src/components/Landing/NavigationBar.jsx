@@ -203,18 +203,18 @@ const NavigationBar = () => {
                                     <img src={Logo} alt="Logo" className='w-28 sm:w-32 md:w-36 lg:w-40 object-scale-down object-center scale-110' />
                                 </Link>
                             </li>
-                            <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                            <li className='pl-6 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
                                 <Dropdown
                                     label="Learn"
                                     items={learnItems} />
                             </li>
-                            <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                            <li className='pl-6 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
                                 <Dropdown
                                     label="Discover"
                                     items={discoverItems}
                                 />
                             </li>
-                            <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'><Dropdown
+                            <li className='pl-6 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'><Dropdown
                                 label="More"
                                 items={moreItems} />
                             </li>
@@ -222,21 +222,21 @@ const NavigationBar = () => {
 
                         <div className='flex justify-end items-center shrink-0'>
                             <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
-                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
                                     <Link to="/about"
                                         className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center text-gray-700 transition-colors hover:border-[var(--accent-color)] hover:!text-[var(--accent-color)]">Learn More</Link>
                                 </li>
-                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
                                     <Link to="/learn"
                                         className=" border-3 border-[var(--accent-color)] !text-[var(--accent-color)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center transition-all duration-150 hover:!text-white hover:bg-[var(--accent-color)]  hover:border-[var(--accent-color)] ">Explore Problems</Link>
                                 </li>
-                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
                                     <Link to="/learn"
                                         className="border-3 border-[var(--mid-main-secondary)] !text-black bg-[var(--mid-main-secondary)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center transition-all hover:border-[var(--mid-main-secondary)]/10 hover:bg-[var(--mid-main-secondary)]/70">Start Learning</Link>
 
 
                                 </li>
-                                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                                <li className='pl-6 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
 
                                 </li>
                                 <li className='pl-6 lg:pl-4'>
@@ -248,7 +248,7 @@ const NavigationBar = () => {
                                         aria-expanded={sidebarOpen}
                                         aria-controls="mobile-navigation"
                                     >
-                                        <FaBars size={24} className='hidden max-md:block' aria-hidden="true" />
+                                        <FaBars size={24} className='block md:hidden' aria-hidden="true" />
                                     </button>
                                 </li>
                             </ul>

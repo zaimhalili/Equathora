@@ -24,7 +24,7 @@ const FeaturesSection = () => {
     ];
 
     return (
-        <section className="w-full bg-white relative overflow-hidden flex justify-center">
+        <section className="w-full bg-[var(--main-color)] relative overflow-hidden flex justify-center">
             {/* Decorative elements */}
             <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
@@ -40,13 +40,13 @@ const FeaturesSection = () => {
                     transition={{ duration: 0.5, ease: "easeOut" }}
                 >
                     <span className="flex items-center gap-6 text-[var(--accent-color)] text-xs font-semibold uppercase tracking-wider pb-2 sm:pb-3">
-                        What we offer
+                        Features
                     </span>
                     <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--secondary-color)] leading-tight pb-4 sm:pb-5 px-6">
-                        Built for real learning
+                        Tools for serious learners
                     </h2>
                     <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-2xl text-xs sm:text-sm px-6">
-                        Equathora gives you the tools to master mathematics at your own pace, with features designed for genuine understanding.
+                        Everything you need to improve, all in one place
                     </p>
                 </motion.div>
 
@@ -108,35 +108,41 @@ const FeaturesSection = () => {
                         </MouseFollower>
                     </div>
 
-                    {/* Right side - Feature cards (CENTERED) */}
-                    <div className="flex-1 flex flex-col gap-4 sm:gap-5 md:gap-6 items-center justify-center w-full">
-                        {features.map((feature, index) => (
-                            <motion.div
-                                key={feature.title}
-                                className="group relative bg-white border border-gray-100 rounded p-8 sm:p-9 md:p-10 shadow-md hover:shadow-xl transition-all cursor-pointer w-full max-w-md"
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.3 }}
-                                transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
-                                whileHover={{ scale: 1.02 }}
-                            >
-                                {/* Icon */}
-                                <div className="pb-4 sm:pb-5 text-xl sm:text-2xl">
-                                    {feature.icon}
-                                </div>
+                    {/* Right side - Feature cards */}
+                    <div className="flex-1 w-full relative">
+                        <div className="grid grid-cols-1 gap-12 sm:gap-16 md:gap-20">
+                            {features.map((feature, index) => (
+                                <motion.div
+                                    key={feature.title}
+                                    className={`relative flex flex-col items-center text-center w-full max-w-lg ${index === 0 ? 'mx-auto' :
+                                            index === 1 ? 'ml-auto mr-0 lg:mr-12' :
+                                                'mx-auto'
+                                        }`}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, amount: 0.3 }}
+                                    transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
+                                >
+                                    {/* Large background number */}
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[200px] md:text-[280px] lg:text-[320px] font-bold text-[var(--french-gray)] opacity-5 select-none pointer-events-none z-0 leading-none">
+                                        {String(index + 1).padStart(2, '0')}
+                                    </div>
 
-                                {/* Content */}
-                                <h3 className="text-base sm:text-lg font-bold text-[var(--secondary-color)] pb-2 sm:pb-3">
-                                    {feature.title}
-                                </h3>
-                                <p className="text-[var(--mid-main-secondary)] leading-relaxed text-xs sm:text-sm">
-                                    {feature.description}
-                                </p>
+                                    {/* Icon */}
+                                    <div className="pb-5 sm:pb-6 text-3xl sm:text-4xl relative z-10">
+                                        {feature.icon}
+                                    </div>
 
-                                {/* Hover accent line */}
-                                <div className="absolute bottom-0 left-0 w-0 h-1 bg-[var(--accent-color)] group-hover:w-full transition-all duration-300" />
-                            </motion.div>
-                        ))}
+                                    {/* Content */}
+                                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[var(--secondary-color)] pb-3 sm:pb-4 relative z-10">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="text-[var(--mid-main-secondary)] leading-relaxed text-sm sm:text-base relative z-10">
+                                        {feature.description}
+                                    </p>
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

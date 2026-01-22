@@ -5,29 +5,22 @@ import { FaEnvelope, FaArrowRight } from 'react-icons/fa';
 
 const WaitlistSection = () => {
     return (
-        <section className="w-full bg-[#fafbfc] relative overflow-hidden">
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+        <section className="w-full bg-gradient-to-br from-[var(--secondary-color)] to-[#1a1a2e] relative overflow-hidden">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-16 sm:py-20 md:py-24 lg:py-28 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                 <motion.div
-                    className="flex flex-col md:flex-row items-center gap-6 sm:gap-7 md:gap-8 p-6 sm:p-8 md:p-12 bg-gradient-to-r from-[var(--secondary-color)] to-[#1a1a2e] rounded shadow-xl"
+                    className="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 md:gap-12"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
                 >
-                    {/* Icon */}
-                    <div className="flex-shrink-0">
-                        <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-2xl bg-[var(--accent-color)]/20 flex items-center justify-center">
-                            <FaEnvelope className="text-3xl sm:text-3xl md:text-4xl text-[var(--accent-color)]" />
-                        </div>
-                    </div>
-
                     {/* Content */}
                     <div className="flex-1 text-center md:text-left">
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white pb-1.5 sm:pb-2">
-                            Join our waitlist
+                        <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white pb-2 sm:pb-3">
+                            Stay updated
                         </h3>
-                        <p className="text-white/70 text-base sm:text-lg">
-                            Get weekly updates on new problems, features, and math learning tips.
+                        <p className="text-white/70 text-base sm:text-lg md:text-xl">
+                            Weekly problem drops, learning tips, and platform updates delivered to your inbox.
                         </p>
                     </div>
 
