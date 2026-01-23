@@ -6,7 +6,7 @@ import Footer from '../components/Footer.jsx';
 import NavigationBar from '../components/Landing/NavigationBar.jsx';
 import HeroSection from '../components/Landing/HeroSection.jsx';
 import TrustedBySection from '../components/Landing/TrustedBySection.jsx';
-import FeaturesSection from '../components/Landing/FeaturesSection.jsx';
+import ExercisesSection from '../components/Landing/ExercisesSection.jsx';
 import WhyChooseSection from '../components/Landing/WhyChooseSection.jsx';
 import HowItWorksSection from '../components/Landing/HowItWorksSection.jsx';
 import TestimonialsSection from '../components/Landing/TestimonialsSection.jsx';
@@ -32,7 +32,7 @@ const Landing = () => {
                 <NavigationBar></NavigationBar>
                 <HeroSection />
                 <TrustedBySection />
-                <FeaturesSection />
+                <ExercisesSection />
                 <WhyChooseSection />
                 <HowItWorksSection />
                 <TestimonialsSection />
