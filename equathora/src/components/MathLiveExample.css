@@ -431,7 +431,7 @@ math-field:focus-within {
     scroll-margin-bottom: 350px !important;
 }
 
-/* Reduce MathLive clunkiness - smoother Sansationactions */
+/* Reduce MathLive clunkiness - smoother Interactions */
 .ML__fieldcontainer,
 .ML__fieldcontainer__field {
     transition: none !important;

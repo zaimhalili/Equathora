@@ -29,7 +29,7 @@ const TestimonialsSection = () => {
             rating: 5
         },
         {
-            quote: "Clean Sansationface and well-structured problems. Looking forward to seeing more content added as the platform grows.",
+            quote: "Clean Interface and well-structured problems. Looking forward to seeing more content added as the platform grows.",
             author: "Sofia Gasparov",
             role: "Math Enthusiast",
             avatar: GuestAvatar,

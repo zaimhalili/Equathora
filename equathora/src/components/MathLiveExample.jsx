@@ -154,7 +154,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                     <div className="ml-format-hints-toggle">
                         <div className="ml-format-hints-title">
                             <FaLightbulb />
-                            How to Use This Sansationface
+                            How to Use This Interface
                         </div>
                         {hintsOpen ? <FaChevronUp /> : <FaChevronDown />}
                     </div>

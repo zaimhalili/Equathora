@@ -49,7 +49,7 @@ export const blogPosts = [
             },
             {
                 type: "paragraph",
-                text: "The current MVP focuses on core features only. Users can solve logic and math problems organized by topic, read full solution explanations, and track progress through a simple scoring system. The Sansationface is intentionally <strong>clean</strong> to reduce distractions and keep attention on reasoning."
+                text: "The current MVP focuses on core features only. Users can solve logic and math problems organized by topic, read full solution explanations, and track progress through a simple scoring system. The Interface is intentionally <strong>clean</strong> to reduce distractions and keep attention on reasoning."
             },
             {
                 type: "divider"
