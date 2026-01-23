@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
-import FeedbackBanner from '../components/FeedbackBanner.jsx';
+// import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import Footer from '../components/Footer.jsx';
 import NavigationBar from '../components/Landing/NavigationBar.jsx';
 import HeroSection from '../components/Landing/HeroSection.jsx';
