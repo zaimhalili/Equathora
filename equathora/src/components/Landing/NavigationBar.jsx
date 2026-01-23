@@ -199,7 +199,7 @@ const NavigationBar = () => {
                     <div className='w-full h-full flex items-center justify-between px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] max-w-[1500px]' style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                         <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
                             <li>
-                                <Link to="/dashboard" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
+                                <Link to="/landing" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
                                     <img src={Logo} alt="Logo" className='w-28 sm:w-32 md:w-36 lg:w-40 object-scale-down object-center scale-110' />
                                 </Link>
                             </li>
