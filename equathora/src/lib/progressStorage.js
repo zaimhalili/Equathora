@@ -473,7 +473,7 @@ export const recordProblemStats = async (
                 total_attempts: progress.totalAttempts,
                 correct_answers: progress.correctAnswers,
                 wrong_submissions: progress.wrongSubmissions,
-                accuracy: progress.accuracyRate,
+                accuracy_rate: progress.accuracyRate,
                 reputation: progress.reputation || 0,
                 solved_problems: progress.solvedProblems,
                 perfect_streak: progress.perfectStreak || 0,
