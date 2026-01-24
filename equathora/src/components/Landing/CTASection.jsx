@@ -31,10 +31,10 @@ const CTASection = () => {
     return (
         <section
             ref={containerRef}
-            className="w-full bg-white relative overflow-hidden flex justify-center"
+            className="w-full bg-white relative overflow-hidden flex justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18"
         >
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10">
+            <div className="max-w-[1400px]  relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-10 md:gap-12">
 
                     {/* Left side - Content */}

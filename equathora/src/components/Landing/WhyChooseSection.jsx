@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaArrowRight, FaCheck } from 'react-icons/fa';
 import Stack from "../../assets/images/stackBooks.jpeg";
 import Math from "../../assets/images/mathFormulas.jpg";
 
@@ -92,8 +91,16 @@ const WhyChooseSection = () => {
                                     viewport={{ once: true, amount: 0.5 }}
                                     transition={{ delay: 0.08 * index, duration: 0.35, ease: "easeOut" }}
                                 >
-                                    <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[var(--accent-color)] text-white flex-shrink-0">
-                                        <FaCheck className="text-xs sm:text-sm" />
+                                    <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 text-white flex-shrink-0">
+                                        <svg className="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                            <defs>
+                                                <linearGradient id="icon-gradient-check" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                    <stop offset="0%" stopColor="var(--accent-color-dark)" />
+                                                    <stop offset="100%" stopColor="var(--accent-color)" />
+                                                </linearGradient>
+                                            </defs>
+                                            <path fill="url(#icon-gradient-check)" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z" />
+                                        </svg>
                                     </span>
                                     <span className="text-[var(--secondary-color)] font-medium text-base sm:text-lg">{benefit}</span>
                                 </motion.div>
@@ -112,7 +119,15 @@ const WhyChooseSection = () => {
                                 className="group inline-flex items-center gap-2 rounded-full !bg-[var(--secondary-color)] px-6 sm:px-8 py-3 sm:py-4 !text-white text-base sm:text-lg font-semibold transition-all hover:!bg-[var(--accent-color)] shadow-lg"
                             >
                                 Explore problems
-                                <FaArrowRight className="transition-transform group-hover:translate-x-1" />
+                                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="icon-gradient-arrow" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stopColor="white" />
+                                            <stop offset="100%" stopColor="white" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path fill="url(#icon-gradient-arrow)" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z" />
+                                </svg>
                             </Link>
                         </motion.div>
                     </div>
