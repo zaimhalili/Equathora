@@ -145,7 +145,7 @@ export const validateMultiStep = (steps, problem) => {
     }
 
     // Award full points for correct final answer
-    // In future, could validate Sansationmediate steps
+    // In future, could validate Intermediate steps
     return {
         isCorrect: true,
         feedback: `Correct! ${steps.length} steps shown.`,

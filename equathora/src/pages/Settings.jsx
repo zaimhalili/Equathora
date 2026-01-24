@@ -115,7 +115,7 @@ const Settings = () => {
                             >
                                 <option value="absBeginner" className='py-2 border border-[var(--french-gray)]'>Absolute Beginner</option>
                                 <option value="beginner" className='py-2'>Beginner</option>
-                                <option value="Sansationmediate" className='py-2'>Sansationmediate</option>
+                                <option value="Intermediate" className='py-2'>Intermediate</option>
                                 <option value="highschool" className='py-2'>High School Student</option>
                                 <option value="undergraduate" className='py-2'>Undergraduate Student</option>
                                 <option value="advanced" className='py-2'>Advanced</option>

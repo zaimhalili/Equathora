@@ -42,17 +42,14 @@ const WhyChooseSection = () => {
             {/* Background scrolling text - FASTER */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
                 <motion.div
-                    className="text-[12vw] font-bold text-[var(--french-gray)]/15 whitespace-nowrap select-none"
-                    animate={{ x: [0, 1000] }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    className="text-[40vw] lg:text-[12vw] font-bold text-[var(--french-gray)]/15 whitespace-nowrap select-none"
+                    animate={{ x: [0, 1200] }}
+                    transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
                 >
-                    PRACTICE LEARN GROW PRACTICE LEARN GROW
+                    PRACTICE LEARN GROW PRACTICE LEARN GROW PRACTICE LEARN GROW PRACTICE LEARN GROW PRACTICE LEARN GROW PRACTICE LEARN GROW
                 </motion.div>
             </div>
 
-            {/* Decorations */}
-            <div className="absolute top-20 right-20 w-32 h-32 border border-gray-100 rounded-full z-0" />
-            <div className="absolute bottom-20 left-10 w-20 h-20 border border-[var(--accent-color)]/10 rounded-full z-0" />
 
             <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto relative z-10">
                 <div className="flex flex-col items-center text-center gap-8 sm:gap-10 md:gap-12">

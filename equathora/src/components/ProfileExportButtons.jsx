@@ -151,7 +151,7 @@ const ProfileExportButtons = () => {
             section: 'Learning Focus', items: [
                 ['Favorite Topics', favoriteTopics.length > 0 ? favoriteTopics.join(', ') : 'Diverse Learning'],
                 ['Total Topics Explored', favoriteTopics.length],
-                ['Primary Skill Level', difficulty.hard > 5 ? 'Advanced' : difficulty.medium > 10 ? 'Sansationmediate' : 'Beginner']
+                ['Primary Skill Level', difficulty.hard > 5 ? 'Advanced' : difficulty.medium > 10 ? 'Intermediate' : 'Beginner']
             ]
         }
     ];

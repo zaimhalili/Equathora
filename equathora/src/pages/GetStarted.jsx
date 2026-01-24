@@ -61,7 +61,7 @@ const GetStarted = () => {
             subtitle: 'This helps us match you with appropriate content',
             options: [
                 { id: 'beginner', label: 'Beginner', icon: <FaBook />, description: 'Learning fundamentals' },
-                { id: 'Sansationmediate', label: 'Sansationmediate', icon: <FaBrain />, description: 'Comfortable with basics' },
+                { id: 'Intermediate', label: 'Intermediate', icon: <FaBrain />, description: 'Comfortable with basics' },
                 { id: 'advanced', label: 'Advanced', icon: <FaChartLine />, description: 'Ready for complex problems' },
                 { id: 'expert', label: 'Expert', icon: <FaRocket />, description: 'Seeking challenges' }
             ]

@@ -149,7 +149,7 @@ const ExercisesSection = () => {
                         {exercises.map((exercise, index) => (
                             <motion.div
                                 key={exercise.title}
-                                className="bg-white rounded-sm transition-all duration-300 p-3 sm:py-3 px-5 shadow-[10px_0_25px_rgba(141,153,174,0.3)] flex items-center gap-6 h-20"
+                                className="bg-white rounded-sm transition-all duration-300 p-3 sm:py-3 px-5 shadow-[10px_0_25px_rgba(141,153,174,0.3)] flex items-center gap-6 h-22"
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, amount: 0.2 }}
@@ -173,7 +173,7 @@ const ExercisesSection = () => {
                     </div>
                 </div>
                 <div className='w-full'>
-                    <img src={Screenshot} alt="List of the problems" className='rounded-xl w-full shadow-[10px_0_25px_rgba(141,153,174,0.3)]' />
+                    <img src={Screenshot} alt="List of the problems" className='rounded-sm w-full shadow-[10px_0_25px_rgba(141,153,174,0.3)]' />
                 </div>
             </article>
 

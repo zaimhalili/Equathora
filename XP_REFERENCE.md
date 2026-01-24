@@ -49,7 +49,7 @@ Perfect Streak: 0
 Total XP = 645
 ```
 
-### Example 2: Sansationmediate User
+### Example 2: Intermediate User
 ```javascript
 solved_problems: 25
 correct_answers: 30
@@ -138,7 +138,7 @@ Total XP = 5,225
 3. Build a daily habit (Streak Bonus)
 4. Don't worry about accuracy initially
 
-### For Sansationmediate Users:
+### For Intermediate Users:
 1. Balance **quantity and quality**
 2. Improve accuracy (Accuracy Bonus)
 3. Maintain 7+ day streaks

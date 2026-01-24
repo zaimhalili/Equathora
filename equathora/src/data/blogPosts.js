@@ -143,7 +143,7 @@ export const blogPosts = [
             },
             {
                 type: "paragraph",
-                text: "Many logic and math problems are easier to solve visually. That’s why Equathora includes a built-in <strong>sketch pad</strong>. On the problem page, you can click the button in the <strong>top-right of the navbar</strong> to activate it. Once opened, you can freely draw diagrams, tables, graphs, or Sansationmediate steps."
+                text: "Many logic and math problems are easier to solve visually. That’s why Equathora includes a built-in <strong>sketch pad</strong>. On the problem page, you can click the button in the <strong>top-right of the navbar</strong> to activate it. Once opened, you can freely draw diagrams, tables, graphs, or Intermediate steps."
             },
             {
                 type: "paragraph",

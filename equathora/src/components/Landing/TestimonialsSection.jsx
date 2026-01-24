@@ -38,23 +38,7 @@ const TestimonialsSection = () => {
     ];
 
     return (
-        <section ref={sectionRef} className="w-full bg-[var(--secondary-color)] relative overflow-hidden">
-            {/* Background decorations */}
-            <div className="absolute inset-0">
-                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[100px]" />
-
-                {/* Grid pattern */}
-                <div
-                    className="absolute inset-0 opacity-[0.02]"
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
-                        `,
-                        backgroundSize: '60px 60px'
-                    }}
-                />
-            </div>
+        <section ref={sectionRef} className="w-full bg-[var(--secondary-color)] relative overflow-hidden font-[Sansation]">
 
             <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 w-full relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                 <div className="flex flex-col gap-8 sm:gap-10 md:gap-12 items-center justify-center w-full">
@@ -81,13 +65,9 @@ const TestimonialsSection = () => {
                     </motion.div>
 
                     <div className="w-full flex flex-col gap-0 relative overflow-hidden">
-                        {/* Blocking divs extending beyond the container */}
-                        <div className="absolute -left-8 sm:-left-12 md:-left-16 lg:-left-24 xl:-left-32 top-0 bottom-0 w-[calc(8rem+8vw)] z-30 pointer-events-none bg-[var(--secondary-color)]"></div>
-                        <div className="absolute -right-8 sm:-right-12 md:-right-16 lg:-right-24 xl:-right-32 top-0 bottom-0 w-[calc(8rem+8vw)] z-30 pointer-events-none bg-[var(--secondary-color)]"></div>
-
                         {/* Fixed gradient overlays for smooth fade */}
-                        <div className="absolute left-[calc(8rem+8vw-8rem)] top-0 bottom-0 w-24 md:w-32 z-20 pointer-events-none bg-gradient-to-r from-[var(--secondary-color)] to-transparent"></div>
-                        <div className="absolute right-[calc(8rem+8vw-8rem)] top-0 bottom-0 w-24 md:w-32 z-20 pointer-events-none bg-gradient-to-l from-[var(--secondary-color)] to-transparent"></div>
+                        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-32 z-20 pointer-events-none bg-gradient-to-r from-[var(--secondary-color)] to-transparent"></div>
+                        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-32 z-20 pointer-events-none bg-gradient-to-l from-[var(--secondary-color)] to-transparent"></div>
 
                         {/* First marquee row */}
                         <motion.div
