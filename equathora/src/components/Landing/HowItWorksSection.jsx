@@ -35,24 +35,7 @@ const HowItWorksSection = () => {
     ];
 
     return (
-        <section className="w-full bg-[#fafbfc] relative overflow-hidden" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/dark-matter.png")' }}>
-            {/* Background decorations */}
-            <div className="absolute inset-0">
-                {/* Additional texture overlay */}
-                <div className="absolute inset-0 opacity-[0.4]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/dark-matter.png")' }}></div>
-                {/* Dot pattern */}
-                <div
-                    className="absolute inset-0 opacity-[0.03]"
-                    style={{
-                        backgroundImage: 'radial-gradient(circle, var(--secondary-color) 1px, transparent 1px)',
-                        backgroundSize: '30px 30px'
-                    }}
-                />
-
-                {/* Gradient orbs */}
-                <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-[var(--accent-color)]/5 rounded-full blur-[120px]" />
-                <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[100px]" />
-            </div>
+        <section className="w-full bg-[#fafbfc] relative overflow-hidden">
 
             <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                 <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
@@ -69,10 +52,10 @@ const HowItWorksSection = () => {
                             Simple process
                             <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
                         </span>
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--secondary-color)] px-4">
+                        <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold text-[var(--secondary-color)] px-4">
                             How it works
                         </h2>
-                        <p className="text-[var(--mid-main-secondary)] text-base sm:text-lg max-w-xl px-4">
+                        <p className="text-[var(--secondary-color)] text-base sm:text-lg max-w-xl px-4">
                             Four simple steps to transform your math skills
                         </p>
                     </motion.div>

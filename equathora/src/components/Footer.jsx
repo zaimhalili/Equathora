@@ -8,6 +8,7 @@ import {
   FaFacebook,
   FaReddit,
 } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 const Footer = () => {
   return (
@@ -16,8 +17,28 @@ const Footer = () => {
 
         <div id="center">
           <h1>
-            Your contribution helps us keep this learning platform available for{' '}
-            <span className='rotated-bg'>students</span> <span className='rotated-bg'>worldwide</span>
+            Your contribution helps us keep this learning platform available for
+            <span className="text-[var(--accent-color)] relative inline-block">
+              students worldwide
+              <motion.svg
+                className="absolute -bottom-2 left-0 w-full"
+                viewBox="0 0 200 8"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+              >
+                <motion.path
+                  d="M0 4 Q50 0 100 4 Q150 8 200 4"
+                  fill="none"
+                  stroke="var(--accent-color)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ delay: 0.8, duration: 0.8 }}
+                />
+              </motion.svg>
+            </span>
           </h1>
           <div id="socialMedia-container">
             <a

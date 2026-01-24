@@ -70,10 +70,10 @@ const WhyChooseSection = () => {
                             <span className="flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
                                 Why Equathora?
                             </span>
-                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--secondary-color)] leading-tight">
+                            <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight">
                                 Real learning, real progress
                             </h2>
-                            <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-2xl text-base sm:text-lg">
+                            <p className="text-[var(--secondary-color)] leading-relaxed max-w-2xl text-base sm:text-lg">
                                 Build problem-solving skills that last. Practice with purpose, track your growth, and master mathematics through thoughtful challenges.
                             </p>
                         </motion.div>
@@ -89,7 +89,7 @@ const WhyChooseSection = () => {
                             {benefits.map((benefit, index) => (
                                 <motion.div
                                     key={benefit}
-                                    className="flex items-center gap-3 justify-center sm:justify-start"
+                                    className="flex items-center gap-3 text-left sm:justify-start"
                                     initial={{ opacity: 0, y: 10 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, amount: 0.5 }}
