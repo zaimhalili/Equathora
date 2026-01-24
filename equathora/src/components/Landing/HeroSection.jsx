@@ -94,32 +94,32 @@ const HeroSection = () => {
 
     return (
         <section
-            className="font-[Sansation] w-full bg-[var(--secondary-color)] relative overflow-hidden min-h-screen flex items-center justify-center"
+            className="font-[Sansation] w-full bg-[var(--main-color)] relative overflow-hidden min-h-screen flex items-center justify-center"
             style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay', opacity: 0.98 }}
         >
             {/* Background decorations */}
             <div className="absolute inset-0">
                 {/* Subtle texture overlay for depth */}
-                <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")' }}></div>
+                <div className="absolute inset-0 opacity-[1]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")' }}></div>
                 {/* Gradient orbs */}
-                <div className="absolute top-0 right-0 w-[300px] sm:w-[400px] md:w-[600px] h-[300px] sm:h-[400px] md:h-[600px] bg-[var(--accent-color)]/20 rounded-full blur-[120px]" />
-                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--accent-color)]/10 rounded-full blur-[100px]" />
+                {/* <div className="absolute top-0 right-0 w-[300px] sm:w-[400px] md:w-[600px] h-[300px] sm:h-[400px] md:h-[600px] bg-[var(--accent-color)]/20 rounded-full blur-[120px]" />
+                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--accent-color)]/10 rounded-full blur-[100px]" /> */}
 
                 {/* Grid lines */}
                 <div
                     className="absolute inset-0 opacity-[0.03]"
                     style={{
                         backgroundImage: `
-                            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+                            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 10px),
+                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 10px)
                         `,
                         backgroundSize: '80px 80px'
                     }}
                 />
 
                 {/* Half circle decoration */}
-                <div className="absolute -right-32 top-1/2 -translate-y-1/2 w-64 h-[500px] border border-white/10 rounded-l-full" />
-                <div className="absolute -left-20 bottom-20 w-40 h-40 border border-white/5 rounded-full" />
+                <div className="absolute -right-32 top-1/2 -translate-y-1/2 w-64 h-[500px] border border-[var(--secondary-color)]/10 rounded-l-full" />
+                <div className="absolute -left-20 bottom-20 w-40 h-40 border border-[var(--secondary-color)]/5 rounded-full" />
             </div>
 
             {/* Red Particles */}
@@ -150,7 +150,7 @@ const HeroSection = () => {
 
                         {/* Main Heading */}
                         <motion.h1
-                            className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-bold leading-[1.1] text-white"
+                            className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)]"
                             initial={{ opacity: 0, rotateX: 45, scale: 0.8 }}
                             animate={{ opacity: 1, rotateX: 0, scale: 1 }}
                             transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
@@ -183,7 +183,7 @@ const HeroSection = () => {
 
                         {/* Description */}
                         <motion.p
-                            className="text-xs sm:text-sm md:text-base text-white/70 leading-relaxed max-w-lg"
+                            className="text-xs sm:text-sm md:text-base text-[var(--secondary-color)]/70 leading-relaxed max-w-lg"
                             initial={{ opacity: 0, rotateX: 30, scale: 0.9 }}
                             animate={{ opacity: 1, rotateX: 0, scale: 1 }}
                             transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
@@ -214,7 +214,7 @@ const HeroSection = () => {
                             </Link>
                             <Link
                                 to="/about"
-                                className="group relative text-sm sm:text-base !text-white font-medium transition-all flex items-center gap-2 min-w-[140px]"
+                                className="group relative text-sm sm:text-base !text-[var(--secondary-color)] font-medium transition-all flex items-center gap-2 min-w-[140px]"
                             >
                                 <FaArrowRight className="text-xs sm:text-sm opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
                                 <span className="transition-transform duration-300">Learn more</span>
@@ -238,10 +238,10 @@ const HeroSection = () => {
                                     transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
                                     style={{ transformPerspective: 1000 }}
                                 >
-                                    <span className="text-xl sm:text-2xl font-bold text-white">
+                                    <span className="text-xl sm:text-2xl font-bold text-[var(--secondary-color)]">
                                         <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                                     </span>
-                                    <span className="text-[10px] sm:text-xs text-white/60 border-t-2 border-[var(--accent-color)] pt-2">
+                                    <span className="text-[10px] sm:text-xs text-[var(--secondary-color)]/60 border-t-2 border-[var(--accent-color)] pt-2">
                                         {stat.label}
                                     </span>
                                 </motion.div>
@@ -278,12 +278,13 @@ const HeroSection = () => {
                                         overflow-hidden
                                         z-10
                                         bg-gradient-to-b
-                                        from-[var(--secondary-color)]
-                                        to-black/60
+                                        from-transparent
+                                        to-[var(--french-gray)]/50
+                                        backdrop-blur-sm
                                     "
                                 >
                                     {/* Inner subtle circle */}
-                                    <div className="absolute inset-[18%] rounded-full bg-[var(--secondary-color)] z-0" />
+                                    <div className="absolute inset-[18%] rounded-full bg-[var(--main-color)]/80 z-0" />
 
                                     {/* Student image – clipped by the circle */}
                                     <img
@@ -297,8 +298,9 @@ const HeroSection = () => {
                                             object-cover
                                             object-top
                                             drop-shadow-2xl
-                                            brightness-95
+                                            brightness-90
                                             z-10
+                                            saturation-95
                                         "
                                         loading="eager"
                                     />
@@ -311,10 +313,10 @@ const HeroSection = () => {
                                     animate={{ y: [0, -6, 0] }}
                                     transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                                 >
-                                    <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-md shadow-2xl">
+                                    <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary-color)] rounded-md shadow-2xl">
                                         <div>
-                                            <p className="font-bold text-xl text-[var(--secondary-color)]">50+</p>
-                                            <p className="text-[10px] text-gray-500">Active learners</p>
+                                            <p className="font-bold text-xl text-[var(--main-color)]">50+</p>
+                                            <p className="text-[10px] text-gray-300">Active learners</p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -327,7 +329,7 @@ const HeroSection = () => {
                                 >
                                     <div className="px-4 py-3 bg-[var(--accent-color)] rounded-md shadow-2xl text-white">
                                         <p className="text-2xl font-bold">98%</p>
-                                        <p className="text-[10px] opacity-90">Success Rate</p>
+                                        <p className="text-[10px] opacity-90 ">Success Rate</p>
                                     </div>
                                 </motion.div>
                             </motion.div>
@@ -335,14 +337,14 @@ const HeroSection = () => {
 
                         {/* Floating math symbols */}
                         <motion.div
-                            className="absolute top-20 left-20 text-4xl text-white/20 font-light z-10 pointer-events-none"
+                            className="absolute top-20 left-20 text-4xl text-[var(--secondary-color)]/20 font-light z-10 pointer-events-none"
                             animate={{ rotate: [0, 10, -10, 0], y: [0, -5, 0] }}
                             transition={{ duration: 6, repeat: Infinity }}
                         >
                             ∑
                         </motion.div>
                         <motion.div
-                            className="absolute bottom-32 right-16 text-3xl text-white/15 font-light z-10 pointer-events-none"
+                            className="absolute bottom-32 right-16 text-3xl text-[var(--secondary-color)]/15 font-light z-10 pointer-events-none"
                             animate={{ rotate: [0, -10, 10, 0], y: [0, -8, 0] }}
                             transition={{ duration: 8, repeat: Infinity, delay: 1 }}
                         >

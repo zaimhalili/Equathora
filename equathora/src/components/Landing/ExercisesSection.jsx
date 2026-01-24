@@ -43,12 +43,12 @@ const ExercisesSection = () => {
     ];
 
     return (
-        <section className="w-full bg-white relative overflow-hidden flex justify-center">
+        <section className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary),var(--main-color)20%)] relative overflow-hidden flex justify-center">
             {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-16 sm:py-20 md:py-24 lg:py-28 relative z-10">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 relative z-10">
                 {/* Section header */}
                 <motion.div
                     className="text-center pb-12 sm:pb-16 md:pb-20 flex flex-col items-center"
@@ -57,7 +57,7 @@ const ExercisesSection = () => {
                     viewport={{ once: true, amount: 0.3 }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
                 >
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--secondary-color)] pb-4 sm:pb-6">
+                    <h2 className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-extrabold text-[var(--secondary-color)] pb-4 sm:pb-6">
                         Over 100 math exercises.
                     </h2>
                     <p className="text-2xl sm:text-3xl md:text-4xl font-light text-[var(--mid-main-secondary)] pb-4 sm:pb-5">

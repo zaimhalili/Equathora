@@ -203,18 +203,18 @@ const NavigationBar = () => {
                                     <img src={Logo} alt="Logo" className='w-28 sm:w-32 md:w-36 lg:w-40 object-scale-down object-center scale-110' />
                                 </Link>
                             </li>
-                            <li className='pl-6 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
+                            <li className='pl-6 lg:pl-4 shrink-0 hidden text-sm sm:text-base md:block text-[var(--secondary-color)]'>
                                 <Dropdown
                                     label="Learn"
                                     items={learnItems} />
                             </li>
-                            <li className='pl-6 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
+                            <li className='pl-6 lg:pl-4 shrink-0 hidden text-sm sm:text-base md:block text-[var(--secondary-color)]'>
                                 <Dropdown
                                     label="Discover"
                                     items={discoverItems}
                                 />
                             </li>
-                            <li className='pl-6 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'><Dropdown
+                            <li className='pl-6 lg:pl-4 shrink-0 hidden text-sm sm:text-base md:block text-[var(--secondary-color)]'><Dropdown
                                 label="More"
                                 items={moreItems} />
                             </li>

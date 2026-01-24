@@ -32,11 +32,11 @@ const TrustedBySection = () => {
     ];
 
     return (
-        <section className="w-full bg-white relative overflow-hidden flex justify-center">
+        <section className="w-full bg-white relative overflow-hidden flex justify-center drop-shadow-2xl">
             {/* Subtle background */}
             <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white w-full" />
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 relative z-10 w-full flex justify-center">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-8 relative z-10 w-full flex justify-center">
                 <motion.div
                     className="flex flex-col gap-6 sm:gap-8 items-center text-center w-full"
                     initial={{ opacity: 0, y: 20 }}

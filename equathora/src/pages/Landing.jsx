@@ -31,7 +31,7 @@ const Landing = () => {
             <div className="min-h-screen bg-white text-[var(--secondary-color)]">
                 <NavigationBar></NavigationBar>
                 <HeroSection />
-                <TrustedBySection />
+                {/* <TrustedBySection /> */}
                 <ExercisesSection />
                 <WhyChooseSection />
                 <HowItWorksSection />
