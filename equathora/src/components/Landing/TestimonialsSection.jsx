@@ -10,8 +10,8 @@ const TestimonialsSection = () => {
         offset: ["start end", "end start"]
     });
     // Transform scroll progress to horizontal translation
-    const translateXFirst = useTransform(scrollYProgress, [0, 1], [0, -300]);
-    const translateXSecond = useTransform(scrollYProgress, [0, 1], [0, 300]);
+    const translateXFirst = useTransform(scrollYProgress, [0.5, 1], [0, -300]);
+    const translateXSecond = useTransform(scrollYProgress, [0.5, 1], [0, 300]);
 
     const testimonials = [
         {
@@ -32,6 +32,27 @@ const TestimonialsSection = () => {
             quote: "Clean Interface and well-structured problems. Looking forward to seeing more content added as the platform grows.",
             author: "Sofia Gasparov",
             role: "Math Enthusiast",
+            avatar: GuestAvatar,
+            rating: 5
+        },
+        {
+            quote: "Great platform for practicing math problems. The interface is intuitive and the problems are challenging.",
+            author: "Luca Bianchi",
+            role: "Engineering Student",
+            avatar: GuestAvatar,
+            rating: 5
+        },
+        {
+            quote: "I've improved my problem-solving skills significantly. Highly recommend for anyone studying math.",
+            author: "Giulia Rossi",
+            role: "Graduate Student",
+            avatar: GuestAvatar,
+            rating: 5
+        },
+        {
+            quote: "The step-by-step solutions are very helpful. It's like having a personal tutor.",
+            author: "Matteo Verdi",
+            role: "High School Teacher",
             avatar: GuestAvatar,
             rating: 5
         }
@@ -75,7 +96,7 @@ const TestimonialsSection = () => {
                             style={{ x: translateXFirst }}
                         >
                             <div className="flex transform-gpu pt-10 pb-5 gap-4">
-                                {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+                                {[...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
                                     <div
                                         key={index}
                                         className="p-4 rounded-lg shadow-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:shadow-xl transition-all duration-200 w-72 shrink-0"
@@ -105,7 +126,7 @@ const TestimonialsSection = () => {
                             style={{ x: translateXSecond }}
                         >
                             <div className="flex transform-gpu pt-5 pb-10 gap-4">
-                                {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+                                {[...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
                                     <div
                                         key={index}
                                         className="p-4 rounded-lg shadow-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:shadow-xl transition-all duration-200 w-72 shrink-0"

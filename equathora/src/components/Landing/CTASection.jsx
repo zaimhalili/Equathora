@@ -33,26 +33,6 @@ const CTASection = () => {
             ref={containerRef}
             className="w-full bg-white relative overflow-hidden flex justify-center"
         >
-            {/* Background decorations */}
-            <div className="absolute inset-0">
-                {/* Gradient mesh */}
-                <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[var(--accent-color)]/5 rounded-full blur-[150px]" />
-                <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[120px]" />
-
-                {/* Lines pattern */}
-                <svg className="absolute inset-0 w-full h-full opacity-[0.02]" preserveAspectRatio="none">
-                    <defs>
-                        <pattern id="ctaLines" width="60" height="60" patternUnits="userSpaceOnUse">
-                            <path d="M0 60L60 0" stroke="var(--secondary-color)" strokeWidth="1" fill="none" />
-                        </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#ctaLines)" />
-                </svg>
-
-                {/* Circles */}
-                <div className="absolute top-20 right-20 w-40 h-40 border border-gray-100 rounded-full" />
-                <div className="absolute bottom-20 left-20 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
-            </div>
 
             <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-10 md:gap-12">

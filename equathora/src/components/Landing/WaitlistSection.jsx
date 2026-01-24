@@ -5,8 +5,8 @@ import { FaEnvelope, FaArrowRight } from 'react-icons/fa';
 
 const WaitlistSection = () => {
     return (
-        <section className="w-full bg-gradient-to-br from-[var(--secondary-color)] to-[#1a1a2e] relative overflow-hidden">
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-16 sm:py-20 md:py-24 lg:py-28 relative z-10" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+        <section className="w-full bg-gradient-to-br from-[var(--secondary-color)] to-[#1a1a2e] relative overflow-hidden px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-10">
+            <div className="max-w-[1400px] relative z-10">
                 <motion.div
                     className="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 md:gap-12"
                     initial={{ opacity: 0, y: 20 }}
