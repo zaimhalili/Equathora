@@ -99,7 +99,7 @@ const HelpCenter = () => {
                 {/* Hero Section with Illustration */}
                 <section className="w-full relative overflow-hidden flex justify-center">
                     {/* Animated background shapes */}
-                    <div className="absolute inset-0 overflow-hidden pointeration-events-none">
+                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
                         <div className="absolute top-20 left-10 w-32 h-32 bg-blue-400 rounded-full opacity-10 blur-2xl"></div>
                         <div className="absolute top-40 right-20 w-40 h-40 bg-purple-400 rounded-full opacity-10 blur-2xl"></div>
                         <div className="absolute bottom-20 left-1/3 w-36 h-36 bg-pink-400 rounded-full opacity-10 blur-2xl"></div>

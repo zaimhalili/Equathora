@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import './ProfileCard.css';
 
 const DEFAULT_BEHIND_GRADIENT =
-    'radial-gradient(farthest-side circle at var(--pointeration-x) var(--pointeration-y),hsla(266,100%,90%,var(--card-opacity)) 4%,hsla(266,50%,80%,calc(var(--card-opacity)*0.75)) 10%,hsla(266,25%,70%,calc(var(--card-opacity)*0.5)) 50%,hsla(266,0%,60%,0) 100%),radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#c137ffff 0%,#07c6ffff 40%,#07c6ffff 60%,#c137ffff 100%)';
+    'radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),hsla(266,100%,90%,var(--card-opacity)) 4%,hsla(266,50%,80%,calc(var(--card-opacity)*0.75)) 10%,hsla(266,25%,70%,calc(var(--card-opacity)*0.5)) 50%,hsla(266,0%,60%,0) 100%),radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#c137ffff 0%,#07c6ffff 40%,#07c6ffff 60%,#c137ffff 100%)';
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)';
 
@@ -62,13 +62,13 @@ const ProfileCardComponent = ({
             const centerY = percentY - 50;
 
             const properties = {
-                '--pointeration-x': `${percentX}%`,
-                '--pointeration-y': `${percentY}%`,
+                '--pointer-x': `${percentX}%`,
+                '--pointer-y': `${percentY}%`,
                 '--background-x': `${adjust(percentX, 0, 100, 35, 65)}%`,
                 '--background-y': `${adjust(percentY, 0, 100, 35, 65)}%`,
-                '--pointeration-from-center': `${clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1)}`,
-                '--pointeration-from-top': `${percentY / 100}`,
-                '--pointeration-from-left': `${percentX / 100}`,
+                '--pointer-from-center': `${clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1)}`,
+                '--pointer-from-top': `${percentY / 100}`,
+                '--pointer-from-left': `${percentX / 100}`,
                 '--rotate-x': `${round(-(centerX / 5))}deg`,
                 '--rotate-y': `${round(centerY / 4)}deg`
             };
@@ -113,7 +113,7 @@ const ProfileCardComponent = ({
         };
     }, [enableTilt]);
 
-    const handlepointerationMove = useCallback(
+    const handlepointerMove = useCallback(
         event => {
             const card = cardRef.current;
             const wrap = wrapRef.current;
@@ -126,7 +126,7 @@ const ProfileCardComponent = ({
         [animationHandlers]
     );
 
-    const handlepointerationEnter = useCallback(() => {
+    const handlepointerEnter = useCallback(() => {
         const card = cardRef.current;
         const wrap = wrapRef.current;
 
@@ -137,7 +137,7 @@ const ProfileCardComponent = ({
         card.classList.add('active');
     }, [animationHandlers]);
 
-    const handlepointerationLeave = useCallback(
+    const handlepointerLeave = useCallback(
         event => {
             const card = cardRef.current;
             const wrap = wrapRef.current;
@@ -185,9 +185,9 @@ const ProfileCardComponent = ({
 
         if (!card || !wrap) return;
 
-        const pointerationMoveHandler = handlepointerationMove;
-        const pointerationEnterHandler = handlepointerationEnter;
-        const pointerationLeaveHandler = handlepointerationLeave;
+        const pointerMoveHandler = handlepointerMove;
+        const pointerEnterHandler = handlepointerEnter;
+        const pointerLeaveHandler = handlepointerLeave;
         const deviceOrientationHandler = handleDeviceOrientation;
 
         const handleClick = () => {
@@ -205,9 +205,9 @@ const ProfileCardComponent = ({
             }
         };
 
-        card.addEventListener('pointerationenter', pointerationEnterHandler);
-        card.addEventListener('pointerationmove', pointerationMoveHandler);
-        card.addEventListener('pointerationleave', pointerationLeaveHandler);
+        card.addEventListener('pointerenter', pointerEnterHandler);
+        card.addEventListener('pointermove', pointerMoveHandler);
+        card.addEventListener('pointerleave', pointerLeaveHandler);
         card.addEventListener('click', handleClick);
 
         const initialX = wrap.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
@@ -217,9 +217,9 @@ const ProfileCardComponent = ({
         animationHandlers.createSmoothAnimation(ANIMATION_CONFIG.INITIAL_DURATION, initialX, initialY, card, wrap);
 
         return () => {
-            card.removeEventListener('pointerationenter', pointerationEnterHandler);
-            card.removeEventListener('pointerationmove', pointerationMoveHandler);
-            card.removeEventListener('pointerationleave', pointerationLeaveHandler);
+            card.removeEventListener('pointerenter', pointerEnterHandler);
+            card.removeEventListener('pointermove', pointerMoveHandler);
+            card.removeEventListener('pointerleave', pointerLeaveHandler);
             card.removeEventListener('click', handleClick);
             window.removeEventListener('deviceorientation', deviceOrientationHandler);
             animationHandlers.cancelAnimation();
@@ -228,9 +228,9 @@ const ProfileCardComponent = ({
         enableTilt,
         enableMobileTilt,
         animationHandlers,
-        handlepointerationMove,
-        handlepointerationEnter,
-        handlepointerationLeave,
+        handlepointerMove,
+        handlepointerEnter,
+        handlepointerLeave,
         handleDeviceOrientation
     ]);
 
@@ -288,7 +288,7 @@ const ProfileCardComponent = ({
                                 <button
                                     className="pc-contact-btn"
                                     onClick={handleContactClick}
-                                    style={{ pointerationEvents: 'auto' }}
+                                    style={{ pointerEvents: 'auto' }}
                                     type="button"
                                     aria-label={`Contact ${name || 'user'}`}
                                 >

@@ -388,7 +388,7 @@ const Profile = () => {
                     </svg>
 
                     {/* Center Text */}
-                    <div className='absolute inset-0 flex flex-col justify-center items-center font-medium text-center pointeration-events-none'>
+                    <div className='absolute inset-0 flex flex-col justify-center items-center font-medium text-center pointer-events-none'>
                       <div className={`transition-all duration-300 ${showAccuracy ? 'opacity-0 scale-90' : 'opacity-100 scale-100'} absolute`}>
                         <p className='text-xl text-[var(--secondary-color)]'><span className='text-4xl font-bold'>{totalSolved}</span>/{totalProblems}</p>
                         <div className='flex justify-center gap-1 items-center'>

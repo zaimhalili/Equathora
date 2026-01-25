@@ -1,9 +1,9 @@
 :root {
-    --pointeration-x: 50%;
-    --pointeration-y: 50%;
-    --pointeration-from-center: 0;
-    --pointeration-from-top: 0.5;
-    --pointeration-from-left: 0.5;
+    --pointer-x: 50%;
+    --pointer-y: 50%;
+    --pointer-from-center: 0;
+    --pointer-from-top: 0.5;
+    --pointer-from-left: 0.5;
     --card-opacity: 0;
     --rotate-x: 0deg;
     --rotate-y: 0deg;
@@ -69,7 +69,7 @@
     position: relative;
     background-blend-mode: color-dodge, normal, normal, normal;
     animation: glow-bg 12s linear infinite;
-    box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointeration-from-left) * 10px) - 3px) calc((var(--pointeration-from-top) * 20px) - 6px) 20px -5px;
+    box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px) calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
     transition: transform 1s ease;
     transform: translate3d(0, 0, 0.1px) rotateX(0deg) rotateY(0deg);
     background-size: 100% 100%;
@@ -79,7 +79,7 @@
         50% 50%,
         0 0;
     background-image:
-        radial-gradient(farthest-side circle at var(--pointeration-x) var(--pointeration-y),
+        radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),
             hsla(266, 100%, 90%, var(--card-opacity)) 4%,
             hsla(266, 50%, 80%, calc(var(--card-opacity) * 0.75)) 10%,
             hsla(266, 25%, 70%, calc(var(--card-opacity) * 0.5)) 50%,
@@ -101,7 +101,7 @@
     grid-area: 1/-1;
     border-radius: var(--card-radius);
     transform: translate3d(0, 0, 0.1px);
-    pointeration-events: none;
+    pointer-events: none;
 }
 
 .pc-inside {
@@ -150,7 +150,7 @@
             hsl(180, 10%, 60%) 5.2%,
             #0e152e 10%,
             #0e152e 12%),
-        radial-gradient(farthest-corner circle at var(--pointeration-x) var(--pointeration-y),
+        radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y),
             hsla(0, 0%, 0%, 0.1) 12%,
             hsla(0, 0%, 0%, 0.15) 20%,
             hsla(0, 0%, 0%, 0.25) 120%);
@@ -197,18 +197,18 @@
             var(--sunpillar-1),
             var(--sunpillar-2),
             var(--sunpillar-3)),
-        radial-gradient(circle at var(--pointeration-x) var(--pointeration-y), hsl(0, 0%, 70%) 0%, hsla(0, 0%, 30%, 0.2) 90%),
+        radial-gradient(circle at var(--pointer-x) var(--pointer-y), hsl(0, 0%, 70%) 0%, hsla(0, 0%, 30%, 0.2) 90%),
         var(--grain);
     background-size:
         250% 250%,
         100% 100%,
         220px 220px;
     background-position:
-        var(--pointeration-x) var(--pointeration-y),
+        var(--pointer-x) var(--pointer-y),
         center,
-        calc(var(--pointeration-x) * 0.01) calc(var(--pointeration-y) * 0.01);
+        calc(var(--pointer-x) * 0.01) calc(var(--pointer-y) * 0.01);
     background-blend-mode: color-dodge;
-    filter: brightness(calc(2 - var(--pointeration-from-center))) contrast(calc(var(--pointeration-from-center) + 2)) saturate(calc(0.5 + var(--pointeration-from-center)));
+    filter: brightness(calc(2 - var(--pointer-from-center))) contrast(calc(var(--pointer-from-center) + 2)) saturate(calc(0.5 + var(--pointer-from-center)));
     mix-blend-mode: luminosity;
 }
 
@@ -228,7 +228,7 @@
 .pc-glare {
     transform: translate3d(0, 0, 1.1px);
     overflow: hidden;
-    background-image: radial-gradient(farthest-corner circle at var(--pointeration-x) var(--pointeration-y),
+    background-image: radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y),
             hsl(248, 25%, 80%) 12%,
             hsla(207, 40%, 30%, 0.8) 90%);
     mix-blend-mode: overlay;
@@ -247,7 +247,7 @@
     left: 50%;
     transform: translateX(-50%) scale(1);
     bottom: 2px;
-    opacity: calc(1.75 - var(--pointeration-from-center));
+    opacity: calc(1.75 - var(--pointer-from-center));
 }
 
 .pc-avatar-content::before {
@@ -261,7 +261,7 @@
             rgba(0, 0, 0, 0) 60%,
             rgba(0, 0, 0, 1) 90%,
             rgba(0, 0, 0, 1) 100%);
-    pointeration-events: none;
+    pointer-events: none;
 }
 
 .pc-user-info {
@@ -278,7 +278,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     padding: 12px 14px;
-    pointeration-events: auto;
+    pointer-events: auto;
 }
 
 .pc-user-details {
@@ -346,8 +346,8 @@
     overflow: hidden;
     text-align: center;
     position: relative;
-    transform: translate3d(calc(var(--pointeration-from-left) * -6px + 3px),
-            calc(var(--pointeration-from-top) * -6px + 3px),
+    transform: translate3d(calc(var(--pointer-from-left) * -6px + 3px),
+            calc(var(--pointer-from-top) * -6px + 3px),
             0.1px) !important;
     z-index: 5;
     mix-blend-mode: luminosity;

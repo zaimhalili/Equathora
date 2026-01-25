@@ -27,7 +27,7 @@
 			var(--raisin-black));
 	/* Adjust opacity for darkness */
 	z-index: 1;
-	pointeration-events: none;
+	pointer-events: none;
 }
 
 .achievements-image-body>* {

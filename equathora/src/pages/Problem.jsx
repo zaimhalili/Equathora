@@ -931,10 +931,10 @@ const Problem = () => {
                             ref={canvasRef}
                             className="w-full h-48 md:h-56 bg-[var(--main-color)] cursor-crosshair"
                             style={{ touchAction: 'none' }}
-                            onpointerationDown={(e) => { e.preventDefault(); startDrawing(e); }}
-                            onpointerationMove={(e) => { e.preventDefault(); drawStroke(e); }}
-                            onpointerationUp={(e) => { e.preventDefault(); endDrawing(); }}
-                            onpointerationLeave={(e) => { e.preventDefault(); endDrawing(); }}
+                            onpointerDown={(e) => { e.preventDefault(); startDrawing(e); }}
+                            onpointerMove={(e) => { e.preventDefault(); drawStroke(e); }}
+                            onpointerUp={(e) => { e.preventDefault(); endDrawing(); }}
+                            onpointerLeave={(e) => { e.preventDefault(); endDrawing(); }}
                           />
                         </div>
                       </div>

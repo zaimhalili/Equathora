@@ -126,7 +126,7 @@ const HeroSection = () => {
             <Particles />
 
             <div className="relative z-10 w-full flex justify-center">
-                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1400px] pt-22 pb-[28px] sm:pt-24 md:pt-30 lg:pt-20 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-11 lg:gap-16 xl:gap-16 w-full min-h-screen">
+                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1400px] pt-40 pb-[28px] sm:pt-24 md:pt-30 lg:pt-20 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-11 lg:gap-16 xl:gap-16 w-full min-h-screen">
 
                     {/* Left Content - Centered */}
                     <motion.div

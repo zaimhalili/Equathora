@@ -19,7 +19,7 @@ export default function GradientText({
         <div className={wrapperClass}>
             {showBorder && (
                 <div
-                    className="absolute inset-0 bg-cover z-0 pointeration-events-none animate-gradient"
+                    className="absolute inset-0 bg-cover z-0 pointer-events-none animate-gradient"
                     style={{
                         ...gradientStyle,
                         backgroundSize: '300% 100%'

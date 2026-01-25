@@ -40,8 +40,11 @@ const Landing = () => {
                 <CTASection />
                 <WaitlistSection />
                 <Footer />
-                <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>Student PNGs by Vecteezy</a>
-                <a href="https://www.vecteezy.com/free-photos/paper" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>Paper Stock photos by Vecteezy</a>
+                <div className="flex flex-col lg:flex-row items-center text-[var(--main-color)]/50 bg-[var(--secondary-color)] underline border-t-1 font-light gap-1 text-[12px] py-3">
+                    <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="
+#freepik-link">Student PNGs by Vecteezy</a>
+                </div>
+                
             </div>
         </>
     );

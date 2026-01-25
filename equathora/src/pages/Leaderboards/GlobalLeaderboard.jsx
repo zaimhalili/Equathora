@@ -93,7 +93,7 @@ const GlobalLeaderboard = () => {
                     <p>{error}</p>
                     <button
                         onClick={fetchLeaderboardData}
-                        style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointeration' }}
+                        style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}
                     >
                         Retry
                     </button>
