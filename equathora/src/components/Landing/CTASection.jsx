@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
+import { FaTick } from 'react-icons/fa';
 
 const CTASection = () => {
     const containerRef = useRef(null);
@@ -88,17 +89,17 @@ const CTASection = () => {
                         transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
                     >
                         <Link
-                            to="/learn"
-                            className="group flex items-center gap-2 sm:gap-3 rounded-full bg-[var(--secondary-color)] px-7 sm:px-9 md:px-10 py-3 sm:py-3.5 md:py-4 text-base sm:text-lg font-semibold !text-white transition-all hover:bg-[var(--accent-color)] shadow-lg"
-                        >
-                            Get started
-                            <motion.span
-                                animate={{ x: [0, 4, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity }}
+                                to="/login"
+                                className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1"
                             >
-                                <FaArrowRight />
-                            </motion.span>
-                        </Link>
+                                Start practicing
+                                <motion.span
+                                    animate={{ x: [0, 4, 0] }}
+                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                >
+                                    <FaArrowRight className="text-xs sm:text-sm" />
+                                </motion.span>
+                            </Link>
                     </motion.div>
 
                     <motion.p
@@ -166,23 +167,23 @@ const CTASection = () => {
                             transition={{ duration: 3, repeat: Infinity }}
                         >
                             <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-500 text-xl">
+                                <div className="w-12 h-12 rounded-full bg-green-400 flex items-center justify-center text-green-900 text-xl font-extrabold">
                                     ✓
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500">Problems solved</p>
-                                    <p className="font-bold text-[var(--secondary-color)]">1,247+</p>
+                                    <p className="font-bold text-[var(--secondary-color)]">124+</p>
                                 </div>
                             </div>
                         </motion.div>
 
                         {/* Math symbol */}
                         <motion.div
-                            className="absolute -top-4 -right-4 w-16 h-16 rounded-2xl bg-[var(--accent-color)] flex items-center justify-center text-white text-2xl font-bold shadow-lg"
+                            className="absolute -top-4 -right-4 w-16 h-16 rounded-2xl bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-white text-2xl font-bold shadow-lg"
                             animate={{ rotate: [0, 5, -5, 0] }}
                             transition={{ duration: 4, repeat: Infinity }}
                         >
-                            ∑
+                            
                         </motion.div>
                     </motion.div>
                 </motion.div>
