@@ -27,16 +27,14 @@ const WaitlistSection = () => {
                     {/* CTA */}
                     <Link
                         to="/waitlist"
-                        className="flex-shrink-0 group flex items-center gap-2 rounded-full bg-[var(--accent-color)] px-6 sm:px-7 md:px-8 py-3 sm:py-3.5 md:py-4 !text-white text-sm sm:text-base font-semibold transition-all hover:bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
-                    >
-                        Subscribe now
-                        <motion.span
-                            animate={{ x: [0, 4, 0] }}
-                            transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                            <FaArrowRight />
-                        </motion.span>
-                    </Link>
+                        className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1">Start practicing
+                                <motion.span
+                                    animate={{ x: [0, 4, 0] }}
+                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                >
+                                    <FaArrowRight className="text-xs sm:text-sm" />
+                                </motion.span>
+                            </Link>
                 </motion.div>
             </div>
         </section>

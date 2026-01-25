@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
-import { FaTick } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 
 const CTASection = () => {
     const containerRef = useRef(null);
@@ -167,8 +167,8 @@ const CTASection = () => {
                             transition={{ duration: 3, repeat: Infinity }}
                         >
                             <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-green-400 flex items-center justify-center text-green-900 text-xl font-extrabold">
-                                    ✓
+                                <div className="w-12 h-12 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-green-900 text-xl font-extrabold">
+                                    <FaCheck className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500">Problems solved</p>
@@ -183,7 +183,7 @@ const CTASection = () => {
                             animate={{ rotate: [0, 5, -5, 0] }}
                             transition={{ duration: 4, repeat: Infinity }}
                         >
-                            
+                            ∑
                         </motion.div>
                     </motion.div>
                 </motion.div>
