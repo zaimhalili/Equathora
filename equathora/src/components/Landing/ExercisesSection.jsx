@@ -194,12 +194,12 @@ const ExercisesSection = () => {
                         </div>
 
                         {/* Title */}
-                        <h3 className="text-xl sm:text-xl font-bold text-[var(--secondary-color)] pb-1 sm:pb-2">
+                        <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)] pb-1 sm:pb-2">
                             {feature.title}
                         </h3>
 
                         {/* Description */}
-                        <p className="text-[var(--secondary-color)] leading-relaxed font-light text-base sm:text-md">
+                        <p className="text-[var(--secondary-color)] font-light text-sm sm:text-base">
                             {feature.description}
                         </p>
                     </motion.div>

@@ -63,13 +63,31 @@ const WhyChooseSection = () => {
                             viewport={{ once: true, amount: 0.3 }}
                             transition={{ duration: 0.5, ease: "easeOut" }}
                         >
-                            <span className="flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
-                                Why Equathora?
-                            </span>
                             <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight">
-                                Real learning, real progress
+                                Real learning, real{' '}
+                                <span className="text-[var(--secondary-color)] relative inline-block">
+                                    progress
+                                    <motion.svg
+                                        className="absolute -bottom-1 left-0 w-full rotate-1"
+                                        viewBox="0 0 200 8"
+                                        initial={{ pathLength: 0 }}
+                                        animate={{ pathLength: 1 }}
+                                        transition={{ delay: 0.8, duration: 0.8 }}
+                                    >
+                                        <motion.path
+                                            d="M0 4 Q50 0 100 4 Q150 8 200 4"
+                                            fill="none"
+                                            stroke="var(--secondary-color)"
+                                            strokeWidth="6"
+                                            strokeLinecap="round"
+                                            initial={{ pathLength: 0 }}
+                                            animate={{ pathLength: 1 }}
+                                            transition={{ delay: 0.8, duration: 0.8 }}
+                                        />
+                                    </motion.svg>
+                                </span>
                             </h2>
-                            <p className="text-[var(--secondary-color)] leading-relaxed max-w-2xl text-base sm:text-lg">
+                            <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
                                 Build problem-solving skills that last. Practice with purpose, track your growth, and master mathematics through thoughtful challenges.
                             </p>
                         </motion.div>

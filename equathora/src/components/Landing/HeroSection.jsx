@@ -100,7 +100,7 @@ const HeroSection = () => {
             {/* Background decorations */}
             <div className="absolute inset-0">
                 {/* Subtle texture overlay for depth */}
-                <div className="absolute inset-0 opacity-[1]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")' }}></div>
+                <div className="absolute inset-0 opacity-[0.85]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")' }}></div>
                 {/* Gradient orbs */}
                 {/* <div className="absolute top-0 right-0 w-[300px] sm:w-[400px] md:w-[600px] h-[300px] sm:h-[400px] md:h-[600px] bg-[var(--accent-color)]/20 rounded-full blur-[120px]" />
                 <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--accent-color)]/10 rounded-full blur-[100px]" /> */}
@@ -202,7 +202,7 @@ const HeroSection = () => {
                         >
                             <Link
                                 to="/learn"
-                                className="group flex items-center gap-2 rounded-full !bg-[var(--accent-color)] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all hover:!bg-[var(--dark-accent-color)] shadow-lg shadow-[var(--accent-color)]/30"
+                                className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all duration-350 ease-out hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--accent-color)]/30"
                             >
                                 Start practicing
                                 <motion.span
@@ -327,7 +327,7 @@ const HeroSection = () => {
                                     animate={{ y: [0, 8, 0] }}
                                     transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
                                 >
-                                    <div className="px-4 py-3 bg-[var(--accent-color)] rounded-md shadow-2xl text-white">
+                                    <div className="px-4 py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] rounded-md shadow-2xl text-white">
                                         <p className="text-2xl font-bold">98%</p>
                                         <p className="text-[10px] opacity-90 ">Success Rate</p>
                                     </div>

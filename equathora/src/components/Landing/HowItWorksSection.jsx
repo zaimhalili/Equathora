@@ -41,21 +41,16 @@ const HowItWorksSection = () => {
                 <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
                     {/* Section header - Centered */}
                     <motion.div
-                        className="flex flex-col gap-3 sm:gap-4 text-center items-center"
+                        className="flex flex-col text-center items-center"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.3 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
                     >
-                        <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider">
-                            <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
-                            Simple process
-                            <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
-                        </span>
-                        <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold text-[var(--secondary-color)] px-4">
+                        <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-4">
                             How it works
                         </h2>
-                        <p className="text-[var(--secondary-color)] text-base sm:text-lg max-w-xl px-4">
+                        <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
                             Four simple steps to transform your math skills
                         </p>
                     </motion.div>
@@ -89,7 +84,7 @@ const HowItWorksSection = () => {
                                     {/* Content */}
                                     <div className="flex flex-col gap-2">
                                         <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)]">{item.title}</h3>
-                                        <p className="text-[var(--mid-main-secondary)] text-xs sm:text-sm leading-relaxed">{item.description}</p>
+                                        <p className="text-[var(--secondary-color)] font-light text-sm sm:text-base">{item.description}</p>
                                     </div>
                                 </motion.div>
                             );

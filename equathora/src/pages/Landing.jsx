@@ -35,13 +35,13 @@ const Landing = () => {
                 <ExercisesSection />
                 <WhyChooseSection />
                 <HowItWorksSection />
-                <TestimonialsSection />
+                {/* <TestimonialsSection /> */}
                 <LatestArticlesSection />
                 <CTASection />
                 <WaitlistSection />
                 <Footer />
-                <a href="https://www.vecteezy.com/free-png/student">Student PNGs by Vecteezy</a>
-                <a href="https://www.vecteezy.com/free-photos/paper">Paper Stock photos by Vecteezy</a>
+                <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>Student PNGs by Vecteezy</a>
+                <a href="https://www.vecteezy.com/free-photos/paper" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>Paper Stock photos by Vecteezy</a>
             </div>
         </>
     );

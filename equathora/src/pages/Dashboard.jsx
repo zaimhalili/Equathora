@@ -71,7 +71,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <BetaBanner />
+      {/* <BetaBanner /> */}
       <FeedbackBanner />
       <main className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] min-h-screen ">
         <header>

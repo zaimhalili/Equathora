@@ -25,25 +25,22 @@ const LatestArticlesSection = () => {
                         viewport={{ once: true, amount: 0.3 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
                     >
-                        <div className="flex flex-col gap-3 sm:gap-4 text-center md:text-left">
-                            <span className="inline-flex items-center gap-2 text-[var(--accent-color)] text-xs sm:text-sm font-semibold uppercase tracking-wider justify-center md:justify-start">
-                                <span className="w-6 sm:w-8 h-[2px] bg-[var(--accent-color)]"></span>
-                                From our blog
-                            </span>
-                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--secondary-color)] px-4 md:px-0">
+                        <div className="flex flex-col text-center md:text-left">
+                            <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-4">
                                 Latest articles
                             </h2>
-                            <p className="text-[var(--mid-main-secondary)] text-base sm:text-lg max-w-lg px-4 md:px-0">
+                            <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
                                 Updates, insights, and thoughts on math learning
                             </p>
                         </div>
                         <Link
-                            to={blogPosts.length > 0 ? `/blog/${blogPosts[0].slug}` : "/blogs"}
-                            className="group inline-flex items-center gap-2 text-[var(--secondary-color)] font-semibold transition-all justify-center md:justify-start"
-                        >
-                            View all articles
-                            <FaArrowRight className="transition-transform group-hover:translate-x-1" />
-                        </Link>
+                                to={blogPosts.length > 0 ? `/blog/${blogPosts[0].slug}` : "/blogs"}
+                                className="group relative text-sm sm:text-base !text-[var(--secondary-color)] font-medium transition-all flex items-center gap-2 min-w-[140px]"
+                            >
+                                <FaArrowRight className="text-xs sm:text-sm opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
+                                <span className="transition-transform duration-300">View all articles</span>
+                                <FaArrowRight className="text-xs sm:text-sm opacity-100 group-hover:translate-x-4 group-hover:opacity-0 transition-all duration-300" />
+                            </Link>
                     </motion.div>
 
                     {/* Articles grid */}
@@ -58,14 +55,14 @@ const LatestArticlesSection = () => {
                             >
                                 <Link
                                     to={`/blog/${post.slug}`}
-                                    className="group flex flex-col bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm transition-all hover:shadow-xl"
+                                    className="group flex flex-col bg-white rounded-md border border-gray-100 overflow-hidden transition-all shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] duration-200 ease-out hover:scale-105"
                                 >
                                     {/* Image */}
                                     <div className="relative overflow-hidden h-44 sm:h-48">
                                         <img
                                             src={post.thumbnail}
                                             alt={post.title}
-                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            className="w-full h-full object-cover transition-transform duration-500 "
                                         />
                                         <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
                                             <span className="px-2.5 sm:px-3 py-1 bg-[var(--accent-color)] text-white text-[10px] sm:text-xs font-semibold rounded-full">
