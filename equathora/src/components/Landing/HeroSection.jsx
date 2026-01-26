@@ -87,9 +87,9 @@ const Particles = () => {
 
 const HeroSection = () => {
     const stats = [
-        { value: 100, label: 'Practice Problems', suffix: '+' },
+        { value: 200, label: 'Practice Problems', suffix: '+' },
         { value: 30, label: 'Achievements', suffix: '+' },
-        { value: 10, label: 'Math Topics', suffix: '+' },
+        { value: 15, label: 'Math Topics', suffix: '+' },
     ];
 
     return (

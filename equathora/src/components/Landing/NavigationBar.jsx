@@ -231,8 +231,8 @@ const NavigationBar = () => {
                                         className=" border-3 border-[var(--accent-color)] !text-[var(--accent-color)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center transition-all duration-150 hover:!text-white hover:bg-[var(--accent-color)]  hover:border-[var(--accent-color)] ">Explore Problems</Link>
                                 </li>
                                 <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
-                                    <Link to="/learn"
-                                        className="border-3 border-[var(--mid-main-secondary)] !text-black bg-[var(--mid-main-secondary)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center transition-all hover:border-[var(--mid-main-secondary)]/10 hover:bg-[var(--mid-main-secondary)]/70">Start Learning</Link>
+                                    <Link to="/login"
+                                        className="border-3 border-[var(--mid-main-secondary)] !text-black bg-[var(--mid-main-secondary)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center transition-all hover:border-[var(--mid-main-secondary)]/10 hover:bg-[var(--mid-main-secondary)]/70">Get Started</Link>
 
 
                                 </li>

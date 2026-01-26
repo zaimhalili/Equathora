@@ -113,7 +113,7 @@ const ExercisesSection = () => {
                             <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2">
                                 Over {' '}
                                 <span className="text-[var(--secondary-color)] relative inline-block">
-                                    100 math exercises.
+                                    210 math exercises.
                                     <motion.svg
                                         className="absolute -bottom-2 left-0 w-full"
                                         viewBox="0 0 200 8"
