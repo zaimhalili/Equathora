@@ -26,14 +26,14 @@ const Waitlist = () => {
                             {/* Badge */}
                             <div className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-[var(--dark-accent-color)] to-[var(--accent-color)] text-white rounded-full text-sm font-semibold shadow-lg animate-bounce">
                                 <svg className="w-4 h-4" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<linearGradient id="icon-gradient-bolt" x1="0%" y1="0%" x2="0%" y2="100%">
-<stop offset="0%" stopColor="var(--dark-accent-color)" />
-<stop offset="100%" stopColor="var(--accent-color)" />
-</linearGradient>
-</defs>
-<path fill="white" d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.7 20.8l-32 416C-.9 445.2 9.9 456 22.8 456.4c4.1.1 8.2-.3 12.1-1.6L266 420.1c10.2-3.3 17.5-12.6 17.5-23.2 0-6.6-2.7-12.8-7.4-17.3L150 256l119.3-99.3c11.3-9.4 14.8-25.6 7.8-38.8z" />
-</svg>
+                                    <defs>
+                                        <linearGradient id="icon-gradient-bolt" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stopColor="var(--dark-accent-color)" />
+                                            <stop offset="100%" stopColor="var(--accent-color)" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path fill="white" d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.7 20.8l-32 416C-.9 445.2 9.9 456 22.8 456.4c4.1.1 8.2-.3 12.1-1.6L266 420.1c10.2-3.3 17.5-12.6 17.5-23.2 0-6.6-2.7-12.8-7.4-17.3L150 256l119.3-99.3c11.3-9.4 14.8-25.6 7.8-38.8z" />
+                                </svg>
                                 <span>50+ Already Joined</span>
                             </div>
 
@@ -76,14 +76,14 @@ const Waitlist = () => {
                                 >
                                     <span>Join the Waitlist</span>
                                     <svg className="w-5 h-5" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<linearGradient id="icon-gradient-arrow-1" x1="0%" y1="0%" x2="0%" y2="100%">
-<stop offset="0%" stopColor="var(--dark-accent-color)" />
-<stop offset="100%" stopColor="var(--accent-color)" />
-</linearGradient>
-</defs>
-<path fill="white" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z" />
-</svg>
+                                        <defs>
+                                            <linearGradient id="icon-gradient-arrow-1" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" stopColor="var(--dark-accent-color)" />
+                                                <stop offset="100%" stopColor="var(--accent-color)" />
+                                            </linearGradient>
+                                        </defs>
+                                        <path fill="white" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z" />
+                                    </svg>
                                 </button>
                                 <p className="flex items-center justify-center text-sm text-[var(--secondary-color)]/60 text-center">
                                     Early access spots are limited • No credit card required • Unsubscribe anytime
@@ -248,14 +248,14 @@ const Waitlist = () => {
                             >
                                 <span>Secure My Spot</span>
                                 <svg className="w-5 h-5" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<linearGradient id="icon-gradient-rocket" x1="0%" y1="0%" x2="0%" y2="100%">
-<stop offset="0%" stopColor="var(--dark-accent-color)" />
-<stop offset="100%" stopColor="var(--accent-color)" />
-</linearGradient>
-</defs>
-<path fill="url(#icon-gradient-rocket)" d="M505.12019,19.09375c-1.18945-5.53125-6.65819-11-12.207-12.1875C460.716,0,435.507,0,410.40747,0,307.17523,0,245.26909,55.20312,199.05238,128H94.83772c-16.34763.01562-35.55658,11.875-42.88664,26.48438L2.51562,253.29688A28.4,28.4,0,0,0,0,264a24.00867,24.00867,0,0,0,24.00582,24H127.81618l-22.47457,22.46875c-11.36521,11.36133-12.99607,32.25781,0,45.25L156.78354,407.16406c13.03118,12.9961,33.94536,11.36524,45.25,0l22.46875-22.47656V488a24.00867,24.00867,0,0,0,24.00582,24,28.55934,28.55934,0,0,0,10.707-2.51562l98.72834-49.39063c14.62888-7.29687,26.50776-26.5,26.50776-42.85937V312.79688c72.59375-46.3125,128.03125-108.40626,128.03125-211.09376C512.07526,76.5,512.07526,51.29688,505.12019,19.09375ZM384.04033,168A40,40,0,1,1,424.05,128,40.02322,40.02322,0,0,1,384.04033,168Z" />
-</svg>
+                                    <defs>
+                                        <linearGradient id="icon-gradient-rocket" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stopColor="var(--dark-accent-color)" />
+                                            <stop offset="100%" stopColor="var(--accent-color)" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path fill="url(#icon-gradient-rocket)" d="M505.12019,19.09375c-1.18945-5.53125-6.65819-11-12.207-12.1875C460.716,0,435.507,0,410.40747,0,307.17523,0,245.26909,55.20312,199.05238,128H94.83772c-16.34763.01562-35.55658,11.875-42.88664,26.48438L2.51562,253.29688A28.4,28.4,0,0,0,0,264a24.00867,24.00867,0,0,0,24.00582,24H127.81618l-22.47457,22.46875c-11.36521,11.36133-12.99607,32.25781,0,45.25L156.78354,407.16406c13.03118,12.9961,33.94536,11.36524,45.25,0l22.46875-22.47656V488a24.00867,24.00867,0,0,0,24.00582,24,28.55934,28.55934,0,0,0,10.707-2.51562l98.72834-49.39063c14.62888-7.29687,26.50776-26.5,26.50776-42.85937V312.79688c72.59375-46.3125,128.03125-108.40626,128.03125-211.09376C512.07526,76.5,512.07526,51.29688,505.12019,19.09375ZM384.04033,168A40,40,0,1,1,424.05,128,40.02322,40.02322,0,0,1,384.04033,168Z" />
+                                </svg>
                             </button>
                         </div>
 
