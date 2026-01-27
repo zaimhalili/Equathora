@@ -60,7 +60,11 @@
             },
             "MathNet.Numerics": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[6.0.0-beta01, )"
+            },
+            "MathNet.Symbolics": {
+              "target": "Package",
+              "version": "[0.25.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",

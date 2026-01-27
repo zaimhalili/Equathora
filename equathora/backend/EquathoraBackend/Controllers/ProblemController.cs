@@ -53,7 +53,7 @@ namespace EquathoraBackend.Controllers
 
     public class StepValidationRequest
     {
-        public List<string> Steps { get; set; }
-        public List<string> CorrectSteps { get; set; }
+        public List<string> Steps { get; set; } = new List<string>();
+        public List<string> CorrectSteps { get; set; } = new List<string>();
     }
 }

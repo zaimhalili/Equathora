@@ -57,16 +57,13 @@ builder.Services.Configure<IpRateLimitOptions>(options =>
         {
             Endpoint = "*/api/auth/*",
             Period = "1m",
-          rate limiting
-app.UseIpRateLimiting();
-
-// Enable   Limit = 10
+            Limit = 10 // Correct property name
         },
         new RateLimitRule
         {
             Endpoint = "*",
             Period = "1m",
-            Limit = 100
+            Limit = 100 // Correct property name
         }
     };
 });
