@@ -88,37 +88,24 @@ export const validateAnswer = (userAnswer, problem) => {
             return {
                 isCorrect: true,
                 feedback: 'Perfect! Your answer is correct!',
-                score: 100
+                score: 1
             };
         }
     }
 
-    // Check numerical equality with tolerance
-    for (const accepted of acceptedAnswers) {
-        if (isNumericallyEqual(normalizedUserAnswer, accepted, 0.01)) {
-            return {
-                isCorrect: true,
-                feedback: 'Correct! (Minor rounding difference, but answer is valid)',
-                score: 100
-            };
-        }
+    // New Math.NET step-by-step validation
+    const mathNetValidation = validateExpression(userAnswer, problem);
+    if (!mathNetValidation.isCorrect) {
+        return {
+            isCorrect: false,
+            feedback: mathNetValidation.feedback,
+            score: mathNetValidation.score
+        };
     }
 
-    // Check if answer is close (for partial credit)
-    for (const accepted of acceptedAnswers) {
-        if (isNumericallyEqual(normalizedUserAnswer, accepted, 0.5)) {
-            return {
-                isCorrect: false,
-                feedback: 'You\'re close! Double-check your calculations. The answer is slightly off.',
-                score: 50
-            };
-        }
-    }
-
-    // Completely wrong
     return {
         isCorrect: false,
-        feedback: 'Not quite right. Review the problem and try again. Consider using a hint if you\'re stuck!',
+        feedback: 'Incorrect answer. Please try again.',
         score: 0
     };
 };
@@ -236,3 +223,5 @@ export default {
     getSmartFeedback,
     normalizeAnswer
 };
+
+import { validateExpression } from '../utils/mathNetService';

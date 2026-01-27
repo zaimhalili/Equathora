@@ -11,8 +11,8 @@ using EquathoraBackend.Data;
 using EquathoraBackend.Models;
 using EquathoraBackend.Contracts;
 using AspNetCoreRateLimit;
-
-
+using MathNet.Numerics;
+using MathNet.Numerics.LinearAlgebra;
 
 var builder = WebApplication.CreateBuilder(args);
 

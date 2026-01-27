@@ -32,6 +32,7 @@ import {
 } from '../lib/progressStorage';
 import { validateAnswer } from '../lib/answerValidation';
 import { recordSubmission, updateStreakData } from '../lib/databaseService';
+import { validateSteps } from '../utils/mathNetService';
 
 const formatDurationLabel = (seconds = 0) => {
   const safeSeconds = Math.max(0, Math.round(seconds));
@@ -519,6 +520,21 @@ const Problem = () => {
       message: validation.feedback
     };
   };
+
+  const handleStepValidation = async (userSteps, correctSteps) => {
+    const validationResult = await validateSteps(userSteps, correctSteps);
+    if (validationResult.feedback) {
+      console.log('Step-by-step feedback:', validationResult.feedback);
+      // Display feedback to the user (e.g., update state or UI)
+    } else {
+      console.error('Failed to get step-by-step feedback.');
+    }
+  };
+
+  // Example usage
+  const userSteps = ["x + 2 = 4", "x = 2"];
+  const correctSteps = ["x + 2 = 4", "x = 2"];
+  handleStepValidation(userSteps, correctSteps);
 
   // Handle loading state
   if (loading) {
