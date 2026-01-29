@@ -180,8 +180,8 @@ export default function App() {
             <Route path="/learn" element={<Learn />} />
             <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
             <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
-            <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} />
-            <Route path="/tracks" element={<ProtectedRoute><Tracks /></ProtectedRoute>} />
+            {/* <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} /> */}
+            {/* <Route path="/tracks" element={<ProtectedRoute><Tracks /></ProtectedRoute>} /> */}
             {/* <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} /> */}
             {/* <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} /> */}
             {/* <Route path="/premium" element={<ProtectedRoute><Premium /></ProtectedRoute>} /> */}

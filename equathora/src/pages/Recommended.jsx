@@ -123,7 +123,7 @@ const Recommended = () => {
     return (
         <>
             <Navbar />
-            <div className="bg-gradient-to-b from-[var(--mid-main-secondary)] via-[var(--main-color)] to-[var(--main-color)] min-h-screen pt-24">
+            <div className="bg-gradient-to-b from-[var(--mid-main-secondary)] via-[var(--main-color)] to-[var(--main-color)] min-h-screen pt-24 flex flex-col items-center">
                 {/* Hero Header */}
                 <div className="px-6 md:px-16 lg:px-32 xl:px-48 pb-12">
                     <div className="text-center">
@@ -169,8 +169,9 @@ const Recommended = () => {
                 </div>
 
                 {/* Recommendations Grid */}
-                <div className="px-6 md:px-16 lg:px-32 xl:px-48 pb-20">
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="flex justify-center pb-20 w-full">
+                    <div className="px-6 md:px-16 lg:px-32 xl:px-48">
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         {recommendations.map((rec, index) => (
                             <Link
                                 key={rec.id}
