@@ -43,7 +43,7 @@ const Recommended = () => {
             problems: 10,
             completed: 8,
             estimatedTime: '1 hour',
-            description: 'Understand slopes, y-Sansationcepts, and graphing linear functions with confidence.',
+            description: 'Understand slopes, y-Interceptions, and graphing linear functions with confidence.',
             path: '/learn?topic=linear-functions'
         },
         {

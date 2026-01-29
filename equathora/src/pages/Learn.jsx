@@ -18,7 +18,7 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }
   const [isOpen, setIsOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0, width: 0 });
   const triggerRef = useRef(null);
-  
+
   const selectedOption = options.find(opt => opt.value === value);
   const displayText = selectedOption ? selectedOption.label : placeholder;
 
@@ -68,7 +68,7 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }
         <FaChevronDown className={`filter-dropdown-icon ${isOpen ? 'rotated' : ''}`} />
       </button>
       {isOpen && createPortal(
-        <div 
+        <div
           className="filter-dropdown-menu filter-dropdown-portal"
           style={{
             position: 'absolute',
@@ -403,7 +403,7 @@ const Learn = () => {
                 onChange={(val) => updateFilters({ sort: val || 'default' })}
                 placeholder="Default Order"
               />
-              
+
               <FilterDropdown
                 label="Grade"
                 value={gradeFilter}
@@ -474,8 +474,8 @@ const Learn = () => {
                   )}
                   {progressFilter && (
                     <span className="active-filter-pill">
-                      {progressFilter === 'in-progress' ? 'In Progress' : 
-                       progressFilter === 'favourite' ? 'Favourite' : 'Premium'}
+                      {progressFilter === 'in-progress' ? 'In Progress' :
+                        progressFilter === 'favourite' ? 'Favourite' : 'Premium'}
                       <button onClick={() => updateFilters({ progress: '' })}><FaTimes /></button>
                     </span>
                   )}

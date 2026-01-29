@@ -48,7 +48,7 @@ const Resend = lazy(() => import("./pages/Resend"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Premium = lazy(() => import("./pages/Premium"));
-const Recommended = lazy(() => import("./pages/Recommended"));
+const Tracks = lazy(() => import("./pages/Tracks"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const Waitlist = lazy(() => import("./pages/Waitlist"));
@@ -70,7 +70,7 @@ function PageTitleUpdater() {
       '/applymentor': 'Become a Mentor - Equathora',
       '/leaderboards': 'Top Solvers - Equathora',
       '/discover': 'Explore More - Equathora',
-      '/recommended': 'For You - Equathora',
+      '/tracks': 'Tracks - Equathora',
       '/notifications': 'Updates - Equathora',
       '/settings': 'Your Settings - Equathora',
       '/premium': 'Go Premium - Equathora',
@@ -180,8 +180,8 @@ export default function App() {
             <Route path="/learn" element={<Learn />} />
             <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
             <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
-            {/* <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} /> */}
-            {/* <Route path="/recommended" element={<ProtectedRoute><Recommended /></ProtectedRoute>} /> */}
+            <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} />
+            <Route path="/tracks" element={<ProtectedRoute><Tracks /></ProtectedRoute>} />
             {/* <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} /> */}
             {/* <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} /> */}
             {/* <Route path="/premium" element={<ProtectedRoute><Premium /></ProtectedRoute>} /> */}
