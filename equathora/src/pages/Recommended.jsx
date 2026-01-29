@@ -172,120 +172,120 @@ const Recommended = () => {
                 <div className="flex justify-center pb-20 w-full">
                     <div className="px-6 md:px-16 lg:px-32 xl:px-48">
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        {recommendations.map((rec, index) => (
-                            <Link
-                                key={rec.id}
-                                to={rec.path}
-                                className="group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[var(--accent-color)] flex flex-col animate-in fade-in slide-in-from-bottom-4"
-                                style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'backwards' }}
-                            >
-                                {/* Shimmer Effect */}
-                                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                            {recommendations.map((rec, index) => (
+                                <Link
+                                    key={rec.id}
+                                    to={rec.path}
+                                    className="group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[var(--accent-color)] flex flex-col animate-in fade-in slide-in-from-bottom-4"
+                                    style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'backwards' }}
+                                >
+                                    {/* Shimmer Effect */}
+                                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
-                                {/* Card Header */}
-                                <div className="relative p-5 bg-gradient-to-br from-[var(--secondary-color)] to-[var(--mid-main-secondary)] overflow-hidden">
-                                    {/* Decorative Elements */}
-                                    <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -mr-10 -mt-10" />
-                                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full -ml-8 -mb-8" />
+                                    {/* Card Header */}
+                                    <div className="relative p-5 bg-gradient-to-br from-[var(--secondary-color)] to-[var(--mid-main-secondary)] overflow-hidden">
+                                        {/* Decorative Elements */}
+                                        <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -mr-10 -mt-10" />
+                                        <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full -ml-8 -mb-8" />
 
-                                    <div className="relative flex items-start justify-between gap-3 mb-3">
-                                        <h3 className="text-xl font-bold text-white font-['Sansation'] leading-tight flex-1">
-                                            {rec.topic}
-                                        </h3>
-                                        <div className="flex items-center gap-2">
-                                            {rec.completed > 0 && (
-                                                <div className="bg-yellow-400 p-1.5 rounded-md shadow-sm">
-                                                    <FaStar className="text-[var(--secondary-color)] text-sm" />
-                                                </div>
-                                            )}
-                                            <button
-                                                onClick={(e) => toggleBookmark(e, rec.id)}
-                                                className="bg-white/20 hover:bg-white/30 p-1.5 rounded-md transition-colors duration-200"
-                                            >
-                                                {bookmarked[rec.id] ? (
-                                                    <FaBookmark className="text-white text-sm" />
-                                                ) : (
-                                                    <FaRegBookmark className="text-white text-sm" />
+                                        <div className="relative flex items-start justify-between gap-3 mb-3">
+                                            <h3 className="text-xl font-bold text-white font-['Sansation'] leading-tight flex-1">
+                                                {rec.topic}
+                                            </h3>
+                                            <div className="flex items-center gap-2">
+                                                {rec.completed > 0 && (
+                                                    <div className="bg-yellow-400 p-1.5 rounded-md shadow-sm">
+                                                        <FaStar className="text-[var(--secondary-color)] text-sm" />
+                                                    </div>
                                                 )}
-                                            </button>
+                                                <button
+                                                    onClick={(e) => toggleBookmark(e, rec.id)}
+                                                    className="bg-white/20 hover:bg-white/30 p-1.5 rounded-md transition-colors duration-200"
+                                                >
+                                                    {bookmarked[rec.id] ? (
+                                                        <FaBookmark className="text-white text-sm" />
+                                                    ) : (
+                                                        <FaRegBookmark className="text-white text-sm" />
+                                                    )}
+                                                </button>
+                                            </div>
                                         </div>
+
+                                        <span className={`inline-block px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${getDifficultyColor(rec.difficulty)}`}>
+                                            {rec.difficulty}
+                                        </span>
                                     </div>
 
-                                    <span className={`inline-block px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${getDifficultyColor(rec.difficulty)}`}>
-                                        {rec.difficulty}
-                                    </span>
-                                </div>
-
-                                {/* Card Body */}
-                                <div className="p-5 flex-1 flex flex-col gap-4">
-                                    <p className="text-[var(--secondary-color)] font-['Sansation'] text-sm leading-relaxed">
-                                        {rec.description}
-                                    </p>
-
-                                    <div className="px-3 py-2 bg-[var(--main-color)] rounded-lg border-l-3 border-[var(--accent-color)]">
-                                        <p className="text-[var(--secondary-color)] font-['Sansation'] text-xs font-medium">
-                                            {rec.reason}
+                                    {/* Card Body */}
+                                    <div className="p-5 flex-1 flex flex-col gap-4">
+                                        <p className="text-[var(--secondary-color)] font-['Sansation'] text-sm leading-relaxed">
+                                            {rec.description}
                                         </p>
-                                    </div>
 
-                                    {rec.completed > 0 ? (
-                                        <div>
-                                            <div className="flex items-center justify-between mb-2">
-                                                <span className="text-xs font-semibold text-[var(--secondary-color)] font-['Sansation']">
-                                                    Progress
-                                                </span>
-                                                <span className="text-xs font-semibold text-[var(--accent-color)] font-['Sansation']">
-                                                    {rec.completed}/{rec.problems}
-                                                </span>
-                                            </div>
-                                            <div className="relative w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                                                <div
-                                                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--light-accent-color)] rounded-full transition-all duration-700 ease-out"
-                                                    style={{ width: `${getProgressPercentage(rec.completed, rec.problems)}%` }}
-                                                />
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="py-2 px-3 bg-gray-50 rounded-md border border-dashed border-gray-300">
-                                            <p className="text-center text-xs font-medium text-[var(--mid-main-secondary)] font-['Sansation']">
-                                                Not Started
+                                        <div className="px-3 py-2 bg-[var(--main-color)] rounded-lg border-l-3 border-[var(--accent-color)]">
+                                            <p className="text-[var(--secondary-color)] font-['Sansation'] text-xs font-medium">
+                                                {rec.reason}
                                             </p>
                                         </div>
-                                    )}
 
-                                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                                        <div className="flex items-center gap-1.5">
-                                            <FaClock className="text-[var(--mid-main-secondary)] text-xs" />
-                                            <span className="text-xs text-[var(--secondary-color)] font-['Sansation'] font-medium">
-                                                {rec.estimatedTime}
-                                            </span>
-                                        </div>
-                                        <div className="flex items-center gap-1.5">
-                                            <FaCheckCircle className="text-[var(--mid-main-secondary)] text-xs" />
-                                            <span className="text-xs text-[var(--secondary-color)] font-['Sansation'] font-medium">
-                                                {rec.problems} problems
-                                            </span>
+                                        {rec.completed > 0 ? (
+                                            <div>
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="text-xs font-semibold text-[var(--secondary-color)] font-['Sansation']">
+                                                        Progress
+                                                    </span>
+                                                    <span className="text-xs font-semibold text-[var(--accent-color)] font-['Sansation']">
+                                                        {rec.completed}/{rec.problems}
+                                                    </span>
+                                                </div>
+                                                <div className="relative w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                                                    <div
+                                                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--light-accent-color)] rounded-full transition-all duration-700 ease-out"
+                                                        style={{ width: `${getProgressPercentage(rec.completed, rec.problems)}%` }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="py-2 px-3 bg-gray-50 rounded-md border border-dashed border-gray-300">
+                                                <p className="text-center text-xs font-medium text-[var(--mid-main-secondary)] font-['Sansation']">
+                                                    Not Started
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                                            <div className="flex items-center gap-1.5">
+                                                <FaClock className="text-[var(--mid-main-secondary)] text-xs" />
+                                                <span className="text-xs text-[var(--secondary-color)] font-['Sansation'] font-medium">
+                                                    {rec.estimatedTime}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-1.5">
+                                                <FaCheckCircle className="text-[var(--mid-main-secondary)] text-xs" />
+                                                <span className="text-xs text-[var(--secondary-color)] font-['Sansation'] font-medium">
+                                                    {rec.problems} problems
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Action Button */}
-                                <div className="p-5 pt-0">
-                                    <div className="flex items-center justify-center gap-2 py-2.5 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-lg transition-colors duration-300">
-                                        <span className="text-white font-semibold text-sm font-['Sansation']">Start Learning</span>
-                                        <svg className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                        </svg>
+                                    {/* Action Button */}
+                                    <div className="p-5 pt-0">
+                                        <div className="flex items-center justify-center gap-2 py-2.5 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-lg transition-colors duration-300">
+                                            <span className="text-white font-semibold text-sm font-['Sansation']">Start Learning</span>
+                                            <svg className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                            </svg>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                        ))}
+                                </Link>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <Footer />
-        </>
-    );
+                <Footer />
+            </>
+            );
 };
 
-export default Recommended;
+            export default Recommended;
