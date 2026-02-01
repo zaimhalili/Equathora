@@ -119,7 +119,7 @@ const About = () => {
                 <main className="relative z-10 w-full flex flex-col items-center">
                     {/* Hero - Full Width Clean */}
 
-                    <section className="w-full relative bg-[var(--main-color)] py-12 overflow-hidden"
+                    <section className="w-full relative bg-[var(--main-color)] py-12 overflow-hidden flex justify-center"
                         style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay' }}>
                         <div className="absolute inset-0 -inset-x-4">
                             {/* Subtle texture overlay for depth */}
@@ -136,96 +136,67 @@ const About = () => {
                                 }}
                             />
                         </div>
-                        <div className="w-full max-w-[1500px] flex flex-col items-center text-center relative z-10" style={{ padding: '0 4vw' }}>
+                        <div className="w-full max-w-[1500px] flex flex-col items-center text-center relative z-10">
                             <motion.div
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                                 className="flex flex-col items-center"
                             >
-                                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black font-[Sansation] text-[var(--secondary-color)] pb-6">
+                                <h1 className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)] pb-2">
                                     About{' '}
-                                    <span className="relative">
-                                        <span className="text-[var(--accent-color)]">Equathora</span>
-                                        <motion.svg
-                                            className="absolute -bottom-2 left-0 w-full"
-                                            viewBox="0 0 400 12"
+                                    <span className="text-[var(--secondary-color)] relative inline-block">
+                                    Equathora
+                                    <motion.svg
+                                        className="absolute -bottom-1 left-0 w-full"
+                                        viewBox="0 0 200 8"
+                                        initial={{ pathLength: 0 }}
+                                        animate={{ pathLength: 1 }}
+                                        transition={{ delay: 0.8, duration: 0.8 }}
+                                    >
+                                        <motion.path
+                                            d="M0 4 Q50 0 100 4 Q150 8 200 4"
+                                            fill="none"
+                                            stroke="var(--secondary-color)"
+                                            strokeWidth="3"
+                                            strokeLinecap="round"
                                             initial={{ pathLength: 0 }}
                                             animate={{ pathLength: 1 }}
-                                            transition={{ delay: 0.8, duration: 1.2 }}
-                                        >
-                                            <motion.path
-                                                d="M0 6 Q100 2 200 6 Q300 10 400 6"
-                                                fill="none"
-                                                stroke="var(--accent-color)"
-                                                strokeWidth="6"
-                                                strokeLinecap="round"
-                                            />
-                                        </motion.svg>
-                                    </span>
+                                            transition={{ delay: 0.8, duration: 0.8 }}
+                                        />
+                                    </motion.svg>
+                                </span>
                                 </h1>
 
                                 <motion.p
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ delay: 0.4, duration: 0.6 }}
-                                    className="text-base sm:text-lg md:text-xl text-[var(--secondary-color)]/70 leading-relaxed" style={{ maxWidth: '48rem', marginBottom: '3rem' }}
+                                    className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light text-[var(--secondary-color)]"
                                 >
-                                    Where <span className="font-bold text-[var(--accent-color)]">equations</span> meet{' '}
-                                    <span className="font-bold text-[var(--accent-color)]">time</span>—a comprehensive platform for mathematical excellence
+                                    Where equations meet time - a comprehensive platform for mathematical excellence
                                 </motion.p>
 
-                                <div className="flex flex-wrap justify-center gap-6" style={{ width: '100%' }}>
-                                    {[
-                                        { value: '200+', label: 'Problems', icon: FaChartLine, color: 'from-blue-500 to-cyan-500' },
-                                        { value: '30+', label: 'Achievements', icon: FaTrophy, color: 'from-yellow-500 to-orange-500' },
-                                        { value: '10+', label: 'Topics', icon: FaBookOpen, color: 'from-purple-500 to-pink-500' }
-                                    ].map((stat, idx) => (
-                                        <motion.div
-                                            key={idx}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.6 + idx * 0.1 }}
-                                            whileHover={{ y: -8, boxShadow: '0 20px 30px rgba(0,0,0,0.15)' }}
-                                            className="flex flex-col items-center justify-center bg-white rounded-2xl shadow-lg" 
-                                            style={{ padding: '2rem', minWidth: '180px', flex: '1 1 180px' }}
-                                        >
-                                            <div className={`flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br ${stat.color}`} style={{ marginBottom: '1rem' }}>
-                                                <stat.icon className="text-white text-2xl" />
-                                            </div>
-                                            <div className="text-4xl font-black text-[var(--secondary-color)]" style={{ marginBottom: '0.5rem' }}>{stat.value}</div>
-                                            <div className="text-sm text-gray-500 font-medium">{stat.label}</div>
-                                        </motion.div>
-                                    ))}
-                                </div>
+                                
                             </motion.div>
                         </div>
                     </section>
 
                     {/* Origin Story */}
                     <section className="w-full flex justify-center" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay' }}>
-                        <div className="w-full flex flex-col" style={{ maxWidth: '1500px', padding: '4rem 4vw' }}>
-                            <ScrollReveal direction="up">
-                                <div className="flex flex-col items-center" style={{ marginBottom: '3rem' }}>
-                                    <h2 className="text-4xl md:text-5xl font-black text-[var(--secondary-color)] font-[Sansation]" style={{ marginBottom: '1rem' }}>
-                                        The Name <span className="text-[var(--accent-color)]">Equathora</span>
-                                    </h2>
-                                    <div className="w-24 h-1 bg-[var(--accent-color)]" style={{ borderRadius: '9999px' }}></div>
-                                </div>
-                            </ScrollReveal>
-
-                            <div className="flex flex-col lg:flex-row" style={{ gap: '3rem' }}>
+                        <div className="w-full flex flex-col max-w-[1500px] px-[4vw] xl:px-[6vw] py-16 gap-12">
+                            <div className="flex flex-col" style={{ gap: '3rem' }}>
                                 {/* Left Column - Name Breakdown */}
-                                <ScrollReveal direction="left" className="flex-1">
-                                    <div className="flex flex-col" style={{ gap: '2rem' }}>
+                                <ScrollReveal direction="left" className="flex-1 order-2 max-w-[1500px]">
+                                    <div className="flex flex-col gap-8">
                                         <motion.div
                                             initial={{ opacity: 0, x: -20 }}
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ delay: 0.1 }}
-                                            className="bg-white rounded-xl shadow-md" style={{ padding: '1.5rem' }}
+                                            className="p-6"
                                         >
-                                            <div className="text-3xl font-black text-[var(--accent-color)]" style={{ marginBottom: '0.5rem' }}>Equat-</div>
+                                            <div className="text-3xl font-black text-[var(--secondary-color)]">Equat-</div>
                                             <p className="text-gray-700 leading-relaxed">
                                                 From <span className="font-bold">"Equation"</span> — the foundation of mathematical thinking and problem-solving
                                             </p>
@@ -236,9 +207,9 @@ const About = () => {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ delay: 0.2 }}
-                                            className="bg-white rounded-xl shadow-md" style={{ padding: '1.5rem' }}
+                                            className="p-6"
                                         >
-                                            <div className="text-3xl font-black text-[var(--accent-color)]" style={{ marginBottom: '0.5rem' }}>-hora</div>
+                                            <div className="text-3xl font-black text-[var(--secondary-color)]">-hora</div>
                                             <p className="text-gray-700 leading-relaxed">
                                                 Greek <span className="font-bold">"ὥρα"</span> meaning time and hour, representing dedication to continuous learning
                                             </p>
@@ -249,10 +220,10 @@ const About = () => {
                                             whileInView={{ opacity: 1, scale: 1 }}
                                             viewport={{ once: true }}
                                             transition={{ delay: 0.3 }}
-                                            className="bg-[var(--accent-color)] text-white rounded-xl shadow-lg" style={{ padding: '2rem' }}
+                                            className="p-6"
                                         >
-                                            <div className="text-4xl font-black" style={{ marginBottom: '1rem' }}>Equathora</div>
-                                            <p className="text-lg font-semibold leading-relaxed">
+                                            <div className="text-3xl font-black text-[var(--secondary-color)]">Equathora</div>
+                                            <p className="text-gray-700 leading-relaxed">
                                                 Time invested in mastering mathematical equations
                                             </p>
                                         </motion.div>
@@ -262,18 +233,19 @@ const About = () => {
                                 {/* Right Column - Why Red */}
                                 <ScrollReveal direction="right" delay={0.2} className="flex-1">
                                     <div className="flex flex-col" style={{ gap: '1.5rem' }}>
-                                        <h3 className="text-2xl font-bold text-[var(--secondary-color)]" style={{ marginBottom: '1rem' }}>
-                                            Why <span className="text-[var(--accent-color)]">Red</span>?
+                                        <h3 className="text-2xl font-bold text-[var(--secondary-color)]">
+                                            Why <span className="text-[var(--accent-color)]">Red?</span>
                                         </h3>
                                         
-                                        <motion.div
+                                        <div className="flex">
+                                            <motion.div
                                             initial={{ opacity: 0, x: 20 }}
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ delay: 0.1 }}
-                                            className="flex" style={{ gap: '1rem' }}
+                                            className="flex gap-4 flex-col"
                                         >
-                                            <div className="flex items-center justify-center w-14 h-14 bg-[var(--accent-color)] rounded-xl flex-shrink-0">
+                                            <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
                                                 <FaBolt className="text-white text-xl" />
                                             </div>
                                             <div className="flex flex-col">
@@ -289,9 +261,9 @@ const About = () => {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ delay: 0.2 }}
-                                            className="flex" style={{ gap: '1rem' }}
+                                            className="flex gap-4 flex-col"
                                         >
-                                            <div className="flex items-center justify-center w-14 h-14 bg-[var(--accent-color)] rounded-xl flex-shrink-0">
+                                            <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
                                                 <FaFire className="text-white text-xl" />
                                             </div>
                                             <div className="flex flex-col">
@@ -307,9 +279,9 @@ const About = () => {
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ delay: 0.3 }}
-                                            className="flex" style={{ gap: '1rem' }}
+                                            className="flex gap-4 flex-col"
                                         >
-                                            <div className="flex items-center justify-center w-14 h-14 bg-[var(--accent-color)] rounded-xl flex-shrink-0">
+                                            <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
                                                 <FaStar className="text-white text-xl" />
                                             </div>
                                             <div className="flex flex-col">
@@ -319,6 +291,8 @@ const About = () => {
                                                 </p>
                                             </div>
                                         </motion.div>
+                                        </div>
+                                        
                                     </div>
                                 </ScrollReveal>
                             </div>
@@ -332,7 +306,7 @@ const About = () => {
                                 <div className="flex flex-col items-center justify-center w-full pb-12">
                                     <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2">
                                         What Equathora Does{' '}
-                                        <span className="text-[var(--accent-color)] relative inline-block">
+                                        <span className="text-[var(--secondary-color)] relative inline-block">
                                             Best
                                             <motion.svg
                                                 className="absolute bottom-1 left-0 w-full"
@@ -345,7 +319,7 @@ const About = () => {
                                                 <motion.path
                                                     d="M0 4 Q50 0 100 4 Q150 8 200 4"
                                                     fill="none"
-                                                    stroke="var(--accent-color)"
+                                                    stroke="var(--secondary-color)"
                                                     strokeWidth="5"
                                                     strokeLinecap="round"
                                                 />

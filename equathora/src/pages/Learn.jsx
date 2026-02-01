@@ -6,81 +6,12 @@ import { useSearchParams } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
 import './Learn.css';
 import Idea from '../assets/images/idea.svg';
+import { FaSearch, FaTimes, FaChevronDown, FaFilter } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { getAllProblems } from '../lib/problemService';
 import { getCompletedProblems, getFavoriteProblems } from '../lib/databaseService';
 import { getInProgressProblems } from '../lib/progressStorage';
-
-const SearchIcon = ({ className, ...props }) => (
-  <svg
-    viewBox="0 0 24 24"
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-    focusable="false"
-    {...props}
-  >
-    <circle cx="11" cy="11" r="7" />
-    <line x1="16.65" y1="16.65" x2="21" y2="21" />
-  </svg>
-);
-
-const TimesIcon = ({ className, ...props }) => (
-  <svg
-    viewBox="0 0 24 24"
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-    focusable="false"
-    {...props}
-  >
-    <line x1="6" y1="6" x2="18" y2="18" />
-    <line x1="18" y1="6" x2="6" y2="18" />
-  </svg>
-);
-
-const ChevronDownIcon = ({ className, ...props }) => (
-  <svg
-    viewBox="0 0 24 24"
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-    focusable="false"
-    {...props}
-  >
-    <polyline points="6 9 12 15 18 9" />
-  </svg>
-);
-
-const FilterIcon = ({ className, ...props }) => (
-  <svg
-    viewBox="0 0 24 24"
-    className={className}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-    focusable="false"
-    {...props}
-  >
-    <path d="M22 3H2l8 9v6l4 3v-9l8-9z" />
-  </svg>
-);
 
 // Custom Dropdown Component with Portal
 const FilterDropdown = React.memo(({ label, value, options, onChange, placeholder = "All" }) => {
@@ -134,7 +65,7 @@ const FilterDropdown = React.memo(({ label, value, options, onChange, placeholde
         onBlur={() => setTimeout(() => setIsOpen(false), 200)}
       >
         <span className="filter-dropdown-text">{displayText}</span>
-        <ChevronDownIcon className={`filter-dropdown-icon ${isOpen ? 'rotated' : ''}`} />
+        <FaChevronDown className={`filter-dropdown-icon ${isOpen ? 'rotated' : ''}`} />
       </button>
       {isOpen && createPortal(
         <div
@@ -179,8 +110,8 @@ const Learn = () => {
   const [loading, setLoading] = useState(true);
   const [localSearchQuery, setLocalSearchQuery] = useState('');
   const searchDebounceRef = useRef(null);
-  const [visibleCount, setVisibleCount] = useState(24);
-  const PAGE_SIZE = 24;
+  const PAGE_SIZE = 12;
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Read filters from URL query params
   const searchQuery = searchParams.get('q') || '';
@@ -462,7 +393,7 @@ const Learn = () => {
             {/* Search Bar */}
             <div className="search-row">
               <div id="searchbar-and-icon">
-                <SearchIcon
+                <FaSearch
                   id='search-icon'
                   onClick={() => document.getElementById('problem-searchbar').focus()}
                 />
@@ -482,7 +413,7 @@ const Learn = () => {
                     onClick={() => { setLocalSearchQuery(''); updateFilters({ q: '' }); }}
                     aria-label="Clear search"
                   >
-                    <TimesIcon />
+                    <FaTimes />
                   </button>
                 )}
               </div>
@@ -492,7 +423,7 @@ const Learn = () => {
                   className="clear-all-btn"
                   onClick={clearAllFilters}
                 >
-                  <TimesIcon /> Clear all ({activeFilterCount})
+                  <FaTimes /> Clear all ({activeFilterCount})
                 </button>
               )}
             </div>
@@ -554,44 +485,44 @@ const Learn = () => {
             {activeFilterCount > 0 && (
               <div className="active-filters-row">
                 <span className="active-filters-label">
-                  <FilterIcon /> Active filters:
+                  <FaFilter /> Active filters:
                 </span>
                 <div className="active-filters-pills">
                   {gradeFilter && (
                     <span className="active-filter-pill">
                       Grade {gradeFilter}
-                      <button onClick={() => updateFilters({ grade: '' })}><TimesIcon /></button>
+                      <button onClick={() => updateFilters({ grade: '' })}><FaTimes /></button>
                     </span>
                   )}
                   {difficultyFilter && (
                     <span className={`active-filter-pill ${difficultyFilter}`}>
                       {difficultyFilter.charAt(0).toUpperCase() + difficultyFilter.slice(1)}
-                      <button onClick={() => updateFilters({ difficulty: '' })}><TimesIcon /></button>
+                      <button onClick={() => updateFilters({ difficulty: '' })}><FaTimes /></button>
                     </span>
                   )}
                   {statusFilter && (
                     <span className="active-filter-pill">
                       {statusFilter === 'completed' ? 'Completed' : 'Not Started'}
-                      <button onClick={() => updateFilters({ status: '' })}><TimesIcon /></button>
+                      <button onClick={() => updateFilters({ status: '' })}><FaTimes /></button>
                     </span>
                   )}
                   {progressFilter && (
                     <span className="active-filter-pill">
                       {progressFilter === 'in-progress' ? 'In Progress' :
                         progressFilter === 'favourite' ? 'Favourite' : 'Premium'}
-                      <button onClick={() => updateFilters({ progress: '' })}><TimesIcon /></button>
+                      <button onClick={() => updateFilters({ progress: '' })}><FaTimes /></button>
                     </span>
                   )}
                   {topicFilter && (
                     <span className="active-filter-pill topic">
                       {topicFilter}
-                      <button onClick={() => updateFilters({ topic: '' })}><TimesIcon /></button>
+                      <button onClick={() => updateFilters({ topic: '' })}><FaTimes /></button>
                     </span>
                   )}
                   {sortBy !== 'default' && (
                     <span className="active-filter-pill sort">
                       {sortOptions.find(o => o.value === sortBy)?.label}
-                      <button onClick={() => updateFilters({ sort: '' })}><TimesIcon /></button>
+                      <button onClick={() => updateFilters({ sort: '' })}><FaTimes /></button>
                     </span>
                   )}
                 </div>

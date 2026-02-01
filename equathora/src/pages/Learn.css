@@ -116,7 +116,8 @@
     position: absolute;
     left: 1rem;
     color: var(--mid-main-secondary);
-    font-size: 1.2rem;
+    width: 18px;
+    height: 18px;
     z-index: 1;
     cursor: pointer;
     transition: color 0.2s ease;
@@ -306,7 +307,8 @@
 
     #search-icon {
         left: 0.75rem;
-        font-size: 0.9rem;
+        width: 16px;
+        height: 16px;
     }
 
     #filters-container {
