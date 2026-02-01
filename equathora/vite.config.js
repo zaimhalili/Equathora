@@ -33,7 +33,7 @@ export default defineConfig({
             // Everything else from node_modules goes to vendor
             return 'vendor';
           }
-          
+
           // Split app code by route/feature
           if (id.includes('/src/pages/Leaderboards/')) {
             return 'leaderboards';
