@@ -9,6 +9,7 @@ import Teacher from "../assets/images/teacher.svg";
 import Progress from "../assets/images/progressAbs.svg";
 import Achieve from "../assets/images/achieveAbs.svg";
 import Study from "../assets/images/studyAbs.svg";
+import Problem from "../assets/images/problemSC.png";
 
 // Reusable animation component for scroll-triggered sections
 const ScrollReveal = ({ children, direction = 'up', delay = 0, className = '' }) => {
@@ -188,7 +189,11 @@ const About = () => {
                             <div className="flex flex-col" style={{ gap: '3rem' }}>
                                 {/* Left Column - Name Breakdown */}
                                 <ScrollReveal direction="left" className="flex-1 order-2 max-w-[1500px]">
-                                    <div className="flex flex-col gap-8">
+                                    <div className="flex flex-col lg:flex-row gap-4">
+                                        <div className="flex items-center lg:w-1/2">
+                                            <img src={Problem} alt="Problem Screenshot" className="cover rounded-sm"/>
+                                        </div>
+                                        <div className="flex flex-col gap-2 h-full">
                                         <motion.div
                                             initial={{ opacity: 0, x: -20 }}
                                             whileInView={{ opacity: 1, x: 0 }}
@@ -228,6 +233,8 @@ const About = () => {
                                             </p>
                                         </motion.div>
                                     </div>
+                                    </div>
+                                    
                                 </ScrollReveal>
 
                                 {/* Right Column - Why Red */}
@@ -326,7 +333,7 @@ const About = () => {
                                             </motion.svg>
                                         </span>
                                     </h2>
-                                    <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-3xl text-center mt-4">
+                                    <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-3xl text-center pt-4">
                                         Practice-first learning designed to build real mathematical confidence. The platform focuses on clarity, progression, and measurable improvement.
                                     </p>
                                 </div>
@@ -342,7 +349,7 @@ const About = () => {
                                     <ScrollReveal key={idx} direction={feature.direction} delay={feature.delay}>
                                         <div className="flex flex-col items-center group">
                                             <motion.div
-                                                className="w-full h-32 flex items-center justify-center mb-4"
+                                                className="w-full h-32 flex items-center justify-center pb-4"
                                                 whileHover={{ scale: 1.05 }}
                                                 transition={{ type: 'spring', stiffness: 300 }}
                                             >
@@ -357,7 +364,7 @@ const About = () => {
                                                 transition={{ type: 'spring', stiffness: 300 }}
                                                 className="relative flex flex-col bg-white rounded-xl border border-gray-100 shadow-lg hover:shadow-2xl duration-300 ease-out p-6 w-full min-h-[160px]"
                                             >
-                                                <h3 className="text-lg font-bold text-[var(--secondary-color)] mb-2">{feature.title}</h3>
+                                                <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-2">{feature.title}</h3>
                                                 <p className="text-sm text-gray-600 leading-relaxed">
                                                     {feature.desc}
                                                 </p>
@@ -391,19 +398,19 @@ const About = () => {
 
                                 {/* Right - Content */}
                                 <ScrollReveal direction="right" className="lg:w-1/2">
-                                    <div className="flex items-center gap-3 mb-6">
+                                    <div className="flex items-center gap-3 pb-6">
                                         <div className="w-1 h-16 bg-gradient-to-b from-[var(--accent-color)] to-purple-500 rounded-full"></div>
                                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--secondary-color)]">
                                             Our <span className="text-[var(--accent-color)]">Mission</span>
                                         </h2>
                                     </div>
-                                    <p className="text-base md:text-lg text-gray-700 leading-relaxed mb-6">
+                                    <p className="text-base md:text-lg text-gray-700 leading-relaxed pb-6">
                                         Transform how students approach mathematics, not as a subject to fear, but as a <span className="font-bold text-[var(--accent-color)]">journey of discovery</span>.
                                     </p>
-                                    <p className="text-base md:text-lg text-gray-700 leading-relaxed mb-6">
+                                    <p className="text-base md:text-lg text-gray-700 leading-relaxed pb-6">
                                         We provide an interactive platform where learners build <span className="font-bold text-[var(--secondary-color)]">confidence through step-by-step guidance</span> and achievement-based motivation.
                                     </p>
-                                    <div className="flex flex-wrap gap-3 mt-8">
+                                    <div className="flex flex-wrap gap-3 pt-8">
                                         <motion.div
                                             whileHover={{ scale: 1.05 }}
                                             className="flex items-center gap-2 bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-5 py-3 rounded-xl shadow-lg"
@@ -470,11 +477,11 @@ const About = () => {
                                         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--accent-color)]/10 to-transparent rounded-bl-full"></div>
                                         <motion.div
                                             whileHover={{ scale: 1.1, rotate: 12 }}
-                                            className="w-12 h-12 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-xl flex items-center justify-center mb-4 relative z-10"
+                                            className="w-12 h-12 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-xl flex items-center justify-center pb-4 relative z-10"
                                         >
                                             <FaLightbulb className="text-white text-xl" />
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] mb-2 group-hover:text-[var(--accent-color)] transition-colors">Smart Hints</h3>
+                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-2 group-hover:text-[var(--accent-color)] transition-colors">Smart Hints</h3>
                                         <p className="text-sm text-gray-600 leading-relaxed">Progressive guidance that adapts to your level</p>
                                     </motion.div>
                                 </ScrollReveal>
@@ -489,11 +496,11 @@ const About = () => {
                                         <motion.div
                                             whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
                                             transition={{ duration: 0.5 }}
-                                            className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center mb-4 relative z-10"
+                                            className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center pb-4 relative z-10"
                                         >
                                             <FaRocket className="text-white text-xl" />
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-white mb-2 relative z-10">Achievements</h3>
+                                        <h3 className="text-xl font-bold text-white pb-2 relative z-10">Achievements</h3>
                                         <p className="text-white/90 text-sm leading-relaxed relative z-10">Track progress with meaningful milestones</p>
                                     </motion.div>
                                 </ScrollReveal>
@@ -508,11 +515,11 @@ const About = () => {
                                         <div className="relative z-10">
                                             <motion.div
                                                 whileHover={{ y: -5 }}
-                                                className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                                                className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center pb-6 shadow-lg"
                                             >
                                                 <FaUsers className="text-white text-2xl" />
                                             </motion.div>
-                                            <h3 className="text-2xl font-bold text-[var(--secondary-color)] mb-3 group-hover:text-[var(--accent-color)] transition-colors">Mentorship</h3>
+                                            <h3 className="text-2xl font-bold text-[var(--secondary-color)] pb-3 group-hover:text-[var(--accent-color)] transition-colors">Mentorship</h3>
                                             <p className="text-gray-600 leading-relaxed">Expert support when you need it most. Real guidance from experienced math educators.</p>
                                         </div>
                                     </motion.div>
@@ -527,11 +534,11 @@ const About = () => {
                                         <div className="absolute top-0 right-0 text-white/10 text-9xl font-black">200+</div>
                                         <motion.div
                                             whileHover={{ scale: 1.15, rotate: -12 }}
-                                            className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center mb-4 relative z-10"
+                                            className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center pb-4 relative z-10"
                                         >
                                             <FaChartLine className="text-white text-xl" />
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-white mb-2 relative z-10">200+ Problems</h3>
+                                        <h3 className="text-xl font-bold text-white pb-2 relative z-10">200+ Problems</h3>
                                         <p className="text-white/90 text-sm leading-relaxed relative z-10">Curated library across many topics</p>
                                     </motion.div>
                                 </ScrollReveal>
@@ -546,11 +553,11 @@ const About = () => {
                                         <motion.div
                                             whileHover={{ rotate: 360, scale: 1.2 }}
                                             transition={{ duration: 0.6 }}
-                                            className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-4 relative z-10 shadow-md"
+                                            className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center pb-4 relative z-10 shadow-md"
                                         >
                                             <FaTrophy className="text-white text-xl" />
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] mb-2 group-hover:text-green-600 transition-colors relative z-10">Leaderboards</h3>
+                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-2 group-hover:text-green-600 transition-colors relative z-10">Leaderboards</h3>
                                         <p className="text-sm text-gray-600 leading-relaxed relative z-10">Compete globally, grow together</p>
                                     </motion.div>
                                 </ScrollReveal>
@@ -564,11 +571,11 @@ const About = () => {
                                         <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
                                         <motion.div
                                             whileHover={{ scale: 1.15, rotate: 15 }}
-                                            className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center mb-4 relative z-10"
+                                            className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center pb-4 relative z-10"
                                         >
                                             <FaChartLine className="text-white text-xl" />
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-white mb-2 relative z-10">Progress Analytics</h3>
+                                        <h3 className="text-xl font-bold text-white pb-2 relative z-10">Progress Analytics</h3>
                                         <p className="text-white/90 text-sm leading-relaxed relative z-10">Deep insights into your learning journey</p>
                                     </motion.div>
                                 </ScrollReveal>
@@ -582,11 +589,11 @@ const About = () => {
                                         <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-orange-500/10 to-transparent rounded-tl-full"></div>
                                         <motion.div
                                             whileHover={{ scale: 1.2, rotate: -15 }}
-                                            className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center mb-4 relative z-10 shadow-md"
+                                            className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center pb-4 relative z-10 shadow-md"
                                         >
                                             <FaFire className="text-white text-xl" />
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] mb-2 group-hover:text-orange-600 transition-colors relative z-10">Study Streaks</h3>
+                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-2 group-hover:text-orange-600 transition-colors relative z-10">Study Streaks</h3>
                                         <p className="text-sm text-gray-600 leading-relaxed relative z-10">Build consistency with daily challenges</p>
                                     </motion.div>
                                 </ScrollReveal>
@@ -601,11 +608,11 @@ const About = () => {
                                         <motion.div
                                             whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
                                             transition={{ duration: 0.5 }}
-                                            className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center mb-4 relative z-10 shadow-md"
+                                            className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center pb-4 relative z-10 shadow-md"
                                         >
                                             <FaClock className="text-white text-xl" />
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] mb-2 group-hover:text-blue-600 transition-colors relative z-10">Real-time Feedback</h3>
+                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-2 group-hover:text-blue-600 transition-colors relative z-10">Real-time Feedback</h3>
                                         <p className="text-sm text-gray-600 leading-relaxed relative z-10">Instant validation as you solve</p>
                                     </motion.div>
                                 </ScrollReveal>
@@ -614,12 +621,9 @@ const About = () => {
                     </section>
 
                     {/* CTA - Immersive Full Width */}
-                    <section className="w-full bg-gradient-to-br from-[var(--accent-color)] via-[var(--dark-accent-color)] to-purple-900 py-24 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10"></div>
-                        <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-                        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+                    <section className="w-full bg-[var(--secondary-color)] py-12 relative overflow-hidden flex justify-center">
 
-                        <div className="relative z-10 w-full max-w-[1500px] mx-auto px-[4vw] xl:px-[6vw]">
+                        <div className="relative z-10 w-full max-w-[1500px]  px-[4vw] xl:px-[6vw]">
                             <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
                                 {/* Left Content */}
                                 <ScrollReveal direction="left" className="lg:w-1/2 text-white">
@@ -629,17 +633,17 @@ const About = () => {
                                         viewport={{ once: true }}
                                         transition={{ duration: 0.6 }}
                                     >
-                                        <div className="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6">
-                                            <span className="text-sm font-bold text-white">🚀 Join 1000+ Students</span>
+                                        <div className="flex justify-center items-center py-2 bg-white/20 backdrop-blur-sm rounded-full">
+                                            <span className="text-sm font-bold text-white">Join 300+ Students</span>
                                         </div>
-                                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 leading-tight">
+                                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black pb-6 leading-tight">
                                             Ready to Master <br />
-                                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">Mathematics?</span>
+                                            <span className="text-[linear-gradient(360deg,var(--accent-color),var(dark-accent-color)]">Mathematics?</span>
                                         </h2>
-                                        <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
+                                        <p className="text-lg md:text-xl text-white/90 pb-8 leading-relaxed">
                                             Start solving problems today, track your progress, and unlock your mathematical potential with personalized learning paths.
                                         </p>
-                                        <div className="flex flex-wrap gap-4 mb-6">
+                                        <div className="flex flex-wrap gap-4 pb-6">
                                             <div className="flex items-center gap-2">
                                                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                                                 <span className="text-sm text-white/80">Free Forever</span>
@@ -654,12 +658,12 @@ const About = () => {
                                             </div>
                                         </div>
                                         <motion.div
-                                            whileHover={{ scale: 1.05 }}
+                                            whileHover={{ scale: 1.01 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
                                             <Link
                                                 to="/signup"
-                                                className="inline-flex items-center gap-3 bg-white text-[var(--accent-color)] px-10 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-white/30 transition-all duration-300 group"
+                                                className="inline-flex items-center gap-3 !bg-[var(--dark-accent-color)] !text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-xl transition-all duration-300 group"
                                             >
                                                 Get Started Free
                                                 <FaArrowRight className="group-hover:translate-x-2 transition-transform" />
@@ -673,11 +677,6 @@ const About = () => {
                                     <motion.div
                                         animate={{
                                             y: [0, -20, 0],
-                                        }}
-                                        transition={{
-                                            duration: 4,
-                                            repeat: Infinity,
-                                            ease: "easeInOut"
                                         }}
                                         className="relative"
                                     >
