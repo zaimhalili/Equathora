@@ -149,26 +149,26 @@ const About = () => {
                                 <h1 className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)] pb-2">
                                     About{' '}
                                     <span className="text-[var(--secondary-color)] relative inline-block">
-                                    Equathora
-                                    <motion.svg
-                                        className="absolute -bottom-1 left-0 w-full"
-                                        viewBox="0 0 200 8"
-                                        initial={{ pathLength: 0 }}
-                                        animate={{ pathLength: 1 }}
-                                        transition={{ delay: 0.8, duration: 0.8 }}
-                                    >
-                                        <motion.path
-                                            d="M0 4 Q50 0 100 4 Q150 8 200 4"
-                                            fill="none"
-                                            stroke="var(--secondary-color)"
-                                            strokeWidth="3"
-                                            strokeLinecap="round"
+                                        Equathora
+                                        <motion.svg
+                                            className="absolute -bottom-1 left-0 w-full"
+                                            viewBox="0 0 200 8"
                                             initial={{ pathLength: 0 }}
                                             animate={{ pathLength: 1 }}
                                             transition={{ delay: 0.8, duration: 0.8 }}
-                                        />
-                                    </motion.svg>
-                                </span>
+                                        >
+                                            <motion.path
+                                                d="M0 4 Q50 0 100 4 Q150 8 200 4"
+                                                fill="none"
+                                                stroke="var(--secondary-color)"
+                                                strokeWidth="3"
+                                                strokeLinecap="round"
+                                                initial={{ pathLength: 0 }}
+                                                animate={{ pathLength: 1 }}
+                                                transition={{ delay: 0.8, duration: 0.8 }}
+                                            />
+                                        </motion.svg>
+                                    </span>
                                 </h1>
 
                                 <motion.p
@@ -180,7 +180,7 @@ const About = () => {
                                     Where equations meet time - a comprehensive platform for mathematical excellence
                                 </motion.p>
 
-                                
+
                             </motion.div>
                         </div>
                     </section>
@@ -193,50 +193,50 @@ const About = () => {
                                 <ScrollReveal direction="left" className="flex-1 order-2 max-w-[1500px]">
                                     <div className="flex flex-col lg:flex-row gap-4">
                                         <div className="flex items-center lg:w-1/2">
-                                            <img src={Problem} alt="Problem Screenshot" className="cover rounded-sm"/>
+                                            <img src={Problem} alt="Problem Screenshot" className="cover rounded-sm" />
                                         </div>
                                         <div className="flex flex-col gap-2 h-full">
-                                        <motion.div
-                                            initial={{ opacity: 0, x: -20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.1 }}
-                                            className="p-6"
-                                        >
-                                            <div className="text-3xl font-black text-[var(--secondary-color)]">Equat-</div>
-                                            <p className="text-gray-700 leading-relaxed">
-                                                From <span className="font-bold">"Equation"</span> — the foundation of mathematical thinking and problem-solving
-                                            </p>
-                                        </motion.div>
-                                        
-                                        <motion.div
-                                            initial={{ opacity: 0, x: -20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.2 }}
-                                            className="p-6"
-                                        >
-                                            <div className="text-3xl font-black text-[var(--secondary-color)]">-hora</div>
-                                            <p className="text-gray-700 leading-relaxed">
-                                                Greek <span className="font-bold">"ὥρα"</span> meaning time and hour, representing dedication to continuous learning
-                                            </p>
-                                        </motion.div>
-                                        
-                                        <motion.div
-                                            initial={{ opacity: 0, scale: 0.95 }}
-                                            whileInView={{ opacity: 1, scale: 1 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.3 }}
-                                            className="p-6"
-                                        >
-                                            <div className="text-3xl font-black text-[var(--secondary-color)]">Equathora</div>
-                                            <p className="text-gray-700 leading-relaxed">
-                                                Time invested in mastering mathematical equations
-                                            </p>
-                                        </motion.div>
+                                            <motion.div
+                                                initial={{ opacity: 0, x: -20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.1 }}
+                                                className="p-6"
+                                            >
+                                                <div className="text-3xl font-black text-[var(--secondary-color)]">Equat-</div>
+                                                <p className="text-gray-700 leading-relaxed">
+                                                    From <span className="font-bold">"Equation"</span> — the foundation of mathematical thinking and problem-solving
+                                                </p>
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ opacity: 0, x: -20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.2 }}
+                                                className="p-6"
+                                            >
+                                                <div className="text-3xl font-black text-[var(--secondary-color)]">-hora</div>
+                                                <p className="text-gray-700 leading-relaxed">
+                                                    Greek <span className="font-bold">"ὥρα"</span> meaning time and hour, representing dedication to continuous learning
+                                                </p>
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.95 }}
+                                                whileInView={{ opacity: 1, scale: 1 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.3 }}
+                                                className="p-6"
+                                            >
+                                                <div className="text-3xl font-black text-[var(--secondary-color)]">Equathora</div>
+                                                <p className="text-gray-700 leading-relaxed">
+                                                    Time invested in mastering mathematical equations
+                                                </p>
+                                            </motion.div>
+                                        </div>
                                     </div>
-                                    </div>
-                                    
+
                                 </ScrollReveal>
 
                                 {/* Right Column - Why Red */}
@@ -245,63 +245,63 @@ const About = () => {
                                         <h3 className="text-2xl font-bold text-[var(--secondary-color)]">
                                             Why <span className="text-[var(--accent-color)]">Red?</span>
                                         </h3>
-                                        
+
                                         <div className="flex">
                                             <motion.div
-                                            initial={{ opacity: 0, x: 20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.1 }}
-                                            className="flex gap-4 flex-col"
-                                        >
-                                            <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
-                                                <FaBolt className="text-white text-xl" />
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <h4 className="text-lg font-bold text-[var(--secondary-color)]" style={{ marginBottom: '0.25rem' }}>Focus</h4>
-                                                <p className="text-gray-600 leading-relaxed">
-                                                    Red naturally draws attention to critical concepts and steps in your learning path
-                                                </p>
-                                            </div>
-                                        </motion.div>
-                                        
-                                        <motion.div
-                                            initial={{ opacity: 0, x: 20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.2 }}
-                                            className="flex gap-4 flex-col"
-                                        >
-                                            <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
-                                                <FaFire className="text-white text-xl" />
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <h4 className="text-lg font-bold text-[var(--secondary-color)]" style={{ marginBottom: '0.25rem' }}>Urgency</h4>
-                                                <p className="text-gray-600 leading-relaxed">
-                                                    It signals importance, from red ink in manuscripts to teacher corrections
-                                                </p>
-                                            </div>
-                                        </motion.div>
-                                        
-                                        <motion.div
-                                            initial={{ opacity: 0, x: 20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.3 }}
-                                            className="flex gap-4 flex-col"
-                                        >
-                                            <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
-                                                <FaStar className="text-white text-xl" />
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <h4 className="text-lg font-bold text-[var(--secondary-color)]" style={{ marginBottom: '0.25rem' }}>Clarity</h4>
-                                                <p className="text-gray-600 leading-relaxed">
-                                                    Marks decisive moments of mathematical insight and understanding
-                                                </p>
-                                            </div>
-                                        </motion.div>
+                                                initial={{ opacity: 0, x: 20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.1 }}
+                                                className="flex gap-4 flex-col"
+                                            >
+                                                <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
+                                                    <FaBolt className="text-white text-xl" />
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <h4 className="text-lg font-bold text-[var(--secondary-color)]" style={{ marginBottom: '0.25rem' }}>Focus</h4>
+                                                    <p className="text-gray-600 leading-relaxed">
+                                                        Red naturally draws attention to critical concepts and steps in your learning path
+                                                    </p>
+                                                </div>
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ opacity: 0, x: 20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.2 }}
+                                                className="flex gap-4 flex-col"
+                                            >
+                                                <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
+                                                    <FaFire className="text-white text-xl" />
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <h4 className="text-lg font-bold text-[var(--secondary-color)]" style={{ marginBottom: '0.25rem' }}>Urgency</h4>
+                                                    <p className="text-gray-600 leading-relaxed">
+                                                        It signals importance, from red ink in manuscripts to teacher corrections
+                                                    </p>
+                                                </div>
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ opacity: 0, x: 20 }}
+                                                whileInView={{ opacity: 1, x: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.3 }}
+                                                className="flex gap-4 flex-col"
+                                            >
+                                                <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
+                                                    <FaStar className="text-white text-xl" />
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <h4 className="text-lg font-bold text-[var(--secondary-color)]" style={{ marginBottom: '0.25rem' }}>Clarity</h4>
+                                                    <p className="text-gray-600 leading-relaxed">
+                                                        Marks decisive moments of mathematical insight and understanding
+                                                    </p>
+                                                </div>
+                                            </motion.div>
                                         </div>
-                                        
+
                                     </div>
                                 </ScrollReveal>
                             </div>

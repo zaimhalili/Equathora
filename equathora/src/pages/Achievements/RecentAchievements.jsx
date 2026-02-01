@@ -46,7 +46,7 @@ const RecentAchievements = () => {
   // Check if user is an early user (created account before a certain date)
   const accountCreated = progress.accountCreated || Date.now();
   const isEarlyUser = accountCreated < new Date('2025-01-01').getTime();
-  
+
   // Time-based checks
   const currentHour = new Date().getHours();
   const isNightOwl = currentHour >= 22 || currentHour < 5;
