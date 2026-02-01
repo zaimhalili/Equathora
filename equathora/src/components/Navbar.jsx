@@ -80,8 +80,8 @@ const Navbar = () => {
   const discoverItems = [
     // Hidden for MVP - will be added after launch
     // {
-    //   to: '/recommended',
-    //   text: "Recommended for You",
+    //   to: '/tracks',
+    //   text: "Tracks",
     //   description: "Personalized problem suggestions.",
     //   image: Choice
     // },

@@ -135,18 +135,6 @@ const HeroSection = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        {/* Badge */}
-                        {/* <motion.div
-                            className="flex items-center justify-center lg:justify-start"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1, duration: 0.4 }}
-                        >
-                            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 text-white text-sm font-medium border border-white/20 backdrop-blur-sm">
-                                <span className="w-2 h-2 rounded-full bg-[var(--accent-color)] animate-pulse"></span>
-                                Practice-focused learning
-                            </span>
-                        </motion.div> */}
 
                         {/* Main Heading */}
                         <motion.h1

@@ -44,7 +44,7 @@ const Landing = () => {
                     <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="
 #freepik-link">Student PNGs by Vecteezy</a>
                 </div>
-                
+
             </div>
         </>
     );

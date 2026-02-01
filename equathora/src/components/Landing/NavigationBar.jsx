@@ -1,13 +1,10 @@
 //Imports
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import Logo from '../../assets/logo/TransparentFullLogo.png';
 import { Link } from 'react-router-dom';
-import { FaBars } from 'react-icons/fa';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
-import Sidebar from '../Sidebar';
 import Dropdown from '../Dropdown';
-import OverflowChecker from "../../pages/OverflowChecker";
 //Dropdown svgs
 import Daily from '../../assets/images/questionMark.svg';
 import Leaderboards from '../../assets/images/leaderboards.svg';
@@ -22,6 +19,28 @@ import Achievements from '../../assets/images/achievementsDD.svg';
 import Events from '../../assets/images/specialEvents.svg';
 import { getDailyProblemSlug } from '../../lib/utils';
 import Books from '../../assets/images/learningBooks.svg';
+
+const Sidebar = lazy(() => import('../Sidebar'));
+const OverflowChecker = lazy(() => import('../../pages/OverflowChecker'));
+
+const MenuIcon = ({ className, ...props }) => (
+    <svg
+        viewBox="0 0 24 24"
+        className={className}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        focusable="false"
+        {...props}
+    >
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+);
 
 const NavigationBar = () => {
 
@@ -72,8 +91,8 @@ const NavigationBar = () => {
     const discoverItems = [
         // Hidden for MVP - will be added after launch
         // {
-        //   to: '/recommended',
-        //   text: "Recommended for You",
+        //   to: '/tracks',
+        //   text: "Tracks",
         //   description: "Personalized problem suggestions.",
         //   image: Choice
         // },
@@ -188,7 +207,9 @@ const NavigationBar = () => {
 
     return (
         <>
-            <OverflowChecker></OverflowChecker>
+            <Suspense fallback={null}>
+                <OverflowChecker />
+            </Suspense>
             <motion.header
                 className='w-full bg-[var(--main-color)] h-[60px] sm:h-[70px] md:h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] fixed top-0 z-[1000] overflow-visible box-border'
                 initial={{ y: -100, opacity: 0 }}
@@ -200,7 +221,7 @@ const NavigationBar = () => {
                         <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
                             <li>
                                 <Link to="/landing" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
-                                    <img src={Logo} alt="Logo" className='w-28 sm:w-32 md:w-36 lg:w-40 object-scale-down object-center scale-110' />
+                                    <img src={Logo} alt="Logo" width="180" height="60" className='w-28 sm:w-32 md:w-36 lg:w-40 object-scale-down object-center scale-110' />
                                 </Link>
                             </li>
                             <li className='pl-6 lg:pl-4 shrink-0 hidden text-sm sm:text-base md:block text-[var(--secondary-color)]'>
@@ -248,7 +269,7 @@ const NavigationBar = () => {
                                         aria-expanded={sidebarOpen}
                                         aria-controls="mobile-navigation"
                                     >
-                                        <FaBars size={24} className='block md:hidden' aria-hidden="true" />
+                                        <MenuIcon className='block md:hidden' width="24" height="24" aria-hidden="true" />
                                     </button>
                                 </li>
                             </ul>
@@ -257,7 +278,11 @@ const NavigationBar = () => {
                 </nav>
             </motion.header>
 
-            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            {sidebarOpen && (
+                <Suspense fallback={null}>
+                    <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+                </Suspense>
+            )}
         </>
     );
 };

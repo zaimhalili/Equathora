@@ -70,7 +70,7 @@ const HowItWorksSection = () => {
                                 >
                                     {/* Connector line */}
                                     {index < steps.length - 1 && (
-                                        <div className="hidden lg:block absolute top-16 -right-3 w-6 h-[2px] bg-gray-200 z-10" />
+                                        <div className="hidden lg:block absolute top-16 -right-6 w-6 h-[2px] bg-gray-200 z-10" />
                                     )}
 
                                     {/* Step number */}

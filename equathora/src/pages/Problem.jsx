@@ -314,9 +314,10 @@ const Problem = () => {
       setStrokes([]);
     }
 
-    // Only reset timer when navigating to a different problem (not on first load/refresh)
+    // Only reset timer when navigating to a DIFFERENT problem
+    // Don't reset on initial load (prevId is undefined) or when prevId equals current problemId
     const prevId = prevProblemIdRef.current;
-    if (typeof window !== 'undefined' && problem && prevId !== null && prevId !== problemId) {
+    if (typeof window !== 'undefined' && problem && prevId !== undefined && prevId !== problemId) {
       const storageKey = `eq:problemTime:${problem.id}`;
       window.localStorage.setItem(storageKey, '0');
       setTimerResetSeq(prev => prev + 1);
@@ -947,10 +948,17 @@ const Problem = () => {
                             ref={canvasRef}
                             className="w-full h-48 md:h-56 bg-[var(--main-color)] cursor-crosshair"
                             style={{ touchAction: 'none' }}
-                            onpointerDown={(e) => { e.preventDefault(); startDrawing(e); }}
-                            onpointerMove={(e) => { e.preventDefault(); drawStroke(e); }}
-                            onpointerUp={(e) => { e.preventDefault(); endDrawing(); }}
-                            onpointerLeave={(e) => { e.preventDefault(); endDrawing(); }}
+                            onPointerDown={(e) => { e.preventDefault(); startDrawing(e); }}
+                            onPointerMove={(e) => { e.preventDefault(); drawStroke(e); }}
+                            onPointerUp={(e) => { e.preventDefault(); endDrawing(); }}
+                            onPointerLeave={(e) => { e.preventDefault(); endDrawing(); }}
+                            onMouseDown={(e) => { e.preventDefault(); startDrawing(e); }}
+                            onMouseMove={(e) => { e.preventDefault(); drawStroke(e); }}
+                            onMouseUp={(e) => { e.preventDefault(); endDrawing(); }}
+                            onMouseLeave={(e) => { e.preventDefault(); endDrawing(); }}
+                            onTouchStart={(e) => { e.preventDefault(); startDrawing(e); }}
+                            onTouchMove={(e) => { e.preventDefault(); drawStroke(e); }}
+                            onTouchEnd={(e) => { e.preventDefault(); endDrawing(); }}
                           />
                         </div>
                       </div>

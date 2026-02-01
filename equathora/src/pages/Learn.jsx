@@ -14,11 +14,11 @@ import { getCompletedProblems, getFavoriteProblems } from '../lib/databaseServic
 import { getInProgressProblems } from '../lib/progressStorage';
 
 // Custom Dropdown Component with Portal
-const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }) => {
+const FilterDropdown = React.memo(({ label, value, options, onChange, placeholder = "All" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0, width: 0 });
   const triggerRef = useRef(null);
-  
+
   const selectedOption = options.find(opt => opt.value === value);
   const displayText = selectedOption ? selectedOption.label : placeholder;
 
@@ -68,7 +68,7 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }
         <FaChevronDown className={`filter-dropdown-icon ${isOpen ? 'rotated' : ''}`} />
       </button>
       {isOpen && createPortal(
-        <div 
+        <div
           className="filter-dropdown-menu filter-dropdown-portal"
           style={{
             position: 'absolute',
@@ -102,12 +102,16 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }
       )}
     </div>
   );
-};
+});
 
 const Learn = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [localSearchQuery, setLocalSearchQuery] = useState('');
+  const searchDebounceRef = useRef(null);
+  const PAGE_SIZE = 12;
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Read filters from URL query params
   const searchQuery = searchParams.get('q') || '';
@@ -166,8 +170,33 @@ const Learn = () => {
   }, [gradeFilter, difficultyFilter, statusFilter, progressFilter, topicFilter, sortBy]);
 
   const clearAllFilters = () => {
+    setLocalSearchQuery('');
     setSearchParams({}, { replace: true });
   };
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [gradeFilter, difficultyFilter, statusFilter, progressFilter, topicFilter, sortBy, searchQuery]);
+
+  // Sync local search with URL params
+  useEffect(() => {
+    setLocalSearchQuery(searchQuery);
+  }, [searchQuery]);
+
+  // Debounced search handler
+  const handleSearchChange = useCallback((value) => {
+    setLocalSearchQuery(value);
+    
+    // Clear existing timeout
+    if (searchDebounceRef.current) {
+      clearTimeout(searchDebounceRef.current);
+    }
+    
+    // Set new timeout to update URL after 300ms
+    searchDebounceRef.current = setTimeout(() => {
+      updateFilters({ q: value });
+    }, 300);
+  }, [updateFilters]);
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -290,6 +319,11 @@ const Learn = () => {
     return filtered;
   }, [gradeFilter, difficultyFilter, topicFilter, statusFilter, progressFilter, searchQuery, sortBy, problems, gradeGroups]);
 
+  const visibleProblems = useMemo(
+    () => filteredProblems.slice(0, visibleCount),
+    [filteredProblems, visibleCount]
+  );
+
   // Dropdown options
   const gradeOptions = [
     { value: '8', label: 'Grade 8' },
@@ -343,7 +377,7 @@ const Learn = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <figure><img src={Idea} alt="idea image" /></figure>
+            <figure><img src={Idea} alt="idea image" fetchpriority="high" width="200" height="200" decoding="async" /></figure>
             <div id="learn-explore">
               <h1>Explore the Math <br />exercises on <span style={{ color: 'var(--dark-accent-color)' }}>Equathora</span></h1>
               <h4>Unlock more exercises as you progress. They're great practise and fun to do!</h4>
@@ -369,14 +403,14 @@ const Learn = () => {
                   id="problem-searchbar"
                   placeholder='Search by title, topic, or description...'
                   aria-label='searchbar'
-                  value={searchQuery}
-                  onChange={(e) => updateFilters({ q: e.target.value })}
+                  value={localSearchQuery}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                 />
-                {searchQuery && (
+                {localSearchQuery && (
                   <button
                     type="button"
                     className="clear-search-btn"
-                    onClick={() => updateFilters({ q: '' })}
+                    onClick={() => { setLocalSearchQuery(''); updateFilters({ q: '' }); }}
                     aria-label="Clear search"
                   >
                     <FaTimes />
@@ -403,7 +437,7 @@ const Learn = () => {
                 onChange={(val) => updateFilters({ sort: val || 'default' })}
                 placeholder="Default Order"
               />
-              
+
               <FilterDropdown
                 label="Grade"
                 value={gradeFilter}
@@ -474,8 +508,8 @@ const Learn = () => {
                   )}
                   {progressFilter && (
                     <span className="active-filter-pill">
-                      {progressFilter === 'in-progress' ? 'In Progress' : 
-                       progressFilter === 'favourite' ? 'Favourite' : 'Premium'}
+                      {progressFilter === 'in-progress' ? 'In Progress' :
+                        progressFilter === 'favourite' ? 'Favourite' : 'Premium'}
                       <button onClick={() => updateFilters({ progress: '' })}><FaTimes /></button>
                     </span>
                   )}
@@ -499,7 +533,7 @@ const Learn = () => {
           {/* Results Summary */}
           <div className="results-summary">
             <span>
-              Showing <strong>{filteredProblems.length}</strong> of <strong>{problems.length}</strong> exercises
+              Showing <strong>{visibleProblems.length}</strong> of <strong>{filteredProblems.length}</strong> exercises
             </span>
           </div>
 
@@ -518,13 +552,25 @@ const Learn = () => {
                 </button>
               </div>
             ) : (
-              filteredProblems.map((problem) => (
-                <motion.div key={problem.id}>
+              visibleProblems.map((problem) => (
+                <div key={problem.id}>
                   <ProblemCard problem={problem} />
-                </motion.div>
+                </div>
               ))
             )}
           </motion.article>
+
+          {filteredProblems.length > visibleCount && (
+            <div className="show-more-row">
+              <button
+                type="button"
+                className="show-more-btn"
+                onClick={() => setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, filteredProblems.length))}
+              >
+                Show more
+              </button>
+            </div>
+          )}
         </section>
 
         <footer>
