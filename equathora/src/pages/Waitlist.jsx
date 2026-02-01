@@ -1,7 +1,8 @@
 import React from 'react';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
-import { FaUsers, FaArrowRight, FaCheckCircle, FaBolt, FaStar, FaCrown, FaRocket, FaShieldAlt } from 'react-icons/fa';
+import { FaUsers, FaArrowRight, FaCheckCircle, FaBolt } from 'react-icons/fa';
+import { FaStar, FaCrown, FaRocket, FaShieldAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 const Waitlist = () => {

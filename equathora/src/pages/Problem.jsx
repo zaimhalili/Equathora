@@ -15,7 +15,10 @@ import {
   ViewSolutionModal,
   SubmissionDetailModal
 } from '../components/ProblemModals';
-import { FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaRegStar, FaPencilAlt } from 'react-icons/fa';
+import { FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt } from 'react-icons/fa';
+import { FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle } from 'react-icons/fa';
+import { FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar } from 'react-icons/fa';
+import { FaRegStar, FaPencilAlt } from 'react-icons/fa';
 import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
 import {

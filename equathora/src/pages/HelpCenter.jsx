@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { FaQuestionCircle, FaBook, FaUserGraduate, FaCog, FaChevronDown, FaChevronUp, FaLightbulb, FaShieldAlt, FaEnvelope, FaRocket, FaStar, FaHeart, FaFire, FaClock, FaTrophy } from 'react-icons/fa';
+import { FaQuestionCircle, FaBook, FaUserGraduate, FaCog, FaChevronDown } from 'react-icons/fa';
+import { FaChevronUp, FaLightbulb, FaShieldAlt, FaEnvelope, FaRocket } from 'react-icons/fa';
+import { FaStar, FaHeart, FaFire, FaClock, FaTrophy } from 'react-icons/fa';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 
 const HelpCenter = () => {

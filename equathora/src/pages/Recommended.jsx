@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
-import { FaStar, FaClock, FaCheckCircle, FaFire, FaLightbulb, FaRocket, FaTrophy, FaBookmark, FaRegBookmark } from 'react-icons/fa';
+import { FaStar, FaClock, FaCheckCircle, FaFire, FaLightbulb } from 'react-icons/fa';
+import { FaRocket, FaTrophy, FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
 const Recommended = () => {
     const [bookmarked, setBookmarked] = useState({});

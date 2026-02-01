@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './RecentAchievements.css';
-import { FaTrophy, FaFire, FaBolt, FaGem, FaStar, FaRocket, FaBrain, FaHeart, FaCrown, FaMedal, FaCalculator, FaGraduationCap, FaMountain, FaInfinity, FaAward, FaLightbulb, FaChartLine, FaClock, FaBalanceScale, FaAtom, FaPuzzlePiece, FaFeather, FaDragon, FaSnowflake, FaSun, FaMoon, FaLeaf, FaGlobe, FaShieldAlt, FaBook } from 'react-icons/fa';
+import { FaTrophy, FaFire, FaBolt, FaGem, FaStar, FaRocket } from 'react-icons/fa';
+import { FaBrain, FaHeart, FaCrown, FaMedal, FaCalculator, FaGraduationCap } from 'react-icons/fa';
+import { FaMountain, FaInfinity, FaAward, FaLightbulb, FaChartLine, FaClock } from 'react-icons/fa';
+import { FaBalanceScale, FaAtom, FaPuzzlePiece, FaFeather, FaDragon, FaSnowflake } from 'react-icons/fa';
+import { FaSun, FaMoon, FaLeaf, FaGlobe, FaShieldAlt, FaBook } from 'react-icons/fa';
 import { getUserStats } from '../../lib/progressStorage';
 
 const RecentAchievements = () => {

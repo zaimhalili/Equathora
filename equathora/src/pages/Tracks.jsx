@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
-import { FaStar, FaClock, FaCheckCircle, FaFire, FaLightbulb, FaRocket, FaTrophy, FaBookmark, FaRegBookmark, FaChartLine, FaBullseye, FaExclamationTriangle, FaPlay } from 'react-icons/fa';
+import { FaStar, FaClock, FaCheckCircle, FaFire, FaLightbulb } from 'react-icons/fa';
+import { FaRocket, FaTrophy, FaBookmark, FaRegBookmark, FaChartLine } from 'react-icons/fa';
+import { FaBullseye, FaExclamationTriangle, FaPlay } from 'react-icons/fa';
 
 const Tracks = () => {
     const [bookmarked, setBookmarked] = useState({});

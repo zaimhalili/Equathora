@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaRocket, FaTrophy, FaGraduationCap, FaBrain, FaChartLine, FaFire, FaBook, FaSquareRootAlt, FaClock, FaUsers, FaLightbulb, FaSun, FaMoon, FaCoffee, FaChartBar, FaFlask } from 'react-icons/fa';
+import { FaArrowLeft, FaRocket, FaTrophy, FaGraduationCap, FaBrain } from 'react-icons/fa';
+import { FaChartLine, FaFire, FaBook, FaSquareRootAlt, FaClock } from 'react-icons/fa';
+import { FaUsers, FaLightbulb, FaSun, FaMoon, FaCoffee } from 'react-icons/fa';
+import { FaChartBar, FaFlask } from 'react-icons/fa';
 import { MdScience, MdTimeline, MdSpeed, MdGroup, MdSelfImprovement } from 'react-icons/md';
 import { IoMdCalculator } from 'react-icons/io';
 import { BiMath } from 'react-icons/bi';
