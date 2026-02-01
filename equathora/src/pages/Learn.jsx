@@ -6,15 +6,84 @@ import { useSearchParams } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
 import './Learn.css';
 import Idea from '../assets/images/idea.svg';
-import { FaSearch, FaTimes, FaChevronDown, FaFilter } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { getAllProblems } from '../lib/problemService';
 import { getCompletedProblems, getFavoriteProblems } from '../lib/databaseService';
 import { getInProgressProblems } from '../lib/progressStorage';
 
+const SearchIcon = ({ className, ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    className={className}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    focusable="false"
+    {...props}
+  >
+    <circle cx="11" cy="11" r="7" />
+    <line x1="16.65" y1="16.65" x2="21" y2="21" />
+  </svg>
+);
+
+const TimesIcon = ({ className, ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    className={className}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    focusable="false"
+    {...props}
+  >
+    <line x1="6" y1="6" x2="18" y2="18" />
+    <line x1="18" y1="6" x2="6" y2="18" />
+  </svg>
+);
+
+const ChevronDownIcon = ({ className, ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    className={className}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    focusable="false"
+    {...props}
+  >
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
+);
+
+const FilterIcon = ({ className, ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    className={className}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    focusable="false"
+    {...props}
+  >
+    <path d="M22 3H2l8 9v6l4 3v-9l8-9z" />
+  </svg>
+);
+
 // Custom Dropdown Component with Portal
-const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }) => {
+const FilterDropdown = React.memo(({ label, value, options, onChange, placeholder = "All" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0, width: 0 });
   const triggerRef = useRef(null);
@@ -65,7 +134,7 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }
         onBlur={() => setTimeout(() => setIsOpen(false), 200)}
       >
         <span className="filter-dropdown-text">{displayText}</span>
-        <FaChevronDown className={`filter-dropdown-icon ${isOpen ? 'rotated' : ''}`} />
+        <ChevronDownIcon className={`filter-dropdown-icon ${isOpen ? 'rotated' : ''}`} />
       </button>
       {isOpen && createPortal(
         <div
@@ -102,12 +171,16 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All" }
       )}
     </div>
   );
-};
+});
 
 const Learn = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [localSearchQuery, setLocalSearchQuery] = useState('');
+  const searchDebounceRef = useRef(null);
+  const [visibleCount, setVisibleCount] = useState(24);
+  const PAGE_SIZE = 24;
 
   // Read filters from URL query params
   const searchQuery = searchParams.get('q') || '';
@@ -166,8 +239,33 @@ const Learn = () => {
   }, [gradeFilter, difficultyFilter, statusFilter, progressFilter, topicFilter, sortBy]);
 
   const clearAllFilters = () => {
+    setLocalSearchQuery('');
     setSearchParams({}, { replace: true });
   };
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [gradeFilter, difficultyFilter, statusFilter, progressFilter, topicFilter, sortBy, searchQuery]);
+
+  // Sync local search with URL params
+  useEffect(() => {
+    setLocalSearchQuery(searchQuery);
+  }, [searchQuery]);
+
+  // Debounced search handler
+  const handleSearchChange = useCallback((value) => {
+    setLocalSearchQuery(value);
+    
+    // Clear existing timeout
+    if (searchDebounceRef.current) {
+      clearTimeout(searchDebounceRef.current);
+    }
+    
+    // Set new timeout to update URL after 300ms
+    searchDebounceRef.current = setTimeout(() => {
+      updateFilters({ q: value });
+    }, 300);
+  }, [updateFilters]);
 
   useEffect(() => {
     const fetchProblems = async () => {
@@ -290,6 +388,11 @@ const Learn = () => {
     return filtered;
   }, [gradeFilter, difficultyFilter, topicFilter, statusFilter, progressFilter, searchQuery, sortBy, problems, gradeGroups]);
 
+  const visibleProblems = useMemo(
+    () => filteredProblems.slice(0, visibleCount),
+    [filteredProblems, visibleCount]
+  );
+
   // Dropdown options
   const gradeOptions = [
     { value: '8', label: 'Grade 8' },
@@ -343,7 +446,7 @@ const Learn = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <figure><img src={Idea} alt="idea image" /></figure>
+            <figure><img src={Idea} alt="idea image" fetchpriority="high" width="200" height="200" decoding="async" /></figure>
             <div id="learn-explore">
               <h1>Explore the Math <br />exercises on <span style={{ color: 'var(--dark-accent-color)' }}>Equathora</span></h1>
               <h4>Unlock more exercises as you progress. They're great practise and fun to do!</h4>
@@ -359,7 +462,7 @@ const Learn = () => {
             {/* Search Bar */}
             <div className="search-row">
               <div id="searchbar-and-icon">
-                <FaSearch
+                <SearchIcon
                   id='search-icon'
                   onClick={() => document.getElementById('problem-searchbar').focus()}
                 />
@@ -369,17 +472,17 @@ const Learn = () => {
                   id="problem-searchbar"
                   placeholder='Search by title, topic, or description...'
                   aria-label='searchbar'
-                  value={searchQuery}
-                  onChange={(e) => updateFilters({ q: e.target.value })}
+                  value={localSearchQuery}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                 />
-                {searchQuery && (
+                {localSearchQuery && (
                   <button
                     type="button"
                     className="clear-search-btn"
-                    onClick={() => updateFilters({ q: '' })}
+                    onClick={() => { setLocalSearchQuery(''); updateFilters({ q: '' }); }}
                     aria-label="Clear search"
                   >
-                    <FaTimes />
+                    <TimesIcon />
                   </button>
                 )}
               </div>
@@ -389,7 +492,7 @@ const Learn = () => {
                   className="clear-all-btn"
                   onClick={clearAllFilters}
                 >
-                  <FaTimes /> Clear all ({activeFilterCount})
+                  <TimesIcon /> Clear all ({activeFilterCount})
                 </button>
               )}
             </div>
@@ -451,44 +554,44 @@ const Learn = () => {
             {activeFilterCount > 0 && (
               <div className="active-filters-row">
                 <span className="active-filters-label">
-                  <FaFilter /> Active filters:
+                  <FilterIcon /> Active filters:
                 </span>
                 <div className="active-filters-pills">
                   {gradeFilter && (
                     <span className="active-filter-pill">
                       Grade {gradeFilter}
-                      <button onClick={() => updateFilters({ grade: '' })}><FaTimes /></button>
+                      <button onClick={() => updateFilters({ grade: '' })}><TimesIcon /></button>
                     </span>
                   )}
                   {difficultyFilter && (
                     <span className={`active-filter-pill ${difficultyFilter}`}>
                       {difficultyFilter.charAt(0).toUpperCase() + difficultyFilter.slice(1)}
-                      <button onClick={() => updateFilters({ difficulty: '' })}><FaTimes /></button>
+                      <button onClick={() => updateFilters({ difficulty: '' })}><TimesIcon /></button>
                     </span>
                   )}
                   {statusFilter && (
                     <span className="active-filter-pill">
                       {statusFilter === 'completed' ? 'Completed' : 'Not Started'}
-                      <button onClick={() => updateFilters({ status: '' })}><FaTimes /></button>
+                      <button onClick={() => updateFilters({ status: '' })}><TimesIcon /></button>
                     </span>
                   )}
                   {progressFilter && (
                     <span className="active-filter-pill">
                       {progressFilter === 'in-progress' ? 'In Progress' :
                         progressFilter === 'favourite' ? 'Favourite' : 'Premium'}
-                      <button onClick={() => updateFilters({ progress: '' })}><FaTimes /></button>
+                      <button onClick={() => updateFilters({ progress: '' })}><TimesIcon /></button>
                     </span>
                   )}
                   {topicFilter && (
                     <span className="active-filter-pill topic">
                       {topicFilter}
-                      <button onClick={() => updateFilters({ topic: '' })}><FaTimes /></button>
+                      <button onClick={() => updateFilters({ topic: '' })}><TimesIcon /></button>
                     </span>
                   )}
                   {sortBy !== 'default' && (
                     <span className="active-filter-pill sort">
                       {sortOptions.find(o => o.value === sortBy)?.label}
-                      <button onClick={() => updateFilters({ sort: '' })}><FaTimes /></button>
+                      <button onClick={() => updateFilters({ sort: '' })}><TimesIcon /></button>
                     </span>
                   )}
                 </div>
@@ -499,7 +602,7 @@ const Learn = () => {
           {/* Results Summary */}
           <div className="results-summary">
             <span>
-              Showing <strong>{filteredProblems.length}</strong> of <strong>{problems.length}</strong> exercises
+              Showing <strong>{visibleProblems.length}</strong> of <strong>{filteredProblems.length}</strong> exercises
             </span>
           </div>
 
@@ -518,13 +621,25 @@ const Learn = () => {
                 </button>
               </div>
             ) : (
-              filteredProblems.map((problem) => (
-                <motion.div key={problem.id}>
+              visibleProblems.map((problem) => (
+                <div key={problem.id}>
                   <ProblemCard problem={problem} />
-                </motion.div>
+                </div>
               ))
             )}
           </motion.article>
+
+          {filteredProblems.length > visibleCount && (
+            <div className="show-more-row">
+              <button
+                type="button"
+                className="show-more-btn"
+                onClick={() => setVisibleCount((prev) => Math.min(prev + PAGE_SIZE, filteredProblems.length))}
+              >
+                Show more
+              </button>
+            </div>
+          )}
         </section>
 
         <footer>

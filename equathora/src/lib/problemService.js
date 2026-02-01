@@ -6,6 +6,13 @@ import { generateProblemSlug, extractIdFromSlug } from './slugify';
  * Replaces local problems.js file
  */
 
+// Simple in-memory cache
+const cache = {
+  problems: null,
+  problemsTimestamp: null,
+  cacheDuration: 5 * 60 * 1000 // 5 minutes
+};
+
 // ============================================================================
 // PROBLEM GROUPS
 // ============================================================================
@@ -58,6 +65,12 @@ export async function getProblemGroup(groupId) {
  */
 export async function getAllProblems() {
     try {
+        // Check cache first
+        const now = Date.now();
+        if (cache.problems && cache.problemsTimestamp && (now - cache.problemsTimestamp < cache.cacheDuration)) {
+            return cache.problems;
+        }
+
         const { data, error } = await supabase
             .from('problems')
             .select('*')
@@ -66,10 +79,16 @@ export async function getAllProblems() {
             .order('display_order', { ascending: true });
 
         if (error) throw error;
-        return data || [];
+        
+        // Update cache
+        cache.problems = data || [];
+        cache.problemsTimestamp = now;
+        
+        return cache.problems;
     } catch (error) {
         console.error('Error fetching problems:', error);
-        return [];
+        // Return cached data if available, even if expired
+        return cache.problems || [];
     }
 }
 

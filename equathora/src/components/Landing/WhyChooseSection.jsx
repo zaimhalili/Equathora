@@ -28,7 +28,7 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
     return <span ref={ref}>{prefix}{count}{suffix}</span>;
 };
 
-const WhyChooseSection = () => {
+const WhyChooseSection = React.memo(() => {
     const benefits = [
         'Structured problem sets',
         'Detailed step-by-step solutions',
@@ -153,6 +153,8 @@ const WhyChooseSection = () => {
             </div>
         </section>
     );
-};
+});
+
+WhyChooseSection.displayName = 'WhyChooseSection';
 
 export default WhyChooseSection;

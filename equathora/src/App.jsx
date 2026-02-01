@@ -1,12 +1,8 @@
-import axios from "axios";
 import { lazy, Suspense, useEffect } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfService from "./pages/TermsOfService";
-import OverflowChecker from "./pages/OverflowChecker";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import CookieConsent from "./components/CookieConsent";
@@ -31,6 +27,9 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogList = lazy(() => import("./pages/BlogList"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const OverflowChecker = lazy(() => import("./pages/OverflowChecker"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -149,7 +148,9 @@ export default function App() {
   return (
     <>
       <PageTitleUpdater />
-      <OverflowChecker />
+      <Suspense fallback={null}>
+        <OverflowChecker />
+      </Suspense>
       <Suspense fallback={<LoadingSpinner />}>
         <div id="main-content" tabIndex={-1} className="outline-none">
           <Routes>
@@ -181,7 +182,7 @@ export default function App() {
             <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
             <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
             {/* <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} /> */}
-            {/* <Route path="/tracks" element={<ProtectedRoute><Tracks /></ProtectedRoute>} /> */}
+            <Route path="/tracks" element={<ProtectedRoute><Tracks /></ProtectedRoute>} />
             {/* <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} /> */}
             {/* <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} /> */}
             {/* <Route path="/premium" element={<ProtectedRoute><Premium /></ProtectedRoute>} /> */}

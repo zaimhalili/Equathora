@@ -35,7 +35,7 @@ const Landing = () => {
                 <ExercisesSection />
                 <WhyChooseSection />
                 <HowItWorksSection />
-                <TestimonialsSection />
+                {/* <TestimonialsSection /> */}
                 <LatestArticlesSection />
                 <CTASection />
                 <WaitlistSection />

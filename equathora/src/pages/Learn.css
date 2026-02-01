@@ -232,6 +232,28 @@
     margin-top: 1.5rem;
 }
 
+.show-more-row {
+    display: flex;
+    justify-content: center;
+    margin: 1.25rem 0 2.5rem 0;
+}
+
+.show-more-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.show-more-btn:hover {
+    color: var(--dark-accent-color);
+}
+
 /* Mobile - Extra Small Devices */
 @media only screen and (max-width: 480px) {
     #hero-learn {
