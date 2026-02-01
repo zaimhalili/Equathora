@@ -384,10 +384,8 @@ const About = () => {
                                 {/* Left - Image */}
                                 <ScrollReveal direction="left" className="lg:w-1/2">
                                     <motion.div
-                                        whileHover={{ scale: 1.05 }}
                                         className="relative"
                                     >
-                                        <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-color)]/20 to-purple-500/20 rounded-3xl blur-3xl"></div>
                                         <img
                                             src={Progress}
                                             alt="Progress tracking"
@@ -399,7 +397,6 @@ const About = () => {
                                 {/* Right - Content */}
                                 <ScrollReveal direction="right" className="lg:w-1/2">
                                     <div className="flex items-center gap-3 pb-6">
-                                        <div className="w-1 h-16 bg-gradient-to-b from-[var(--accent-color)] to-purple-500 rounded-full"></div>
                                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--secondary-color)]">
                                             Our <span className="text-[var(--accent-color)]">Mission</span>
                                         </h2>
@@ -412,15 +409,13 @@ const About = () => {
                                     </p>
                                     <div className="flex flex-wrap gap-3 pt-8">
                                         <motion.div
-                                            whileHover={{ scale: 1.05 }}
-                                            className="flex items-center gap-2 bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-5 py-3 rounded-xl shadow-lg"
+                                            className="cursor-default pointer-events-none flex items-center gap-2 bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-5 py-3 rounded-xl shadow-lg"
                                         >
                                             <FaGraduationCap className="text-xl" />
                                             <span className="font-semibold">Student-First</span>
                                         </motion.div>
                                         <motion.div
-                                            whileHover={{ scale: 1.05 }}
-                                            className="flex items-center gap-2 bg-white border-2 border-[var(--accent-color)] text-[var(--accent-color)] px-5 py-3 rounded-xl shadow-lg"
+                                            className="cursor-default pointer-events-none flex items-center gap-2 bg-white border-2 border-[var(--accent-color)] text-[var(--accent-color)] px-5 py-3 rounded-xl shadow-lg"
                                         >
                                             <FaRocket className="text-xl" />
                                             <span className="font-semibold">Growth-Oriented</span>
@@ -453,7 +448,7 @@ const About = () => {
                                             <motion.div
                                                 whileHover={{ rotate: 360, scale: 1.2 }}
                                                 transition={{ duration: 0.8 }}
-                                                className="flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl" style={{ marginBottom: '1rem' }}
+                                                className="flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex-1" style={{ marginBottom: '1rem' }}
                                             >
                                                 <FaCode className="text-white text-3xl" />
                                             </motion.div>
@@ -675,9 +670,6 @@ const About = () => {
                                 {/* Right Illustration */}
                                 <ScrollReveal direction="right" className="lg:w-1/2 flex justify-center">
                                     <motion.div
-                                        animate={{
-                                            y: [0, -20, 0],
-                                        }}
                                         className="relative"
                                     >
                                         <div className="absolute inset-0 bg-white/20 rounded-full blur-3xl"></div>
