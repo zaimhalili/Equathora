@@ -53,7 +53,7 @@ const TrustedBySection = () => {
                             return (
                                 <motion.div
                                     key={org.name}
-                                    className="flex flex-col items-center justify-center gap-2 sm:gap-3 p-4 sm:p-6 rounded-2xl transition-all w-1/2 md:w-1/4"
+                                    className="flex flex-col items-center justify-center gap-2 sm:gap-3 p-4 sm:p-6 rounded-md transition-all w-1/2 md:w-1/4"
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}

@@ -79,11 +79,12 @@ const Footer = () => {
           <div className="links-column">
             <h3 className="footer-column-title">Platform</h3>
             <ul className="links">
-              <li><Link to="/learn" className='footer-links'>Learn</Link></li>
-              {/* <li><Link to="/discover" className='footer-links'>Discover</Link></li> */}
+              <li><Link to="/learn" className='footer-links'>Problems</Link></li>
+              <li><Link to="/leaderboards/global" className='footer-links'>Leaderboards</Link></li>
               <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
               <li><Link to="/notifications" className='footer-links'>Notifications</Link></li>
               <li><Link to="/profile/myprofile" className='footer-links'>My Profile</Link></li>
+              <li><Link to="/waitlist" className='footer-links'>Join Waitlist</Link></li>
             </ul>
           </div>
           <div className="links-column">

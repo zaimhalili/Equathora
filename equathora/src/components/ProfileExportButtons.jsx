@@ -357,7 +357,7 @@ const ProfileExportButtons = () => {
             <button
                 type="button"
                 onClick={() => setShowMenu(!showMenu)}
-                className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[var(--french-gray)] rounded-lg text-[var(--secondary-color)] font-semibold text-sm transition-all duration-200 shadow-sm cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[var(--french-gray)] rounded-md text-[var(--secondary-color)] font-semibold text-sm transition-all duration-200 shadow-sm cursor-pointer"
                 aria-label="Export account data"
             >
                 <FaFileDownload className="text-base" />
@@ -366,7 +366,7 @@ const ProfileExportButtons = () => {
             </button>
 
             {showMenu && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-[var(--french-gray)] rounded-lg shadow-xl z-50 overflow-hidden">
+                <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-[var(--french-gray)] rounded-md shadow-xl z-50 overflow-hidden">
                     {/* <div className="p-2 bg-[var(--french-gray)] border-b border-gray-200">
                         <p className="text-xs font-semibold text-[var(--secondary-color)] uppercase tracking-wide">Select Format</p>
                     </div> */}

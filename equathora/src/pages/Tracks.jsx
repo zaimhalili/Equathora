@@ -279,7 +279,7 @@ const Tracks = () => {
                             animate="visible"
                         >
                             <motion.div
-                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-lg shadow-sm border border-gray-200"
+                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-md shadow-sm border border-gray-200"
                                 variants={statVariants}
                                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
                             >
@@ -292,7 +292,7 @@ const Tracks = () => {
                                 </div>
                             </motion.div>
                             <motion.div
-                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-lg shadow-sm border border-gray-200"
+                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-md shadow-sm border border-gray-200"
                                 variants={statVariants}
                                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
                             >
@@ -305,7 +305,7 @@ const Tracks = () => {
                                 </div>
                             </motion.div>
                             <motion.div
-                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-lg shadow-sm border border-gray-200"
+                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-md shadow-sm border border-gray-200"
                                 variants={statVariants}
                                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
                             >
@@ -318,7 +318,7 @@ const Tracks = () => {
                                 </div>
                             </motion.div>
                             <motion.div
-                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-lg shadow-sm border border-gray-200"
+                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-md shadow-sm border border-gray-200"
                                 variants={statVariants}
                                 whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
                             >
@@ -334,7 +334,7 @@ const Tracks = () => {
 
                         {/* Insights */}
                         <motion.div
-                            className="mt-8 bg-white/90 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-200 max-w-4xl mx-auto"
+                            className="mt-8 bg-white/90 backdrop-blur-sm rounded-md p-6 shadow-lg border border-gray-200 max-w-4xl mx-auto"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.5 }}
@@ -344,7 +344,7 @@ const Tracks = () => {
                                 Your Learning Insights
                             </h3>
                             <div className="grid md:grid-cols-2 gap-4">
-                                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
                                     <h4 className="font-semibold text-blue-800 mb-2">Focus Area</h4>
                                     <p className="text-sm text-blue-700">
                                         {loading ? 'Loading...' : (
@@ -354,7 +354,7 @@ const Tracks = () => {
                                         )}
                                     </p>
                                 </div>
-                                <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
                                     <h4 className="font-semibold text-orange-800 mb-2 flex items-center gap-1">
                                         <FaExclamationTriangle />
                                         Review Needed
@@ -395,7 +395,7 @@ const Tracks = () => {
                                 >
                                     <Link
                                         to={`/learn?topic=${track.topic}`}
-                                        className="group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[var(--accent-color)] flex flex-col animate-in fade-in slide-in-from-bottom-4"
+                                        className="group relative bg-white rounded-md overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[var(--accent-color)] flex flex-col animate-in fade-in slide-in-from-bottom-4"
                                         style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'backwards' }}
                                     >
                                         {/* Shimmer Effect */}
@@ -409,7 +409,7 @@ const Tracks = () => {
 
                                             <div className="relative flex items-start justify-between gap-3 mb-3">
                                                 <div className="flex items-center gap-3 flex-1">
-                                                    <div className={`text-3xl ${track.iconColor} bg-white/10 p-3 rounded-lg backdrop-blur-sm`}>
+                                                    <div className={`text-3xl ${track.iconColor} bg-white/10 p-3 rounded-md backdrop-blur-sm`}>
                                                         <IconComponent />
                                                     </div>
                                                     <div className="flex-1">
@@ -453,7 +453,7 @@ const Tracks = () => {
                                                 {track.description}
                                             </p>
 
-                                            <div className="px-3 py-2 bg-[var(--main-color)] rounded-lg border-l-3 border-[var(--accent-color)]">
+                                            <div className="px-3 py-2 bg-[var(--main-color)] rounded-md border-l-3 border-[var(--accent-color)]">
                                                 <p className="text-[var(--secondary-color)] font-['Sansation'] text-xs font-medium text-center">
                                                     {track.reason}
                                                 </p>
@@ -505,7 +505,7 @@ const Tracks = () => {
 
                                         {/* Action Button */}
                                         <div className="p-5 pt-0">
-                                            <div className="flex items-center justify-center gap-2 py-3 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-lg transition-colors duration-300">
+                                            <div className="flex items-center justify-center gap-2 py-3 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-md transition-colors duration-300">
                                                 <FaPlay className="text-white text-sm" />
                                                 <span className="text-white font-semibold text-sm font-['Sansation']">Start Track</span>
                                             </div>

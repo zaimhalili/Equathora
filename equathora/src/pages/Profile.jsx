@@ -213,7 +213,7 @@ const Profile = () => {
               transition={{ duration: 0.5 }}
             >
               {/* Combined Card */}
-              <div className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-6'>
+              <div className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col gap-6'>
                 {/* Profile Header Section */}
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
@@ -308,7 +308,7 @@ const Profile = () => {
                   </div>
                   <div className='flex gap-2 md:gap-3 flex-wrap'>
                     {userData.mathTopics.map((topic, i) => (
-                      <p key={i} className='rounded-2xl bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)] cursor-default'>{topic}</p>
+                      <p key={i} className='rounded-md bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)] cursor-default'>{topic}</p>
                     ))}
                   </div>
                 </div>
@@ -319,7 +319,7 @@ const Profile = () => {
             <div className='lg:col-span-2 flex flex-col gap-4'>
               {/* Statistics Card */}
               <motion.div
-                className='bg-[var(--main-color)] rounded-xl shadow-lg p-6'
+                className='bg-[var(--main-color)] rounded-md shadow-lg p-6'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -405,17 +405,17 @@ const Profile = () => {
 
                   {/* Difficulty Breakdown */}
                   <div className='w-full md:w-auto flex md:flex-col gap-2 md:gap-3 justify-center'>
-                    <div className='bg-[var(--french-gray)] rounded-lg text-center flex flex-col font-bold py-2 px-3 md:px-4 flex-1 md:flex-none md:min-w-[100px]'>
+                    <div className='bg-[var(--french-gray)] rounded-md text-center flex flex-col font-bold py-2 px-3 md:px-4 flex-1 md:flex-none md:min-w-[100px]'>
                       <p className='text-teal-700 text-sm md:text-base'>Easy:</p>
                       <p className='text-sm md:text-base text-[var(--secondary-color)]'>{userData.stats.easy.solved}/{userData.stats.easy.total}</p>
                     </div>
 
-                    <div className='bg-[var(--french-gray)] rounded-lg text-center flex flex-col font-bold py-2 px-3 md:px-4 flex-1 md:flex-none md:min-w-[100px]'>
+                    <div className='bg-[var(--french-gray)] rounded-md text-center flex flex-col font-bold py-2 px-3 md:px-4 flex-1 md:flex-none md:min-w-[100px]'>
                       <p className='text-yellow-700 text-sm md:text-base'>Medium:</p>
                       <p className='text-sm md:text-base text-[var(--secondary-color)]'>{userData.stats.medium.solved}/{userData.stats.medium.total}</p>
                     </div>
 
-                    <div className='bg-[var(--french-gray)] rounded-lg text-center flex flex-col font-bold py-2 px-3 md:px-4 flex-1 md:flex-none md:min-w-[100px]'>
+                    <div className='bg-[var(--french-gray)] rounded-md text-center flex flex-col font-bold py-2 px-3 md:px-4 flex-1 md:flex-none md:min-w-[100px]'>
                       <p className='text-[var(--dark-accent-color)] text-sm md:text-base'>Hard:</p>
                       <p className='text-sm md:text-base text-[var(--secondary-color)]'>{userData.stats.hard.solved}/{userData.stats.hard.total}</p>
                     </div>
@@ -425,7 +425,7 @@ const Profile = () => {
 
               {/* Solved Problems Card */}
               <motion.div
-                className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-5'
+                className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col gap-5'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}

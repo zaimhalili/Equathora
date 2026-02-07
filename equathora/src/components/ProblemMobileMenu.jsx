@@ -22,7 +22,7 @@ const ProblemMobileMenu = ({
         <div className="md:hidden relative mobile-menu-container">
             <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
+                className="flex items-center justify-center w-9 h-9 rounded-md transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                 title="More options"
             >
                 <FaEllipsisV className="text-sm" />
@@ -30,7 +30,7 @@ const ProblemMobileMenu = ({
 
             {/* Mobile dropdown menu */}
             {showMobileMenu && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-[var(--main-color)] border border-[var(--french-gray)] rounded-lg shadow-lg z-50 overflow-hidden">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-[var(--main-color)] border border-[var(--french-gray)] rounded-md shadow-lg z-50 overflow-hidden">
                     <button
                         onClick={() => {
                             setShowDrawingPad((prev) => !prev);

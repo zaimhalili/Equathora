@@ -187,15 +187,15 @@ const About = () => {
 
                     {/* Origin Story */}
                     <section className="w-full flex justify-center" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay' }}>
-                        <div className="w-full flex flex-col max-w-[1500px] px-[4vw] xl:px-[6vw] md:py-16 py-6 gap-12">
+                        <div className="w-full flex flex-col max-w-[1500px] px-[4vw] xl:px-[6vw] md:pb-16 gap-12">
                             <div className="flex flex-col gap-12">
                                 {/* Left Column - Name Breakdown */}
                                 <ScrollReveal direction="left" className="flex-1 order-2 max-w-[1500px]">
                                     <div className="flex flex-col lg:flex-row gap-4">
-                                        <div className="flex items-center lg:w-1/2">
-                                            <img src={Problem} alt="Problem Screenshot" className="cover rounded-sm" />
+                                        <div className="flex items-center">
+                                            <img src={Problem} alt="Problem Screenshot" className="object-contain rounded-md h-full" />
                                         </div>
-                                        <div className="flex flex-col gap-2 h-full">
+                                        <div className="flex flex-col gap-2">
                                             <motion.div
                                                 initial={{ opacity: 0, x: -20 }}
                                                 whileInView={{ opacity: 1, x: 0 }}
@@ -254,7 +254,7 @@ const About = () => {
                                                 transition={{ delay: 0.1 }}
                                                 className="flex gap-4 md:flex-col"
                                             >
-                                                <div className="flex items-center justify-center w-14 md:h-14  rounded-xl flex-shrink-0">
+                                                <div className="flex items-center justify-center w-14 md:h-14  rounded-md flex-shrink-0">
                                                     <svg className="w-5 h-5" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                                         <defs>
                                                             <linearGradient id="icon-gradient-bolt" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -280,7 +280,7 @@ const About = () => {
                                                 transition={{ delay: 0.2 }}
                                                 className="flex gap-4 md:flex-col"
                                             >
-                                                <div className="flex items-center justify-center w-14 md:h-14  rounded-xl flex-shrink-0">
+                                                <div className="flex items-center justify-center w-14 md:h-14  rounded-md flex-shrink-0">
                                                     <svg className="w-5 h-5" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                                         <defs>
                                                             <linearGradient id="icon-gradient-fire" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -306,7 +306,7 @@ const About = () => {
                                                 transition={{ delay: 0.3 }}
                                                 className="flex gap-4 md:flex-col"
                                             >
-                                                <div className="flex items-center justify-center w-14 md:h-14  rounded-xl flex-shrink-0">
+                                                <div className="flex items-center justify-center w-14 md:h-14  rounded-md flex-shrink-0">
                                                     <svg className="w-5 h-5" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
                                                         <defs>
                                                             <linearGradient id="icon-gradient-star" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -375,7 +375,7 @@ const About = () => {
                                     <ScrollReveal key={idx} direction={feature.direction} delay={feature.delay}>
                                         <div className="flex flex-col items-center group">
                                             <motion.div
-                                                className="w-full h-32 flex items-center justify-center pb-4"
+                                                className="w-full h-32 flex items-center justify-center"
                                                 whileHover={{ scale: 1.05 }}
                                                 transition={{ type: 'spring', stiffness: 300 }}
                                             >
@@ -388,7 +388,7 @@ const About = () => {
                                             <motion.div
                                                 whileHover={{ y: -5, boxShadow: '0 20px 30px rgba(141,153,174,0.4)' }}
                                                 transition={{ type: 'spring', stiffness: 300 }}
-                                                className="relative flex flex-col bg-white rounded-xl border border-gray-100 shadow-lg hover:shadow-2xl duration-300 ease-out p-6 w-full min-h-[160px]"
+                                                className="relative flex flex-col bg-white rounded-md border border-gray-100 shadow-lg hover:shadow-2xl duration-300 ease-out p-6 w-full min-h-[160px]"
                                             >
                                                 <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-2">{feature.title}</h3>
                                                 <p className="text-sm text-gray-600 leading-relaxed">
@@ -435,13 +435,13 @@ const About = () => {
                                     </p>
                                     <div className="flex flex-wrap gap-3 pt-8">
                                         <motion.div
-                                            className="cursor-default pointer-events-none flex items-center gap-2 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white px-5 py-3 rounded-xl shadow-lg"
+                                            className="cursor-default pointer-events-none flex items-center gap-2 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white px-5 py-3 rounded-md shadow-lg"
                                         >
                                             <FaGraduationCap className="text-xl" />
                                             <span className="font-semibold">Student-First</span>
                                         </motion.div>
                                         <motion.div
-                                            className="cursor-default pointer-events-none flex items-center gap-2 bg-white border-2 border-[var(--accent-color)] text-[var(--accent-color)] px-5 py-3 rounded-xl shadow-lg"
+                                            className="cursor-default pointer-events-none flex items-center gap-2 bg-white border-2 border-[var(--accent-color)] text-[var(--accent-color)] px-5 py-3 rounded-md shadow-lg"
                                         >
                                             <FaRocket className="text-xl" />
                                             <span className="font-semibold text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">Growth-Oriented</span>
@@ -467,14 +467,14 @@ const About = () => {
                                 <ScrollReveal direction="left" delay={0} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                                     <motion.div
                                         whileHover={{ scale: 1.02 }}
-                                        className="group relative bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-3xl overflow-hidden shadow-2xl cursor-pointer flex flex-col justify-between p-8 h-full"
+                                        className="group relative bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-md overflow-hidden shadow-2xl cursor-pointer flex flex-col justify-between p-8 h-full"
                                     >
                                         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10"></div>
                                         <div className="relative z-10 flex flex-col justify-between h-full">
                                             <motion.div
                                                 whileHover={{ rotate: 360, scale: 1.2 }}
                                                 transition={{ type: 'spring', stiffness: 300, duration: 0.8 }}
-                                                className="flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl"
+                                                className="flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-md"
                                             >
                                                 <FaCode className="text-white text-3xl" />
                                             </motion.div>
@@ -491,12 +491,12 @@ const About = () => {
                                 <ScrollReveal direction="up" delay={0.1} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                                     <motion.div
                                         whileHover={{ y: -8 }}
-                                        className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[var(--accent-color)]/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                        className="group bg-white rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[var(--accent-color)]/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                     >
                                         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--accent-color)]/10 to-transparent rounded-bl-full"></div>
                                         <motion.div
                                             whileHover={{ scale: 1.1, rotate: 12 }}
-                                            className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-2xl relative z-10"
+                                            className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-md relative z-10"
                                         >
                                             <FaLightbulb className="text-white text-3xl" />
                                         </motion.div>
@@ -511,13 +511,13 @@ const About = () => {
                                 <ScrollReveal direction="right" delay={0.15} className="w-full md:w-[calc(33.333%-0.67rem)] min-h-[360px]">
                                     <motion.div
                                         whileHover={{ scale: 1.05 }}
-                                        className="group bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                        className="group bg-gradient-to-br from-yellow-400 to-orange-500 rounded-md shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                     >
                                         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
                                         <motion.div
                                             whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
                                             transition={{ duration: 0.5 }}
-                                            className="flex items-center justify-center w-16 h-16 bg-white/30 backdrop-blur-sm rounded-2xl relative z-10"
+                                            className="flex items-center justify-center w-16 h-16 bg-white/30 backdrop-blur-sm rounded-md relative z-10"
                                         >
                                             <FaRocket className="text-white text-3xl" />
                                         </motion.div>
@@ -531,13 +531,13 @@ const About = () => {
                                 <ScrollReveal direction="left" delay={0.2} className="w-full md:w-[calc(33.333%-0.67rem)] min-h-[360px]">
                                     <motion.div
                                         whileHover={{ scale: 1.02 }}
-                                        className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[var(--accent-color)]/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
+                                        className="group bg-white rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[var(--accent-color)]/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
                                     >
                                         <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full group-hover:scale-125 transition-transform duration-500"></div>
                                         <motion.div
                                             whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
                                             transition={{ duration: 0.5 }}
-                                            className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl relative z-10 shadow-lg"
+                                            className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-md relative z-10 shadow-lg"
                                         >
                                             <FaUsers className="text-white text-3xl" />
                                         </motion.div>
@@ -553,13 +553,13 @@ const About = () => {
                                     <ScrollReveal direction="right" delay={0.3} className="flex-1">
                                         <motion.div
                                             whileHover={{ scale: 1.05 }}
-                                            className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                            className="group bg-white rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                         >
                                             <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 group-hover:from-green-500/10 group-hover:to-emerald-500/10 transition-all duration-300"></div>
                                             <motion.div
                                                 whileHover={{ rotate: 360, scale: 1.2 }}
                                                 transition={{ duration: 0.6 }}
-                                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl relative z-10 shadow-md"
+                                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-md relative z-10 shadow-md"
                                             >
                                                 <FaTrophy className="text-white text-3xl" />
                                             </motion.div>
@@ -573,12 +573,12 @@ const About = () => {
                                     <ScrollReveal direction="left" delay={0.35} className="flex-1">
                                         <motion.div
                                             whileHover={{ y: -8 }}
-                                            className="group bg-gradient-to-br from-indigo-500 to-purple-500 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                            className="group bg-gradient-to-br from-indigo-500 to-purple-500 rounded-md shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                         >
                                             <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
                                             <motion.div
                                                 whileHover={{ scale: 1.15, rotate: 15 }}
-                                                className="flex items-center justify-center w-16 h-16 bg-white/30 backdrop-blur-sm rounded-2xl relative z-10"
+                                                className="flex items-center justify-center w-16 h-16 bg-white/30 backdrop-blur-sm rounded-md relative z-10"
                                             >
                                                 <FaChartLine className="text-white text-3xl" />
                                             </motion.div>
@@ -594,12 +594,12 @@ const About = () => {
                                 <ScrollReveal direction="up" delay={0.25} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                                     <motion.div
                                         whileHover={{ y: -8 }}
-                                        className="group bg-gradient-to-br from-blue-500 to-cyan-400 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                        className="group bg-gradient-to-br from-blue-500 to-cyan-400 rounded-md shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                     >
                                         <div className="absolute top-0 right-0 text-white/10 text-[200px] font-black">200+</div>
                                         <motion.div
                                             whileHover={{ scale: 1.15, rotate: -12 }}
-                                            className="flex items-center justify-center w-16 h-16 bg-white/30 backdrop-blur-sm rounded-2xl relative z-10"
+                                            className="flex items-center justify-center w-16 h-16 bg-white/30 backdrop-blur-sm rounded-md relative z-10"
                                         >
                                             <FaChartLine className="text-white text-3xl" />
                                         </motion.div>
@@ -615,12 +615,12 @@ const About = () => {
                                     <ScrollReveal direction="up" delay={0.4} className="flex-1">
                                         <motion.div
                                             whileHover={{ scale: 1.05 }}
-                                            className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                            className="group bg-white rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                         >
                                             <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-orange-500/10 to-transparent rounded-tl-full"></div>
                                             <motion.div
                                                 whileHover={{ scale: 1.2, rotate: -15 }}
-                                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl relative z-10 shadow-md"
+                                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-md relative z-10 shadow-md"
                                             >
                                                 <FaFire className="text-white text-3xl" />
                                             </motion.div>
@@ -634,13 +634,13 @@ const About = () => {
                                     <ScrollReveal direction="right" delay={0.45} className="flex-1">
                                         <motion.div
                                             whileHover={{ y: -8 }}
-                                            className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                            className="group bg-white rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                         >
                                             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 group-hover:from-blue-500/10 group-hover:to-cyan-500/10 transition-all duration-300"></div>
                                             <motion.div
                                                 whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
                                                 transition={{ duration: 0.5 }}
-                                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl relative z-10 shadow-md"
+                                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-md relative z-10 shadow-md"
                                             >
                                                 <FaClock className="text-white text-3xl" />
                                             </motion.div>

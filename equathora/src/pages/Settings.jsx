@@ -52,7 +52,7 @@ const Settings = () => {
                 <h1 className='font-[Sansation,cursive] font-bold text-[var(--secondary-color)] text-2xl lg:text-3xl pt-5'>Settings & Customization</h1>
 
                 {/* Profile Section */}
-                <section className='bg-white shadow-gray-500 shadow-2xl rounded-xl w-full px-5 pt-3 pb-5 max-w-[800px]'>
+                <section className='bg-white shadow-gray-500 shadow-2xl rounded-md w-full px-5 pt-3 pb-5 max-w-[800px]'>
                     <h2 className='font-bold text-xl lg:text-3xl text-[var(--secondary-color)] pb-3'>Profile</h2>
                     <div>
                         <div className='flex flex-col gap-2 pb-3'>
@@ -63,7 +63,7 @@ const Settings = () => {
                                 id="name_input"
                                 value={userName}
                                 onChange={(e) => setUserName(e.target.value)}
-                                className='text-md border rounded-lg px-3 py-2 lg:py-4 w-full border-[var(--french-gray)] focus:shadow-[var(--accent-color)]'
+                                className='text-md border rounded-md px-3 py-2 lg:py-4 w-full border-[var(--french-gray)] focus:shadow-[var(--accent-color)]'
                                 required
                                 minLength={4}
                                 maxLength={16}
@@ -77,7 +77,7 @@ const Settings = () => {
                                 id="location_input"
                                 value={userLocation}
                                 onChange={(e) => setUserLocation(e.target.value)}
-                                className=' text-md border rounded-lg px-3 py-2 lg:py-4 w-full border-[var(--french-gray)] focus:shadow-[var(--accent-color)]'
+                                className=' text-md border rounded-md px-3 py-2 lg:py-4 w-full border-[var(--french-gray)] focus:shadow-[var(--accent-color)]'
                                 minLength={4}
                                 maxLength={16}
                             />
@@ -91,7 +91,7 @@ const Settings = () => {
                                 id=""
                                 value={userBio}
                                 onChange={(e) => setUserBio(e.target.value)}
-                                className='text-md xl:text-lg border rounded-lg px-3 py-2 w-full border-[var(--french-gray)] focus:shadow-[var(--accent-color)] h-24 lg:h-32 resize-none scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100'
+                                className='text-md xl:text-lg border rounded-md px-3 py-2 w-full border-[var(--french-gray)] focus:shadow-[var(--accent-color)] h-24 lg:h-32 resize-none scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100'
                                 placeholder="Tell the world about yourself..."
                             ></textarea>
                             <p className='text-xs lg:text-md'>Tell the world about you! Be proud!</p>
@@ -105,7 +105,7 @@ const Settings = () => {
                                 id=""
                                 value={seniority}
                                 onChange={(e) => setSeniority(e.target.value)}
-                                className="text-md cursor-pointer px-3 py-2 lg:py-4 border rounded-lg border-[var(--french-gray)] appearance-none bg-white pr-10"
+                                className="text-md cursor-pointer px-3 py-2 lg:py-4 border rounded-md border-[var(--french-gray)] appearance-none bg-white pr-10"
                                 style={{
                                     backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
                                     backgroundRepeat: 'no-repeat',
@@ -126,18 +126,18 @@ const Settings = () => {
                         </div>
                     </div>
                     <hr className='pb-3' />
-                    <button type="submit" className='cursor-pointer py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md rounded-lg shadow-md shadow-gray-400 border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-150 max-w-[180px]'>Save profile data</button>
+                    <button type="submit" className='cursor-pointer py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md rounded-md shadow-md shadow-gray-400 border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-150 max-w-[180px]'>Save profile data</button>
                 </section>
 
                 {/* Handle Section */}
-                <section className='bg-white shadow-gray-500 shadow-2xl rounded-xl w-full px-5 pt-3 pb-5 flex flex-col gap-2 lg:gap-4 max-w-[800px]'>
+                <section className='bg-white shadow-gray-500 shadow-2xl rounded-md w-full px-5 pt-3 pb-5 flex flex-col gap-2 lg:gap-4 max-w-[800px]'>
                     <h1 className='font-[Sansation,cursive] font-bold text-[var(--secondary-color)] text-2xl pt-5 lg:text-3xl'>Change your handle</h1>
                     <div>
                         <input
                             type="text"
                             name="handle"
                             id="handle_input"
-                            className='border rounded-lg px-3 py-2 lg:py-4 w-full border-[var(--french-gray)] focus:shadow-[var(--accent-color)] text-md'
+                            className='border rounded-md px-3 py-2 lg:py-4 w-full border-[var(--french-gray)] focus:shadow-[var(--accent-color)] text-md'
                             value={`@${userHandle}`}
                             onChange={(e) => setUserHandle(e.target.value.replace('@', ''))}
                             required
@@ -146,7 +146,7 @@ const Settings = () => {
                         />
                     </div>
                     <div>
-                        <button type="submit" className='cursor-pointer py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md rounded-lg shadow-md shadow-gray-400 border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-150 max-w-[180px]'>Change handle</button>
+                        <button type="submit" className='cursor-pointer py-2 px-3 bg-[var(--accent-color)] text-white font-bold text-md rounded-md shadow-md shadow-gray-400 border-1 border-black hover:bg-[var(--dark-accent-color)] transition-all duration-150 max-w-[180px]'>Change handle</button>
                     </div>
                 </section>
 

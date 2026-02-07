@@ -89,17 +89,17 @@ const CTASection = () => {
                         transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
                     >
                         <Link
-                                to="/login"
-                                className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1"
+                            to="/login"
+                            className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1"
+                        >
+                            Start Your Journey
+                            <motion.span
+                                animate={{ x: [0, 4, 0] }}
+                                transition={{ duration: 1.5, repeat: Infinity }}
                             >
-                                Start Your Journey
-                                <motion.span
-                                    animate={{ x: [0, 4, 0] }}
-                                    transition={{ duration: 1.5, repeat: Infinity }}
-                                >
-                                    <FaArrowRight className="text-xs sm:text-sm" />
-                                </motion.span>
-                            </Link>
+                                <FaArrowRight className="text-xs sm:text-sm" />
+                            </motion.span>
+                        </Link>
                     </motion.div>
 
                     <motion.p
@@ -126,7 +126,7 @@ const CTASection = () => {
                         style={{ x: floatX, y: floatY }}
                     >
                         {/* Main card */}
-                        <div className="w-80 h-96 rounded-3xl bg-gradient-to-br from-[var(--secondary-color)] to-[#1a1a2e] p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
+                        <div className="w-80 h-96 rounded-md bg-gradient-to-br from-[var(--secondary-color)] to-[#1a1a2e] p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
                             {/* Glow effect */}
                             <div className="absolute top-0 right-0 w-40 h-40 bg-[var(--accent-color)]/20 rounded-full blur-[60px]" />
 
@@ -162,7 +162,7 @@ const CTASection = () => {
 
                         {/* Floating badge */}
                         <motion.div
-                            className="absolute -bottom-6 -left-6 px-5 py-4 rounded-2xl bg-white shadow-2xl border border-gray-100"
+                            className="absolute -bottom-6 -left-6 px-5 py-4 rounded-md bg-white shadow-2xl border border-gray-100"
                             animate={{ y: [0, -8, 0] }}
                             transition={{ duration: 3, repeat: Infinity }}
                         >
@@ -179,7 +179,7 @@ const CTASection = () => {
 
                         {/* Math symbol */}
                         <motion.div
-                            className="absolute -top-4 -right-4 w-16 h-16 rounded-2xl bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-white text-2xl font-bold shadow-lg"
+                            className="absolute -top-4 -right-4 w-16 h-16 rounded-md bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-white text-2xl font-bold shadow-lg"
                             animate={{ rotate: [0, 5, -5, 0] }}
                             transition={{ duration: 4, repeat: Infinity }}
                         >

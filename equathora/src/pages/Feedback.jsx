@@ -146,7 +146,7 @@ const Feedback = () => {
 
             <main className="min-h-screen bg-gradient-to-b from-[var(--mid-main-secondary)] to-[var(--main-color)] py-8 px-4 sm:px-6 md:px-8 w-full flex justify-center">
                 <div className="max-w-3xl">
-                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-10">
+                    <div className="bg-white rounded-md shadow-xl p-6 sm:p-8 md:p-10">
                         <h1 className="text-3xl sm:text-4xl font-bold text-[var(--secondary-color)] font-[Sansation] pb-4">
                             Share Your Feedback
                         </h1>
@@ -155,7 +155,7 @@ const Feedback = () => {
                         </p>
 
                         {submitSuccess ? (
-                            <div className="bg-green-50 border-2 border-green-500 rounded-lg p-6 text-center">
+                            <div className="bg-green-50 border-2 border-green-500 rounded-md p-6 text-center">
                                 <div className="text-4xl pb-4">✅</div>
                                 <h2 className="text-2xl font-bold text-green-700 pb-2">Thank You!</h2>
                                 <p className="text-green-600">Your feedback has been submitted successfully. Redirecting to homepage...</p>
@@ -171,7 +171,7 @@ const Feedback = () => {
                                         {feedbackTypes.map((type) => (
                                             <label
                                                 key={type.value}
-                                                className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${formData.feedbackType === type.value
+                                                className={`flex items-center gap-3 p-4 border-2 rounded-md cursor-pointer transition-all duration-200 ${formData.feedbackType === type.value
                                                     ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/5'
                                                     : 'border-[var(--french-gray)] hover:border-[var(--mid-main-secondary)]'
                                                     }`}
@@ -200,7 +200,7 @@ const Feedback = () => {
                                         {commonIssues[formData.feedbackType].map((issue) => (
                                             <label
                                                 key={issue}
-                                                className={`flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer transition-all duration-150 text-sm ${formData.commonIssue === issue
+                                                className={`flex items-center gap-2 px-3 py-2 border rounded-md cursor-pointer transition-all duration-150 text-sm ${formData.commonIssue === issue
                                                     ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/10 text-[var(--secondary-color)] font-medium'
                                                     : 'border-[var(--french-gray)] hover:border-[var(--mid-main-secondary)] text-[var(--secondary-color)]'
                                                     }`}
@@ -233,7 +233,7 @@ const Feedback = () => {
                                         required
                                         maxLength={100}
                                         placeholder="Brief summary of your feedback"
-                                        className="w-full px-4 py-3 border-2 border-[var(--french-gray)] rounded-lg focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation] text-black"
+                                        className="w-full px-4 py-3 border-2 border-[var(--french-gray)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation] text-black"
                                     />
                                 </div>
 
@@ -251,7 +251,7 @@ const Feedback = () => {
                                         maxLength={2000}
                                         rows={6}
                                         placeholder="Please provide detailed information about your feedback..."
-                                        className="w-full px-4 py-3 border-2 border-[var(--french-gray)] rounded-lg focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation] resize-none text-black"
+                                        className="w-full px-4 py-3 border-2 border-[var(--french-gray)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation] resize-none text-black"
                                     />
                                     <div className="text-xs text-gray-500 pt-1 text-right">
                                         {formData.description.length}/2000 characters
@@ -271,7 +271,7 @@ const Feedback = () => {
                                         onChange={handleChange}
                                         maxLength={100}
                                         placeholder="your.email@example.com"
-                                        className="w-full px-4 py-3 border-2 text-black border-[var(--french-gray)] rounded-lg focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation]"
+                                        className="w-full px-4 py-3 border-2 text-black border-[var(--french-gray)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation]"
                                     />
                                     <p className="text-xs text-gray-500 pt-1">
                                         Provide your email if you'd like us to follow up with you.
@@ -283,7 +283,7 @@ const Feedback = () => {
                                     <button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        className="flex-1 px-6 py-3 border-2 border-[var(--accent-color)] rounded-lg font-bold text-white bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                                        className="flex-1 px-6 py-3 border-2 border-[var(--accent-color)] rounded-md font-bold text-white bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                                     >
                                         {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
                                     </button>
@@ -294,7 +294,7 @@ const Feedback = () => {
 
                     {/* Information Boxes */}
                     <div className="pt-6 flex flex-col gap-5">
-                        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4">
+                        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-md p-4">
                             <h3 className="font-bold text-blue-900 pb-2 font-[Sansation]">Privacy Notice</h3>
                             <p className="text-sm text-blue-800 font-[Sansation]">
                                 Your feedback is important to us. We collect this information solely to improve Equathora.
@@ -302,7 +302,7 @@ const Feedback = () => {
                             </p>
                         </div>
 
-                        <div className="bg-green-50 border-l-4 border-green-500 rounded-lg p-4">
+                        <div className="bg-green-50 border-l-4 border-green-500 rounded-md p-4">
                             <h3 className="font-bold text-green-900 mb-2 font-[Sansation]">📧 Instant Delivery</h3>
                             <p className="text-sm text-green-800 font-[Sansation]">
                                 Your feedback will be sent directly to our team via email. We read every submission and typically respond within 24-48 hours.

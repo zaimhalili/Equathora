@@ -144,21 +144,21 @@ const Recommended = () => {
 
                         {/* Stats Bar */}
                         <div className="mt-8 flex items-center justify-center gap-8 flex-wrap">
-                            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200">
+                            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-md shadow-sm border border-gray-200">
                                 <FaFire className="text-orange-500 text-lg" />
                                 <div className="text-left">
                                     <p className="text-xs text-[var(--mid-main-secondary)] font-medium">Streak</p>
                                     <p className="text-sm font-bold text-[var(--secondary-color)]">12 Days</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200">
+                            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-md shadow-sm border border-gray-200">
                                 <FaTrophy className="text-yellow-500 text-lg" />
                                 <div className="text-left">
                                     <p className="text-xs text-[var(--mid-main-secondary)] font-medium">Achievements</p>
                                     <p className="text-sm font-bold text-[var(--secondary-color)]">24 Earned</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-gray-200">
+                            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-md shadow-sm border border-gray-200">
                                 <FaStar className="text-[var(--accent-color)] text-lg" />
                                 <div className="text-left">
                                     <p className="text-xs text-[var(--mid-main-secondary)] font-medium">XP Points</p>
@@ -177,7 +177,7 @@ const Recommended = () => {
                                 <Link
                                     key={rec.id}
                                     to={rec.path}
-                                    className="group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[var(--accent-color)] flex flex-col animate-in fade-in slide-in-from-bottom-4"
+                                    className="group relative bg-white rounded-md overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[var(--accent-color)] flex flex-col animate-in fade-in slide-in-from-bottom-4"
                                     style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'backwards' }}
                                 >
                                     {/* Shimmer Effect */}
@@ -223,7 +223,7 @@ const Recommended = () => {
                                             {rec.description}
                                         </p>
 
-                                        <div className="px-3 py-2 bg-[var(--main-color)] rounded-lg border-l-3 border-[var(--accent-color)]">
+                                        <div className="px-3 py-2 bg-[var(--main-color)] rounded-md border-l-3 border-[var(--accent-color)]">
                                             <p className="text-[var(--secondary-color)] font-['Sansation'] text-xs font-medium">
                                                 {rec.reason}
                                             </p>
@@ -272,7 +272,7 @@ const Recommended = () => {
 
                                     {/* Action Button */}
                                     <div className="p-5 pt-0">
-                                        <div className="flex items-center justify-center gap-2 py-2.5 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-lg transition-colors duration-300">
+                                        <div className="flex items-center justify-center gap-2 py-2.5 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-md transition-colors duration-300">
                                             <span className="text-white font-semibold text-sm font-['Sansation']">Start Learning</span>
                                             <svg className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />

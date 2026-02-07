@@ -28,7 +28,7 @@ const Hero = () => {
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.4, delay: 0.1 }}
-                                className='inline-flex items-center justify-center px-3 py-1.5 bg-[var(--accent-color)]/20 rounded-lg text-xs font-semibold backdrop-blur-sm border border-[var(--accent-color)]/30 self-center lg:self-start gap-2'
+                                className='inline-flex items-center justify-center px-3 py-1.5 bg-[var(--accent-color)]/20 rounded-md text-xs font-semibold backdrop-blur-sm border border-[var(--accent-color)]/30 self-center lg:self-start gap-2'
                             >
                                 <FaStar className='text-[var(--accent-color)]' />
                                 <span>FREE TO JOIN</span>
@@ -65,7 +65,7 @@ const Hero = () => {
                                     href='https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform'
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    className='group relative bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-3 rounded-lg !font-bold text-sm md:text-base overflow-hidden transition-all flex items-center justify-center gap-2 no-underline shadow-lg hover:shadow-xl w-full sm:w-auto'
+                                    className='group relative bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-3 rounded-md !font-bold text-sm md:text-base overflow-hidden transition-all flex items-center justify-center gap-2 no-underline shadow-lg hover:shadow-xl w-full sm:w-auto'
                                 >
                                     <FaUsers />
                                     <span className='relative z-10'>Join 50+ Educators</span>

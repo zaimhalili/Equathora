@@ -75,7 +75,7 @@ const HowItWorksSection = () => {
 
                                     {/* Step number */}
                                     <div className="flex items-center justify-between">
-                                        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg`}>
+                                        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-md bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg`}>
                                             <IconComponent className="text-xl sm:text-2xl text-white" />
                                         </div>
                                         <span className="text-3xl sm:text-4xl font-bold text-gray-100">{item.step}</span>

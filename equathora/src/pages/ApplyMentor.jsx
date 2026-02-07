@@ -79,10 +79,10 @@ const ApplyMentor = () => {
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
-                                    className='relative bg-white p-5 rounded-lg shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 flex flex-col gap-3 overflow-hidden group'
+                                    className='relative bg-white p-5 rounded-md shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 flex flex-col gap-3 overflow-hidden group'
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-200`}></div>
-                                    <div className={`relative w-12 h-12 bg-gradient-to-br ${benefit.gradient} rounded-lg flex items-center justify-center text-white shadow-md`}>
+                                    <div className={`relative w-12 h-12 bg-gradient-to-br ${benefit.gradient} rounded-md flex items-center justify-center text-white shadow-md`}>
                                         {benefit.icon}
                                     </div>
                                     <h3 className='relative text-base md:text-lg font-bold'>{benefit.title}</h3>
@@ -118,7 +118,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.4 }}
-                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
+                                className='bg-white rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -128,7 +128,7 @@ const ApplyMentor = () => {
                                     />
                                 </div>
                                 <div className='flex flex-col p-5 gap-3'>
-                                    <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white text-lg shadow-md'>
+                                    <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-md flex items-center justify-center text-white text-lg shadow-md'>
                                         <FaUsers />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Community Mentors</h3>
@@ -151,7 +151,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.5 }}
-                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
+                                className='bg-white rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -161,7 +161,7 @@ const ApplyMentor = () => {
                                     />
                                 </div>
                                 <div className='flex flex-col p-5 gap-3'>
-                                    <div className='w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-lg flex items-center justify-center text-white text-lg shadow-md'>
+                                    <div className='w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-md flex items-center justify-center text-white text-lg shadow-md'>
                                         <FaChalkboardTeacher />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Teachers</h3>
@@ -181,7 +181,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.6 }}
-                                className='bg-white rounded-lg shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col  md:col-span-2 lg:col-span-1 hover:scale-102'
+                                className='bg-white rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col  md:col-span-2 lg:col-span-1 hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -191,7 +191,7 @@ const ApplyMentor = () => {
                                     />
                                 </div>
                                 <div className='flex flex-col p-5 gap-3'>
-                                    <div className='w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center text-white text-lg shadow-md'>
+                                    <div className='w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-md flex items-center justify-center text-white text-lg shadow-md'>
                                         <FaHeart />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Parents</h3>
@@ -238,7 +238,7 @@ const ApplyMentor = () => {
                                     href='https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform'
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    className='bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-4 rounded-lg !font-bold text-base flex items-center justify-center gap-2 no-underline shadow-lg transition-colors duration-200 w-full sm:w-auto'
+                                    className='bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-4 rounded-md !font-bold text-base flex items-center justify-center gap-2 no-underline shadow-lg transition-colors duration-200 w-full sm:w-auto'
                                 >
                                     <FaUsers />
                                     <span>Join the Waitlist</span>

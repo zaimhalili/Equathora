@@ -73,7 +73,7 @@ const Waitlist = () => {
                             <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
                                 <button
                                     onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform', '_blank')}
-                                    className="flex items-center justify-center gap-3 px-12 py-5 bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white text-xl font-bold rounded-xl transition-all w-full cursor-pointer"
+                                    className="flex items-center justify-center gap-3 px-12 py-5 bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white text-xl font-bold rounded-md transition-all w-full cursor-pointer"
                                 >
                                     <span>Join the Waitlist</span>
                                     <svg className="w-5 h-5" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
@@ -157,9 +157,9 @@ const Waitlist = () => {
                             ].map((benefit, index) => (
                                 <div
                                     key={index}
-                                    className="group relative flex flex-col items-start justify-start bg-white rounded-2xl p-8 border border-gray-200 hover:border-[var(--accent-color)]/30 hover:shadow-lg transition-all duration-300"
+                                    className="group relative flex flex-col items-start justify-start bg-white rounded-md p-8 border border-gray-200 hover:border-[var(--accent-color)]/30 hover:shadow-lg transition-all duration-300"
                                 >
-                                    <div className="flex items-center justify-center p-4 bg-[var(--accent-color)]/5 rounded-xl text-[var(--accent-color)] group-hover:bg-[var(--accent-color)]/10 transition-all duration-300">
+                                    <div className="flex items-center justify-center p-4 bg-[var(--accent-color)]/5 rounded-md text-[var(--accent-color)] group-hover:bg-[var(--accent-color)]/10 transition-all duration-300">
                                         <benefit.icon className="text-2xl" />
                                     </div>
                                     <h3 className="flex items-start justify-start text-xl font-bold text-[var(--secondary-color)] pt-6 pb-3">{benefit.title}</h3>
@@ -220,7 +220,7 @@ const Waitlist = () => {
                                     a: 'Only to notify you about launch updates and exclusive offers. We never spam or share your data. Unsubscribe anytime.'
                                 }
                             ].map((faq, index) => (
-                                <div key={index} className="flex flex-col items-start justify-start bg-gray-50 rounded-xl p-8 border border-gray-200 hover:border-[var(--accent-color)]/50 transition-all">
+                                <div key={index} className="flex flex-col items-start justify-start bg-gray-50 rounded-md p-8 border border-gray-200 hover:border-[var(--accent-color)]/50 transition-all">
                                     <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-3">{faq.q}</h3>
                                     <p className="text-[var(--secondary-color)]/70 leading-relaxed">{faq.a}</p>
                                 </div>
@@ -245,7 +245,7 @@ const Waitlist = () => {
                         <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
                             <button
                                 onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform', '_blank')}
-                                className="flex items-center justify-center gap-3 px-12 py-5 bg-white text-[var(--secondary-color)] text-xl font-bold rounded-xl hover:bg-gray-100 transition-all w-full cursor-pointer"
+                                className="flex items-center justify-center gap-3 px-12 py-5 bg-white text-[var(--secondary-color)] text-xl font-bold rounded-md hover:bg-gray-100 transition-all w-full cursor-pointer"
                             >
                                 <span>Secure My Spot</span>
                                 <svg className="w-5 h-5" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">

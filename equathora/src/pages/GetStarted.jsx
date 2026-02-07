@@ -196,7 +196,7 @@ const GetStarted = () => {
                     {currentStep > 0 && (
                         <button
                             onClick={handleBack}
-                            className='p-2 rounded-lg hover:bg-[var(--french-gray)] transition-colors duration-200 text-[var(--secondary-color)] cursor-pointer'
+                            className='p-2 rounded-md hover:bg-[var(--french-gray)] transition-colors duration-200 text-[var(--secondary-color)] cursor-pointer'
                             aria-label="Go back"
                         >
                             <FaArrowLeft className='text-lg' />
@@ -216,7 +216,7 @@ const GetStarted = () => {
                 </div>
 
                 {getFeedbackMessage() && (
-                    <div className='px-4 py-2 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm font-medium text-center'>
+                    <div className='px-4 py-2 bg-green-50 border border-green-200 text-green-700 rounded-md text-sm font-medium text-center'>
                         {getFeedbackMessage()}
                     </div>
                 )}
@@ -249,7 +249,7 @@ const GetStarted = () => {
                             <button
                                 key={option.id}
                                 onClick={() => handleSelection(option.id)}
-                                className={`group flex items-center gap-2.5 p-2.5 rounded-lg border-2 transition-colors duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
+                                className={`group flex items-center gap-2.5 p-2.5 rounded-md border-2 transition-colors duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
                                     ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
                                     : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                     }`}
@@ -280,7 +280,7 @@ const GetStarted = () => {
                                 <button
                                     key={option.id}
                                     onClick={() => handleSelection(option.id)}
-                                    className={`flex flex-row items-center justify-center gap-2 px-3 py-2 rounded-lg border-2 transition-colors duration-200 cursor-pointer ${isSelected
+                                    className={`flex flex-row items-center justify-center gap-2 px-3 py-2 rounded-md border-2 transition-colors duration-200 cursor-pointer ${isSelected
                                         ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
                                         : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                         }`}

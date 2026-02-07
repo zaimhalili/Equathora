@@ -99,7 +99,7 @@ const Notifications = () => {
         <div className="px-6 md:px-16 lg:px-24 py-6">
           <div className="flex flex-col gap-5 md:gap-6">
             {notifications.length === 0 ? (
-              <div className="bg-white rounded-xl p-16 text-center gap-20">
+              <div className="bg-white rounded-md p-16 text-center gap-20">
                 <h3 className="text-2xl font-bold text-[var(--secondary-color)] mb-2 font-['Sansation']">
                   No notifications
                 </h3>
@@ -111,7 +111,7 @@ const Notifications = () => {
               notifications.map(notification => (
                 <div
                   key={notification.id}
-                  className={`cursor-pointer rounded-lg p-4 md:p-5 flex items-start md:items-center gap-3 md:gap-5 transition-all border-l-4 bg-white hover:bg-gray-50 ${!notification.read ? 'border-[var(--accent-color)] shadow-md' : 'border-gray-200 shadow-sm'}`}
+                  className={`cursor-pointer rounded-md p-4 md:p-5 flex items-start md:items-center gap-3 md:gap-5 transition-all border-l-4 bg-white hover:bg-gray-50 ${!notification.read ? 'border-[var(--accent-color)] shadow-md' : 'border-gray-200 shadow-sm'}`}
                   onClick={() => handleSelectNotification(notification.id)}
                 >
                   <input

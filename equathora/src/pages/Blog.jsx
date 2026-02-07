@@ -39,7 +39,7 @@ const Blog = () => {
                                 <img src={Journey} alt="" className='rounded-md w-full object-cover h-40 max-h-40' />
                                 <p className='text-md text-left lg:text-lg cursor-pointer font-[Sansation] text-[var(--secondary-color)] font-bold'>Join our waitlist to receive weekly updates</p>
                                 <p className='text-[var(--mid-main-secondary)] font-[Sansation]'>Zaim ⋅ Recently</p>
-                            </Link>
+                            </Link> 
 
                             {/* Blog Post Cards */}
                             {blogPosts.map(post => (

@@ -21,7 +21,7 @@ const ReputationBadge = ({
     const progressPercent = Math.min(100, (value % 100));
 
     return (
-        <div className="bg-white/95 border border-[rgba(43,45,66,0.1)] rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] p-4 flex flex-col gap-3 w-full">
+        <div className="bg-white/95 border border-[rgba(43,45,66,0.1)] rounded-md shadow-[0_10px_25px_rgba(0,0,0,0.08)] p-4 flex flex-col gap-3 w-full">
             <div className="flex items-start justify-between">
                 <div>
                     <p className="text-xs uppercase tracking-widest text-[var(--french-gray)] font-semibold">Reputation</p>
