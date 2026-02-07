@@ -149,7 +149,7 @@ export default function App() {
   return (
     <>
       <PageTitleUpdater />
-      <OverflowChecker />
+      {/* <OverflowChecker /> */}
       <Suspense fallback={<LoadingSpinner />}>
         <div id="main-content" tabIndex={-1} className="outline-none">
           <Routes>

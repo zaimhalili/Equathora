@@ -127,6 +127,16 @@ export async function createNotification({ type, title, message, link = null, me
 }
 
 // Helper functions for specific notification types
+export async function notifyWelcome(username = 'there') {
+    return createNotification({
+        type: NOTIFICATION_TYPES.SYSTEM,
+        title: `Welcome to Equathora, ${username}! 🎉`,
+        message: 'We\'re excited to have you here! Start solving problems to build your streak and unlock achievements. Check out the Help Center if you need guidance.',
+        link: '/dashboard',
+        metadata: { isWelcome: true },
+    });
+}
+
 export async function notifyAchievementUnlocked(achievementTitle, achievementDescription) {
     return createNotification({
         type: NOTIFICATION_TYPES.ACHIEVEMENT,
@@ -522,4 +532,140 @@ export function markAchievementSeen(achievementId) {
     } catch {
         // noop
     }
+}
+// ============================================================================
+// ADMIN FUNCTIONS (for sending notifications to all users)
+// ============================================================================
+
+/**
+ * Check if the current user is an admin.
+ * Queries the profiles table for role = 'admin'.
+ */
+export async function isCurrentUserAdmin() {
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return false;
+
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', session.user.id)
+            .single();
+
+        if (error) throw error;
+        return data?.role === 'admin';
+    } catch (error) {
+        console.error('Error checking admin status:', error);
+        return false;
+    }
+}
+
+/**
+ * ADMIN ONLY: Send a notification to all users in the platform.
+ * This function checks if the current user is an admin before proceeding.
+ * 
+ * ⚠️ SECURITY: This function verifies admin status on BOTH frontend and database level (RLS).
+ * 
+ * Usage from browser console (only works if you're an admin):
+ * const { notifyAllUsers } = await import('./src/lib/notificationService');
+ * await notifyAllUsers({
+ *   type: 'system',
+ *   title: 'Platform Update',
+ *   message: 'We've added new features! Check them out.',
+ *   link: '/systemupdates'
+ * });
+ */
+export async function notifyAllUsers({ type, title, message, link = null, metadata = {} }) {
+    try {
+        // Frontend admin check
+        const isAdmin = await isCurrentUserAdmin();
+        if (!isAdmin) {
+            return {
+                success: false,
+                message: '🚫 Access denied. You must be an admin to send notifications to all users.',
+                count: 0
+            };
+        }
+
+        // Get all user profiles
+        const { data: profiles, error } = await supabase
+            .from('profiles')
+            .select('id');
+
+        if (error) throw error;
+        if (!profiles || profiles.length === 0) {
+            return { success: false, message: 'No users found', count: 0 };
+        }
+
+        // Create notification for each user
+        const notifications = profiles.map(profile => ({
+            user_id: profile.id,
+            type,
+            title,
+            message,
+            link: link || NOTIFICATION_ROUTES[type] || null,
+            metadata,
+            read: false,
+            created_at: new Date().toISOString(),
+        }));
+
+        // Batch insert all notifications
+        // Note: RLS policy will verify admin status again at database level
+        const { data, error: insertError } = await supabase
+            .from('user_notifications')
+            .insert(notifications)
+            .select();
+
+        if (insertError) {
+            // If RLS blocks it, the error message will indicate permission denied
+            if (insertError.message?.includes('permission') || insertError.message?.includes('policy')) {
+                return {
+                    success: false,
+                    message: '🚫 Database security blocked this action. You must be an admin.',
+                    count: 0
+                };
+            }
+            throw insertError;
+        }
+
+        return {
+            success: true,
+            message: `✅ Successfully sent notification to ${profiles.length} users`,
+            count: profiles.length
+        };
+    } catch (error) {
+        console.error('Error sending notification to all users:', error);
+        return {
+            success: false,
+            message: `❌ Error: ${error.message}`,
+            count: 0
+        };
+    }
+}
+
+/**
+ * ADMIN ONLY: Send a system announcement to all users.
+ * Convenience wrapper for notifyAllUsers for system messages.
+ * 
+ * ⚠️ SECURITY: Requires admin role. Verified at both frontend and database level.
+ * 
+ * Usage from browser console (after opening any page on the site):
+ * // First, get access to the function
+ * const { notifySystemAnnouncement } = await import('./src/lib/notificationService');
+ * 
+ * // Then send the announcement (only works if you're an admin)
+ * const result = await notifySystemAnnouncement(
+ *   'New Feature: Dark Mode',
+ *   'We've added dark mode! Toggle it in your settings.'
+ * );
+ * console.log(result);
+ */
+export async function notifySystemAnnouncement(title, message, link = '/systemupdates') {
+    return notifyAllUsers({
+        type: NOTIFICATION_TYPES.SYSTEM,
+        title,
+        message,
+        link,
+        metadata: { isAnnouncement: true }
+    });
 }

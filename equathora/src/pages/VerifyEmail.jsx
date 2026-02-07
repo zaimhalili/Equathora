@@ -6,6 +6,7 @@ import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
+import { notifyWelcome } from '../lib/notificationService';
 
 const VerifyEmail = () => {
     const [email, setEmail] = useState('');
@@ -41,6 +42,20 @@ const VerifyEmail = () => {
                 setError(verifyError.message || 'Verification failed. Please check your code and try again.');
                 setLoading(false);
                 return;
+            }
+
+            // Send welcome notification after successful verification
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session?.user) {
+                    const username = session.user.user_metadata?.username || 
+                                   session.user.user_metadata?.full_name ||
+                                   session.user.email?.split('@')[0] || 
+                                   'there';
+                    await notifyWelcome(username);
+                }
+            } catch (err) {
+                console.error('Failed to send welcome notification:', err);
             }
 
             setMessage('Email verified successfully! Redirecting...');
