@@ -1,6 +1,6 @@
 .special-events {
     padding: 2rem;
-    border-radius: 8px;
+    border-radius: 6px;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
     width: 100%;
     font-family: 'Sansation', sans-serif;
@@ -31,7 +31,7 @@
     color: white;
     padding: 1.5rem;
     margin-bottom: 1rem;
-    border-radius: 8px;
+    border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     cursor: default;
     opacity: 0;
@@ -77,7 +77,7 @@
     color: white;
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-family: 'Sansation', sans-serif;

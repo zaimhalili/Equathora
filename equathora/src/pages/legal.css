@@ -11,7 +11,7 @@
 
 .legal-content {
     background: #fff;
-    border-radius: 16px;
+    border-radius: 6px;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
     max-width: 700px;
     width: 90%;
@@ -66,7 +66,7 @@
     border-collapse: collapse;
     background: white;
     border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    border-radius: 6px;
     overflow: hidden;
 }
 
@@ -98,7 +98,7 @@
 .cookie-table code {
     background: #f3f4f6;
     padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    border-radius: 6px;
     font-family: 'Monaco', 'Courier New', monospace;
     font-size: 0.8125rem;
     color: var(--accent-color);

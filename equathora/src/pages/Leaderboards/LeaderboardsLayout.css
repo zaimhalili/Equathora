@@ -27,7 +27,7 @@
     font-family: 'Sansation', Arial, Helvetica, sans-serif;
     font-size: clamp(0.85rem, 2vw, 0.95rem);
     padding: 0.6rem 1.2rem;
-    border-radius: 8px;
+    border-radius: 6px;
     font-weight: 600;
     text-align: center;
     transition: all 0.3s ease;

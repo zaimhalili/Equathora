@@ -81,7 +81,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    border-radius: 8px;
+    border-radius: 6px;
     margin: 30px 0 30px 0;
     border: 1px solid var(--secondary-color);
     transition: 0.1s ease-out;

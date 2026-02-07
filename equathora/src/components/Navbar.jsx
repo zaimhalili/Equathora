@@ -200,6 +200,12 @@ const Navbar = () => {
       image: GuestAvatar
     },
     {
+      to: '/settings',
+      text: "Settings",
+      description: "Manage your account and preferences",
+      image: Settings
+    },
+    {
       text: "Sign Out",
       description: "Securely log out of your account",
       image: LogoutIMG,

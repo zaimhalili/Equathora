@@ -27,7 +27,7 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    border-radius: 8px;
+    border-radius: 6px;
     transition: all 0.2s ease;
 }
 
@@ -322,7 +322,7 @@
 
 .sidebar-content::-webkit-scrollbar-thumb {
     background: var(--french-gray);
-    border-radius: 3px;
+    border-radius: 6px;
 }
 
 .sidebar-content::-webkit-scrollbar-thumb:hover {
