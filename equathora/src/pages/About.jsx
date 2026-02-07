@@ -241,12 +241,12 @@ const About = () => {
 
                                 {/* Right Column - Why Red */}
                                 <ScrollReveal direction="right" delay={0.2} className="flex-1">
-                                    <div className="flex flex-col" style={{ gap: '1.5rem' }}>
-                                        <h3 className="text-2xl font-bold text-[var(--secondary-color)]">
+                                    <div className="flex flex-col gap-6">
+                                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--secondary-color)]">
                                             Why <span className="text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">Red?</span>
                                         </h3>
 
-                                        <div className="flex flex-col md:flex-row gap-4">
+                                        <div className="flex flex-col md:flex-row gap-6">
                                             <motion.div
                                                 initial={{ opacity: 0, x: 20 }}
                                                 whileInView={{ opacity: 1, x: 0 }}
@@ -337,12 +337,12 @@ const About = () => {
                         <div className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw]">
                             <ScrollReveal direction="up">
                                 <div className="flex flex-col items-center justify-center w-full pb-12">
-                                    <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2">
-                                        What Equathora Does{' '}
+                                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--secondary-color)] pb-4">
+                                        What Equathora {' '}
                                         <span className="text-[var(--secondary-color)] relative inline-block">
-                                            Best
+                                            Does Best
                                             <motion.svg
-                                                className="absolute bottom-1 left-0 w-full"
+                                                className="absolute -bottom-0 left-0 w-full"
                                                 viewBox="0 0 200 8"
                                                 initial={{ pathLength: 0 }}
                                                 whileInView={{ pathLength: 1 }}
@@ -353,13 +353,13 @@ const About = () => {
                                                     d="M0 4 Q50 0 100 4 Q150 8 200 4"
                                                     fill="none"
                                                     stroke="var(--secondary-color)"
-                                                    strokeWidth="5"
+                                                    strokeWidth="4"
                                                     strokeLinecap="round"
                                                 />
                                             </motion.svg>
                                         </span>
                                     </h2>
-                                    <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-3xl text-center pt-4">
+                                    <p className="text-sm sm:text-xl md:text-2xl font-light text-[var(--secondary-color)] max-w-3xl text-center">
                                         Practice-first learning designed to build real mathematical confidence. The platform focuses on clarity, progression, and measurable improvement.
                                     </p>
                                 </div>
@@ -424,18 +424,18 @@ const About = () => {
                                 <ScrollReveal direction="right" className="lg:w-1/2">
                                     <div className="flex items-center gap-3 pb-6">
                                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--secondary-color)]">
-                                            Our <span className="text-[var(--accent-color)]">Mission</span>
+                                            Our <span className="text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">Mission</span>
                                         </h2>
                                     </div>
-                                    <p className="text-base md:text-lg text-gray-700 leading-relaxed pb-6">
-                                        Transform how students approach mathematics, not as a subject to fear, but as a <span className="font-bold text-[var(--accent-color)]">journey of discovery</span>.
+                                    <p className="text-sm sm:text-xl md:text-2xl font-light text-[var(--secondary-color)]">
+                                        Transform how students approach mathematics, not as a subject to fear, but as a <span className="font-bold text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">journey of discovery</span>.
                                     </p>
-                                    <p className="text-base md:text-lg text-gray-700 leading-relaxed pb-6">
+                                    <p className="text-sm sm:text-xl md:text-2xl font-light text-[var(--secondary-color)]">
                                         We provide an interactive platform where learners build <span className="font-bold text-[var(--secondary-color)]">confidence through step-by-step guidance</span> and achievement-based motivation.
                                     </p>
                                     <div className="flex flex-wrap gap-3 pt-8">
                                         <motion.div
-                                            className="cursor-default pointer-events-none flex items-center gap-2 bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-5 py-3 rounded-xl shadow-lg"
+                                            className="cursor-default pointer-events-none flex items-center gap-2 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white px-5 py-3 rounded-xl shadow-lg"
                                         >
                                             <FaGraduationCap className="text-xl" />
                                             <span className="font-semibold">Student-First</span>
@@ -444,7 +444,7 @@ const About = () => {
                                             className="cursor-default pointer-events-none flex items-center gap-2 bg-white border-2 border-[var(--accent-color)] text-[var(--accent-color)] px-5 py-3 rounded-xl shadow-lg"
                                         >
                                             <FaRocket className="text-xl" />
-                                            <span className="font-semibold">Growth-Oriented</span>
+                                            <span className="font-semibold text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">Growth-Oriented</span>
                                         </motion.div>
                                     </div>
                                 </ScrollReveal>
@@ -457,7 +457,7 @@ const About = () => {
                         <div className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] flex flex-col justify-center items-center">
                             <ScrollReveal direction="up">
                                 <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--secondary-color)] pb-16 text-center">
-                                    What Makes Us <span className="text-[var(--accent-color)]">Different</span>
+                                    What Makes Us <span className="text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">Different</span>
                                 </h2>
                             </ScrollReveal>
 
@@ -473,7 +473,7 @@ const About = () => {
                                         <div className="relative z-10 flex flex-col justify-between h-full">
                                             <motion.div
                                                 whileHover={{ rotate: 360, scale: 1.2 }}
-                                                transition={{ duration: 0.8 }}
+                                                transition={{ type: 'spring', stiffness: 300, duration: 0.8 }}
                                                 className="flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl"
                                             >
                                                 <FaCode className="text-white text-3xl" />
@@ -535,7 +535,8 @@ const About = () => {
                                     >
                                         <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full group-hover:scale-125 transition-transform duration-500"></div>
                                         <motion.div
-                                            whileHover={{ y: -5 }}
+                                            whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
+                                            transition={{ duration: 0.5 }}
                                             className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl relative z-10 shadow-lg"
                                         >
                                             <FaUsers className="text-white text-3xl" />
@@ -667,10 +668,10 @@ const About = () => {
                                         viewport={{ once: true }}
                                         transition={{ duration: 0.6 }}
                                     >
-                                        <div className="flex justify-center items-center py-2 bg-white/20 backdrop-blur-sm rounded-full">
+                                        <div className="flex justify-center items-center px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center bg-white/20 backdrop-blur-sm rounded-full">
                                             <span className="text-sm font-bold text-white">Join 300+ Students</span>
                                         </div>
-                                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black pb-6 leading-tight">
+                                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white py-6">
                                             Ready to Master <br />
                                             <span className="text-[linear-gradient(360deg,var(--accent-color),var(dark-accent-color)]">Mathematics?</span>
                                         </h2>
@@ -696,11 +697,16 @@ const About = () => {
                                             whileTap={{ scale: 0.95 }}
                                         >
                                             <Link
-                                                to="/signup"
-                                                className="inline-flex items-center gap-3 !bg-[var(--dark-accent-color)] !text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-xl transition-all duration-300 group"
+                                                to="/learn"
+                                                className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1 w-fit"
                                             >
                                                 Get Started Free
-                                                <FaArrowRight className="group-hover:translate-x-2 transition-transform" />
+                                                <motion.span
+                                                    animate={{ x: [0, 4, 0] }}
+                                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                                >
+                                                    <FaArrowRight className="text-xs sm:text-sm" />
+                                                </motion.span>
                                             </Link>
                                         </motion.div>
                                     </motion.div>
