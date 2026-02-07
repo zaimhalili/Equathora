@@ -187,8 +187,8 @@ const About = () => {
 
                     {/* Origin Story */}
                     <section className="w-full flex justify-center" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay' }}>
-                        <div className="w-full flex flex-col max-w-[1500px] px-[4vw] xl:px-[6vw] py-16 gap-12">
-                            <div className="flex flex-col" style={{ gap: '3rem' }}>
+                        <div className="w-full flex flex-col max-w-[1500px] px-[4vw] xl:px-[6vw] md:py-16 py-6 gap-12">
+                            <div className="flex flex-col gap-12">
                                 {/* Left Column - Name Breakdown */}
                                 <ScrollReveal direction="left" className="flex-1 order-2 max-w-[1500px]">
                                     <div className="flex flex-col lg:flex-row gap-4">
@@ -204,7 +204,7 @@ const About = () => {
                                                 className="p-6"
                                             >
                                                 <div className="text-3xl font-black text-[var(--secondary-color)]">Equat-</div>
-                                                <p className="text-gray-700 leading-relaxed">
+                                                <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light text-[var(--secondary-color)]">
                                                     From <span className="font-bold">"Equation"</span> — the foundation of mathematical thinking and problem-solving
                                                 </p>
                                             </motion.div>
@@ -217,7 +217,7 @@ const About = () => {
                                                 className="p-6"
                                             >
                                                 <div className="text-3xl font-black text-[var(--secondary-color)]">-hora</div>
-                                                <p className="text-gray-700 leading-relaxed">
+                                                <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light text-[var(--secondary-color)]">
                                                     Greek <span className="font-bold">"ὥρα"</span> meaning time and hour, representing dedication to continuous learning
                                                 </p>
                                             </motion.div>
@@ -230,7 +230,7 @@ const About = () => {
                                                 className="p-6"
                                             >
                                                 <div className="text-3xl font-black text-[var(--secondary-color)]">Equathora</div>
-                                                <p className="text-gray-700 leading-relaxed">
+                                                <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light text-[var(--secondary-color)]">
                                                     Time invested in mastering mathematical equations
                                                 </p>
                                             </motion.div>
@@ -243,21 +243,29 @@ const About = () => {
                                 <ScrollReveal direction="right" delay={0.2} className="flex-1">
                                     <div className="flex flex-col" style={{ gap: '1.5rem' }}>
                                         <h3 className="text-2xl font-bold text-[var(--secondary-color)]">
-                                            Why <span className="text-[var(--accent-color)]">Red?</span>
+                                            Why <span className="text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">Red?</span>
                                         </h3>
 
-                                        <div className="flex">
+                                        <div className="flex flex-col md:flex-row gap-4">
                                             <motion.div
                                                 initial={{ opacity: 0, x: 20 }}
                                                 whileInView={{ opacity: 1, x: 0 }}
                                                 viewport={{ once: true }}
                                                 transition={{ delay: 0.1 }}
-                                                className="flex gap-4 flex-col"
+                                                className="flex gap-4 md:flex-col"
                                             >
-                                                <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
-                                                    <FaBolt className="text-white text-xl" />
+                                                <div className="flex items-center justify-center w-14 md:h-14  rounded-xl flex-shrink-0">
+                                                    <svg className="w-5 h-5" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                                        <defs>
+                                                            <linearGradient id="icon-gradient-bolt" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                                <stop offset="0%" stopColor="var(--dark-accent-color)" />
+                                                                <stop offset="100%" stopColor="var(--accent-color)" />
+                                                            </linearGradient>
+                                                        </defs>
+                                                        <path fill="url(#icon-gradient-bolt)" d="M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288H175.5L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7H272.5L349.4 44.6z" />
+                                                    </svg>
                                                 </div>
-                                                <div className="flex flex-col">
+                                                <div className="flex flex-col border-l-4 border-(--accent-color) md:border-none pl-4 md:pl-0">
                                                     <h4 className="text-lg font-bold text-[var(--secondary-color)]" style={{ marginBottom: '0.25rem' }}>Focus</h4>
                                                     <p className="text-gray-600 leading-relaxed">
                                                         Red naturally draws attention to critical concepts and steps in your learning path
@@ -270,12 +278,20 @@ const About = () => {
                                                 whileInView={{ opacity: 1, x: 0 }}
                                                 viewport={{ once: true }}
                                                 transition={{ delay: 0.2 }}
-                                                className="flex gap-4 flex-col"
+                                                className="flex gap-4 md:flex-col"
                                             >
-                                                <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
-                                                    <FaFire className="text-white text-xl" />
+                                                <div className="flex items-center justify-center w-14 md:h-14  rounded-xl flex-shrink-0">
+                                                    <svg className="w-5 h-5" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                                        <defs>
+                                                            <linearGradient id="icon-gradient-fire" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                                <stop offset="0%" stopColor="var(--dark-accent-color)" />
+                                                                <stop offset="100%" stopColor="var(--accent-color)" />
+                                                            </linearGradient>
+                                                        </defs>
+                                                        <path fill="url(#icon-gradient-fire)" d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 53.8 77.7 84c11-14.4 23.5-30.1 37-42.9c7.9-7.4 20.1-7.4 28 .1c34.6 33 63.9 76.6 84.5 118c20.3 40.8 33.8 82.5 33.8 111.9C448 404.2 348.2 512 224 512C98.4 512 0 404.1 0 276.5c0-38.4 17.8-85.3 45.4-131.7C73.3 97.7 112.7 48.6 159.3 5.4zM225.7 416c25.3 0 47.7-7 68.8-21c42.1-29.4 53.4-88.2 28.1-134.4c-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5c-16.5-21-46-58.5-62.8-79.8c-6.3-8-18.3-8.1-24.7-.1c-33.8 42.5-50.8 69.3-50.8 99.4C112 375.4 162.6 416 225.7 416z" />
+                                                    </svg>
                                                 </div>
-                                                <div className="flex flex-col">
+                                                <div className="flex flex-col border-l-4 border-(--accent-color) md:border-none pl-4 md:pl-0">
                                                     <h4 className="text-lg font-bold text-[var(--secondary-color)]" style={{ marginBottom: '0.25rem' }}>Urgency</h4>
                                                     <p className="text-gray-600 leading-relaxed">
                                                         It signals importance, from red ink in manuscripts to teacher corrections
@@ -288,12 +304,20 @@ const About = () => {
                                                 whileInView={{ opacity: 1, x: 0 }}
                                                 viewport={{ once: true }}
                                                 transition={{ delay: 0.3 }}
-                                                className="flex gap-4 flex-col"
+                                                className="flex gap-4 md:flex-col"
                                             >
-                                                <div className="flex items-center justify-center w-14 h-14 bg-[var(--secondary-color)] rounded-xl flex-shrink-0">
-                                                    <FaStar className="text-white text-xl" />
+                                                <div className="flex items-center justify-center w-14 md:h-14  rounded-xl flex-shrink-0">
+                                                    <svg className="w-5 h-5" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
+                                                        <defs>
+                                                            <linearGradient id="icon-gradient-star" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                                <stop offset="0%" stopColor="var(--dark-accent-color)" />
+                                                                <stop offset="100%" stopColor="var(--accent-color)" />
+                                                            </linearGradient>
+                                                        </defs>
+                                                        <path fill="url(#icon-gradient-star)" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
+                                                    </svg>
                                                 </div>
-                                                <div className="flex flex-col">
+                                                <div className="flex flex-col border-l-4 border-(--accent-color) md:border-none pl-4 md:pl-0">
                                                     <h4 className="text-lg font-bold text-[var(--secondary-color)]" style={{ marginBottom: '0.25rem' }}>Clarity</h4>
                                                     <p className="text-gray-600 leading-relaxed">
                                                         Marks decisive moments of mathematical insight and understanding
@@ -438,181 +462,194 @@ const About = () => {
                             </ScrollReveal>
 
                             {/* Bento Grid Layout */}
-                            <div className="w-full flex flex-wrap" style={{ gap: '1rem' }}>
-                                {/* Large feature - Math Editor */}
-                                <ScrollReveal direction="left" delay={0} style={{ flex: '1 1 calc(50% - 0.5rem)', minWidth: '300px', minHeight: '360px' }}>
+                            <div className="w-full flex flex-wrap gap-4">
+                                {/* Row 1: Math Editor + Smart Hints */}
+                                <ScrollReveal direction="left" delay={0} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                                     <motion.div
                                         whileHover={{ scale: 1.02 }}
-                                        className="group relative bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-3xl overflow-hidden shadow-2xl cursor-pointer flex flex-col justify-between" style={{ padding: '2rem', height: '100%' }}
+                                        className="group relative bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-3xl overflow-hidden shadow-2xl cursor-pointer flex flex-col justify-between p-8 h-full"
                                     >
                                         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10"></div>
-                                        <div className="relative z-10 flex flex-col justify-between" style={{ height: '100%' }}>
+                                        <div className="relative z-10 flex flex-col justify-between h-full">
                                             <motion.div
                                                 whileHover={{ rotate: 360, scale: 1.2 }}
                                                 transition={{ duration: 0.8 }}
-                                                className="flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex-1" style={{ marginBottom: '1rem' }}
+                                                className="flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl"
                                             >
                                                 <FaCode className="text-white text-3xl" />
                                             </motion.div>
                                             <div>
-                                                <h3 className="text-2xl md:text-3xl font-black text-white" style={{ marginBottom: '0.75rem' }}>Math Editor</h3>
+                                                <h3 className="text-2xl md:text-3xl font-black text-white">Math Editor</h3>
                                                 <p className="text-white/90 text-sm md:text-base leading-relaxed">
                                                     Natural LaTeX input with real-time preview. Write equations as easily as you think them.
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="absolute" style={{ bottom: '-2.5rem', right: '-2.5rem', width: '10rem', height: '10rem', background: 'rgba(255,255,255,0.1)', borderRadius: '50%', filter: 'blur(3rem)' }}></div>
                                     </motion.div>
                                 </ScrollReveal>
 
-                                {/* Smart Hints */}
-                                <ScrollReveal direction="up" delay={0.1} style={{ flex: '1 1 calc(50% - 0.5rem)', minWidth: '300px', minHeight: '180px' }}>
+                                <ScrollReveal direction="up" delay={0.1} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                                     <motion.div
                                         whileHover={{ y: -8 }}
-                                        className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[var(--accent-color)]/30 relative overflow-hidden" style={{ padding: '1.5rem', height: '100%' }}
+                                        className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[var(--accent-color)]/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                     >
                                         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--accent-color)]/10 to-transparent rounded-bl-full"></div>
                                         <motion.div
                                             whileHover={{ scale: 1.1, rotate: 12 }}
-                                            className="w-12 h-12 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-xl flex items-center justify-center pb-4 relative z-10"
+                                            className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-2xl relative z-10"
                                         >
-                                            <FaLightbulb className="text-white text-xl" />
+                                            <FaLightbulb className="text-white text-3xl" />
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-2 group-hover:text-[var(--accent-color)] transition-colors">Smart Hints</h3>
-                                        <p className="text-sm text-gray-600 leading-relaxed">Progressive guidance that adapts to your level</p>
+                                        <div>
+                                            <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-[var(--accent-color)] transition-colors">Smart Hints</h3>
+                                            <p className="text-sm md:text-base text-gray-600 leading-relaxed">Progressive guidance that adapts to your level</p>
+                                        </div>
                                     </motion.div>
                                 </ScrollReveal>
 
-                                {/* Achievements */}
-                                <ScrollReveal direction="right" delay={0.15} style={{ flex: '1 1 calc(33.333% - 0.67rem)', minWidth: '250px', minHeight: '180px' }}>
+                                {/* Row 2: Achievements + Mentorship + (Leaderboards + Progress Analytics) */}
+                                <ScrollReveal direction="right" delay={0.15} className="w-full md:w-[calc(33.333%-0.67rem)] min-h-[360px]">
                                     <motion.div
                                         whileHover={{ scale: 1.05 }}
-                                        className="group bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden" style={{ padding: '1.5rem', height: '100%' }}
+                                        className="group bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                     >
                                         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
                                         <motion.div
                                             whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
                                             transition={{ duration: 0.5 }}
-                                            className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center pb-4 relative z-10"
+                                            className="flex items-center justify-center w-16 h-16 bg-white/30 backdrop-blur-sm rounded-2xl relative z-10"
                                         >
-                                            <FaRocket className="text-white text-xl" />
+                                            <FaRocket className="text-white text-3xl" />
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-white pb-2 relative z-10">Achievements</h3>
-                                        <p className="text-white/90 text-sm leading-relaxed relative z-10">Track progress with meaningful milestones</p>
-                                    </motion.div>
-                                </ScrollReveal>
-
-                                {/* Mentorship - Tall */}
-                                <ScrollReveal direction="left" delay={0.2} style={{ flex: '1 1 calc(33.333% - 0.67rem)', minWidth: '250px', minHeight: '360px' }}>
-                                    <motion.div
-                                        whileHover={{ scale: 1.02 }}
-                                        className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[var(--accent-color)]/50 flex flex-col justify-between relative overflow-hidden" style={{ padding: '1.5rem', height: '100%' }}
-                                    >
-                                        <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full group-hover:scale-125 transition-transform duration-500"></div>
-                                        <div className="relative z-10">
-                                            <motion.div
-                                                whileHover={{ y: -5 }}
-                                                className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center pb-6 shadow-lg"
-                                            >
-                                                <FaUsers className="text-white text-2xl" />
-                                            </motion.div>
-                                            <h3 className="text-2xl font-bold text-[var(--secondary-color)] pb-3 group-hover:text-[var(--accent-color)] transition-colors">Mentorship</h3>
-                                            <p className="text-gray-600 leading-relaxed">Expert support when you need it most. Real guidance from experienced math educators.</p>
+                                        <div>
+                                            <h3 className="text-2xl md:text-3xl font-black text-white relative z-10">Achievements</h3>
+                                            <p className="text-white/90 text-sm md:text-base leading-relaxed relative z-10">Track progress with meaningful milestones</p>
                                         </div>
                                     </motion.div>
                                 </ScrollReveal>
 
-                                {/* 200+ Problems */}
-                                <ScrollReveal direction="up" delay={0.25} style={{ flex: '1 1 calc(33.333% - 0.67rem)', minWidth: '250px', minHeight: '180px' }}>
+                                <ScrollReveal direction="left" delay={0.2} className="w-full md:w-[calc(33.333%-0.67rem)] min-h-[360px]">
+                                    <motion.div
+                                        whileHover={{ scale: 1.02 }}
+                                        className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[var(--accent-color)]/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
+                                    >
+                                        <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full group-hover:scale-125 transition-transform duration-500"></div>
+                                        <motion.div
+                                            whileHover={{ y: -5 }}
+                                            className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl relative z-10 shadow-lg"
+                                        >
+                                            <FaUsers className="text-white text-3xl" />
+                                        </motion.div>
+                                        <div>
+                                            <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-[var(--accent-color)] transition-colors">Mentorship</h3>
+                                            <p className="text-sm md:text-base text-gray-600 leading-relaxed">Expert support when you need it most. Real guidance from experienced math educators.</p>
+                                        </div>
+                                    </motion.div>
+                                </ScrollReveal>
+
+                                {/* Leaderboards + Progress Analytics column */}
+                                <div className="w-full md:w-[calc(33.333%-0.67rem)] flex flex-col gap-4 min-h-[360px]">
+                                    <ScrollReveal direction="right" delay={0.3} className="flex-1">
+                                        <motion.div
+                                            whileHover={{ scale: 1.05 }}
+                                            className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                        >
+                                            <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 group-hover:from-green-500/10 group-hover:to-emerald-500/10 transition-all duration-300"></div>
+                                            <motion.div
+                                                whileHover={{ rotate: 360, scale: 1.2 }}
+                                                transition={{ duration: 0.6 }}
+                                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl relative z-10 shadow-md"
+                                            >
+                                                <FaTrophy className="text-white text-3xl" />
+                                            </motion.div>
+                                            <div>
+                                                <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-green-600 transition-colors relative z-10">Leaderboards</h3>
+                                                <p className="text-sm md:text-base text-gray-600 leading-relaxed relative z-10">Compete globally, grow together</p>
+                                            </div>
+                                        </motion.div>
+                                    </ScrollReveal>
+
+                                    <ScrollReveal direction="left" delay={0.35} className="flex-1">
+                                        <motion.div
+                                            whileHover={{ y: -8 }}
+                                            className="group bg-gradient-to-br from-indigo-500 to-purple-500 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                        >
+                                            <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
+                                            <motion.div
+                                                whileHover={{ scale: 1.15, rotate: 15 }}
+                                                className="flex items-center justify-center w-16 h-16 bg-white/30 backdrop-blur-sm rounded-2xl relative z-10"
+                                            >
+                                                <FaChartLine className="text-white text-3xl" />
+                                            </motion.div>
+                                            <div>
+                                                <h3 className="text-2xl md:text-3xl font-black text-white relative z-10">Progress Analytics</h3>
+                                                <p className="text-white/90 text-sm md:text-base leading-relaxed relative z-10">Deep insights into your learning journey</p>
+                                            </div>
+                                        </motion.div>
+                                    </ScrollReveal>
+                                </div>
+
+                                {/* Row 3: 200+ Problems + (Study Streaks + Real-time Feedback) */}
+                                <ScrollReveal direction="up" delay={0.25} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                                     <motion.div
                                         whileHover={{ y: -8 }}
-                                        className="group bg-gradient-to-br from-blue-500 to-cyan-400 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden" style={{ padding: '1.5rem', height: '100%' }}
+                                        className="group bg-gradient-to-br from-blue-500 to-cyan-400 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                     >
-                                        <div className="absolute top-0 right-0 text-white/10 text-9xl font-black">200+</div>
+                                        <div className="absolute top-0 right-0 text-white/10 text-[200px] font-black">200+</div>
                                         <motion.div
                                             whileHover={{ scale: 1.15, rotate: -12 }}
-                                            className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center pb-4 relative z-10"
+                                            className="flex items-center justify-center w-16 h-16 bg-white/30 backdrop-blur-sm rounded-2xl relative z-10"
                                         >
-                                            <FaChartLine className="text-white text-xl" />
+                                            <FaChartLine className="text-white text-3xl" />
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-white pb-2 relative z-10">200+ Problems</h3>
-                                        <p className="text-white/90 text-sm leading-relaxed relative z-10">Curated library across many topics</p>
+                                        <div>
+                                            <h3 className="text-2xl md:text-3xl font-black text-white relative z-10">200+ Problems</h3>
+                                            <p className="text-white/90 text-sm md:text-base leading-relaxed relative z-10">Curated library across many topics</p>
+                                        </div>
                                     </motion.div>
                                 </ScrollReveal>
 
-                                {/* Leaderboards */}
-                                <ScrollReveal direction="right" delay={0.3} style={{ flex: '1 1 calc(33.333% - 0.67rem)', minWidth: '250px', minHeight: '180px' }}>
-                                    <motion.div
-                                        whileHover={{ scale: 1.05 }}
-                                        className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-green-400 relative overflow-hidden" style={{ padding: '1.5rem', height: '100%' }}
-                                    >
-                                        <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 group-hover:from-green-500/10 group-hover:to-emerald-500/10 transition-all duration-300"></div>
+                                {/* Study Streaks + Real-time Feedback column */}
+                                <div className="w-full md:w-[calc(50%-0.5rem)] flex flex-col gap-4 min-h-[360px]">
+                                    <ScrollReveal direction="up" delay={0.4} className="flex-1">
                                         <motion.div
-                                            whileHover={{ rotate: 360, scale: 1.2 }}
-                                            transition={{ duration: 0.6 }}
-                                            className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center pb-4 relative z-10 shadow-md"
+                                            whileHover={{ scale: 1.05 }}
+                                            className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                         >
-                                            <FaTrophy className="text-white text-xl" />
+                                            <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-orange-500/10 to-transparent rounded-tl-full"></div>
+                                            <motion.div
+                                                whileHover={{ scale: 1.2, rotate: -15 }}
+                                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl relative z-10 shadow-md"
+                                            >
+                                                <FaFire className="text-white text-3xl" />
+                                            </motion.div>
+                                            <div>
+                                                <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-orange-600 transition-colors relative z-10">Study Streaks</h3>
+                                                <p className="text-sm md:text-base text-gray-600 leading-relaxed relative z-10">Build consistency with daily challenges</p>
+                                            </div>
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-2 group-hover:text-green-600 transition-colors relative z-10">Leaderboards</h3>
-                                        <p className="text-sm text-gray-600 leading-relaxed relative z-10">Compete globally, grow together</p>
-                                    </motion.div>
-                                </ScrollReveal>
+                                    </ScrollReveal>
 
-                                {/* Progress Analytics */}
-                                <ScrollReveal direction="left" delay={0.35} style={{ flex: '1 1 calc(33.333% - 0.67rem)', minWidth: '250px', minHeight: '180px' }}>
-                                    <motion.div
-                                        whileHover={{ y: -8 }}
-                                        className="group bg-gradient-to-br from-indigo-500 to-purple-500 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden" style={{ padding: '1.5rem', height: '100%' }}
-                                    >
-                                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
+                                    <ScrollReveal direction="right" delay={0.45} className="flex-1">
                                         <motion.div
-                                            whileHover={{ scale: 1.15, rotate: 15 }}
-                                            className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center pb-4 relative z-10"
+                                            whileHover={{ y: -8 }}
+                                            className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                                         >
-                                            <FaChartLine className="text-white text-xl" />
+                                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 group-hover:from-blue-500/10 group-hover:to-cyan-500/10 transition-all duration-300"></div>
+                                            <motion.div
+                                                whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
+                                                transition={{ duration: 0.5 }}
+                                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl relative z-10 shadow-md"
+                                            >
+                                                <FaClock className="text-white text-3xl" />
+                                            </motion.div>
+                                            <div>
+                                                <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-blue-600 transition-colors relative z-10">Real-time Feedback</h3>
+                                                <p className="text-sm md:text-base text-gray-600 leading-relaxed relative z-10">Instant validation as you solve</p>
+                                            </div>
                                         </motion.div>
-                                        <h3 className="text-xl font-bold text-white pb-2 relative z-10">Progress Analytics</h3>
-                                        <p className="text-white/90 text-sm leading-relaxed relative z-10">Deep insights into your learning journey</p>
-                                    </motion.div>
-                                </ScrollReveal>
-
-                                {/* Study Streaks */}
-                                <ScrollReveal direction="up" delay={0.4} style={{ flex: '1 1 calc(33.333% - 0.67rem)', minWidth: '250px', minHeight: '180px' }}>
-                                    <motion.div
-                                        whileHover={{ scale: 1.05 }}
-                                        className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-orange-400 relative overflow-hidden" style={{ padding: '1.5rem', height: '100%' }}
-                                    >
-                                        <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-orange-500/10 to-transparent rounded-tl-full"></div>
-                                        <motion.div
-                                            whileHover={{ scale: 1.2, rotate: -15 }}
-                                            className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center pb-4 relative z-10 shadow-md"
-                                        >
-                                            <FaFire className="text-white text-xl" />
-                                        </motion.div>
-                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-2 group-hover:text-orange-600 transition-colors relative z-10">Study Streaks</h3>
-                                        <p className="text-sm text-gray-600 leading-relaxed relative z-10">Build consistency with daily challenges</p>
-                                    </motion.div>
-                                </ScrollReveal>
-
-                                {/* Real-time Feedback */}
-                                <ScrollReveal direction="right" delay={0.45} style={{ flex: '1 1 calc(33.333% - 0.67rem)', minWidth: '250px', minHeight: '180px' }}>
-                                    <motion.div
-                                        whileHover={{ y: -8 }}
-                                        className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-blue-400 relative overflow-hidden" style={{ padding: '1.5rem', height: '100%' }}
-                                    >
-                                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 group-hover:from-blue-500/10 group-hover:to-cyan-500/10 transition-all duration-300"></div>
-                                        <motion.div
-                                            whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
-                                            transition={{ duration: 0.5 }}
-                                            className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center pb-4 relative z-10 shadow-md"
-                                        >
-                                            <FaClock className="text-white text-xl" />
-                                        </motion.div>
-                                        <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-2 group-hover:text-blue-600 transition-colors relative z-10">Real-time Feedback</h3>
-                                        <p className="text-sm text-gray-600 leading-relaxed relative z-10">Instant validation as you solve</p>
-                                    </motion.div>
-                                </ScrollReveal>
+                                    </ScrollReveal>
+                                </div>
                             </div>
                         </div>
                     </section>
