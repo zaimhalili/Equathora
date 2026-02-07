@@ -519,13 +519,13 @@ const Problem = () => {
     const previousStreakData = getStreakData();
     const previousStreak = previousStreakData.current;
     const streakData = updateStreak();
-    
+
     // Show popup if streak was incremented (first solve of the day)
     if (validation.isCorrect && streakData.current > previousStreak) {
       setCurrentStreakValue(streakData.current);
       setShowStreakPopup(true);
     }
-    
+
     try {
       void updateStreakData({
         current_streak: streakData.current,
@@ -559,13 +559,13 @@ const Problem = () => {
 
           // Fire background notifications for each new achievement
           freshlyUnlocked.forEach(a => {
-            void notifyAchievementUnlocked(a.title, a.description).catch(() => {});
+            void notifyAchievementUnlocked(a.title, a.description).catch(() => { });
           });
         }
 
         // Also fire streak milestone notification
         if (streakData.current > previousStreak && [7, 14, 30, 60, 90, 180, 365].includes(streakData.current)) {
-          void notifyStreakMilestone(streakData.current).catch(() => {});
+          void notifyStreakMilestone(streakData.current).catch(() => { });
         }
       } catch {
         // achievement check is non-blocking
