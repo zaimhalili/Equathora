@@ -9,6 +9,8 @@ import MathLiveExample from '../components/MathLiveExample';
 import MathJaxRenderer from '../components/MathJaxRenderer';
 import Timer from '../components/Timer.jsx';
 import ProblemMobileMenu from '../components/ProblemMobileMenu.jsx';
+import StreakPopup from '../components/StreakPopup.jsx';
+import AchievementPopup from '../components/AchievementPopup.jsx';
 import {
   ReportModal,
   HelpModal,
@@ -29,13 +31,23 @@ import {
   addSubmission,
   markProblemCompleted,
   updateStreak,
+  getStreakData,
   recordProblemStats,
   markProblemInProgress,
-  removeProblemFromInProgress
+  removeProblemFromInProgress,
+  getUserStats
 } from '../lib/progressStorage';
 import { validateAnswer } from '../lib/answerValidation';
 import { recordSubmission, updateStreakData } from '../lib/databaseService';
 import { validateSteps } from '../utils/mathNetService';
+import { buildAchievements } from '../data/achievements';
+import {
+  checkNewAchievements,
+  getSeenAchievements,
+  markAchievementSeen,
+  notifyAchievementUnlocked,
+  notifyStreakMilestone,
+} from '../lib/notificationService';
 
 const formatDurationLabel = (seconds = 0) => {
   const safeSeconds = Math.max(0, Math.round(seconds));
@@ -183,6 +195,10 @@ const Problem = () => {
   const [strokes, setStrokes] = useState([]);
   const [timerResetSeq, setTimerResetSeq] = useState(0);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showStreakPopup, setShowStreakPopup] = useState(false);
+  const [currentStreakValue, setCurrentStreakValue] = useState(0);
+  const [showAchievementPopup, setShowAchievementPopup] = useState(false);
+  const [newAchievements, setNewAchievements] = useState([]);
   const prevProblemIdRef = useRef(problem?.id);
   const canvasRef = useRef(null);
   const isDrawingRef = useRef(false);
@@ -499,7 +515,17 @@ const Problem = () => {
       // noop
     }
 
+    // Track previous streak before updating
+    const previousStreakData = getStreakData();
+    const previousStreak = previousStreakData.current;
     const streakData = updateStreak();
+    
+    // Show popup if streak was incremented (first solve of the day)
+    if (validation.isCorrect && streakData.current > previousStreak) {
+      setCurrentStreakValue(streakData.current);
+      setShowStreakPopup(true);
+    }
+    
     try {
       void updateStreakData({
         current_streak: streakData.current,
@@ -518,6 +544,33 @@ const Problem = () => {
       hintsUsed: hintsOpened.length,
       solutionViewed
     });
+
+    // Check for newly unlocked achievements after stats update
+    if (validation.isCorrect) {
+      try {
+        const seenIds = getSeenAchievements();
+        const updatedStats = getUserStats();
+        const currentAchievements = buildAchievements(updatedStats);
+        const freshlyUnlocked = checkNewAchievements(seenIds, currentAchievements);
+
+        if (freshlyUnlocked.length > 0) {
+          setNewAchievements(freshlyUnlocked);
+          setShowAchievementPopup(true);
+
+          // Fire background notifications for each new achievement
+          freshlyUnlocked.forEach(a => {
+            void notifyAchievementUnlocked(a.title, a.description).catch(() => {});
+          });
+        }
+
+        // Also fire streak milestone notification
+        if (streakData.current > previousStreak && [7, 14, 30, 60, 90, 180, 365].includes(streakData.current)) {
+          void notifyStreakMilestone(streakData.current).catch(() => {});
+        }
+      } catch {
+        // achievement check is non-blocking
+      }
+    }
 
     return {
       success: validation.isCorrect,
@@ -730,6 +783,24 @@ const Problem = () => {
           onClose={() => setShowSubmissionDetail(false)}
           submission={selectedSubmission}
         />
+
+        {showStreakPopup && (
+          <StreakPopup
+            streak={currentStreakValue}
+            onClose={() => setShowStreakPopup(false)}
+          />
+        )}
+
+        {showAchievementPopup && newAchievements.length > 0 && (
+          <AchievementPopup
+            achievements={newAchievements}
+            onClose={() => {
+              setShowAchievementPopup(false);
+              setNewAchievements([]);
+            }}
+            onDismissOne={(id) => markAchievementSeen(id)}
+          />
+        )}
 
         {/* Main Content */}
         <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 lg:max-h-[calc(100vh-80px)] lg:overflow-hidden">

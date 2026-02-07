@@ -54,7 +54,7 @@ const Navbar = () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
-        
+
         const streakData = await getStreakData();
         setCurrentStreak(streakData?.current_streak || 0);
       } catch (error) {
@@ -155,13 +155,13 @@ const Navbar = () => {
   ]
 
   const notificationItems = [
-    // {
-    //   to: '/notifications',
-    //   text: "All Notifications",
-    //   description: "View everything at once.",
-    //   image: Notifications,
-    //   notificationsNo: "4"
-    // },
+    {
+      to: '/notifications',
+      text: "All Notifications",
+      description: "View everything at once.",
+      image: Notifications,
+      notificationsNo: ""
+    },
     {
       to: '/systemupdates',
       text: "System Updates",
@@ -252,7 +252,7 @@ const Navbar = () => {
               <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
                 <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
                   <Link to="/achievements/stats" className='flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors'>
-                    <svg className="w-5 h-5" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                       <defs>
                         <linearGradient id="icon-gradient-fire-navbar" x1="0%" y1="0%" x2="0%" y2="100%">
                           <stop offset="0%" stopColor="var(--dark-accent-color)" />

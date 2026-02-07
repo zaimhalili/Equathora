@@ -182,8 +182,8 @@ export default function App() {
             <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
             {/* <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} /> */}
             <Route path="/tracks" element={<ProtectedRoute><Tracks /></ProtectedRoute>} />
-            {/* <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} /> */}
-            {/* <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} /> */}
+            <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
             {/* <Route path="/premium" element={<ProtectedRoute><Premium /></ProtectedRoute>} /> */}
 
 

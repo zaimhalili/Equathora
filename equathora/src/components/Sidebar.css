@@ -100,6 +100,46 @@
     color: var(--french-gray);
 }
 
+.sidebar-streak {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--french-gray);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.sidebar-streak:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar-streak-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-streak-text {
+    flex: 1;
+}
+
+.sidebar-streak-text h4 {
+    margin: 0;
+    font-family: 'Sansation', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
+.sidebar-streak-text p {
+    margin: 2px 0 0;
+    font-family: 'Sansation', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--french-gray);
+}
+
 .sidebar-nav {
     flex: 1;
     padding: 0.5rem 0;

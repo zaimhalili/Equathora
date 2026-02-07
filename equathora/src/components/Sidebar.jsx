@@ -34,7 +34,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             try {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) return;
-                
+
                 const streakData = await getStreakData();
                 setCurrentStreak(streakData?.current_streak || 0);
             } catch (error) {
