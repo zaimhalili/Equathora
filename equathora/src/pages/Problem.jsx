@@ -11,6 +11,7 @@ import Timer from '../components/Timer.jsx';
 import ProblemMobileMenu from '../components/ProblemMobileMenu.jsx';
 import StreakPopup from '../components/StreakPopup.jsx';
 import AchievementPopup from '../components/AchievementPopup.jsx';
+import InsightPanel from '../components/InsightPanel.jsx';
 import {
   ReportModal,
   HelpModal,
@@ -199,6 +200,7 @@ const Problem = () => {
   const [currentStreakValue, setCurrentStreakValue] = useState(0);
   const [showAchievementPopup, setShowAchievementPopup] = useState(false);
   const [newAchievements, setNewAchievements] = useState([]);
+  const [showInsightPanel, setShowInsightPanel] = useState(false);
   const prevProblemIdRef = useRef(problem?.id);
   const canvasRef = useRef(null);
   const isDrawingRef = useRef(false);
@@ -453,7 +455,7 @@ const Problem = () => {
     const finalAnswer = preparedAnswer || (lastStep?.latex || '');
 
     if (!finalAnswer.trim()) {
-      const feedback = '📝 Please enter your final answer in the last step before submitting.';
+      const feedback = 'Please enter your final answer in the last step before submitting.';
       setSubmissionFeedback({ message: feedback, isCorrect: false });
       return { success: false, message: feedback };
     }
@@ -486,7 +488,20 @@ const Problem = () => {
     };
 
     setSubmissions(prev => [entry, ...prev]);
-    setSubmissionFeedback({ message: validation.feedback, isCorrect: validation.isCorrect });
+    setSubmissionFeedback({
+      message: validation.feedback,
+      isCorrect: validation.isCorrect,
+      attemptNumber,
+      timeSpent: timeSpentSeconds,
+      topic: problem.topic,
+      difficulty: problem.difficulty
+    });
+
+    // Show the InsightPanel ribbon for correct answers
+    if (validation.isCorrect) {
+      setShowInsightPanel(true);
+    }
+
     setShowSubmissions(true);
     setShowDescription(false);
     setShowTop(false);
@@ -802,6 +817,24 @@ const Problem = () => {
           />
         )}
 
+        {/* Insight Panel - correct answer ribbon */}
+        {showInsightPanel && submissionFeedback?.isCorrect && (
+          <InsightPanel
+            insight={submissionFeedback.message}
+            topic={submissionFeedback.topic}
+            difficulty={submissionFeedback.difficulty}
+            nextProblemPath={nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
+            onViewSolution={() => {
+              setShowSolution(true);
+              setShowDescription(false);
+              setShowSubmissions(false);
+              setSolutionViewed(true);
+            }}
+            onDismiss={() => setShowInsightPanel(false)}
+            autoDismissSeconds={12}
+          />
+        )}
+
         {/* Main Content */}
         <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 lg:max-h-[calc(100vh-80px)] lg:overflow-hidden">
           {/* Description Side */}
@@ -892,9 +925,23 @@ const Problem = () => {
                   </div>
                 </div>
 
-                {submissionFeedback && (
-                  <div className={`rounded-md px-3 py-2 border text-xs md:text-sm font-medium ${submissionFeedback.isCorrect ? 'bg-green-500/10 border-green-500/40 text-green-600' : 'bg-red-500/10 border-red-500/40 text-red-600'}`}>
-                    {submissionFeedback.message}
+                {/* Inline feedback for incorrect answers only */}
+                {submissionFeedback && !submissionFeedback.isCorrect && (
+                  <div className="rounded-xl px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 bg-red-400">
+                        \u2717
+                      </div>
+                      <span className="text-sm font-bold font-[Sansation,sans-serif] text-red-600">
+                        Incorrect
+                      </span>
+                      {submissionFeedback.attemptNumber > 1 && (
+                        <span className="text-[10px] text-gray-400 font-[Sansation,sans-serif]">Attempt {submissionFeedback.attemptNumber}</span>
+                      )}
+                    </div>
+                    <p className="text-xs md:text-[0.82rem] leading-relaxed font-[Sansation,sans-serif] text-red-600/85">
+                      {submissionFeedback.message}
+                    </p>
                   </div>
                 )}
 

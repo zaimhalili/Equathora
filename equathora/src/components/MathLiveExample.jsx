@@ -225,9 +225,22 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
 
                 <div className="ml-toolbar-sticky">
                     {submissionFeedback && (
-                        <div className={`ml-feedback ${submissionFeedback.success ? 'success' : 'error'}`}>
-                            {submissionFeedback.message}
-                        </div>
+                        submissionFeedback.success ? (
+                            <div className="ml-feedback-card success" style={{ padding: '0.5rem 1rem' }}>
+                                <div className="ml-feedback-header" style={{ marginBottom: 0 }}>
+                                    <div className="ml-feedback-icon success">{'\u2713'}</div>
+                                    <span className="ml-feedback-title">Correct</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="ml-feedback-card error">
+                                <div className="ml-feedback-header">
+                                    <div className="ml-feedback-icon error">{'\u2717'}</div>
+                                    <span className="ml-feedback-title">Incorrect</span>
+                                </div>
+                                <p className="ml-feedback-message">{submissionFeedback.message}</p>
+                            </div>
+                        )
                     )}
                     <div className="ml-toolbar">
                         <button className="ml-btn clear flex gap-1 order-2 sm:order-1" onClick={() => setDeleteAllPopup(true)}>

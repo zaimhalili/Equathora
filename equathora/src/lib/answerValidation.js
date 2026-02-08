@@ -87,7 +87,7 @@ export const validateAnswer = async (userAnswer, problem) => {
         if (normalizedUserAnswer === normalizedAccepted) {
             return {
                 isCorrect: true,
-                feedback: 'Perfect! Your answer is correct!',
+                feedback: getCorrectFeedback(problem),
                 score: 1
             };
         }
@@ -98,7 +98,7 @@ export const validateAnswer = async (userAnswer, problem) => {
         if (isNumericallyEqual(normalizedUserAnswer, normalizeAnswer(accepted))) {
             return {
                 isCorrect: true,
-                feedback: 'Correct! Your answer is numerically equivalent.',
+                feedback: getCorrectFeedback(problem),
                 score: 1
             };
         }
@@ -110,7 +110,7 @@ export const validateAnswer = async (userAnswer, problem) => {
         if (mathNetValidation.isCorrect) {
             return {
                 isCorrect: true,
-                feedback: mathNetValidation.feedback || 'Correct! Your answer is valid.',
+                feedback: getCorrectFeedback(problem),
                 score: mathNetValidation.score || 1
             };
         }
@@ -120,9 +120,95 @@ export const validateAnswer = async (userAnswer, problem) => {
 
     return {
         isCorrect: false,
-        feedback: '❌ Incorrect answer. Please check your work and try again.',
+        feedback: getIncorrectFeedback(userAnswer, problem),
         score: 0
     };
+};
+
+/**
+ * Generate smart correct-answer feedback
+ */
+const getCorrectFeedback = (problem) => {
+    const topic = problem.topic || '';
+    const difficulty = (problem.difficulty || '').toLowerCase();
+
+    const topicInsights = {
+        'Linear Equations': 'You demonstrated strong algebraic reasoning — isolating variables is a fundamental skill.',
+        'Quadratic Equations': 'Solid work with quadratics. Recognizing the structure of the equation is the key insight here.',
+        'Polynomials': 'Nice polynomial manipulation. Identifying terms and combining like terms shows real fluency.',
+        'Trigonometry': 'Great trigonometric thinking. Understanding angle relationships is essential for advanced math.',
+        'Calculus': 'Excellent calculus work. You applied differentiation/integration concepts correctly.',
+        'Geometry': 'Strong geometric reasoning. Visualizing shapes and applying formulas accurately is a core skill.',
+        'Area': 'You correctly identified the shape properties and applied the right formula.',
+        'Volume': 'Great spatial reasoning — computing volume requires understanding 3D relationships.',
+        'Probability': 'Good probabilistic thinking. You correctly identified the sample space and computed the outcome.',
+        'Combinatorics': 'Nice combinatorial reasoning. Counting principles are fundamental to discrete math.',
+        'Number Theory': 'Solid number theory work. Understanding divisibility and primes is a deep mathematical skill.',
+        'Logic': 'Clean logical reasoning. Breaking down the problem step by step is exactly the right approach.',
+        'Statistics': 'Great statistical analysis. You correctly interpreted and computed from the data.',
+        'Series': 'Nice work with series. Recognizing the pattern is the critical step.',
+        'Inequalities': 'Well done. Manipulating inequalities requires careful attention to direction — you nailed it.',
+    };
+
+    const insight = topicInsights[topic] || 'You applied the right approach and executed it accurately.';
+
+    const difficultyBoost = {
+        'easy': '',
+        'medium': ' This was a medium-difficulty problem — well done.',
+        'hard': ' This was a hard problem — impressive work.',
+    };
+
+    return insight + (difficultyBoost[difficulty] || '');
+};
+
+/**
+ * Generate smart incorrect-answer feedback with hints toward the right thinking
+ */
+const getIncorrectFeedback = (userAnswer, problem) => {
+    const topic = problem.topic || '';
+    const correctAnswer = problem.answer || problem.acceptedAnswers?.[0] || '';
+    const userNum = parseFloat(userAnswer);
+    const correctNum = parseFloat(correctAnswer);
+
+    // Check for near-miss (close numerically)
+    if (!isNaN(userNum) && !isNaN(correctNum)) {
+        const diff = Math.abs(userNum - correctNum);
+        if (diff > 0 && diff < 2) {
+            return 'Very close! Your approach seems right — double-check your arithmetic in the final step.';
+        }
+        if (userNum === -correctNum) {
+            return 'Almost there — check your signs. A sign error flipped your answer.';
+        }
+        if (correctNum !== 0 && Math.abs(userNum / correctNum - 2) < 0.01) {
+            return 'Your answer is exactly double the expected result. Did you forget to divide somewhere?';
+        }
+        if (correctNum !== 0 && Math.abs(userNum / correctNum - 0.5) < 0.01) {
+            return 'Your answer is half the expected result. Check if you missed a multiplication step.';
+        }
+    }
+
+    // Topic-specific guidance
+    const topicHints = {
+        'Linear Equations': 'Review your steps for isolating the variable. Check each operation applied to both sides.',
+        'Quadratic Equations': 'Try re-examining the factoring or formula application. Common pitfalls: sign errors in the discriminant.',
+        'Trigonometry': 'Verify your angle units (degrees vs radians) and trig identity usage.',
+        'Geometry': 'Double-check which formula applies to this shape and that all measurements are correct.',
+        'Area': 'Make sure you selected the correct area formula and applied all dimensions properly.',
+        'Volume': 'Verify the 3D formula — common mistake is using area instead of volume formulas.',
+        'Calculus': 'Review the differentiation/integration rules you applied, especially chain rule or substitution.',
+        'Probability': 'Check your sample space and whether events are independent or dependent.',
+        'Combinatorics': 'Verify whether order matters (permutation vs combination) in this problem.',
+        'Number Theory': 'Re-examine divisibility rules or prime factorization steps.',
+        'Logic': 'Trace through the logical steps again — check for any assumption gaps.',
+        'Inequalities': 'Remember: multiplying or dividing by a negative flips the inequality direction.',
+    };
+
+    const topicHint = topicHints[topic];
+    if (topicHint) {
+        return 'Not quite right. ' + topicHint;
+    }
+
+    return 'Not quite right. Review your approach and try again — focus on the key step where you set up the equation.';
 };
 
 /**
@@ -192,41 +278,6 @@ export const calculateScore = (isCorrect, hintsUsed = 0, attempts = 1) => {
  */
 export const getSmartFeedback = async (userAnswer, problem) => {
     const validation = await validateAnswer(userAnswer, problem);
-
-    if (validation.isCorrect) {
-        return validation.feedback;
-    }
-
-    // Check for common mistakes based on problem type
-    if (problem.topic === 'Linear Equations') {
-        const userNum = parseFloat(userAnswer);
-        const correctNum = parseFloat(problem.answer);
-
-        if (!isNaN(userNum) && !isNaN(correctNum)) {
-            if (Math.abs(userNum - correctNum) < 2) {
-                return 'You\'re very close! Double-check your arithmetic.';
-            }
-            if (userNum === -correctNum) {
-                return 'Check your signs! You may have a sign error.';
-            }
-        }
-    }
-
-    if (problem.topic === 'Area' || problem.topic === 'Volume') {
-        const userNum = parseFloat(userAnswer);
-        const correctNum = parseFloat(problem.answer);
-
-        if (!isNaN(userNum) && !isNaN(correctNum)) {
-            // Check if they forgot to square/cube
-            if (userNum * userNum === correctNum) {
-                return 'Tip: Did you remember to square the value?';
-            }
-            if (userNum / 2 === correctNum) {
-                return 'Tip: For triangles, don\'t forget to divide by 2!';
-            }
-        }
-    }
-
     return validation.feedback;
 };
 
