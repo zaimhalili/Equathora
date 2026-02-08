@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using EquathoraBackend.Data;
 using EquathoraBackend.Models;
+using EquathoraBackend.Contracts;
 
 public static class AttemptEndpoints
 {

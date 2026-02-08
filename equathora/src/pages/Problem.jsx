@@ -442,7 +442,7 @@ const Problem = () => {
     }
   };
 
-  const handleNewSubmission = (steps) => {
+  const handleNewSubmission = async (steps) => {
     if (!problem) {
       return { success: false, message: 'Problem not found.' };
     }
@@ -458,7 +458,7 @@ const Problem = () => {
       return { success: false, message: feedback };
     }
 
-    const validation = validateAnswer(finalAnswer, problem);
+    const validation = await validateAnswer(finalAnswer, problem);
 
     // Get actual time from localStorage (what the Timer component tracks)
     const storageKey = `eq:problemTime:${problem.id}`;

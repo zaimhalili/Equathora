@@ -88,7 +88,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
         setFields((prev) => prev.filter((f) => f.id !== id));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         // Filter out empty fields
         const nonEmptyFields = fields.filter(f => f.latex && f.latex.trim() !== '');
 
@@ -102,9 +102,9 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
         // Call the onSubmit handler from parent if provided
         if (onSubmit) {
             try {
-                const submission = onSubmit(nonEmptyFields);
+                const submission = await onSubmit(nonEmptyFields);
                 const success = submission?.success ?? false;
-                const message = submission?.message || 'Submission sent!';
+                const message = submission?.message || 'Unable to validate your answer. Please try again.';
                 setSubmissionFeedback({ message, success });
                 if (success) setCanShowNext(true);
             } catch (error) {

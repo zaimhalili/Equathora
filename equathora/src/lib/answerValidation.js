@@ -68,7 +68,7 @@ const isNumericallyEqual = (userAnswer, correctAnswer, tolerance = 0.01) => {
  * Main validation function
  * Returns: { isCorrect: boolean, feedback: string, score: number }
  */
-export const validateAnswer = (userAnswer, problem) => {
+export const validateAnswer = async (userAnswer, problem) => {
     if (!userAnswer || !problem) {
         return {
             isCorrect: false,
@@ -93,19 +93,34 @@ export const validateAnswer = (userAnswer, problem) => {
         }
     }
 
-    // New Math.NET step-by-step validation
-    const mathNetValidation = validateExpression(userAnswer, problem);
-    if (!mathNetValidation.isCorrect) {
-        return {
-            isCorrect: false,
-            feedback: mathNetValidation.feedback,
-            score: mathNetValidation.score
-        };
+    // Check numerical equivalence
+    for (const accepted of acceptedAnswers) {
+        if (isNumericallyEqual(normalizedUserAnswer, normalizeAnswer(accepted))) {
+            return {
+                isCorrect: true,
+                feedback: 'Correct! Your answer is numerically equivalent.',
+                score: 1
+            };
+        }
+    }
+
+    // Try Math.NET backend validation as a last resort
+    try {
+        const mathNetValidation = await validateExpression(userAnswer, problem);
+        if (mathNetValidation.isCorrect) {
+            return {
+                isCorrect: true,
+                feedback: mathNetValidation.feedback || 'Correct! Your answer is valid.',
+                score: mathNetValidation.score || 1
+            };
+        }
+    } catch {
+        // Backend unavailable — fall through to incorrect
     }
 
     return {
         isCorrect: false,
-        feedback: 'Incorrect answer. Please try again.',
+        feedback: '❌ Incorrect answer. Please check your work and try again.',
         score: 0
     };
 };
@@ -114,7 +129,7 @@ export const validateAnswer = (userAnswer, problem) => {
  * Validate multi-step solution
  * For problems that require showing work
  */
-export const validateMultiStep = (steps, problem) => {
+export const validateMultiStep = async (steps, problem) => {
     if (!steps || steps.length === 0) {
         return {
             isCorrect: false,
@@ -125,7 +140,7 @@ export const validateMultiStep = (steps, problem) => {
 
     // Check final answer
     const finalStep = steps[steps.length - 1];
-    const finalValidation = validateAnswer(finalStep, problem);
+    const finalValidation = await validateAnswer(finalStep, problem);
 
     if (!finalValidation.isCorrect) {
         return finalValidation;
@@ -175,8 +190,8 @@ export const calculateScore = (isCorrect, hintsUsed = 0, attempts = 1) => {
 /**
  * Provide feedback based on common mistakes
  */
-export const getSmartFeedback = (userAnswer, problem) => {
-    const validation = validateAnswer(userAnswer, problem);
+export const getSmartFeedback = async (userAnswer, problem) => {
+    const validation = await validateAnswer(userAnswer, problem);
 
     if (validation.isCorrect) {
         return validation.feedback;

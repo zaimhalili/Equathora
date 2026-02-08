@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using EquathoraBackend.Data;
 using EquathoraBackend.Models;
+using EquathoraBackend.Contracts;
 
 public static class AuthEndpoints
 {

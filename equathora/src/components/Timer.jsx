@@ -14,16 +14,16 @@ const Timer = ({ problemId, isRunning = true }) => {
     const timer = useRef();
 
     const format = (time) => {
-        let hours = Math.floor(time / 3600 % 24);
-        let minutes = Math.floor(time / 60 % 60);
+        let hours = Math.floor(time / 3600);
+        let minutes = Math.floor((time % 3600) / 60);
         let seconds = Math.floor(time % 60);
 
-        hours = hours < 10 ? '0' + hours : hours;
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        seconds = seconds < 10 ? '0' + seconds : seconds;
+        const pad = (n) => n < 10 ? '0' + n : n;
 
-        // return hours + ':' + minutes + ':' + seconds;
-        return "Time: " + minutes + ':' + seconds;
+        if (hours > 0) {
+            return "Time: " + pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+        }
+        return "Time: " + pad(minutes) + ':' + pad(seconds);
     };
 
     useEffect(() => {
