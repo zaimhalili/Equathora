@@ -50,6 +50,7 @@ import {
   notifyStreakMilestone,
 } from '../lib/notificationService';
 
+
 const formatDurationLabel = (seconds = 0) => {
   const safeSeconds = Math.max(0, Math.round(seconds));
   const minutes = Math.floor(safeSeconds / 60);
@@ -447,6 +448,19 @@ const Problem = () => {
   const handleNewSubmission = async (steps) => {
     if (!problem) {
       return { success: false, message: 'Problem not found.' };
+    }
+
+    // CRITICAL GUARD: Prevent re-solving an already-completed problem.
+    // This blocks reputation farming, duplicate XP, and achievement re-triggering.
+    if (isProblemCompleted(problem.id)) {
+      setSubmissionFeedback({
+        message: 'You have already solved this problem. Your progress has been recorded.',
+        isCorrect: true,
+        attemptNumber: submissions.length,
+        topic: problem.topic,
+        difficulty: problem.difficulty
+      });
+      return { success: true, message: 'Already solved.' };
     }
 
     const safeSteps = steps || [];
@@ -930,7 +944,7 @@ const Problem = () => {
                   <div className="rounded-xl px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
                     <div className="flex items-center gap-2 mb-1.5">
                       <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 bg-red-400">
-                        \u2717
+                        <FaTimesCircle />
                       </div>
                       <span className="text-sm font-bold font-[Sansation,sans-serif] text-red-600">
                         Incorrect

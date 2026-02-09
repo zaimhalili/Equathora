@@ -154,8 +154,8 @@ const getCorrectFeedback = (problem) => {
 
     const difficultyBoost = {
         'easy': '',
-        'medium': ' This was a medium-difficulty problem — well done.',
-        'hard': ' This was a hard problem — impressive work.',
+        'medium': ' This was a medium-difficulty problem. Well done.',
+        'hard': ' This was a hard problem. Impressive work.',
     };
 
     return insight + (difficultyBoost[difficulty] || '');
@@ -208,7 +208,7 @@ const getIncorrectFeedback = (userAnswer, problem) => {
         return 'Not quite right. ' + topicHint;
     }
 
-    return 'Not quite right. Review your approach and try again — focus on the key step where you set up the equation.';
+    return 'Not quite right. Review your approach and try again. Focus on the key step where you set up the equation.';
 };
 
 /**

@@ -235,7 +235,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                         ) : (
                             <div className="ml-feedback-card error">
                                 <div className="ml-feedback-header">
-                                    <div className="ml-feedback-icon error">{'\u2717'}</div>
+                                    <div className="ml-feedback-icon error"><FaTimes /></div>
                                     <span className="ml-feedback-title">Incorrect</span>
                                 </div>
                                 <p className="ml-feedback-message">{submissionFeedback.message}</p>

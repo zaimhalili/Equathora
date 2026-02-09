@@ -48,8 +48,6 @@ const InsightPanel = ({
         <div className="insight-panel-overlay">
             <div className={`insight-panel${closing ? ' closing' : ''}`}>
                 <div className="insight-panel-inner">
-                    {/* Green accent strip */}
-                    <div className="insight-accent" />
 
                     <div className="insight-content">
                         {/* Row 1: Status + Actions */}

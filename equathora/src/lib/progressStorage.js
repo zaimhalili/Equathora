@@ -536,6 +536,9 @@ export const recordProblemStats = async (
     progress.reputation = progress.reputation || 0;
     if (isCorrect && !alreadySolved) {
         progress.reputation += 20;
+    } else if (isCorrect && alreadySolved) {
+        // GUARD: Do not award any reputation for re-solving a problem.
+        // This prevents reputation farming by clicking solved problems.
     }
     if (streakData && typeof streakData.current === 'number') {
         const previous = progress.lastReputationStreak || 0;
