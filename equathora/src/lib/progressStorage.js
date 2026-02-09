@@ -194,17 +194,18 @@ export const markProblemCompleted = async (problemId, score, timeSpent) => {
         }
 
         localStorage.setItem(STORAGE_KEYS.COMPLETED_PROBLEMS, JSON.stringify(completed));
+
+        // Update user stats snapshot (accuracy handled by recordProblemStats)
+        updateUserProgress({
+            problemsSolved: completed.length,
+            totalTime: completed.reduce((sum, p) => sum + p.timeSpent, 0)
+        });
+
+        return completed;
     } catch (error) {
         console.error('Failed to mark problem as complete:', error);
+        return getCompletedProblems();
     }
-
-    // Update user stats snapshot (accuracy handled by recordProblemStats)
-    updateUserProgress({
-        problemsSolved: completed.length,
-        totalTime: completed.reduce((sum, p) => sum + p.timeSpent, 0)
-    });
-
-    return completed;
 };
 
 // Check if problem is completed
@@ -386,6 +387,16 @@ export const recordProblemStats = async (
 ) => {
     if (!problem) return null;
 
+    // DEFENSE-IN-DEPTH: If the problem is already completed AND the answer is correct,
+    // this is a practice-mode submission. Do NOT update any stats, XP, reputation, or achievements.
+    // The primary guard lives in handleNewSubmission, but this protects against direct calls.
+    const completedProblems = getCompletedProblems();
+    const isAlreadyCompleted = completedProblems.some(p => p.problemId === problem.id);
+    if (isAlreadyCompleted && isCorrect) {
+        console.log('⏭️ Practice mode submission — skipping stats update for problem', problem.id);
+        return null;
+    }
+
     // Get current database values first
     let dbProgress = null;
     try {
@@ -523,11 +534,13 @@ export const recordProblemStats = async (
         .map(([topic]) => topic);
     progress.conceptsLearned = Object.keys(progress.topicFrequency).length;
 
-    if (isCorrect && attemptNumber === 1) {
+    if (isCorrect && !alreadySolved && attemptNumber === 1) {
         progress.perfectStreak = (progress.perfectStreak || 0) + 1;
     } else if (!isCorrect) {
         progress.perfectStreak = 0;
     }
+    // NOTE: If isCorrect && alreadySolved, we leave perfectStreak unchanged.
+    // Re-solves never affect progression counters.
 
     if (streakData && typeof streakData.current === 'number') {
         progress.streakDays = streakData.current;

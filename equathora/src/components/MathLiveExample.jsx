@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/MathLiveExample.css";
-import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb, FaCheckCircle } from "react-icons/fa";
 
 const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
@@ -24,7 +24,7 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     );
 };
 
-export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false }) {
+export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false }) {
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
@@ -228,8 +228,11 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                         submissionFeedback.success ? (
                             <div className="ml-feedback-card success" style={{ padding: '0.5rem 1rem' }}>
                                 <div className="ml-feedback-header" style={{ marginBottom: 0 }}>
-                                    <div className="ml-feedback-icon success">{'\u2713'}</div>
+                                    <div className="ml-feedback-icon success"><FaCheckCircle /></div>
                                     <span className="ml-feedback-title">Correct</span>
+                                    {isPracticeMode && (
+                                        <span className="ml-2 text-[10px] font-medium text-emerald-500 font-[Sansation,sans-serif]">Practice Mode</span>
+                                    )}
                                 </div>
                             </div>
                         ) : (
@@ -237,6 +240,9 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                 <div className="ml-feedback-header">
                                     <div className="ml-feedback-icon error"><FaTimes /></div>
                                     <span className="ml-feedback-title">Incorrect</span>
+                                    {isPracticeMode && (
+                                        <span className="ml-2 text-[10px] font-medium text-gray-400 font-[Sansation,sans-serif]">Practice Mode</span>
+                                    )}
                                 </div>
                                 <p className="ml-feedback-message">{submissionFeedback.message}</p>
                             </div>

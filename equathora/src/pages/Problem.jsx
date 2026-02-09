@@ -40,7 +40,6 @@ import {
 } from '../lib/progressStorage';
 import { validateAnswer } from '../lib/answerValidation';
 import { recordSubmission, updateStreakData } from '../lib/databaseService';
-import { validateSteps } from '../utils/mathNetService';
 import { buildAchievements } from '../data/achievements';
 import {
   checkNewAchievements,
@@ -450,18 +449,9 @@ const Problem = () => {
       return { success: false, message: 'Problem not found.' };
     }
 
-    // CRITICAL GUARD: Prevent re-solving an already-completed problem.
-    // This blocks reputation farming, duplicate XP, and achievement re-triggering.
-    if (isProblemCompleted(problem.id)) {
-      setSubmissionFeedback({
-        message: 'You have already solved this problem. Your progress has been recorded.',
-        isCorrect: true,
-        attemptNumber: submissions.length,
-        topic: problem.topic,
-        difficulty: problem.difficulty
-      });
-      return { success: true, message: 'Already solved.' };
-    }
+    // Determine if this problem was already solved BEFORE this submission.
+    // This is the single source of truth for "practice mode" vs "first solve".
+    const alreadySolvedBefore = isProblemCompleted(problem.id);
 
     const safeSteps = steps || [];
     const lastStep = safeSteps[safeSteps.length - 1];
@@ -474,6 +464,7 @@ const Problem = () => {
       return { success: false, message: feedback };
     }
 
+    // Always validate the answer — even in practice mode
     const validation = await validateAnswer(finalAnswer, problem);
 
     // Get actual time from localStorage (what the Timer component tracks)
@@ -482,6 +473,35 @@ const Problem = () => {
     const timeSpentSeconds = storedTime ? Math.max(1, parseInt(storedTime, 10)) : Math.max(1, Math.round((Date.now() - sessionStartRef.current) / 1000));
     const attemptNumber = submissions.length + 1;
 
+    // ================================================================
+    // PRACTICE MODE PATH — problem was already solved before
+    // Show feedback only, never touch progression/stats/achievements.
+    // ================================================================
+    if (alreadySolvedBefore) {
+      setSubmissionFeedback({
+        message: validation.isCorrect
+          ? 'Correct! (Practice mode — no additional points awarded)'
+          : validation.feedback,
+        isCorrect: validation.isCorrect,
+        attemptNumber,
+        timeSpent: timeSpentSeconds,
+        topic: problem.topic,
+        difficulty: problem.difficulty,
+        isPracticeMode: true
+      });
+      return {
+        success: validation.isCorrect,
+        message: validation.isCorrect
+          ? 'Correct! (Practice mode)'
+          : validation.feedback,
+        isPracticeMode: true
+      };
+    }
+
+    // ================================================================
+    // FIRST SOLVE PATH — normal progression flow
+    // This code only runs when the problem has NOT been solved before.
+    // ================================================================
     const entry = addSubmission(
       problem.id,
       finalAnswer,
@@ -508,7 +528,8 @@ const Problem = () => {
       attemptNumber,
       timeSpent: timeSpentSeconds,
       topic: problem.topic,
-      difficulty: problem.difficulty
+      difficulty: problem.difficulty,
+      isPracticeMode: false
     });
 
     // Show the InsightPanel ribbon for correct answers
@@ -603,24 +624,10 @@ const Problem = () => {
 
     return {
       success: validation.isCorrect,
-      message: validation.feedback
+      message: validation.feedback,
+      isPracticeMode: false
     };
   };
-
-  const handleStepValidation = async (userSteps, correctSteps) => {
-    const validationResult = await validateSteps(userSteps, correctSteps);
-    if (validationResult.feedback) {
-      console.log('Step-by-step feedback:', validationResult.feedback);
-      // Display feedback to the user (e.g., update state or UI)
-    } else {
-      console.error('Failed to get step-by-step feedback.');
-    }
-  };
-
-  // Example usage
-  const userSteps = ["x + 2 = 4", "x = 2"];
-  const correctSteps = ["x + 2 = 4", "x = 2"];
-  handleStepValidation(userSteps, correctSteps);
 
   // Handle loading state
   if (loading) {
@@ -949,7 +956,10 @@ const Problem = () => {
                       <span className="text-sm font-bold font-[Sansation,sans-serif] text-red-600">
                         Incorrect
                       </span>
-                      {submissionFeedback.attemptNumber > 1 && (
+                      {submissionFeedback.isPracticeMode && (
+                        <span className="text-[10px] font-medium text-gray-400 font-[Sansation,sans-serif]">Practice Mode</span>
+                      )}
+                      {!submissionFeedback.isPracticeMode && submissionFeedback.attemptNumber > 1 && (
                         <span className="text-[10px] text-gray-400 font-[Sansation,sans-serif]">Attempt {submissionFeedback.attemptNumber}</span>
                       )}
                     </div>
@@ -1213,6 +1223,7 @@ const Problem = () => {
               onSubmit={handleNewSubmission}
               nextProblemPath={nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
               isSolved={isCompleted}
+              isPracticeMode={isCompleted}
             />
           </article>
         </section>
