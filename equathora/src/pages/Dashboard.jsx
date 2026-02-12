@@ -82,10 +82,10 @@ const Dashboard = () => {
         if (notifications.length === 0) {
           // First time user - send welcome notification
           const username = session.user.user_metadata?.full_name ||
-                         session.user.user_metadata?.name ||
-                         session.user.user_metadata?.username ||
-                         session.user.email?.split('@')[0] ||
-                         'there';
+            session.user.user_metadata?.name ||
+            session.user.user_metadata?.username ||
+            session.user.email?.split('@')[0] ||
+            'there';
           await notifyWelcome(username);
         }
       } catch (error) {
@@ -99,7 +99,7 @@ const Dashboard = () => {
     <>
       {/* <BetaBanner /> */}
       <FeedbackBanner />
-      <main className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] min-h-screen ">
+      <main className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed min-h-screen ">
         <header>
           <Navbar />
         </header>

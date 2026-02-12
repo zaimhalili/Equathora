@@ -622,7 +622,7 @@ const Settings = () => {
     return (
         <div>
             <Navbar />
-            <main className="min-h-screen flex flex-col bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] text-[var(--secondary-color)] font-[Sansation,sans-serif]">
+            <main className="min-h-screen flex flex-col bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed text-[var(--secondary-color)] font-[Sansation,sans-serif]">
                 {/* Header */}
                 <div className="w-full flex flex-col items-center gap-2 pt-8 pb-4 px-4">
                     <h1 className="font-bold text-3xl lg:text-4xl">Settings</h1>
@@ -1002,8 +1002,8 @@ const Settings = () => {
 
                                 <div className="flex items-center gap-2 mt-1">
                                     <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${cookieConsent === 'accepted'
-                                            ? 'bg-green-100 text-green-700'
-                                            : 'bg-amber-100 text-amber-700'
+                                        ? 'bg-green-100 text-green-700'
+                                        : 'bg-amber-100 text-amber-700'
                                         }`}>
                                         <span className={`w-1.5 h-1.5 rounded-full ${cookieConsent === 'accepted' ? 'bg-green-500' : 'bg-amber-500'
                                             }`} />

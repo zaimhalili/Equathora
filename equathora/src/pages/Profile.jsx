@@ -200,7 +200,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className='bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] px-3 md:px-[30px] [@media(min-width:1600px)]:px-[12vw] pt-5 pb-20'>
+      <main className='bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed px-3 md:px-[30px] [@media(min-width:1600px)]:px-[12vw] pt-5 pb-20'>
         <div className='mx-auto px-[4vw] xl:px-[6vw] max-w-[1500px]'>
           {/* Two Column Layout */}
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>

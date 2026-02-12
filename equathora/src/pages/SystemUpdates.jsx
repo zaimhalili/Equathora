@@ -332,7 +332,7 @@ const SystemUpdates = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full min-h-screen bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] font-[Sansation]">
+            <div className="w-full min-h-screen bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed font-[Sansation]">
                 <header>
                     <Navbar />
                 </header>
