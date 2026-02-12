@@ -122,13 +122,10 @@
 }
 
 .achievement-icon {
-    font-size: 2rem;
-    flex-shrink: 0;
     transition: all 0.3s ease;
-}
-
-.a-list-component.unlocked .achievement-icon {
-    filter: drop-shadow(0 0 10px currentColor);
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    display: flex;
+    align-items: center;
 }
 
 .achievement-content {
@@ -144,20 +141,24 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 8px;
+    width: 100%;
 }
 
 .a-list-component h3 {
     color: white;
-    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
     font-weight: 700;
     margin: 0;
 }
 
 .a-list-component p {
     color: rgba(255, 255, 255, 0.7);
-    font-size: clamp(0.85rem, 2.5vw, 1rem);
+    font-size: 1rem;
+    display: flex;
+    width: 100%;
+    height: fit-content;
     margin: 0;
-    line-height: 1.4;
+    padding: 0;
 }
 
 .achievement-rarity {
@@ -168,18 +169,6 @@
     padding: 2px 8px;
     border-radius: 6px;
     background: rgba(0, 0, 0, 0.3);
-}
-
-.achievement-status {
-    font-size: 1.5rem;
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.3s ease;
 }
 
 .automatic-badge {

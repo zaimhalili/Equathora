@@ -523,8 +523,9 @@ export async function incrementWeeklyProgress(dayIndex) {
 function getWeekStartDate() {
     const now = new Date();
     const dayOfWeek = now.getDay();
-    const diff = now.getDate() - dayOfWeek;
-    const weekStart = new Date(now.setDate(diff));
+    // Monday = 0 index in our graph (Mon-Sun), JS getDay() returns 0=Sun,1=Mon...
+    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff);
     return weekStart.toISOString().split('T')[0];
 }
 

@@ -120,6 +120,59 @@ const Statistics = () => {
 
         const avgTimeSec = solved > 0 ? totalTimeSec / solved : 0;
 
+        // If DB weekly progress is all zeros, compute from submissions as fallback
+        let finalWeeklyData = weeklyData;
+        const hasDbWeekly = (weeklyData || []).some(v => v > 0);
+        if (!hasDbWeekly) {
+          // Compute weekly activity from submissions (correct ones only, this week)
+          const now = new Date();
+          const dayOfWeek = now.getDay();
+          const mondayDiff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+          const weekStartDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + mondayDiff);
+          weekStartDate.setHours(0, 0, 0, 0);
+
+          const computedWeekly = Array(7).fill(0);
+
+          // Try database submissions first
+          const correctSubs = (allSubmissions || []).filter(s => s.is_correct);
+          // De-duplicate by problem_id to count unique problems solved per day
+          const seenByDay = new Map();
+          correctSubs.forEach(sub => {
+            const subDate = new Date(sub.submitted_at || sub.created_at);
+            if (subDate >= weekStartDate) {
+              const jsDay = subDate.getDay();
+              const dayIdx = jsDay === 0 ? 6 : jsDay - 1; // Mon=0 ... Sun=6
+              const key = `${dayIdx}-${sub.problem_id}`;
+              if (!seenByDay.has(key)) {
+                seenByDay.set(key, true);
+                computedWeekly[dayIdx] = (computedWeekly[dayIdx] || 0) + 1;
+              }
+            }
+          });
+
+          // If still empty, try local submissions
+          if (computedWeekly.every(v => v === 0)) {
+            const localSubs = getSubmissions() || [];
+            const localSeen = new Map();
+            localSubs.filter(s => s.isCorrect).forEach(sub => {
+              const subDate = new Date(sub.timestamp || sub.date);
+              if (subDate >= weekStartDate) {
+                const jsDay = subDate.getDay();
+                const dayIdx = jsDay === 0 ? 6 : jsDay - 1;
+                const key = `${dayIdx}-${sub.problemId}`;
+                if (!localSeen.has(key)) {
+                  localSeen.set(key, true);
+                  computedWeekly[dayIdx] = (computedWeekly[dayIdx] || 0) + 1;
+                }
+              }
+            });
+          }
+
+          if (computedWeekly.some(v => v > 0)) {
+            finalWeeklyData = computedWeekly;
+          }
+        }
+
         setProgress({
           correctAnswers: correctAnswers,
           wrongSubmissions: wrongSubmissions,
@@ -130,7 +183,7 @@ const Statistics = () => {
           totalTimeSpent: `${Math.floor(totalTimeSec / 3600)}h ${Math.floor((totalTimeSec % 3600) / 60)}m`,
           averageTime: `${Math.floor(avgTimeSec / 60)}m ${Math.floor(avgTimeSec % 60)}s`,
           favoriteTopics: topTopics.length > 0 ? topTopics : ['No data yet'],
-          weeklyProgress: weeklyData,
+          weeklyProgress: finalWeeklyData,
           difficultyBreakdown: finalDifficultyBreakdown
         });
       } catch (error) {

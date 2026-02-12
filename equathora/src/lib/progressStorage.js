@@ -1,7 +1,7 @@
 // localStorage-based progress tracking system for MVP
 // This will be replaced with backend API calls in v1.1
 
-import { markProblemComplete as dbMarkProblemComplete } from './databaseService';
+import { markProblemComplete as dbMarkProblemComplete, incrementWeeklyProgress } from './databaseService';
 import { getAllProblems } from './problemService';
 import { supabase } from './supabaseClient';
 import { calculateProblemXP } from './leaderboardService';
@@ -526,6 +526,15 @@ export const recordProblemStats = async (
     }
     const weekdayIndex = getWeekdayIndex(timestamp);
     progress.weeklyProgress[weekdayIndex] = (progress.weeklyProgress[weekdayIndex] || 0) + 1;
+
+    // Persist weekly progress to database for the graph
+    if (isCorrect && !alreadySolved) {
+        try {
+            void incrementWeeklyProgress(weekdayIndex);
+        } catch (e) {
+            console.error('Failed to increment weekly progress in DB:', e);
+        }
+    }
 
     const topicKey = problem.topic || 'General Concepts';
     progress.topicFrequency = progress.topicFrequency || {};

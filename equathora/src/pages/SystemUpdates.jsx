@@ -332,7 +332,7 @@ const SystemUpdates = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full min-h-screen bg-gradient-to-b from-blue-50 via-white to-purple-50 font-[Sansation]">
+            <div className="w-full min-h-screen bg-[linear-gradient(180deg,var(--mid-main-secondary),var(--main-color)50%)] font-[Sansation]">
                 <header>
                     <Navbar />
                 </header>
@@ -347,7 +347,6 @@ const SystemUpdates = () => {
                     >
                         <div className="flex flex-col items-center text-center gap-3">
                             <div className="flex items-center gap-2">
-                                <span className="text-3xl">🔔</span>
                                 <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[Sansation]">
                                     System Updates
                                 </h1>
