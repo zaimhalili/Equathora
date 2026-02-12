@@ -41,16 +41,21 @@ const RecentAchievements = () => {
         <p>You have come a long way</p>
         <div className="block-container">
           <div className={`block ${isAnimated ? "animate-in" : ''}`}>
-            <span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{achievementsEarned}</span> <br />
-            Achievements Earned
+            <span className="h-1/2" style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{achievementsEarned}</span> <br />
+            <div className="h-1/2">Achievements Earned</div>
+            
           </div>
           <div className={`block ${isAnimated ? "animate-in" : ''}`}>
-            <span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{streakDays}</span> <br />
-            Days Streak
+            <span className="h-1/2 " style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{streakDays}</span> <br />
+            <div className="h-1/2">Days Streak</div>
+            
           </div>
           <div className={`block ${isAnimated ? "animate-in" : ''}`}>
-            <span style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{conceptsLearned}</span> <br />
-            Concepts Learned
+            <span className="h-1/2" style={{ fontSize: " clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, color: "var(--dark-accent-color)" }}>{conceptsLearned}</span> <br />
+            <div className="h-1/2">
+              Concepts Learned
+            </div>
+            
           </div>
         </div>
       </article>
@@ -62,11 +67,12 @@ const RecentAchievements = () => {
             className={`a-list-component ${achievement.unlocked ? 'unlocked' : 'locked'} ${isAnimated ? 'animate-in' : ''}`}
             style={{ animationDelay: `${index * 0.1}s` }}
           >
-            <div className="achievement-icon" style={{ color: achievement.unlocked ? achievement.color : '#95a5a6' }}>
-              {achievement.icon}
-            </div>
+            
             <div className="achievement-content">
               <div className="achievement-header">
+                <div className="achievement-icon" style={{ color: achievement.unlocked ? achievement.color : '#95a5a6' }}>
+                  {achievement.icon}
+                </div>
                 <h3>{achievement.title}</h3>
                 <span className="achievement-rarity" style={{ color: getRarityColor(achievement.rarity) }}>
                   {achievement.rarity}
@@ -77,8 +83,8 @@ const RecentAchievements = () => {
                 <span className="automatic-badge">Auto-Unlocked</span>
               )}
             </div>
-            <div className={`achievement-status ${achievement.unlocked ? 'unlocked-badge' : 'locked-badge'}`}>
-              {achievement.unlocked ? '✓' : '🔒'}
+            <div className={`achievement-status ${achievement.unlocked ? '' : 'locked-badge'}`}>
+              {achievement.unlocked ? '' : '🔒'}
             </div>
           </div>
         ))}

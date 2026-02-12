@@ -1,10 +1,11 @@
 
 import React, { useEffect, useState } from 'react';
 import './Statistics.css';
-import { getUserProgress, getStreakData, getWeeklyProgress, getDifficultyBreakdown, getTopicFrequency, getCompletedProblems } from '../../lib/databaseService';
+import { getUserProgress, getStreakData, getWeeklyProgress, getDifficultyBreakdown, getTopicFrequency, getCompletedProblems, getUserSubmissions } from '../../lib/databaseService';
 import { getAllProblems } from '../../lib/problemService';
 import { supabase } from '../../lib/supabaseClient';
 import { getSubmissions } from '../../lib/progressStorage';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Statistics = () => {
   const [progress, setProgress] = useState({
@@ -27,14 +28,15 @@ const Statistics = () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
 
-        const [userProgress, streakData, weeklyData, allProblems, completedIds, difficultyData, topicData] = await Promise.all([
+        const [userProgress, streakData, weeklyData, allProblems, completedIds, difficultyData, topicData, allSubmissions] = await Promise.all([
           getUserProgress(),
           getStreakData(),
           getWeeklyProgress(),
           getAllProblems(),
           getCompletedProblems(),
           getDifficultyBreakdown(),
-          getTopicFrequency()
+          getTopicFrequency(),
+          getUserSubmissions()
         ]);
 
         const totalProblems = allProblems.length || 0;
@@ -42,20 +44,26 @@ const Statistics = () => {
         const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
         const validCompletedIds = (completedIds || []).filter(id => validProblemIds.has(String(id)));
         const solved = validCompletedIds.length;
-        
+
         // Calculate difficulty breakdown from completed problems (same as Profile)
         const completedProblems = allProblems.filter(p => validCompletedIds.includes(String(p.id)));
         const easySolved = completedProblems.filter(p => p.difficulty === 'Easy').length;
         const mediumSolved = completedProblems.filter(p => p.difficulty === 'Medium').length;
         const hardSolved = completedProblems.filter(p => p.difficulty === 'Hard').length;
-        
+
         // Use calculated breakdown if database breakdown is empty
         const calculatedBreakdown = { easy: easySolved, medium: mediumSolved, hard: hardSolved };
         const finalDifficultyBreakdown = (difficultyData?.easy || difficultyData?.medium || difficultyData?.hard)
           ? difficultyData
           : calculatedBreakdown;
 
-        const topTopics = (topicData || []).sort((a, b) => b.count - a.count).slice(0, 5).map(t => t.topic);
+        // Get favorite topics from database topic frequency first
+        let topTopics = (topicData || []).sort((a, b) => b.count - a.count).slice(0, 5).map(t => t.topic);
+
+        // If database topic frequency is empty, derive from completed problems (same as Profile)
+        if (topTopics.length === 0 && completedProblems.length > 0) {
+          topTopics = [...new Set(completedProblems.map(p => p.topic).filter(Boolean))];
+        }
 
         // Get correct/wrong from database
         let correctAnswers = userProgress?.correct_answers || 0;
@@ -74,8 +82,42 @@ const Statistics = () => {
           }
         }
 
-        // Calculate time spent from completed problems if database doesn't have it
-        const totalTimeSec = totalTimeMinutes * 60;
+        // Calculate time spent: try database total_time_minutes first, 
+        // then sum from submissions, then fall back to local timer storage
+        let totalTimeSec = totalTimeMinutes * 60;
+
+        if (totalTimeSec === 0) {
+          // Sum time from database submissions
+          const submissionTimeSec = (allSubmissions || []).reduce((sum, sub) => {
+            return sum + (sub.time_spent_seconds || 0);
+          }, 0);
+          if (submissionTimeSec > 0) {
+            totalTimeSec = submissionTimeSec;
+          }
+        }
+
+        if (totalTimeSec === 0) {
+          // Fall back to local timer storage per problem
+          const localTimeSec = (validCompletedIds || []).reduce((sum, pid) => {
+            const stored = typeof window !== 'undefined' ? window.localStorage.getItem(`eq:problemTime:${pid}`) : null;
+            return sum + (stored ? Math.max(0, parseInt(stored, 10)) : 0);
+          }, 0);
+          if (localTimeSec > 0) {
+            totalTimeSec = localTimeSec;
+          }
+        }
+
+        // Also check local submissions for time
+        if (totalTimeSec === 0) {
+          const localSubs = getSubmissions() || [];
+          const localTimeSec = localSubs
+            .filter(s => validProblemIds.has(String(s.problemId)))
+            .reduce((sum, s) => sum + (s.metadata?.timeSpent || s.timeSpent || 0), 0);
+          if (localTimeSec > 0) {
+            totalTimeSec = localTimeSec;
+          }
+        }
+
         const avgTimeSec = solved > 0 ? totalTimeSec / solved : 0;
 
         setProgress({
@@ -198,26 +240,59 @@ const Statistics = () => {
       {/* Weekly Activity */}
       <div className="activity-section">
         <h3>Weekly Activity</h3>
-        <div className="activity-chart">
-          {stats.weeklyProgress.map((problems, index) => {
-            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            // Bar height maxes out at 5 problems (100% height), then only number increases
-            const maxProblemsForFullHeight = 5;
-            const heightPercentage = Math.min((problems / maxProblemsForFullHeight) * 100, 100);
-
-            return (
-              <div key={index} className="activity-day">
-                <div
-                  className="activity-bar"
-                  style={{ height: `${heightPercentage}%` }}
-                  title={`${problems} problems on ${days[index]}`}
-                >
-                  {problems > 0 && <span className="bar-value">{problems}</span>}
-                </div>
-                <div className="activity-label">{days[index]}</div>
-              </div>
-            );
-          })}
+        <div className="activity-chart-container">
+          <ResponsiveContainer width="100%" height={250}>
+            <AreaChart
+              data={(() => {
+                const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                return stats.weeklyProgress.map((problems, i) => ({
+                  day: days[i],
+                  problems,
+                }));
+              })()}
+              margin={{ top: 10, right: 20, left: -10, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient id="weeklyGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#d70427" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#d70427" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
+              <XAxis
+                dataKey="day"
+                tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 13 }}
+                axisLine={{ stroke: 'rgba(255,255,255,0.15)' }}
+                tickLine={false}
+              />
+              <YAxis
+                allowDecimals={false}
+                tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 13 }}
+                axisLine={{ stroke: 'rgba(255,255,255,0.15)' }}
+                tickLine={false}
+              />
+              <Tooltip
+                contentStyle={{
+                  background: '#1e1f30',
+                  border: '1px solid rgba(215,4,39,0.4)',
+                  borderRadius: '10px',
+                  color: '#fff',
+                  fontSize: '0.9rem',
+                }}
+                labelStyle={{ color: 'rgba(255,255,255,0.6)' }}
+                formatter={(value) => [`${value} problem${value !== 1 ? 's' : ''}`, 'Solved']}
+              />
+              <Area
+                type="monotone"
+                dataKey="problems"
+                stroke="#d70427"
+                strokeWidth={3}
+                fill="url(#weeklyGradient)"
+                dot={{ r: 5, fill: '#d70427', stroke: '#fff', strokeWidth: 2 }}
+                activeDot={{ r: 7, fill: '#fff', stroke: '#d70427', strokeWidth: 2 }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
@@ -226,8 +301,8 @@ const Statistics = () => {
         <h3>Your Favorite Topics</h3>
         <div className="topics-list">
           {stats.favoriteTopics.map((topic, index) => (
-            <div key={index} className="topic-tag">
-              #{topic}
+            <div key={index} className="topic-tag  rounded-full">
+              {topic}
             </div>
           ))}
         </div>

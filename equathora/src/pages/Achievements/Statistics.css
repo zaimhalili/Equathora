@@ -59,10 +59,10 @@
 }
 
 .stat-card {
-    background-color: var(--secondary-color);
     padding: clamp(1rem, 3vw, 1.5rem);
     border-radius: 6px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.1);
     transition:
         opacity 0.6s ease-out,
         transform 0.6s ease-out,
@@ -81,11 +81,6 @@
 .stat-card.animate-in {
     opacity: 1;
     transform: translateY(0);
-}
-
-.stat-card:hover {
-    transform: translateY(-5px) scale(1.08);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 }
 
 .stat-number {
@@ -203,13 +198,13 @@
     width: 100%;
     margin-top: clamp(1.5rem, 3vw, 2rem);
     cursor: default;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .activity-section {
-    background-color: var(--secondary-color);
     padding: clamp(1rem, 2vw, 2rem);
     border-radius: 15px;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
     overflow: hidden;
 }
 
@@ -270,128 +265,14 @@ progress.progress-bar::-moz-progress-bar {
     transition: width 0.5s ease;
 }
 
-.activity-chart {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-    gap: clamp(6px, 2vw, 12px);
-    height: clamp(180px, 25vw, 200px);
+.activity-chart-container {
     width: 100%;
-    padding: 1rem 0.5rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-color) rgba(255, 255, 255, 0.1);
-}
-
-.activity-chart::-webkit-scrollbar {
-    height: 6px;
-}
-
-.activity-chart::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    margin: 0 0.5rem;
-}
-
-.activity-chart::-webkit-scrollbar-thumb {
-    background: var(--accent-color);
-    border-radius: 10px;
-}
-
-.activity-chart::-webkit-scrollbar-thumb:hover {
-    background: var(--dark-accent-color);
+    height: 250px;
 }
 
 @media (max-width: 640px) {
-    .activity-chart {
-        justify-content: flex-start;
-        gap: 8px;
-    }
-}
-
-.activity-day {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    gap: clamp(6px, 2vw, 10px);
-    min-width: clamp(50px, 10vw, 60px);
-    height: 100%;
-}
-
-@media (max-width: 640px) {
-    .activity-day {
-        flex: 0 0 auto;
-        min-width: 55px;
-    }
-}
-
-.activity-bar {
-    width: 100%;
-    min-height: 4px;
-    max-width: 60px;
-    background: linear-gradient(180deg, var(--dark-accent-color) 0%, var(--accent-color) 100%);
-    border-radius: 8px 8px 4px 4px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    box-shadow: 0 -2px 8px rgba(217, 4, 41, 0.3);
-    cursor: default;
-}
-
-.activity-bar:hover {
-    transform: scaleY(1.05);
-    box-shadow: 0 -4px 12px rgba(217, 4, 41, 0.5);
-    filter: brightness(1.2);
-}
-
-.bar-value {
-    position: absolute;
-    top: 4px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.activity-label {
-    text-align: center;
-    color: white;
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-}
-
-@media (max-width: 768px) {
-    .activity-chart {
-        padding: 1rem 0.25rem;
-    }
-
-    .activity-bar {
-        max-width: 45px;
-    }
-
-    .activity-label {
-        font-size: 0.75rem;
-    }
-
-    .bar-value {
-        font-size: 0.65rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .activity-bar {
-        max-width: 42px;
-    }
-
-    .activity-label {
-        font-size: 0.7rem;
+    .activity-chart-container {
+        height: 220px;
     }
 }
 
@@ -417,10 +298,9 @@ progress.progress-bar::-moz-progress-bar {
 }
 
 .topic-tag {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--mid-main-secondary) 100%);
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
     color: white;
     padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 3vw, 1.25rem);
-    border-radius: 6px;
     font-size: clamp(0.8rem, 2vw, 0.95rem);
     font-weight: 600;
     font-family: 'Sansation', sans-serif;
@@ -428,12 +308,6 @@ progress.progress-bar::-moz-progress-bar {
     transition: all 0.3s ease;
     text-align: center;
     cursor: default;
-}
-
-.topic-tag:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.2);
 }
 
 @media (max-width: 480px) {

@@ -475,7 +475,20 @@ export const recordProblemStats = async (
     const currentTotalXP = dbProgress?.total_xp || progress.totalXP || 0;
     const totalXP = currentTotalXP + problemXP;
 
-    // Update database with accuracy stats and XP
+    // Calculate time spent before database update so we can include it
+    const minutesSpent = Math.max(1, Math.round(timeSpentSeconds / 60));
+    const currentDbTimeMinutes = dbProgress?.total_time_minutes || 0;
+    const updatedTotalTimeMinutes = currentDbTimeMinutes + minutesSpent;
+    progress.totalTimeMinutes = updatedTotalTimeMinutes;
+    progress.totalTimeSpent = formatHoursMinutes(progress.totalTimeMinutes);
+
+    const solvedCountForAvg = (progress.solvedProblems || []).length;
+    if (solvedCountForAvg > 0) {
+        const avgSeconds = Math.round((progress.totalTimeMinutes * 60) / solvedCountForAvg);
+        progress.averageTime = formatMinutesSeconds(avgSeconds);
+    }
+
+    // Update database with accuracy stats, XP, and time
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
@@ -488,7 +501,8 @@ export const recordProblemStats = async (
                 reputation: progress.reputation || 0,
                 solved_problems: progress.solvedProblems,
                 perfect_streak: progress.perfectStreak || 0,
-                total_xp: totalXP
+                total_xp: totalXP,
+                total_time_minutes: updatedTotalTimeMinutes
             };
             console.log('📊 Updating database with:', updateData);
 
@@ -505,16 +519,6 @@ export const recordProblemStats = async (
         }
     } catch (error) {
         console.error('Failed to update database stats:', error);
-    }
-
-    const minutesSpent = Math.max(1, Math.round(timeSpentSeconds / 60));
-    progress.totalTimeMinutes = (progress.totalTimeMinutes || 0) + minutesSpent;
-    progress.totalTimeSpent = formatHoursMinutes(progress.totalTimeMinutes);
-
-    const solvedCountForAvg = (progress.solvedProblems || []).length;
-    if (solvedCountForAvg > 0) {
-        const avgSeconds = Math.round((progress.totalTimeMinutes * 60) / solvedCountForAvg);
-        progress.averageTime = formatMinutesSeconds(avgSeconds);
     }
 
     if (!Array.isArray(progress.weeklyProgress) || progress.weeklyProgress.length !== 7) {

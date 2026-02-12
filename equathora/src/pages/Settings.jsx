@@ -260,6 +260,11 @@ const Settings = () => {
     const [settingsSaving, setSettingsSaving] = useState(false);
     const [settingsMessage, setSettingsMessage] = useState({ text: '', type: 'success' });
 
+    // Cookie preference state
+    const [cookieConsent, setCookieConsent] = useState(() => {
+        return localStorage.getItem('equathora_cookie_consent') || 'none';
+    });
+
     // Session state
     const [currentSession, setCurrentSession] = useState(null);
     const [sessionLoading, setSessionLoading] = useState(false);
@@ -966,11 +971,50 @@ const Settings = () => {
                                 <h3 className="text-base font-bold">Data & Cookies</h3>
                                 <p className="text-xs text-[var(--french-gray)]">
                                     We use essential cookies for authentication and localStorage for offline progress tracking.
+                                    Optional cookies are used for analytics and personalization.
                                     Read our full{' '}
                                     <Link to="/privacy-policy" className="text-[var(--accent-color)] hover:underline">Privacy Policy</Link>{' '}
                                     and{' '}
                                     <Link to="/cookie-policy" className="text-[var(--accent-color)] hover:underline">Cookie Policy</Link>.
                                 </p>
+
+                                <ToggleSwitch
+                                    label="Allow Analytics & Personalization Cookies"
+                                    description={
+                                        cookieConsent === 'accepted'
+                                            ? 'All cookies are enabled — analytics and personalization data is collected'
+                                            : 'Only essential cookies are active — no analytics or personalization data is collected'
+                                    }
+                                    checked={cookieConsent === 'accepted'}
+                                    onChange={(enabled) => {
+                                        const newConsent = enabled ? 'accepted' : 'declined';
+                                        setCookieConsent(newConsent);
+                                        localStorage.setItem('equathora_cookie_consent', newConsent);
+                                        localStorage.setItem('equathora_cookie_consent_date', new Date().toISOString());
+                                        setSettingsMessage({
+                                            text: enabled
+                                                ? 'All cookies enabled. Analytics and personalization are now active.'
+                                                : 'Optional cookies disabled. Only essential cookies will be used.',
+                                            type: 'success'
+                                        });
+                                    }}
+                                />
+
+                                <div className="flex items-center gap-2 mt-1">
+                                    <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${cookieConsent === 'accepted'
+                                            ? 'bg-green-100 text-green-700'
+                                            : 'bg-amber-100 text-amber-700'
+                                        }`}>
+                                        <span className={`w-1.5 h-1.5 rounded-full ${cookieConsent === 'accepted' ? 'bg-green-500' : 'bg-amber-500'
+                                            }`} />
+                                        {cookieConsent === 'accepted' ? 'All Cookies Accepted' : 'Essential Only'}
+                                    </span>
+                                    {cookieConsent !== 'none' && (
+                                        <span className="text-[10px] text-[var(--french-gray)]">
+                                            Set on {new Date(localStorage.getItem('equathora_cookie_consent_date') || '').toLocaleDateString()}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
 
                             <AnimatePresence>
