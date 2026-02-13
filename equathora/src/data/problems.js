@@ -32,8 +32,8 @@ export const problems = [
         title: "Cubic Difference then Combine",
         difficulty: "Medium",
         description: "Compute 2x^3 - (5x^3 + 3x - 1) and add the result to (3x^2 + 3x - 1). Simplify.",
-        answer: "-3x^3+3x^2",
-        acceptedAnswers: ["-3x^3+3x^2", "-3x^3 + 3x^2", "3x^2-3x^3", "3x^2 - 3x^3"],
+        answer: "-3x^{3}+3x^{2}",
+        acceptedAnswers: ["-3x^{3}+3x^{2}", "-3x^3+3x^2", "-3x^{3} + 3x^{2}", "3x^{2}-3x^{3}", "3x^2-3x^3"],
         hints: [
             "Distribute the minus sign on the subtraction.",
             "Combine the result with 3x^2 + 3x - 1.",
@@ -49,8 +49,8 @@ export const problems = [
         title: "Nested Subtraction with y",
         difficulty: "Medium",
         description: "Add (2y - 3y^2) and (1 - 5y^3) to the remainder of 5y^2 - (1 - 2y^2 + y^3). Simplify.",
-        answer: "-6y^3+4y^2+2y",
-        acceptedAnswers: ["-6y^3+4y^2+2y", "-6y^3 + 4y^2 + 2y", "4y^2+2y-6y^3", "4y^2 + 2y - 6y^3"],
+        answer: "-6y^{3}+4y^{2}+2y",
+        acceptedAnswers: ["-6y^{3}+4y^{2}+2y", "-6y^3+4y^2+2y", "-6y^{3} + 4y^{2} + 2y", "4y^{2}+2y-6y^{3}"],
         hints: [
             "Evaluate the inner subtraction first.",
             "Add the two outside expressions.",
@@ -66,8 +66,8 @@ export const problems = [
         title: "Fractional Mix of x and y",
         difficulty: "Hard",
         description: "Take (x^3 - y^3) from (3xy - 4y^2), then add the result to (0.5xy - x^2 - 3y^2) + (2x^2 + 6y^2). Simplify.",
-        answer: "-x^3+y^3+x^2+3.5xy-y^2",
-        acceptedAnswers: ["-x^3+y^3+x^2+3.5xy-y^2", "-x^3 + y^3 + x^2 + 3.5xy - y^2", "-x^3+y^3+x^2+7/2xy-y^2", "-x^3 + y^3 + x^2 + 7/2xy - y^2"],
+        answer: "-x^{3}+y^{3}+x^{2}+\\frac{7}{2}xy-y^{2}",
+        acceptedAnswers: ["-x^{3}+y^{3}+x^{2}+\\frac{7}{2}xy-y^{2}", "-x^3+y^3+x^2+7/2xy-y^2", "-x^3+y^3+x^2+3.5xy-y^2"],
         hints: [
             "First compute (3xy - 4y^2) - (x^3 - y^3).",
             "Simplify the second sum separately.",
@@ -100,8 +100,8 @@ export const problems = [
         title: "Diminish a Combined Polynomial",
         difficulty: "Medium",
         description: "Add (3x^2 - 7x + 5) to (2x^3 + 5x - 3), then subtract (3x^2 + 2). Simplify.",
-        answer: "2x^3-2x",
-        acceptedAnswers: ["2x^3-2x", "2x^3 - 2x"],
+        answer: "2x^{3}-2x",
+        acceptedAnswers: ["2x^{3}-2x", "2x^3-2x", "2x^{3} - 2x"],
         hints: [
             "Combine the first two polynomials.",
             "Subtract the third polynomial.",
@@ -117,8 +117,8 @@ export const problems = [
         title: "Fill the Gap to Target Quadratic",
         difficulty: "Easy",
         description: "What expression must be added to 5x^2 - 7x + 2 to produce 7x^2 - 1?",
-        answer: "2x^2+7x-3",
-        acceptedAnswers: ["2x^2+7x-3", "2x^2 + 7x - 3"],
+        answer: "2x^{2}+7x-3",
+        acceptedAnswers: ["2x^{2}+7x-3", "2x^2+7x-3", "2x^{2} + 7x - 3"],
         hints: [
             "Target minus given equals the required addend.",
             "Subtract each coefficient carefully."
@@ -133,8 +133,8 @@ export const problems = [
         title: "Add to Reach New Cubic Form",
         difficulty: "Medium",
         description: "What expression must be added to 4x^3 - 3x^2 + 2 to produce 4x^3 + 7x - 6?",
-        answer: "3x^2+7x-8",
-        acceptedAnswers: ["3x^2+7x-8", "3x^2 + 7x - 8"],
+        answer: "3x^{2}+7x-8",
+        acceptedAnswers: ["3x^{2}+7x-8", "3x^2+7x-8", "3x^{2} + 7x - 8"],
         hints: [
             "Subtract the original from the target.",
             "Match coefficients term by term."
@@ -165,8 +165,8 @@ export const problems = [
         title: "Subtrahend to Hit Target Quadratic",
         difficulty: "Medium",
         description: "What expression must be subtracted from 9x^2 + 11x - 5 to leave 6x^2 - 17x + 3?",
-        answer: "3x^2+28x-8",
-        acceptedAnswers: ["3x^2+28x-8", "3x^2 + 28x - 8"],
+        answer: "3x^{2}+28x-8",
+        acceptedAnswers: ["3x^{2}+28x-8", "3x^2+28x-8", "3x^{2} + 28x - 8"],
         hints: [
             "Compute original minus target.",
             "Watch the signs on each term."
@@ -181,8 +181,8 @@ export const problems = [
         title: "Source Expression for a^2 Terms",
         difficulty: "Hard",
         description: "Find X so that X - (11a^2 - 6ab - 7bc) = 5a^2 + 7ab + 7bc.",
-        answer: "16a^2+ab",
-        acceptedAnswers: ["16a^2+ab", "16a^2 + ab", "ab+16a^2"],
+        answer: "16a^{2}+ab",
+        acceptedAnswers: ["16a^{2}+ab", "16a^2+ab", "16a^{2} + ab", "ab+16a^{2}"],
         hints: [
             "Move the subtracted expression to the right side.",
             "Add term by term."
@@ -197,8 +197,8 @@ export const problems = [
         title: "Source Expression with abc",
         difficulty: "Medium",
         description: "Find X so that X - (3ab + b^2c - 6ca) = 6ca - 5bc.",
-        answer: "3ab+b^2c-5bc",
-        acceptedAnswers: ["3ab+b^2c-5bc", "3ab + b^2c - 5bc"],
+        answer: "3ab+b^{2}c-5bc",
+        acceptedAnswers: ["3ab+b^{2}c-5bc", "3ab+b^2c-5bc", "3ab + b^{2}c - 5bc"],
         hints: [
             "Add the subtracted expression to the target remainder.",
             "Combine like bc terms."
@@ -213,8 +213,8 @@ export const problems = [
         title: "Add to Complete a Cubic",
         difficulty: "Medium",
         description: "What expression must be added to 7x^3 - 6x^2 - 5x to make 9x^3 - 6x - 7x^2?",
-        answer: "2x^3-x^2-x",
-        acceptedAnswers: ["2x^3-x^2-x", "2x^3 - x^2 - x"],
+        answer: "2x^{3}-x^{2}-x",
+        acceptedAnswers: ["2x^{3}-x^{2}-x", "2x^3-x^2-x", "2x^{3} - x^{2} - x"],
         hints: [
             "Take target minus given.",
             "Align coefficients by degree."
@@ -244,8 +244,8 @@ export const problems = [
         title: "Negate a Quadratic",
         difficulty: "Easy",
         description: "If 3x^2 - 7x + 2 is subtracted from zero, what is the result?",
-        answer: "-3x^2+7x-2",
-        acceptedAnswers: ["-3x^2+7x-2", "-3x^2 + 7x - 2"],
+        answer: "-3x^{2}+7x-2",
+        acceptedAnswers: ["-3x^{2}+7x-2", "-3x^2+7x-2", "-3x^{2} + 7x - 2"],
         hints: [
             "Subtracting from zero changes every sign."
         ],
@@ -259,8 +259,8 @@ export const problems = [
         title: "Difference of a Sum from 5x^2+3x-1",
         difficulty: "Hard",
         description: "From 5x^2 + 3x - 1 subtract the sum of (2x - 5 + 7x^2) and (3x^3 + 4 - 2x^2 + x). Simplify.",
-        answer: "-3x^3",
-        acceptedAnswers: ["-3x^3", "-3x^3+0"],
+        answer: "-3x^{3}",
+        acceptedAnswers: ["-3x^{3}", "-3x^3"],
         hints: [
             "Combine the two parentheses first.",
             "Then subtract from 5x^2 + 3x - 1."
@@ -275,8 +275,8 @@ export const problems = [
         title: "Addend for Mixed Cubic",
         difficulty: "Medium",
         description: "Find the expression that must be added to 2x^3 - 3x^2 + x to obtain x^3 + 4x^2 - 5x.",
-        answer: "-x^3+7x^2-6x",
-        acceptedAnswers: ["-x^3+7x^2-6x", "-x^3 + 7x^2 - 6x"],
+        answer: "-x^{3}+7x^{2}-6x",
+        acceptedAnswers: ["-x^{3}+7x^{2}-6x", "-x^3+7x^2-6x", "-x^{3} + 7x^{2} - 6x"],
         hints: [
             "Compute target minus given.",
             "Track each degree separately."
@@ -291,8 +291,8 @@ export const problems = [
         title: "Subtract Two Quadratic Forms",
         difficulty: "Medium",
         description: "Simplify (x^2 + 2xy - y^2) - (2x^2 - xy + 3y^2).",
-        answer: "-x^2+3xy-4y^2",
-        acceptedAnswers: ["-x^2+3xy-4y^2", "-x^2 + 3xy - 4y^2"],
+        answer: "-x^{2}+3xy-4y^{2}",
+        acceptedAnswers: ["-x^{2}+3xy-4y^{2}", "-x^2+3xy-4y^2", "-x^{2} + 3xy - 4y^{2}"],
         hints: [
             "Distribute the negative sign to the second parentheses.",
             "Combine like terms."
@@ -307,8 +307,8 @@ export const problems = [
         title: "Add Two Cubic Binomials",
         difficulty: "Easy",
         description: "Simplify (4a^2b - 2ab^2 + b^3) + (-3a^2b + 5ab^2 - b^3).",
-        answer: "a^2b+3ab^2",
-        acceptedAnswers: ["a^2b+3ab^2", "a^2b + 3ab^2"],
+        answer: "a^{2}b+3ab^{2}",
+        acceptedAnswers: ["a^{2}b+3ab^{2}", "a^2b+3ab^2", "a^{2}b + 3ab^{2}"],
         hints: [
             "Group the a^2b, ab^2, and b^3 terms separately."
         ],
@@ -322,8 +322,8 @@ export const problems = [
         title: "Subtract Quadratic in m and n",
         difficulty: "Medium",
         description: "Simplify (6m^2 - 3mn + n^2) - (2m^2 + mn - 4n^2).",
-        answer: "4m^2-4mn+5n^2",
-        acceptedAnswers: ["4m^2-4mn+5n^2", "4m^2 - 4mn + 5n^2"],
+        answer: "4m^{2}-4mn+5n^{2}",
+        acceptedAnswers: ["4m^{2}-4mn+5n^{2}", "4m^2-4mn+5n^2", "4m^{2} - 4mn + 5n^{2}"],
         hints: [
             "Distribute the negative through the second bracket.",
             "Combine like terms."
@@ -354,8 +354,8 @@ export const problems = [
         title: "rs Mixed Powers",
         difficulty: "Medium",
         description: "Simplify (3r^2s - 5rs^2) - (-2r^2s + 7rs^2).",
-        answer: "5r^2s-12rs^2",
-        acceptedAnswers: ["5r^2s-12rs^2", "5r^2s - 12rs^2"],
+        answer: "5r^{2}s-12rs^{2}",
+        acceptedAnswers: ["5r^{2}s-12rs^{2}", "5r^2s-12rs^2", "5r^{2}s - 12rs^{2}"],
         hints: [
             "Subtracting a negative becomes addition.",
             "Combine the r^2s and rs^2 terms."
@@ -400,8 +400,8 @@ export const problems = [
         title: "Sum of Two Quadratics in u and v",
         difficulty: "Medium",
         description: "Simplify (7u^2 + 2uv - v^2) + (3u^2 - 5uv + 4v^2).",
-        answer: "10u^2-3uv+3v^2",
-        acceptedAnswers: ["10u^2-3uv+3v^2", "10u^2 - 3uv + 3v^2"],
+        answer: "10u^{2}-3uv+3v^{2}",
+        acceptedAnswers: ["10u^{2}-3uv+3v^{2}", "10u^2-3uv+3v^2", "10u^{2} - 3uv + 3v^{2}"],
         hints: [
             "Combine u^2, uv, and v^2 terms separately."
         ],
@@ -417,8 +417,8 @@ export const problems = [
         title: "Subtract Two Cubics in x",
         difficulty: "Medium",
         description: "Simplify (6x^3 - 2x^2 + x) - (4x^3 + x^2 - 5x).",
-        answer: "2x^3-3x^2+6x",
-        acceptedAnswers: ["2x^3-3x^2+6x", "2x^3 - 3x^2 + 6x"],
+        answer: "2x^{3}-3x^{2}+6x",
+        acceptedAnswers: ["2x^{3}-3x^{2}+6x", "2x^3-3x^2+6x", "2x^{3} - 3x^{2} + 6x"],
         hints: [
             "Distribute the subtraction.",
             "Collect like terms."
@@ -433,8 +433,8 @@ export const problems = [
         title: "Combine Two Quadratics in a and b",
         difficulty: "Easy",
         description: "Simplify (a^2 - 4ab + b^2) + (3ab - 2b^2).",
-        answer: "a^2-ab-b^2",
-        acceptedAnswers: ["a^2-ab-b^2", "a^2 - ab - b^2"],
+        answer: "a^{2}-ab-b^{2}",
+        acceptedAnswers: ["a^{2}-ab-b^{2}", "a^2-ab-b^2", "a^{2} - ab - b^{2}"],
         hints: [
             "Combine ab terms then b^2 terms."
         ],
@@ -448,8 +448,8 @@ export const problems = [
         title: "Combine with Opposite Signs in xy",
         difficulty: "Medium",
         description: "Simplify (-2x^2y + 5xy^2) - (-3x^2y - xy^2).",
-        answer: "x^2y+6xy^2",
-        acceptedAnswers: ["x^2y+6xy^2", "x^2y + 6xy^2"],
+        answer: "x^{2}y+6xy^{2}",
+        acceptedAnswers: ["x^{2}y+6xy^{2}", "x^2y+6xy^2", "x^{2}y + 6xy^{2}"],
         hints: [
             "Subtracting a negative flips the sign.",
             "Combine x^2y and xy^2 terms."
@@ -464,8 +464,8 @@ export const problems = [
         title: "Cubic and Linear Mix in k",
         difficulty: "Easy",
         description: "Simplify (4k^3 - 7k + 2) + (-k^3 + 5k - 9).",
-        answer: "3k^3-2k-7",
-        acceptedAnswers: ["3k^3-2k-7", "3k^3 - 2k - 7"],
+        answer: "3k^{3}-2k-7",
+        acceptedAnswers: ["3k^{3}-2k-7", "3k^3-2k-7", "3k^{3} - 2k - 7"],
         hints: [
             "Combine k^3 terms, then k terms, then constants."
         ],
@@ -479,8 +479,8 @@ export const problems = [
         title: "Fractional Coefficients in a and b",
         difficulty: "Medium",
         description: "Simplify (5/2 a - 3/4 b) + (3/2 a + 1/4 b).",
-        answer: "4a-0.5b",
-        acceptedAnswers: ["4a-0.5b", "4a - 0.5b", "4a-1/2b", "4a - 1/2 b", "4a-1/2 b"],
+        answer: "4a-\\frac{1}{2}b",
+        acceptedAnswers: ["4a-\\frac{1}{2}b", "4a-0.5b", "4a-1/2b", "4a - \\frac{1}{2}b"],
         hints: [
             "Add the a-terms, then the b-terms.",
             "Convert to halves for clarity."
@@ -495,8 +495,8 @@ export const problems = [
         title: "Fractions in x and y",
         difficulty: "Medium",
         description: "Simplify (7/3 x - 5/6 y) - (2/3 x + 1/6 y).",
-        answer: "5/3x-y",
-        acceptedAnswers: ["5/3x-y", "5/3 x - y", "(5/3)x - y"],
+        answer: "\\frac{5}{3}x-y",
+        acceptedAnswers: ["\\frac{5}{3}x-y", "5/3x-y", "\\frac{5}{3}x - y"],
         hints: [
             "Subtract numerators with common denominators.",
             "Combine y-terms carefully."
@@ -511,8 +511,8 @@ export const problems = [
         title: "Decimals in a^2",
         difficulty: "Easy",
         description: "Simplify (0.5a^2 - 3a + 4) + (1.5a^2 + a - 6).",
-        answer: "2a^2-2a-2",
-        acceptedAnswers: ["2a^2-2a-2", "2a^2 - 2a - 2"],
+        answer: "2a^{2}-2a-2",
+        acceptedAnswers: ["2a^{2}-2a-2", "2a^2-2a-2", "2a^{2} - 2a - 2"],
         hints: [
             "Add a^2 coefficients, then a, then constants."
         ],
@@ -556,8 +556,8 @@ export const problems = [
         title: "Subtracting Mixed b^2 Terms",
         difficulty: "Hard",
         description: "Simplify (6a^2b^2 - 4ab^2 + 2b^2) - (3a^2b^2 - 5ab^2 - b^2).",
-        answer: "3a^2b^2+ab^2+3b^2",
-        acceptedAnswers: ["3a^2b^2+ab^2+3b^2", "3a^2b^2 + ab^2 + 3b^2"],
+        answer: "3a^{2}b^{2}+ab^{2}+3b^{2}",
+        acceptedAnswers: ["3a^{2}b^{2}+ab^{2}+3b^{2}", "3a^2b^2+ab^2+3b^2", "3a^{2}b^{2} + ab^{2} + 3b^{2}"],
         hints: [
             "Distribute the negative across the second parentheses.",
             "Combine like b^2 factors."
@@ -574,8 +574,8 @@ export const problems = [
         title: "Addend for a Quadratic Target",
         difficulty: "Medium",
         description: "Find E so that E + (2x^2 - 3x + 1) = 5x^2 + x - 4.",
-        answer: "3x^2+4x-5",
-        acceptedAnswers: ["3x^2+4x-5", "3x^2 + 4x - 5"],
+        answer: "3x^{2}+4x-5",
+        acceptedAnswers: ["3x^{2}+4x-5", "3x^2+4x-5", "3x^{2} + 4x - 5"],
         hints: [
             "Subtract the known addend from the target."
         ],
@@ -589,8 +589,8 @@ export const problems = [
         title: "Subtrahend for a Quadratic Target",
         difficulty: "Medium",
         description: "Find S so that (9y^2 - 2y + 7) - S = 4y^2 + 5y - 1.",
-        answer: "5y^2-7y+8",
-        acceptedAnswers: ["5y^2-7y+8", "5y^2 - 7y + 8"],
+        answer: "5y^{2}-7y+8",
+        acceptedAnswers: ["5y^{2}-7y+8", "5y^2-7y+8", "5y^{2} - 7y + 8"],
         hints: [
             "Move the target to the left to isolate S."
         ],
@@ -604,8 +604,8 @@ export const problems = [
         title: "Addend to Reach a^2 + 2ab + 3b^2",
         difficulty: "Medium",
         description: "Find the expression that must be added to (-3a^2 + 4ab - b^2) to obtain (a^2 + 2ab + 3b^2).",
-        answer: "4a^2-2ab+4b^2",
-        acceptedAnswers: ["4a^2-2ab+4b^2", "4a^2 - 2ab + 4b^2"],
+        answer: "4a^{2}-2ab+4b^{2}",
+        acceptedAnswers: ["4a^{2}-2ab+4b^{2}", "4a^2-2ab+4b^2", "4a^{2} - 2ab + 4b^{2}"],
         hints: [
             "Compute target minus given."
         ],
@@ -619,8 +619,8 @@ export const problems = [
         title: "Subtrahend for Cubic in x",
         difficulty: "Hard",
         description: "Find S so that (7x^3 - x) - S = 2x^3 + 5x.",
-        answer: "5x^3-6x",
-        acceptedAnswers: ["5x^3-6x", "5x^3 - 6x"],
+        answer: "5x^{3}-6x",
+        acceptedAnswers: ["5x^{3}-6x", "5x^3-6x", "5x^{3} - 6x"],
         hints: [
             "Rearrange to S = (7x^3 - x) - (2x^3 + 5x)."
         ],
@@ -634,8 +634,8 @@ export const problems = [
         title: "Addend for pq Mix",
         difficulty: "Medium",
         description: "Find the expression to add to (4p^2q - 3pq^2) to obtain (10p^2q + pq^2).",
-        answer: "6p^2q+4pq^2",
-        acceptedAnswers: ["6p^2q+4pq^2", "6p^2q + 4pq^2"],
+        answer: "6p^{2}q+4pq^{2}",
+        acceptedAnswers: ["6p^{2}q+4pq^{2}", "6p^2q+4pq^2", "6p^{2}q + 4pq^{2}"],
         hints: [
             "Target minus current gives the needed addend."
         ],
@@ -649,8 +649,8 @@ export const problems = [
         title: "Subtrahend for Quadratic in m",
         difficulty: "Medium",
         description: "Find the expression that must be subtracted from (8m^2 + 6m - 5) to leave (-m^2 + 2m + 9).",
-        answer: "9m^2+4m-14",
-        acceptedAnswers: ["9m^2+4m-14", "9m^2 + 4m - 14"],
+        answer: "9m^{2}+4m-14",
+        acceptedAnswers: ["9m^{2}+4m-14", "9m^2+4m-14", "9m^{2} + 4m - 14"],
         hints: [
             "Set S so that original - S = target.",
             "Solve S = original - target."
@@ -680,8 +680,8 @@ export const problems = [
         title: "Additive Inverse of a Cubic",
         difficulty: "Easy",
         description: "What expression must be added to (2x^3 - x^2 - x) so that the total is zero?",
-        answer: "-2x^3+x^2+x",
-        acceptedAnswers: ["-2x^3+x^2+x", "-2x^3 + x^2 + x"],
+        answer: "-2x^{3}+x^{2}+x",
+        acceptedAnswers: ["-2x^{3}+x^{2}+x", "-2x^3+x^2+x", "-2x^{3} + x^{2} + x"],
         hints: [
             "Use the additive inverse of each term."
         ],
@@ -710,8 +710,8 @@ export const problems = [
         title: "Addend for Quadratic in k",
         difficulty: "Medium",
         description: "Find S so that (6k^2 - 5k + 2) + S = k^2 + 9k - 7.",
-        answer: "-5k^2+14k-9",
-        acceptedAnswers: ["-5k^2+14k-9", "-5k^2 + 14k - 9"],
+        answer: "-5k^{2}+14k-9",
+        acceptedAnswers: ["-5k^{2}+14k-9", "-5k^2+14k-9", "-5k^{2} + 14k - 9"],
         hints: [
             "Subtract the given from the target."
         ],
@@ -755,8 +755,8 @@ export const problems = [
         title: "Combine Mixed xy Powers",
         difficulty: "Medium",
         description: "Simplify (5x^2y - 2xy^2 + y^3) + (-3x^2y + 4xy^2 - y^3).",
-        answer: "2x^2y+2xy^2",
-        acceptedAnswers: ["2x^2y+2xy^2", "2x^2y + 2xy^2"],
+        answer: "2x^{2}y+2xy^{2}",
+        acceptedAnswers: ["2x^{2}y+2xy^{2}", "2x^2y+2xy^2", "2x^{2}y + 2xy^{2}"],
         hints: [
             "Group x^2y, xy^2, and y^3 terms."
         ],
@@ -770,8 +770,8 @@ export const problems = [
         title: "Difference of Two Squares of Binomials",
         difficulty: "Hard",
         description: "Simplify (2a - 3b)^2 - (a - b)^2.",
-        answer: "3a^2-10ab+8b^2",
-        acceptedAnswers: ["3a^2-10ab+8b^2", "3a^2 - 10ab + 8b^2"],
+        answer: "3a^{2}-10ab+8b^{2}",
+        acceptedAnswers: ["3a^{2}-10ab+8b^{2}", "3a^2-10ab+8b^2", "3a^{2} - 10ab + 8b^{2}"],
         hints: [
             "Expand each square separately.",
             "Subtract the second expansion from the first."
@@ -786,8 +786,8 @@ export const problems = [
         title: "Sum of Two Symmetric Squares",
         difficulty: "Easy",
         description: "Simplify (x - 2)^2 + (x + 2)^2.",
-        answer: "2x^2+8",
-        acceptedAnswers: ["2x^2+8", "2x^2 + 8"],
+        answer: "2x^{2}+8",
+        acceptedAnswers: ["2x^{2}+8", "2x^2+8", "2x^{2} + 8"],
         hints: [
             "Expand each square.",
             "Combine like terms."

@@ -2,7 +2,8 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, var(--mid-main-secondary), var(--main-color) 50%);
+    background: linear-gradient(180deg, var(--mid-main-secondary)50%, var(--main-color));
+    background-attachment: fixed;
 }
 
 .leaderboards-main {
@@ -30,23 +31,23 @@
     border-radius: 6px;
     font-weight: 600;
     text-align: center;
-    transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .lb-option.active {
     color: rgb(255, 255, 255);
-    background-color: var(--accent-color);
     border-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+.lb-option:active{
+    transform: scale(0.95);
+}
+
 .lb-option:hover {
     background-color: rgba(0, 0, 0, 0.15);
     border-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-1px);
 }
 
 .lb-option.active:hover {

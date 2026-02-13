@@ -6,8 +6,9 @@
     gap: 1.5rem;
     padding: 1.5rem;
     font-family: 'Sansation', sans-serif;
-    backdrop-filter: brightness(0.35);
+    background-color: var(--main-color);
     border-radius: 6px;
+    color: var(--secondary-color);
 }
 
 .leaderboard-header {
@@ -18,13 +19,13 @@
 .leaderboard-header h2 {
     font-family: 'Sansation', sans-serif;
     font-size: clamp(1.5rem, 4vw, 2rem);
-    color: white;
+    color: var(--secondary-color);
     margin: 0 0 0.3rem 0;
     font-weight: 700;
 }
 
 .leaderboard-subtitle {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--secondary-color);
     font-size: clamp(0.8rem, 2vw, 0.9rem);
     margin: 0;
     font-weight: 400;
@@ -37,7 +38,6 @@
     max-height: 600px;
     overflow-y: auto;
     padding-right: 0.3rem;
-    border: 4px solid rgb(170, 170, 170);
     border-radius: 6px;
 }
 
@@ -46,17 +46,17 @@
 }
 
 .leaderboard-list::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
     border-radius: 10px;
 }
 
 .leaderboard-list::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
     border-radius: 10px;
 }
 
 .leaderboard-list::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
 }
 
 .leaderboard-card {
@@ -66,7 +66,7 @@
     padding: 0.9rem 1.2rem;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--secondary-color);
     transition: all 0.3s ease;
     text-decoration: none;
     cursor: pointer;
@@ -76,7 +76,7 @@
 .leaderboard-card:hover {
     background: rgba(255, 255, 255, 0.12);
     transform: translateX(4px);
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--secondary-color);
 }
 
 .leaderboard-card.current-user {
@@ -94,7 +94,7 @@
     justify-content: center;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.1);
-    color: white;
+    color: black;
     flex-shrink: 0;
 }
 
@@ -124,7 +124,7 @@
 .player-name {
     font-size: clamp(0.95rem, 2.5vw, 1.1rem);
     font-weight: 600;
-    color: white;
+    color: var(--secondary-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -134,7 +134,7 @@
     display: flex;
     gap: 1rem;
     font-size: clamp(0.75rem, 2vw, 0.85rem);
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--secondary-color);
 }
 
 .stat-item {
@@ -162,7 +162,7 @@
 
 .xp-label {
     font-size: clamp(0.65rem, 1.5vw, 0.75rem);
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--secondary-color);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -175,7 +175,7 @@
 
 .your-rank-label {
     text-align: center;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--secondary-color);
     font-size: clamp(0.75rem, 2vw, 0.85rem);
     margin-bottom: 0.6rem;
     font-weight: 500;

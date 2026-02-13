@@ -18,17 +18,17 @@ const LeaderboardsLayout = () => {
                     className="leaderboard-opt-container"
                 >
                     <NavLink to="global" className={({ isActive }) =>
-                        isActive ? 'lb-option active' : 'lb-option'
+                        isActive ? 'lb-option active bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]' : 'lb-option'
                     }>
                         Global Leaderboard
                     </NavLink>
                     <NavLink to="friends" className={({ isActive }) =>
-                        isActive ? 'lb-option active' : 'lb-option'
+                        isActive ? 'lb-option active bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]' : 'lb-option'
                     }>
                         Friends Leaderboard
                     </NavLink>
                     <NavLink to="top-solvers" className={({ isActive }) =>
-                        isActive ? 'lb-option active' : 'lb-option'
+                        isActive ? 'lb-option active bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]' : 'lb-option'
                     }>
                         Top Solvers
                     </NavLink>

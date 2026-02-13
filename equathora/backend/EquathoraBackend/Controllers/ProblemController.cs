@@ -176,9 +176,26 @@ namespace EquathoraBackend.Controllers
             if (string.IsNullOrWhiteSpace(answer))
                 return "";
 
-            return answer
+            var s = answer.Trim();
+
+            // ── LaTeX → plain algebra ──────────────────────────────
+            // \frac{a}{b} → a/b
+            s = System.Text.RegularExpressions.Regex.Replace(s, @"\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}", "($1)/($2)");
+            s = System.Text.RegularExpressions.Regex.Replace(s, @"\\[dt]frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}", "($1)/($2)");
+            // \sqrt{x} → sqrt(x)
+            s = System.Text.RegularExpressions.Regex.Replace(s, @"\\sqrt\s*\{([^{}]+)\}", "sqrt($1)");
+            // \cdot, \times → *
+            s = s.Replace("\\cdot", "*").Replace("\\times", "*");
+            // \left, \right → remove
+            s = s.Replace("\\left", "").Replace("\\right", "");
+            // Remove remaining LaTeX commands (keep the name)
+            s = System.Text.RegularExpressions.Regex.Replace(s, @"\\([a-zA-Z]+)", "$1");
+            // Remove braces
+            s = s.Replace("{", "").Replace("}", "");
+
+            // ── General normalisation ──────────────────────────────
+            return s
                 .ToLower()
-                .Trim()
                 .Replace(" ", "")
                 .Replace(",", "")
                 .Replace("$", "")

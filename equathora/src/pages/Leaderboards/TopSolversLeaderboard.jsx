@@ -118,14 +118,15 @@ const TopSolversLeaderboard = () => {
                             onClick={() => setCategory(cat)}
                             style={{
                                 padding: '0.5rem 1rem',
-                                background: category === cat ? 'var(--accent-color)' : 'var(--main-color)',
+                                background: category === cat ? 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' : 'var(--main-color)',
                                 color: category === cat ? 'white' : 'var(--secondary-color)',
-                                border: '1px solid var(--french-gray)',
+                                border: category===cat ? 'none' : '1px solid var(--french-gray)',
                                 borderRadius: '0.5rem',
                                 cursor: 'pointer',
                                 textTransform: 'capitalize',
                                 fontSize: '0.9rem'
                             }}
+                            className='active:scale-95 hover:bg-black/15'
                         >
                             {cat}
                         </button>

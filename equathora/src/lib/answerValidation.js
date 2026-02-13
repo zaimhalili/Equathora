@@ -1,53 +1,67 @@
 // Client-side answer validation for static MVP
 // This validates student answers against the problem's accepted answers
 
+import { validateExpression } from '../utils/mathNetService';
+
 /**
- * Normalize answer for comparison
- * - Remove spaces
- * - Convert to lowercase
- * - Remove common variations
- * - Handle LaTeX output from MathLive
+ * Normalize a LaTeX or plain-text answer into a canonical comparable string.
+ *
+ * Pipeline:
+ *  1. Strip / convert LaTeX commands to plain algebraic notation
+ *  2. Normalise Unicode symbols, whitespace and operator formatting
+ *  3. Result is a lowercase, space-free string suitable for ===
  */
 const normalizeAnswer = (answer) => {
     if (!answer) return '';
 
-    return answer
-        .toString()
-        .toLowerCase()
-        .trim()
-        // Handle fractions in various formats: (a)/(b) -> a/b
-        .replace(/\(([^()]+)\)\/\(([^()]+)\)/g, '$1/$2')
-        // Handle sqrt variations
-        .replace(/sqrt\(([^)]+)\)/g, 'sqrt($1)')
-        .replace(/√/g, 'sqrt')
-        // Handle exponents
-        .replace(/\^(\d+)/g, '^$1')
-        .replace(/\*\*/g, '^')
-        .replace(/²/g, '^2')
-        .replace(/³/g, '^3')
-        // Normalize spacing around operators
-        .replace(/\s*\+\s*/g, '+')
-        .replace(/\s*-\s*/g, '-')
-        .replace(/\s*\*\s*/g, '*')
-        .replace(/\s*\/\s*/g, '/')
-        .replace(/\s*\^\s*/g, '^')
-        // Normalize multiplication symbols
-        .replace(/×|·|⋅/g, '*')
-        // Normalize minus/dash symbols to hyphen
-        .replace(/−|–|—/g, '-')
-        // Remove spaces
-        .replace(/\s+/g, '')
-        // Remove commas (thousands separator)
-        .replace(/,/g, '')
-        // Remove dollar signs
-        .replace(/\$/g, '')
-        // Remove degree symbols
-        .replace(/°/g, '')
-        // Remove parentheses around single terms: (x) -> x
-        .replace(/\(([a-z0-9]+)\)/g, '$1')
-        // Handle implicit multiplication like 2x -> 2*x for comparison (optional)
-        // Note: leaving as-is for now since accepted answers handle this
-        ;
+    let s = answer.toString().trim();
+
+    // ── Step 1: LaTeX → plain algebra ──────────────────────────────
+    // \frac{a}{b} → a/b  (keep as fraction string, not float)
+    s = s.replace(/\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g, '($1)/($2)');
+    // \dfrac, \tfrac same treatment
+    s = s.replace(/\\[dt]frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g, '($1)/($2)');
+    // \sqrt[n]{x} → nroot(x,n)  |  \sqrt{x} → sqrt(x)
+    s = s.replace(/\\sqrt\[([^\]]+)\]\{([^{}]+)\}/g, 'nroot($2,$1)');
+    s = s.replace(/\\sqrt\s*\{([^{}]+)\}/g, 'sqrt($1)');
+    // \cdot, \times → *
+    s = s.replace(/\\cdot|\\times/g, '*');
+    // \left, \right, \Big etc. → remove
+    s = s.replace(/\\(left|right|Big|big|Bigg|bigg)/g, '');
+    // \pi → pi, \alpha → alpha, etc.
+    s = s.replace(/\\([a-zA-Z]+)/g, '$1');
+    // Remove remaining curly braces (after commands have been handled)
+    s = s.replace(/[{}]/g, '');
+
+    // ── Step 2: General normalisation ──────────────────────────────
+    s = s.toLowerCase();
+    // Parenthesised fractions: (a)/(b) → a/b
+    s = s.replace(/\(([^()]+)\)\/\(([^()]+)\)/g, '$1/$2');
+    // Handle sqrt symbol
+    s = s.replace(/√/g, 'sqrt');
+    // Python-style exponents
+    s = s.replace(/\*\*/g, '^');
+    // Unicode superscripts
+    s = s.replace(/²/g, '^2');
+    s = s.replace(/³/g, '^3');
+    // Normalise spacing around operators
+    s = s.replace(/\s*\+\s*/g, '+');
+    s = s.replace(/\s*-\s*/g, '-');
+    s = s.replace(/\s*\*\s*/g, '*');
+    s = s.replace(/\s*\/\s*/g, '/');
+    s = s.replace(/\s*\^\s*/g, '^');
+    // Normalise multiplication symbols
+    s = s.replace(/×|·|⋅/g, '*');
+    // Normalise minus/dash symbols to ASCII hyphen
+    s = s.replace(/−|–|—/g, '-');
+    // Remove all remaining whitespace
+    s = s.replace(/\s+/g, '');
+    // Remove commas, dollar signs, degree symbols
+    s = s.replace(/[,$°]/g, '');
+    // Remove parentheses around single terms:  (x) → x
+    s = s.replace(/\(([a-z0-9]+)\)/g, '$1');
+
+    return s;
 };
 
 /**
@@ -289,5 +303,3 @@ export default {
     getSmartFeedback,
     normalizeAnswer
 };
-
-import { validateExpression } from '../utils/mathNetService';
