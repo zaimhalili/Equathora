@@ -9,6 +9,7 @@
     background-color: var(--main-color);
     border-radius: 6px;
     color: var(--secondary-color);
+    min-height: 70vh;
 }
 
 .leaderboard-header {

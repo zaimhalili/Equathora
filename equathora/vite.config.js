@@ -14,43 +14,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          // Separate node_modules into vendor chunks
-          if (id.includes('node_modules')) {
-            // Large libraries get their own chunks
-            if (id.includes('mathlive')) {
-              return 'mathlive';
-            }
-            if (id.includes('framer-motion')) {
-              return 'motion';
-            }
-            if (id.includes('@supabase')) {
-              return 'supabase';
-            }
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'react-vendor';
-            }
-            // Everything else from node_modules goes to vendor
-            return 'vendor';
-          }
-
-          // Split app code by route/feature
-          if (id.includes('/src/pages/Leaderboards/')) {
-            return 'leaderboards';
-          }
-          if (id.includes('/src/pages/Achievements/')) {
-            return 'achievements';
-          }
-          if (id.includes('/src/components/Landing/')) {
-            return 'landing';
-          }
-          if (id.includes('/src/pages/Blog') || id.includes('blogPosts')) {
-            return 'blog';
-          }
+        manualChunks: {
+          // Only split mathlive (huge, rarely changes) into its own chunk
+          'mathlive': ['mathlive'],
         }
       }
     },
-    chunkSizeWarningLimit: 1000, // Increase to 1MB - this is just a warning, not an error
+    chunkSizeWarningLimit: 1500,
     sourcemap: false,
   },
   server: {
