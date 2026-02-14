@@ -39,7 +39,7 @@ const AchievementsLayout = () => {
             <NavLink
               to="recent"
               className={({ isActive }) =>
-                isActive ? 'achievements-link active' : 'achievements-link'
+                isActive ? 'achievements-link active  active:scale-95' : 'achievements-link active:scale-95'
               }
             >
               <img src={AchievementsDD} alt="achievements" />
@@ -49,7 +49,7 @@ const AchievementsLayout = () => {
             <NavLink
               to="stats"
               className={({ isActive }) =>
-                isActive ? 'achievements-link active' : 'achievements-link'
+                isActive ? 'achievements-link active  active:scale-95' : 'achievements-link active:scale-95'
               }
             >
               <img src={Statistics} alt="statistics" />
@@ -59,7 +59,7 @@ const AchievementsLayout = () => {
             <NavLink
               to="events"
               className={({ isActive }) =>
-                isActive ? 'achievements-link active' : 'achievements-link'
+                isActive ? 'achievements-link active active:scale-95' : 'achievements-link active:scale-95'
               }
             >
               <img src={Events} alt="achievements" />

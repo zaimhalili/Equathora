@@ -25,7 +25,7 @@ const ProblemCard = ({ problem }) => {
     return (
         <Link
             to={`/problems/${problemSlug}`}
-            className={`problem-card ${problem.completed ? 'completed' : ''}`}
+            className={`problem-card active:scale-95 ${problem.completed ? 'completed' : ''}`}
         >
             <div className="problem-card-header">
                 <h3 className="problem-title">{problem.title}</h3>

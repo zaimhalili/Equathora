@@ -71,7 +71,7 @@ export const blogPosts = [
             },
             {
                 type: "paragraph",
-                text: "If you're Sansationested in improving logical thinking and math problem-solving skills, you can follow development updates and <strong>early access</strong> here:"
+                text: "If you're interested in improving logical thinking and math problem-solving skills, you can follow development updates and <strong>early access</strong> here:"
             },
             {
                 type: "link",

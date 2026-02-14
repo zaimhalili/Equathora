@@ -1,5 +1,5 @@
 #body-learn {
-    background: linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color));
+    background: linear-gradient(180deg, var(--mid-main-secondary)45%, var(--main-color));
     background-attachment: fixed;
     min-height: 100vh;
 }
@@ -424,8 +424,8 @@
 }
 
 /* ============================================================================
-   ENHANCED FILTERING SYSTEM
-   ============================================================================ */
+ENHANCED FILTERING SYSTEM
+============================================================================ */
 
 /* Search Row Layout */
 .search-row {
@@ -443,19 +443,20 @@
 .clear-search-btn {
     position: absolute;
     right: 0.75rem;
-    background: none;
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
     border: none;
-    color: var(--mid-main-secondary);
+    color: white;
     cursor: pointer;
     padding: 0.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: color 0.2s ease;
+    border-radius: 6px;
 }
 
-.clear-search-btn:hover {
-    color: var(--accent-color);
+.clear-search-btn:active {
+    scale: 0.95;
 }
 
 /* Clear all button in search row */
@@ -463,23 +464,21 @@
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.5rem 1rem;
-    background: transparent;
-    border: 1.5px solid rgba(217, 4, 41, 0.3);
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
     border-radius: 6px;
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--accent-color);
+    color: white;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
     flex-shrink: 0;
+    height: 44px;
+    padding: 0 0.75rem;
 }
 
-.clear-all-btn:hover {
-    background-color: var(--accent-color);
-    color: white;
-    border-color: var(--accent-color);
+.clear-all-btn:active{
+    scale: .95;
 }
 
 /* Filter Rows Container */
@@ -706,25 +705,17 @@
     gap: 0.5rem;
     padding: 0.625rem 0.875rem;
     background-color: var(--main-color);
-    border: 1.5px solid rgba(43, 45, 66, 0.15);
     border-radius: 6px;
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--secondary-color);
     cursor: pointer;
-    transition: all 0.2s ease;
     width: 100%;
     text-align: left;
 }
 
-.filter-dropdown-trigger:hover {
-    border-color: var(--accent-color);
-    background-color: rgba(217, 4, 41, 0.02);
-}
-
 .filter-dropdown-trigger.open {
     border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.1);
 }
 
 .filter-dropdown-trigger.has-value {
@@ -796,7 +787,6 @@
     font-weight: 500;
     color: var(--secondary-color);
     cursor: pointer;
-    transition: background-color 0.15s ease;
     text-align: left;
 }
 
@@ -804,9 +794,13 @@
     background-color: rgba(43, 45, 66, 0.05);
 }
 
+.filter-dropdown-option:active {
+    scale: 0.95;
+}
+
 .filter-dropdown-option.selected {
-    background-color: rgba(217, 4, 41, 0.1);
-    color: var(--accent-color);
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
+    color: white;
 }
 
 .filter-dropdown-option:first-child {

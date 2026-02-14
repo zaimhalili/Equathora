@@ -337,18 +337,7 @@ const Learn = () => {
           <Navbar />
         </header>
         <section id='hero-learn'>
-          <motion.article
-            id='welcome-learn'
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <figure><img src={Idea} alt="idea image" /></figure>
-            <div id="learn-explore">
-              <h1>Explore the Math <br />exercises on <span style={{ color: 'var(--dark-accent-color)' }}>Equathora</span></h1>
-              <h4>Unlock more exercises as you progress. They're great practise and fun to do!</h4>
-            </div>
-          </motion.article>
+          
 
           <motion.article
             id='search-filtering'

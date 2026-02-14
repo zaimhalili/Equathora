@@ -100,7 +100,7 @@ const BlogPost = () => {
                                         className='rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 object-cover object-bottom'
                                     />
                                     <div className='flex flex-col gap-1'>
-                                        <h3 className='font-bold text-base sm:text-xl'>Find the post Sansationesting or useful?</h3>
+                                        <h3 className='font-bold text-base sm:text-xl'>Find the post interesting or useful?</h3>
                                         <p className='text-sm sm:text-lg'>Share it around and have others benefit too!</p>
                                     </div>
                                 </div>
@@ -108,6 +108,7 @@ const BlogPost = () => {
                             <ShareButton
                                 text={`Check out "${post.title}" on Equathora!`}
                                 url={window.location.href}
+                                className="active:scale-95"
                             />
                         </div>
                     </header>
