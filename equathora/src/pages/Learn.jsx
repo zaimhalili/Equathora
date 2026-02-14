@@ -337,7 +337,38 @@ const Learn = () => {
           <Navbar />
         </header>
         <section id='hero-learn'>
-          
+          <motion.article
+            id='welcome-learn'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <figure><img src={Idea} alt="idea image" /></figure>
+            <div id="learn-explore">
+              <h1>Explore the Math <br />exercises on <span className="text-[var(--accent-color)] relative inline-block">
+                Equathora
+                <motion.svg
+                  className="absolute -bottom-0 left-0 w-full"
+                  viewBox="0 0 200 8"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ delay: 0.8, duration: 0.8 }}
+                >
+                  <motion.path
+                    d="M0 4 Q50 0 100 4 Q150 8 200 4"
+                    fill="none"
+                    stroke="var(--accent-color)"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ delay: 0.8, duration: 0.8 }}
+                  />
+                </motion.svg>
+              </span></h1>
+              <h4>Unlock more exercises as you progress. They're great practise and fun to do!</h4>
+            </div>
+          </motion.article>
 
           <motion.article
             id='search-filtering'

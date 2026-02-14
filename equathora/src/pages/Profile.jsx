@@ -255,7 +255,7 @@ const Profile = () => {
                   {viewingOwnProfile && (
                     <button
                       type="button"
-                      className='w-full py-2 md:py-3 bg-[var(--accent-color)] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300 cursor-pointer'
+                      className='w-full py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold text-white rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-300 cursor-pointer active:scale-95'
                       onClick={() => setIsEditModalOpen(true)}
                     >
                       Edit Profile
