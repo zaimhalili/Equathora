@@ -7,11 +7,63 @@ import React, {
   createRef,
 } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import TopicNode from '@/components/TopicNode';
 import mathPathTopics from '@/data/mathPathData';
 import { FaRoute, FaCheckCircle, FaLock, FaMapMarkerAlt, FaChevronDown } from 'react-icons/fa';
+import { supabase } from '@/lib/supabaseClient';
+import { getAllProblems } from '@/lib/problemService';
+import { getTopicFrequency, incrementTopicFrequency } from '@/lib/databaseService';
+
+/* ================================================================
+   TOPIC MAPPING — maps mathPathData topic IDs to DB topic values.
+   Each key lists the DB `topic` strings that belong to it.
+   Falls back to case-insensitive title matching too.
+   ================================================================ */
+const TOPIC_DB_MAP = {
+  'arithmetic': ['Arithmetic'],
+  'fractions': ['Fractions'],
+  'decimals': ['Decimals'],
+  'ratios': ['Ratio & Proportion', 'Grade 10 - Ratio & Proportion', 'Ratios'],
+  'variables': ['Variables'],
+  'expressions': ['Algebraic Expressions', 'Expressions'],
+  'linear-equations': ['Linear Equations'],
+  'inequalities': ['Inequalities'],
+  'systems-of-equations': ['Systems of Equations'],
+  'functions': ['Functions'],
+  'graphs': ['Graphs', 'Geometry'],
+  'polynomials': ['Polynomials'],
+  'factoring': ['Factoring'],
+  'quadratics': ['Quadratic Equations', 'Grade 10 - Quadratic Equations', 'Quadratics'],
+  'exponents-logarithms': ['Exponents', 'Logarithms', 'Exponents & Logs'],
+  'sequences-series': ['Sequences & Series', 'Grade 11 - Sequences & Series', 'Arithmetic series'],
+  'logical-reasoning': ['Logical Reasoning', 'Logic'],
+  'proof-techniques': ['Proof Techniques', 'Proofs'],
+  'combinatorics': ['Combinatorics', 'Counting and probability', 'Grade 12 - Binomial Theorem'],
+  'number-theory': ['Number Theory'],
+};
+
+/** Match a DB problem topic string to a mathPathData topic id */
+function matchProblemToTopic(dbTopic) {
+  if (!dbTopic) return null;
+  const lower = dbTopic.toLowerCase();
+  for (const [topicId, aliases] of Object.entries(TOPIC_DB_MAP)) {
+    for (const alias of aliases) {
+      if (alias.toLowerCase() === lower || lower.includes(alias.toLowerCase())) {
+        return topicId;
+      }
+    }
+  }
+  // Fallback: try matching against topic titles
+  for (const t of mathPathTopics) {
+    if (lower.includes(t.title.toLowerCase()) || t.title.toLowerCase().includes(lower)) {
+      return t.id;
+    }
+  }
+  return null;
+}
 
 /* ================================================================
    HELPER — derive statuses from the completed set
@@ -228,8 +280,59 @@ const SVGConnectorLayer = ({ topics, statusMap, nodeRefs, containerRef }) => {
    PAGE — Discover (Math Learning Path)
    ================================================================ */
 const Discover = () => {
-  // Demo state — production would read from database
+  const navigate = useNavigate();
+
+  /* ── Database-driven state ───────────────────────────── */
   const [completedIds, setCompletedIds] = useState(new Set());
+  const [problemsByTopic, setProblemsByTopic] = useState({}); // { [topicId]: [{id,title,slug},...] }
+  const [loading, setLoading] = useState(true);
+
+  // Fetch problems & user progress from Supabase
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchData() {
+      try {
+        // Parallel: all problems + user topic frequency
+        const [allProblems, topicFreq] = await Promise.all([
+          getAllProblems(),
+          getTopicFrequency().catch(() => []), // graceful fallback if not logged in
+        ]);
+
+        if (cancelled) return;
+
+        // Group problems by mathPathData topic id
+        const grouped = {};
+        (allProblems || []).forEach((p) => {
+          const topicId = matchProblemToTopic(p.topic);
+          if (topicId) {
+            if (!grouped[topicId]) grouped[topicId] = [];
+            grouped[topicId].push({
+              id: p.id,
+              title: p.title,
+              slug: p.slug || p.id,
+            });
+          }
+        });
+        setProblemsByTopic(grouped);
+
+        // Derive completed topics: topics where user has frequency count > 0
+        const completedSet = new Set();
+        (topicFreq || []).forEach((tf) => {
+          const topicId = matchProblemToTopic(tf.topic);
+          if (topicId && tf.count > 0) {
+            completedSet.add(topicId);
+          }
+        });
+        setCompletedIds(completedSet);
+      } catch (err) {
+        console.error('Discover: failed to load data', err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    fetchData();
+    return () => { cancelled = true; };
+  }, []);
 
   const statusMap = useMemo(
     () => deriveStatuses(mathPathTopics, completedIds),
@@ -273,18 +376,16 @@ const Discover = () => {
   const progressPct =
     totalTopics > 0 ? Math.round((completedCount / totalTopics) * 100) : 0;
 
-  // Toggle topic completion (demo interaction)
-  const handleTopicClick = useCallback((topic) => {
-    setCompletedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(topic.id)) {
-        next.delete(topic.id);
-      } else {
-        next.add(topic.id);
-      }
-      return next;
-    });
-  }, []);
+  // When user clicks a topic: push to DB + navigate to learn page
+  const handleTopicClick = useCallback(async (topic) => {
+    // Push concept open to database (fire-and-forget)
+    incrementTopicFrequency(topic.title).catch((err) =>
+      console.warn('Failed to track topic open:', err),
+    );
+
+    // Navigate to the learn page filtered by this topic
+    navigate(`/learn?topic=${encodeURIComponent(topic.title)}`);
+  }, [navigate]);
 
   useEffect(() => {
     document.title = 'Discover — Equathora';
@@ -333,6 +434,9 @@ const Discover = () => {
             status={statusMap[t.id]}
             index={globalIndex++}
             onClick={() => handleTopicClick(t)}
+            allTopics={mathPathTopics}
+            problemCount={(problemsByTopic[t.id] || []).length}
+            problems={problemsByTopic[t.id] || []}
           />
         ))}
       </div>,
@@ -349,6 +453,9 @@ const Discover = () => {
             status={statusMap[t.id]}
             index={globalIndex++}
             onClick={() => handleTopicClick(t)}
+            allTopics={mathPathTopics}
+            problemCount={(problemsByTopic[t.id] || []).length}
+            problems={problemsByTopic[t.id] || []}
           />
         ))}
       </div>,
@@ -368,6 +475,9 @@ const Discover = () => {
             status={statusMap[t.id]}
             index={globalIndex++}
             onClick={() => handleTopicClick(t)}
+            allTopics={mathPathTopics}
+            problemCount={(problemsByTopic[t.id] || []).length}
+            problems={problemsByTopic[t.id] || []}
           />
         ))}
       </div>,
@@ -387,6 +497,9 @@ const Discover = () => {
             status={statusMap[t.id]}
             index={globalIndex++}
             onClick={() => handleTopicClick(t)}
+            allTopics={mathPathTopics}
+            problemCount={(problemsByTopic[t.id] || []).length}
+            problems={problemsByTopic[t.id] || []}
           />
         </div>,
       );
@@ -397,144 +510,151 @@ const Discover = () => {
     <>
       <Navbar />
       <div className="bg-[linear-gradient(180deg,var(--mid-main-secondary)_45%,var(--main-color))] bg-fixed min-h-screen pt-24 pb-20 font-[Sansation,sans-serif]">
-        {/* ── Hero Header ───────────────────────────────── */}
-        <div className="px-6 md:px-16 lg:px-32 xl:px-48 pb-12 flex justify-center">
-          <motion.div
-            className="text-center flex items-center flex-col gap-4 max-w-2xl"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.div
-              className="flex items-center justify-center h-14 w-14 rounded-2xl bg-white/90 shadow-md"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            >
-              <FaRoute className="text-[var(--accent-color)] text-2xl" />
-            </motion.div>
+        {/* ── Centered container matching Dashboard max-width ── */}
+        <div className="w-full flex justify-center">
+          <div className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw]">
 
-            <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--secondary-color)] leading-tight">
-              Your Journey Through Mathematics
-            </h1>
-            <p className="text-[var(--secondary-color)] text-base md:text-lg leading-relaxed max-w-xl opacity-90">
-              Master mathematical thinking step by step. Unlock topics as you
-              progress from foundations to advanced problem solving.
-            </p>
-
-            {/* Progress stats strip — dashboard-style cards */}
-            <motion.div
-              className="flex flex-wrap justify-center gap-2 md:gap-3 mt-4 w-full"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              {[
-                { icon: <FaCheckCircle className="text-green-500" />, label: 'Completed', value: completedCount, color: 'green' },
-                { icon: <FaMapMarkerAlt className="text-[var(--accent-color)]" />, label: 'Available', value: availableCount, color: 'accent' },
-                { icon: <FaLock className="text-[var(--mid-main-secondary)]" />, label: 'Locked', value: lockedCount, color: 'gray' },
-              ].map((stat) => (
-                <div
-                  key={stat.label}
-                  className="flex items-center gap-2.5 rounded-xl bg-white px-4 py-3 shadow-sm transition-all duration-150 ease-out hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 cursor-default"
-                >
-                  <div className="flex-shrink-0 text-base">{stat.icon}</div>
-                  <div className="text-left">
-                    <p className="text-[10px] text-[var(--mid-main-secondary)] font-medium leading-none">
-                      {stat.label}
-                    </p>
-                    <p className="text-lg font-bold text-[var(--secondary-color)] leading-tight">
-                      {stat.value}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Progress bar */}
-            <motion.div
-              className="w-full max-w-md mt-2"
-              initial={{ opacity: 0, scaleX: 0.6 }}
-              animate={{ opacity: 1, scaleX: 1 }}
-              transition={{ delay: 0.45, duration: 0.5 }}
-            >
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs text-[var(--mid-main-secondary)] font-medium">
-                  Overall Progress
-                </span>
-                <span className="text-xs font-bold text-[var(--secondary-color)]">
-                  {completedCount} of {totalTopics} · {progressPct}%
-                </span>
-              </div>
-              <div className="h-2.5 rounded-full bg-white/60 overflow-hidden shadow-inner">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--light-accent-color)]"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progressPct}%` }}
-                  transition={{ delay: 0.6, duration: 0.7, ease: 'easeOut' }}
-                />
-              </div>
-            </motion.div>
-
-            {/* Scroll hint */}
-            <motion.div
-              className="flex flex-col items-center gap-1 mt-2"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              <p className="text-[11px] text-[var(--mid-main-secondary)] italic">
-                Click an available topic to mark it complete and unlock the next step.
-              </p>
+            {/* ── Hero Header ───────────────────────────────── */}
+            <div className="pb-12 flex justify-center">
               <motion.div
-                animate={{ y: [0, 4, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+                className="text-center flex items-center flex-col gap-4 max-w-2xl"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
               >
-                <FaChevronDown className="text-[var(--mid-main-secondary)] text-xs opacity-50" />
+                <motion.div
+                  className="flex items-center justify-center h-14 w-14 rounded-2xl bg-white/90 shadow-md"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+                >
+                  <FaRoute className="text-[var(--accent-color)] text-2xl" />
+                </motion.div>
+
+                <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--secondary-color)] leading-tight">
+                  Your Journey Through Mathematics
+                </h1>
+                <p className="text-[var(--secondary-color)] text-base md:text-lg leading-relaxed max-w-xl opacity-90">
+                  Master mathematical thinking step by step. Unlock topics as you
+                  progress from foundations to advanced problem solving.
+                </p>
+
+                {/* Progress stats strip — dashboard-style cards */}
+                <motion.div
+                  className="flex flex-wrap justify-center gap-2 md:gap-3 mt-4 w-full"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                >
+                  {[
+                    { icon: <FaCheckCircle className="text-green-500" />, label: 'Completed', value: completedCount, color: 'green' },
+                    { icon: <FaMapMarkerAlt className="text-[var(--accent-color)]" />, label: 'Available', value: availableCount, color: 'accent' },
+                    { icon: <FaLock className="text-[var(--mid-main-secondary)]" />, label: 'Locked', value: lockedCount, color: 'gray' },
+                  ].map((stat) => (
+                    <div
+                      key={stat.label}
+                      className="flex items-center gap-2.5 rounded-xl bg-white px-4 py-3 shadow-sm transition-all duration-150 ease-out hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 cursor-default"
+                    >
+                      <div className="flex-shrink-0 text-base">{stat.icon}</div>
+                      <div className="text-left">
+                        <p className="text-[10px] text-[var(--mid-main-secondary)] font-medium leading-none">
+                          {stat.label}
+                        </p>
+                        <p className="text-lg font-bold text-[var(--secondary-color)] leading-tight">
+                          {stat.value}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+
+                {/* Progress bar */}
+                <motion.div
+                  className="w-full max-w-md mt-2"
+                  initial={{ opacity: 0, scaleX: 0.6 }}
+                  animate={{ opacity: 1, scaleX: 1 }}
+                  transition={{ delay: 0.45, duration: 0.5 }}
+                >
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs text-[var(--mid-main-secondary)] font-medium">
+                      Overall Progress
+                    </span>
+                    <span className="text-xs font-bold text-[var(--secondary-color)]">
+                      {completedCount} of {totalTopics} · {progressPct}%
+                    </span>
+                  </div>
+                  <div className="h-2.5 rounded-full bg-white/60 overflow-hidden shadow-inner">
+                    <motion.div
+                      className="h-full rounded-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--light-accent-color)]"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${progressPct}%` }}
+                      transition={{ delay: 0.6, duration: 0.7, ease: 'easeOut' }}
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Scroll hint */}
+                <motion.div
+                  className="flex flex-col items-center gap-1 mt-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <p className="text-[11px] text-[var(--mid-main-secondary)] italic">
+                    Click any topic to explore its problems. Hover for details.
+                  </p>
+                  <motion.div
+                    animate={{ y: [0, 4, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+                  >
+                    <FaChevronDown className="text-[var(--mid-main-secondary)] text-xs opacity-50" />
+                  </motion.div>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          </motion.div>
-        </div>
+            </div>
 
-        {/* ── Path Section (relative container for SVG overlay) ── */}
-        <div
-          ref={containerRef}
-          className="relative px-4 md:px-8 lg:px-16 xl:px-32 max-w-[1200px] mx-auto"
-        >
-          {/* SVG Connector Layer — absolute overlay */}
-          <SVGConnectorLayer
-            topics={mathPathTopics}
-            statusMap={statusMap}
-            nodeRefs={nodeRefs}
-            containerRef={containerRef}
-          />
+            {/* ── Path Section (relative container for SVG overlay) ── */}
+            <div
+              ref={containerRef}
+              className="relative mx-auto"
+            >
+              {/* SVG Connector Layer — absolute overlay */}
+              <SVGConnectorLayer
+                topics={mathPathTopics}
+                statusMap={statusMap}
+                nodeRefs={nodeRefs}
+                containerRef={containerRef}
+              />
 
-          {/* Desktop 3-column grid */}
-          <div
-            className="hidden md:grid items-start justify-items-center"
-            style={{
-              gridTemplateColumns: '1fr auto 1fr',
-              rowGap: '2.5rem',
-              columnGap: '2rem',
-            }}
-          >
-            {gridItems.filter(
-              (item) => !item.key?.startsWith('mobile-'),
-            )}
+              {/* Desktop 3-column grid */}
+              <div
+                className="hidden md:grid items-start justify-items-center"
+                style={{
+                  gridTemplateColumns: '1fr auto 1fr',
+                  rowGap: '2.5rem',
+                  columnGap: '2rem',
+                }}
+              >
+                {gridItems.filter(
+                  (item) => !item.key?.startsWith('mobile-'),
+                )}
+              </div>
+
+              {/* Mobile single-column */}
+              <div className="flex md:hidden flex-col items-center gap-5">
+                {gridItems.filter(
+                  (item) =>
+                    item.key?.startsWith('mobile-') ||
+                    item.key?.startsWith('cat-'),
+                )}
+              </div>
+            </div>
+
+            {/* Bottom spacing before footer */}
+            <div className="h-12" />
+
           </div>
-
-          {/* Mobile single-column */}
-          <div className="flex md:hidden flex-col items-center gap-5">
-            {gridItems.filter(
-              (item) =>
-                item.key?.startsWith('mobile-') ||
-                item.key?.startsWith('cat-'),
-            )}
-          </div>
         </div>
-
-        {/* Bottom spacing before footer */}
-        <div className="h-12" />
       </div>
       <Footer />
     </>
