@@ -8,13 +8,15 @@ public static class ProblemEndpoints
         app.MapGet("/api/problems", async (AppDbContext db) =>
         {
             return await db.Problems
+                .Where(p => p.IsActive)
                 .Select(p => new 
                 {
                     p.Id,
                     p.Title,
-                    p.Statement,
+                    p.Description,
                     p.Topic,
-                    p.Difficulty
+                    p.Difficulty,
+                    p.Slug
                 })
                 .ToListAsync();
         });

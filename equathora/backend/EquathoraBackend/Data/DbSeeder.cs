@@ -13,19 +13,21 @@ public static class DbSeeder
         db.Problems.AddRange(
             new Problem
             {
+                GroupId = 1,
                 Title = "Simple Addition",
-                Statement = "What is 7 + 5?",
-                Topic = "Arithmetic",
-                Difficulty = 1,
-                Answer = "12"
+                Description = "What is $7 + 5$?",
+                Difficulty = "Easy",
+                Answer = "12",
+                Topic = "arithmetic"
             },
             new Problem
             {
+                GroupId = 1,
                 Title = "Logic Check",
-                Statement = "Is every square a rectangle?",
-                Topic = "Logic",
-                Difficulty = 1,
-                Answer = "Yes"
+                Description = "Is every square a rectangle?",
+                Difficulty = "Easy",
+                Answer = "Yes",
+                Topic = "logic"
             }
         );
 

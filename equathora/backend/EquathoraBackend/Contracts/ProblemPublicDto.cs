@@ -1,9 +1,10 @@
 namespace EquathoraBackend.Contracts;
 
 public record ProblemPublicDto(
-    Guid Id,
+    int Id,
     string Title,
-    string Statement,
+    string Description,
     string Topic,
-    int Difficulty
+    string Difficulty,
+    string? Slug
 );
