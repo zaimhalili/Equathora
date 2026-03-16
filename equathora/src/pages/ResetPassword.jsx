@@ -6,6 +6,7 @@ import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
+import { validatePassword } from "./passwordUtils";
 
 const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -44,8 +45,9 @@ const ResetPassword = () => {
             return;
         }
 
-        if (newPassword.length < 6) {
-            setError('Password must be at least 6 characters');
+        const { valid, errors } = validatePassword(newPassword);
+        if (!valid) {
+            setError(errors.join(', '));
             return;
         }
 

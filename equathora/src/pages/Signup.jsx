@@ -9,6 +9,7 @@ import './Signup.css';
 import '../components/Auth.css';
 import { supabase } from '../lib/supabaseClient';
 import { notifyWelcome } from '../lib/notificationService';
+import { validatePassword } from "../utils/passwordUtil";
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -37,8 +38,9 @@ const Signup = () => {
       return;
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+    const { valid, errors } = validatePassword(password);
+    if (!valid) {
+      setError(errors.join(', '));
       return;
     }
 
