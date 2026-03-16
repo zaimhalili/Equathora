@@ -6,7 +6,7 @@ import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
-import { validatePassword } from "./passwordUtils";
+import { validatePassword } from "../utils/passwordUtil";
 
 const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
