@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { FiCheck } from "react-icons/fi";
+
 import {
     getNotifications,
     getUnreadCount,
@@ -248,7 +250,7 @@ const Notifications = () => {
     return (
         <>
             <Navbar />
-            <main className="min-h-screen flex flex-col bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed font-[Sansation,sans-serif] text-[var(--secondary-color)]">
+            <main className="w-full min-h-screen flex flex-col bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed font-[Sansation,sans-serif] text-[var(--secondary-color)]">
                 {/* Header */}
                 <div className="w-full flex flex-col items-center gap-2 pt-8 pb-2 px-4">
                     <div className="flex items-center gap-3">
@@ -259,11 +261,11 @@ const Notifications = () => {
                             </span>
                         )}
                     </div>
-                    <p className="text-sm text-[var(--french-gray)]">Stay updated with your progress and activity</p>
+                    <p className="text-sm text-[var(--raisin-black)]">Stay updated with your progress and activity</p>
                 </div>
 
                 {/* Content */}
-                <div className="w-full flex flex-col gap-4 px-4 sm:px-8 lg:px-24 xl:px-36 pb-12 max-w-[1000px] self-center flex-1">
+                <div className="w-full flex flex-col gap-4 px-4 sm:px-8 lg:px-24 xl:px-36 pb-12 max-w-[1500px] self-center flex-1">
 
                     {/* Filter tabs */}
                     <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
@@ -272,9 +274,9 @@ const Notifications = () => {
                                 key={opt.value}
                                 onClick={() => { setFilter(opt.value); setSelectedIds([]); }}
                                 className={`px-4 py-2 rounded-md text-xs font-semibold whitespace-nowrap transition-all shrink-0 cursor-pointer ${filter === opt.value
-                                    ? 'bg-[var(--accent-color)] text-white'
+                                    ? 'bg-gradient-to-t from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white'
                                     : 'bg-white text-[var(--secondary-color)] border border-[var(--french-gray)] hover:bg-gray-50'
-                                    }`}
+                                }`}
                             >
                                 {opt.label}
                             </button>
@@ -283,13 +285,32 @@ const Notifications = () => {
 
                     {/* Action bar */}
                     <div className="flex items-center justify-between gap-3 flex-wrap">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input
-                                type="checkbox"
-                                checked={selectAll}
-                                onChange={handleSelectAll}
-                                className="w-4 h-4 accent-[var(--accent-color)] cursor-pointer"
-                            />
+                        <label className="pl-5 flex items-center gap-2 cursor-pointer">
+                            <div
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleSelectAll();
+                                }}
+                                className={`
+                                    w-5 h-5 flex items-center justify-center
+                                    border rounded-md cursor-pointer
+                                    transition-all duration-200
+                                    hover:ring-2
+                                    hover:ring-[var(--accent-color)]
+                                    hover:ring-offset-1
+                                    active:scale-90
+                                    ${selectAll
+                                    ? "border-[var(--accent-color)] bg-[var(--accent-color)]"
+                                    : " bg-transparent"
+                                }
+                                `}
+                            >
+                                {selectAll && (
+                                    <span className="text-white text-[12px] leading-none font-bold">
+                                        <FiCheck />
+                                    </span>
+                                )}
+                            </div>
                             <span className="text-xs font-semibold">Select all</span>
                         </label>
 
@@ -332,7 +353,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleClearAll}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-white text-[var(--french-gray)] rounded-md border border-[var(--french-gray)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
+                                    className="px-3 py-1.5 bg-white text-[var(--raisin-black)] rounded-md border border-[var(--french-gray)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
                                 >
                                     Clear all
                                 </button>
@@ -356,7 +377,7 @@ const Notifications = () => {
                                 </svg>
                             </div>
                             <h3 className="text-lg font-bold">No notifications</h3>
-                            <p className="text-sm text-[var(--french-gray)]">You're all caught up!</p>
+                            <p className="text-sm text-[var(--raisin-black)]">You're all caught up!</p>
                         </div>
                     ) : (
                         <div className="flex flex-col gap-3">
@@ -370,40 +391,64 @@ const Notifications = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, x: -20, height: 0 }}
                                             transition={{ duration: 0.2 }}
-                                            className={`flex items-start gap-3 rounded-md p-4 transition-all cursor-pointer border-l-4 ${!notification.read
+                                            className={`flex items-center gap-3 rounded-md p-4 transition-all cursor-pointer h-full border-l-4 ${!notification.read
                                                 ? `bg-white shadow-md ${config.borderColor}`
                                                 : 'bg-gray-50/80 border-gray-200 shadow-sm'
-                                                } hover:shadow-md`}
+                                            } hover:shadow-md`}
                                             onClick={() => handleNotificationClick(notification)}
                                         >
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedIds.includes(notification.id)}
-                                                onChange={() => handleToggleSelect(notification.id)}
-                                                onClick={e => e.stopPropagation()}
-                                                className="w-4 h-4 accent-[var(--accent-color)] cursor-pointer shrink-0 translate-y-1"
-                                            />
-
-                                            <div className={`flex items-center justify-center w-10 h-10 rounded-md shrink-0 ${config.bgColor}`}>
-                                                {config.icon}
-                                            </div>
-
-                                            <div className="flex flex-col gap-1 flex-1 min-w-0">
-                                                <div className="flex items-center gap-2 flex-wrap">
-                                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${config.badgeColor}`}>
-                                                        {config.label}
+                                            <div className="flex items-center gap-2">
+                                                <div
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleToggleSelect(notification.id);
+                                                    }}
+                                                    className={`
+                                                    w-6 h-6 flex items-center justify-center
+                                                    border rounded-md cursor-pointer
+                                                    transition-all duration-200
+                                                    hover:ring-2
+                                                    hover:ring-[var(--accent-color)]
+                                                    hover:ring-offset-1
+                                                    ${selectedIds.includes(notification.id)
+                                                        ? "border-[var(--accent-color)] bg-[var(--accent-color)]"
+                                                        : "border-[#8e8f92] bg-transparent"
+                                                    }`}
+                                                >
+                                                    {selectedIds.includes(notification.id) && (
+                                                        <span className="text-white text-xs leading-none font-bold">
+                                                        <FiCheck />
                                                     </span>
-                                                    {!notification.read && (
-                                                        <span className="w-2 h-2 bg-[var(--accent-color)] rounded-md shrink-0" />
                                                     )}
                                                 </div>
-                                                <p className={`text-sm leading-snug ${!notification.read ? 'font-semibold' : ''}`}>
+
+                                                <div className={`flex items-center justify-center w-10 h-10 rounded-md shrink-0 ${config.bgColor}`}>
+                                                    {config.icon}
+                                                </div>
+                                            </div>
+
+
+                                            <div className="flex flex-col gap-1 flex-1 min-w-0">
+
+                                                <p className={`flex gap-3 text-lg leading-snug ${!notification.read ? 'font-semibold' : ''}`}>
                                                     {notification.title}
+                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                        <span className={`
+                                                            text-[10px] font-bold tracking-widest uppercase px-2 py-0.5
+                                                            rounded-full ${config.badgeColor}
+                                                            ring-1 ring-black/[0.06]
+                                                        `}>
+                                                            {config.label}
+                                                        </span>
+                                                        {!notification.read && (
+                                                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-color)] animate-pulse shrink-0" />
+                                                        )}
+                                                    </div>
                                                 </p>
-                                                <p className="text-xs text-[var(--french-gray)] leading-relaxed">
+                                                <p className="text-xs text-[var(--raisin-black)] leading-relaxed">
                                                     {notification.message}
                                                 </p>
-                                                <span className="text-[10px] text-[var(--french-gray)]">
+                                                <span className="text-[10px] text-[var(--secondary-color)]">
                                                     {formatTimeAgo(notification.created_at)}
                                                 </span>
                                             </div>
