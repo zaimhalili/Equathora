@@ -196,6 +196,12 @@ const Profile = () => {
     return { percentage, offset, circumference };
   };
 
+  // Cut name if it passes a certain length
+
+  if (userData.name.length >= 13) {
+    // userData.name = "bro"
+  }
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -213,7 +219,7 @@ const Profile = () => {
               transition={{ duration: 0.5 }}
             >
               {/* Combined Card */}
-              <div className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col gap-6'>
+              <div className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col gap-6 overflow-hidden'>
                 {/* Profile Header Section */}
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
@@ -230,7 +236,7 @@ const Profile = () => {
                     />
                     <div className='text-[var(--secondary-color)] font-[Sansation] flex flex-col justify-between gap-1'>
                       <div>
-                        <h5 className='font-bold text-xl md:text-2xl'>{userData.name}</h5>
+                        <h5 className='font-bold text-xl md:text-2xl truncate max-w-[11ch] text-overflow: ellipsis'>{userData.name}</h5>
                         <h5 className='font-light text-md md:text-lg'>@{userData.username}</h5>
                       </div>
                       <h6 className='text-md md:text-lg'>Rank <span className='font-bold'>{userData.stats.globalRank}</span></h6>
