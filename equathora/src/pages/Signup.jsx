@@ -21,6 +21,15 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Password feedback state
+  const { valid: isPasswordStrong, errors: passwordErrors } = validatePassword(password);
+  const missingPasswordRules = passwordErrors.filter(err => err !== 'Password is required');
+  const passwordFeedback = password.length === 0
+    ? ''
+    : isPasswordStrong
+      ? 'Strong password'
+      : `Weak password. Missing: ${missingPasswordRules.join(', ')}`;
+
   // Peek at password
   const [type, setType] = useState('password');
   const [peekOpen, setPeekOpen] = useState(false);
@@ -162,7 +171,7 @@ const Signup = () => {
               type={type}
               className='inputAuth pr-10'
               placeholder='Enter your password'
-              minLength="6"
+              minLength="8"
               maxLength="128"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -177,6 +186,20 @@ const Signup = () => {
               {peekOpen ? <FaEye size={18} /> : <FaEyeSlash size={18} />}
             </button>
           </div>
+
+          {passwordFeedback && (
+            <div
+              aria-live="polite"
+              style={{
+                marginTop: '-0.9rem',
+                marginBottom: '1.2rem',
+                fontSize: '0.8rem',
+                color: isPasswordStrong ? '#10B981' : 'var(--dark-accent-color)'
+              }}
+            >
+              {passwordFeedback}
+            </div>
+          )}
 
           <h5 className='typeOfInput'>PASSWORD CONFIRMATION</h5>
           <input
