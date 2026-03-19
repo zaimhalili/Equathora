@@ -1,7 +1,10 @@
 import React from 'react';
 import { FaTimes, FaFileAlt, FaCalculator, FaLightbulb, FaChevronRight, FaPencilAlt } from 'react-icons/fa';
+import useBodyScrollLock from '../../hooks/useBodyScrollLock';
 
 const HelpModal = ({ isOpen, onClose }) => {
+    useBodyScrollLock(isOpen);
+
     if (!isOpen) return null;
 
     return (

@@ -196,12 +196,6 @@ const Profile = () => {
     return { percentage, offset, circumference };
   };
 
-  // Cut name if it passes a certain length
-
-  if (userData.name.length >= 13) {
-    // userData.name = "bro"
-  }
-
 
   return (
     <div className="min-h-screen flex flex-col">

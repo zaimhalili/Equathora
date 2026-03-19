@@ -3,8 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaCamera, FaUser, FaEnvelope, FaGlobeAmericas } from 'react-icons/fa';
 import { supabase } from '../lib/supabaseClient';
 import imageCompression from 'browser-image-compression';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
 const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
+    useBodyScrollLock(isOpen);
+
     const [formData, setFormData] = useState({
         full_name: userData?.name || '',
         username: userData?.username || '',

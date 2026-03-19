@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
 const StreakPopup = ({ streak, onClose }) => {
     const [show, setShow] = useState(true);
+
+    useBodyScrollLock(show);
 
     useEffect(() => {
         const timer = setTimeout(() => {

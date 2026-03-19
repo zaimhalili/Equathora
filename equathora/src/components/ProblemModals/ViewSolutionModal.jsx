@@ -1,6 +1,9 @@
 import React from 'react';
+import useBodyScrollLock from '../../hooks/useBodyScrollLock';
 
 const ViewSolutionModal = ({ isOpen, onClose, onConfirm }) => {
+    useBodyScrollLock(isOpen);
+
     if (!isOpen) return null;
 
     return (

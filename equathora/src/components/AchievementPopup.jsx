@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
 const RARITY_COLORS = {
     Common: { bg: 'from-green-400 to-green-600', ring: 'ring-green-400/40', text: 'text-green-600' },
@@ -12,6 +13,8 @@ const RARITY_COLORS = {
 const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [show, setShow] = useState(true);
+
+    useBodyScrollLock(show && achievements.length > 0);
 
     const current = achievements[currentIndex];
     const isLast = currentIndex >= achievements.length - 1;

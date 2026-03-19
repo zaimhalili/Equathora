@@ -1,7 +1,10 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
 const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDetails, setReportDetails, onSubmit }) => {
+    useBodyScrollLock(isOpen);
+
     if (!isOpen) return null;
 
     return (

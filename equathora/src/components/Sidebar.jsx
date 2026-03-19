@@ -44,6 +44,35 @@ const Sidebar = ({ isOpen, onClose }) => {
         fetchStreak();
     }, [isOpen]);
 
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const scrollY = window.scrollY;
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalBodyPosition = document.body.style.position;
+        const originalBodyTop = document.body.style.top;
+        const originalBodyWidth = document.body.style.width;
+        const originalBodyTouchAction = document.body.style.touchAction;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.width = '100%';
+        document.body.style.touchAction = 'none';
+
+        return () => {
+            document.documentElement.style.overflow = originalHtmlOverflow;
+            document.body.style.overflow = originalBodyOverflow;
+            document.body.style.position = originalBodyPosition;
+            document.body.style.top = originalBodyTop;
+            document.body.style.width = originalBodyWidth;
+            document.body.style.touchAction = originalBodyTouchAction;
+            window.scrollTo(0, scrollY);
+        };
+    }, [isOpen]);
+
     async function LogOut() {
         await clearUserData();
         await supabase.auth.signOut();

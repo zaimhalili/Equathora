@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { FaTimes, FaClock, FaCheckCircle, FaTimesCircle, FaCopy } from 'react-icons/fa';
 import { MathfieldElement } from 'mathlive';
+import useBodyScrollLock from '../../hooks/useBodyScrollLock';
 
 const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
+    useBodyScrollLock(isOpen && !!submission);
+
     const [copyMessage, setCopyMessage] = useState('');
 
     const formatMinutesSeconds = (totalSeconds = 0) => {

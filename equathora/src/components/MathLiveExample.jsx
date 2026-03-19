@@ -2,8 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/MathLiveExample.css";
 import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb, FaCheckCircle } from "react-icons/fa";
+import useBodyScrollLock from "../hooks/useBodyScrollLock";
 
 const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
+    useBodyScrollLock(isOpen);
+
     if (!isOpen) return null;
 
     return (

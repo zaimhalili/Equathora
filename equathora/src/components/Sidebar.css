@@ -11,6 +11,8 @@
     transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     right: -320px;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
 }
 
 .sidebar-header {
@@ -299,6 +301,7 @@
     z-index: 1050;
     backdrop-filter: blur(3px);
     animation: fadeIn 0.3s ease;
+    touch-action: none;
 }
 
 @keyframes fadeIn {
