@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import CookieConsent from "./components/CookieConsent";
 import { supabase } from "./lib/supabaseClient";
+import { useAuth } from "./hooks/useAuth";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -52,6 +53,20 @@ const Tracks = lazy(() => import("./pages/Tracks"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const Waitlist = lazy(() => import("./pages/Waitlist"));
+
+function HomeRoute() {
+  const { loading, isAuth } = useAuth();
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (isAuth) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <Landing />;
+}
 
 function PageTitleUpdater() {
   const location = useLocation();
@@ -133,7 +148,7 @@ export default function App() {
 
   // Handle OAuth callback and redirect to dashboard
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
         // Check if we're not already on dashboard or a protected route
         const currentPath = window.location.pathname;
@@ -142,6 +157,8 @@ export default function App() {
         }
       }
     });
+
+    return () => subscription.unsubscribe();
   }, [navigate]);
 
 
@@ -154,7 +171,7 @@ export default function App() {
         <div id="main-content" tabIndex={-1} className="outline-none">
           <Routes>
             {/* Public Routes */}
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<HomeRoute />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/verify" element={<VerifyEmail />} />
