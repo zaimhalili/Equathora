@@ -213,7 +213,7 @@ const Profile = () => {
               transition={{ duration: 0.5 }}
             >
               {/* Combined Card */}
-              <div className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col gap-6 overflow-hidden'>
+              <div className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col gap-6'>
                 {/* Profile Header Section */}
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center mb-4'>
