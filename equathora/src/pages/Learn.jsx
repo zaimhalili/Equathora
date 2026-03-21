@@ -157,11 +157,12 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All", 
 const Learn = () => {
   const pageSize = 50; // Default page size
   const [searchParams, setSearchParams] = useSearchParams();
-  const [problems, setProblems] =  useState({ count: 0, data: [] });;
+  const [problems, setProblems] = useState({ count: 0, data: [] });
   const[facets, setFacets] = useState({ difficulties: [], topics: [], grade: [], progress: [] });
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
 
   // Read filters from URL query params
   const searchQuery = searchParams.get('q') || '';
@@ -234,41 +235,19 @@ const Learn = () => {
     setSearchParams({}, { replace: true });
   };
 
-  const fetchProblems = async () => {
-      try {
-        let problems = await Promise.all([getProblems(currentPage, pageSize)]);  
-        
-        problems = problems[0];
-        setProblems({ count: problems?.count, data: problems?.data });
-        setFacets({
-          grade: problems?.facets?.grade || {},
-          topic: problems?.facets?.topic || {},
-          progress: problems?.facets?.progress || {},
-          difficulty: problems?.facets?.difficulty || {}
-        });
-        setTotalPages(problems.count);
-      } catch (error) {
-        console.error('Failed to fetch problems:', error);
-        setProblems({ count: 0, data: [] });
-      } finally {
-        setLoading(false);
-      }
-    };
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [gradeFilter, difficultyFilter, topicFilter, statusFilter, progressFilter, debouncedSearchQuery, sortBy]);
 
   useEffect(() => {
-    fetchProblems();
-
-    // Refresh on window focus (when returning from Problem page)
-    const handleFocus = () => fetchProblems();
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, []);
-
-  
-  useEffect(() => {
-    const fetchFilteredProblems = async () => {
-      //setLoading(true);
+    const fetchPagedProblems = async () => {
       try {
+        if (currentPage === 1) {
+          setLoading(true);
+        } else {
+          setLoadingMore(true);
+        }
+
         const problemId = null;
         const groupId = gradeFilter ? gradeFilter.split(',') : null;
         const slug = null;
@@ -279,7 +258,6 @@ const Learn = () => {
         const progress = progressFilter ? progressFilter.split(',') : null;
         const grades = gradeFilter ? gradeFilter.split(',') : null;
 
-        // Fetch problems from Supabase
         const response = await getProblems(
           currentPage,
           pageSize,
@@ -293,19 +271,49 @@ const Learn = () => {
           sort,
           progress
         );
-        let filtered = response.data || [];
 
+        const pageData = response?.data || [];
 
-        setProblems({ count: filtered.length, data: filtered });
-        setTotalPages(response.count);
+        setFacets({
+          grade: response?.facets?.grade || {},
+          topic: response?.facets?.topic || {},
+          progress: response?.facets?.progress || {},
+          difficulty: response?.facets?.difficulty || {}
+        });
+
+        setTotalCount(response?.count || 0);
+
+        setProblems((prev) => {
+          if (currentPage === 1) {
+            return { count: response?.count || 0, data: pageData };
+          }
+          return {
+            count: response?.count || 0,
+            data: [...prev.data, ...pageData]
+          };
+        });
       } catch (error) {
-        setProblems({ count: 0, data: [] });
+        console.error('Failed to fetch problems:', error);
+        if (currentPage === 1) {
+          setProblems({ count: 0, data: [] });
+          setTotalCount(0);
+        }
       } finally {
-        //setLoading(false);
+        setLoading(false);
+        setLoadingMore(false);
       }
     };
-    fetchFilteredProblems();
-  }, [gradeFilter, difficultyFilter, topicFilter, statusFilter, progressFilter, debouncedSearchQuery, sortBy]);
+
+    fetchPagedProblems();
+  }, [currentPage, gradeFilter, difficultyFilter, topicFilter, statusFilter, progressFilter, debouncedSearchQuery, sortBy]);
+
+  const hasMore = problems?.data?.length < totalCount;
+  const remainingCount = Math.max(0, totalCount - (problems?.data?.length || 0));
+  const handleShowMore = () => {
+    if (!loadingMore && hasMore) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
 
 
   // Dropdown options from enums
@@ -534,7 +542,7 @@ const Learn = () => {
           {/* Results Summary */}
           <div className="results-summary">
             <span>
-              Showing <strong>{problems?.data?.length}</strong> of <strong>{totalPages}</strong> exercises
+              Showing <strong>{problems?.data?.length}</strong> of <strong>{totalCount}</strong> exercises
             </span>
           </div>        
           <motion.article
@@ -559,6 +567,19 @@ const Learn = () => {
               ))
             )}
           </motion.article>
+
+          {!loading && problems?.count > 0 && hasMore && (
+            <div className="show-more-row">
+              <button
+                type="button"
+                className="show-more-btn"
+                onClick={handleShowMore}
+                disabled={loadingMore}
+              >
+                {loadingMore ? 'Loading…' : `Show more (${Math.min(pageSize, remainingCount)} more)`}
+              </button>
+            </div>
+          )}
         </section>
             
         <footer>
