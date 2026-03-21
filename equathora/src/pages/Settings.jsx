@@ -630,7 +630,7 @@ const Settings = () => {
                 </div>
 
                 {/* Content wrapper */}
-                <div className="w-full flex flex-col lg:flex-row gap-6 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-[1200px] self-center flex-1">
+                <div className="w-full flex flex-col lg:flex-row gap-6 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-[1500px] self-center flex-1">
                     {/* Sidebar (desktop) */}
                     <nav className="hidden lg:flex flex-col gap-1 w-56 shrink-0 sticky top-24 self-start">
                         {sidebarSections.map(section => (
