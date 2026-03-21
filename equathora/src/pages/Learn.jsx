@@ -158,7 +158,7 @@ const Learn = () => {
   const pageSize = 50; // Default page size
   const [searchParams, setSearchParams] = useSearchParams();
   const [problems, setProblems] = useState({ count: 0, data: [] });
-  const[facets, setFacets] = useState({ difficulties: [], topics: [], grade: [], progress: [] });
+  const [facets, setFacets] = useState({ difficulties: [], topics: [], grade: [], progress: [] });
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -347,7 +347,7 @@ const Learn = () => {
     return <LoadingSpinner message="Loading exercises..." />;
   }
 
- 
+
   return (
     <>
       <main id='body-learn'>
@@ -544,7 +544,7 @@ const Learn = () => {
             <span>
               Showing <strong>{problems?.data?.length}</strong> of <strong>{totalCount}</strong> exercises
             </span>
-          </div>        
+          </div>
           <motion.article
             id='problems-container'
             initial={{ opacity: 0 }}
@@ -581,7 +581,7 @@ const Learn = () => {
             </div>
           )}
         </section>
-            
+
         <footer>
           <Footer />
         </footer>
