@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './RecentAchievements.css';
 import { getUserStats } from '../../lib/progressStorage';
 import { buildAchievements, RARITY_ORDER } from '../../data/achievements';
+import { FaLock } from 'react-icons/fa'
 
 const RecentAchievements = () => {
   const userStats = getUserStats();
@@ -78,9 +79,15 @@ const RecentAchievements = () => {
                   <h3>{achievement.title}</h3>
                 </div>
 
-                <span className="achievement-rarity" style={{ color: getRarityColor(achievement.rarity) }}>
+                <div className={`flex gap-3 items-center`}>
+                  <span className="w-[90px] text-center achievement-rarity" style={{ color: getRarityColor(achievement.rarity) }}>
                   {achievement.rarity}
-                </span>
+                  </span>
+
+                  <div className={`content-center m-auto achievement-status ${achievement.unlocked ? '' : 'locked-badge'}`}>
+                    {achievement.unlocked ? '' : <FaLock className={`text-[var(--mid-main-secondary)]`}/>}
+                  </div>
+                </div>
               </div>
 
               <p>{achievement.description}</p>
@@ -88,9 +95,7 @@ const RecentAchievements = () => {
                 <span className="automatic-badge">Auto-Unlocked</span>
               )}
             </div>
-            <div className={`achievement-status ${achievement.unlocked ? '' : 'locked-badge'}`}>
-              {achievement.unlocked ? '' : '🔒'}
-            </div>
+
           </div>
         ))}
       </article>
