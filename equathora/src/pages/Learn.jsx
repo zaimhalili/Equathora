@@ -249,27 +249,27 @@ const Learn = () => {
         }
 
         const problemId = null;
-        const groupId = gradeFilter ? gradeFilter.split(',') : null;
         const slug = null;
         const difficulties = difficultyFilter ? difficultyFilter.split(',') : null;
         const topics = topicFilter ? topicFilter.split(',') : null;
         const searchTerm = debouncedSearchQuery || null;
         const sort = sortBy === 'default' ? null : sortBy;
         const progress = progressFilter ? progressFilter.split(',') : null;
+        const status = statusFilter ? statusFilter.split(',') : null;
         const grades = gradeFilter ? gradeFilter.split(',') : null;
 
         const response = await getProblems(
           currentPage,
           pageSize,
           problemId,
-          groupId,
           slug,
           difficulties,
           topics,
           grades,
           searchTerm,
           sort,
-          progress
+          progress,
+          status
         );
 
         const pageData = response?.data || [];
@@ -315,31 +315,32 @@ const Learn = () => {
     }
   };
 
-
-  // Dropdown options from enums
   const gradeOptions = GradeOptions.map(opt => {
-    const count = facets.grade && typeof facets.grade === 'object' && opt.value in facets.grade ? facets.grade[opt.value] : 0;
+    const count = facets.grade ? facets.grade[opt.value] : 0;
     return { ...opt, count };
   });
 
   const difficultyOptions = DifficultyOptions.map(opt => {
-    const count = facets.difficulty && typeof facets.difficulty === 'object' && opt.value in facets.difficulty ? facets.difficulty[opt.value] : 0;
+    const count = facets.difficulty  ? facets.difficulty[opt.value] : 0;
     return { ...opt, count };
   });
 
-  const statusOptions = StatusOptions.map(opt => {
-    // No status facet in JSON, fallback to 0
-    return { ...opt, count: 0 };
-  });
+  const completedCount = facets.progress["completed"] !== undefined ? facets.progress["completed"] : 0;
+  const totalProblems = problems?.count || 0;
+  const notStartedCount = Math.max(totalProblems - completedCount, 0);
 
-  const progressOptions = ProgressOptions.map(opt => {
-    let count = 0;
-    if (facets.progress && typeof facets.progress === 'object') {
-      // Some keys may be missing in backend, so default to 0
-      count = facets.progress[opt.value] !== undefined ? facets.progress[opt.value] : 0;
+  const statusOptions = [
+    {
+      label: "Completed",
+      value: "completed",
+      count: completedCount
+    },
+    {
+      label: "Not Started",
+      value: "notstarted",
+      count: notStartedCount
     }
-    return { ...opt, count };
-  });
+  ];
 
   const sortOptions = SortOptions;
 
@@ -472,7 +473,7 @@ const Learn = () => {
               <FilterDropdown
                 label="Progress"
                 value={progressFilter}
-                options={progressOptions}
+                options={ProgressOptions}
                 onChange={(val) => updateFilters({ progress: val })}
                 placeholder="All Progress"
                 multiSelect={true}

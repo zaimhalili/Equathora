@@ -1,5 +1,5 @@
 create or replace function public.get_problems_with_facets(
-  p_user_id uuid,
+  p_user_id uuid default null,
   p_page integer default null,
   p_page_size integer default null,
   p_problem_id bigint default null,
@@ -10,7 +10,8 @@ create or replace function public.get_problems_with_facets(
   p_grades text[] default null,
   p_search_term text default null,
   p_sort text default null,
-  p_progress text[] default null
+  p_progress text[] default null,
+  p_completed boolean default null
 )
 returns jsonb
 language sql
@@ -41,8 +42,8 @@ base as (
     exists (
       select 1
       from user_completed_problems ucp
-      where ucp.problem_id_int = p.id
-        and ucp.user_id = p_user_id
+      where CAST(ucp.problem_id_int AS INTEGER) = p.id
+        and ucp.user_id = p_user_id   
     ) as completed,
 
     exists (
@@ -58,7 +59,6 @@ base as (
     and (p_group_id is null or p.group_id = p_group_id)
     and (p_slug is null or p.slug = p_slug)
 
-    
     and (
       p_grades is null
       or array_length(p_grades, 1) is null
@@ -87,12 +87,8 @@ filtered as (
   select *
   from base b
   where
-    p_progress is null
-    or array_length(p_progress, 1) is null
-    or (
-      ('completed' = any(p_progress) and b.completed)
-      or ('favorite' = any(p_progress) and b.favorite)
-    )
+    p_completed is null
+    or b.completed = p_completed
 ),
 
 ordered as (
@@ -114,7 +110,6 @@ paged as (
   offset coalesce((p_page - 1) * p_page_size, 0)
   limit coalesce(p_page_size, 1000000)
 ),
-
 
 difficulty_facets as (
   select coalesce(jsonb_object_agg(difficulty, cnt), '{}'::jsonb) as value
@@ -155,11 +150,10 @@ grade_facets as (
   ) x
 ),
 
-
 progress_facets as (
   select jsonb_build_object(
-    'completed', (select count(*) from filtered where completed),
-    'favorite', (select count(*) from filtered where favorite)
+    'completed', (select count(*) from filtered where completed = true),
+    'favorite', (select count(*) from filtered where favorite = true)
   ) as value
 )
 

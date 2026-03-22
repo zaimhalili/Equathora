@@ -57,7 +57,6 @@ export async function getProblems(
     page = null,
     pageSize = null,
     problemId = null,
-    groupId = null,
     slug = null,
     difficulties = null,
     topics = null,
@@ -65,26 +64,32 @@ export async function getProblems(
     searchTerm = null,
     sort = null,
     progress = null,
+    status = null
  ) {
     try {
         const { data: { session } } = await supabase.auth.getSession();
-        if (!session?.user?.id) {
-            throw new Error("User not authenticated");
+
+        let completed = null;
+
+        if (status && status.includes('completed')) {
+            completed = true;
+        } else if (status && status.includes('notstarted') || progress && progress.includes('in-progress')) {
+            completed = false;
         }
-        
+
         const { data, error } = await supabase.rpc("get_problems_with_facets", {
-            p_user_id: session.user.id,
-            p_page: page,
-            p_page_size: pageSize,
-            p_problem_id: problemId,
-            p_group_id: groupId,
-            p_slug: slug,
-            p_difficulties: difficulties,
-            p_topics: topics,
-            p_grades: grades,
-            p_search_term: searchTerm,
-            p_sort: sort,
-            p_progress: progress,
+              p_user_id: session?.user?.id,
+              p_page: page,
+              p_page_size: pageSize,
+              p_problem_id: problemId,
+              p_slug: slug,
+              p_difficulties: difficulties,
+              p_topics: topics,
+              p_grades: grades,
+              p_search_term: searchTerm,
+              p_sort: sort,
+              p_progress: progress,
+              p_completed: completed,
         });
 
         if (error) throw error;
