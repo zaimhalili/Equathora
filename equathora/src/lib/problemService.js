@@ -64,12 +64,21 @@ export async function getProblems(
     searchTerm = null,
     sort = null,
     progress = null,
+    status = null
  ) {
     try {
         const { data: { session } } = await supabase.auth.getSession();
-        
+
+        let completed = null;
+
+        if (status && status.includes('completed')) {
+            completed = true;
+        } else if (status && status.includes('notstarted') || progress && progress.includes('in-progress')) {
+            completed = false;
+        }
+
         const { data, error } = await supabase.rpc("get_problems_with_facets", {
-            p_user_id: session?.user?.id,
+              p_user_id: session?.user?.id,
               p_page: page,
               p_page_size: pageSize,
               p_problem_id: problemId,
@@ -80,6 +89,7 @@ export async function getProblems(
               p_search_term: searchTerm,
               p_sort: sort,
               p_progress: progress,
+              p_completed: completed,
         });
 
         if (error) throw error;
