@@ -1,5 +1,5 @@
 create or replace function public.get_problems_with_facets(
-  p_user_id uuid,
+  p_user_id uuid default null,
   p_page integer default null,
   p_page_size integer default null,
   p_problem_id bigint default null,

@@ -68,12 +68,8 @@ export async function getProblems(
  ) {
     try {
         const { data: { session } } = await supabase.auth.getSession();
-        if (!session?.user?.id) {
-            throw new Error("User not authenticated");
-        }
-        
         const { data, error } = await supabase.rpc("get_problems_with_facets", {
-            p_user_id: session.user.id,
+            p_user_id: session?.user?.id,
             p_page: page,
             p_page_size: pageSize,
             p_problem_id: problemId,
