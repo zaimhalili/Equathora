@@ -1,43 +1,38 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { FaQuestionCircle, FaBook, FaUserGraduate, FaCog, FaChevronDown } from 'react-icons/fa';
-import { FaChevronUp, FaLightbulb, FaShieldAlt, FaEnvelope, FaRocket } from 'react-icons/fa';
-import { FaStar, FaHeart, FaFire, FaClock, FaTrophy } from 'react-icons/fa';
+import { FaQuestionCircle, FaChevronDown } from 'react-icons/fa';
+import { FaChevronUp, FaLightbulb, FaShieldAlt, FaRocket } from 'react-icons/fa';
+import { FaStar, FaClock, FaTrophy, FaArrowRight, FaUsers, FaComments, FaHeadset } from 'react-icons/fa';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 
 const HelpCenter = () => {
     const [openFaq, setOpenFaq] = useState(null);
-    const [activeCategory, setActiveCategory] = useState('all');
 
     const quickLinks = [
         {
             icon: <FaRocket className="text-2xl" />,
             title: "Getting Started",
             description: "New to Equathora? Start here!",
-            color: "from-blue-500 to-cyan-500",
-            emoji: "🚀"
+            color: "from-blue-500 to-cyan-500"
         },
         {
             icon: <FaLightbulb className="text-2xl" />,
             title: "Problem Solving",
             description: "Learn how to tackle problems",
-            color: "from-yellow-500 to-orange-500",
-            emoji: "💡"
+            color: "from-yellow-500 to-orange-500"
         },
         {
             icon: <FaTrophy className="text-2xl" />,
             title: "Achievements",
             description: "Track your progress & badges",
-            color: "from-purple-500 to-pink-500",
-            emoji: "🏆"
+            color: "from-purple-500 to-pink-500"
         },
         {
-            icon: <FaHeart className="text-2xl" />,
+            icon: <FaHeadset className="text-2xl" />,
             title: "Account Help",
             description: "Profile & settings support",
-            color: "from-red-500 to-rose-500",
-            emoji: "❤️"
+            color: "from-red-500 to-rose-500"
         }
     ];
 
@@ -74,7 +69,7 @@ const HelpCenter = () => {
         },
         {
             question: "Can I use Equathora offline?",
-            answer: "Currently, Equathora requires an Sansationnet connection to sync your progress and access problems. However, we're working on an offline mode for future releases.",
+            answer: "Currently, Equathora requires an internet connection to sync your progress and access problems. However, we're working on an offline mode for future releases.",
             icon: <FaQuestionCircle />,
             color: "text-cyan-500"
         },
@@ -93,32 +88,38 @@ const HelpCenter = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full min-h-screen bg-gradient-to-b from-blue-50 via-white to-purple-50 font-[Sansation]">
+            <div className="w-full min-h-screen bg-[var(--main-color)] font-[Sansation] text-[var(--secondary-color)]">
                 <header>
                     <Navbar />
                 </header>
 
                 {/* Hero Section with Illustration */}
-                <section className="w-full relative overflow-hidden flex justify-center">
+                <section className="w-full relative overflow-hidden flex justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white">
                     {/* Animated background shapes */}
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-400 rounded-full opacity-10 blur-2xl"></div>
-                        <div className="absolute top-40 right-20 w-40 h-40 bg-purple-400 rounded-full opacity-10 blur-2xl"></div>
-                        <div className="absolute bottom-20 left-1/3 w-36 h-36 bg-pink-400 rounded-full opacity-10 blur-2xl"></div>
+                        <div className="absolute top-20 left-10 w-32 h-32 bg-[var(--accent-color)] rounded-full opacity-25 blur-2xl"></div>
+                        <div className="absolute top-40 right-20 w-40 h-40 bg-blue-300 rounded-full opacity-20 blur-2xl"></div>
+                        <div className="absolute bottom-20 left-1/3 w-36 h-36 bg-white rounded-full opacity-10 blur-2xl"></div>
                     </div>
 
                     <div className="relative px-[4vw] xl:px-[6vw] py-12 max-w-[1500px] w-full">
                         <div className="w-full flex flex-col lg:flex-row items-center gap-8">
                             {/* Left: Content */}
                             <div className="flex-1 flex flex-col gap-4">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-3xl">👋</span>
-                                    <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[Sansation]">
+                                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/30 text-xs font-semibold w-fit">
+                                    <FaHeadset />
+                                    SUPPORT CENTER
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-12 h-12 rounded-md bg-white/15 flex items-center justify-center text-xl">
+                                        <FaQuestionCircle />
+                                    </div>
+                                    <h1 className="text-4xl font-bold text-white font-[Sansation]">
                                         Help Center
                                     </h1>
                                 </div>
-                                <p className="text-base text-gray-600">
-                                    We're here to help you succeed! Find answers, tutorials, and support.
+                                <p className="text-base text-gray-200 max-w-xl">
+                                    We're here to help you succeed with clear answers, practical tutorials, and responsive support.
                                 </p>
                             </div>
 
@@ -128,7 +129,7 @@ const HelpCenter = () => {
                                     <img
                                         src="https://illustrations.popsy.co/amber/question-mark.svg"
                                         alt="Help illustration"
-                                        className="w-40 lg:w-48"
+                                        className="w-40 lg:w-48 drop-shadow-2xl"
                                     />
                                 </div>
                             </div>
@@ -143,11 +144,13 @@ const HelpCenter = () => {
                             {quickLinks.map((link, index) => (
                                 <div
                                     key={index}
-                                    className="relative bg-white rounded-md p-4 flex flex-col gap-2 shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:scale-105 hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 group overflow-hidden "
+                                    className="relative bg-white rounded-md p-4 flex flex-col gap-2 shadow-sm hover:shadow-lg transition-all duration-200 group overflow-hidden border border-gray-100"
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-5 group-hover:opacity-10 transition-opacity duration-200`}></div>
                                     <div className="relative">
-                                        <div className="text-3xl pb-1">{link.emoji}</div>
+                                        <div className={`w-11 h-11 rounded-md bg-gradient-to-br ${link.color} text-white flex items-center justify-center mb-3 shadow-md`}>
+                                            {link.icon}
+                                        </div>
                                         <h3 className="text-lg font-bold text-[var(--secondary-color)]">{link.title}</h3>
                                         <p className="text-sm text-gray-600 pt-0.5">{link.description}</p>
                                     </div>
@@ -160,17 +163,17 @@ const HelpCenter = () => {
                 {/* Fun Stats Banner */}
                 <section className="w-full flex justify-center">
                     <div className="px-[4vw] xl:px-[6vw] py-4 max-w-[1500px] w-full">
-                        <div className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-md p-6 flex flex-wrap justify-around items-center gap-4 text-white shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
+                        <div className="w-full bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] rounded-md p-6 flex flex-wrap justify-around items-center gap-4 text-white shadow-sm">
                             <div className="flex flex-col items-center gap-1">
                                 <div className="flex items-center gap-2">
-                                    <FaFire className="text-xl" />
+                                    <FaComments className="text-xl" />
                                     <span className="text-2xl font-bold">500+</span>
                                 </div>
                                 <span className="text-sm opacity-90">Answers provided</span>
                             </div>
                             <div className="flex flex-col items-center gap-1">
                                 <div className="flex items-center gap-2">
-                                    <FaHeart className="text-xl" />
+                                    <FaUsers className="text-xl" />
                                     <span className="text-2xl font-bold">98%</span>
                                 </div>
                                 <span className="text-sm opacity-90">Satisfaction rate</span>
@@ -200,7 +203,7 @@ const HelpCenter = () => {
                             {faqs.map((faq, index) => (
                                 <div
                                     key={index}
-                                    className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
+                                    className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden"
                                 >
                                     <button
                                         className="w-full p-4 flex items-start gap-3 text-left cursor-pointer"
@@ -238,29 +241,30 @@ const HelpCenter = () => {
                 {/* Contact Section with Illustration */}
                 <section className="w-full flex justify-center">
                     <div className="px-[4vw] xl:px-[6vw] py-8 max-w-[1500px] w-full">
-                        <div className="w-full bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] rounded-md overflow-hidden shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
+                        <div className="w-full bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] rounded-md overflow-hidden shadow-sm">
                             <div className="flex flex-col lg:flex-row items-center">
                                 <div className="flex-1 p-8 flex flex-col gap-4 text-white">
                                     <div className="flex items-center gap-2">
-                                        <span className="text-3xl">💌</span>
+                                        <FaHeadset className="text-2xl" />
                                         <h2 className="text-2xl font-bold font-[Sansation]">Still Need Help?</h2>
                                     </div>
-                                    <p className="text-gray-300 text-base">
+                                    <p className="text-gray-200 text-base">
                                         Can't find your answer? Our support team responds within 3 hours (usually) !
                                     </p>
                                     <a
                                         href="mailto:equathora@gmail.com"
-                                        className="inline-block px-6 py-3 bg-gradient-to-r from-[var(--accent-color)] to-pink-600 text-white rounded-md font-bold text-base no-underline w-fit"
+                                        className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--main-color)] !text-[var(--accent-color)] rounded-md font-bold text-base no-underline w-fit hover:bg-gray-200 transition-colors"
                                     >
-                                        Contact Support →
+                                        <span>Contact Support</span>
+                                        <FaArrowRight className="text-sm" />
                                     </a>
-                                    <div className="flex flex-wrap gap-3 text-sm text-gray-300">
+                                    <div className="flex flex-wrap gap-3 text-sm text-gray-200">
                                         <div className="flex items-center gap-2">
                                             <FaClock />
                                             <span>Fast response</span>
                                         </div>
                                         <div className="flex items-center gap-2">
-                                            <FaHeart />
+                                            <FaUsers />
                                             <span>Friendly team</span>
                                         </div>
                                         <div className="flex items-center gap-2">

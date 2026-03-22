@@ -930,13 +930,13 @@ ENHANCED FILTERING SYSTEM
 
 .no-results p {
     font-size: 0.95rem;
-    color: var(--mid-main-secondary);
+    color: var(--secondary-color);
     margin-bottom: 1.5rem;
 }
 
 .reset-filters-btn {
     padding: 0.75rem 1.5rem;
-    background-color: var(--accent-color);
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
     color: white;
     border: none;
     border-radius: 6px;
@@ -947,8 +947,11 @@ ENHANCED FILTERING SYSTEM
 }
 
 .reset-filters-btn:hover {
-    background-color: var(--dark-accent-color);
-    transform: translateY(-1px);
+    background: linear-gradient(360deg, var(--dark-accent-color), var(--dark-accent-color));
+}
+
+.reset-filters-btn:active{
+    scale: 0.95;
 }
 
 /* Mobile Responsive for Dropdowns */
