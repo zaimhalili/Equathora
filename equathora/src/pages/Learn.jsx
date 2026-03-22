@@ -363,7 +363,7 @@ const Learn = () => {
           >
             <figure><img src={Idea} alt="idea image" fetchPriority="high" loading="eager" decoding="async" width="200" height="200" /></figure>
             <div id="learn-explore">
-              <h1>Explore the Math <br />exercises on <span className="text-[var(--dark-accent-color)] relative inline-block">
+              <h1>Explore the Math <br />exercises on <span className="text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)65%)] relative inline-block">
                 Equathora
                 <motion.svg
                   className="absolute -bottom-0 left-0 w-full"
@@ -375,7 +375,7 @@ const Learn = () => {
                   <motion.path
                     d="M0 4 Q50 0 100 4 Q150 8 200 4"
                     fill="none"
-                    stroke="var(--dark-accent-color)"
+                    stroke="var(--accent-color)"
                     strokeWidth="4"
                     strokeLinecap="round"
                     initial={{ pathLength: 0 }}

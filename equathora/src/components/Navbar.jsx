@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Logo from '../assets/logo/TransparentFullLogo.png';
 import { Link } from 'react-router-dom';
-import { FaBell, FaTrophy, FaUser, FaBars } from 'react-icons/fa';
+import { FaBell, FaTrophy, FaBars } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
 import Dropdown from './Dropdown';
@@ -31,11 +31,28 @@ import Events from '../assets/images/specialEvents.svg';
 import { getDailyProblemSlug } from '../lib/utils';
 import Books from '../assets/images/learningBooks.svg';
 
+const getLowResAvatarUrl = (avatarUrl) => {
+  if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
+    return GuestAvatar;
+  }
+
+  try {
+    const parsed = new URL(avatarUrl);
+    if (!parsed.searchParams.has('w')) parsed.searchParams.set('w', '48');
+    if (!parsed.searchParams.has('h')) parsed.searchParams.set('h', '48');
+    if (!parsed.searchParams.has('q')) parsed.searchParams.set('q', '40');
+    return parsed.toString();
+  } catch {
+    return avatarUrl;
+  }
+};
+
 const Navbar = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dailyProblemSlug, setDailyProblemSlug] = useState('');
   const [currentStreak, setCurrentStreak] = useState(0);
+  const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
 
   useEffect(() => {
     const loadDailyProblem = async () => {
@@ -54,6 +71,10 @@ const Navbar = () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
+
+        const metadata = session.user?.user_metadata || {};
+        const avatarUrl = metadata.avatar_url || metadata.picture || metadata.image || metadata.photo_url || '';
+        setProfileAvatarSrc(getLowResAvatarUrl(avatarUrl));
 
         const streakData = await getStreakData();
         setCurrentStreak(streakData?.current_streak || 0);
@@ -197,7 +218,8 @@ const Navbar = () => {
       to: '/profile/myprofile',
       text: "My Profile",
       description: "View and edit your profile",
-      image: GuestAvatar
+      image: profileAvatarSrc,
+      isAvatar: true
     },
     {
       to: '/settings',
@@ -250,8 +272,8 @@ const Navbar = () => {
               </li>
               <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
                 <Dropdown
-                label="More"
-                items={moreItems} />
+                  label="More"
+                  items={moreItems} />
               </li>
             </ul>
 
@@ -289,7 +311,7 @@ const Navbar = () => {
                 </li>
                 <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
                   <Dropdown
-                    label={<FaUser size={24} />}
+                    label={<img src={profileAvatarSrc} alt="Profile" width={28} height={28} style={{ borderRadius: '9999px', objectFit: 'cover', border: '2px solid var(--secondary-color)' }} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />}
                     ariaLabel="Profile menu"
                     items={profileItems}
                     alignRight={true}

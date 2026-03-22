@@ -9,10 +9,27 @@ import { clearUserData } from '../lib/userStorage';
 import { getDailyProblemSlug } from '../lib/utils';
 import { getStreakData } from '../lib/databaseService';
 
+const getLowResAvatarUrl = (avatarUrl) => {
+    if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
+        return GuestAvatar;
+    }
+
+    try {
+        const parsed = new URL(avatarUrl);
+        if (!parsed.searchParams.has('w')) parsed.searchParams.set('w', '48');
+        if (!parsed.searchParams.has('h')) parsed.searchParams.set('h', '48');
+        if (!parsed.searchParams.has('q')) parsed.searchParams.set('q', '40');
+        return parsed.toString();
+    } catch {
+        return avatarUrl;
+    }
+};
+
 const Sidebar = ({ isOpen, onClose }) => {
     const [moreExpanded, setMoreExpanded] = useState(false);
     const [dailyProblemSlug, setDailyProblemSlug] = useState('');
     const [currentStreak, setCurrentStreak] = useState(0);
+    const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -34,6 +51,10 @@ const Sidebar = ({ isOpen, onClose }) => {
             try {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) return;
+
+                const metadata = session.user?.user_metadata || {};
+                const avatarUrl = metadata.avatar_url || metadata.picture || metadata.image || metadata.photo_url || '';
+                setProfileAvatarSrc(getLowResAvatarUrl(avatarUrl));
 
                 const streakData = await getStreakData();
                 setCurrentStreak(streakData?.current_streak || 0);
@@ -235,7 +256,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <div className="sidebar-content">
                     <div className="sidebar-profile">
                         <Link to="/profile/myprofile" className="sidebar-profile-link" onClick={onClose}>
-                            <img src={GuestAvatar} alt="avatar" className="sidebar-avatar" />
+                            <img src={profileAvatarSrc} alt="avatar" className="sidebar-avatar" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />
                             <div className="sidebar-profile-info">
                                 <h4>Your Profile</h4>
                                 <p>View & edit</p>

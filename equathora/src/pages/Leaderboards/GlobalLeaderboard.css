@@ -147,7 +147,6 @@
     justify-content: center;
     gap: 0.35rem;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
     color: black;
     flex-shrink: 0;
 }
@@ -163,14 +162,17 @@
 }
 
 .rank-gold .rank-badge {
+    color: var(--main-color);
     background: linear-gradient(135deg, #6b4f09, #f4c542);
 }
 
 .rank-silver .rank-badge {
+    color: var(--main-color);
     background: linear-gradient(135deg, #3e4a59, #9caec2);
 }
 
 .rank-bronze .rank-badge {
+    color: var(--main-color);
     background: linear-gradient(135deg, #4a2b12, #c67b34);
 }
 
