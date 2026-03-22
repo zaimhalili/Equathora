@@ -9,6 +9,7 @@ import OverflowChecker from "../pages/OverflowChecker";
 import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
 import { getStreakData } from '../lib/databaseService';
+import { getUnreadCount } from '../lib/notificationService';
 //Dropdown svgs
 import Daily from '../assets/images/questionMark.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
@@ -53,6 +54,7 @@ const Navbar = () => {
   const [dailyProblemSlug, setDailyProblemSlug] = useState('');
   const [currentStreak, setCurrentStreak] = useState(0);
   const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
 
   useEffect(() => {
     const loadDailyProblem = async () => {
@@ -78,6 +80,9 @@ const Navbar = () => {
 
         const streakData = await getStreakData();
         setCurrentStreak(streakData?.current_streak || 0);
+
+        const unreadCount = await getUnreadCount();
+        setUnreadNotificationCount(unreadCount);
       } catch (error) {
         console.error('Failed to fetch streak:', error);
       }
@@ -87,6 +92,44 @@ const Navbar = () => {
     // Refresh streak on focus
     window.addEventListener('focus', fetchStreak);
     return () => window.removeEventListener('focus', fetchStreak);
+  }, []);
+
+  useEffect(() => {
+    let channel;
+    let isMounted = true;
+
+    const setupNotificationSubscription = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      channel = supabase
+        .channel(`navbar-notifications-${session.user.id}`)
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'user_notifications',
+            filter: `user_id=eq.${session.user.id}`
+          },
+          async () => {
+            const unreadCount = await getUnreadCount();
+            if (isMounted) {
+              setUnreadNotificationCount(unreadCount);
+            }
+          }
+        )
+        .subscribe();
+    };
+
+    setupNotificationSubscription();
+
+    return () => {
+      isMounted = false;
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
+    };
   }, []);
 
   const learnItems = [
@@ -181,7 +224,7 @@ const Navbar = () => {
       text: "All Notifications",
       description: "View everything at once.",
       image: Notifications,
-      notificationsNo: ""
+      notificationsNo: unreadNotificationCount > 0 ? (unreadNotificationCount > 99 ? '99+' : String(unreadNotificationCount)) : ''
     },
     {
       to: '/systemupdates',
@@ -247,9 +290,20 @@ const Navbar = () => {
     // }
   ];
 
+  const notificationBellLabel = (
+    <span className='relative flex items-center justify-center w-6 h-6 leading-none'>
+      <FaBell className='w-6 h-6 block' />
+      {unreadNotificationCount > 0 && (
+        <span className='absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-[var(--accent-color)] text-white text-[10px] leading-[18px] text-center font-bold'>
+          {unreadNotificationCount > 99 ? '99+' : unreadNotificationCount}
+        </span>
+      )}
+    </span>
+  );
+
   return (
     <>
-      <OverflowChecker></OverflowChecker>
+      {/* <OverflowChecker></OverflowChecker> */}
       <header className='w-full bg-[var(--main-color)] h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
         <nav aria-label="Primary" className='w-full h-full flex justify-center'>
           <div className='w-full h-full mx-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
@@ -295,7 +349,7 @@ const Navbar = () => {
                 </li>
                 <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
                   <Dropdown
-                    label={<FaBell size={24} />}
+                    label={notificationBellLabel}
                     ariaLabel="Notifications menu"
                     items={notificationItems}
                     alignRight={true}

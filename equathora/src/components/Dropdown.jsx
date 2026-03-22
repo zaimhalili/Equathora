@@ -32,7 +32,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                 aria-label={ariaLabel || (typeof label === 'string' ? label : undefined)}
             >
                 {typeof label === 'string' ? label : React.cloneElement(label, {
-                    className: 'text-[var(--secondary-color)] transition-colors duration-200 group-hover:text-[var(--accent-color)]',
+                    className: `${label.props.className || ''} text-[var(--secondary-color)] transition-colors duration-200 group-hover:text-[var(--accent-color)]`.trim(),
                     'aria-hidden': true,
                     focusable: false
                 })}
@@ -82,8 +82,8 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             </div>
 
                             {item.notificationsNo && (
-                                <div className="ml-auto flex items-center px-2.5 justify-between">
-                                    <h4 className='text-yellow-500 flex h-full items-center font-semibold'>
+                                    <div className="ml-auto flex items-center justify-center rounded-full h-5 w-5 text-white !bg-[var(--accent-color)] text-center">
+                                    <h4 className='flex h-full items-center'>
                                         {item.notificationsNo}
                                     </h4>
                                 </div>
