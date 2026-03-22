@@ -27,12 +27,12 @@ const Profile = () => {
   const handleProfileSave = useCallback((updatedData) => {
     setUserData(prevData => ({
       ...prevData,
-      name: updatedData.name || prevData.name,
-      username: updatedData.username || prevData.username,
-      bio: updatedData.bio || prevData.bio,
-      location: updatedData.location || prevData.location,
-      website: updatedData.website || prevData.website,
-      avatar_url: updatedData.avatar_url || prevData.avatar_url
+      name: updatedData.name ?? prevData.name,
+      username: updatedData.username ?? prevData.username,
+      bio: updatedData.bio ?? prevData.bio,
+      location: updatedData.location ?? prevData.location,
+      website: updatedData.website ?? prevData.website,
+      avatar_url: updatedData.avatar_url ?? prevData.avatar_url
     }));
   }, []);
 
@@ -107,12 +107,12 @@ const Profile = () => {
 
         const meta = isSelf ? session.user.user_metadata : {};
 
-        const displayName = profileRow?.full_name || profileRow?.username || meta.full_name || meta.name || session.user.email?.split('@')[0] || 'Student';
-        const username = profileRow?.username || meta.preferred_username || session.user.email?.split('@')[0] || 'student';
-        const avatarUrl = profileRow?.avatar_url || meta.avatar_url || meta.picture || meta.image || meta.photo_url || '';
-        const bio = profileRow?.bio || meta.bio || '';
-        const location = profileRow?.location || meta.location || '';
-        const website = profileRow?.website || meta.website || '';
+        const displayName = profileRow?.full_name ?? profileRow?.username ?? meta.full_name ?? meta.name ?? session.user.email?.split('@')[0] ?? 'Student';
+        const username = profileRow?.username ?? meta.preferred_username ?? session.user.email?.split('@')[0] ?? 'student';
+        const avatarUrl = profileRow?.avatar_url ?? meta.avatar_url ?? meta.picture ?? meta.image ?? meta.photo_url ?? '';
+        const bio = profileRow?.bio ?? meta.bio ?? '';
+        const location = profileRow?.location ?? meta.location ?? '';
+        const website = profileRow?.website ?? meta.website ?? '';
 
         // Filter completed problems by valid problem IDs (consistent with Statistics and YourTrack)
         const validProblemIds = new Set((problemList || []).map(p => String(p.id)));
