@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaCamera, FaUser, FaEnvelope, FaGlobeAmericas } from 'react-icons/fa';
 import { supabase } from '../lib/supabaseClient';
@@ -22,6 +22,22 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const fileInputRef = useRef(null);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        setFormData({
+            full_name: userData?.name || '',
+            username: userData?.username || '',
+            bio: userData?.bio || '',
+            location: userData?.location || '',
+            website: userData?.website || '',
+            avatar_url: userData?.avatar_url || ''
+        });
+        setAvatarPreview(userData?.avatar_url || '');
+        setAvatarFile(null);
+        setError('');
+    }, [isOpen, userData]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

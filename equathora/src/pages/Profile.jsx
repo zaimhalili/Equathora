@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
@@ -22,6 +22,7 @@ const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [viewingOwnProfile, setViewingOwnProfile] = useState(false);
+  const fetchRequestIdRef = useRef(0);
 
   const handleProfileSave = useCallback((updatedData) => {
     setUserData(prevData => ({
@@ -36,7 +37,15 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
+    const requestId = ++fetchRequestIdRef.current;
+    let isActive = true;
+
     const fetchUserData = async () => {
+      setLoading(true);
+      setUserData(null);
+      setViewingOwnProfile(false);
+      setIsEditModalOpen(false);
+
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
@@ -47,6 +56,7 @@ const Profile = () => {
         const isMyProfileAlias = profile === 'myprofile' || profile === 'me';
         const targetUserId = isMyProfileAlias || !profile ? session.user.id : profile;
         const isSelf = targetUserId === session.user.id;
+        if (!isActive || fetchRequestIdRef.current !== requestId) return;
         setViewingOwnProfile(isSelf);
 
         // Pull profile, progress, streak, and leaderboard data for the target user
@@ -182,16 +192,23 @@ const Profile = () => {
           problemsSolved: completedProblems.slice(-10).reverse()
         };
 
+        if (!isActive || fetchRequestIdRef.current !== requestId) return;
         setUserData(newUserData);
 
       } catch (error) {
         console.error('Failed to fetch user data:', error);
       } finally {
-        setLoading(false);
+        if (isActive && fetchRequestIdRef.current === requestId) {
+          setLoading(false);
+        }
       }
     };
 
     fetchUserData();
+
+    return () => {
+      isActive = false;
+    };
   }, [profile]);
 
   if (loading || !userData) {
