@@ -160,9 +160,11 @@ const Learn = () => {
   const [problems, setProblems] = useState({ count: 0, data: [] });
   const [facets, setFacets] = useState({ difficulties: [], topics: [], grade: [], progress: [] });
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const hasLoadedOnceRef = useRef(false);
 
   // Read filters from URL query params
   const searchQuery = searchParams.get('q') || '';
@@ -243,7 +245,11 @@ const Learn = () => {
     const fetchPagedProblems = async () => {
       try {
         if (currentPage === 1) {
-          setLoading(true);
+          if (hasLoadedOnceRef.current) {
+            setIsRefreshing(true);
+          } else {
+            setLoading(true);
+          }
         } else {
           setLoadingMore(true);
         }
@@ -285,6 +291,7 @@ const Learn = () => {
 
         setProblems((prev) => {
           if (currentPage === 1) {
+            hasLoadedOnceRef.current = true;
             return { count: response?.count || 0, data: pageData };
           }
           return {
@@ -300,6 +307,7 @@ const Learn = () => {
         }
       } finally {
         setLoading(false);
+        setIsRefreshing(false);
         setLoadingMore(false);
       }
     };
@@ -321,7 +329,7 @@ const Learn = () => {
   });
 
   const difficultyOptions = DifficultyOptions.map(opt => {
-    const count = facets.difficulty  ? facets.difficulty[opt.value] : 0;
+    const count = facets.difficulty ? facets.difficulty[opt.value] : 0;
     return { ...opt, count };
   });
 
@@ -545,9 +553,11 @@ const Learn = () => {
             <span>
               Showing <strong>{problems?.data?.length}</strong> of <strong>{totalCount}</strong> exercises
             </span>
+            {isRefreshing && <span className="results-refreshing">Updating problems…</span>}
           </div>
           <motion.article
             id='problems-container'
+            className={isRefreshing ? 'problems-refreshing' : ''}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -575,7 +585,7 @@ const Learn = () => {
                 type="button"
                 className="show-more-btn"
                 onClick={handleShowMore}
-                disabled={loadingMore}
+                disabled={loadingMore || isRefreshing}
               >
                 {loadingMore ? 'Loading…' : `Show more (${Math.min(pageSize, remainingCount)} more)`}
               </button>

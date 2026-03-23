@@ -600,11 +600,27 @@ ENHANCED FILTERING SYSTEM
     color: var(--secondary-color);
     opacity: 0.7;
     padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
 }
 
 .results-summary strong {
     color: var(--secondary-color);
     opacity: 1;
+}
+
+.results-refreshing {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--dark-accent-color);
+    opacity: 1;
+}
+
+.problems-refreshing {
+    opacity: 0.66;
+    transition: opacity 0.2s ease;
 }
 
 /* Topic chip colors */
@@ -764,7 +780,29 @@ ENHANCED FILTERING SYSTEM
     z-index: 2000;
     max-height: 280px;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) rgba(43, 45, 66, 0.08);
     animation: dropdownFadeIn 0.15s ease;
+}
+
+.filter-dropdown-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.filter-dropdown-menu::-webkit-scrollbar-track {
+    background: rgba(43, 45, 66, 0.08);
+    border-radius: 10px;
+    margin: 4px;
+}
+
+.filter-dropdown-menu::-webkit-scrollbar-thumb {
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
+    border-radius: 10px;
+    border: 2px solid rgba(43, 45, 66, 0.08);
+}
+
+.filter-dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(360deg, var(--dark-accent-color), var(--accent-color));
 }
 
 /* Portal version rendered at body level - always on top */
@@ -950,7 +988,7 @@ ENHANCED FILTERING SYSTEM
     background: linear-gradient(360deg, var(--dark-accent-color), var(--dark-accent-color));
 }
 
-.reset-filters-btn:active{
+.reset-filters-btn:active {
     scale: 0.95;
 }
 
