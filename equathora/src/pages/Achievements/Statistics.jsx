@@ -5,6 +5,7 @@ import { getUserProgress, getStreakData, getWeeklyProgress, getDifficultyBreakdo
 import { getAllProblems } from '../../lib/problemService';
 import { supabase } from '../../lib/supabaseClient';
 import { getSubmissions } from '../../lib/progressStorage';
+import { formatTopicLabel } from '../../lib/utils';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Statistics = () => {
@@ -355,7 +356,7 @@ const Statistics = () => {
         <div className="topics-list">
           {stats.favoriteTopics.map((topic, index) => (
             <div key={index} className="topic-tag  rounded-full">
-              {topic}
+              {topic === 'No data yet' ? topic : formatTopicLabel(topic)}
             </div>
           ))}
         </div>

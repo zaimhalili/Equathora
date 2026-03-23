@@ -10,15 +10,8 @@ import { FaSearch, FaTimes, FaChevronDown, FaFilter } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { getProblems } from '../lib/problemService';
-import { GradeOptions, DifficultyOptions, StatusOptions, ProgressOptions, SortOptions } from '../enum/DropdownEnums';
-
-const formatTopicLabel = (topic) => {
-  if (!topic) return '';
-  return topic
-    .split('_')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-};
+import { GradeOptions, DifficultyOptions, StatusOptions, SortOptions } from '../enum/DropdownEnums';
+import { formatTopicLabel } from '../lib/utils';
 
 const FilterDropdown = ({ label, value, options, onChange, placeholder = "All", multiSelect = false }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -172,7 +165,6 @@ const Learn = () => {
   const gradeFilter = searchParams.get('grade') || '';
   const difficultyFilter = searchParams.get('difficulty') || '';
   const statusFilter = searchParams.get('status') || '';
-  const progressFilter = searchParams.get('progress') || '';
   const topicFilter = searchParams.get('topic') || '';
   const sortBy = searchParams.get('sort') || 'default';
 
@@ -208,6 +200,33 @@ const Learn = () => {
     setSearchParams(newParams, { replace: true });
   }, [searchParams, setSearchParams]);
 
+  useEffect(() => {
+    const legacyProgress = searchParams.get('progress');
+    if (!legacyProgress) return;
+
+    const legacyToStatus = {
+      'in-progress': 'in-progress',
+      favorite: 'favorite',
+      favourite: 'favorite'
+    };
+
+    const mappedStatuses = legacyProgress
+      .split(',')
+      .map((item) => legacyToStatus[item])
+      .filter(Boolean);
+
+    const existingStatuses = (searchParams.get('status') || '')
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    const mergedStatus = Array.from(new Set([...existingStatuses, ...mappedStatuses])).join(',');
+    updateFilters({
+      status: mergedStatus,
+      progress: ''
+    });
+  }, [searchParams, updateFilters]);
+
   // Extract unique topics from problems
   const availableTopics = useMemo(() => {
     if (!facets.topic || typeof facets.topic !== 'object') return [];
@@ -222,11 +241,10 @@ const Learn = () => {
     if (gradeFilter) count += gradeFilter.split(',').length;
     if (difficultyFilter) count += difficultyFilter.split(',').length;
     if (statusFilter) count += statusFilter.split(',').length;
-    if (progressFilter) count += progressFilter.split(',').length;
     if (topicFilter) count += topicFilter.split(',').length;
     if (sortBy !== 'default') count++;
     return count;
-  }, [gradeFilter, difficultyFilter, statusFilter, progressFilter, topicFilter, sortBy]);
+  }, [gradeFilter, difficultyFilter, statusFilter, topicFilter, sortBy]);
 
   const removeFilterValue = (key, currentValues, valueToRemove) => {
     const newValues = currentValues.split(',').filter(v => v !== valueToRemove).join(',');
@@ -239,7 +257,7 @@ const Learn = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [gradeFilter, difficultyFilter, topicFilter, statusFilter, progressFilter, debouncedSearchQuery, sortBy]);
+  }, [gradeFilter, difficultyFilter, topicFilter, statusFilter, debouncedSearchQuery, sortBy]);
 
   useEffect(() => {
     const fetchPagedProblems = async () => {
@@ -260,7 +278,6 @@ const Learn = () => {
         const topics = topicFilter ? topicFilter.split(',') : null;
         const searchTerm = debouncedSearchQuery || null;
         const sort = sortBy === 'default' ? null : sortBy;
-        const progress = progressFilter ? progressFilter.split(',') : null;
         const status = statusFilter ? statusFilter.split(',') : null;
         const grades = gradeFilter ? gradeFilter.split(',') : null;
 
@@ -274,7 +291,7 @@ const Learn = () => {
           grades,
           searchTerm,
           sort,
-          progress,
+          null,
           status
         );
 
@@ -313,7 +330,7 @@ const Learn = () => {
     };
 
     fetchPagedProblems();
-  }, [currentPage, gradeFilter, difficultyFilter, topicFilter, statusFilter, progressFilter, debouncedSearchQuery, sortBy]);
+  }, [currentPage, gradeFilter, difficultyFilter, topicFilter, statusFilter, debouncedSearchQuery, sortBy]);
 
   const hasMore = problems?.data?.length < totalCount;
   const remainingCount = Math.max(0, totalCount - (problems?.data?.length || 0));
@@ -334,21 +351,23 @@ const Learn = () => {
   });
 
   const completedCount = facets.progress["completed"] !== undefined ? facets.progress["completed"] : 0;
+  const inProgressCount = facets.progress["inProgress"] !== undefined
+    ? facets.progress["inProgress"]
+    : (facets.progress["in-progress"] !== undefined ? facets.progress["in-progress"] : 0);
   const totalProblems = problems?.count || 0;
-  const notStartedCount = Math.max(totalProblems - completedCount, 0);
+  const notStartedCount = Math.max(totalProblems - completedCount - inProgressCount, 0);
 
-  const statusOptions = [
-    {
-      label: "Completed",
-      value: "completed",
-      count: completedCount
-    },
-    {
-      label: "Not Started",
-      value: "notstarted",
-      count: notStartedCount
-    }
-  ];
+  const statusCountMap = {
+    'in-progress': inProgressCount,
+    completed: completedCount,
+    notstarted: notStartedCount,
+    favorite: undefined
+  };
+
+  const statusOptions = StatusOptions.map((option) => ({
+    ...option,
+    count: statusCountMap[option.value]
+  }));
 
   const sortOptions = SortOptions;
 
@@ -479,24 +498,13 @@ const Learn = () => {
               />
 
               <FilterDropdown
-                label="Progress"
-                value={progressFilter}
-                options={ProgressOptions}
-                onChange={(val) => updateFilters({ progress: val })}
-                placeholder="All Progress"
+                label="Topics"
+                value={topicFilter}
+                options={availableTopics}
+                onChange={(val) => updateFilters({ topic: val })}
+                placeholder="All Topics"
                 multiSelect={true}
               />
-
-              {availableTopics.length > 0 && (
-                <FilterDropdown
-                  label="Tags"
-                  value={topicFilter}
-                  options={availableTopics}
-                  onChange={(val) => updateFilters({ topic: val })}
-                  placeholder="All Topics"
-                  multiSelect={true}
-                />
-              )}
             </div>
 
             {/* Active Filters Pills */}
@@ -520,15 +528,14 @@ const Learn = () => {
                   ))}
                   {statusFilter && statusFilter.split(',').map(status => (
                     <span key={`status-${status}`} className="active-filter-pill">
-                      {status === 'completed' ? 'Completed' : 'Not Started'}
+                      {status === 'completed'
+                        ? 'Completed'
+                        : status === 'in-progress'
+                          ? 'In Progress'
+                          : status === 'favorite'
+                            ? 'Favourite'
+                            : 'Not Started'}
                       <button onClick={() => removeFilterValue('status', statusFilter, status)}><FaTimes /></button>
-                    </span>
-                  ))}
-                  {progressFilter && progressFilter.split(',').map(prog => (
-                    <span key={`prog-${prog}`} className="active-filter-pill">
-                      {prog === 'in-progress' ? 'In Progress' :
-                        prog === 'favorite' ? 'Favorite' : 'Premium'}
-                      <button onClick={() => removeFilterValue('progress', progressFilter, prog)}><FaTimes /></button>
                     </span>
                   ))}
                   {topicFilter && topicFilter.split(',').map(topic => (

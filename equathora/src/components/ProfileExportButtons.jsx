@@ -5,6 +5,7 @@ import Logo from '../assets/logo/EquathoraSymbolIcon.png';
 import { getUserStats, getSubmissions } from '../lib/progressStorage';
 import { getCompletedProblems, getUserProgress } from '../lib/databaseService';
 import { getAllProblems } from '../lib/problemService';
+import { formatTopicLabel } from '../lib/utils';
 
 const formatDuration = (totalSeconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(totalSeconds));
@@ -40,7 +41,9 @@ const buildDataSnapshot = async () => {
     const firstCompletion = completed[0]?.completedAt || stats.joinDate;
 
     const difficulty = stats.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 };
-    const favoriteTopics = Array.isArray(stats.favoriteTopics) ? stats.favoriteTopics : [];
+    const favoriteTopics = Array.isArray(stats.favoriteTopics)
+        ? stats.favoriteTopics.map((topic) => formatTopicLabel(topic))
+        : [];
 
     // Additional comprehensive data
     const avgTimePerProblem = completed.length > 0 ? Math.round(totalTimeSeconds / completed.length) : 0;

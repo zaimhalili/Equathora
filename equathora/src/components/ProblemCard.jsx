@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FaStar, FaRegStar, FaCrown, FaCheckCircle, FaClock, FaTag } from 'react-icons/fa';
 import { generateProblemSlug } from '../lib/slugify';
 import MathJaxRenderer from './MathJaxRenderer';
+import { formatTopicLabel } from '../lib/utils';
 
 const ProblemCard = ({ problem }) => {
     const getDifficultyColor = (difficulty) => {
@@ -59,7 +60,7 @@ const ProblemCard = ({ problem }) => {
                     {problem.topic && (
                         <span className="topic-badge">
                             <FaTag className="topic-icon" />
-                            {problem.topic}
+                            {formatTopicLabel(problem.topic)}
                         </span>
                     )}
                 </div>

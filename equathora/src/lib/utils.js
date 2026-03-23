@@ -7,6 +7,14 @@ export function cn(...inputs) {
     return twMerge(clsx(inputs));
 }
 
+export const formatTopicLabel = (topic) => {
+    if (!topic || typeof topic !== 'string') return '';
+    return topic
+        .split('_')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+};
+
 /**
  * Gets the daily problem ID that rotates through all problems before repeating
  * Uses localStorage to track which problems have been shown

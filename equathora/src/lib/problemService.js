@@ -1,5 +1,6 @@
 import { supabase } from './supabaseClient';
 import { getInProgressProblems } from '../lib/progressStorage';
+import { getFavorites } from './databaseService';
 import { generateProblemSlug, extractIdFromSlug } from './slugify';
 
 /**
@@ -67,6 +68,195 @@ export async function getProblems(
     status = null
 ) {
     const buildCsv = (value) => Array.isArray(value) && value.length > 0 ? value.join(',') : null;
+    const normalizeStatusValues = (values) => {
+        if (!Array.isArray(values)) return [];
+        return values.map((item) => {
+            if (item === 'not-started') return 'notstarted';
+            if (item === 'favourite') return 'favorite';
+            return item;
+        });
+    };
+
+    const statusFilters = normalizeStatusValues(status);
+    const includesFavorite = statusFilters.includes('favorite');
+
+    const applyLocalSort = (items, sortValue) => {
+        if (!sortValue || sortValue === 'default') return items;
+
+        const difficultyRank = { easy: 1, medium: 2, hard: 3 };
+
+        return [...items].sort((a, b) => {
+            if (sortValue === 'title-asc') return (a.title || '').localeCompare(b.title || '');
+            if (sortValue === 'title-desc') return (b.title || '').localeCompare(a.title || '');
+
+            if (sortValue === 'difficulty-asc') {
+                return (difficultyRank[(a.difficulty || '').toLowerCase()] || 99) - (difficultyRank[(b.difficulty || '').toLowerCase()] || 99);
+            }
+
+            if (sortValue === 'difficulty-desc') {
+                return (difficultyRank[(b.difficulty || '').toLowerCase()] || 99) - (difficultyRank[(a.difficulty || '').toLowerCase()] || 99);
+            }
+
+            if (sortValue === 'newest') {
+                return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+            }
+
+            if (sortValue === 'oldest') {
+                return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
+            }
+
+            return 0;
+        });
+    };
+
+    const buildFacets = (items) => {
+        const facets = {
+            difficulty: {},
+            topic: {},
+            grade: {},
+            progress: {
+                completed: 0,
+                inProgress: 0,
+                notStarted: 0,
+            },
+        };
+
+        for (const item of items) {
+            if (item.difficulty) {
+                facets.difficulty[item.difficulty] = (facets.difficulty[item.difficulty] || 0) + 1;
+            }
+
+            if (item.topic) {
+                facets.topic[item.topic] = (facets.topic[item.topic] || 0) + 1;
+            }
+
+            if (item.grade_group !== undefined && item.grade_group !== null) {
+                const gradeKey = String(item.grade_group);
+                facets.grade[gradeKey] = (facets.grade[gradeKey] || 0) + 1;
+            }
+
+            if (item.completed) {
+                facets.progress.completed += 1;
+            } else if (item.inProgress) {
+                facets.progress.inProgress += 1;
+            } else {
+                facets.progress.notStarted += 1;
+            }
+        }
+
+        return facets;
+    };
+
+    if (includesFavorite) {
+        try {
+            const favoriteProblemIds = await getFavorites();
+            if (!favoriteProblemIds.length) {
+                return {
+                    data: [],
+                    count: 0,
+                    page: page ?? 1,
+                    pageSize: pageSize ?? 50,
+                    facets: {
+                        difficulty: {},
+                        topic: {},
+                        grade: {},
+                        progress: {},
+                    },
+                };
+            }
+
+            const { data: { session } } = await supabase.auth.getSession();
+            const userId = session?.user?.id;
+
+            let problemsQuery = supabase
+                .from('problems')
+                .select('*')
+                .eq('is_active', true)
+                .in('id', favoriteProblemIds);
+
+            if (Array.isArray(difficulties) && difficulties.length > 0) {
+                problemsQuery = problemsQuery.in('difficulty', difficulties);
+            }
+
+            if (Array.isArray(topics) && topics.length > 0) {
+                problemsQuery = problemsQuery.in('topic', topics);
+            }
+
+            if (Array.isArray(grades) && grades.length > 0) {
+                const numericGrades = grades
+                    .map((grade) => Number(grade))
+                    .filter((grade) => Number.isFinite(grade));
+
+                if (numericGrades.length > 0) {
+                    problemsQuery = problemsQuery.in('grade_group', numericGrades);
+                }
+            }
+
+            if (searchTerm && String(searchTerm).trim()) {
+                const escapedSearch = String(searchTerm).trim();
+                problemsQuery = problemsQuery.or(`title.ilike.%${escapedSearch}%,description.ilike.%${escapedSearch}%,topic.ilike.%${escapedSearch}%`);
+            }
+
+            const { data: allFavoriteProblems, error: favoriteProblemsError } = await problemsQuery;
+
+            if (favoriteProblemsError) throw favoriteProblemsError;
+
+            let progressMap = new Map();
+            if (userId && allFavoriteProblems?.length) {
+                const { data: attemptsRows, error: attemptsError } = await supabase
+                    .from('user_attempts')
+                    .select('problem_id, is_correct')
+                    .eq('user_id', userId)
+                    .in('problem_id', allFavoriteProblems.map((problem) => problem.id));
+
+                if (attemptsError) throw attemptsError;
+
+                progressMap = (attemptsRows || []).reduce((map, row) => {
+                    const current = map.get(row.problem_id) || { attempted: false, solved: false };
+                    current.attempted = true;
+                    current.solved = current.solved || Boolean(row.is_correct);
+                    map.set(row.problem_id, current);
+                    return map;
+                }, new Map());
+            }
+
+            const enrichedFavorites = (allFavoriteProblems || []).map((problem) => {
+                const progressData = progressMap.get(problem.id) || { attempted: false, solved: false };
+                return {
+                    ...problem,
+                    completed: progressData.solved,
+                    inProgress: progressData.attempted && !progressData.solved,
+                    favourite: true,
+                };
+            });
+
+            const narrowedStatuses = statusFilters.filter((item) => item !== 'favorite');
+            const statusFilteredFavorites = narrowedStatuses.length > 0
+                ? enrichedFavorites.filter((problem) => narrowedStatuses.some((statusValue) => {
+                    if (statusValue === 'completed') return problem.completed;
+                    if (statusValue === 'in-progress') return problem.inProgress;
+                    if (statusValue === 'notstarted') return !problem.completed && !problem.inProgress;
+                    return false;
+                }))
+                : enrichedFavorites;
+
+            const sortedFavorites = applyLocalSort(statusFilteredFavorites, sort);
+            const safePage = page ?? 1;
+            const safePageSize = pageSize ?? 50;
+            const startIndex = Math.max(0, (safePage - 1) * safePageSize);
+            const pagedFavorites = sortedFavorites.slice(startIndex, startIndex + safePageSize);
+
+            return {
+                data: pagedFavorites,
+                count: sortedFavorites.length,
+                page: safePage,
+                pageSize: safePageSize,
+                facets: buildFacets(sortedFavorites),
+            };
+        } catch (favoriteError) {
+            console.warn('Favorite status filtering failed, falling back to regular source:', favoriteError);
+        }
+    }
 
     try {
         const apiBase = import.meta.env.VITE_API_URL || '';
@@ -81,7 +271,7 @@ export async function getProblems(
         const difficultyCsv = buildCsv(difficulties);
         const topicCsv = buildCsv(topics);
         const gradeCsv = buildCsv(grades);
-        const statusCsv = buildCsv(status);
+        const statusCsv = buildCsv(statusFilters);
         const progressCsv = buildCsv(progress);
 
         if (difficultyCsv) params.set('difficulty', difficultyCsv);
@@ -123,9 +313,9 @@ export async function getProblems(
 
             let completed = null;
 
-            if (status && status.includes('completed')) {
+            if (statusFilters.includes('completed')) {
                 completed = true;
-            } else if (status && status.includes('notstarted') || progress && progress.includes('in-progress')) {
+            } else if (statusFilters.includes('notstarted') || progress && progress.includes('in-progress')) {
                 completed = false;
             }
 

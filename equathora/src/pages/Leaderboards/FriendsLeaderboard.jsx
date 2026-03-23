@@ -127,7 +127,7 @@ const FriendsLeaderboard = () => {
                                     <FaChartLine className="stat-icon" />
                                     {player.problemsSolved} solved
                                 </span>
-                                {player.accuracy > 0 && (
+                                {player.accuracy !== null && player.accuracy !== undefined && (
                                     <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
                                         <FaBullseye className="stat-icon" />
                                         {player.accuracy}%
@@ -168,7 +168,7 @@ const FriendsLeaderboard = () => {
                                     <FaChartLine className="stat-icon" />
                                     {currentUser.problemsSolved} solved
                                 </span>
-                                {currentUser.accuracy > 0 && (
+                                {currentUser.accuracy !== null && currentUser.accuracy !== undefined && (
                                     <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
                                         <FaBullseye className="stat-icon" />
                                         {currentUser.accuracy}%

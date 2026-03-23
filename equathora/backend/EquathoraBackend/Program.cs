@@ -498,14 +498,28 @@ app.MapGet("/api/problems", async (
         ["not-started"] = filteredWithProgress.Count(p => !p.Completed && !p.InProgress)
     };
 
-    var ordered = (sort ?? string.Empty).ToLowerInvariant() switch
+    var normalizedSort = (sort ?? string.Empty)
+        .Trim()
+        .ToLowerInvariant();
+
+    var ordered = normalizedSort switch
     {
-        "difficulty_asc" => filteredWithProgress
+        "title-asc" => filteredWithProgress
+            .OrderBy(p => p.Title)
+            .ThenBy(p => p.GroupId)
+            .ThenBy(p => p.DisplayOrder)
+            .ThenBy(p => p.Id),
+        "title-desc" => filteredWithProgress
+            .OrderByDescending(p => p.Title)
+            .ThenBy(p => p.GroupId)
+            .ThenBy(p => p.DisplayOrder)
+            .ThenBy(p => p.Id),
+        "difficulty-asc" or "difficulty_asc" => filteredWithProgress
             .OrderBy(p => p.Difficulty == "Easy" ? 0 : p.Difficulty == "Medium" ? 1 : 2)
             .ThenBy(p => p.GroupId)
             .ThenBy(p => p.DisplayOrder)
             .ThenBy(p => p.Id),
-        "difficulty_desc" => filteredWithProgress
+        "difficulty-desc" or "difficulty_desc" => filteredWithProgress
             .OrderByDescending(p => p.Difficulty == "Hard" ? 2 : p.Difficulty == "Medium" ? 1 : 0)
             .ThenBy(p => p.GroupId)
             .ThenBy(p => p.DisplayOrder)
@@ -513,6 +527,9 @@ app.MapGet("/api/problems", async (
         "newest" => filteredWithProgress
             .OrderByDescending(p => p.CreatedAt)
             .ThenByDescending(p => p.Id),
+        "oldest" => filteredWithProgress
+            .OrderBy(p => p.CreatedAt)
+            .ThenBy(p => p.Id),
         _ => filteredWithProgress
             .OrderBy(p => p.GroupId)
             .ThenBy(p => p.DisplayOrder)

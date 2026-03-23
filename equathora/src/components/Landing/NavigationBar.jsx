@@ -84,11 +84,10 @@ const NavigationBar = () => {
             image: Leaderboards
         },
         {
-            to: "/learn",
+            to: "/learn?status=favorite",
             text: "Favourite Problems",
             description: "Quickly revisit starred problems.",
             image: Favourite,
-            state: { filter: 'favourite' }
         },
         {
             to: '/waitlist',

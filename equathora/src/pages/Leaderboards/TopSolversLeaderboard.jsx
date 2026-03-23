@@ -277,54 +277,54 @@ const TopSolversLeaderboard = () => {
                     (() => {
                         const primaryMetric = getPrimaryMetric(player);
                         return (
-                    <Link
-                        key={player.userId}
-                        to={`/profile/${player.userId}`}
-                        className={`leaderboard-card ${getRankClass(player.displayRank)} ${currentUser && player.userId === currentUser.id ? 'current-user' : ''}`}
-                    >
-                        <div className="rank-badge">
-                            {getRankBadge(player.displayRank)}
-                            <span className="rank-badge-number">{player.displayRank}</span>
-                        </div>
-                        <div className="player-avatar-wrapper">
-                            <img
-                                src={player.avatarUrl || GuestAvatar}
-                                alt={`${player.name} avatar`}
-                                className="player-avatar"
-                            />
-                        </div>
-                        <div className="player-info">
-                            <div className="player-name">{player.name}</div>
-                            <div className="player-stats">
-                                <span className="stat-item">
-                                    <FaChartLine className="stat-icon" />
-                                    {viewMode === 'weekly' ? player.recentSolved || player.problemsSolved : player.problemsSolved} solved
-                                </span>
-                                {(viewMode === 'accuracy' || metric === 'accuracy') && player.accuracy > 0 && (
-                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                        <FaBullseye className="stat-icon" />
-                                        {player.accuracy}%
-                                    </span>
-                                )}
-                                {(viewMode === 'streak' || metric === 'streak') && (
-                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                        <FaFire className="stat-icon" />
-                                        {player.currentStreak} days
-                                    </span>
-                                )}
-                                {viewMode === 'weekly' && (
-                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                        <FaChartLine className="stat-icon" />
-                                        last 7d
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                        <div className="player-xp">
-                            <span className="xp-value">{primaryMetric.value}</span>
-                            <span className="xp-label">{primaryMetric.label}</span>
-                        </div>
-                    </Link>
+                            <Link
+                                key={player.userId}
+                                to={`/profile/${player.userId}`}
+                                className={`leaderboard-card ${getRankClass(player.displayRank)} ${currentUser && player.userId === currentUser.id ? 'current-user' : ''}`}
+                            >
+                                <div className="rank-badge">
+                                    {getRankBadge(player.displayRank)}
+                                    <span className="rank-badge-number">{player.displayRank}</span>
+                                </div>
+                                <div className="player-avatar-wrapper">
+                                    <img
+                                        src={player.avatarUrl || GuestAvatar}
+                                        alt={`${player.name} avatar`}
+                                        className="player-avatar"
+                                    />
+                                </div>
+                                <div className="player-info">
+                                    <div className="player-name">{player.name}</div>
+                                    <div className="player-stats">
+                                        <span className="stat-item">
+                                            <FaChartLine className="stat-icon" />
+                                            {viewMode === 'weekly' ? player.recentSolved || player.problemsSolved : player.problemsSolved} solved
+                                        </span>
+                                        {(viewMode === 'accuracy' || metric === 'accuracy') && player.accuracy !== null && player.accuracy !== undefined && (
+                                            <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                                <FaBullseye className="stat-icon" />
+                                                {player.accuracy}%
+                                            </span>
+                                        )}
+                                        {(viewMode === 'streak' || metric === 'streak') && (
+                                            <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                                <FaFire className="stat-icon" />
+                                                {player.currentStreak} days
+                                            </span>
+                                        )}
+                                        {viewMode === 'weekly' && (
+                                            <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                                <FaChartLine className="stat-icon" />
+                                                last 7d
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="player-xp">
+                                    <span className="xp-value">{primaryMetric.value}</span>
+                                    <span className="xp-label">{primaryMetric.label}</span>
+                                </div>
+                            </Link>
                         );
                     })()
                 ))}
@@ -341,42 +341,42 @@ const TopSolversLeaderboard = () => {
                             const primaryMetric = getPrimaryMetric(currentUser);
                             return (
                                 <>
-                        <div className="rank-badge">
-                            {getRankBadge(currentUserDisplayRank || currentUser.rank)}
-                            <span className="rank-badge-number">{currentUserDisplayRank || currentUser.rank}</span>
-                        </div>
-                        <div className="player-avatar-wrapper">
-                            <img
-                                src={currentUser.avatarUrl || GuestAvatar}
-                                alt={`${currentUser.name} avatar`}
-                                className="player-avatar"
-                            />
-                        </div>
-                        <div className="player-info">
-                            <div className="player-name">{currentUser.name}</div>
-                            <div className="player-stats">
-                                <span className="stat-item">
-                                    <FaChartLine className="stat-icon" />
-                                    {currentUser.problemsSolved} solved
-                                </span>
-                                {(viewMode === 'accuracy' || metric === 'accuracy') && currentUser.accuracy > 0 && (
-                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                        <FaBullseye className="stat-icon" />
-                                        {currentUser.accuracy}%
-                                    </span>
-                                )}
-                                {(viewMode === 'streak' || metric === 'streak') && (
-                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                        <FaFire className="stat-icon" />
-                                        {currentUser.currentStreak} days
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                        <div className="player-xp">
-                            <span className="xp-value">{primaryMetric.value}</span>
-                            <span className="xp-label">{primaryMetric.label}</span>
-                        </div>
+                                    <div className="rank-badge">
+                                        {getRankBadge(currentUserDisplayRank || currentUser.rank)}
+                                        <span className="rank-badge-number">{currentUserDisplayRank || currentUser.rank}</span>
+                                    </div>
+                                    <div className="player-avatar-wrapper">
+                                        <img
+                                            src={currentUser.avatarUrl || GuestAvatar}
+                                            alt={`${currentUser.name} avatar`}
+                                            className="player-avatar"
+                                        />
+                                    </div>
+                                    <div className="player-info">
+                                        <div className="player-name">{currentUser.name}</div>
+                                        <div className="player-stats">
+                                            <span className="stat-item">
+                                                <FaChartLine className="stat-icon" />
+                                                {currentUser.problemsSolved} solved
+                                            </span>
+                                            {(viewMode === 'accuracy' || metric === 'accuracy') && currentUser.accuracy !== null && currentUser.accuracy !== undefined && (
+                                                <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                                    <FaBullseye className="stat-icon" />
+                                                    {currentUser.accuracy}%
+                                                </span>
+                                            )}
+                                            {(viewMode === 'streak' || metric === 'streak') && (
+                                                <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
+                                                    <FaFire className="stat-icon" />
+                                                    {currentUser.currentStreak} days
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className="player-xp">
+                                        <span className="xp-value">{primaryMetric.value}</span>
+                                        <span className="xp-label">{primaryMetric.label}</span>
+                                    </div>
                                 </>
                             );
                         })()}

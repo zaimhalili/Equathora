@@ -13,14 +13,10 @@ export const DifficultyOptions = [
 ];
 
 export const StatusOptions = [
-  { value: 'completed', label: 'Completed' },
-  { value: 'not-started', label: 'Not Started' }
-];
-
-export const ProgressOptions = [
   { value: 'in-progress', label: 'In Progress' },
-  { value: 'favorite', label: 'Favorite' },
-  { value: 'premium', label: 'Premium' }
+  { value: 'completed', label: 'Completed' },
+  { value: 'notstarted', label: 'Not Started' },
+  { value: 'favorite', label: 'Favourite' }
 ];
 
 export const SortOptions = [

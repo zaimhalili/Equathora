@@ -14,6 +14,7 @@ import ProfileExportButtons from '../components/ProfileExportButtons';
 import { getSubmissions } from '../lib/progressStorage';
 import { generateProblemSlug } from '../lib/slugify';
 import { getCachedGlobalLeaderboard } from '../lib/leaderboardService';
+import { formatTopicLabel } from '../lib/utils';
 
 const getEffectiveStreak = (currentStreak = 0, lastActivityDate = null) => {
   if (!currentStreak || currentStreak <= 0) return 0;
@@ -360,7 +361,7 @@ const Profile = () => {
                   </div>
                   <div className='flex gap-2 md:gap-3 flex-wrap'>
                     {userData.mathTopics.map((topic, i) => (
-                      <p key={i} className='rounded-md bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)] cursor-default'>{topic}</p>
+                      <p key={i} className='rounded-md bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)] cursor-default'>{formatTopicLabel(topic)}</p>
                     ))}
                   </div>
                 </div>
