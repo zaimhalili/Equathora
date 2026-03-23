@@ -121,6 +121,38 @@ const TopSolversLeaderboard = () => {
         return 'rank-default';
     };
 
+    const getPrimaryMetric = (player) => {
+        if (metric === 'solved' || viewMode === 'weekly') {
+            const solvedValue = viewMode === 'weekly'
+                ? (player.recentSolved ?? player.problemsSolved ?? 0)
+                : (player.problemsSolved ?? 0);
+
+            return {
+                value: String(solvedValue),
+                label: viewMode === 'weekly' ? 'Solved (7d)' : 'Solved'
+            };
+        }
+
+        if (metric === 'accuracy' || viewMode === 'accuracy') {
+            return {
+                value: player.accuracy === null || player.accuracy === undefined ? 'N/A' : `${player.accuracy}%`,
+                label: 'Accuracy'
+            };
+        }
+
+        if (metric === 'streak' || viewMode === 'streak') {
+            return {
+                value: `${player.currentStreak || 0}d`,
+                label: 'Streak'
+            };
+        }
+
+        return {
+            value: (player.xp || 0).toLocaleString(),
+            label: 'XP'
+        };
+    };
+
     if (loading) {
         return (
             <article className="global-leaderboard">
@@ -242,6 +274,9 @@ const TopSolversLeaderboard = () => {
 
             <div className="leaderboard-list">
                 {filteredPlayers.map((player) => (
+                    (() => {
+                        const primaryMetric = getPrimaryMetric(player);
+                        return (
                     <Link
                         key={player.userId}
                         to={`/profile/${player.userId}`}
@@ -286,10 +321,12 @@ const TopSolversLeaderboard = () => {
                             </div>
                         </div>
                         <div className="player-xp">
-                            <span className="xp-value">{player.xp.toLocaleString()}</span>
-                            <span className="xp-label">XP</span>
+                            <span className="xp-value">{primaryMetric.value}</span>
+                            <span className="xp-label">{primaryMetric.label}</span>
                         </div>
                     </Link>
+                        );
+                    })()
                 ))}
             </div>
 
@@ -300,6 +337,10 @@ const TopSolversLeaderboard = () => {
                         to={`/profile/${currentUser.id}`}
                         className={`leaderboard-card current-user-highlight ${getRankClass(currentUserDisplayRank || currentUser.rank)}`}
                     >
+                        {(() => {
+                            const primaryMetric = getPrimaryMetric(currentUser);
+                            return (
+                                <>
                         <div className="rank-badge">
                             {getRankBadge(currentUserDisplayRank || currentUser.rank)}
                             <span className="rank-badge-number">{currentUserDisplayRank || currentUser.rank}</span>
@@ -333,9 +374,12 @@ const TopSolversLeaderboard = () => {
                             </div>
                         </div>
                         <div className="player-xp">
-                            <span className="xp-value">{currentUser.xp.toLocaleString()}</span>
-                            <span className="xp-label">XP</span>
+                            <span className="xp-value">{primaryMetric.value}</span>
+                            <span className="xp-label">{primaryMetric.label}</span>
                         </div>
+                                </>
+                            );
+                        })()}
                     </Link>
                 </div>
             )}

@@ -125,6 +125,34 @@ const GlobalLeaderboard = () => {
         return 'rank-default';
     };
 
+    const getPrimaryMetric = (player) => {
+        if (metric === 'solved') {
+            return {
+                value: String(player.problemsSolved ?? 0),
+                label: 'Solved'
+            };
+        }
+
+        if (metric === 'accuracy') {
+            return {
+                value: player.accuracy === null || player.accuracy === undefined ? 'N/A' : `${player.accuracy}%`,
+                label: 'Accuracy'
+            };
+        }
+
+        if (metric === 'streak') {
+            return {
+                value: `${player.currentStreak || 0}d`,
+                label: 'Streak'
+            };
+        }
+
+        return {
+            value: (player.xp || 0).toLocaleString(),
+            label: 'XP'
+        };
+    };
+
     if (loading) {
         return (
             <article className="global-leaderboard">
@@ -239,6 +267,9 @@ const GlobalLeaderboard = () => {
 
             <div className="leaderboard-list">
                 {filteredPlayers.map((player) => (
+                    (() => {
+                        const primaryMetric = getPrimaryMetric(player);
+                        return (
                     <Link
                         key={player.userId}
                         to={`/profile/${player.userId}`}
@@ -275,10 +306,12 @@ const GlobalLeaderboard = () => {
                             </div>
                         </div>
                         <div className="player-xp">
-                            <span className="xp-value">{player.xp.toLocaleString()}</span>
-                            <span className="xp-label">XP</span>
+                            <span className="xp-value">{primaryMetric.value}</span>
+                            <span className="xp-label">{primaryMetric.label}</span>
                         </div>
                     </Link>
+                        );
+                    })()
                 ))}
             </div>
 
@@ -289,6 +322,10 @@ const GlobalLeaderboard = () => {
                         to={`/profile/${currentUser.id}`}
                         className={`leaderboard-card current-user-highlight ${getRankClass(currentUserDisplayRank || currentUser.rank)}`}
                     >
+                        {(() => {
+                            const primaryMetric = getPrimaryMetric(currentUser);
+                            return (
+                                <>
                         <div className="rank-badge">
                             {getRankBadge(currentUserDisplayRank || currentUser.rank)}
                             <span className="rank-badge-number">{currentUserDisplayRank || currentUser.rank}</span>
@@ -320,9 +357,12 @@ const GlobalLeaderboard = () => {
                             </div>
                         </div>
                         <div className="player-xp">
-                            <span className="xp-value">{currentUser.xp.toLocaleString()}</span>
-                            <span className="xp-label">XP</span>
+                            <span className="xp-value">{primaryMetric.value}</span>
+                            <span className="xp-label">{primaryMetric.label}</span>
                         </div>
+                                </>
+                            );
+                        })()}
                     </Link>
                 </div>
             )}

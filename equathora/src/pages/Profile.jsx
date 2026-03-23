@@ -15,6 +15,21 @@ import { getSubmissions } from '../lib/progressStorage';
 import { generateProblemSlug } from '../lib/slugify';
 import { getCachedGlobalLeaderboard } from '../lib/leaderboardService';
 
+const getEffectiveStreak = (currentStreak = 0, lastActivityDate = null) => {
+  if (!currentStreak || currentStreak <= 0) return 0;
+  if (!lastActivityDate) return currentStreak;
+
+  const todayUtc = new Date();
+  todayUtc.setUTCHours(0, 0, 0, 0);
+
+  const lastUtc = new Date(lastActivityDate);
+  if (Number.isNaN(lastUtc.getTime())) return currentStreak;
+  lastUtc.setUTCHours(0, 0, 0, 0);
+
+  const diffDays = Math.floor((todayUtc.getTime() - lastUtc.getTime()) / (1000 * 60 * 60 * 24));
+  return diffDays <= 1 ? currentStreak : 0;
+};
+
 const Profile = () => {
   const { profile } = useParams();
   const [showAccuracy, setShowAccuracy] = useState(false);
@@ -180,7 +195,7 @@ const Profile = () => {
               wrong: wrongSubmissions,
               total: totalAttempts
             },
-            currentStreak: streakRow?.current_streak || 0,
+            currentStreak: getEffectiveStreak(streakRow?.current_streak || 0, streakRow?.last_activity_date || null),
             longestStreak: streakRow?.longest_streak || 0,
             reputation: progressRow?.reputation || 0,
             globalRank: resolvedGlobalRank,

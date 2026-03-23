@@ -28,6 +28,37 @@ function normalizeProblemId(problemId) {
     return String(problemId);
 }
 
+function getEffectiveStreak(currentStreak = 0, lastActivityDate = null) {
+    if (!currentStreak || currentStreak <= 0) return 0;
+    if (!lastActivityDate) return currentStreak;
+
+    const todayUtc = new Date();
+    todayUtc.setUTCHours(0, 0, 0, 0);
+
+    const lastUtc = new Date(lastActivityDate);
+    if (Number.isNaN(lastUtc.getTime())) return currentStreak;
+    lastUtc.setUTCHours(0, 0, 0, 0);
+
+    const diffDays = Math.floor((todayUtc.getTime() - lastUtc.getTime()) / (1000 * 60 * 60 * 24));
+
+    // Active today/yesterday keeps streak alive, otherwise streak should display as 0.
+    return diffDays <= 1 ? currentStreak : 0;
+}
+
+function calculateAccuracy(totalAttempts = 0, wrongSubmissions = 0, solvedCount = 0) {
+    if (totalAttempts > 0) {
+        const correctSubmissions = totalAttempts - (wrongSubmissions || 0);
+        return Math.max(0, Math.min(100, Math.round((correctSubmissions / totalAttempts) * 100)));
+    }
+
+    // If user has solved problems but has no attempts data, accuracy is unknown (not zero).
+    if (solvedCount > 0) {
+        return null;
+    }
+
+    return 0;
+}
+
 async function getActiveProblemIdSet() {
     const now = Date.now();
     if (activeProblemIdsCache && now - activeProblemIdsCacheTime < ACTIVE_PROBLEM_CACHE_DURATION) {
@@ -285,7 +316,7 @@ async function computeLeaderboardFromTables(limit = 100) {
 
         const { data: streakData } = await supabase
             .from('user_streak_data')
-            .select('user_id, current_streak, longest_streak');
+            .select('user_id, current_streak, longest_streak, last_activity_date');
 
         // Create maps for quick lookup
         const progressMap = {};
@@ -295,7 +326,11 @@ async function computeLeaderboardFromTables(limit = 100) {
 
         const streakMap = {};
         (streakData || []).forEach(s => {
-            streakMap[s.user_id] = s.current_streak || 0;
+            streakMap[s.user_id] = {
+                currentStreak: getEffectiveStreak(s.current_streak || 0, s.last_activity_date),
+                rawCurrentStreak: s.current_streak || 0,
+                lastActivityDate: s.last_activity_date || null
+            };
         });
 
         const profileMap = await getProfileMap(allUserIds);
@@ -313,18 +348,13 @@ async function computeLeaderboardFromTables(limit = 100) {
                 total_xp: 0
             };
 
-            const xpData = calculateUserXP(progress, { current_streak: streakMap[userId] || 0 });
+            const xpData = calculateUserXP(progress, { current_streak: streakMap[userId]?.currentStreak || 0 });
             const profile = profileMap[userId] || {};
             const solvedCount = solvedCountMap[userId] ?? (Array.isArray(progress.solved_problems)
                 ? progress.solved_problems.length
                 : 0);
 
-            // Accuracy = (total_attempts - wrong_submissions) / total_attempts
-            // This counts all correct submissions including re-solves
-            const correctSubmissions = progress.total_attempts - (progress.wrong_submissions || 0);
-            const accuracy = progress.total_attempts > 0
-                ? Math.round((correctSubmissions / progress.total_attempts) * 100)
-                : 0;
+            const accuracy = calculateAccuracy(progress.total_attempts || 0, progress.wrong_submissions || 0, solvedCount);
 
             return {
                 userId: userId,
@@ -334,7 +364,7 @@ async function computeLeaderboardFromTables(limit = 100) {
                 problemsSolved: solvedCount,
                 accuracy: accuracy,
                 reputation: progress.reputation || 0,
-                currentStreak: streakMap[userId] || 0,
+                currentStreak: streakMap[userId]?.currentStreak || 0,
                 rank: 0
             };
         });
@@ -371,11 +401,15 @@ async function computeLeaderboardFromProgressOnly(limit = 100) {
 
         const { data: streakData } = await supabase
             .from('user_streak_data')
-            .select('user_id, current_streak, longest_streak');
+            .select('user_id, current_streak, longest_streak, last_activity_date');
 
         const streakMap = {};
         (streakData || []).forEach(s => {
-            streakMap[s.user_id] = s.current_streak || 0;
+            streakMap[s.user_id] = {
+                currentStreak: getEffectiveStreak(s.current_streak || 0, s.last_activity_date),
+                rawCurrentStreak: s.current_streak || 0,
+                lastActivityDate: s.last_activity_date || null
+            };
         });
 
         const userIds = progressData.map(p => p.user_id);
@@ -383,17 +417,13 @@ async function computeLeaderboardFromProgressOnly(limit = 100) {
         const solvedCountMap = await getSolvedCountMapFromCompletedProblems(userIds);
 
         const leaderboardData = progressData.map((progress) => {
-            const xpData = calculateUserXP(progress, { current_streak: streakMap[progress.user_id] });
+            const xpData = calculateUserXP(progress, { current_streak: streakMap[progress.user_id]?.currentStreak || 0 });
             const profile = profileMap[progress.user_id] || {};
             const solvedCount = solvedCountMap[progress.user_id] ?? (Array.isArray(progress.solved_problems)
                 ? progress.solved_problems.length
                 : 0);
 
-            // Accuracy = (total_attempts - wrong_submissions) / total_attempts
-            const correctSubmissions = progress.total_attempts - (progress.wrong_submissions || 0);
-            const accuracy = progress.total_attempts > 0
-                ? Math.round((correctSubmissions / progress.total_attempts) * 100)
-                : 0;
+            const accuracy = calculateAccuracy(progress.total_attempts || 0, progress.wrong_submissions || 0, solvedCount);
 
             return {
                 userId: progress.user_id,
@@ -403,7 +433,7 @@ async function computeLeaderboardFromProgressOnly(limit = 100) {
                 problemsSolved: solvedCount,
                 accuracy: accuracy,
                 reputation: progress.reputation || 0,
-                currentStreak: streakMap[progress.user_id] || 0,
+                currentStreak: streakMap[progress.user_id]?.currentStreak || 0,
                 rank: 0
             };
         });
@@ -462,7 +492,7 @@ export async function getGlobalLeaderboard(limit = 100) {
 
         const { data: streakData } = await supabase
             .from('user_streak_data')
-            .select('user_id, current_streak')
+            .select('user_id, current_streak, last_activity_date')
             .in('user_id', allIds);
 
         const profileMap = await getProfileMap(allIds);
@@ -473,7 +503,11 @@ export async function getGlobalLeaderboard(limit = 100) {
         }, {});
 
         const streakMap = (streakData || []).reduce((acc, row) => {
-            acc[row.user_id] = row.current_streak || 0;
+            acc[row.user_id] = {
+                currentStreak: getEffectiveStreak(row.current_streak || 0, row.last_activity_date),
+                rawCurrentStreak: row.current_streak || 0,
+                lastActivityDate: row.last_activity_date || null
+            };
             return acc;
         }, {});
 
@@ -499,7 +533,7 @@ export async function getGlobalLeaderboard(limit = 100) {
                 : problemsFromView);
 
             const shouldRecompute = (!viewRow?.total_xp && progress) || (problemsFromView === 0 && progress && Array.isArray(progress.solved_problems));
-            const xpData = shouldRecompute ? calculateUserXP(progress, { current_streak: streakMap[userId] }) : null;
+            const xpData = shouldRecompute ? calculateUserXP(progress, { current_streak: streakMap[userId]?.currentStreak || 0 }) : null;
 
             // Calculate XP - for users with only completed problems but no progress, give base XP
             let xpValue = 0;
@@ -519,8 +553,9 @@ export async function getGlobalLeaderboard(limit = 100) {
             if (viewRow?.accuracy_percentage) {
                 accuracyVal = viewRow.accuracy_percentage;
             } else if (progress?.total_attempts) {
-                const correctSubs = progress.total_attempts - (progress.wrong_submissions || 0);
-                accuracyVal = Math.round((correctSubs / progress.total_attempts) * 100);
+                accuracyVal = calculateAccuracy(progress.total_attempts, progress.wrong_submissions || 0, solvedCount);
+            } else {
+                accuracyVal = calculateAccuracy(0, 0, solvedCount);
             }
 
             return {
@@ -532,7 +567,7 @@ export async function getGlobalLeaderboard(limit = 100) {
                 problemsSolved: solvedCount,
                 accuracy: accuracyVal,
                 reputation: viewRow?.reputation || progress?.reputation || 0,
-                currentStreak: viewRow?.current_streak || streakMap[userId] || 0,
+                currentStreak: streakMap[userId]?.currentStreak ?? 0,
                 rank: viewRow?.rank || 0
             };
         });
@@ -575,13 +610,24 @@ export async function getCurrentUserRank() {
         const solvedCountMap = await getSolvedCountMapFromCompletedProblems([session.user.id]);
         const canonicalSolvedCount = solvedCountMap[session.user.id];
 
+        const { data: streakRow } = await supabase
+            .from('user_streak_data')
+            .select('current_streak, last_activity_date')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+
         const problemsSolved = typeof canonicalSolvedCount === 'number'
             ? canonicalSolvedCount
             : typeof data.problems_solved_count === 'number'
-            ? data.problems_solved_count
-            : Array.isArray(data.solved_problems)
-                ? data.solved_problems.length
-                : 0;
+                ? data.problems_solved_count
+                : Array.isArray(data.solved_problems)
+                    ? data.solved_problems.length
+                    : 0;
+
+        const accuracy = data.accuracy_percentage ?? calculateAccuracy(0, 0, problemsSolved);
+        const currentStreak = streakRow
+            ? getEffectiveStreak(streakRow.current_streak ?? 0, streakRow.last_activity_date ?? null)
+            : 0;
 
         return {
             userId: data.user_id,
@@ -589,9 +635,9 @@ export async function getCurrentUserRank() {
             avatarUrl: profile.avatarUrl || '',
             xp: data.total_xp || 0,
             problemsSolved,
-            accuracy: data.accuracy_percentage || 0,
+            accuracy,
             reputation: data.reputation || 0,
-            currentStreak: data.current_streak || 0,
+            currentStreak,
             rank: data.rank || 0
         };
     } catch (error) {
@@ -637,6 +683,15 @@ export async function getFriendsLeaderboard() {
 
         const profileMap = await getProfileMap(targetIds);
         const solvedCountMap = await getSolvedCountMapFromCompletedProblems(targetIds);
+        const { data: streakData } = await supabase
+            .from('user_streak_data')
+            .select('user_id, current_streak, last_activity_date')
+            .in('user_id', targetIds);
+
+        const streakMap = (streakData || []).reduce((acc, row) => {
+            acc[row.user_id] = getEffectiveStreak(row.current_streak || 0, row.last_activity_date);
+            return acc;
+        }, {});
 
         return (data || []).map((row, index) => ({
             userId: row.user_id,
@@ -646,9 +701,9 @@ export async function getFriendsLeaderboard() {
             problemsSolved: typeof solvedCountMap[row.user_id] === 'number'
                 ? solvedCountMap[row.user_id]
                 : (typeof row.problems_solved_count === 'number' ? row.problems_solved_count : 0),
-            accuracy: row.accuracy_percentage || 0,
+            accuracy: row.accuracy_percentage ?? calculateAccuracy(0, 0, solvedCountMap[row.user_id] || 0),
             reputation: row.reputation || 0,
-            currentStreak: row.current_streak || 0,
+            currentStreak: streakMap[row.user_id] ?? 0,
             rank: row.rank || index + 1
         }));
     } catch (error) {
