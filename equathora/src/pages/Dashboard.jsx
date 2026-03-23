@@ -17,6 +17,7 @@ import { getDailyProblemSlug } from '../lib/utils';
 import { migrateLocalStorageToDatabase, needsMigration } from '../lib/migrateStorage';
 import { supabase } from '../lib/supabaseClient';
 import { notifyWelcome, getNotifications } from '../lib/notificationService';
+import LoadingSpinner from '@/components/LoadingSpinner.jsx';
 
 const Dashboard = () => {
   const [migrationStatus, setMigrationStatus] = useState(null);
@@ -103,6 +104,7 @@ const Dashboard = () => {
         <header>
           <Navbar />
         </header>
+        {/* <LoadingSpinner></LoadingSpinner> */}
 
         {/* Hero Section */}
         <div className='flex w-full justify-center items-center'>
