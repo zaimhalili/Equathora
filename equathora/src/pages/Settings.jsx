@@ -213,7 +213,6 @@ const sidebarSections = [
 const Settings = () => {
     const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState('profile');
-    const [isLoading, setIsLoading] = useState(true);
 
     // Profile state
     const [profileData, setProfileData] = useState({
@@ -331,8 +330,6 @@ const Settings = () => {
                 setCurrentSession(sess);
             } catch (error) {
                 console.error('Error loading settings:', error);
-            } finally {
-                setIsLoading(false);
             }
         };
 
@@ -602,23 +599,6 @@ const Settings = () => {
     // ========================================================================
     // RENDER
     // ========================================================================
-    if (isLoading) {
-        return (
-            <div>
-                <Navbar />
-                <main className="min-h-screen flex items-center justify-center bg-[var(--main-color)]">
-                    <div className="flex flex-col items-center gap-4">
-                        <svg className="animate-spin h-10 w-10 text-[var(--accent-color)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                        </svg>
-                        <p className="text-[var(--secondary-color)] font-[Sansation,sans-serif]">Loading settings...</p>
-                    </div>
-                </main>
-            </div>
-        );
-    }
-
     return (
         <div>
             <Navbar />
