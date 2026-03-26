@@ -7,6 +7,13 @@ import { useState } from 'react';
 import AdminProblems from '@/components/Admin/AdminProblems';
 
 const AdminDashboard = () => {
+    const [selected, setSelected] = useState('dashboard');
+
+    const tabs = [
+        { id: 'problems', label: 'Problem Library' },
+        { id: 'users', label: 'Users' },
+        { id: 'solutionGenerator', label: 'Solution Generator' }
+    ]
     return (
         <>
             <header>
@@ -15,11 +22,17 @@ const AdminDashboard = () => {
             <main className='flex  relative min-h-screen'>
                 <aside className='bg-[var(--main-color)] min-h-screen absolute left-0 w-1/8 shadow-2xl z-4'>
                     <h1 className='text-xl bg-[var(--dark-accent-color)] w-full text-center py-2 cursor-pointer shadow-md pb-4 font-black'>Admin Tools</h1>
-                    <button className='text-xl bg-[var(--dark-accent-color)] w-full text-center py-2 font-medium cursor-pointer shadow-md'>Problem Library</button>
-                    <button className='text-xl text-[var(--secondary-color)] w-full text-center py-2 font-medium cursor-pointer'>AI Solution Generator</button>
+                    {tabs.map(tab => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setSelected(tab.id)}
+                            className={selected === tab.id ? 'text-xl bg-[var(--dark-accent-color)] w-full text-center py-2 font-medium cursor-pointer shadow-md' : 'text-xl bg-[var(--main-color)] w-full text-center py-2 font-medium cursor-pointer shadow-md'}>{tab.label}</button>
+                    ))}
                 </aside>
                 <section className='bg-[var(--main-color)] w-7/8 absolute right-0 min-h-screen'>
-                    <AdminProblems></AdminProblems>
+                    {selected === 'problems' && <AdminProblems />}
+                    {selected === 'problems' && <AdminProblems />}
+                    {selected === 'problems' && <AdminProblems />}
                 </section>
             </main>
         </>
