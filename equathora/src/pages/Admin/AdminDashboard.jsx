@@ -6,13 +6,27 @@ import { useState } from 'react';
 // Components
 import AdminProblems from '@/components/Admin/AdminProblems';
 
+const TAB_COMPONENTS = {
+    analytics: <AdminProblems />,
+    problems: <AdminProblems />,
+    users: <AdminProblems />,
+    announcements: <AdminProblems />,
+    solutionGenerator: <AdminProblems />,
+    finance: <AdminProblems />,
+    logs: <AdminProblems />,
+}
+
 const AdminDashboard = () => {
-    const [selected, setSelected] = useState('dashboard');
+    const [selected, setSelected] = useState('analytics');
 
     const tabs = [
+        { id: 'analytics', label: 'Analytics'},
         { id: 'problems', label: 'Problem Library' },
-        { id: 'users', label: 'Users' },
-        { id: 'solutionGenerator', label: 'Solution Generator' }
+        { id: 'users', label: 'User Management' },
+        { id: 'announcements', label: 'Announcements'},
+        { id: 'solutionGenerator', label: 'Solution Generator' },
+        { id: 'finance', label: 'finance'},
+        { id: 'logs', label: 'Logs'},
     ]
     return (
         <>
@@ -26,13 +40,11 @@ const AdminDashboard = () => {
                         <button
                             key={tab.id}
                             onClick={() => setSelected(tab.id)}
-                            className={selected === tab.id ? 'text-xl bg-[var(--dark-accent-color)] w-full text-center py-2 font-medium cursor-pointer shadow-md' : 'text-xl bg-[var(--main-color)] w-full text-center py-2 font-medium cursor-pointer shadow-md'}>{tab.label}</button>
+                            className={`text-xl w-full text-center py-2 font-medium cursor-pointer shadow-md ${selected === tab.id ? 'bg-[var(--dark-accent-color)]' : 'bg-[var(--main-color)]'}`}>{tab.label}</button>
                     ))}
                 </aside>
                 <section className='bg-[var(--main-color)] w-7/8 absolute right-0 min-h-screen'>
-                    {selected === 'problems' && <AdminProblems />}
-                    {selected === 'problems' && <AdminProblems />}
-                    {selected === 'problems' && <AdminProblems />}
+                    {TAB_COMPONENTS[selected]}
                 </section>
             </main>
         </>
@@ -41,13 +53,11 @@ const AdminDashboard = () => {
 
 export default AdminDashboard;
 
-// Optimizing tool selection...For an app like Equathora, an`AdminDashboard` should focus on  visibility, control, and safety :
-
 // -  Key KPIs(top cards): daily / weekly active users, new signups, retention, solved problems, report count, system health.
 // -  User management: search users, view profiles, roles / permissions, suspend / reactivate, reset sessions, mentor verification.
 // -  Content moderation: queue for reported problems / solutions / comments, approve / reject actions, reason logging.
 // -  Content operations: manage problems / topics / paths, publish / unpublish, difficulty tuning, bulk import/export status.
-//     -  Support & incident center: recent errors, failed jobs, abuse spikes, quick links to logs.
+// -  Support & incident center: recent errors, failed jobs, abuse spikes, quick links to logs.
 // -  Announcements / notifications: send targeted messages(all users, mentors, specific cohorts), schedule + preview.
 // -  Audit trail: who changed what and when(role changes, deletions, moderation decisions).
 // -  Security controls: admin access logs, suspicious login alerts, rate - limit / abuse stats.
@@ -67,5 +77,3 @@ export default AdminDashboard;
 // - ** Confidence score + flags:** show why AI is uncertain and force human review for low - confidence items.
 // - ** Human -in -the - loop:** AI never auto - publishes without rule - based thresholds or admin approval.
 // - ** Audit log:** track who approved / edited what and when.
-
-// If you want, I can give you a ** minimal MVP structure ** (just 4 tabs) so you can build this in phases without overcomplicating it.
