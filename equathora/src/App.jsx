@@ -202,7 +202,7 @@ export default function App() {
             <Route path="/tracks" element={<ProtectedRoute><Tracks /></ProtectedRoute>} />
             <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-            {/* <Route path="/adminDashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}></Route> */}
+            <Route path="/adminDashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}></Route>
             {/* <Route path="/premium" element={<ProtectedRoute><Premium /></ProtectedRoute>} /> */}
 
 

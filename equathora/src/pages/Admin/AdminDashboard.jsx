@@ -4,12 +4,18 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 // Components
+import AdminAnalytics from '@/components/Admin/AdminAnalytics';
 import AdminProblems from '@/components/Admin/AdminProblems';
+import AdminUserManagement from '@/components/Admin/AdminUserManagement';
+import AdminAnnouncements from '@/components/Admin/AdminAnnouncements';
+import AdminSolutionGenerator from '@/components/Admin/AdminSolutionGenerator';
+import AdminFinance from '@/components/Admin/AdminFinance';
+import AdminLogs from '@/components/Admin/AdminLogs';
 
 const TAB_COMPONENTS = {
-    analytics: <AdminProblems />,
+    analytics: <AdminAnalytics />,
     problems: <AdminProblems />,
-    users: <AdminProblems />,
+    users: <AdminUserManagement />,
     announcements: <AdminProblems />,
     solutionGenerator: <AdminProblems />,
     finance: <AdminProblems />,
@@ -20,13 +26,13 @@ const AdminDashboard = () => {
     const [selected, setSelected] = useState('analytics');
 
     const tabs = [
-        { id: 'analytics', label: 'Analytics'},
+        { id: 'analytics', label: 'Analytics' },
         { id: 'problems', label: 'Problem Library' },
         { id: 'users', label: 'User Management' },
-        { id: 'announcements', label: 'Announcements'},
+        { id: 'announcements', label: 'Announcements' },
         { id: 'solutionGenerator', label: 'Solution Generator' },
-        { id: 'finance', label: 'finance'},
-        { id: 'logs', label: 'Logs'},
+        { id: 'finance', label: 'Finance' },
+        { id: 'logs', label: 'Logs' },
     ]
     return (
         <>
@@ -34,13 +40,13 @@ const AdminDashboard = () => {
                 <Navbar></Navbar>
             </header>
             <main className='flex  relative min-h-screen'>
-                <aside className='bg-[var(--main-color)] min-h-screen absolute left-0 w-1/8 shadow-2xl z-4'>
-                    <h1 className='text-xl bg-[var(--dark-accent-color)] w-full text-center py-2 cursor-pointer shadow-md pb-4 font-black'>Admin Tools</h1>
+                <aside className='bg-[var(--main-color)] min-h-screen absolute left-0 w-1/8 shadow-2xl z-4 overflow-hidden'>
+                    {/* <h1 className='text-xl bg-[var(--dark-accent-color)] w-full text-center py-2 cursor-pointer shadow-md pb-4 font-black'>Admin Tools</h1> */}
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
                             onClick={() => setSelected(tab.id)}
-                            className={`text-xl w-full text-center py-2 font-medium cursor-pointer shadow-md ${selected === tab.id ? 'bg-[var(--dark-accent-color)]' : 'bg-[var(--main-color)]'}`}>{tab.label}</button>
+                            className={`text-xl w-full text-center px-3 py-2 cursor-pointer shadow-md ${selected === tab.id ? 'bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] z-10 relative font-black ' : 'bg-[var(--main-color)] text-[var(--secondary-color)] hover:bg-gray-300 font-medium'}`}>{tab.label}</button>
                     ))}
                 </aside>
                 <section className='bg-[var(--main-color)] w-7/8 absolute right-0 min-h-screen'>
@@ -53,8 +59,7 @@ const AdminDashboard = () => {
 
 export default AdminDashboard;
 
-// -  Key KPIs(top cards): daily / weekly active users, new signups, retention, solved problems, report count, system health.
-// -  User management: search users, view profiles, roles / permissions, suspend / reactivate, reset sessions, mentor verification.
+
 // -  Content moderation: queue for reported problems / solutions / comments, approve / reject actions, reason logging.
 // -  Content operations: manage problems / topics / paths, publish / unpublish, difficulty tuning, bulk import/export status.
 // -  Support & incident center: recent errors, failed jobs, abuse spikes, quick links to logs.
