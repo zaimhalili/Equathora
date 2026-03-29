@@ -14,6 +14,12 @@ import CookieConsent from "./components/CookieConsent";
 import { supabase } from "./lib/supabaseClient";
 import { useAuth } from "./hooks/useAuth";
 import { trackDailyActivity } from "./lib/activityTrackingService";
+import {
+  initPostHog,
+  identifyPostHogUser,
+  resetPostHogUser,
+  capturePostHogEvent
+} from "./lib/posthogClient";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -120,6 +126,10 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  useEffect(() => {
+    initPostHog();
+  }, []);
+
   // Clean up old localStorage data to prevent conflicts with database
   useEffect(() => {
     const cleanupOldLocalStorage = async () => {
@@ -154,11 +164,21 @@ export default function App() {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
+        identifyPostHogUser(session.user);
+        void capturePostHogEvent('user_signed_in', {
+          email: session.user?.email || null
+        });
+
         // Check if we're not already on dashboard or a protected route
         const currentPath = window.location.pathname;
         if (currentPath === '/' || currentPath === '/login' || currentPath === '/signup') {
           navigate('/dashboard', { replace: true });
         }
+      }
+
+      if (event === 'SIGNED_OUT') {
+        void capturePostHogEvent('user_signed_out');
+        resetPostHogUser();
       }
     });
 

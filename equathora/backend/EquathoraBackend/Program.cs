@@ -17,13 +17,28 @@ using MathNet.Numerics.LinearAlgebra;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var defaultConnection =
+    builder.Configuration["SUPABASE_DB_CONNECTION"] ??
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (string.IsNullOrWhiteSpace(defaultConnection))
+{
+    throw new InvalidOperationException(
+        "ConnectionStrings:DefaultConnection is missing. Configure appsettings or environment variables before starting the backend.");
+}
+
 // DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(defaultConnection));
 
 // JWT config
 var jwtSection = builder.Configuration.GetSection("JWT");
-var secretKey = jwtSection["SecretKey"] ?? throw new InvalidOperationException("JWT:SecretKey missing");
+var configuredSecretKey = jwtSection["SecretKey"];
+var secretKey = !string.IsNullOrWhiteSpace(configuredSecretKey)
+    ? configuredSecretKey
+    : builder.Environment.IsDevelopment()
+        ? "equathora-dev-only-jwt-secret-key-please-change-in-production-123456"
+        : throw new InvalidOperationException("JWT:SecretKey missing");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -266,6 +281,24 @@ app.MapGet("/api/admin/analytics", async (
 
     try
     {
+        static List<AnalyticsActivityRow> SubmissionSignals(IEnumerable<AnalyticsSubmissionRow> submissions) =>
+            submissions
+                .Select(s => new AnalyticsActivityRow
+                {
+                    UserId = s.UserId,
+                    CreatedAt = s.CreatedAt,
+                    EventType = "submission"
+                })
+                .ToList();
+
+        static List<AnalyticsActivityRow> MergeActivityWithSubmissionSignals(
+            IEnumerable<AnalyticsActivityRow> activity,
+            IEnumerable<AnalyticsSubmissionRow> submissions) =>
+            activity
+                .Concat(SubmissionSignals(submissions))
+                .GroupBy(a => new { a.UserId, Day = a.CreatedAt.Date })
+                .Select(g => g.OrderBy(x => x.CreatedAt).First())
+                .ToList();
 
         var submissionsForRolling = await db.Database.SqlQuery<AnalyticsSubmissionRow>($@"
         SELECT
@@ -309,23 +342,14 @@ app.MapGet("/api/admin/analytics", async (
         catch
         {
             // Backward compatible fallback when the activity table has not been created yet.
-            activityForRolling = submissionsForRolling
-                .Select(s => new AnalyticsActivityRow
-                {
-                    UserId = s.UserId,
-                    CreatedAt = s.CreatedAt,
-                    EventType = "submission"
-                })
-                .ToList();
-            activityForRetention = submissionsForRetention
-                .Select(s => new AnalyticsActivityRow
-                {
-                    UserId = s.UserId,
-                    CreatedAt = s.CreatedAt,
-                    EventType = "submission"
-                })
-                .ToList();
+            activityForRolling = SubmissionSignals(submissionsForRolling);
+            activityForRetention = SubmissionSignals(submissionsForRetention);
         }
+
+        // Keep analytics meaningful even when user_activity_events exists but is sparse.
+        // We blend in submission-based activity signals so DAU/WAU and retention still reflect usage.
+        activityForRolling = MergeActivityWithSubmissionSignals(activityForRolling, submissionsForRolling);
+        activityForRetention = MergeActivityWithSubmissionSignals(activityForRetention, submissionsForRetention);
 
         List<AnalyticsUserRow> usersInWindow;
         List<AnalyticsUserRow> usersForRetention;
@@ -513,7 +537,11 @@ app.MapGet("/api/admin/analytics", async (
             {
                 totalUsers = (await db.Database.SqlQuery<AnalyticsCountRow>($@"
         SELECT COUNT(DISTINCT user_id)::int AS ""Count""
-        FROM user_activity_events
+        FROM (
+            SELECT user_id FROM user_activity_events
+            UNION
+            SELECT user_id FROM user_submissions
+        ) combined_users
     ").ToListAsync()).FirstOrDefault()?.Count ?? 0;
             }
             catch

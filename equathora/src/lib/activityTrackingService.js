@@ -1,4 +1,5 @@
 import { supabase } from './supabaseClient';
+import { capturePostHogEvent, identifyPostHogUser } from './posthogClient';
 
 const keyForUser = (userId) => `equathora_last_activity_ping_${userId}`;
 const keyForSignup = (userId) => `equathora_signup_event_ping_${userId}`;
@@ -36,7 +37,7 @@ async function insertActivityEvent(userId, eventType, eventTimestamp) {
         });
 }
 
-export async function trackActivityEvent(eventType, eventTimestamp = new Date()) {
+export async function trackActivityEvent(eventType, eventTimestamp = new Date(), metadata = {}) {
     try {
         if (typeof eventType !== 'string' || eventType.trim().length === 0) {
             return false;
@@ -47,11 +48,18 @@ export async function trackActivityEvent(eventType, eventTimestamp = new Date())
         if (!userId) return false;
 
         const normalizedEventType = eventType.trim().toLowerCase();
+        identifyPostHogUser(session.user);
+        const trackedInPostHog = capturePostHogEvent(normalizedEventType, {
+            source: 'equathora_web',
+            user_id: userId,
+            ...metadata
+        });
+
         const { error } = await insertActivityEvent(userId, normalizedEventType, eventTimestamp);
 
         if (error) {
             console.warn('Activity event tracking failed:', error.message || error);
-            return false;
+            return trackedInPostHog;
         }
 
         return true;
@@ -91,6 +99,12 @@ async function ensureSignupEvent(userId, userCreatedAt) {
         return;
     }
 
+    capturePostHogEvent('signup', {
+        source: 'equathora_web',
+        user_id: userId,
+        created_at: isoTimestampFrom(userCreatedAt)
+    });
+
     localStorage.setItem(key, '1');
 }
 
@@ -101,6 +115,8 @@ export async function trackDailyActivity() {
         const user = session?.user;
         const userId = user?.id;
         if (!userId) return;
+
+        identifyPostHogUser(user);
 
         await ensureSignupEvent(userId, user?.created_at);
 
@@ -115,6 +131,12 @@ export async function trackDailyActivity() {
             console.warn('Activity tracking failed:', error.message || error);
             return;
         }
+
+        capturePostHogEvent('app_active', {
+            source: 'equathora_web',
+            user_id: userId,
+            event_date: today
+        });
 
         localStorage.setItem(key, today);
     } catch (error) {

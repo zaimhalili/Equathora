@@ -475,6 +475,19 @@ const Problem = () => {
     const timeSpentSeconds = storedTime ? Math.max(1, parseInt(storedTime, 10)) : Math.max(1, Math.round((Date.now() - sessionStartRef.current) / 1000));
     const attemptNumber = submissions.length + 1;
 
+    void trackActivityEvent(
+      validation.isCorrect ? 'problem_solved' : 'problem_attempt',
+      new Date(),
+      {
+        problem_id: problem.id,
+        problem_topic: problem.topic || 'Unknown',
+        problem_difficulty: problem.difficulty || 'Unknown',
+        time_spent_seconds: timeSpentSeconds,
+        attempt_number: attemptNumber,
+        is_correct: validation.isCorrect
+      }
+    );
+
     // ================================================================
     // PRACTICE MODE PATH — problem was already solved before
     // Show feedback only, never touch progression/stats/achievements.
