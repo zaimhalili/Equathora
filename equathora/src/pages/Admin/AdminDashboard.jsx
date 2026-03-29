@@ -42,6 +42,8 @@ const AdminDashboard = () => {
             <main className='flex relative max-h-[calc(100vh-7.5vh)] overflow-hidden'>
                 <aside className='bg-[var(--main-color)] min-h-screen sticky left-0 w-1/8 shadow-2xl z-4 overflow-hidden h-[calc(100vh-7.5vh)] max-h-[calc(100vh-7.5vh)]'>
                     {/* <h1 className='text-xl bg-[var(--dark-accent-color)] w-full text-center py-2 cursor-pointer shadow-md pb-4 font-black'>Admin Tools</h1> */}
+
+                    {/* Admin Tabs */}
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
