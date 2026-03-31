@@ -139,6 +139,7 @@ const AdminProblems = () => {
     const [detailsReady, setDetailsReady] = useState(false);
     const [detailsLoading, setDetailsLoading] = useState(false);
     const [detailsError, setDetailsError] = useState('');
+    const [exporting, setExporting] = useState(false);
 
     useEffect(() => {
         let mounted = true;
@@ -365,6 +366,77 @@ const AdminProblems = () => {
         : weekIndex === 0
             ? 'Last week (real data)'
             : `Week ${weekIndex + 1} ago (real data)`;
+
+    const orderedAllProblems = useMemo(() => {
+        return [...normalizedProblems].sort((a, b) => {
+            if (a.numericId !== b.numericId) return a.numericId - b.numericId;
+            return a.title.localeCompare(b.title);
+        });
+    }, [normalizedProblems]);
+
+    const handleExportJson = async () => {
+        setExporting(true);
+
+        try {
+            let detailsSnapshot = detailsById;
+
+            if (!detailsReady || Object.keys(detailsSnapshot).length < orderedAllProblems.length) {
+                const allDetails = await getAllAdminProblemDetails();
+                detailsSnapshot = (Array.isArray(allDetails) ? allDetails : []).reduce((map, detail) => {
+                    const key = String(detail?.id || '');
+                    if (key) map[key] = detail;
+                    return map;
+                }, {});
+                setDetailsById(detailsSnapshot);
+            }
+
+            const exportRows = orderedAllProblems.map((problem) => {
+                const detail = detailsSnapshot[problem.id] || {};
+
+                return {
+                    id: problem.numericId,
+                    title: detail.title || problem.title,
+                    slug: detail.slug || problem.slug || '',
+                    topic: detail.topic || problem.topic,
+                    difficulty: detail.difficulty || problem.difficulty,
+                    premium: Boolean(detail.premium ?? problem.premium),
+                    source: problem.source,
+                    status: problem.status,
+                    createdAt: detail.createdAt || problem.createdAt,
+                    updatedAt: detail.updatedAt || null,
+                    solvedCount: Number(detail.solvedCount ?? problem.solvedCount ?? 0),
+                    attempts: Number(detail.attempts ?? problem.attempts ?? 0),
+                    solveRate: Number(detail.solveRate ?? problem.solveRate ?? 0),
+                    description: detail.description || problem.description || '',
+                    solution: detail.solution || '',
+                    answer: detail.answer || '',
+                    acceptedAnswers: Array.isArray(detail.acceptedAnswers) ? detail.acceptedAnswers : [],
+                    hints: Array.isArray(detail.hints) ? detail.hints : []
+                };
+            });
+
+            const payload = {
+                exportedAt: new Date().toISOString(),
+                total: exportRows.length,
+                sort: 'id_asc',
+                data: exportRows
+            };
+
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = `problem-library-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.json`;
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+            URL.revokeObjectURL(url);
+        } catch (exportError) {
+            setError(exportError?.message || 'Failed to export problems JSON.');
+        } finally {
+            setExporting(false);
+        }
+    };
 
     const canGoPrevWeek = range === 'week' && weekIndex < maxWeekIndex;
     const canGoNextWeek = range === 'week' && weekIndex > 0;
@@ -644,9 +716,20 @@ const AdminProblems = () => {
             <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                 <header className='mb-3 flex items-center justify-between gap-2'>
                     <h2 className='text-lg font-bold'>All Problems Table</h2>
-                    <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
-                        {orderedFilteredProblems.length} rows
-                    </span>
+                    <div className='flex items-center gap-2'>
+                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                            {orderedFilteredProblems.length} rows
+                        </span>
+                        <button
+                            type='button'
+                            onClick={handleExportJson}
+                            disabled={exporting || loading || !orderedAllProblems.length}
+                            className='rounded-md border px-3 py-1.5 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
+                            style={{ borderColor: palette.accentDark, backgroundColor: palette.accentDark, color: palette.main }}
+                        >
+                            {exporting ? 'Exporting...' : 'Download JSON'}
+                        </button>
+                    </div>
                 </header>
 
                 <p className='mb-3 text-xs font-semibold' style={{ color: palette.mid }}>
