@@ -244,8 +244,9 @@ const AdminUserManagement = () => {
     const canGoPrevWeek = range === 'week' && weekIndex < maxWeekIndex;
     const canGoNextWeek = range === 'week' && weekIndex > 0;
 
-    const handleAction = async (action) => {
+    const handleAction = async (action, confirmMessage) => {
         if (!selectedUser) return;
+        if (confirmMessage && !window.confirm(confirmMessage)) return;
 
         setActionLoading(true);
         setActionMessage('');
@@ -640,7 +641,10 @@ const AdminUserManagement = () => {
                                 <button
                                     type='button'
                                     disabled={actionLoading}
-                                    onClick={() => handleAction(() => updateAdminUserRole(selectedUser.id, roleDraft))}
+                                    onClick={() => handleAction(
+                                        () => updateAdminUserRole(selectedUser.id, roleDraft),
+                                        `Change role for ${selectedUser.email} to ${roleDraft}?`
+                                    )}
                                     className='rounded-md border px-2 py-2 text-xs font-semibold disabled:opacity-60'
                                     style={{ borderColor: palette.secondary, backgroundColor: palette.secondary, color: palette.main }}
                                 >
@@ -649,7 +653,10 @@ const AdminUserManagement = () => {
                                 <button
                                     type='button'
                                     disabled={actionLoading}
-                                    onClick={() => handleAction(() => resetAdminUserSessions(selectedUser.id))}
+                                    onClick={() => handleAction(
+                                        () => resetAdminUserSessions(selectedUser.id),
+                                        `Reset all active sessions for ${selectedUser.email}? This will force re-login.`
+                                    )}
                                     className='rounded-md border px-2 py-2 text-xs font-semibold disabled:opacity-60'
                                     style={{ borderColor: palette.accentDark, backgroundColor: palette.accentDark, color: palette.main }}
                                 >
@@ -658,7 +665,10 @@ const AdminUserManagement = () => {
                                 <button
                                     type='button'
                                     disabled={actionLoading}
-                                    onClick={() => handleAction(() => updateAdminUserStatus({ ...selectedUser, status: statusDraft }))}
+                                    onClick={() => handleAction(
+                                        () => updateAdminUserStatus({ ...selectedUser, status: statusDraft }),
+                                        `Change status for ${selectedUser.email} to ${statusDraft}?`
+                                    )}
                                     className='rounded-md border px-2 py-2 text-xs font-semibold disabled:opacity-60'
                                     style={{ borderColor: palette.accent, backgroundColor: palette.accent, color: palette.main }}
                                 >
@@ -667,7 +677,10 @@ const AdminUserManagement = () => {
                                 <button
                                     type='button'
                                     disabled={actionLoading}
-                                    onClick={() => handleAction(() => updateAdminMentorVerification(selectedUser.id, verificationDraft))}
+                                    onClick={() => handleAction(
+                                        () => updateAdminMentorVerification(selectedUser.id, verificationDraft),
+                                        `Set mentor verification for ${selectedUser.email} to ${verificationDraft}?`
+                                    )}
                                     className='col-span-2 rounded-md border px-2 py-2 text-xs font-semibold disabled:opacity-60'
                                     style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                                 >

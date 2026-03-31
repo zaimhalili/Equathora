@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '@/components/Navbar';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
 
 // Components
 import AdminAnalytics from '@/components/Admin/AdminAnalytics';
@@ -16,14 +14,49 @@ const TAB_COMPONENTS = {
     analytics: <AdminAnalytics />,
     problems: <AdminProblems />,
     users: <AdminUserManagement />,
-    announcements: <AdminProblems />,
+    announcements: <AdminAnnouncements />,
     solutionGenerator: <AdminSolutionGenerator />,
-    finance: <AdminProblems />,
-    logs: <AdminProblems />,
+    finance: <AdminFinance />,
+    logs: <AdminLogs />,
 }
+
+const TAB_DATA_SOURCE = {
+    analytics: 'Real',
+    problems: 'Real',
+    users: 'Real',
+    announcements: 'Mock',
+    solutionGenerator: 'Mock',
+    finance: 'Mock',
+    logs: 'Mock'
+};
 
 const AdminDashboard = () => {
     const [selected, setSelected] = useState('analytics');
+    const [isSwitching, setIsSwitching] = useState(false);
+    const switchTimerRef = useRef(null);
+
+    useEffect(() => {
+        return () => {
+            if (switchTimerRef.current) {
+                clearTimeout(switchTimerRef.current);
+            }
+        };
+    }, []);
+
+    const handleTabSelect = (tabId) => {
+        if (tabId === selected) return;
+
+        setSelected(tabId);
+        setIsSwitching(true);
+
+        if (switchTimerRef.current) {
+            clearTimeout(switchTimerRef.current);
+        }
+
+        switchTimerRef.current = setTimeout(() => {
+            setIsSwitching(false);
+        }, 250);
+    };
 
     const tabs = [
         { id: 'analytics', label: 'Analytics' },
@@ -39,7 +72,7 @@ const AdminDashboard = () => {
             <header>
                 <Navbar></Navbar>
             </header>
-            <main className='flex relative max-h-[calc(100vh-7.5vh)] overflow-hidden'>
+            <main className='admin-interactive flex relative max-h-[calc(100vh-7.5vh)] overflow-hidden'>
                 <aside className='bg-[var(--main-color)] min-h-screen sticky left-0 w-1/3 xl:w-1/8 shadow-2xl z-4 overflow-hidden h-[calc(100vh-7.5vh)] max-h-[calc(100vh-7.5vh)]'>
                     {/* <h1 className='text-xl bg-[var(--dark-accent-color)] w-full text-center py-2 cursor-pointer shadow-md pb-4 font-black'>Admin Tools</h1> */}
 
@@ -47,11 +80,19 @@ const AdminDashboard = () => {
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
-                            onClick={() => setSelected(tab.id)}
+                            onClick={() => handleTabSelect(tab.id)}
                             className={`xl:text-xl w-full text-center px-3 py-2 cursor-pointer shadow-md ${selected === tab.id ? 'bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] z-10 relative font-black ' : 'bg-[var(--main-color)] text-[var(--secondary-color)] hover:bg-gray-300 font-medium'}`}>{tab.label}</button>
                     ))}
                 </aside>
                 <section className='bg-[var(--main-color)] w-2/3 xl:w-7/8 absolute right-0 overflow-y-scroll h-[calc(100vh-7.5vh)] max-h-[calc(100vh-7.5vh)]'>
+                    <div className='sticky top-0 z-20 flex items-center justify-between border-b px-3 py-2 text-xs font-semibold' style={{ borderColor: 'var(--french-gray)', backgroundColor: 'var(--main-color)' }}>
+                        <span style={{ color: 'var(--mid-main-secondary)' }}>
+                            {isSwitching ? 'Loading module...' : 'Module ready'}
+                        </span>
+                        <span className='rounded-md px-2 py-1' style={{ backgroundColor: TAB_DATA_SOURCE[selected] === 'Real' ? 'var(--secondary-color)' : 'var(--mid-main-secondary)', color: 'var(--main-color)' }}>
+                            Data Source: {TAB_DATA_SOURCE[selected]}
+                        </span>
+                    </div>
                     {TAB_COMPONENTS[selected]}
                 </section>
             </main>

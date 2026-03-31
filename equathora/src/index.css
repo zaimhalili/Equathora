@@ -115,6 +115,17 @@ body {
   width: 100%;
 }
 
+/* Keep admin interactions clearly clickable without touching every component. */
+.admin-interactive button,
+.admin-interactive a,
+.admin-interactive [role="button"],
+.admin-interactive summary,
+.admin-interactive input[type="button"],
+.admin-interactive input[type="submit"],
+.admin-interactive input[type="reset"] {
+  cursor: pointer;
+}
+
 #root {
   overflow-x: hidden;
   width: 100%;
