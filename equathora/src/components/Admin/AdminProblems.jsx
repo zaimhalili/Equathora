@@ -13,7 +13,7 @@ import {
     XAxis,
     YAxis
 } from 'recharts';
-import { getAllAdminProblems } from '@/lib/adminProblemsService';
+import { getAllAdminProblems, getAllAdminProblemDetails, getAdminProblemDetails } from '@/lib/adminProblemsService';
 
 const palette = {
     raisinBlack: 'var(--raisin-black)',
@@ -133,6 +133,12 @@ const AdminProblems = () => {
     const [date, setDate] = useState('');
     const [range, setRange] = useState('week');
     const [weekIndex, setWeekIndex] = useState(0);
+    const [selectedProblemId, setSelectedProblemId] = useState(null);
+    const [isReaderOpen, setIsReaderOpen] = useState(false);
+    const [detailsById, setDetailsById] = useState({});
+    const [detailsReady, setDetailsReady] = useState(false);
+    const [detailsLoading, setDetailsLoading] = useState(false);
+    const [detailsError, setDetailsError] = useState('');
 
     useEffect(() => {
         let mounted = true;
@@ -152,10 +158,34 @@ const AdminProblems = () => {
                     pagesFetched: Number(response?.pagesFetched || 0),
                     pageSize: Number(response?.pageSize || 100)
                 });
+
+                setDetailsReady(false);
+                try {
+                    const allDetails = await getAllAdminProblemDetails();
+                    if (!mounted) return;
+
+                    const detailsMap = (Array.isArray(allDetails) ? allDetails : []).reduce((map, detail) => {
+                        const key = String(detail?.id || '');
+                        if (key) map[key] = detail;
+                        return map;
+                    }, {});
+
+                    setDetailsById(detailsMap);
+                } catch (detailsLoadError) {
+                    if (!mounted) return;
+                    console.warn('Bulk preload failed, row click will use on-demand detail fetch.', detailsLoadError);
+                    setDetailsById({});
+                } finally {
+                    if (mounted) {
+                        setDetailsReady(true);
+                    }
+                }
             } catch (loadError) {
                 if (!mounted) return;
                 setProblems([]);
                 setLoadMeta(emptyLoadMeta);
+                setDetailsById({});
+                setDetailsReady(false);
                 setError(loadError?.message || 'Failed to load problem library data.');
             } finally {
                 if (mounted) {
@@ -180,14 +210,19 @@ const AdminProblems = () => {
 
         return {
             id: String(row?.id ?? '-'),
+            numericId: Number(row?.id || Number.MAX_SAFE_INTEGER),
             title: row?.title || 'Untitled',
+            description: row?.description || '',
             topic: row?.topic || 'Uncategorized',
             difficulty: row?.difficulty || 'Unknown',
             source: row?.premium ? 'Premium' : 'Standard',
+            premium: Boolean(row?.premium),
+            slug: row?.slug || '',
             status: rowStatus,
             date: formatDateForTable(row?.createdAt),
             dateKey: toDateKey(row?.createdAt),
             attempts: Number(row?.attempts || 0),
+            solvedCount: Number(row?.solvedCount || 0),
             solveRate: Number(row?.solveRate || 0),
             createdAt: row?.createdAt || null
         };
@@ -227,6 +262,71 @@ const AdminProblems = () => {
             );
         });
     }, [normalizedProblems, search, topic, difficulty, source, status, date]);
+
+    const orderedFilteredProblems = useMemo(() => {
+        return [...filteredProblems].sort((a, b) => {
+            if (a.numericId !== b.numericId) return a.numericId - b.numericId;
+            return a.title.localeCompare(b.title);
+        });
+    }, [filteredProblems]);
+
+    const selectedProblemIndex = useMemo(() => {
+        if (!selectedProblemId) return -1;
+        return orderedFilteredProblems.findIndex((row) => row.id === selectedProblemId);
+    }, [orderedFilteredProblems, selectedProblemId]);
+
+    const selectedProblem = selectedProblemIndex >= 0
+        ? orderedFilteredProblems[selectedProblemIndex]
+        : null;
+
+    const selectedProblemDetails = selectedProblem ? detailsById[selectedProblem.id] || null : null;
+
+    const openProblemReader = async (row) => {
+        setSelectedProblemId(row.id);
+        setIsReaderOpen(true);
+
+        const cached = detailsById[row.id];
+        if (cached) {
+            setDetailsError('');
+            setDetailsLoading(false);
+            return;
+        }
+
+        setDetailsLoading(true);
+        setDetailsError('');
+
+        try {
+            const detail = await getAdminProblemDetails(row.id);
+            setDetailsById((prev) => ({ ...prev, [row.id]: detail }));
+        } catch (detailError) {
+            setDetailsError(detailError?.message || 'Failed to load problem details.');
+        } finally {
+            setDetailsLoading(false);
+        }
+    };
+
+    const goToProblemByIndex = async (index) => {
+        const target = orderedFilteredProblems[index];
+        if (!target) return;
+        await openProblemReader(target);
+    };
+
+    useEffect(() => {
+        if (!orderedFilteredProblems.length) {
+            if (selectedProblemId) setSelectedProblemId(null);
+            return;
+        }
+
+        if (!selectedProblemId) {
+            setSelectedProblemId(orderedFilteredProblems[0].id);
+            return;
+        }
+
+        const stillVisible = orderedFilteredProblems.some((row) => row.id === selectedProblemId);
+        if (!stillVisible) {
+            setSelectedProblemId(orderedFilteredProblems[0].id);
+        }
+    }, [orderedFilteredProblems, selectedProblemId]);
 
     const maxWeekIndex = useMemo(() => maxWeekOffsetFromRows(normalizedProblems), [normalizedProblems]);
 
@@ -351,6 +451,11 @@ const AdminProblems = () => {
                     {loading && (
                         <span className='text-xs font-semibold' style={{ color: palette.mid }}>
                             Loading all problems...
+                        </span>
+                    )}
+                    {!loading && !detailsReady && !error && (
+                        <span className='text-xs font-semibold' style={{ color: palette.mid }}>
+                            Preloading full problem details...
                         </span>
                     )}
                     {!!error && (
@@ -540,12 +645,15 @@ const AdminProblems = () => {
                 <header className='mb-3 flex items-center justify-between gap-2'>
                     <h2 className='text-lg font-bold'>All Problems Table</h2>
                     <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
-                        {filteredProblems.length} rows
+                        {orderedFilteredProblems.length} rows
                     </span>
                 </header>
 
                 <p className='mb-3 text-xs font-semibold' style={{ color: palette.mid }}>
                     Loaded {loadMeta.fetched.toLocaleString()} / {loadMeta.count.toLocaleString()} problems in {loadMeta.pagesFetched.toLocaleString()} request(s). No table pagination is applied.
+                </p>
+                <p className='mb-3 text-xs font-semibold' style={{ color: palette.mid }}>
+                    Ordered by ID (ascending). Full details are preloaded first, then row click opens instantly with no extra fetch.
                 </p>
 
                 <div className='overflow-x-auto'>
@@ -559,13 +667,30 @@ const AdminProblems = () => {
                                 <th className='pb-2 pr-4 font-semibold'>Source</th>
                                 <th className='pb-2 pr-4 font-semibold'>Status</th>
                                 <th className='pb-2 pr-4 font-semibold'>Date</th>
+                                <th className='pb-2 pr-4 font-semibold'>Solved</th>
                                 <th className='pb-2 pr-4 font-semibold'>Attempts</th>
                                 <th className='pb-2 font-semibold'>Solve Rate</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredProblems.map((row) => (
-                                <tr key={row.id} className='border-t' style={{ borderColor: palette.french }}>
+                            {orderedFilteredProblems.map((row) => (
+                                <tr
+                                    key={row.id}
+                                    className='cursor-pointer border-t transition-colors'
+                                    style={{
+                                        borderColor: palette.french,
+                                        backgroundColor: row.id === selectedProblemId ? palette.french : 'transparent',
+                                        opacity: detailsReady ? 1 : 0.65
+                                    }}
+                                    onClick={() => openProblemReader(row)}
+                                    onKeyDown={(event) => {
+                                        if (event.key === 'Enter' || event.key === ' ') {
+                                            event.preventDefault();
+                                            openProblemReader(row);
+                                        }
+                                    }}
+                                    tabIndex={0}
+                                >
                                     <td className='py-2 pr-4 font-semibold'>{row.id}</td>
                                     <td className='py-2 pr-4'>{row.title}</td>
                                     <td className='py-2 pr-4'>{row.topic}</td>
@@ -577,6 +702,7 @@ const AdminProblems = () => {
                                         </span>
                                     </td>
                                     <td className='py-2 pr-4'>{row.date}</td>
+                                    <td className='py-2 pr-4'>{row.solvedCount.toLocaleString()}</td>
                                     <td className='py-2 pr-4'>{row.attempts.toLocaleString()}</td>
                                     <td className='py-2'>{row.solveRate.toFixed(1)}%</td>
                                 </tr>
@@ -585,7 +711,125 @@ const AdminProblems = () => {
                     </table>
                 </div>
 
-                {filteredProblems.length === 0 && (
+                {isReaderOpen && selectedProblem && (
+                    <div className='fixed inset-0 z-[1300] flex items-center justify-center bg-black/55 px-3 py-6' onClick={() => setIsReaderOpen(false)}>
+                        <article
+                            className='max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-xl border p-4 md:p-5'
+                            style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                            onClick={(event) => event.stopPropagation()}
+                        >
+                            <header className='mb-3 flex flex-wrap items-center justify-between gap-2'>
+                                <div>
+                                    <h3 className='text-base font-bold md:text-lg'>Problem Reader</h3>
+                                    <p className='text-xs font-semibold' style={{ color: palette.mid }}>
+                                        #{selectedProblem.id} • {selectedProblem.title}
+                                    </p>
+                                </div>
+                                <div className='flex items-center gap-2'>
+                                    <button
+                                        type='button'
+                                        onClick={() => goToProblemByIndex(selectedProblemIndex - 1)}
+                                        disabled={selectedProblemIndex <= 0}
+                                        className='rounded-md border px-3 py-1.5 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
+                                        style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                                    >
+                                        Previous
+                                    </button>
+                                    <button
+                                        type='button'
+                                        onClick={() => goToProblemByIndex(selectedProblemIndex + 1)}
+                                        disabled={selectedProblemIndex < 0 || selectedProblemIndex >= orderedFilteredProblems.length - 1}
+                                        className='rounded-md border px-3 py-1.5 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
+                                        style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                                    >
+                                        Next
+                                    </button>
+                                    <button
+                                        type='button'
+                                        onClick={() => setIsReaderOpen(false)}
+                                        className='rounded-md border px-3 py-1.5 text-xs font-semibold'
+                                        style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                                    >
+                                        Close
+                                    </button>
+                                </div>
+                            </header>
+
+                            {detailsLoading && (
+                                <p className='text-sm font-semibold' style={{ color: palette.mid }}>Loading problem details...</p>
+                            )}
+
+                            {!!detailsError && (
+                                <p className='text-sm font-semibold text-red-500'>{detailsError}</p>
+                            )}
+
+                            {!detailsLoading && !detailsError && !selectedProblemDetails && (
+                                <p className='text-sm font-semibold text-red-500'>Problem details are unavailable for this row.</p>
+                            )}
+
+                            {!detailsLoading && !detailsError && selectedProblemDetails && (
+                                <>
+                                    <div className='grid grid-cols-1 gap-2 text-sm md:grid-cols-2'>
+                                        <p><span className='font-semibold'>ID:</span> {selectedProblemDetails.id}</p>
+                                        <p><span className='font-semibold'>Slug:</span> {selectedProblemDetails.slug || selectedProblem.slug || '-'}</p>
+                                        <p><span className='font-semibold'>Topic:</span> {selectedProblemDetails.topic || selectedProblem.topic}</p>
+                                        <p><span className='font-semibold'>Difficulty:</span> {selectedProblemDetails.difficulty || selectedProblem.difficulty}</p>
+                                        <p><span className='font-semibold'>Source:</span> {selectedProblem.source}</p>
+                                        <p><span className='font-semibold'>Premium:</span> {(selectedProblemDetails.premium ?? selectedProblem.premium) ? 'Yes' : 'No'}</p>
+                                        <p><span className='font-semibold'>Date:</span> {selectedProblem.date}</p>
+                                        <p><span className='font-semibold'>Solved:</span> {Number(selectedProblemDetails.solvedCount ?? selectedProblem.solvedCount ?? 0).toLocaleString()}</p>
+                                        <p><span className='font-semibold'>Attempts:</span> {Number(selectedProblemDetails.attempts ?? selectedProblem.attempts).toLocaleString()}</p>
+                                        <p><span className='font-semibold'>Solve Rate:</span> {Number(selectedProblemDetails.solveRate ?? selectedProblem.solveRate).toFixed(1)}%</p>
+                                    </div>
+
+                                    <div className='mt-3'>
+                                        <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Description</p>
+                                        <p className='mt-1 whitespace-pre-wrap text-sm'>
+                                            {selectedProblemDetails.description || selectedProblem.description || 'No description available.'}
+                                        </p>
+                                    </div>
+
+                                    <div className='mt-3'>
+                                        <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Solution</p>
+                                        <p className='mt-1 whitespace-pre-wrap text-sm'>
+                                            {selectedProblemDetails.solution || 'No solution available.'}
+                                        </p>
+                                    </div>
+
+                                    <div className='mt-3 grid grid-cols-1 gap-3 md:grid-cols-2'>
+                                        <div>
+                                            <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Answer</p>
+                                            <p className='mt-1 whitespace-pre-wrap text-sm'>
+                                                {selectedProblemDetails.answer || 'No answer available.'}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Accepted Answers</p>
+                                            <ul className='mt-1 list-disc pl-5 text-sm'>
+                                                {(Array.isArray(selectedProblemDetails.acceptedAnswers) && selectedProblemDetails.acceptedAnswers.length > 0
+                                                    ? selectedProblemDetails.acceptedAnswers
+                                                    : ['No accepted answers configured.'])
+                                                    .map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div className='mt-3'>
+                                        <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Hints</p>
+                                        <ul className='mt-1 list-disc pl-5 text-sm'>
+                                            {(Array.isArray(selectedProblemDetails.hints) && selectedProblemDetails.hints.length > 0
+                                                ? selectedProblemDetails.hints
+                                                : ['No hints available.'])
+                                                .map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}
+                                        </ul>
+                                    </div>
+                                </>
+                            )}
+                        </article>
+                    </div>
+                )}
+
+                {orderedFilteredProblems.length === 0 && (
                     <p className='mt-3 text-sm font-semibold' style={{ color: palette.accentDark }}>
                         No problems matched current filters.
                     </p>

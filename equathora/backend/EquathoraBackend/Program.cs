@@ -1081,6 +1081,7 @@ app.MapGet("/api/problems", async (
                 inProgress = p.InProgress,
                 createdAt = p.CreatedAt,
                 attempts = stats.attempts,
+                solvedCount = stats.correct,
                 solveRate
             };
         })
@@ -1099,6 +1100,160 @@ app.MapGet("/api/problems", async (
             grade = gradeFacet,
             progress = progressFacet
         }
+    });
+});
+
+app.MapGet("/api/admin/problems/{problemId:int}", async (
+    AppDbContext db,
+    int problemId) =>
+{
+    var problem = await db.Problems
+        .AsNoTracking()
+        .Where(p => p.IsActive && p.Id == problemId)
+        .Select(p => new
+        {
+            p.Id,
+            p.GroupId,
+            p.Title,
+            p.Description,
+            p.Answer,
+            p.AcceptedAnswers,
+            p.Hints,
+            p.Solution,
+            p.IsPremium,
+            p.Topic,
+            p.DisplayOrder,
+            p.Slug,
+            p.CreatedAt,
+            p.UpdatedAt,
+            p.Difficulty
+        })
+        .FirstOrDefaultAsync();
+
+    if (problem is null)
+    {
+        return Results.NotFound(new { error = "Problem not found" });
+    }
+
+    var stats = await db.Attempts
+        .AsNoTracking()
+        .Where(a => a.ProblemId == problemId)
+        .GroupBy(a => a.ProblemId)
+        .Select(g => new
+        {
+            attempts = g.Count(),
+            solved = g.Count(x => x.IsCorrect)
+        })
+        .FirstOrDefaultAsync();
+
+    var attempts = stats?.attempts ?? 0;
+    var solved = stats?.solved ?? 0;
+    var solveRate = attempts == 0
+        ? 0
+        : Math.Round((solved / (double)attempts) * 100, 1);
+
+    return Results.Ok(new
+    {
+        id = problem.Id,
+        group_id = problem.GroupId,
+        title = problem.Title,
+        description = problem.Description,
+        answer = problem.Answer,
+        acceptedAnswers = problem.AcceptedAnswers ?? Array.Empty<string>(),
+        hints = problem.Hints ?? Array.Empty<string>(),
+        solution = problem.Solution,
+        premium = problem.IsPremium,
+        topic = problem.Topic,
+        displayOrder = problem.DisplayOrder,
+        slug = problem.Slug,
+        createdAt = problem.CreatedAt,
+        updatedAt = problem.UpdatedAt,
+        difficulty = problem.Difficulty,
+        attempts,
+        solvedCount = solved,
+        solveRate
+    });
+});
+
+app.MapGet("/api/admin/problems/details", async (AppDbContext db) =>
+{
+    var problems = await db.Problems
+        .AsNoTracking()
+        .Where(p => p.IsActive)
+        .Select(p => new
+        {
+            p.Id,
+            p.GroupId,
+            p.Title,
+            p.Description,
+            p.Answer,
+            p.AcceptedAnswers,
+            p.Hints,
+            p.Solution,
+            p.IsPremium,
+            p.Topic,
+            p.DisplayOrder,
+            p.Slug,
+            p.CreatedAt,
+            p.UpdatedAt,
+            p.Difficulty
+        })
+        .ToListAsync();
+
+    var problemIds = problems.Select(p => p.Id).ToArray();
+
+    var statsByProblemId = await db.Attempts
+        .AsNoTracking()
+        .Where(a => problemIds.Contains(a.ProblemId))
+        .GroupBy(a => a.ProblemId)
+        .Select(g => new
+        {
+            problemId = g.Key,
+            attempts = g.Count(),
+            solved = g.Count(x => x.IsCorrect)
+        })
+        .ToDictionaryAsync(x => x.problemId, x => new { x.attempts, x.solved });
+
+    var data = problems
+        .Select(problem =>
+        {
+            var stats = statsByProblemId.TryGetValue(problem.Id, out var value)
+                ? value
+                : new { attempts = 0, solved = 0 };
+
+            var solveRate = stats.attempts == 0
+                ? 0
+                : Math.Round((stats.solved / (double)stats.attempts) * 100, 1);
+
+            return new
+            {
+                id = problem.Id,
+                group_id = problem.GroupId,
+                title = problem.Title,
+                description = problem.Description,
+                answer = problem.Answer,
+                acceptedAnswers = problem.AcceptedAnswers ?? Array.Empty<string>(),
+                hints = problem.Hints ?? Array.Empty<string>(),
+                solution = problem.Solution,
+                premium = problem.IsPremium,
+                topic = problem.Topic,
+                displayOrder = problem.DisplayOrder,
+                slug = problem.Slug,
+                createdAt = problem.CreatedAt,
+                updatedAt = problem.UpdatedAt,
+                difficulty = problem.Difficulty,
+                attempts = stats.attempts,
+                solvedCount = stats.solved,
+                solveRate
+            };
+        })
+        .OrderBy(x => x.id)
+        .ToList();
+
+    return Results.Ok(new
+    {
+        data,
+        count = data.Count
     });
 });
 
