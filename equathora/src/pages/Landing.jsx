@@ -13,6 +13,7 @@ import TestimonialsSection from '../components/Landing/TestimonialsSection.jsx';
 import LatestArticlesSection from '../components/Landing/LatestArticlesSection.jsx';
 import WaitlistSection from '../components/Landing/WaitlistSection.jsx';
 import CTASection from '../components/Landing/CTASection.jsx';
+import { color } from 'framer-motion';
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -33,16 +34,22 @@ const Landing = () => {
                 <HeroSection />
                 {/* <TrustedBySection /> */}
                 <ExercisesSection />
+                <hr class="border-[var(--french-gray)]" />
                 <WhyChooseSection />
+                <hr class="border-[var(--french-gray)]" />
                 <HowItWorksSection />
+                <hr class="border-[var(--french-gray)]" />
                 <TestimonialsSection />
+                <hr class="border-[var(--french-gray)]" />
                 <LatestArticlesSection />
+                <hr class="border-[var(--french-gray)]" />
                 <CTASection />
                 <WaitlistSection />
                 <Footer />
-                <div className="flex flex-col lg:flex-row items-center text-[var(--main-color)]/50 bg-[var(--secondary-color)] underline border-t-1 font-light gap-1 text-[12px] py-3">
-                    <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="
-#freepik-link">Student PNGs by Vecteezy</a>
+                <div className="flex flex-col lg:flex-row items-center text-[var(--french-gray)] bg-[var(--secondary-color)] underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center font-[Sansation]">
+                    <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="#freepik-link">
+                        Student PNGs by Vecteezy
+                    </a>
                 </div>
 
             </div>

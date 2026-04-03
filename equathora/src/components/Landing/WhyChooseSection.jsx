@@ -41,11 +41,11 @@ const WhyChooseSection = () => {
             {/* Background scrolling text - FASTER */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
                 <motion.div
-                    className="text-[40vw] lg:text-[32vw] font-bold text-[var(--french-gray)]/15 whitespace-nowrap select-none"
-                    animate={{ x: [0, 1200] }}
-                    transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                    className="text-[40vw] lg:text-[30vw] font-bold text-[var(--french-gray)]/15 whitespace-nowrap select-none"
+                    animate={{ x: [-100, 2500] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 >
-                    PRACTICE LEARN GROW PRACTICE LEARN GROW PRACTICE LEARN GROW PRACTICE LEARN GROW PRACTICE LEARN GROW PRACTICE LEARN GROW
+                    MATH EQUATHORA MATH EQUATHORA MATH EQUATHORA MATH EQUATHORA MATH EQUATHORA
                 </motion.div>
             </div>
 
