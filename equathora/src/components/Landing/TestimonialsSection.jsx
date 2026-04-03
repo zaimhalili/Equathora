@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import Aashrun from "../../assets/images/aashrun.jpg";
 import { FaArrowLeft } from 'react-icons/fa';
 import { FaArrowRight } from 'react-icons/fa';
@@ -49,12 +49,12 @@ const TestimonialsSection = () => {
     return (
         <>
             <section className='flex justify-center text-[var(--secondary-color)] font-[Sansation,Arial]'>
-                <div className='max-w-[1400px] mx-auto w-full bg-white relative overflow-hidden flex justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10'>
+                <div className='max-w-[1400px] mx-auto w-full bg-white relative overflow-hidden flex flex-col lg:flex-row justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 gap-8 lg:gap-10'>
 
                     {/* Left Side - Header & Navigation Arrows */}
-                    <div className='flex flex-col w-1/2 pr-36'>
-                        <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl text-[var(--secondary-color)] pb-2 font-extrabold'>From our <br /><span className='font-black'>community.</span></h2>
-                        <p className='text-[var(--secondary-color)] font-light text-sm sm:text-base'>What students say before and after Equathora are two different stories.</p>
+                    <div className='flex flex-col w-full lg:w-1/2 pr-0 lg:pr-36'>
+                        <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl text-[var(--secondary-color)] pb-4 font-extrabold'>From our <br /><span className='font-black'>community.</span></h2>
+                        <p className='text-[var(--secondary-color)] font-light text-sm sm:text-xl md:text-2xl max-w-3xl'>What students say before and after Equathora are two different stories.</p>
 
                         {/* Arrow Buttons */}
                         <div className='pt-6 flex gap-3'>
@@ -75,7 +75,7 @@ const TestimonialsSection = () => {
                     </div>
 
                     {/* Right Side - Testimonial Slider */}
-                    <div className='w-1/2 flex relative min-h-80'>
+                    <div className='w-full lg:w-1/2 flex relative min-h-64 md:min-h-60 lg:min-h-80'>
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={index}
@@ -83,9 +83,9 @@ const TestimonialsSection = () => {
                                 animate={{ x: 0, opacity: 1 }}
                                 exit={{ x: -100, opacity: 0 }}
                                 transition={{ duration: 0.4 }}
-                                className='flex flex-col gap-6 absolute w-full'
+                                className='flex flex-col gap-6 absolute inset-0 w-full'
                             >
-                                <p className='text-3xl font-light'>
+                                <p className='text-lg sm:text-xl md:text-2xl xl:text-3xl font-light'>
                                     {testimonials[index].text}
                                 </p>
                                 {testimonials[index].link.length === 0 ? (
@@ -104,7 +104,7 @@ const TestimonialsSection = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                        <a href={testimonials[index].link} className='flex gap-3 items-center' target="_blank" rel="noopener noreferrer hover: text-blue-500">
+                                    <a href={testimonials[index].link} className='flex gap-3 items-center' target="_blank" rel="noopener noreferrer hover: text-blue-500">
                                         <img
                                             src={testimonials[index].image}
                                             className='rounded-full w-16 h-16'
