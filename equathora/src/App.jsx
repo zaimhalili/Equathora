@@ -241,6 +241,7 @@ export default function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
+            {/* <Route path="/premium" element={<Premium />} /> */}
 
 
             {/* Protected Routes - Require Authentication */}
@@ -254,7 +255,6 @@ export default function App() {
             <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
             <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>}></Route>
-            {/* <Route path="/premium" element={<ProtectedRoute><Premium /></ProtectedRoute>} /> */}
 
 
 
