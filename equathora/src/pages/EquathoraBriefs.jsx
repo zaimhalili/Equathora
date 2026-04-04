@@ -6,12 +6,19 @@ import { FaStar, FaCrown, FaRocket, FaShieldAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import EquathoraBriefsModal from '@/components/EquathoraBriefs/EquathoraBriefsModal.jsx';
 import { subscribeToEquathoraBriefs } from '@/lib/equathoraBriefsService.js';
+import { useAuth } from '@/hooks/useAuth.js';
 
 const EquathoraBriefsPage = () => {
     const [isBriefsModalOpen, setIsBriefsModalOpen] = useState(false);
+    const { user } = useAuth() || {};
 
     const handleEquathoraBriefsSave = async (formData) => {
-        await subscribeToEquathoraBriefs(formData);
+        try {
+            await subscribeToEquathoraBriefs(formData);
+        } catch (err) {
+            console.error('Subscribe error:', err);
+            throw err;
+        }
     };
 
     return (
@@ -282,6 +289,7 @@ const EquathoraBriefsPage = () => {
                 isOpen={isBriefsModalOpen}
                 onClose={() => setIsBriefsModalOpen(false)}
                 onSave={handleEquathoraBriefsSave}
+                userData={user ? { name: user.user_metadata?.full_name || '', email: user.email } : null}
             />
         </>
     );

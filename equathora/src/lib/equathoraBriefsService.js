@@ -1,11 +1,15 @@
-const DEFAULT_LOCAL_BACKEND = 'http://localhost:5104';
+import { supabase } from './supabaseClient';
 
-const normalizeBase = (value) => {
-    if (!value || typeof value !== 'string') return '';
-    return value.trim().replace(/\/$/, '');
-};
+const SUBSCRIBE_ERROR_MESSAGE = 'Something went wrong on our side. Please try again in a little while.';
 
-const buildApiBaseCandidates = () => {
+// Fix #6: compute API candidates once at module load since env vars and
+// window.location never change at runtime.
+const API_BASE_CANDIDATES = (() => {
+    const normalizeBase = (value) => {
+        if (!value || typeof value !== 'string') return '';
+        return value.trim().replace(/\/$/, '');
+    };
+
     const explicit = normalizeBase(
         import.meta.env.VITE_API_URL ||
         import.meta.env.VITE_BACKEND_URL ||
@@ -17,33 +21,43 @@ const buildApiBaseCandidates = () => {
 
     const candidates = [];
 
-    // Prefer same-origin first so local Vite proxy and reverse proxies work automatically.
-    candidates.push('');
-
     if (explicit) {
-        const isLocalExplicit = explicit.includes('://localhost') || explicit.includes('://127.0.0.1');
+        const isLocalExplicit =
+            explicit.includes('://localhost') || explicit.includes('://127.0.0.1');
         if (isLocalRuntime || !isLocalExplicit) {
             candidates.push(explicit);
         }
     }
 
-    if (isLocalRuntime && !explicit) {
-        candidates.push(DEFAULT_LOCAL_BACKEND);
+    // For non-local runtimes, same-origin API calls allow reverse-proxy setups.
+    // In local dev, avoid same-origin backend calls unless an explicit API URL is set.
+    if (!isLocalRuntime) {
+        candidates.push('');
     }
 
+    // Only use an explicit backend URL. Avoid implicit localhost fallback,
+    // which causes noisy ERR_CONNECTION_REFUSED logs when backend is not running.
+
     return [...new Set(candidates)];
+})();
+
+const isDuplicateEmailError = (error) => {
+    const code = String(error?.code || '').trim();
+    const message = String(error?.message || '').toLowerCase();
+    return code === '23505' || message.includes('duplicate key');
 };
 
-export async function subscribeToEquathoraBriefs({ full_name, email }) {
-    const payload = {
-        fullName: String(full_name || '').trim(),
-        email: String(email || '').trim().toLowerCase(),
-    };
-
+const subscribeViaBackend = async (payload) => {
     const failures = [];
 
-    for (const apiBase of buildApiBaseCandidates()) {
+    if (API_BASE_CANDIDATES.length === 0) {
+        return { ok: false, failures };
+    }
+
+    for (const apiBase of API_BASE_CANDIDATES) {
         const requestUrl = `${apiBase}/api/briefs/subscribe`;
+        // Fix #7: use a human-readable label in failure messages for the same-origin candidate.
+        const displayUrl = apiBase === '' ? `(same-origin)/api/briefs/subscribe` : requestUrl;
 
         try {
             const response = await fetch(requestUrl, {
@@ -56,25 +70,99 @@ export async function subscribeToEquathoraBriefs({ full_name, email }) {
             });
 
             if (response.ok) {
-                return;
+                return { ok: true, failures };
             }
 
-            let errorMessage = 'Could not save your signup. Please try again.';
-            const contentType = response.headers.get('content-type') || '';
-
-            if (contentType.toLowerCase().includes('application/json')) {
-                const body = await response.json().catch(() => null);
-                errorMessage = body?.error || body?.detail || errorMessage;
+            let responseDetail = '';
+            try {
+                const text = await response.text();
+                if (text) {
+                    responseDetail = ` | ${text.slice(0, 300)}`;
+                }
+            } catch {
+                // Ignore body-read errors and keep status-based failure output.
             }
 
-            failures.push(`${requestUrl} -> ${response.status}: ${errorMessage}`);
+            failures.push(`${displayUrl} -> ${response.status} ${response.statusText}${responseDetail}`);
         } catch (error) {
-            failures.push(`${requestUrl} -> network error: ${error?.message || 'unknown error'}`);
+            failures.push(`${displayUrl} -> network error: ${error?.message || 'unknown error'}`);
         }
     }
 
-    throw new Error(
-        failures[0] ||
-        'Could not save your signup. Please try again. If this persists, set VITE_API_URL to your backend origin.'
-    );
+    return { ok: false, failures };
+};
+
+const subscribeViaSupabase = async (payload) => {
+    try {
+        const { error } = await supabase
+            .from('equathora_briefs_list')
+            .insert([{ name: payload.fullName, email: payload.email }]);
+
+        if (!error) {
+            return { ok: true, isDuplicate: false, failure: null };
+        }
+
+        if (isDuplicateEmailError(error)) {
+            // Fix #5: surface duplicate status so callers can make an informed decision.
+            // We still treat this as "ok" (silent success) to avoid leaking whether an
+            // email is already registered, but the flag lets callers log or act if needed.
+            return { ok: true, isDuplicate: true, failure: null };
+        }
+
+        return {
+            ok: false,
+            isDuplicate: false,
+            failure: `supabase insert failed: ${error?.code || 'unknown'} ${error?.message || ''}`.trim(),
+        };
+    } catch (error) {
+        return {
+            ok: false,
+            isDuplicate: false,
+            failure: `supabase network error: ${error?.message || 'unknown error'}`,
+        };
+    }
+};
+
+// Fix #8: validate fields individually so the error message identifies the
+// specific missing/invalid field rather than grouping both together.
+const validatePayload = (payload) => {
+    if (!payload.fullName) {
+        throw new Error('Please enter your full name.');
+    }
+    if (!payload.email) {
+        throw new Error('Please enter your email address.');
+    }
+};
+
+export async function subscribeToEquathoraBriefs(data) {
+    const full_name = data.full_name || data.fullName || data.name;
+    const email = data.email;
+
+    const payload = {
+        fullName: String(full_name || '').trim(),
+        email: String(email || '').trim().toLowerCase(),
+    };
+
+    // Fix #8: separate validation with per-field error messages.
+    validatePayload(payload);
+
+    const backendResult = await subscribeViaBackend(payload);
+    if (backendResult.ok) return;
+
+    const supabaseResult = await subscribeViaSupabase(payload);
+    if (supabaseResult.ok) {
+        // Fix #5: log duplicates in non-production environments for observability
+        // without exposing anything to the user.
+        if (supabaseResult.isDuplicate && import.meta.env.DEV) {
+            console.info('Equathora briefs: email already subscribed:', payload.email);
+        }
+        return;
+    }
+
+    console.error('Equathora briefs subscribe failed', {
+        backendFailures: backendResult.failures,
+        supabaseFailure: supabaseResult.failure,
+    });
+
+    throw new Error(SUBSCRIBE_ERROR_MESSAGE);
 }

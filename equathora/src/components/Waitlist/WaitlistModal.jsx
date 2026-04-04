@@ -3,7 +3,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FaEnvelope, FaTimes, FaUser } from 'react-icons/fa';
 import TransparentFullLogo from '@/assets/logo/TransparentFullLogo.png';
-import EquathoraBriefsSuccessModal from './EquathoraBriefsSuccessModal.jsx';
+import EquathoraBriefsSuccessModal from '../EquathoraBriefs/EquathoraBriefsSuccessModal.jsx';
+import { subscribeToEquathoraBriefs } from '@/lib/equathoraBriefsService.js';
+
+const FRIENDLY_SAVE_ERROR = 'Something did not work. Please try again shortly.';
 
 const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
     useBodyScrollLock(isOpen);
@@ -41,10 +44,14 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
         setIsLoading(true);
 
         try {
-            await Promise.resolve(onSave?.(formData));
+            if (onSave) {
+                await Promise.resolve(onSave(formData));
+            } else {
+                await subscribeToEquathoraBriefs(formData);
+            }
             setIsSubscribed(true);
-        } catch (saveError) {
-            setError(saveError?.message || 'Could not save your signup. Please try again.');
+        } catch {
+            setError(FRIENDLY_SAVE_ERROR);
         } finally {
             setIsLoading(false);
         }

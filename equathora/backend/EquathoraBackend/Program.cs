@@ -252,7 +252,7 @@ app.MapPost("/api/auth/reset-password", async (ResetPasswordRequest req, AppDbCo
     return Results.Ok(new { message = "Password reset successfully" });
 });
 
-app.MapPost("/api/briefs/subscribe", async (BriefsSubscriptionRequest req, AppDbContext db) =>
+app.MapPost("/api/briefs/subscribe", async (BriefsSubscriptionRequest req, AppDbContext db, ILogger<Program> logger) =>
 {
     var normalizedName = req.FullName?.Trim() ?? string.Empty;
     var normalizedEmail = (req.Email ?? string.Empty).Trim().ToLowerInvariant();
@@ -285,8 +285,9 @@ app.MapPost("/api/briefs/subscribe", async (BriefsSubscriptionRequest req, AppDb
 
         return Results.Ok(new { message = "Subscribed successfully." });
     }
-    catch (Exception)
+    catch (Exception ex)
     {
+        logger.LogError(ex, "Failed to save Equathora briefs subscription for {Email}", normalizedEmail);
         return Results.Problem(
             detail: "Unable to save subscription right now.",
             statusCode: StatusCodes.Status500InternalServerError);
