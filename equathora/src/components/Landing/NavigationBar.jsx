@@ -24,7 +24,7 @@ import { getDailyProblemSlug } from '../../lib/utils';
 import Books from '../../assets/images/learningBooks.svg';
 
 const NavigationBar = () => {
-
+    text: "Equathora Briefs",
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [dailyProblemSlug, setDailyProblemSlug] = useState('');
 
@@ -90,9 +90,9 @@ const NavigationBar = () => {
             image: Favourite,
         },
         {
-            to: '/waitlist',
-            text: "Join Waitlist",
-            description: "Get early access to full launch.",
+            to: '/equathora-briefs',
+            text: "Equathora Briefs",
+            description: "Weekly product updates and challenge drops.",
             image: Daily
         },
         // Hidden for MVP - will be added after launch

@@ -54,7 +54,7 @@ const Hero = () => {
                                 Guide students through math challenges, reinforce your expertise, and make a lasting impact.
                             </motion.p>
 
-                            {/* Waitlist CTA */}
+                            {/* Equathora Briefs CTA */}
                             <motion.div
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}

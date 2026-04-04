@@ -223,11 +223,11 @@ const SystemUpdates = () => {
             type: "feature",
             icon: <FaRocket className="text-xl" />,
             color: "from-amber-500 to-orange-500",
-            title: "Waitlist & Navigation Boosts",
+            title: "Equathora Briefs & Navigation Boosts",
             changes: [
-                "Added join waitlist card directly in the dashboard",
+                "Added Equathora Briefs card directly in the dashboard",
                 "Introduced next/previous problem buttons for faster practice",
-                "Restyled Waitlist page with fresher layout",
+                "Restyled Equathora Briefs page with fresher layout",
                 "Minor visual polish across components"
             ]
         },
@@ -420,7 +420,7 @@ const SystemUpdates = () => {
                                 </div> */}
                                 <div className="flex items-center justify-center gap-2 text-sm">
                                     <span>Are you subscribed to our newsletter? </span>
-                                    <Link to="/waitlist" className='!text-yellow-500 !underline hover:!text-yellow-400' title='Subscribe to our waitlist now for free!'>Click to Join</Link>
+                                    <Link to="/equathora-briefs" className='!text-yellow-500 !underline hover:!text-yellow-400' title='Subscribe to Equathora Briefs now for free!'>Click to Join</Link>
                                     <FaCheckCircle className="text-green-400" />
                                 </div>
                             </div>

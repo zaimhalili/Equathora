@@ -186,9 +186,9 @@ const Navbar = () => {
       image: Favourite,
     },
     {
-      to: '/waitlist',
-      text: "Join Waitlist",
-      description: "Get early access to full launch.",
+      to: '/equathora-briefs',
+      text: "Equathora Briefs",
+      description: "Weekly product updates and math drops.",
       image: Daily
     },
     // Hidden for MVP - will be added after launch

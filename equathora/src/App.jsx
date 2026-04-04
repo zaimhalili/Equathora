@@ -59,7 +59,7 @@ const Premium = lazy(() => import("./pages/Premium"));
 const Tracks = lazy(() => import("./pages/Tracks"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
-const Waitlist = lazy(() => import("./pages/Waitlist"));
+const EquathoraBriefs = lazy(() => import("./pages/EquathoraBriefs"));
 const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard"));
 
 function HomeRoute() {
@@ -101,7 +101,7 @@ function PageTitleUpdater() {
       '/login': 'Sign In - Equathora',
       '/signup': 'Join Now - Equathora',
       '/verify': 'Verify Email - Equathora',
-      '/waitlist': 'Join Waitlist - Equathora',
+      '/equathora-briefs': 'Equathora Briefs - Equathora',
       '/resend': 'Resend Confirmation - Equathora',
       '/forgotpassword': 'Reset Password - Equathora',
       '/reset-password': 'Reset Password - Equathora',
@@ -234,7 +234,7 @@ export default function App() {
             <Route path="/helpCenter" element={<HelpCenter />} />
             <Route path="/systemupdates" element={<SystemUpdates />} />
             <Route path="/pageNotFound" element={<PageNotFound />} />
-            <Route path="/waitlist" element={<Waitlist />} />
+            <Route path="/equathora-briefs" element={<EquathoraBriefs />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blogs" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogPost />} />

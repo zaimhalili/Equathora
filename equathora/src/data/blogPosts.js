@@ -75,8 +75,8 @@ export const blogPosts = [
             },
             {
                 type: "link",
-                text: "Join the Equathora waitlist",
-                url: "/waitlist"
+                text: "Join Equathora Briefs",
+                url: "/equathora-briefs"
             },
             {
                 type: "paragraph",
@@ -210,8 +210,8 @@ export const blogPosts = [
             },
             {
                 type: "link",
-                text: "Join the Equathora waitlist",
-                url: "/waitlist"
+                text: "Join Equathora Briefs",
+                url: "/equathora-briefs"
             },
             {
                 type: "paragraph",

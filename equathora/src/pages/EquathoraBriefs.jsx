@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
-import { FaUsers, FaArrowRight, FaCheckCircle, FaBolt } from 'react-icons/fa';
+import { FaUsers, FaCheckCircle, FaBolt } from 'react-icons/fa';
 import { FaStar, FaCrown, FaRocket, FaShieldAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import EquathoraBriefsModal from '@/components/EquathoraBriefs/EquathoraBriefsModal.jsx';
 
-const Waitlist = () => {
+const EquathoraBriefsPage = () => {
+    const [isBriefsModalOpen, setIsBriefsModalOpen] = useState(false);
+
+    const handleEquathoraBriefsSave = () => {
+        // Placeholder callback for future persistence.
+    };
 
     return (
         <>
@@ -35,14 +41,14 @@ const Waitlist = () => {
                                     </defs>
                                     <path fill="white" d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.7 20.8l-32 416C-.9 445.2 9.9 456 22.8 456.4c4.1.1 8.2-.3 12.1-1.6L266 420.1c10.2-3.3 17.5-12.6 17.5-23.2 0-6.6-2.7-12.8-7.4-17.3L150 256l119.3-99.3c11.3-9.4 14.8-25.6 7.8-38.8z" />
                                 </svg>
-                                <span>50+ Already Joined</span>
+                                <span>60+ Already Subscribed</span>
                             </div>
 
                             {/* Main Headline */}
                             <h1 className="flex flex-col items-center justify-center text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] font-[Sansation] leading-tight text-center">
                                 <span>Master Math.</span>
                                 <span className="text-[var(--accent-color)] relative inline-block">
-                                    Get Early Access.
+                                    Get Weekly Math Briefs.
                                     <motion.svg
                                         className="absolute -bottom-2 left-0 w-full"
                                         viewBox="0 0 200 8"
@@ -66,16 +72,16 @@ const Waitlist = () => {
 
                             {/* Subheadline */}
                             <p className="flex items-center justify-center text-center text-sm sm:text-xl md:text-2xl text-[var(--secondary-color)] font-light w-full max-w-3xl leading-relaxed">
-                                Join the waitlist for exclusive early access to premium features, personalized learning paths, and the future of mathematical education.
+                                Join Equathora Briefs for early feature announcements, fresh challenge drops, and practical updates for students and teachers.
                             </p>
 
                             {/* CTA Button */}
                             <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
                                 <button
-                                    onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform', '_blank')}
+                                    onClick={() => setIsBriefsModalOpen(true)}
                                     className="flex items-center justify-center gap-3 px-12 py-5 bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white text-xl font-bold rounded-md transition-all w-full cursor-pointer"
                                 >
-                                    <span>Join the Waitlist</span>
+                                    <span>Join Equathora Briefs</span>
                                     <svg className="w-5 h-5" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                         <defs>
                                             <linearGradient id="icon-gradient-arrow-1" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -87,7 +93,7 @@ const Waitlist = () => {
                                     </svg>
                                 </button>
                                 <p className="flex items-center justify-center text-sm text-[var(--secondary-color)]/60 text-center">
-                                    Early access spots are limited • No credit card required • Unsubscribe anytime
+                                    Weekly updates • No credit card required • Unsubscribe anytime
                                 </p>
                             </div>
 
@@ -176,7 +182,7 @@ const Waitlist = () => {
                         <div className="grid md:grid-cols-3 gap-8 text-center text-white w-full">
                             <div className="flex flex-col items-center justify-center gap-2">
                                 <div className="text-5xl md:text-6xl font-black">50+</div>
-                                <div className="text-xl opacity-90">On Waitlist</div>
+                                <div className="text-xl opacity-90">Subscribers</div>
                             </div>
                             <div className="flex flex-col items-center justify-center gap-2">
                                 <div className="text-5xl md:text-6xl font-black">2026</div>
@@ -205,7 +211,7 @@ const Waitlist = () => {
                                 },
                                 {
                                     q: 'Is there any cost to join?',
-                                    a: 'Absolutely not! Joining the waitlist is 100% free with no credit card required and no strings attached.'
+                                    a: 'Absolutely not! Subscribing is 100% free with no credit card required and no strings attached.'
                                 },
                                 {
                                     q: 'What do I get as an early member?',
@@ -217,7 +223,7 @@ const Waitlist = () => {
                                 },
                                 {
                                     q: 'How will you use my email?',
-                                    a: 'Only to notify you about launch updates and exclusive offers. We never spam or share your data. Unsubscribe anytime.'
+                                    a: 'Only to send curated updates and major product news. We never spam or share your data. Unsubscribe anytime.'
                                 }
                             ].map((faq, index) => (
                                 <div key={index} className="flex flex-col items-start justify-start bg-gray-50 rounded-md p-8 border border-gray-200 hover:border-[var(--accent-color)]/50 transition-all">
@@ -236,18 +242,18 @@ const Waitlist = () => {
 
                     <div className="relative flex flex-col items-center justify-center w-full max-w-4xl text-center text-white gap-8">
                         <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold">
-                            Don't Miss Out
+                            Stay In The Loop
                         </h2>
                         <p className="flex items-center justify-center text-sm sm:text-xl md:text-2xl font-light w-full max-w-2xl">
-                            Join 50+ students, teachers, and math enthusiasts already on the list. Spots are filling fast!
+                            Join 50+ students, teachers, and math enthusiasts receiving updates straight to their inbox.
                         </p>
 
                         <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
                             <button
-                                onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdLLApMvE_dJdllHd0U4YxFFQ6K7YasS4I-xO1mDG9SFCariw/viewform', '_blank')}
+                                onClick={() => setIsBriefsModalOpen(true)}
                                 className="flex items-center justify-center gap-3 px-12 py-5 bg-white text-[var(--secondary-color)] text-xl font-bold rounded-md hover:bg-gray-100 transition-all w-full cursor-pointer"
                             >
-                                <span>Secure My Spot</span>
+                                <span>Open Equathora Briefs Form</span>
                                 <svg className="w-5 h-5" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                                     <defs>
                                         <linearGradient id="icon-gradient-rocket" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -261,7 +267,7 @@ const Waitlist = () => {
                         </div>
 
                         <p className="flex items-center justify-center text-sm opacity-75 pt-4">
-                            ✓ No spam ever  •  ✓ Unsubscribe anytime  •  ✓ Join in 30 seconds
+                            ✓ No spam ever  •  ✓ Unsubscribe anytime  •  ✓ Subscribe in 30 seconds
                         </p>
                     </div>
                 </section>
@@ -270,8 +276,14 @@ const Waitlist = () => {
                     <Footer />
                 </footer>
             </main>
+
+            <EquathoraBriefsModal
+                isOpen={isBriefsModalOpen}
+                onClose={() => setIsBriefsModalOpen(false)}
+                onSave={handleEquathoraBriefsSave}
+            />
         </>
     );
 };
 
-export default Waitlist;
+export default EquathoraBriefsPage;

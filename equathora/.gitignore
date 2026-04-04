@@ -101,3 +101,5 @@ admin-console-helper.js
 
 # Claude AI Standards (internal)
 /claude
+
+*.csv

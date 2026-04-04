@@ -11,7 +11,7 @@ import WhyChooseSection from '../components/Landing/WhyChooseSection.jsx';
 import HowItWorksSection from '../components/Landing/HowItWorksSection.jsx';
 import TestimonialsSection from '../components/Landing/TestimonialsSection.jsx';
 import LatestArticlesSection from '../components/Landing/LatestArticlesSection.jsx';
-import WaitlistSection from '../components/Landing/WaitlistSection.jsx';
+import EquathoraBriefsSection from '../components/Landing/EquathoraBriefsSection.jsx';
 import CTASection from '../components/Landing/CTASection.jsx';
 import { color } from 'framer-motion';
 
@@ -44,7 +44,7 @@ const Landing = () => {
                 <LatestArticlesSection />
                 <hr class="border-[var(--french-gray)]" />
                 <CTASection />
-                <WaitlistSection />
+                <EquathoraBriefsSection />
                 <Footer />
                 <div className="flex flex-col lg:flex-row items-center text-[var(--french-gray)] bg-[var(--secondary-color)] underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center font-[Sansation]">
                     <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="#freepik-link">

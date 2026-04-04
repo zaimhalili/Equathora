@@ -84,7 +84,7 @@ const Footer = () => {
               <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
               <li><Link to="/notifications" className='footer-links'>Notifications</Link></li>
               <li><Link to="/profile/myprofile" className='footer-links'>My Profile</Link></li>
-              <li><Link to="/waitlist" className='footer-links'>Join Waitlist</Link></li>
+              <li><Link to="/equathora-briefs" className='footer-links'>Equathora Briefs</Link></li>
             </ul>
           </div>
           <div className="links-column">

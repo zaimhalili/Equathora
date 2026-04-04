@@ -230,7 +230,7 @@ const ApplyMentor = () => {
                                 Applications Opening Soon!
                             </h2>
                             <p className='text-base md:text-lg text-gray-300 max-w-xl lg:max-w-none'>
-                                We're putting the final touches on the mentor platform. Join 50+ educators already on the waitlist!
+                                We're putting the final touches on the mentor platform. Join 50+ educators already following Equathora Briefs.
                             </p>
 
                             <div className='flex flex-col gap-3'>
@@ -241,7 +241,7 @@ const ApplyMentor = () => {
                                     className='bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-4 rounded-md !font-bold text-base flex items-center justify-center gap-2 no-underline shadow-lg transition-colors duration-200 w-full sm:w-auto'
                                 >
                                     <FaUsers />
-                                    <span>Join the Waitlist</span>
+                                    <span>Join Equathora Briefs</span>
                                     <FaArrowRight className='text-sm' />
                                 </a>
 
@@ -265,7 +265,7 @@ const ApplyMentor = () => {
                         <div className='flex-1 flex justify-center lg:justify-end'>
                             <img
                                 src={achievements}
-                                alt="Join waitlist"
+                                alt="Join Equathora Briefs"
                                 className='w-64 md:w-80 lg:w-96 drop-shadow-2xl'
                             />
                         </div>
