@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Aashrun from "../../assets/images/aashrun.jpg";
 import Sanya from "../../assets/images/sanya.jpg";
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 import { FaArrowRight } from 'react-icons/fa';
 
 const testimonials = [
@@ -14,7 +14,7 @@ const testimonials = [
             <>
                 It’s actually <span className='font-bold'>well-designed</span>. <br />And it lets you practice math{" "}
                 <span className='font-bold'>chapter by chapter</span>, with a <span className=''>HUGE database of questions</span>{" "}
-                without wanting to throw your laptop out the window.
+                without wanting to throw your laptop out the window.{" "}<FaQuoteRight className='inline w-3 h-3 -translate-y-3'/>
             </>
         ),
         link: "https://www.linkedin.com/posts/aashrun-gautam-72572a1a5_equathora-master-math-through-practice-activity-7423286785453174785-mgSJ?utm_source=share&utm_medium=member_desktop&rcm=ACoAADJeKOABNdzq_bUV8CWEUZirbIav6hZpjJk",
@@ -25,7 +25,7 @@ const testimonials = [
         role: "High School STEM Teacher",
         text: (
             <>
-                Equathora made <span className='font-bold'>teaching math</span><br /> so much easier. Students build <span className='font-bold'>confidence</span> through leveled questions from Easy all the way up to Hard and the clean, web-based workspace means I've cut down on printed worksheets significantly.
+                Equathora made <span className='font-bold'>teaching math</span><br /> so much easier. Students build <span className='font-bold'>confidence</span> through leveled questions from Easy all the way up to Hard and the clean, web-based workspace means I've cut down on printed worksheets significantly.{" "}<FaQuoteRight className='inline w-3 h-3 -translate-y-3' />
             </>
         ),
         link: "https://www.linkedin.com/in/snylumagbas/",
@@ -93,6 +93,8 @@ const TestimonialsSection = () => {
                                 transition={{ duration: 0.4 }}
                                 className='flex flex-col gap-6 absolute inset-0 w-full justify-between'
                             >
+
+                                <FaQuoteLeft className='text-[var(--secondary-color)] absolute w-3 h-3 -left-5'/>
                                 <p className='text-lg sm:text-xl md:text-2xl xl:text-3xl font-light'>
                                     {testimonials[index].text}
                                 </p>
