@@ -14,7 +14,7 @@ const testimonials = [
             <>
                 It’s actually <span className='font-bold'>well-designed</span>. <br />And it lets you practice math{" "}
                 <span className='font-bold'>chapter by chapter</span>, with a <span className=''>HUGE database of questions</span>{" "}
-                without wanting to throw your laptop out the window.{" "}<FaQuoteRight className='inline w-3 h-3 -translate-y-3'/>
+                without wanting to throw your laptop out the window.{" "}<FaQuoteRight className='hidden md:inline w-3 h-3 -translate-y-3'/>
             </>
         ),
         link: "https://www.linkedin.com/posts/aashrun-gautam-72572a1a5_equathora-master-math-through-practice-activity-7423286785453174785-mgSJ?utm_source=share&utm_medium=member_desktop&rcm=ACoAADJeKOABNdzq_bUV8CWEUZirbIav6hZpjJk",
@@ -25,7 +25,7 @@ const testimonials = [
         role: "High School STEM Teacher",
         text: (
             <>
-                Equathora made <span className='font-bold'>teaching math</span><br /> so much easier. Students build <span className='font-bold'>confidence</span> through leveled questions from Easy all the way up to Hard and the clean, web-based workspace means I've cut down on printed worksheets significantly.{" "}<FaQuoteRight className='inline w-3 h-3 -translate-y-3' />
+                Equathora made <span className='font-bold'>teaching math</span><br /> so much easier. Students build <span className='font-bold'>confidence</span> through leveled questions from Easy all the way up to Hard and the clean, web-based workspace means I've cut down on printed worksheets significantly.{" "}<FaQuoteRight className='hidden md:inline w-3 h-3 -translate-y-3' />
             </>
         ),
         link: "https://www.linkedin.com/in/snylumagbas/",
@@ -61,8 +61,8 @@ const TestimonialsSection = () => {
 
                     {/* Left Side - Header & Navigation Arrows */}
                     <div className='flex flex-col w-full lg:w-1/2 pr-0 lg:pr-36'>
-                        <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl text-[var(--secondary-color)] pb-4 font-extrabold'>From our <br /><span className='font-black'>community.</span></h2>
-                        <p className='text-[var(--secondary-color)] font-light text-sm sm:text-xl md:text-2xl max-w-3xl'>What students say before and after Equathora are two different stories.</p>
+                        <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl text-[var(--secondary-color)] pb-4 font-extrabold text-center md:text-left'>From our <br /><span className='font-black'>community.</span></h2>
+                        <p className='text-[var(--secondary-color)] font-light text-sm sm:text-xl md:text-2xl max-w-3xl text-center md:text-left'>What students say before and after Equathora are two different stories.</p>
 
                         {/* Arrow Buttons */}
                         <div className='pt-3 sm:pt-5 md:pt-6 flex gap-3'>
@@ -94,7 +94,7 @@ const TestimonialsSection = () => {
                                 className='flex flex-col gap-6 absolute inset-0 w-full justify-between'
                             >
 
-                                <FaQuoteLeft className='text-[var(--secondary-color)] absolute w-3 h-3 -left-5'/>
+                                <FaQuoteLeft className='text-[var(--secondary-color)] absolute w-3 h-3 -left-5 hidden md:flex'/>
                                 <p className='text-lg sm:text-xl md:text-2xl xl:text-3xl font-light'>
                                     {testimonials[index].text}
                                 </p>
