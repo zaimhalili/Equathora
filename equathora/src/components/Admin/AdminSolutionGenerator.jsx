@@ -57,7 +57,11 @@ const buildRunCommand = ({
         String(maxChars),
         '--answer-mode',
         answerMode,
-        '--strict-math-guard'
+        '--strict-math-guard',
+        '--content-mode',
+        'raw',
+        '--output-mode',
+        'stdout'
     ];
 
     if (answerPagesStart) {
@@ -78,6 +82,27 @@ const formatBatchLabel = (batch, idx) => {
 const readJsonFile = async (file) => {
     const text = await file.text();
     return JSON.parse(text);
+};
+
+const extractFirstJsonObject = (raw) => {
+    const text = String(raw || '').trim();
+    if (!text) {
+        throw new Error('No JSON text provided.');
+    }
+
+    try {
+        return JSON.parse(text);
+    } catch {
+        // Continue and attempt to parse a JSON block from mixed terminal output.
+    }
+
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    if (start === -1 || end === -1 || end <= start) {
+        throw new Error('Could not find a JSON object in the pasted text.');
+    }
+
+    return JSON.parse(text.slice(start, end + 1));
 };
 
 const loadProgressStore = () => {
@@ -128,8 +153,9 @@ const AdminSolutionGenerator = () => {
     const [notice, setNotice] = useState('');
     const [error, setError] = useState('');
     const [progressStore, setProgressStore] = useState(loadProgressStore);
+    const [rawOutputInput, setRawOutputInput] = useState('');
 
-    const batches = loadedPayload?.batches || [];
+    const batches = useMemo(() => loadedPayload?.batches || [], [loadedPayload]);
     const currentBatch = batches[batchIndex] || null;
     const canMoveNext = batchIndex < batches.length - 1;
     const canMovePrev = batchIndex > 0;
@@ -247,50 +273,80 @@ const AdminSolutionGenerator = () => {
         await copyText(runCommand, 'Run command copied. Paste in terminal and press Enter.');
     };
 
+    const copyRunCommandToClipboard = async () => {
+        await copyText(`${runCommand} | Set-Clipboard`, 'Command copied. It will place extraction JSON directly in your clipboard.');
+    };
+
+    const loadPayloadToQueue = (parsed, sourceLabel) => {
+        if (!Array.isArray(parsed?.batches)) {
+            throw new Error('Invalid JSON. Expected an object with a batches array.');
+        }
+
+        const incomingRunKey = buildRunKey(parsed, sourceLabel);
+        const incomingProgress = progressStore?.runs?.[incomingRunKey];
+
+        setLoadedPayload(parsed);
+        setLoadedFileName(sourceLabel);
+        setBatchIndex(normalizePositiveInt(incomingProgress?.lastBatchIndex, 0));
+        setNotice(`Loaded ${parsed.batches.length} batch(es) from ${sourceLabel}.`);
+        setError('');
+
+        if (!incomingProgress) {
+            setProgressStore((prev) => {
+                const safeStore = prev && typeof prev === 'object' ? prev : { runs: {} };
+                const nextStore = {
+                    ...safeStore,
+                    runs: {
+                        ...(safeStore.runs || {}),
+                        [incomingRunKey]: {
+                            doneBatchIndexes: [],
+                            note: '',
+                            lastBatchIndex: 0,
+                            batchesSnapshot: parsed.batches
+                        }
+                    }
+                };
+                persistProgressStore(nextStore);
+                return nextStore;
+            });
+        }
+    };
+
     const onLoadOutputFile = async (event) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
         try {
             const parsed = await readJsonFile(file);
-            if (!Array.isArray(parsed?.batches)) {
-                throw new Error('Invalid file. Expected JSON with a batches array.');
-            }
-
-            const incomingRunKey = buildRunKey(parsed, file.name);
-            const incomingProgress = progressStore?.runs?.[incomingRunKey];
-
-            setLoadedPayload(parsed);
-            setLoadedFileName(file.name);
-            setBatchIndex(normalizePositiveInt(incomingProgress?.lastBatchIndex, 0));
-            setNotice(`Loaded ${parsed.batches.length} batch(es) from ${file.name}.`);
-            setError('');
-
-            if (!incomingProgress) {
-                setProgressStore((prev) => {
-                    const safeStore = prev && typeof prev === 'object' ? prev : { runs: {} };
-                    const nextStore = {
-                        ...safeStore,
-                        runs: {
-                            ...(safeStore.runs || {}),
-                            [incomingRunKey]: {
-                                doneBatchIndexes: [],
-                                note: '',
-                                lastBatchIndex: 0,
-                                batchesSnapshot: parsed.batches
-                            }
-                        }
-                    };
-                    persistProgressStore(nextStore);
-                    return nextStore;
-                });
-            }
+            loadPayloadToQueue(parsed, file.name);
         } catch (fileError) {
             setLoadedPayload(null);
             setLoadedFileName('');
             setBatchIndex(0);
             setNotice('');
             setError(fileError?.message || 'Failed to read JSON output file.');
+        }
+    };
+
+    const onLoadFromPastedOutput = () => {
+        try {
+            const parsed = extractFirstJsonObject(rawOutputInput);
+            loadPayloadToQueue(parsed, 'terminal-output');
+        } catch (parseError) {
+            setNotice('');
+            setError(parseError?.message || 'Failed to parse pasted JSON output.');
+        }
+    };
+
+    const onLoadFromClipboard = async () => {
+        try {
+            const clipboardText = await navigator.clipboard.readText();
+            const parsed = extractFirstJsonObject(clipboardText);
+            setRawOutputInput(clipboardText);
+            loadPayloadToQueue(parsed, 'clipboard-output');
+        } catch (clipboardError) {
+            setNotice('');
+            setError(clipboardError?.message || 'Failed to read/parse clipboard text.');
         }
     };
 
@@ -443,9 +499,19 @@ const AdminSolutionGenerator = () => {
                         <FiPlay />
                         Copy Run Command
                     </button>
+                    <button
+                        type='button'
+                        onClick={copyRunCommandToClipboard}
+                        disabled={hasInvalidRange || isCharLimitTooLow}
+                        className='inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold disabled:opacity-70'
+                        style={{ borderColor: 'var(--mid-main-secondary)' }}
+                    >
+                        <FiClipboard />
+                        Copy Command (Output -&gt; Clipboard)
+                    </button>
                     <label className='inline-flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                         <FiUpload />
-                        Load Generated JSON
+                        Load JSON File (Optional)
                         <input type='file' accept='.json,application/json' onChange={onLoadOutputFile} className='hidden' />
                     </label>
                 </div>
@@ -459,7 +525,40 @@ const AdminSolutionGenerator = () => {
 
                 {hasInvalidRange && <p className='mt-2 text-sm font-semibold text-[var(--accent-color)]'>End page must be greater than or equal to start page.</p>}
                 {isCharLimitTooLow && <p className='mt-2 text-sm font-semibold text-[var(--accent-color)]'>Character limit should be at least 2000.</p>}
-                {!hasInvalidRange && !isCharLimitTooLow && <p className='mt-2 text-xs text-[var(--mid-main-secondary)]'>This command runs locally in terminal. Browser security prevents directly launching Python from this page.</p>}
+                {!hasInvalidRange && !isCharLimitTooLow && <p className='mt-2 text-xs text-[var(--mid-main-secondary)]'>This command uses raw mode + stdout mode, so no output files are created. Use the clipboard command for a faster flow.</p>}
+            </div>
+
+            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <div className='flex flex-wrap items-center justify-between gap-3'>
+                    <h2 className='text-lg font-bold'>Load From Terminal Output</h2>
+                    <div className='flex flex-wrap items-center gap-2'>
+                        <button
+                            type='button'
+                            onClick={onLoadFromClipboard}
+                            className='inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold'
+                            style={{ borderColor: 'var(--mid-main-secondary)' }}
+                        >
+                            <FiClipboard />
+                            Load From Clipboard
+                        </button>
+                        <button
+                            type='button'
+                            onClick={onLoadFromPastedOutput}
+                            className='inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-[var(--main-color)]'
+                            style={{ background: 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' }}
+                        >
+                            <FiUpload />
+                            Parse Pasted Output
+                        </button>
+                    </div>
+                </div>
+                <textarea
+                    value={rawOutputInput}
+                    onChange={(event) => setRawOutputInput(event.target.value)}
+                    placeholder='Paste terminal JSON output here (or use Load From Clipboard).'
+                    className='mt-3 min-h-32 w-full rounded-md border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
+                    style={{ borderColor: 'var(--mid-main-secondary)' }}
+                />
             </div>
 
             <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
