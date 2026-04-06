@@ -105,3 +105,8 @@ admin-console-helper.js
 *.csv
 Program.cs
 *.pdf
+*.txt
+
+/books
+EquathoraBackend/books/BookExtract/*
+/openstax_problems_debug2
