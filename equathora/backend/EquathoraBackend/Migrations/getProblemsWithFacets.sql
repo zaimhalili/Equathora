@@ -44,18 +44,18 @@ with base as (
     and (
       p_grades is null
       or array_length(p_grades, 1) is null
-      or (p.grade is not null and p.grade = any(p_grades))
+      or (p.grade is not null and lower(trim(p.grade)) = any(array(select lower(trim(x)) from unnest(p_grades) as x)))
     )
 
     and (
       p_difficulties is null
       or array_length(p_difficulties, 1) is null
-      or p.difficulty = any(p_difficulties)
+      or lower(trim(p.difficulty)) = any(array(select lower(trim(x)) from unnest(p_difficulties) as x))
     )
     and (
       p_topics is null
       or array_length(p_topics, 1) is null
-      or p.topic = any(p_topics)
+      or lower(trim(p.topic)) = any(array(select lower(trim(x)) from unnest(p_topics) as x))
     )
     and (
       p_search_term is null
@@ -79,8 +79,34 @@ ordered as (
   order by
     case when p_sort = 'title-asc' then title end asc nulls last,
     case when p_sort = 'title-desc' then title end desc nulls last,
-    case when p_sort = 'difficulty-asc' then difficulty end asc nulls last,
-    case when p_sort = 'difficulty-desc' then difficulty end desc nulls last,
+    case when p_sort in ('difficulty-asc', 'difficulty_asc') then
+      case lower(trim(difficulty))
+        when 'beginner' then 0
+        when 'easy' then 1
+        when 'standard' then 2
+        when 'intermediate' then 3
+        when 'medium' then 4
+        when 'challenging' then 5
+        when 'hard' then 6
+        when 'advanced' then 7
+        when 'expert' then 8
+        else 999
+      end
+    end asc nulls last,
+    case when p_sort in ('difficulty-desc', 'difficulty_desc') then
+      case lower(trim(difficulty))
+        when 'beginner' then 0
+        when 'easy' then 1
+        when 'standard' then 2
+        when 'intermediate' then 3
+        when 'medium' then 4
+        when 'challenging' then 5
+        when 'hard' then 6
+        when 'advanced' then 7
+        when 'expert' then 8
+        else 999
+      end
+    end desc nulls last,
     case when p_sort = 'newest' then created_at end desc nulls last,
     case when p_sort = 'oldest' then created_at end asc nulls last,
     id asc

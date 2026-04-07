@@ -841,7 +841,11 @@ app.MapGet("/api/problems", async (
             ? Array.Empty<string>()
             : input.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
-    var difficultyFilters = ParseCsv(difficulty);
+    var difficultyFilters = ParseCsv(difficulty)
+        .Select(d => d.Trim().ToLowerInvariant())
+        .Where(d => !string.IsNullOrWhiteSpace(d))
+        .Distinct()
+        .ToArray();
     var topicFilters = ParseCsv(topic);
     var gradeFilters = ParseCsv(grade)
         .Select(g => g.Trim().ToLowerInvariant())
@@ -868,7 +872,7 @@ app.MapGet("/api/problems", async (
 
     if (difficultyFilters.Length > 0)
     {
-        baseQuery = baseQuery.Where(p => difficultyFilters.Contains(p.Difficulty));
+        baseQuery = baseQuery.Where(p => difficultyFilters.Contains(p.Difficulty.ToLower()));
     }
 
     if (topicFilters.Length > 0)
