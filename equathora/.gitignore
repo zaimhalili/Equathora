@@ -106,7 +106,10 @@ admin-console-helper.js
 Program.cs
 *.pdf
 *.txt
+*.md
 
-/books
-EquathoraBackend/books/BookExtract/*
+# Private books content - ignore any books directory anywhere in the repo
+**/books/
+**/books/**
+
 /openstax_problems_debug2
