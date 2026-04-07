@@ -10,7 +10,7 @@ import { FaSearch, FaTimes, FaChevronDown, FaFilter } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { getProblems } from '../lib/problemService';
-import { GradeOptions, DifficultyOptions, StatusOptions, SortOptions } from '../enum/DropdownEnums';
+import { StatusOptions, SortOptions } from '../enum/DropdownEnums';
 import { formatTopicLabel } from '../lib/utils';
 
 const FilterDropdown = ({ label, value, options, onChange, placeholder = "All", multiSelect = false }) => {
@@ -168,14 +168,11 @@ const Learn = () => {
   const topicFilter = searchParams.get('topic') || '';
   const sortBy = searchParams.get('sort') || 'default';
 
-  // Grade to group mapping
-  const gradeGroups = {
-    '8': [1],
-    '9': [2, 3],
-    '10': [4, 5],
-    '11': [6, 7],
-    '12': [8, 9, 10]
-  };
+  const formatGradeLabel = useCallback((gradeValue) => {
+    const grade = String(gradeValue || '').trim();
+    if (!grade) return 'Grade';
+    return /^\d+$/.test(grade) ? `Grade ${grade}` : grade;
+  }, []);
 
   // Debounce search input
   useEffect(() => {
@@ -340,15 +337,56 @@ const Learn = () => {
     }
   };
 
-  const gradeOptions = GradeOptions.map(opt => {
-    const count = facets.grade ? facets.grade[opt.value] : 0;
-    return { ...opt, count };
-  });
+  const gradeOptions = useMemo(() => {
+    if (!facets.grade || typeof facets.grade !== 'object') return [];
+    return Object.entries(facets.grade)
+      .map(([value, count]) => ({
+        value,
+        label: formatGradeLabel(value),
+        count
+      }))
+      .sort((a, b) => {
+        const aNumeric = /^\d+$/.test(a.value) ? Number(a.value) : Number.NaN;
+        const bNumeric = /^\d+$/.test(b.value) ? Number(b.value) : Number.NaN;
 
-  const difficultyOptions = DifficultyOptions.map(opt => {
-    const count = facets.difficulty ? facets.difficulty[opt.value] : 0;
-    return { ...opt, count };
-  });
+        if (Number.isFinite(aNumeric) && Number.isFinite(bNumeric)) {
+          return aNumeric - bNumeric;
+        }
+
+        if (Number.isFinite(aNumeric)) return -1;
+        if (Number.isFinite(bNumeric)) return 1;
+        return a.label.localeCompare(b.label);
+      });
+  }, [facets.grade, formatGradeLabel]);
+
+  const difficultyOptions = useMemo(() => {
+    if (!facets.difficulty || typeof facets.difficulty !== 'object') return [];
+
+    const difficultyOrder = {
+      beginner: 1,
+      easy: 2,
+      standard: 3,
+      intermediate: 4,
+      medium: 5,
+      challenging: 6,
+      hard: 7,
+      advanced: 8,
+      expert: 9,
+    };
+
+    return Object.entries(facets.difficulty)
+      .map(([value, count]) => ({
+        value,
+        label: value,
+        count
+      }))
+      .sort((a, b) => {
+        const aRank = difficultyOrder[String(a.value).toLowerCase()] ?? 99;
+        const bRank = difficultyOrder[String(b.value).toLowerCase()] ?? 99;
+        if (aRank !== bRank) return aRank - bRank;
+        return a.label.localeCompare(b.label);
+      });
+  }, [facets.difficulty]);
 
   const completedCount = facets.progress["completed"] !== undefined ? facets.progress["completed"] : 0;
   const inProgressCount = facets.progress["inProgress"] !== undefined
@@ -516,7 +554,7 @@ const Learn = () => {
                 <div className="active-filters-pills">
                   {gradeFilter && gradeFilter.split(',').map(grade => (
                     <span key={`grade-${grade}`} className="active-filter-pill">
-                      Grade {grade}
+                      {formatGradeLabel(grade)}
                       <button onClick={() => removeFilterValue('grade', gradeFilter, grade)}><FaTimes /></button>
                     </span>
                   ))}

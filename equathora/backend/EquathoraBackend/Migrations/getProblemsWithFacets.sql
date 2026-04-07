@@ -17,25 +17,7 @@ returns jsonb
 language sql
 stable
 as $$
-with grade_map as (
-  select * from (
-    values
-      ('8', array[1]),
-      ('9', array[2,3]),
-      ('10', array[4,5]),
-      ('11', array[6,7]),
-      ('12', array[8,9,10])
-  ) as g(grade, group_ids)
-),
-
-selected_groups as (
-  select distinct unnest(group_ids) as group_id
-  from grade_map
-  where p_grades is not null
-    and grade = any(p_grades)
-),
-
-base as (
+with base as (
   select
     p.*,
 
@@ -62,7 +44,7 @@ base as (
     and (
       p_grades is null
       or array_length(p_grades, 1) is null
-      or p.group_id in (select group_id from selected_groups)
+      or (p.grade is not null and p.grade = any(p_grades))
     )
 
     and (
@@ -137,15 +119,10 @@ grade_facets as (
   select coalesce(jsonb_object_agg(grade, cnt), '{}'::jsonb) as value
   from (
     select
-      case
-        when group_id = any(array[1]) then '8'
-        when group_id = any(array[2,3]) then '9'
-        when group_id = any(array[4,5]) then '10'
-        when group_id = any(array[6,7]) then '11'
-        when group_id = any(array[8,9,10]) then '12'
-      end as grade,
+      grade,
       count(*) as cnt
     from filtered
+    where grade is not null and trim(grade) <> ''
     group by grade
   ) x
 ),

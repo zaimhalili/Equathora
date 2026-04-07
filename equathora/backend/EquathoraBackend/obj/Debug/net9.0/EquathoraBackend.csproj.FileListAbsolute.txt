@@ -149,3 +149,16 @@ C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Develop
 C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\tr\FSharp.Core.resources.dll
 C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\zh-Hans\FSharp.Core.resources.dll
 C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\zh-Hant\FSharp.Core.resources.dll
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\algebra-and-trigonometry-2e.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\audit_report.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\calculus-volume-1.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\calculus-volume-2.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\calculus-volume-3.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\college-algebra-2e.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\contemporary-mathematics.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\intermediate-algebra-2e.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\introductory-statistics-2e.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\manifest.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\precalculus-2e.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\BookExtract\ExtractedBooks\statistics.json
+C:\Users\halil\OneDrive - TURKIYE MAARIF VAKFI\Desktop\ITTS 24-25-26\Web Development\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\books\JsonProblemList\problems1.json

@@ -19,6 +19,10 @@ public class Problem
     [Column("difficulty")]
     public string Difficulty { get; set; } = null!;
 
+    [Required]
+    [Column("grade")]
+    public string Grade { get; set; } = null!;
+
     [Column("description")]
     public string Description { get; set; } = null!;
 

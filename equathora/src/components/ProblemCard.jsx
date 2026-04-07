@@ -8,13 +8,23 @@ import { formatTopicLabel } from '../lib/utils';
 
 const ProblemCard = ({ problem }) => {
     const getDifficultyColor = (difficulty) => {
-        switch (difficulty.toLowerCase()) {
+        switch ((difficulty || '').toLowerCase()) {
+            case 'beginner':
+                return '#38bdf8';
             case 'easy':
                 return '#22c55e';
+            case 'standard':
+            case 'intermediate':
+                return '#14b8a6';
             case 'medium':
                 return '#e59e0b';
+            case 'challenging':
+                return '#f97316';
             case 'hard':
                 return '#a3142c';
+            case 'advanced':
+            case 'expert':
+                return '#7c3aed';
             default:
                 return '#6b7280';
         }

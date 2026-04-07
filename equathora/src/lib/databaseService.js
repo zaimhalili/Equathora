@@ -567,6 +567,16 @@ function getWeekStartDate() {
 // DIFFICULTY BREAKDOWN
 // ============================================================================
 
+const normalizeDifficultyBucket = (difficulty) => {
+    const normalized = String(difficulty || '').trim().toLowerCase();
+
+    if (normalized === 'beginner' || normalized === 'easy') return 'easy';
+    if (normalized === 'standard' || normalized === 'intermediate' || normalized === 'medium') return 'medium';
+    if (normalized === 'challenging' || normalized === 'hard' || normalized === 'advanced' || normalized === 'expert') return 'hard';
+
+    return 'medium';
+};
+
 export async function getDifficultyBreakdown() {
     try {
         const { data: { session } } = await supabase.auth.getSession();
@@ -597,12 +607,14 @@ export async function incrementDifficultyBreakdown(difficulty) {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
 
+        const difficultyBucket = normalizeDifficultyBucket(difficulty);
+
         // Check if entry exists
         const { data: existing } = await supabase
             .from('user_difficulty_breakdown')
             .select('count')
             .eq('user_id', session.user.id)
-            .eq('difficulty', difficulty)
+            .eq('difficulty', difficultyBucket)
             .single();
 
         if (existing) {
@@ -614,7 +626,7 @@ export async function incrementDifficultyBreakdown(difficulty) {
                     updated_at: new Date().toISOString()
                 })
                 .eq('user_id', session.user.id)
-                .eq('difficulty', difficulty);
+                .eq('difficulty', difficultyBucket);
 
             if (error) throw error;
         } else {
@@ -623,7 +635,7 @@ export async function incrementDifficultyBreakdown(difficulty) {
                 .from('user_difficulty_breakdown')
                 .insert({
                     user_id: session.user.id,
-                    difficulty,
+                    difficulty: difficultyBucket,
                     count: 1
                 });
 

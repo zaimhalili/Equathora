@@ -12,7 +12,7 @@ import AdminLogs from '@/components/Admin/AdminLogs';
 import AdminEmailBriefs from '@/components/Admin/AdminEmailBriefs';
 
 const TAB_COMPONENTS = {
-    analytics: <AdminAnalytics />,
+    // analytics: <AdminAnalytics />,
     problems: <AdminProblems />,
     users: <AdminUserManagement />,
     announcements: <AdminAnnouncements />,
@@ -34,7 +34,7 @@ const TAB_DATA_SOURCE = {
 };
 
 const AdminDashboard = () => {
-    const [selected, setSelected] = useState('analytics');
+    const [selected, setSelected] = useState('problems');
     const [isSwitching, setIsSwitching] = useState(false);
 
     useEffect(() => {
@@ -54,14 +54,15 @@ const AdminDashboard = () => {
     };
 
     const tabs = [
-        { id: 'analytics', label: 'Analytics' },
+        // { id: 'analytics', label: 'Analytics' },
         { id: 'problems', label: 'Problem Library' },
         { id: 'users', label: 'User Management' },
         { id: 'announcements', label: 'Announcements' },
-        { id: 'solutionGenerator', label: 'Solution Generator' },
+        // { id: 'solutionGenerator', label: 'Solution Generator' },
         { id: 'finance', label: 'Finance' },
         { id: 'logs', label: 'Logs' },
         { id: 'emailBriefs', label: 'Email Briefs' },
+
     ]
     return (
         <>

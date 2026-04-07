@@ -548,12 +548,15 @@ export async function getGlobalLeaderboard(limit = 100) {
                 xpValue = completedCount * 50;
             }
 
-            // Accuracy = (total_attempts - wrong_submissions) / total_attempts
-            let accuracyVal = 0;
-            if (viewRow?.accuracy_percentage) {
+            // Keep leaderboard accuracy aligned with Profile page logic.
+            // Prefer live counters from user_progress; use materialized-view value only as a last fallback.
+            const hasProgressCounters = typeof progress?.total_attempts === 'number';
+            let accuracyVal;
+
+            if (hasProgressCounters) {
+                accuracyVal = calculateAccuracy(progress.total_attempts || 0, progress.wrong_submissions || 0, solvedCount);
+            } else if (viewRow?.accuracy_percentage !== null && viewRow?.accuracy_percentage !== undefined) {
                 accuracyVal = viewRow.accuracy_percentage;
-            } else if (progress?.total_attempts) {
-                accuracyVal = calculateAccuracy(progress.total_attempts, progress.wrong_submissions || 0, solvedCount);
             } else {
                 accuracyVal = calculateAccuracy(0, 0, solvedCount);
             }
@@ -624,7 +627,16 @@ export async function getCurrentUserRank() {
                     ? data.solved_problems.length
                     : 0;
 
-        const accuracy = data.accuracy_percentage ?? calculateAccuracy(0, 0, problemsSolved);
+        const { data: progressRow } = await supabase
+            .from('user_progress')
+            .select('total_attempts, wrong_submissions')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+
+        const hasProgressCounters = typeof progressRow?.total_attempts === 'number';
+        const accuracy = hasProgressCounters
+            ? calculateAccuracy(progressRow.total_attempts || 0, progressRow.wrong_submissions || 0, problemsSolved)
+            : (data.accuracy_percentage ?? calculateAccuracy(0, 0, problemsSolved));
         const currentStreak = streakRow
             ? getEffectiveStreak(streakRow.current_streak ?? 0, streakRow.last_activity_date ?? null)
             : 0;
@@ -701,7 +713,19 @@ export async function getFriendsLeaderboard() {
             problemsSolved: typeof solvedCountMap[row.user_id] === 'number'
                 ? solvedCountMap[row.user_id]
                 : (typeof row.problems_solved_count === 'number' ? row.problems_solved_count : 0),
-            accuracy: row.accuracy_percentage ?? calculateAccuracy(0, 0, solvedCountMap[row.user_id] || 0),
+            accuracy: (typeof row.total_attempts === 'number')
+                ? calculateAccuracy(
+                    row.total_attempts,
+                    row.wrong_submissions ?? 0,
+                    solvedCountMap[row.user_id]
+                    || (typeof row.problems_solved_count === 'number' ? row.problems_solved_count : 0)
+                )
+                : (row.accuracy_percentage ?? calculateAccuracy(
+                    0,
+                    0,
+                    solvedCountMap[row.user_id]
+                    || (typeof row.problems_solved_count === 'number' ? row.problems_solved_count : 0)
+                )),
             reputation: row.reputation || 0,
             currentStreak: streakMap[row.user_id] ?? 0,
             rank: row.rank || index + 1

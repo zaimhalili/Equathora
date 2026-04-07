@@ -3,6 +3,42 @@ import { getInProgressProblems } from '../lib/progressStorage';
 import { getFavorites } from './databaseService';
 import { generateProblemSlug, extractIdFromSlug } from './slugify';
 
+const DEFAULT_LOCAL_BACKEND = 'http://localhost:5104';
+
+const normalizeBase = (value) => {
+    if (!value || typeof value !== 'string') return '';
+    return value.trim().replace(/\/$/, '');
+};
+
+const isJsonContentType = (contentType) => {
+    const normalized = String(contentType || '').toLowerCase();
+    return normalized.includes('application/json') || normalized.includes('+json');
+};
+
+const buildApiBaseCandidates = () => {
+    const explicit = normalizeBase(
+        import.meta.env.VITE_API_URL ||
+        import.meta.env.VITE_BACKEND_URL ||
+        import.meta.env.VITE_API_BASE_URL
+    );
+    const runtimeHost = typeof window !== 'undefined' ? window.location.hostname : '';
+    const isLocalRuntime = runtimeHost === 'localhost' || runtimeHost === '127.0.0.1';
+
+    const candidates = [];
+
+    if (explicit) {
+        candidates.push(explicit);
+    }
+
+    candidates.push('');
+
+    if (isLocalRuntime && !explicit) {
+        candidates.push(DEFAULT_LOCAL_BACKEND);
+    }
+
+    return [...new Set(candidates)];
+};
+
 /**
  * Service for managing problems from Supabase database
  * Replaces local problems.js file
@@ -83,7 +119,17 @@ export async function getProblems(
     const applyLocalSort = (items, sortValue) => {
         if (!sortValue || sortValue === 'default') return items;
 
-        const difficultyRank = { easy: 1, medium: 2, hard: 3 };
+        const difficultyRank = {
+            beginner: 1,
+            easy: 2,
+            standard: 3,
+            intermediate: 4,
+            medium: 5,
+            challenging: 6,
+            hard: 7,
+            advanced: 8,
+            expert: 9,
+        };
 
         return [...items].sort((a, b) => {
             if (sortValue === 'title-asc') return (a.title || '').localeCompare(b.title || '');
@@ -130,8 +176,9 @@ export async function getProblems(
                 facets.topic[item.topic] = (facets.topic[item.topic] || 0) + 1;
             }
 
-            if (item.grade_group !== undefined && item.grade_group !== null) {
-                const gradeKey = String(item.grade_group);
+            const gradeValue = item.grade ?? item.grade_group;
+            if (gradeValue !== undefined && gradeValue !== null && String(gradeValue).trim() !== '') {
+                const gradeKey = String(gradeValue);
                 facets.grade[gradeKey] = (facets.grade[gradeKey] || 0) + 1;
             }
 
@@ -183,13 +230,7 @@ export async function getProblems(
             }
 
             if (Array.isArray(grades) && grades.length > 0) {
-                const numericGrades = grades
-                    .map((grade) => Number(grade))
-                    .filter((grade) => Number.isFinite(grade));
-
-                if (numericGrades.length > 0) {
-                    problemsQuery = problemsQuery.in('grade_group', numericGrades);
-                }
+                problemsQuery = problemsQuery.in('grade', grades);
             }
 
             if (searchTerm && String(searchTerm).trim()) {
@@ -259,11 +300,6 @@ export async function getProblems(
     }
 
     try {
-        const apiBase =
-            import.meta.env.VITE_API_URL ||
-            import.meta.env.VITE_BACKEND_URL ||
-            import.meta.env.VITE_API_BASE_URL ||
-            '';
         const params = new URLSearchParams();
 
         params.set('page', String(page ?? 1));
@@ -287,16 +323,81 @@ export async function getProblems(
         if (problemId) params.set('problemId', String(problemId));
         if (slug) params.set('slug', slug);
 
-        const backendResponse = await fetch(`${apiBase}/api/problems?${params.toString()}`, {
-            method: 'GET',
-            credentials: 'include'
-        });
+        const endpoint = `/api/problems?${params.toString()}`;
+        const baseCandidates = buildApiBaseCandidates();
+        const failures = [];
+        let backendData = null;
 
-        if (!backendResponse.ok) {
-            throw new Error(`Backend problems endpoint failed with ${backendResponse.status}`);
+        for (const apiBase of baseCandidates) {
+            const requestUrl = `${apiBase}${endpoint}`;
+            try {
+                const backendResponse = await fetch(requestUrl, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json'
+                    },
+                    credentials: 'include'
+                });
+
+                const contentType = backendResponse.headers.get('content-type') || '';
+                if (!backendResponse.ok) {
+                    failures.push(`${requestUrl} -> ${backendResponse.status} ${backendResponse.statusText}`);
+                    continue;
+                }
+
+                if (!isJsonContentType(contentType)) {
+                    failures.push(`${requestUrl} -> non-JSON (${contentType || 'unknown'})`);
+                    continue;
+                }
+
+                backendData = await backendResponse.json();
+                break;
+            } catch (error) {
+                failures.push(`${requestUrl} -> network error: ${error?.message || 'unknown error'}`);
+            }
         }
 
-        const backendData = await backendResponse.json();
+        if (!backendData) {
+            const reason = failures.length > 0 ? ` (${failures[0]})` : '';
+            throw new Error(`Backend problems endpoint unavailable${reason}`);
+        }
+
+        // If backend returns an empty catalog, try Supabase RPC.
+        // This keeps Learn usable when backend DB is freshly reset while Supabase still has data,
+        // including filtered views (status, difficulty, search, etc.).
+        if ((backendData?.count || 0) === 0) {
+            const { data: { session } } = await supabase.auth.getSession();
+            const { data: rpcData, error: rpcError } = await supabase.rpc("get_problems_with_facets", {
+                p_user_id: session?.user?.id,
+                p_page: page,
+                p_page_size: pageSize,
+                p_problem_id: problemId,
+                p_slug: slug,
+                p_difficulties: difficulties,
+                p_topics: topics,
+                p_grades: grades,
+                p_search_term: searchTerm,
+                p_sort: sort,
+                p_progress: progress,
+                p_completed: null,
+            });
+
+            if (!rpcError && (rpcData?.count || 0) > 0) {
+                return {
+                    data: rpcData?.data || [],
+                    count: rpcData?.count || 0,
+                    page: rpcData?.page ?? page,
+                    pageSize: rpcData?.pageSize ?? pageSize,
+                    facets: rpcData?.facets || {
+                        difficulty: {},
+                        topic: {},
+                        grade: {},
+                        progress: {},
+                    },
+                };
+            }
+        }
+
         return {
             data: backendData?.data || [],
             count: backendData?.count || 0,

@@ -843,7 +843,11 @@ app.MapGet("/api/problems", async (
 
     var difficultyFilters = ParseCsv(difficulty);
     var topicFilters = ParseCsv(topic);
-    var gradeFilters = ParseCsv(grade);
+    var gradeFilters = ParseCsv(grade)
+        .Select(g => g.Trim().ToLowerInvariant())
+        .Where(g => !string.IsNullOrWhiteSpace(g))
+        .Distinct()
+        .ToArray();
     var statusFilters = ParseCsv(status);
     var progressFilters = ParseCsv(progress);
 
@@ -874,38 +878,7 @@ app.MapGet("/api/problems", async (
 
     if (gradeFilters.Length > 0)
     {
-        var gradeGroupIds = gradeFilters
-            .SelectMany(g => g switch
-            {
-                "8" => new[] { 1 },
-                "9" => new[] { 2, 3 },
-                "10" => new[] { 4, 5 },
-                "11" => new[] { 6, 7 },
-                "12" => new[] { 8, 9, 10 },
-                _ => Array.Empty<int>()
-            })
-            .Distinct()
-            .ToArray();
-
-        if (gradeGroupIds.Length == 0)
-        {
-            return Results.Ok(new
-            {
-                data = Array.Empty<object>(),
-                count = 0,
-                page = currentPage,
-                pageSize = currentPageSize,
-                facets = new
-                {
-                    difficulty = new Dictionary<string, int>(),
-                    topic = new Dictionary<string, int>(),
-                    grade = new Dictionary<string, int>(),
-                    progress = new Dictionary<string, int>()
-                }
-            });
-        }
-
-        baseQuery = baseQuery.Where(p => gradeGroupIds.Contains(p.GroupId));
+        baseQuery = baseQuery.Where(p => p.Grade != null && gradeFilters.Contains(p.Grade.ToLower()));
     }
 
     if (!string.IsNullOrWhiteSpace(q))
@@ -922,6 +895,7 @@ app.MapGet("/api/problems", async (
         {
             p.Id,
             p.GroupId,
+            p.Grade,
             p.Title,
             p.Description,
             p.Topic,
@@ -977,7 +951,8 @@ app.MapGet("/api/problems", async (
         {
             var statusMatch = statusFilters.Any(s =>
                 (s.Equals("completed", StringComparison.OrdinalIgnoreCase) && isCompleted) ||
-                (s.Equals("notstarted", StringComparison.OrdinalIgnoreCase) && !isCompleted && !isInProgress));
+                ((s.Equals("in-progress", StringComparison.OrdinalIgnoreCase) || s.Equals("inprogress", StringComparison.OrdinalIgnoreCase)) && isInProgress) ||
+                ((s.Equals("not-started", StringComparison.OrdinalIgnoreCase) || s.Equals("notstarted", StringComparison.OrdinalIgnoreCase)) && !isCompleted && !isInProgress));
 
             if (!statusMatch) return false;
         }
@@ -1001,6 +976,7 @@ app.MapGet("/api/problems", async (
         {
             p.Id,
             p.GroupId,
+            p.Grade,
             p.Title,
             p.Description,
             p.Topic,
@@ -1023,20 +999,9 @@ app.MapGet("/api/problems", async (
         .GroupBy(p => p.Topic!)
         .ToDictionary(g => g.Key, g => g.Count());
 
-    string? GradeFromGroupId(int groupId) => groupId switch
-    {
-        1 => "8",
-        2 or 3 => "9",
-        4 or 5 => "10",
-        6 or 7 => "11",
-        8 or 9 or 10 => "12",
-        _ => null
-    };
-
     var gradeFacet = filteredWithProgress
-        .Select(p => GradeFromGroupId(p.GroupId))
-        .Where(g => g != null)
-        .GroupBy(g => g!)
+        .Where(p => !string.IsNullOrWhiteSpace(p.Grade))
+        .GroupBy(p => p.Grade!)
         .ToDictionary(g => g.Key, g => g.Count());
 
     var progressFacet = new Dictionary<string, int>
@@ -1049,6 +1014,24 @@ app.MapGet("/api/problems", async (
     var normalizedSort = (sort ?? string.Empty)
         .Trim()
         .ToLowerInvariant();
+
+    static int DifficultyRank(string? value)
+    {
+        var normalized = (value ?? string.Empty).Trim().ToLowerInvariant();
+        return normalized switch
+        {
+            "beginner" => 0,
+            "easy" => 1,
+            "standard" => 2,
+            "intermediate" => 3,
+            "medium" => 4,
+            "challenging" => 5,
+            "hard" => 6,
+            "advanced" => 7,
+            "expert" => 8,
+            _ => 999
+        };
+    }
 
     var ordered = normalizedSort switch
     {
@@ -1063,12 +1046,12 @@ app.MapGet("/api/problems", async (
             .ThenBy(p => p.DisplayOrder)
             .ThenBy(p => p.Id),
         "difficulty-asc" or "difficulty_asc" => filteredWithProgress
-            .OrderBy(p => p.Difficulty == "Easy" ? 0 : p.Difficulty == "Medium" ? 1 : 2)
+            .OrderBy(p => DifficultyRank(p.Difficulty))
             .ThenBy(p => p.GroupId)
             .ThenBy(p => p.DisplayOrder)
             .ThenBy(p => p.Id),
         "difficulty-desc" or "difficulty_desc" => filteredWithProgress
-            .OrderByDescending(p => p.Difficulty == "Hard" ? 2 : p.Difficulty == "Medium" ? 1 : 0)
+            .OrderByDescending(p => DifficultyRank(p.Difficulty))
             .ThenBy(p => p.GroupId)
             .ThenBy(p => p.DisplayOrder)
             .ThenBy(p => p.Id),
@@ -1121,6 +1104,7 @@ app.MapGet("/api/problems", async (
             {
                 id = p.Id,
                 group_id = p.GroupId,
+                grade = p.Grade,
                 title = p.Title,
                 description = p.Description,
                 topic = p.Topic,
