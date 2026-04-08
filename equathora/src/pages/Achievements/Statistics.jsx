@@ -1,18 +1,46 @@
 
 import React, { useEffect, useState } from 'react';
 import './Statistics.css';
-import { getUserProgress, getStreakData, getWeeklyProgress, getDifficultyBreakdown, getTopicFrequency, getCompletedProblems, getUserSubmissions } from '../../lib/databaseService';
+import { getUserProgress, getStreakData, getWeeklyProgress, getDifficultyBreakdown, getTopicFrequency, getUserSubmissions } from '../../lib/databaseService';
 import { getAllProblems } from '../../lib/problemService';
 import { supabase } from '../../lib/supabaseClient';
-import { getSubmissions } from '../../lib/progressStorage';
 import { formatTopicLabel } from '../../lib/utils';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
+const normalizeCompletedProblemId = (rawValue) => {
+  if (rawValue === null || rawValue === undefined) return '';
+
+  if (typeof rawValue === 'string' && rawValue.startsWith('{')) {
+    try {
+      const parsed = JSON.parse(rawValue);
+      return String(parsed?.problemId ?? parsed?.id ?? '').trim();
+    } catch {
+      return '';
+    }
+  }
+
+  return String(rawValue).trim();
+};
+
+const calculateAccuracy = (totalAttempts = 0, wrongSubmissions = 0, solvedCount = 0) => {
+  if (totalAttempts > 0) {
+    const correctSubmissions = totalAttempts - (wrongSubmissions || 0);
+    return Math.max(0, Math.min(100, Math.round((correctSubmissions / totalAttempts) * 100)));
+  }
+
+  if (solvedCount > 0) {
+    return null;
+  }
+
+  return 0;
+};
 
 const Statistics = () => {
   const [progress, setProgress] = useState({
     correctAnswers: 0,
     wrongSubmissions: 0,
     totalAttempts: 0,
+    accuracyRate: 0,
     totalProblems: 0,
     solvedProblems: 0,
     streakDays: 0,
@@ -29,21 +57,33 @@ const Statistics = () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
 
-        const [userProgress, streakData, weeklyData, allProblems, completedIds, difficultyData, topicData, allSubmissions] = await Promise.all([
+        const [userProgress, streakData, weeklyData, allProblems, completedRowsResult, difficultyData, topicData, allSubmissions] = await Promise.all([
           getUserProgress(),
           getStreakData(),
           getWeeklyProgress(),
           getAllProblems(),
-          getCompletedProblems(),
+          supabase
+            .from('user_completed_problems')
+            .select('problem_id')
+            .eq('user_id', session.user.id),
           getDifficultyBreakdown(),
           getTopicFrequency(),
           getUserSubmissions()
         ]);
 
+        const completedRows = completedRowsResult?.data || [];
+
         const totalProblems = allProblems.length || 0;
         // Filter completed IDs to only count valid current problems (same as YourTrack)
         const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
-        const validCompletedIds = (completedIds || []).filter(id => validProblemIds.has(String(id)));
+        const completedIds = Array.from(
+          new Set(
+            (completedRows || [])
+              .map((row) => normalizeCompletedProblemId(row.problem_id))
+              .filter(Boolean)
+          )
+        );
+        const validCompletedIds = completedIds.filter(id => validProblemIds.has(String(id)));
         const solved = validCompletedIds.length;
 
         // Calculate difficulty breakdown from completed problems (same as Profile)
@@ -66,29 +106,19 @@ const Statistics = () => {
           topTopics = [...new Set(completedProblems.map(p => p.topic).filter(Boolean))];
         }
 
-        // Get correct/wrong from database
-        let correctAnswers = userProgress?.correct_answers || 0;
-        let wrongSubmissions = userProgress?.wrong_submissions || 0;
-        let totalAttempts = userProgress?.total_attempts || 0;
+        // Get attempts counters from database (canonical source for accuracy parity with leaderboard)
+        const wrongSubmissionsRaw = Number(userProgress?.wrong_submissions || 0);
+        const totalAttemptsRaw = Number(userProgress?.total_attempts || 0);
+        const wrongSubmissions = Number.isFinite(wrongSubmissionsRaw) ? wrongSubmissionsRaw : 0;
+        const totalAttempts = Number.isFinite(totalAttemptsRaw) ? totalAttemptsRaw : 0;
+        const correctAnswers = totalAttempts > 0 ? Math.max(totalAttempts - wrongSubmissions, 0) : 0;
+        const accuracyRate = calculateAccuracy(totalAttempts, wrongSubmissions, solved);
         let totalTimeMinutes = userProgress?.total_time_minutes || 0;
 
-        // If backend counters aren't populated, fall back to local submissions (same as Profile)
-        if (totalAttempts === 0) {
-          const local = (getSubmissions() || []).filter(s => validProblemIds.has(String(s.problemId)));
-          if (local.length > 0) {
-            const localCorrect = local.filter(s => s.isCorrect).length;
-            correctAnswers = localCorrect;
-            wrongSubmissions = local.length - localCorrect;
-            totalAttempts = local.length;
-          }
-        }
-
-        // Calculate time spent: try database total_time_minutes first, 
-        // then sum from submissions, then fall back to local timer storage
+        // DB-only time source: use aggregated minutes, then fallback to persisted DB submissions.
         let totalTimeSec = totalTimeMinutes * 60;
 
         if (totalTimeSec === 0) {
-          // Sum time from database submissions
           const submissionTimeSec = (allSubmissions || []).reduce((sum, sub) => {
             return sum + (sub.time_spent_seconds || 0);
           }, 0);
@@ -97,35 +127,12 @@ const Statistics = () => {
           }
         }
 
-        if (totalTimeSec === 0) {
-          // Fall back to local timer storage per problem
-          const localTimeSec = (validCompletedIds || []).reduce((sum, pid) => {
-            const stored = typeof window !== 'undefined' ? window.localStorage.getItem(`eq:problemTime:${pid}`) : null;
-            return sum + (stored ? Math.max(0, parseInt(stored, 10)) : 0);
-          }, 0);
-          if (localTimeSec > 0) {
-            totalTimeSec = localTimeSec;
-          }
-        }
-
-        // Also check local submissions for time
-        if (totalTimeSec === 0) {
-          const localSubs = getSubmissions() || [];
-          const localTimeSec = localSubs
-            .filter(s => validProblemIds.has(String(s.problemId)))
-            .reduce((sum, s) => sum + (s.metadata?.timeSpent || s.timeSpent || 0), 0);
-          if (localTimeSec > 0) {
-            totalTimeSec = localTimeSec;
-          }
-        }
-
         const avgTimeSec = solved > 0 ? totalTimeSec / solved : 0;
 
-        // If DB weekly progress is all zeros, compute from submissions as fallback
+        // DB-only weekly fallback: derive from DB submissions if weekly aggregate table is empty.
         let finalWeeklyData = weeklyData;
         const hasDbWeekly = (weeklyData || []).some(v => v > 0);
         if (!hasDbWeekly) {
-          // Compute weekly activity from submissions (correct ones only, this week)
           const now = new Date();
           const dayOfWeek = now.getDay();
           const mondayDiff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
@@ -134,9 +141,7 @@ const Statistics = () => {
 
           const computedWeekly = Array(7).fill(0);
 
-          // Try database submissions first
           const correctSubs = (allSubmissions || []).filter(s => s.is_correct);
-          // De-duplicate by problem_id to count unique problems solved per day
           const seenByDay = new Map();
           correctSubs.forEach(sub => {
             const subDate = new Date(sub.submitted_at || sub.created_at);
@@ -151,24 +156,6 @@ const Statistics = () => {
             }
           });
 
-          // If still empty, try local submissions
-          if (computedWeekly.every(v => v === 0)) {
-            const localSubs = getSubmissions() || [];
-            const localSeen = new Map();
-            localSubs.filter(s => s.isCorrect).forEach(sub => {
-              const subDate = new Date(sub.timestamp || sub.date);
-              if (subDate >= weekStartDate) {
-                const jsDay = subDate.getDay();
-                const dayIdx = jsDay === 0 ? 6 : jsDay - 1;
-                const key = `${dayIdx}-${sub.problemId}`;
-                if (!localSeen.has(key)) {
-                  localSeen.set(key, true);
-                  computedWeekly[dayIdx] = (computedWeekly[dayIdx] || 0) + 1;
-                }
-              }
-            });
-          }
-
           if (computedWeekly.some(v => v > 0)) {
             finalWeeklyData = computedWeekly;
           }
@@ -178,6 +165,7 @@ const Statistics = () => {
           correctAnswers: correctAnswers,
           wrongSubmissions: wrongSubmissions,
           totalAttempts: totalAttempts,
+          accuracyRate: accuracyRate,
           totalProblems,
           solvedProblems: solved,
           streakDays: streakData?.current_streak || 0,
@@ -197,7 +185,7 @@ const Statistics = () => {
   const correctAnswers = progress.correctAnswers;
   const wrongSubmissions = progress.wrongSubmissions;
   const totalAttempts = progress.totalAttempts;
-  const accuracyRate = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
+  const accuracyRate = progress.accuracyRate;
 
   const stats = {
     totalProblems: progress.totalProblems,
@@ -235,9 +223,13 @@ const Statistics = () => {
         </div>
 
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
-          <div className="stat-number">{accuracyRate}%</div>
+          <div className="stat-number">{accuracyRate === null ? 'N/A' : `${accuracyRate}%`}</div>
           <div className="stat-label">Accuracy Rate</div>
-          <div className="stat-sublabel">{stats.correctAnswers} correct · {stats.wrongSubmissions} wrong</div>
+          <div className="stat-sublabel">
+            {stats.totalAttempts > 0
+              ? `${stats.correctAnswers} correct · ${stats.wrongSubmissions} wrong`
+              : 'No attempts tracked'}
+          </div>
         </div>
 
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
@@ -266,9 +258,9 @@ const Statistics = () => {
         <div className="progress-item">
           <div className="progress-header">
             <span>Accuracy Rate </span>
-            <span>{accuracyRate}%</span>
+            <span>{accuracyRate === null ? 'N/A' : `${accuracyRate}%`}</span>
           </div>
-          <progress className="progress-bar" value={accuracyRate} max="100"></progress>
+          <progress className="progress-bar" value={accuracyRate === null ? 0 : accuracyRate} max="100"></progress>
         </div>
       </div>
 

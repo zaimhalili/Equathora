@@ -42,7 +42,7 @@ const Footer = () => {
           </h1>
           <div id="socialMedia-container">
             <a
-              href="https://www.linkedin.com/in/zaimhalili/"
+              href="https://www.linkedin.com/company/equathora/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Connect with us on LinkedIn"

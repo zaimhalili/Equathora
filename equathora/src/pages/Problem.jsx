@@ -583,32 +583,37 @@ const Problem = () => {
       // noop
     }
 
-    // Track previous streak before updating
+    // Streak should only update on a correct first-solve submission.
     const previousStreakData = getStreakData();
-    const previousStreak = previousStreakData.current;
-    const streakData = updateStreak();
+    const previousStreak = previousStreakData.current || 0;
+    let streakData = previousStreakData;
 
-    // Show popup if streak was incremented (first solve of the day)
-    if (validation.isCorrect && streakData.current > previousStreak) {
-      setCurrentStreakValue(streakData.current);
-      setShowStreakPopup(true);
+    if (validation.isCorrect) {
+      streakData = updateStreak();
+
+      // Show popup if streak was incremented (first solve of the day)
+      if (streakData.current > previousStreak) {
+        setCurrentStreakValue(streakData.current);
+        setShowStreakPopup(true);
+      }
+
+      try {
+        void updateStreakData({
+          current_streak: streakData.current,
+          longest_streak: streakData.longest,
+          last_activity_date: new Date().toISOString().split('T')[0]
+        });
+      } catch {
+        // ignore background failure
+      }
     }
 
-    try {
-      void updateStreakData({
-        current_streak: streakData.current,
-        longest_streak: streakData.longest,
-        last_activity_date: new Date().toISOString().split('T')[0]
-      });
-    } catch {
-      // ignore background failure
-    }
     recordProblemStats(problem, {
       isCorrect: validation.isCorrect,
       timeSpentSeconds,
       timestamp: entry.timestamp,
       attemptNumber,
-      streakData,
+      streakData: validation.isCorrect ? streakData : null,
       hintsUsed: hintsOpened.length,
       solutionViewed
     });

@@ -8,10 +8,8 @@ import EditProfileModal from '../components/EditProfileModal';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
 import { getAllProblems } from '../lib/problemService';
-import { getCompletedProblems } from '../lib/databaseService';
 import { supabase } from '../lib/supabaseClient';
 import ProfileExportButtons from '../components/ProfileExportButtons';
-import { getSubmissions } from '../lib/progressStorage';
 import { generateProblemSlug } from '../lib/slugify';
 import { getCachedGlobalLeaderboard } from '../lib/leaderboardService';
 import { formatTopicLabel } from '../lib/utils';
@@ -29,6 +27,34 @@ const getEffectiveStreak = (currentStreak = 0, lastActivityDate = null) => {
 
   const diffDays = Math.floor((todayUtc.getTime() - lastUtc.getTime()) / (1000 * 60 * 60 * 24));
   return diffDays <= 1 ? currentStreak : 0;
+};
+
+const normalizeCompletedProblemId = (rawValue) => {
+  if (rawValue === null || rawValue === undefined) return '';
+
+  if (typeof rawValue === 'string' && rawValue.startsWith('{')) {
+    try {
+      const parsed = JSON.parse(rawValue);
+      return String(parsed?.problemId ?? parsed?.id ?? '').trim();
+    } catch {
+      return '';
+    }
+  }
+
+  return String(rawValue).trim();
+};
+
+const calculateProfileAccuracy = (totalAttempts = 0, wrongSubmissions = 0, solvedCount = 0) => {
+  if (totalAttempts > 0) {
+    const correctSubmissions = totalAttempts - (wrongSubmissions || 0);
+    return Math.max(0, Math.min(100, Math.round((correctSubmissions / totalAttempts) * 100)));
+  }
+
+  if (solvedCount > 0) {
+    return null;
+  }
+
+  return 0;
 };
 
 const Profile = () => {
@@ -88,30 +114,18 @@ const Profile = () => {
           supabase.from('leaderboard_view').select('*').eq('user_id', targetUserId).maybeSingle()
         ]);
 
-        // For own profile, use getCompletedProblems() which has fallback logic
-        // For other users, query their completed problems directly
-        let completedIds;
-        if (isSelf) {
-          completedIds = await getCompletedProblems();
-        } else {
-          const { data: completedRows } = await supabase
-            .from('user_completed_problems')
-            .select('problem_id')
-            .eq('user_id', targetUserId);
+        const { data: completedRows } = await supabase
+          .from('user_completed_problems')
+          .select('problem_id')
+          .eq('user_id', targetUserId);
 
-          completedIds = (completedRows || []).map(r => {
-            const pid = r.problem_id;
-            if (typeof pid === 'string' && pid.startsWith('{')) {
-              try {
-                const parsed = JSON.parse(pid);
-                return String(parsed.problemId ?? parsed.id ?? '');
-              } catch {
-                return '';
-              }
-            }
-            return String(pid);
-          }).filter(Boolean);
-        }
+        const completedIds = Array.from(
+          new Set(
+            (completedRows || [])
+              .map((row) => normalizeCompletedProblemId(row.problem_id))
+              .filter(Boolean)
+          )
+        );
 
         const allProblems = await getAllProblems().catch(err => {
           console.error('Error fetching all problems:', err);
@@ -137,24 +151,16 @@ const Profile = () => {
 
         // Calculate stats (scope solved to current problems list)
         const solved = completedProblems.length;
-        let wrongSubmissions = progressRow?.wrong_submissions || 0;
-        let totalAttempts = progressRow?.total_attempts || 0;
+        const wrongSubmissionsRaw = Number(progressRow?.wrong_submissions || 0);
+        const totalAttemptsRaw = Number(progressRow?.total_attempts || 0);
+        const wrongSubmissions = Number.isFinite(wrongSubmissionsRaw) ? wrongSubmissionsRaw : 0;
+        const totalAttempts = Number.isFinite(totalAttemptsRaw) ? totalAttemptsRaw : 0;
 
-        // If backend counters aren't populated, fall back to local submissions for self only.
-        if (isSelf && totalAttempts === 0) {
-          const validProblemIdsSet = new Set((problemList || []).map(p => String(p.id)));
-          const local = (getSubmissions() || []).filter(s => validProblemIdsSet.has(String(s.problemId)));
-          if (local.length > 0) {
-            const localCorrect = local.filter(s => s.isCorrect).length;
-            wrongSubmissions = local.length - localCorrect;
-            totalAttempts = local.length;
-          }
-        }
-
-        // Calculate accuracy = (totalAttempts - wrongSubmissions) / totalAttempts
-        // This matches the progressStorage.js formula and counts all correct submissions
-        const correctSubmissions = totalAttempts - wrongSubmissions;
-        const accuracy = totalAttempts > 0 ? Math.round((correctSubmissions / totalAttempts) * 100) : 0;
+        // Keep Profile accuracy semantics aligned with leaderboard calculations.
+        const correctSubmissions = totalAttempts > 0
+          ? Math.max(totalAttempts - wrongSubmissions, 0)
+          : 0;
+        const accuracy = calculateProfileAccuracy(totalAttempts, wrongSubmissions, solved);
 
         // Use solved count from completedProblems filtered by valid IDs (consistent with YourTrack and Statistics)
         const finalSolved = solved;
@@ -337,8 +343,12 @@ const Profile = () => {
                     <div className='flex gap-3 items-center'>
                       <div className='text-blue-500 text-2xl md:text-3xl'><FaChartLine /></div>
                       <div className='flex flex-col'>
-                        <p className='text-sm md:text-base text-[var(--secondary-color)]'>Accuracy <span className='font-bold'>{userData.stats.accuracy}%</span></p>
-                        <span className='text-xs text-[var(--french-gray)]'>{userData.stats.accuracyDetail.correct} correct · {userData.stats.accuracyDetail.wrong} wrong</span>
+                        <p className='text-sm md:text-base text-[var(--secondary-color)]'>Accuracy <span className='font-bold'>{userData.stats.accuracy === null ? 'N/A' : `${userData.stats.accuracy}%`}</span></p>
+                        <span className='text-xs text-[var(--french-gray)]'>
+                          {userData.stats.accuracyDetail.total > 0
+                            ? `${userData.stats.accuracyDetail.correct} correct · ${userData.stats.accuracyDetail.wrong} wrong`
+                            : 'No attempts tracked'}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -450,7 +460,7 @@ const Profile = () => {
                         </div>
                       </div>
                       <div className={`transition-all duration-300 ${showAccuracy ? 'opacity-100 scale-100' : 'opacity-0 scale-90'} absolute`}>
-                        <p className='text-3xl font-bold text-[var(--secondary-color)]'>{userData.stats.accuracy}%</p>
+                        <p className='text-3xl font-bold text-[var(--secondary-color)]'>{userData.stats.accuracy === null ? 'N/A' : `${userData.stats.accuracy}%`}</p>
                         <p className='text-md font-medium text-[var(--secondary-color)]'>Accuracy</p>
                       </div>
                     </div>

@@ -350,9 +350,7 @@ async function computeLeaderboardFromTables(limit = 100) {
 
             const xpData = calculateUserXP(progress, { current_streak: streakMap[userId]?.currentStreak || 0 });
             const profile = profileMap[userId] || {};
-            const solvedCount = solvedCountMap[userId] ?? (Array.isArray(progress.solved_problems)
-                ? progress.solved_problems.length
-                : 0);
+            const solvedCount = solvedCountMap[userId] ?? 0;
 
             const accuracy = calculateAccuracy(progress.total_attempts || 0, progress.wrong_submissions || 0, solvedCount);
 
@@ -419,9 +417,7 @@ async function computeLeaderboardFromProgressOnly(limit = 100) {
         const leaderboardData = progressData.map((progress) => {
             const xpData = calculateUserXP(progress, { current_streak: streakMap[progress.user_id]?.currentStreak || 0 });
             const profile = profileMap[progress.user_id] || {};
-            const solvedCount = solvedCountMap[progress.user_id] ?? (Array.isArray(progress.solved_problems)
-                ? progress.solved_problems.length
-                : 0);
+            const solvedCount = solvedCountMap[progress.user_id] ?? 0;
 
             const accuracy = calculateAccuracy(progress.total_attempts || 0, progress.wrong_submissions || 0, solvedCount);
 
@@ -518,7 +514,7 @@ export async function getGlobalLeaderboard(limit = 100) {
             const viewRow = rows.find(r => r.user_id === userId);
             const progress = progressMap[userId];
             const profile = profileMap[userId] || {};
-            const completedCount = solvedCountMap[userId] || 0;
+            const completedCount = solvedCountMap[userId];
 
             const problemsFromView = typeof viewRow?.problems_solved_count === 'number'
                 ? viewRow.problems_solved_count
@@ -526,13 +522,11 @@ export async function getGlobalLeaderboard(limit = 100) {
                     ? viewRow.solved_problems.length
                     : 0;
 
-            // Canonical solved source: user_completed_problems (normalized + deduped + active-only)
-            // Fallback to progress/view only if canonical source has no rows for this user.
-            const solvedCount = completedCount || (Array.isArray(progress?.solved_problems)
-                ? progress.solved_problems.length
-                : problemsFromView);
+            // Canonical solved source: user_completed_problems (normalized + deduped + active-only).
+            // Do not fall back to legacy solved arrays to avoid stale counts after resets.
+            const solvedCount = completedCount ?? 0;
 
-            const shouldRecompute = (!viewRow?.total_xp && progress) || (problemsFromView === 0 && progress && Array.isArray(progress.solved_problems));
+            const shouldRecompute = Boolean(progress) && (!viewRow?.total_xp || problemsFromView !== solvedCount);
             const xpData = shouldRecompute ? calculateUserXP(progress, { current_streak: streakMap[userId]?.currentStreak || 0 }) : null;
 
             // Calculate XP - for users with only completed problems but no progress, give base XP
@@ -621,11 +615,7 @@ export async function getCurrentUserRank() {
 
         const problemsSolved = typeof canonicalSolvedCount === 'number'
             ? canonicalSolvedCount
-            : typeof data.problems_solved_count === 'number'
-                ? data.problems_solved_count
-                : Array.isArray(data.solved_problems)
-                    ? data.solved_problems.length
-                    : 0;
+            : 0;
 
         const { data: progressRow } = await supabase
             .from('user_progress')
@@ -705,31 +695,25 @@ export async function getFriendsLeaderboard() {
             return acc;
         }, {});
 
-        return (data || []).map((row, index) => ({
-            userId: row.user_id,
-            name: (profileMap[row.user_id]?.name) || `Student-${String(row.user_id).slice(0, 6)}`,
-            avatarUrl: profileMap[row.user_id]?.avatarUrl || '',
-            xp: row.total_xp || 0,
-            problemsSolved: typeof solvedCountMap[row.user_id] === 'number'
+        return (data || []).map((row, index) => {
+            const solvedForUser = typeof solvedCountMap[row.user_id] === 'number'
                 ? solvedCountMap[row.user_id]
-                : (typeof row.problems_solved_count === 'number' ? row.problems_solved_count : 0),
-            accuracy: (typeof row.total_attempts === 'number')
-                ? calculateAccuracy(
-                    row.total_attempts,
-                    row.wrong_submissions ?? 0,
-                    solvedCountMap[row.user_id]
-                    || (typeof row.problems_solved_count === 'number' ? row.problems_solved_count : 0)
-                )
-                : (row.accuracy_percentage ?? calculateAccuracy(
-                    0,
-                    0,
-                    solvedCountMap[row.user_id]
-                    || (typeof row.problems_solved_count === 'number' ? row.problems_solved_count : 0)
-                )),
-            reputation: row.reputation || 0,
-            currentStreak: streakMap[row.user_id] ?? 0,
-            rank: row.rank || index + 1
-        }));
+                : 0;
+
+            return {
+                userId: row.user_id,
+                name: (profileMap[row.user_id]?.name) || `Student-${String(row.user_id).slice(0, 6)}`,
+                avatarUrl: profileMap[row.user_id]?.avatarUrl || '',
+                xp: row.total_xp || 0,
+                problemsSolved: solvedForUser,
+                accuracy: (typeof row.total_attempts === 'number')
+                    ? calculateAccuracy(row.total_attempts, row.wrong_submissions ?? 0, solvedForUser)
+                    : (row.accuracy_percentage ?? calculateAccuracy(0, 0, solvedForUser)),
+                reputation: row.reputation || 0,
+                currentStreak: streakMap[row.user_id] ?? 0,
+                rank: row.rank || index + 1
+            };
+        });
     } catch (error) {
         console.error('Error getting friends leaderboard:', error);
         return [];

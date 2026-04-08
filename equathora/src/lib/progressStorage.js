@@ -279,22 +279,43 @@ export const getStreakData = () => {
     return data ? JSON.parse(data) : { current: 0, longest: 0, lastDate: null };
 };
 
+const toUtcDateKey = (dateValue = new Date()) => {
+    const date = dateValue instanceof Date ? dateValue : new Date(dateValue);
+    if (Number.isNaN(date.getTime())) return null;
+    return date.toISOString().split('T')[0];
+};
+
+const normalizeStoredStreakDate = (rawValue) => {
+    if (!rawValue) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(rawValue)) return rawValue;
+
+    const parsed = new Date(rawValue);
+    if (Number.isNaN(parsed.getTime())) return null;
+    return toUtcDateKey(parsed);
+};
+
 export const updateStreak = () => {
     const streakData = getStreakData();
-    const today = new Date().toDateString();
+    const today = toUtcDateKey(new Date());
+    const lastDate = normalizeStoredStreakDate(streakData.lastDate);
 
-    if (streakData.lastDate === today) {
+    if (lastDate === today) {
+        // Normalize any legacy date string format to YYYY-MM-DD.
+        if (streakData.lastDate !== today) {
+            streakData.lastDate = today;
+            localStorage.setItem(STORAGE_KEYS.STREAK_DATA, JSON.stringify(streakData));
+        }
         return streakData; // Already counted today
     }
 
     const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toDateString();
+    yesterday.setUTCDate(yesterday.getUTCDate() - 1);
+    const yesterdayStr = toUtcDateKey(yesterday);
 
-    if (streakData.lastDate === yesterdayStr) {
+    if (lastDate === yesterdayStr) {
         // Continue streak
         streakData.current += 1;
-    } else if (streakData.lastDate) {
+    } else if (lastDate) {
         // Streak broken
         streakData.current = 1;
     } else {

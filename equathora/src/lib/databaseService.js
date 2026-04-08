@@ -279,6 +279,21 @@ export async function toggleFavorite(problemId) {
 // STREAK DATA
 // ============================================================================
 
+const getEffectiveStreak = (currentStreak = 0, lastActivityDate = null) => {
+    if (!currentStreak || currentStreak <= 0) return 0;
+    if (!lastActivityDate) return currentStreak;
+
+    const todayUtc = new Date();
+    todayUtc.setUTCHours(0, 0, 0, 0);
+
+    const lastUtc = new Date(lastActivityDate);
+    if (Number.isNaN(lastUtc.getTime())) return currentStreak;
+    lastUtc.setUTCHours(0, 0, 0, 0);
+
+    const diffDays = Math.floor((todayUtc.getTime() - lastUtc.getTime()) / (1000 * 60 * 60 * 24));
+    return diffDays <= 1 ? currentStreak : 0;
+};
+
 export async function getStreakData() {
     try {
         const { data: { session } } = await supabase.auth.getSession();
@@ -292,7 +307,11 @@ export async function getStreakData() {
 
         if (error) throw error;
 
-        return data || createDefaultStreak();
+        const streak = data || createDefaultStreak();
+        return {
+            ...streak,
+            current_streak: getEffectiveStreak(streak.current_streak || 0, streak.last_activity_date || null)
+        };
     } catch (error) {
         console.error('Error getting streak data:', error);
         return createDefaultStreak();
