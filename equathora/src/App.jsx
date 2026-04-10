@@ -10,6 +10,12 @@ import AdminRoute from "./components/AdminRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import CookieConsent from "./components/CookieConsent";
 import { supabase } from "./lib/supabaseClient";
+import { getUserSettings } from "./lib/notificationService";
+import {
+  normalizeThemePreference,
+  setThemePreference,
+  syncThemeWithSystemPreference
+} from "./lib/theme";
 import { useAuth } from "./hooks/useAuth";
 import { trackActivityEvent, trackDailyActivity } from "./lib/activityTrackingService";
 import {
@@ -146,6 +152,35 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const cleanupSystemThemeSync = syncThemeWithSystemPreference();
+    return cleanupSystemThemeSync;
+  }, []);
+
+  useEffect(() => {
+    let isDisposed = false;
+
+    const syncThemeFromSavedSettings = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+
+        const userSettings = await getUserSettings();
+        if (isDisposed) return;
+
+        setThemePreference(normalizeThemePreference(userSettings?.theme), { persist: true });
+      } catch (error) {
+        console.error("Error syncing theme preference:", error);
+      }
+    };
+
+    void syncThemeFromSavedSettings();
+
+    return () => {
+      isDisposed = true;
+    };
+  }, []);
+
+  useEffect(() => {
     void capturePostHogPageView(location.pathname, {
       route: location.pathname
     });
@@ -185,6 +220,15 @@ export default function App() {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
+        void (async () => {
+          try {
+            const userSettings = await getUserSettings();
+            setThemePreference(normalizeThemePreference(userSettings?.theme), { persist: true });
+          } catch (error) {
+            console.error('Error syncing signed-in theme preference:', error);
+          }
+        })();
+
         identifyPostHogUser(session.user);
         void capturePostHogEvent('user_signed_in', {
           email: session.user?.email || null
