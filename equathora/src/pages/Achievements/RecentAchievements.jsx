@@ -1,14 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import './RecentAchievements.css';
-import { getUserStats } from '../../lib/progressStorage';
+import { getAchievementProgress } from '../../lib/databaseService';
 import { buildAchievements, RARITY_ORDER } from '../../data/achievements';
 import { FaLock } from 'react-icons/fa'
 
+const toAchievementStats = (snapshot = {}) => {
+  const solvedProblems = Array.isArray(snapshot.solved_problems)
+    ? snapshot.solved_problems.length
+    : Number(snapshot.problemsSolved || 0);
+
+  const currentStreak = Number(snapshot.currentStreak ?? snapshot.current_streak ?? 0);
+  const longestStreak = Number(snapshot.longestStreak ?? snapshot.longest_streak ?? 0);
+
+  const topicFrequency = Array.isArray(snapshot.topicFrequency)
+    ? snapshot.topicFrequency
+    : [];
+
+  const favoriteTopics = topicFrequency
+    .map((item) => item.topic)
+    .filter(Boolean);
+
+  const totalTimeSeconds = Math.max(0, Number(snapshot.total_time_minutes || 0)) * 60;
+
+  return {
+    problemsSolved: solvedProblems,
+    currentStreak,
+    longestStreak,
+    bestStreak: longestStreak,
+    totalTime: totalTimeSeconds,
+    difficultyBreakdown: snapshot.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 },
+    perfectStreak: Number(snapshot.perfect_streak || snapshot.perfectStreak || 0),
+    favoriteTopics,
+    joinDate: snapshot.account_created || null
+  };
+};
+
 const RecentAchievements = () => {
-  const userStats = getUserStats();
-  const solvedProblems = userStats.problemsSolved || 0;
+  const [userStats, setUserStats] = useState(() => toAchievementStats());
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchStats = async () => {
+      const snapshot = await getAchievementProgress();
+      if (!isMounted) return;
+      setUserStats(toAchievementStats(snapshot));
+    };
+
+    void fetchStats();
+
+    const handleRefresh = () => {
+      void fetchStats();
+    };
+
+    window.addEventListener('focus', handleRefresh);
+    window.addEventListener('equathora:streak-updated', handleRefresh);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener('focus', handleRefresh);
+      window.removeEventListener('equathora:streak-updated', handleRefresh);
+    };
+  }, []);
+
   const streakDays = userStats.currentStreak || 0;
-  const conceptsLearned = Object.keys(userStats.favoriteTopics || {}).length || 0;
+  const conceptsLearned = Array.isArray(userStats.favoriteTopics)
+    ? userStats.favoriteTopics.length
+    : Object.keys(userStats.favoriteTopics || {}).length || 0;
 
   const achievements = buildAchievements(userStats);
   const unlockedAchievements = achievements.filter(a => a.unlocked);

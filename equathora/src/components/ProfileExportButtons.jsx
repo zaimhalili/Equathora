@@ -2,9 +2,9 @@ import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { FaFileDownload, FaFilePdf, FaFileCsv, FaChevronDown } from 'react-icons/fa';
 import { jsPDF } from 'jspdf';
 import Logo from '../assets/logo/EquathoraSymbolIcon.png';
-import { getUserStats, getSubmissions } from '../lib/progressStorage';
-import { getCompletedProblems, getUserProgress } from '../lib/databaseService';
+import { getAchievementProgress, getCompletedProblems, getUserSubmissions } from '../lib/databaseService';
 import { getAllProblems } from '../lib/problemService';
+import { supabase } from '../lib/supabaseClient';
 import { formatTopicLabel } from '../lib/utils';
 
 const formatDuration = (totalSeconds = 0) => {
@@ -28,26 +28,82 @@ const formatDate = (iso, includeTime = false) => {
 };
 
 const buildDataSnapshot = async () => {
-    const stats = getUserStats();
-    const [completedIds, allProblems] = await Promise.all([
+    const [achievementSnapshot, completedIds, allProblems, allSubmissions, sessionResult] = await Promise.all([
+        getAchievementProgress(),
         getCompletedProblems(),
-        getAllProblems()
+        getAllProblems(),
+        getUserSubmissions(),
+        supabase.auth.getSession()
     ]);
-    const completed = allProblems.filter(p => completedIds.includes(String(p.id)));
-    const allSubmissions = getSubmissions();
 
-    const totalTimeSeconds = completed.reduce((sum, item) => sum + (item.timeSpent || 0), 0);
-    const latestCompletion = completed[completed.length - 1]?.completedAt || completed[completed.length - 1]?.lastAttempt;
-    const firstCompletion = completed[0]?.completedAt || stats.joinDate;
+    const session = sessionResult?.data?.session || null;
+    const completedIdSet = new Set((completedIds || []).map((id) => String(id)));
+    const completed = allProblems.filter((problem) => completedIdSet.has(String(problem.id)));
 
-    const difficulty = stats.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 };
-    const favoriteTopics = Array.isArray(stats.favoriteTopics)
-        ? stats.favoriteTopics.map((topic) => formatTopicLabel(topic))
+    const totalAttempts = Number(achievementSnapshot?.total_attempts || 0);
+    const wrongSubmissions = Number(achievementSnapshot?.wrong_submissions || 0);
+    const correctSubmissions = totalAttempts > 0
+        ? Math.max(totalAttempts - wrongSubmissions, 0)
+        : Number(achievementSnapshot?.correct_answers || 0);
+    const accuracy = totalAttempts > 0
+        ? Math.round((correctSubmissions / totalAttempts) * 100)
+        : 0;
+
+    const dbTimeSeconds = Math.max(0, Number(achievementSnapshot?.total_time_minutes || 0)) * 60;
+    const fallbackSubmissionTimeSeconds = (allSubmissions || []).reduce((sum, sub) => {
+        return sum + (sub.time_spent_seconds || 0);
+    }, 0);
+    const totalTimeSeconds = dbTimeSeconds || fallbackSubmissionTimeSeconds;
+
+    const latestCompletion = allSubmissions?.[0]?.submitted_at || null;
+    const firstCompletion = allSubmissions?.length
+        ? allSubmissions[allSubmissions.length - 1]?.submitted_at
+        : (session?.user?.created_at || null);
+
+    const difficulty = achievementSnapshot?.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 };
+    const topicFrequency = Array.isArray(achievementSnapshot?.topicFrequency)
+        ? achievementSnapshot.topicFrequency
         : [];
+    const favoriteTopics = topicFrequency
+        .slice()
+        .sort((a, b) => (b.count || 0) - (a.count || 0))
+        .slice(0, 3)
+        .map((item) => formatTopicLabel(item.topic))
+        .filter(Boolean);
+
+    const weeklyProgress = Array.isArray(achievementSnapshot?.weeklyProgress)
+        ? achievementSnapshot.weeklyProgress
+        : Array(7).fill(0);
+
+    const username = session?.user?.user_metadata?.username
+        || session?.user?.user_metadata?.preferred_username
+        || session?.user?.user_metadata?.full_name
+        || session?.user?.user_metadata?.name
+        || session?.user?.email?.split('@')[0]
+        || 'Student';
+
+    const stats = {
+        username,
+        joinDate: session?.user?.created_at || new Date().toISOString(),
+        problemsSolved: completed.length,
+        accuracy,
+        accuracyBreakdown: {
+            correct: correctSubmissions,
+            wrong: wrongSubmissions,
+            total: totalAttempts
+        },
+        totalAttempts,
+        difficultyBreakdown: difficulty,
+        currentStreak: Number(achievementSnapshot?.currentStreak || 0),
+        longestStreak: Number(achievementSnapshot?.longestStreak || 0),
+        reputation: Number(achievementSnapshot?.reputation || 0),
+        weeklyProgress,
+        favoriteTopics
+    };
 
     // Additional comprehensive data
     const avgTimePerProblem = completed.length > 0 ? Math.round(totalTimeSeconds / completed.length) : 0;
-    const totalSessions = stats.weeklyProgress ? stats.weeklyProgress.reduce((a, b) => a + b, 0) : 0;
+    const totalSessions = weeklyProgress.reduce((a, b) => a + b, 0);
     const avgProblemsPerSession = totalSessions > 0 ? (completed.length / totalSessions).toFixed(1) : '0';
 
     return {
@@ -62,7 +118,7 @@ const buildDataSnapshot = async () => {
         avgTimePerProblem,
         totalSessions,
         avgProblemsPerSession,
-        totalSubmissions: allSubmissions.length,
+        totalSubmissions: (allSubmissions || []).length,
         totalProblems: allProblems.length,
         easyTotal: allProblems.filter(p => p.difficulty === 'Easy').length,
         mediumTotal: allProblems.filter(p => p.difficulty === 'Medium').length,

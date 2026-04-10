@@ -95,7 +95,12 @@ const Navbar = () => {
 
     // Refresh streak on focus
     window.addEventListener('focus', fetchStreak);
-    return () => window.removeEventListener('focus', fetchStreak);
+    window.addEventListener('equathora:streak-updated', fetchStreak);
+
+    return () => {
+      window.removeEventListener('focus', fetchStreak);
+      window.removeEventListener('equathora:streak-updated', fetchStreak);
+    };
   }, []);
 
   useEffect(() => {

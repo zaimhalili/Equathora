@@ -63,6 +63,11 @@ const Sidebar = ({ isOpen, onClose }) => {
             }
         };
         fetchStreak();
+
+        window.addEventListener('equathora:streak-updated', fetchStreak);
+        return () => {
+            window.removeEventListener('equathora:streak-updated', fetchStreak);
+        };
     }, [isOpen]);
 
     useEffect(() => {

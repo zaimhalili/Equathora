@@ -16,17 +16,25 @@ import React from 'react';
  * @returns {{ id: string, icon: JSX.Element, title: string, description: string, color: string, unlocked: boolean, rarity: string }[]}
  */
 export function buildAchievements(userStats = {}) {
-    const solvedProblems = userStats.problemsSolved || 0;
-    const streakDays = userStats.currentStreak || 0;
-    const totalTimeMinutes = Math.floor((userStats.totalTime || 0) / 60);
+    const solvedProblems = Number(
+        userStats.problemsSolved
+        || (Array.isArray(userStats.solved_problems) ? userStats.solved_problems.length : 0)
+    );
+    const streakDays = Number(userStats.currentStreak ?? userStats.current_streak ?? 0);
+    const totalTimeSeconds = Number(userStats.totalTime || 0);
+    const totalTimeMinutes = totalTimeSeconds > 0
+        ? Math.floor(totalTimeSeconds / 60)
+        : Math.floor(Number(userStats.total_time_minutes || 0));
     const diff = userStats.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 };
     const hardProblems = diff.hard || 0;
     const mediumProblems = diff.medium || 0;
     const easyProblems = diff.easy || 0;
     const perfectStreak = userStats.perfectStreak || 0;
-    const topicsExplored = Object.keys(userStats.favoriteTopics || {}).length || 0;
+    const topicsExplored = Array.isArray(userStats.favoriteTopics)
+        ? userStats.favoriteTopics.length
+        : Object.keys(userStats.favoriteTopics || {}).length || 0;
     const longestSession = userStats.longestSession || 0;
-    const bestStreak = userStats.bestStreak || streakDays;
+    const bestStreak = Number(userStats.bestStreak ?? userStats.longestStreak ?? userStats.longest_streak ?? streakDays);
     const accountCreated = userStats.joinDate ? new Date(userStats.joinDate).getTime() : Date.now();
     const isEarlyUser = accountCreated < new Date('2025-01-01').getTime();
 

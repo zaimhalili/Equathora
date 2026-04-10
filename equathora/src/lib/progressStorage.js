@@ -294,6 +294,24 @@ const normalizeStoredStreakDate = (rawValue) => {
     return toUtcDateKey(parsed);
 };
 
+export const syncStreakData = ({ current = 0, longest = 0, lastDate = null } = {}) => {
+    const normalizedLastDate = normalizeStoredStreakDate(lastDate) || toUtcDateKey(new Date());
+    const streakData = {
+        current: Math.max(0, Number(current) || 0),
+        longest: Math.max(0, Number(longest) || 0),
+        lastDate: normalizedLastDate
+    };
+
+    localStorage.setItem(STORAGE_KEYS.STREAK_DATA, JSON.stringify(streakData));
+
+    updateUserProgress({
+        currentStreak: streakData.current,
+        longestStreak: streakData.longest
+    });
+
+    return streakData;
+};
+
 export const updateStreak = () => {
     const streakData = getStreakData();
     const today = toUtcDateKey(new Date());

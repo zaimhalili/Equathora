@@ -294,6 +294,31 @@ const getEffectiveStreak = (currentStreak = 0, lastActivityDate = null) => {
     return diffDays <= 1 ? currentStreak : 0;
 };
 
+const toUtcDateKey = (dateValue = new Date()) => {
+    const date = dateValue instanceof Date ? dateValue : new Date(dateValue);
+    if (Number.isNaN(date.getTime())) return null;
+    return date.toISOString().split('T')[0];
+};
+
+const normalizeStreakDateKey = (rawValue) => {
+    if (!rawValue) return null;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(rawValue)) return rawValue;
+    return toUtcDateKey(rawValue);
+};
+
+const getUtcDayDiff = (fromDateKey, toDateKey) => {
+    if (!fromDateKey || !toDateKey) return null;
+
+    const from = new Date(`${fromDateKey}T00:00:00.000Z`);
+    const to = new Date(`${toDateKey}T00:00:00.000Z`);
+
+    if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime())) {
+        return null;
+    }
+
+    return Math.floor((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24));
+};
+
 export async function getStreakData() {
     try {
         const { data: { session } } = await supabase.auth.getSession();
@@ -334,6 +359,100 @@ export async function updateStreakData(streakData) {
         if (error) throw error;
     } catch (error) {
         console.error('Error updating streak data:', error);
+    }
+}
+
+export async function updateStreakForCorrectSolve() {
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+            return {
+                ...createDefaultStreak(),
+                previous_streak: 0,
+                incremented: false
+            };
+        }
+
+        const todayKey = toUtcDateKey(new Date());
+
+        const { data: existing, error } = await supabase
+            .from('user_streak_data')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+
+        if (error) throw error;
+
+        const row = existing || createDefaultStreak();
+        const previousCurrentRaw = Math.max(0, Number(row.current_streak || 0));
+        const previousLongestRaw = Math.max(0, Number(row.longest_streak || 0));
+        const previousLastDate = normalizeStreakDateKey(row.last_activity_date);
+        const previousEffective = getEffectiveStreak(previousCurrentRaw, previousLastDate);
+
+        let nextCurrent = previousCurrentRaw;
+        let nextLongest = previousLongestRaw;
+        let nextLastDate = previousLastDate;
+        let nextStartDate = normalizeStreakDateKey(row.streak_start_date) || todayKey;
+        let incremented = false;
+
+        const dayDiff = previousLastDate ? getUtcDayDiff(previousLastDate, todayKey) : null;
+
+        if (previousCurrentRaw <= 0 || !previousLastDate) {
+            nextCurrent = 1;
+            nextLastDate = todayKey;
+            nextStartDate = todayKey;
+            incremented = true;
+        } else if (dayDiff === 1) {
+            nextCurrent = previousCurrentRaw + 1;
+            nextLastDate = todayKey;
+            incremented = true;
+        } else if (dayDiff === null || dayDiff > 1) {
+            nextCurrent = 1;
+            nextLastDate = todayKey;
+            nextStartDate = todayKey;
+            incremented = true;
+        }
+
+        nextLongest = Math.max(nextLongest, nextCurrent);
+
+        const hasChanges =
+            !existing ||
+            incremented ||
+            normalizeStreakDateKey(row.last_activity_date) !== nextLastDate ||
+            Math.max(0, Number(row.current_streak || 0)) !== nextCurrent ||
+            Math.max(0, Number(row.longest_streak || 0)) !== nextLongest ||
+            normalizeStreakDateKey(row.streak_start_date) !== nextStartDate;
+
+        if (hasChanges) {
+            const { error: persistError } = await supabase
+                .from('user_streak_data')
+                .upsert({
+                    user_id: session.user.id,
+                    current_streak: nextCurrent,
+                    longest_streak: nextLongest,
+                    last_activity_date: nextLastDate,
+                    streak_start_date: nextStartDate,
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'user_id' });
+
+            if (persistError) throw persistError;
+        }
+
+        return {
+            current_streak: nextCurrent,
+            longest_streak: nextLongest,
+            last_activity_date: nextLastDate,
+            streak_start_date: nextStartDate,
+            previous_streak: previousEffective,
+            incremented
+        };
+    } catch (error) {
+        console.error('Error updating streak for correct solve:', error);
+        return {
+            ...createDefaultStreak(),
+            previous_streak: 0,
+            incremented: false
+        };
     }
 }
 

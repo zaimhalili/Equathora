@@ -32,15 +32,14 @@ import {
   getSubmissions,
   addSubmission,
   markProblemCompleted,
-  updateStreak,
-  getStreakData,
+  syncStreakData,
   recordProblemStats,
   markProblemInProgress,
   removeProblemFromInProgress,
   getUserStats
 } from '../lib/progressStorage';
 import { validateAnswer } from '../lib/answerValidation';
-import { recordSubmission, updateStreakData } from '../lib/databaseService';
+import { recordSubmission, updateStreakForCorrectSolve } from '../lib/databaseService';
 import { trackActivityEvent } from '../lib/activityTrackingService';
 import { buildAchievements } from '../data/achievements';
 import {
@@ -584,31 +583,39 @@ const Problem = () => {
     }
 
     // Streak should only update on a correct first-solve submission.
-    const previousStreakData = getStreakData();
-    const previousStreak = previousStreakData.current || 0;
-    let streakData = previousStreakData;
+    let previousStreak = 0;
+    let streakData = null;
 
     if (validation.isCorrect) {
-      streakData = updateStreak();
-
-      // Show popup if streak was incremented (first solve of the day)
-      if (streakData.current > previousStreak) {
-        setCurrentStreakValue(streakData.current);
-        setShowStreakPopup(true);
-      }
-
       try {
-        void updateStreakData({
-          current_streak: streakData.current,
-          longest_streak: streakData.longest,
-          last_activity_date: new Date().toISOString().split('T')[0]
+        const streakUpdate = await updateStreakForCorrectSolve();
+        previousStreak = streakUpdate.previous_streak || 0;
+        streakData = syncStreakData({
+          current: streakUpdate.current_streak || 0,
+          longest: streakUpdate.longest_streak || 0,
+          lastDate: streakUpdate.last_activity_date || null
         });
+
+        // Show popup if streak was incremented (first solve of the day)
+        if (streakUpdate.incremented && streakData.current > previousStreak) {
+          setCurrentStreakValue(streakData.current);
+          setShowStreakPopup(true);
+        }
+
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('equathora:streak-updated', {
+            detail: {
+              currentStreak: streakData.current,
+              longestStreak: streakData.longest
+            }
+          }));
+        }
       } catch {
         // ignore background failure
       }
     }
 
-    recordProblemStats(problem, {
+    await recordProblemStats(problem, {
       isCorrect: validation.isCorrect,
       timeSpentSeconds,
       timestamp: entry.timestamp,
@@ -637,7 +644,7 @@ const Problem = () => {
         }
 
         // Also fire streak milestone notification
-        if (streakData.current > previousStreak && [7, 14, 30, 60, 90, 180, 365].includes(streakData.current)) {
+        if (streakData?.current > previousStreak && [7, 14, 30, 60, 90, 180, 365].includes(streakData.current)) {
           void notifyStreakMilestone(streakData.current).catch(() => { });
         }
       } catch {
