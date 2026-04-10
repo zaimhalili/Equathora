@@ -251,11 +251,11 @@ input[type="email"]:-webkit-autofill:focus,
   background-color: var(--autofill-bg) !important;
 }
 
-button{
+button {
   cursor: pointer;
 }
 
-select{
+select {
   cursor: pointer;
 }
 

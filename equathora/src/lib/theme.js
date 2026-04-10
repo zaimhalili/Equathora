@@ -65,7 +65,7 @@ export function initializeTheme() {
 
 export function syncThemeWithSystemPreference() {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-        return () => {};
+        return () => { };
     }
 
     const mediaQuery = window.matchMedia(SYSTEM_THEME_QUERY);
