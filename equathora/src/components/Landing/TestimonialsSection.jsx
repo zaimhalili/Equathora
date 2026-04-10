@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Aashrun from "../../assets/images/aashrun.jpg";
 import Sanya from "../../assets/images/sanya.jpg";
+import Rudransh from "../../assets/images/rudransh.jpg";
 import { FaArrowLeft, FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 import { FaArrowRight } from 'react-icons/fa';
 
@@ -14,7 +15,7 @@ const testimonials = [
             <>
                 It’s actually <span className='font-bold'>well-designed</span>. <br />And it lets you practice math{" "}
                 <span className='font-bold'>chapter by chapter</span>, with a <span className=''>HUGE database of questions</span>{" "}
-                without wanting to throw your laptop out the window.{" "}<FaQuoteRight className='hidden md:inline w-3 h-3 -translate-y-3'/>
+                without wanting to throw your laptop out the window.{" "}<FaQuoteRight className='hidden md:inline w-3 h-3 -translate-y-3' />
             </>
         ),
         link: "https://www.linkedin.com/posts/aashrun-gautam-72572a1a5_equathora-master-math-through-practice-activity-7423286785453174785-mgSJ?utm_source=share&utm_medium=member_desktop&rcm=ACoAADJeKOABNdzq_bUV8CWEUZirbIav6hZpjJk",
@@ -29,6 +30,17 @@ const testimonials = [
             </>
         ),
         link: "https://www.linkedin.com/in/snylumagbas/",
+    },
+    {
+        image: Rudransh,
+        name: "Rudransh Shukla",
+        role: "Co-Founder and CEO of OpennMind",
+        text: (
+            <>
+                Equathora is a very well-built platform that makes math practice feel simple, <span className='font-bold'>engaging</span>, and easy to follow. The experience feels clean and thoughtfully designed, and it has the <span className='font-bold'>potential</span> to genuinely <span className='font-bold'>help students</span> stay consistent and improve over time.{" "}<FaQuoteRight className='hidden md:inline w-3 h-3 -translate-y-3' />
+            </>
+        ),
+        link: "https://www.linkedin.com/in/rudransh-shukla-669865248/",
     },
 ];
 
@@ -94,7 +106,7 @@ const TestimonialsSection = () => {
                                 className='flex flex-col gap-6 absolute inset-0 w-full justify-between'
                             >
 
-                                <FaQuoteLeft className='text-[var(--secondary-color)] absolute w-3 h-3 -left-5 hidden md:flex'/>
+                                <FaQuoteLeft className='text-[var(--secondary-color)] absolute w-3 h-3 -left-5 hidden md:flex' />
                                 <p className='text-lg sm:text-xl md:text-2xl xl:text-3xl font-light'>
                                     {testimonials[index].text}
                                 </p>
