@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo } from "react";
+import React, { lazy, Suspense, useEffect, useMemo } from "react";
 import { Analytics } from "@vercel/analytics/react";
 
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";

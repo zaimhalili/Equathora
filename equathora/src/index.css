@@ -19,7 +19,7 @@
     --raisin-black: rgb(32, 34, 49);
     --secondary-color: #2b2d42;
     /*Secondary Color*/
-    --mid-main-secondary: rgb(141, 153, 174); /* in dark should be raising black color */
+    --mid-main-secondary: rgb(141, 153, 174); /* in dark should be raising black color ; black with white and white wwith black and so on*/
     /*Mid Main & Secondary*/
     --french-gray: #bdc6d1ff; /* in dark should be secondary color */
     --main-color: #edf2f4; /* in dark should be secondary color */
