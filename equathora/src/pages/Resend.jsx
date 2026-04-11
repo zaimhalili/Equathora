@@ -70,14 +70,14 @@ const Resend = () => {
           </form>
 
           <div id='auth-other-options'>
-            <p className='auth-other-options-text'>
+            <p className='auth-other-options-text text-black dark:text-white'>
               Already have an account?{' '}
               <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
                 Log In
               </Link>
             </p>
 
-            <p className='auth-other-options-text'>
+            <p className='auth-other-options-text text-black dark:text-white'>
               Don't have an account yet?{' '}
               <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
                 Sign up for free.
