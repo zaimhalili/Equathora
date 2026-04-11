@@ -268,8 +268,7 @@ const HeroSection = () => {
                                         bg-gradient-to-b
                                         from-transparent
                                         to-[var(--french-gray)]/50
-                                        backdrop-blur-sm
-                                    "
+                                        backdrop-blur-sm"
                                 >
                                     {/* Inner subtle circle */}
                                     <div className="absolute inset-[18%] rounded-full bg-[var(--main-color)]/80 z-0" />
@@ -304,7 +303,7 @@ const HeroSection = () => {
                                     <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary-color)] rounded-md shadow-2xl">
                                         <div>
                                             <p className="font-bold text-xl text-[var(--main-color)]">50+</p>
-                                            <p className="text-[10px] text-gray-300">Active learners</p>
+                                            <p className="text-[10px] text-[var(--mid-main-secondary)]">Active learners</p>
                                         </div>
                                     </div>
                                 </motion.div>

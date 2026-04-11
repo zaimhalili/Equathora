@@ -1,7 +1,7 @@
 #body-login {
     height: 100vh;
     min-height: 100vh;
-    background-color: white;
+    background-color: var(--main);
     width: 100vw;
     display: flex;
     overflow-y: auto;

@@ -115,7 +115,7 @@ const CTASection = () => {
 
                 {/* Right side - Decorative card */}
                 <motion.div
-                    className="flex-1 relative flex justify-center items-center max-lg:hidden"
+                    className="flex-1 relative flex justify-center items-center max-lg:hidden theme-lock"
                     initial={{ opacity: 0, x: 50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}

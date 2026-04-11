@@ -1,3 +1,11 @@
+:root[data-theme='dark'] #footer-container {
+    --secondary-color: #2b2d42;
+    --main-color: #edf2f4;
+    --mid-main-secondary: #8d99ae;
+    --accent-color: #d70427;
+    --dark-accent-color: #a3142c;
+}
+
 #footer-container {
     width: 100%;
     height: auto;

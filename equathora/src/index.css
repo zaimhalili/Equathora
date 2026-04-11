@@ -53,15 +53,34 @@
     --chart-5: 27 87% 67%;
   }
 
+  :root[data-theme='dark'] .theme-lock {
+    --raisin-black: #202231;
+    --secondary-color: #2b2d42;
+    --mid-main-secondary: #8d99ae;
+    --french-gray: #c3ccd8;
+    --main-color: #edf2f4;
+    --light-accent-color: #ef233c;
+    --accent-color: #d70427;
+    --dark-accent-color: #a3142c;
+    --white-color: #ffffff;
+
+    --surface-card: #ffffff;
+    --surface-muted: #f3f6fb;
+    --surface-elevated: #e6ebf3;
+    --text-muted: #5f6d89;
+    --text-subtle: #7f8aa3;
+    --border-strong: #d0d9e6;
+  }
+
   :root[data-theme='dark'] {
     --raisin-black: #070c16;
     --secondary-color: #e7edf8;
     --mid-main-secondary: #131b2b;
     --french-gray: #3a4761;
     --main-color: #0f1421;
-    --light-accent-color: #ff6a80;
-    --accent-color: #ff3a55;
-    --dark-accent-color: #d91d3c;
+    --light-accent-color: #ef233c;
+    --accent-color: #ef233c;
+    --dark-accent-color: #d70427;
 
     --surface-card: #171f31;
     --surface-muted: #1d273b;
@@ -365,4 +384,1287 @@ select {
 :root[data-theme='dark'] .text-yellow-800,
 :root[data-theme='dark'] .text-yellow-700 {
   color: #fde68a !important;
+}
+
+
+/* Auto-generated opposite Tailwind shade overrides for dark mode.
+   This file is generated from currently used Tailwind color utility classes in src/. */
+:root[data-theme='dark'] .bg-amber-100 {
+  background-color: var(--color-amber-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-amber-100 {
+  background-color: var(--color-amber-100) !important;
+}
+
+:root[data-theme='dark'] .bg-amber-50 {
+  background-color: var(--color-amber-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-amber-50 {
+  background-color: var(--color-amber-50) !important;
+}
+
+:root[data-theme='dark'] .bg-blue-100 {
+  background-color: var(--color-blue-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-blue-100 {
+  background-color: var(--color-blue-100) !important;
+}
+
+:root[data-theme='dark'] .bg-blue-300 {
+  background-color: var(--color-blue-600) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-blue-300 {
+  background-color: var(--color-blue-300) !important;
+}
+
+:root[data-theme='dark'] .bg-blue-400 {
+  background-color: var(--color-blue-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-blue-400 {
+  background-color: var(--color-blue-400) !important;
+}
+
+:root[data-theme='dark'] .bg-blue-50 {
+  background-color: var(--color-blue-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-blue-50 {
+  background-color: var(--color-blue-50) !important;
+}
+
+:root[data-theme='dark'] .bg-gray-100 {
+  background-color: var(--color-gray-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-gray-100 {
+  background-color: var(--color-gray-100) !important;
+}
+
+:root[data-theme='dark'] .bg-gray-200 {
+  background-color: var(--color-gray-700) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-gray-200 {
+  background-color: var(--color-gray-200) !important;
+}
+
+:root[data-theme='dark'] .bg-gray-300 {
+  background-color: var(--color-gray-600) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-gray-300 {
+  background-color: var(--color-gray-300) !important;
+}
+
+:root[data-theme='dark'] .bg-gray-50 {
+  background-color: var(--color-gray-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-gray-50 {
+  background-color: var(--color-gray-50) !important;
+}
+
+:root[data-theme='dark'] .bg-gray-50\/80 {
+  background-color: color-mix(in oklab, var(--color-gray-900) 80%, transparent) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-gray-50\/80 {
+  background-color: color-mix(in oklab, var(--color-gray-50) 80%, transparent) !important;
+}
+
+:root[data-theme='dark'] .bg-green-100 {
+  background-color: var(--color-green-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-green-100 {
+  background-color: var(--color-green-100) !important;
+}
+
+:root[data-theme='dark'] .bg-green-400 {
+  background-color: var(--color-green-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-green-400 {
+  background-color: var(--color-green-400) !important;
+}
+
+:root[data-theme='dark'] .bg-green-50 {
+  background-color: var(--color-green-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-green-50 {
+  background-color: var(--color-green-50) !important;
+}
+
+:root[data-theme='dark'] .bg-green-600 {
+  background-color: var(--color-green-300) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-green-600 {
+  background-color: var(--color-green-600) !important;
+}
+
+:root[data-theme='dark'] .bg-green-700 {
+  background-color: var(--color-green-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-green-700 {
+  background-color: var(--color-green-700) !important;
+}
+
+:root[data-theme='dark'] .bg-indigo-100 {
+  background-color: var(--color-indigo-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-indigo-100 {
+  background-color: var(--color-indigo-100) !important;
+}
+
+:root[data-theme='dark'] .bg-orange-100 {
+  background-color: var(--color-orange-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-orange-100 {
+  background-color: var(--color-orange-100) !important;
+}
+
+:root[data-theme='dark'] .bg-orange-50 {
+  background-color: var(--color-orange-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-orange-50 {
+  background-color: var(--color-orange-50) !important;
+}
+
+:root[data-theme='dark'] .bg-purple-100 {
+  background-color: var(--color-purple-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-purple-100 {
+  background-color: var(--color-purple-100) !important;
+}
+
+:root[data-theme='dark'] .bg-red-100 {
+  background-color: var(--color-red-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-red-100 {
+  background-color: var(--color-red-100) !important;
+}
+
+:root[data-theme='dark'] .bg-red-400 {
+  background-color: var(--color-red-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-red-400 {
+  background-color: var(--color-red-400) !important;
+}
+
+:root[data-theme='dark'] .bg-red-50 {
+  background-color: var(--color-red-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-red-50 {
+  background-color: var(--color-red-50) !important;
+}
+
+:root[data-theme='dark'] .bg-red-600 {
+  background-color: var(--color-red-300) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-red-600 {
+  background-color: var(--color-red-600) !important;
+}
+
+:root[data-theme='dark'] .bg-red-700 {
+  background-color: var(--color-red-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-red-700 {
+  background-color: var(--color-red-700) !important;
+}
+
+:root[data-theme='dark'] .bg-yellow-100 {
+  background-color: var(--color-yellow-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-yellow-100 {
+  background-color: var(--color-yellow-100) !important;
+}
+
+:root[data-theme='dark'] .bg-yellow-400 {
+  background-color: var(--color-yellow-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-yellow-400 {
+  background-color: var(--color-yellow-400) !important;
+}
+
+:root[data-theme='dark'] .bg-yellow-50 {
+  background-color: var(--color-yellow-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .bg-yellow-50 {
+  background-color: var(--color-yellow-50) !important;
+}
+
+:root[data-theme='dark'] .border-amber-300 {
+  border-color: var(--color-amber-600) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-amber-300 {
+  border-color: var(--color-amber-300) !important;
+}
+
+:root[data-theme='dark'] .border-blue-200 {
+  border-color: var(--color-blue-700) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-blue-200 {
+  border-color: var(--color-blue-200) !important;
+}
+
+:root[data-theme='dark'] .border-blue-400 {
+  border-color: var(--color-blue-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-blue-400 {
+  border-color: var(--color-blue-400) !important;
+}
+
+:root[data-theme='dark'] .border-blue-50 {
+  border-color: var(--color-blue-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-blue-50 {
+  border-color: var(--color-blue-50) !important;
+}
+
+:root[data-theme='dark'] .border-gray-100 {
+  border-color: var(--color-gray-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-gray-100 {
+  border-color: var(--color-gray-100) !important;
+}
+
+:root[data-theme='dark'] .border-gray-200 {
+  border-color: var(--color-gray-700) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-gray-200 {
+  border-color: var(--color-gray-200) !important;
+}
+
+:root[data-theme='dark'] .border-gray-300 {
+  border-color: var(--color-gray-600) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-gray-300 {
+  border-color: var(--color-gray-300) !important;
+}
+
+:root[data-theme='dark'] .border-gray-50 {
+  border-color: var(--color-gray-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-gray-50 {
+  border-color: var(--color-gray-50) !important;
+}
+
+:root[data-theme='dark'] .border-gray-50\/20 {
+  border-color: color-mix(in oklab, var(--color-gray-900) 20%, transparent) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-gray-50\/20 {
+  border-color: color-mix(in oklab, var(--color-gray-50) 20%, transparent) !important;
+}
+
+:root[data-theme='dark'] .border-green-200 {
+  border-color: var(--color-green-700) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-green-200 {
+  border-color: var(--color-green-200) !important;
+}
+
+:root[data-theme='dark'] .border-green-400 {
+  border-color: var(--color-green-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-green-400 {
+  border-color: var(--color-green-400) !important;
+}
+
+:root[data-theme='dark'] .border-green-50 {
+  border-color: var(--color-green-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-green-50 {
+  border-color: var(--color-green-50) !important;
+}
+
+:root[data-theme='dark'] .border-orange-200 {
+  border-color: var(--color-orange-700) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-orange-200 {
+  border-color: var(--color-orange-200) !important;
+}
+
+:root[data-theme='dark'] .border-orange-400 {
+  border-color: var(--color-orange-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-orange-400 {
+  border-color: var(--color-orange-400) !important;
+}
+
+:root[data-theme='dark'] .border-red-200 {
+  border-color: var(--color-red-700) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-red-200 {
+  border-color: var(--color-red-200) !important;
+}
+
+:root[data-theme='dark'] .border-red-400 {
+  border-color: var(--color-red-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-red-400 {
+  border-color: var(--color-red-400) !important;
+}
+
+:root[data-theme='dark'] .border-red-50 {
+  border-color: var(--color-red-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-red-50 {
+  border-color: var(--color-red-50) !important;
+}
+
+:root[data-theme='dark'] .border-yellow-200 {
+  border-color: var(--color-yellow-700) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-yellow-200 {
+  border-color: var(--color-yellow-200) !important;
+}
+
+:root[data-theme='dark'] .border-yellow-50 {
+  border-color: var(--color-yellow-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .border-yellow-50 {
+  border-color: var(--color-yellow-50) !important;
+}
+
+:root[data-theme='dark'] .from-amber-50 {
+  --tw-gradient-from: var(--color-amber-900) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-amber-900) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-amber-50 {
+  --tw-gradient-from: var(--color-amber-50) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-amber-50) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-blue-100 {
+  --tw-gradient-from: var(--color-blue-800) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-blue-800) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-blue-100 {
+  --tw-gradient-from: var(--color-blue-100) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-blue-100) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-blue-400 {
+  --tw-gradient-from: var(--color-blue-500) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-blue-500) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-blue-400 {
+  --tw-gradient-from: var(--color-blue-400) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-blue-400) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-blue-50 {
+  --tw-gradient-from: var(--color-blue-900) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-blue-900) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-blue-50 {
+  --tw-gradient-from: var(--color-blue-50) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-blue-50) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-blue-600 {
+  --tw-gradient-from: var(--color-blue-300) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-blue-300) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-blue-600 {
+  --tw-gradient-from: var(--color-blue-600) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-blue-600) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-emerald-100 {
+  --tw-gradient-from: var(--color-emerald-800) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-emerald-800) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-emerald-100 {
+  --tw-gradient-from: var(--color-emerald-100) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-emerald-100) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-gray-50 {
+  --tw-gradient-from: var(--color-gray-900) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-gray-900) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-gray-50 {
+  --tw-gradient-from: var(--color-gray-50) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-gray-50) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-gray-50\/50 {
+  --tw-gradient-from: color-mix(in oklab, var(--color-gray-900) 50%, transparent) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, color-mix(in oklab, var(--color-gray-900) 50%, transparent) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-gray-50\/50 {
+  --tw-gradient-from: color-mix(in oklab, var(--color-gray-50) 50%, transparent) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, color-mix(in oklab, var(--color-gray-50) 50%, transparent) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-green-100 {
+  --tw-gradient-from: var(--color-green-800) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-green-800) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-green-100 {
+  --tw-gradient-from: var(--color-green-100) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-green-100) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-green-400 {
+  --tw-gradient-from: var(--color-green-500) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-green-500) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-green-400 {
+  --tw-gradient-from: var(--color-green-400) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-green-400) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-green-50 {
+  --tw-gradient-from: var(--color-green-900) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-green-900) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-green-50 {
+  --tw-gradient-from: var(--color-green-50) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-green-50) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-indigo-50 {
+  --tw-gradient-from: var(--color-indigo-900) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-indigo-900) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-indigo-50 {
+  --tw-gradient-from: var(--color-indigo-50) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-indigo-50) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-orange-100 {
+  --tw-gradient-from: var(--color-orange-800) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-orange-800) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-orange-100 {
+  --tw-gradient-from: var(--color-orange-100) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-orange-100) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-orange-400 {
+  --tw-gradient-from: var(--color-orange-500) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-orange-500) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-orange-400 {
+  --tw-gradient-from: var(--color-orange-400) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-orange-400) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-orange-50 {
+  --tw-gradient-from: var(--color-orange-900) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-orange-900) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-orange-50 {
+  --tw-gradient-from: var(--color-orange-50) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-orange-50) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-pink-100 {
+  --tw-gradient-from: var(--color-pink-800) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-pink-800) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-pink-100 {
+  --tw-gradient-from: var(--color-pink-100) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-pink-100) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-pink-400 {
+  --tw-gradient-from: var(--color-pink-500) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-pink-500) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-pink-400 {
+  --tw-gradient-from: var(--color-pink-400) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-pink-400) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-purple-100 {
+  --tw-gradient-from: var(--color-purple-800) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-purple-800) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-purple-100 {
+  --tw-gradient-from: var(--color-purple-100) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-purple-100) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-purple-400 {
+  --tw-gradient-from: var(--color-purple-500) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-purple-500) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-purple-400 {
+  --tw-gradient-from: var(--color-purple-400) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-purple-400) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-purple-50 {
+  --tw-gradient-from: var(--color-purple-900) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-purple-900) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-purple-50 {
+  --tw-gradient-from: var(--color-purple-50) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-purple-50) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-red-100 {
+  --tw-gradient-from: var(--color-red-800) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-red-800) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-red-100 {
+  --tw-gradient-from: var(--color-red-100) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-red-100) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-red-50 {
+  --tw-gradient-from: var(--color-red-900) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-red-900) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-red-50 {
+  --tw-gradient-from: var(--color-red-50) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-red-50) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-slate-50 {
+  --tw-gradient-from: var(--color-slate-900) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-slate-900) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-slate-50 {
+  --tw-gradient-from: var(--color-slate-50) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-slate-50) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-teal-100 {
+  --tw-gradient-from: var(--color-teal-800) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-teal-800) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-teal-100 {
+  --tw-gradient-from: var(--color-teal-100) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-teal-100) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-yellow-400 {
+  --tw-gradient-from: var(--color-yellow-500) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-yellow-500) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-yellow-400 {
+  --tw-gradient-from: var(--color-yellow-400) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-yellow-400) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .from-yellow-50 {
+  --tw-gradient-from: var(--color-yellow-900) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-yellow-900) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .from-yellow-50 {
+  --tw-gradient-from: var(--color-yellow-50) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: color-mix(in oklab, var(--color-yellow-50) 0%, transparent) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-from), var(--tw-gradient-to)) !important;
+}
+
+:root[data-theme='dark'] .text-amber-700 {
+  color: var(--color-amber-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-amber-700 {
+  color: var(--color-amber-700) !important;
+}
+
+:root[data-theme='dark'] .text-amber-800 {
+  color: var(--color-amber-100) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-amber-800 {
+  color: var(--color-amber-800) !important;
+}
+
+:root[data-theme='dark'] .text-amber-900 {
+  color: var(--color-amber-50) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-amber-900 {
+  color: var(--color-amber-900) !important;
+}
+
+:root[data-theme='dark'] .text-blue-400 {
+  color: var(--color-blue-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-blue-400 {
+  color: var(--color-blue-400) !important;
+}
+
+:root[data-theme='dark'] .text-blue-50 {
+  color: var(--color-blue-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-blue-50 {
+  color: var(--color-blue-50) !important;
+}
+
+:root[data-theme='dark'] .text-blue-600 {
+  color: var(--color-blue-300) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-blue-600 {
+  color: var(--color-blue-600) !important;
+}
+
+:root[data-theme='dark'] .text-blue-700 {
+  color: var(--color-blue-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-blue-700 {
+  color: var(--color-blue-700) !important;
+}
+
+:root[data-theme='dark'] .text-blue-800 {
+  color: var(--color-blue-100) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-blue-800 {
+  color: var(--color-blue-800) !important;
+}
+
+:root[data-theme='dark'] .text-blue-900 {
+  color: var(--color-blue-50) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-blue-900 {
+  color: var(--color-blue-900) !important;
+}
+
+:root[data-theme='dark'] .text-cyan-50 {
+  color: var(--color-cyan-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-cyan-50 {
+  color: var(--color-cyan-50) !important;
+}
+
+:root[data-theme='dark'] .text-emerald-50 {
+  color: var(--color-emerald-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-emerald-50 {
+  color: var(--color-emerald-50) !important;
+}
+
+:root[data-theme='dark'] .text-emerald-700 {
+  color: var(--color-emerald-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-emerald-700 {
+  color: var(--color-emerald-700) !important;
+}
+
+:root[data-theme='dark'] .text-gray-100 {
+  color: var(--color-gray-800) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-gray-100 {
+  color: var(--color-gray-100) !important;
+}
+
+:root[data-theme='dark'] .text-gray-200 {
+  color: var(--color-gray-700) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-gray-200 {
+  color: var(--color-gray-200) !important;
+}
+
+:root[data-theme='dark'] .text-gray-300 {
+  color: var(--color-gray-600) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-gray-300 {
+  color: var(--color-gray-300) !important;
+}
+
+:root[data-theme='dark'] .text-gray-400 {
+  color: var(--color-gray-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-gray-400 {
+  color: var(--color-gray-400) !important;
+}
+
+:root[data-theme='dark'] .text-gray-50 {
+  color: var(--color-gray-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-gray-50 {
+  color: var(--color-gray-50) !important;
+}
+
+:root[data-theme='dark'] .text-gray-600 {
+  color: var(--color-gray-300) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-gray-600 {
+  color: var(--color-gray-600) !important;
+}
+
+:root[data-theme='dark'] .text-gray-700 {
+  color: var(--color-gray-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-gray-700 {
+  color: var(--color-gray-700) !important;
+}
+
+:root[data-theme='dark'] .text-gray-800 {
+  color: var(--color-gray-100) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-gray-800 {
+  color: var(--color-gray-800) !important;
+}
+
+:root[data-theme='dark'] .text-gray-900 {
+  color: var(--color-gray-50) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-gray-900 {
+  color: var(--color-gray-900) !important;
+}
+
+:root[data-theme='dark'] .text-green-400 {
+  color: var(--color-green-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-green-400 {
+  color: var(--color-green-400) !important;
+}
+
+:root[data-theme='dark'] .text-green-50 {
+  color: var(--color-green-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-green-50 {
+  color: var(--color-green-50) !important;
+}
+
+:root[data-theme='dark'] .text-green-600 {
+  color: var(--color-green-300) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-green-600 {
+  color: var(--color-green-600) !important;
+}
+
+:root[data-theme='dark'] .text-green-700 {
+  color: var(--color-green-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-green-700 {
+  color: var(--color-green-700) !important;
+}
+
+:root[data-theme='dark'] .text-green-800 {
+  color: var(--color-green-100) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-green-800 {
+  color: var(--color-green-800) !important;
+}
+
+:root[data-theme='dark'] .text-green-900 {
+  color: var(--color-green-50) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-green-900 {
+  color: var(--color-green-900) !important;
+}
+
+:root[data-theme='dark'] .text-indigo-700 {
+  color: var(--color-indigo-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-indigo-700 {
+  color: var(--color-indigo-700) !important;
+}
+
+:root[data-theme='dark'] .text-orange-50 {
+  color: var(--color-orange-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-orange-50 {
+  color: var(--color-orange-50) !important;
+}
+
+:root[data-theme='dark'] .text-orange-600 {
+  color: var(--color-orange-300) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-orange-600 {
+  color: var(--color-orange-600) !important;
+}
+
+:root[data-theme='dark'] .text-orange-700 {
+  color: var(--color-orange-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-orange-700 {
+  color: var(--color-orange-700) !important;
+}
+
+:root[data-theme='dark'] .text-orange-800 {
+  color: var(--color-orange-100) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-orange-800 {
+  color: var(--color-orange-800) !important;
+}
+
+:root[data-theme='dark'] .text-pink-700 {
+  color: var(--color-pink-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-pink-700 {
+  color: var(--color-pink-700) !important;
+}
+
+:root[data-theme='dark'] .text-purple-50 {
+  color: var(--color-purple-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-purple-50 {
+  color: var(--color-purple-50) !important;
+}
+
+:root[data-theme='dark'] .text-purple-600 {
+  color: var(--color-purple-300) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-purple-600 {
+  color: var(--color-purple-600) !important;
+}
+
+:root[data-theme='dark'] .text-purple-700 {
+  color: var(--color-purple-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-purple-700 {
+  color: var(--color-purple-700) !important;
+}
+
+:root[data-theme='dark'] .text-red-50 {
+  color: var(--color-red-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-red-50 {
+  color: var(--color-red-50) !important;
+}
+
+:root[data-theme='dark'] .text-red-600 {
+  color: var(--color-red-300) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-red-600 {
+  color: var(--color-red-600) !important;
+}
+
+:root[data-theme='dark'] .text-red-600\/85 {
+  color: color-mix(in oklab, var(--color-red-300) 85%, transparent) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-red-600\/85 {
+  color: color-mix(in oklab, var(--color-red-600) 85%, transparent) !important;
+}
+
+:root[data-theme='dark'] .text-red-700 {
+  color: var(--color-red-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-red-700 {
+  color: var(--color-red-700) !important;
+}
+
+:root[data-theme='dark'] .text-red-800 {
+  color: var(--color-red-100) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-red-800 {
+  color: var(--color-red-800) !important;
+}
+
+:root[data-theme='dark'] .text-teal-700 {
+  color: var(--color-teal-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-teal-700 {
+  color: var(--color-teal-700) !important;
+}
+
+:root[data-theme='dark'] .text-yellow-300 {
+  color: var(--color-yellow-600) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-yellow-300 {
+  color: var(--color-yellow-300) !important;
+}
+
+:root[data-theme='dark'] .text-yellow-400 {
+  color: var(--color-yellow-500) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-yellow-400 {
+  color: var(--color-yellow-400) !important;
+}
+
+:root[data-theme='dark'] .text-yellow-50 {
+  color: var(--color-yellow-900) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-yellow-50 {
+  color: var(--color-yellow-50) !important;
+}
+
+:root[data-theme='dark'] .text-yellow-600 {
+  color: var(--color-yellow-300) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-yellow-600 {
+  color: var(--color-yellow-600) !important;
+}
+
+:root[data-theme='dark'] .text-yellow-700 {
+  color: var(--color-yellow-200) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-yellow-700 {
+  color: var(--color-yellow-700) !important;
+}
+
+:root[data-theme='dark'] .text-yellow-800 {
+  color: var(--color-yellow-100) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .text-yellow-800 {
+  color: var(--color-yellow-800) !important;
+}
+
+:root[data-theme='dark'] .to-blue-50 {
+  --tw-gradient-to: var(--color-blue-900) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-blue-50 {
+  --tw-gradient-to: var(--color-blue-50) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-blue-600 {
+  --tw-gradient-to: var(--color-blue-300) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-blue-600 {
+  --tw-gradient-to: var(--color-blue-600) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-cyan-100 {
+  --tw-gradient-to: var(--color-cyan-800) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-cyan-100 {
+  --tw-gradient-to: var(--color-cyan-100) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-cyan-400 {
+  --tw-gradient-to: var(--color-cyan-500) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-cyan-400 {
+  --tw-gradient-to: var(--color-cyan-400) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-cyan-50 {
+  --tw-gradient-to: var(--color-cyan-900) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-cyan-50 {
+  --tw-gradient-to: var(--color-cyan-50) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-emerald-100 {
+  --tw-gradient-to: var(--color-emerald-800) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-emerald-100 {
+  --tw-gradient-to: var(--color-emerald-100) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-emerald-50 {
+  --tw-gradient-to: var(--color-emerald-900) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-emerald-50 {
+  --tw-gradient-to: var(--color-emerald-50) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-gray-200 {
+  --tw-gradient-to: var(--color-gray-700) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-gray-200 {
+  --tw-gradient-to: var(--color-gray-200) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-gray-50 {
+  --tw-gradient-to: var(--color-gray-900) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-gray-50 {
+  --tw-gradient-to: var(--color-gray-50) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-gray-700 {
+  --tw-gradient-to: var(--color-gray-200) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-gray-700 {
+  --tw-gradient-to: var(--color-gray-700) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-green-100 {
+  --tw-gradient-to: var(--color-green-800) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-green-100 {
+  --tw-gradient-to: var(--color-green-100) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-green-600 {
+  --tw-gradient-to: var(--color-green-300) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-green-600 {
+  --tw-gradient-to: var(--color-green-600) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-orange-50 {
+  --tw-gradient-to: var(--color-orange-900) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-orange-50 {
+  --tw-gradient-to: var(--color-orange-50) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-orange-600 {
+  --tw-gradient-to: var(--color-orange-300) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-orange-600 {
+  --tw-gradient-to: var(--color-orange-600) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-pink-100 {
+  --tw-gradient-to: var(--color-pink-800) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-pink-100 {
+  --tw-gradient-to: var(--color-pink-100) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-pink-50 {
+  --tw-gradient-to: var(--color-pink-900) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-pink-50 {
+  --tw-gradient-to: var(--color-pink-50) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-pink-600 {
+  --tw-gradient-to: var(--color-pink-300) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-pink-600 {
+  --tw-gradient-to: var(--color-pink-600) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-purple-100 {
+  --tw-gradient-to: var(--color-purple-800) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-purple-100 {
+  --tw-gradient-to: var(--color-purple-100) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-purple-50 {
+  --tw-gradient-to: var(--color-purple-900) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-purple-50 {
+  --tw-gradient-to: var(--color-purple-50) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-purple-600 {
+  --tw-gradient-to: var(--color-purple-300) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-purple-600 {
+  --tw-gradient-to: var(--color-purple-600) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-red-100 {
+  --tw-gradient-to: var(--color-red-800) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-red-100 {
+  --tw-gradient-to: var(--color-red-100) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-red-50 {
+  --tw-gradient-to: var(--color-red-900) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-red-50 {
+  --tw-gradient-to: var(--color-red-50) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-rose-100 {
+  --tw-gradient-to: var(--color-rose-800) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-rose-100 {
+  --tw-gradient-to: var(--color-rose-100) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-rose-50 {
+  --tw-gradient-to: var(--color-rose-900) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-rose-50 {
+  --tw-gradient-to: var(--color-rose-50) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-teal-50 {
+  --tw-gradient-to: var(--color-teal-900) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-teal-50 {
+  --tw-gradient-to: var(--color-teal-50) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .to-yellow-600 {
+  --tw-gradient-to: var(--color-yellow-300) var(--tw-gradient-to-position) !important;
+}
+
+:root[data-theme='dark'] .theme-lock .to-yellow-600 {
+  --tw-gradient-to: var(--color-yellow-600) var(--tw-gradient-to-position) !important;
 }
