@@ -441,11 +441,12 @@ export const recordProblemStats = async (
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-            const { data } = await supabase
+            const { data, error } = await supabase
                 .from('user_progress')
                 .select('*')
                 .eq('user_id', session.user.id)
-                .single();
+                .maybeSingle();
+            if (error) throw error;
             dbProgress = data;
         }
     } catch (error) {
@@ -454,16 +455,27 @@ export const recordProblemStats = async (
 
     const progress = getAchievementProgress();
 
-    // Use database values as source of truth for accuracy counters
-    const currentTotalAttempts = dbProgress?.total_attempts || progress.totalAttempts || 0;
-    const currentCorrectAnswers = dbProgress?.correct_answers || progress.correctAnswers || 0;
-    const currentWrongSubmissions = dbProgress?.wrong_submissions || progress.wrongSubmissions || 0;
-    const currentSolvedProblems = dbProgress?.solved_problems || progress.solvedProblems || [];
+    // Use database values as source of truth for progression counters.
+    // This prevents stale local snapshots from repopulating values after a DB reset.
+    const currentTotalAttempts = Number(dbProgress?.total_attempts ?? 0);
+    const currentCorrectAnswers = Number(dbProgress?.correct_answers ?? 0);
+    const currentWrongSubmissions = Number(dbProgress?.wrong_submissions ?? 0);
+    const currentSolvedProblems = Array.isArray(dbProgress?.solved_problems)
+        ? dbProgress.solved_problems
+        : [];
+    const currentPerfectStreak = Number(dbProgress?.perfect_streak ?? 0);
+    const currentReputation = Number(dbProgress?.reputation ?? 0);
+    const currentLastReputationStreak = Number(dbProgress?.last_reputation_streak ?? 0);
+
+    progress.perfectStreak = Number.isFinite(currentPerfectStreak) ? currentPerfectStreak : 0;
+    progress.reputation = Number.isFinite(currentReputation) ? currentReputation : 0;
+    progress.lastReputationStreak = Number.isFinite(currentLastReputationStreak) ? currentLastReputationStreak : 0;
 
     // Increment counters
     progress.totalAttempts = currentTotalAttempts + 1;
 
     const solved = new Set(currentSolvedProblems);
+    progress.solvedProblems = Array.from(solved);
     const alreadySolved = solved.has(problem.id);
 
     if (isCorrect) {
@@ -510,13 +522,13 @@ export const recordProblemStats = async (
         console.log('🎯 XP Breakdown:', xpResult.breakdown);
     }
 
-    // Get current total XP from database or progress
-    const currentTotalXP = dbProgress?.total_xp || progress.totalXP || 0;
+    // Get current total XP from database
+    const currentTotalXP = Number(dbProgress?.total_xp ?? 0);
     const totalXP = currentTotalXP + problemXP;
 
     // Calculate time spent before database update so we can include it
     const minutesSpent = Math.max(1, Math.round(timeSpentSeconds / 60));
-    const currentDbTimeMinutes = dbProgress?.total_time_minutes || 0;
+    const currentDbTimeMinutes = Number(dbProgress?.total_time_minutes ?? 0);
     const updatedTotalTimeMinutes = currentDbTimeMinutes + minutesSpent;
     progress.totalTimeMinutes = updatedTotalTimeMinutes;
     progress.totalTimeSpent = formatHoursMinutes(progress.totalTimeMinutes);
@@ -527,7 +539,33 @@ export const recordProblemStats = async (
         progress.averageTime = formatMinutesSeconds(avgSeconds);
     }
 
-    // Update database with accuracy stats, XP, and time
+    if (isCorrect && !alreadySolved && attemptNumber === 1) {
+        progress.perfectStreak = (progress.perfectStreak || 0) + 1;
+    } else if (!isCorrect) {
+        progress.perfectStreak = 0;
+    }
+    // NOTE: If isCorrect && alreadySolved, we leave perfectStreak unchanged.
+    // Re-solves never affect progression counters.
+
+    if (streakData && typeof streakData.current === 'number') {
+        progress.streakDays = streakData.current;
+    }
+
+    if (isCorrect && !alreadySolved) {
+        progress.reputation += 20;
+    } else if (isCorrect && alreadySolved) {
+        // GUARD: Do not award any reputation for re-solving a problem.
+        // This prevents reputation farming by clicking solved problems.
+    }
+    if (streakData && typeof streakData.current === 'number') {
+        const previous = progress.lastReputationStreak || 0;
+        if (streakData.current > previous) {
+            progress.reputation += (streakData.current - previous) * 2;
+            progress.lastReputationStreak = streakData.current;
+        }
+    }
+
+    // Update database with accuracy stats, XP, time, and reputation
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
@@ -540,6 +578,7 @@ export const recordProblemStats = async (
                 reputation: progress.reputation || 0,
                 solved_problems: progress.solvedProblems,
                 perfect_streak: progress.perfectStreak || 0,
+                last_reputation_streak: progress.lastReputationStreak || 0,
                 total_xp: totalXP,
                 total_time_minutes: updatedTotalTimeMinutes
             };
@@ -585,33 +624,6 @@ export const recordProblemStats = async (
         .slice(0, 3)
         .map(([topic]) => topic);
     progress.conceptsLearned = Object.keys(progress.topicFrequency).length;
-
-    if (isCorrect && !alreadySolved && attemptNumber === 1) {
-        progress.perfectStreak = (progress.perfectStreak || 0) + 1;
-    } else if (!isCorrect) {
-        progress.perfectStreak = 0;
-    }
-    // NOTE: If isCorrect && alreadySolved, we leave perfectStreak unchanged.
-    // Re-solves never affect progression counters.
-
-    if (streakData && typeof streakData.current === 'number') {
-        progress.streakDays = streakData.current;
-    }
-
-    progress.reputation = progress.reputation || 0;
-    if (isCorrect && !alreadySolved) {
-        progress.reputation += 20;
-    } else if (isCorrect && alreadySolved) {
-        // GUARD: Do not award any reputation for re-solving a problem.
-        // This prevents reputation farming by clicking solved problems.
-    }
-    if (streakData && typeof streakData.current === 'number') {
-        const previous = progress.lastReputationStreak || 0;
-        if (streakData.current > previous) {
-            progress.reputation += (streakData.current - previous) * 2;
-            progress.lastReputationStreak = streakData.current;
-        }
-    }
 
     progress.lastSubmissionAt = timestamp;
     progress.totalHintsUsed = (progress.totalHintsUsed || 0) + (hintsUsed || 0);
@@ -681,6 +693,49 @@ export const resetAllUserProgress = async () => {
         // Clear localStorage first
         clearAllProgress();
 
+        const isMissingResetFunctionError = (errorObj) => {
+            const message = String(errorObj?.message || '').toLowerCase();
+            const code = String(errorObj?.code || '').toUpperCase();
+            return code === 'PGRST202'
+                || code === '42883'
+                || (message.includes('reset_my_progress') && (
+                    message.includes('not found')
+                    || message.includes('does not exist')
+                    || message.includes('could not find')
+                ));
+        };
+
+        let rpcResetError = null;
+
+        // Prefer a DB-level reset RPC if available; this is the most reliable path across RLS differences.
+        try {
+            const { data: rpcData, error: rpcError } = await supabase.rpc('reset_my_progress');
+            if (!rpcError) {
+                try {
+                    await supabase.rpc('refresh_leaderboard_view');
+                } catch (err) {
+                    console.warn('Could not refresh leaderboard view:', err.message);
+                }
+
+                const message = typeof rpcData?.message === 'string'
+                    ? rpcData.message
+                    : 'All progress reset successfully';
+
+                console.log('✅ All user progress reset successfully via reset_my_progress RPC');
+                return { success: true, message };
+            }
+
+            if (!isMissingResetFunctionError(rpcError)) {
+                rpcResetError = rpcError;
+                console.warn('reset_my_progress RPC failed, falling back to legacy reset path:', rpcError.message);
+            }
+        } catch (err) {
+            if (!isMissingResetFunctionError(err)) {
+                rpcResetError = err;
+                console.warn('reset_my_progress RPC call threw error, falling back to legacy reset path:', err.message);
+            }
+        }
+
         // Clear database tables for this user
         const tables = [
             'user_progress',
@@ -693,12 +748,97 @@ export const resetAllUserProgress = async () => {
             'user_topic_frequency'
         ];
 
+        const resetErrors = [];
+        if (rpcResetError) {
+            resetErrors.push(`reset_my_progress RPC: ${rpcResetError.message || String(rpcResetError)}`);
+        }
+
         for (const table of tables) {
             try {
-                await supabase.from(table).delete().eq('user_id', userId);
+                const { error } = await supabase.from(table).delete().eq('user_id', userId);
+                if (error) {
+                    // Some policies may block delete on user_progress; try zeroing out instead.
+                    if (table === 'user_progress') {
+                        const { error: fallbackError } = await supabase
+                            .from('user_progress')
+                            .upsert({
+                                user_id: userId,
+                                solved_problems: [],
+                                correct_answers: 0,
+                                wrong_submissions: 0,
+                                total_attempts: 0,
+                                streak_days: 0,
+                                total_time_minutes: 0,
+                                concepts_learned: 0,
+                                perfect_streak: 0,
+                                reputation: 0,
+                                accuracy_rate: 0,
+                                last_reputation_streak: 0,
+                                total_xp: 0,
+                                updated_at: new Date().toISOString()
+                            }, { onConflict: 'user_id' });
+
+                        if (fallbackError) {
+                            resetErrors.push(`${table}: delete failed (${error.message}); fallback failed (${fallbackError.message})`);
+                        }
+                    } else {
+                        resetErrors.push(`${table}: ${error.message}`);
+                    }
+                }
             } catch (err) {
-                console.warn(`Could not clear ${table}:`, err.message);
+                resetErrors.push(`${table}: ${err.message}`);
             }
+        }
+
+        // Always enforce zeroed progress/streak rows to avoid stale counters when delete is silently ignored.
+        try {
+            const todayIso = new Date().toISOString().split('T')[0];
+
+            const { error: progressUpsertError } = await supabase
+                .from('user_progress')
+                .upsert({
+                    user_id: userId,
+                    solved_problems: [],
+                    correct_answers: 0,
+                    wrong_submissions: 0,
+                    total_attempts: 0,
+                    streak_days: 0,
+                    total_time_minutes: 0,
+                    concepts_learned: 0,
+                    perfect_streak: 0,
+                    reputation: 0,
+                    accuracy_rate: 0,
+                    last_reputation_streak: 0,
+                    total_xp: 0,
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'user_id' });
+
+            if (progressUpsertError) {
+                resetErrors.push(`user_progress upsert: ${progressUpsertError.message}`);
+            }
+
+            const { error: streakUpsertError } = await supabase
+                .from('user_streak_data')
+                .upsert({
+                    user_id: userId,
+                    current_streak: 0,
+                    longest_streak: 0,
+                    last_activity_date: todayIso,
+                    streak_start_date: todayIso,
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'user_id' });
+
+            if (streakUpsertError) {
+                resetErrors.push(`user_streak_data upsert: ${streakUpsertError.message}`);
+            }
+        } catch (err) {
+            resetErrors.push(`reset fallback upsert: ${err.message}`);
+        }
+
+        if (resetErrors.length > 0) {
+            const message = `Could not fully reset progress. ${resetErrors.join(' | ')}`;
+            console.error(message);
+            return { success: false, message };
         }
 
         // Refresh leaderboard view (best-effort)

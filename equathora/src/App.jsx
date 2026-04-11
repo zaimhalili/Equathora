@@ -39,6 +39,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogList = lazy(() => import("./pages/BlogList"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const Recommended = lazy(() => import("./pages/Recommended"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -109,6 +110,8 @@ function PageTitleUpdater() {
       '/blog': 'Blog - Equathora',
       '/blogs': 'All Posts - Equathora',
       '/adminDashboard': 'Admin Dashboard - Equathora',
+      '/recommended': 'Recommended Path - Equathora',
+      '/getStarted' : 'Choose Your Path - Equathora'
     };
 
     const matchedRoute = Object.keys(pageTitles).find(route =>
@@ -241,6 +244,8 @@ export default function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
+            <Route path="/recommended" element={<Recommended />} />
+            {/* <Route path="/getStarted" element={<GetStarted />} /> */}
             {/* <Route path="/premium" element={<Premium />} /> */}
 
 
@@ -250,7 +255,7 @@ export default function App() {
             <Route path="/learn" element={<Learn />} />
             <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
             <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
-            <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} />
+            {/* <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} /> */}
             <Route path="/tracks" element={<ProtectedRoute><Tracks /></ProtectedRoute>} />
             <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />

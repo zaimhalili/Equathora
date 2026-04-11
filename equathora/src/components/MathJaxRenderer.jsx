@@ -8,6 +8,19 @@ const MathJaxRenderer = ({ content, className = '', as = 'div' }) => {
     const containerRef = useRef(null);
     const Component = as;
 
+    const normalizeLatexEscapes = (text) => {
+        if (!text) return text;
+
+        let normalized = String(text);
+
+        // Repair accidental control-char command prefixes and over-escaped LaTeX commands.
+        normalized = normalized
+            .replace(/\t(?=(?:imes|frac|dfrac|tfrac|sqrt|cdot|ext|pi|ightarrow)\b)/g, '\\')
+            .replace(/\\\\(?=(?:frac|dfrac|tfrac|sqrt|times|cdot|pi|Rightarrow|left|right|text|pm|mapsto|therefore)\b)/g, '\\');
+
+        return normalized;
+    };
+
     /**
      * Comprehensive auto-wrap for mathematical expressions
      * Handles: exponents, parenthetical expressions, fractions, variables, etc.
@@ -16,7 +29,11 @@ const MathJaxRenderer = ({ content, className = '', as = 'div' }) => {
         if (!text) return text;
 
         // Normalize whitespace and invisible characters
-        let clean = text.replace(/\u00A0/g, ' ').replace(/[\t\r\n]+/g, ' ').replace(/\s+/g, ' ').trim();
+        let clean = normalizeLatexEscapes(text)
+            .replace(/\u00A0/g, ' ')
+            .replace(/[\t\r\n]+/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
 
         // If user already included delimiters or MathJax markers, leave as-is
         if (/\$[^$]+\$|\\\(|\\\[/.test(clean)) return clean;
@@ -78,7 +95,8 @@ const MathJaxRenderer = ({ content, className = '', as = 'div' }) => {
         typesetMath();
     }, [content]);
 
-    return <Component ref={containerRef} className={className} />;
+    const mergedClassName = ['mathjax-renderer', className].filter(Boolean).join(' ');
+    return <Component ref={containerRef} className={mergedClassName} />;
 };
 
 export default MathJaxRenderer;

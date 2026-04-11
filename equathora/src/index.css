@@ -19,10 +19,13 @@
     --raisin-black: rgb(32, 34, 49);
     --secondary-color: #2b2d42;
     /*Secondary Color*/
-    --mid-main-secondary: rgb(141, 153, 174); /* in dark should be raising black color ; black with white and white wwith black and so on*/
+    --mid-main-secondary: rgb(141, 153, 174);
+    /* in dark should be raising black color ; black with white and white wwith black and so on*/
     /*Mid Main & Secondary*/
-    --french-gray: #bdc6d1ff; /* in dark should be secondary color */
-    --main-color: #edf2f4; /* in dark should be secondary color */
+    --french-gray: #bdc6d1ff;
+    /* in dark should be secondary color */
+    --main-color: #edf2f4;
+    /* in dark should be secondary color */
     /*Main Color*/
     --light-accent-color: #ef233c;
     /*Light Accent Color*/
@@ -65,7 +68,22 @@
   margin: 0;
   /* This is for debugging */
   /* border: 2px solid skyblue; */
-  font-family: Sansation;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: Sansation, sans-serif;
+}
+
+/* Keep MathJax glyph metrics untouched by app typography. */
+.mathjax-renderer mjx-container,
+.mathjax-renderer mjx-container * {
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+  font-stretch: normal !important;
 }
 
 
@@ -180,11 +198,11 @@ input[type="email"]:-webkit-autofill:focus,
   background-color: #ffffff !important;
 }
 
-button{
+button {
   cursor: pointer;
 }
 
-select{
+select {
   cursor: pointer;
 }
 

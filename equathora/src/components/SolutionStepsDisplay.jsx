@@ -120,7 +120,7 @@ const SolutionStepsDisplay = ({ solution }) => {
     return (
         <div
             ref={containerRef}
-            className="flex w-full flex-col overflow-hidden rounded-md bg-[var(--main-color)] font-[Sansation,sans-serif]"
+            className="mathjax-renderer flex w-full flex-col overflow-hidden rounded-md bg-[var(--main-color)] font-[Sansation,sans-serif]"
         >
             <div className="flex flex-1 flex-col overflow-hidden py-2">
                 <div className="flex-1 overflow-y-auto overflow-x-hidden">
