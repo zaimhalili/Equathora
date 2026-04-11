@@ -145,7 +145,7 @@ const Dashboard = () => {
                   </h3>
 
                   {/* Blocks - Squares */}
-                  <div className="w-full pt-2 gap-0.5 lg:gap-[1px] flex flex-wrap justify-center sm:justify-start">
+                  <div className="w-full pt-2 gap-0.5 lg:gap-[1px] flex flex-wrap justify-center sm:justify-start theme-lock">
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -273,7 +273,7 @@ const Dashboard = () => {
                   <div className="flex gap-3 max-w-[400px]">
                     <Link
                       to="/applymentor"
-                      className="flex items-center justify-center font-[Sansation] font-semibold text-[0.9375rem] !text-white bg-[var(--secondary-color)] rounded-md no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-2 py-2 px-2 text-wrap active:scale-95"
+                      className="flex items-center justify-center font-[Sansation] font-semibold text-[0.9375rem] !text-white dark:text-black bg-[var(--secondary-color)] rounded-md no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-2 py-2 px-2 text-wrap active:scale-95"
                     >
                       Apply Now
                     </Link>

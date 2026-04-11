@@ -14,7 +14,7 @@ const CommunityPosts = () => {
 
   return (
     <div>
-      <article className='flex flex-col lg:flex-row justify-center items-center py-4 lg:py-6'>
+      <article className='flex flex-col lg:flex-row justify-center items-center py-4 lg:py-6 theme-lock'>
         <div className='flex w-full px-[4vw] xl:px-[6vw] max-w-[1500px] flex-col'>
           <article className='w-full lg:w-[70%] flex flex-col gap-3'>
             <h3 className="text-[var(--secondary-color)] font-[Sansation] text-2xl font-bold text-center md:text-left">
