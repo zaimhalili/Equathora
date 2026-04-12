@@ -100,7 +100,8 @@ const Dashboard = () => {
     <>
       {/* <BetaBanner /> */}
       <FeedbackBanner />
-      <main className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed min-h-screen ">
+      {/* TODO: Check why the dark: doesn't work as it should */}
+      <main className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] dark:bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen ">
         <header>
           <Navbar />
         </header>
@@ -145,17 +146,17 @@ const Dashboard = () => {
                   </h3>
 
                   {/* Blocks - Squares */}
-                  <div className="w-full pt-2 gap-0.5 lg:gap-[1px] flex flex-wrap justify-center sm:justify-start theme-lock">
+                  <div className="w-full pt-2 gap-0.5 lg:gap-[1px] flex flex-wrap justify-center sm:justify-start">
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                     >
                       <Link
                         to={`/problems/${dailyProblemSlug}`}
-                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md  hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                       >
                         <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                        <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center ">
+                        <h6 className="text-[var(--secondary-color)] font-[Sansation,sans-serif] text-lg font-normal w-full text-center flex items-center justify-center">
                           Solve the daily challenge
                         </h6>
                       </Link>
@@ -167,7 +168,7 @@ const Dashboard = () => {
                     >
                       <Link
                         to="/learn"
-                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 active:shadow-none"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 active:shadow-none dark:bg-[var(--french-gray)]"
                       >
                         <img src={Books} alt="books" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                         <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -182,7 +183,7 @@ const Dashboard = () => {
                     >
                       <Link
                         to="/applyMentor"
-                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 active:shadow-none"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 active:shadow-none dark:bg-[var(--french-gray)]"
                       >
                         <img src={Mentoring} alt="mentoring" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                         <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -197,10 +198,10 @@ const Dashboard = () => {
                     >
                       <Link
                         to="/leaderboards/global"
-                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 active:shadow-none"
+                        className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-white transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 active:shadow-none dark:bg-[var(--french-gray)]"
                       >
                         <img src={Leaderboards} alt="leaderboards" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                        <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
+                        <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center ">
                           Join the race
                         </h6>
                       </Link>
