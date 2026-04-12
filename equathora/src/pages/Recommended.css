@@ -1,0 +1,150 @@
+.recommended-shell {
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--mid-main-secondary) 38%, var(--main-color) 100%);
+    background-attachment: fixed;
+}
+
+.recommended-card {
+    border: 1px solid color-mix(in srgb, var(--secondary-color) 14%, transparent);
+    background: color-mix(in srgb, var(--main-color) 92%, white);
+    border-radius: 0.375rem;
+}
+
+.recommended-card-soft {
+    border: 1px solid color-mix(in srgb, var(--secondary-color) 10%, transparent);
+    background: color-mix(in srgb, var(--main-color) 96%, white);
+    border-radius: 0.375rem;
+}
+
+.problem-path-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    gap: 0.75rem;
+}
+
+.problem-path-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.7rem;
+    border-radius: 0.375rem;
+    border: 1px solid color-mix(in srgb, var(--secondary-color) 12%, transparent);
+    background: color-mix(in srgb, var(--main-color) 96%, white);
+}
+
+.problem-node {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 9999px;
+    border: 2px solid var(--mid-main-secondary);
+    background: var(--main-color);
+    color: var(--secondary-color);
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 260ms ease, border-color 260ms ease, color 260ms ease, transform 220ms ease, box-shadow 260ms ease;
+    flex-shrink: 0;
+}
+
+.problem-node:hover {
+    transform: translateY(-1px);
+}
+
+.problem-node--locked {
+    border-style: dashed;
+    border-color: var(--french-gray);
+    color: color-mix(in srgb, var(--secondary-color) 66%, transparent);
+    background: color-mix(in srgb, var(--french-gray) 70%, var(--main-color) 30%);
+}
+
+.problem-node--available {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--secondary-color) 15%, transparent);
+}
+
+.problem-node--in-progress {
+    border-color: var(--accent-color);
+    background: color-mix(in srgb, var(--accent-color) 12%, var(--main-color) 88%);
+    color: var(--accent-color);
+}
+
+.problem-node--solved {
+    border-color: var(--accent-color);
+    background: linear-gradient(135deg, var(--dark-accent-color), var(--accent-color));
+    color: var(--main-color);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--dark-accent-color) 35%, transparent);
+}
+
+.path-connector {
+    flex: 1;
+    min-width: 1rem;
+    height: 2px;
+    background: color-mix(in srgb, var(--mid-main-secondary) 70%, transparent);
+}
+
+.path-connector--solved {
+    background: linear-gradient(90deg, var(--dark-accent-color), var(--accent-color));
+}
+
+.recommended-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+}
+
+.recommended-badge--easy {
+    color: var(--secondary-color);
+    border-color: color-mix(in srgb, var(--secondary-color) 16%, transparent);
+    background: color-mix(in srgb, var(--french-gray) 80%, white);
+}
+
+.recommended-badge--medium {
+    color: var(--accent-color);
+    border-color: color-mix(in srgb, var(--accent-color) 30%, transparent);
+    background: color-mix(in srgb, var(--light-accent-color) 10%, var(--main-color) 90%);
+}
+
+.recommended-badge--hard {
+    color: var(--main-color);
+    border-color: var(--dark-accent-color);
+    background: linear-gradient(140deg, var(--dark-accent-color), var(--accent-color));
+}
+
+.recommended-pill {
+    border-radius: 0.375rem;
+    border: 1px solid color-mix(in srgb, var(--secondary-color) 16%, transparent);
+    padding: 0.35rem 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    background: color-mix(in srgb, var(--main-color) 97%, white);
+}
+
+.recommended-pill-active {
+    border-color: var(--accent-color);
+    color: var(--main-color);
+    background: linear-gradient(135deg, var(--dark-accent-color), var(--accent-color));
+}
+
+.recommended-stat-value {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--secondary-color);
+}
+
+.recommended-muted {
+    color: color-mix(in srgb, var(--secondary-color) 76%, transparent);
+}
+
+@media (max-width: 768px) {
+    .problem-path-list {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}

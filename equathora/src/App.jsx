@@ -111,7 +111,7 @@ function PageTitleUpdater() {
       '/blogs': 'All Posts - Equathora',
       '/adminDashboard': 'Admin Dashboard - Equathora',
       '/recommended': 'Recommended Path - Equathora',
-      '/getStarted' : 'Choose Your Path - Equathora'
+      '/getStarted': 'Choose Your Path - Equathora'
     };
 
     const matchedRoute = Object.keys(pageTitles).find(route =>
@@ -244,7 +244,7 @@ export default function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
-            <Route path="/recommended" element={<Recommended />} />
+            {/* <Route path="/recommended" element={<Recommended />} /> */}
             {/* <Route path="/getStarted" element={<GetStarted />} /> */}
             {/* <Route path="/premium" element={<Premium />} /> */}
 
