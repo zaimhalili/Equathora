@@ -26,7 +26,7 @@ const CommunityPosts = () => {
                 <Link
                   key={post.id}
                   to={`/blog/${post.slug}`}
-                  className='bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-103 cursor-pointer min-w-50 flex-1 max-w-80 active:scale-100'
+                  className='bg-[var(--white)] rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-103 cursor-pointer min-w-50 flex-1 max-w-80 active:scale-100'
                 >
                   <img src={post.thumbnail} alt={post.title} className='rounded-md w-full max-h-40 object-cover' />
                   <p className='text-md text-left lg:text-lg cursor-pointer font-[Sansation] text-[var(--secondary-color)] font-bold line-clamp-2'>
@@ -39,7 +39,7 @@ const CommunityPosts = () => {
               ))}
 
               {/* Equathora Briefs Card */}
-              <Link to="/equathora-briefs" className='bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80 active:scale-100'>
+              <Link to="/equathora-briefs" className='bg-[var(--white)] rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80 active:scale-100'>
                 <img src={EquathoraBriefsImage} alt="" className='rounded-md w-full max-h-40 object-cover' />
                 <p className='text-md text-left lg:text-lg cursor-pointer font-[Sansation] text-[var(--secondary-color)] font-bold'>Join Equathora Briefs to receive weekly updates</p>
                 <p className='text-[var(--mid-main-secondary)] font-[Sansation]'>Zaim ⋅ Recently</p>
