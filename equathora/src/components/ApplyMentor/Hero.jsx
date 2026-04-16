@@ -8,7 +8,7 @@ import { FaCheckCircle, FaArrowRight, FaUsers, FaHeart, FaStar } from 'react-ico
 
 const Hero = ({ onOpenBriefsModal }) => {
     return (
-        <section className='relative  bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white flex justify-center overflow-hidden'>
+        <section className='relative  bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white flex justify-center overflow-hidden theme-lock'>
             {/* Decorative Elements */}
             <div className='px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:py-6 gap-8'>
                 <div className='absolute top-0 right-0 w-72 h-72 bg-[var(--accent-color)] rounded-full opacity-10 blur-3xl -translate-y-1/2 translate-x-1/2'></div>
@@ -21,7 +21,7 @@ const Hero = ({ onOpenBriefsModal }) => {
                     transition={{ duration: 0.5 }}
                     className='relative z-10 w-full max-w-[1500px] flex justify-center'
                 >
-                    <div className='flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 w-full'>
+                    <div className='flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 w-full '>
                         {/* Left Content */}
                         <div className='flex flex-col flex-1 text-center lg:text-left gap-4'>
                             <motion.div

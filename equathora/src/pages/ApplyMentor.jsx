@@ -28,14 +28,14 @@ const ApplyMentor = () => {
     };
 
     return (
-        <div className='text-[var(--secondary-color)] font-[Sansation] w-full bg-[var(--main-color)]'>
+        <div className='text-[var(--secondary-color)] font-[Sansation] w-full bg-[var(--main-color)] '>
             <header><Navbar /></header>
 
             {/* Hero Section */}
             <Hero onOpenBriefsModal={() => setIsBriefsModalOpen(true)} />
 
             {/* Benefits Section */}
-            <section className='flex justify-center w-full'>
+            <section className='flex justify-center w-full '>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
