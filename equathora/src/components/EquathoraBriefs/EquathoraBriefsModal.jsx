@@ -2,8 +2,9 @@ import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FaEnvelope, FaTimes, FaUser } from 'react-icons/fa';
-import TransparentFullLogo from '@/assets/logo/TransparentFullLogo.png';
 import EquathoraBriefsSuccessModal from './EquathoraBriefsSuccessModal.jsx';
+import news_bro from '../../assets/images/News-bro.svg';
+
 
 const FRIENDLY_SAVE_ERROR = 'Something did not work. Please try again shortly.';
 
@@ -94,7 +95,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
         <AnimatePresence>
             {isOpen && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-                    {/* Fix #2: key prop added so AnimatePresence can track this node */}
+                    {/* Backdrop */}
                     <motion.div
                         key="briefs-backdrop"
                         initial={{ opacity: 0 }}
@@ -104,136 +105,127 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                     />
 
+                    {/* Modal Container */}
                     <motion.div
                         key="briefs-modal"
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative bg-white rounded-md shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                        className="relative bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-gray-100"
                     >
                         {isSubscribed ? (
-                            <EquathoraBriefsSuccessModal onClose={onClose} />
+                            <div className={` `}>
+                                <EquathoraBriefsSuccessModal onClose={onClose} />
+                            </div>
                         ) : (
-                            <>
-                                <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
-                                    <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Sansation]">
-                                        Join Equathora Briefs
-                                    </h2>
-                                    <button
-                                        type="button"
-                                        onClick={onClose}
-                                        className="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-md cursor-pointer active:scale-95"
-                                        aria-label="Close modal"
-                                    >
-                                        <FaTimes size={20} />
-                                    </button>
-                                </div>
+                            <div className="relative">
+                                {/* Close Button at top right */}
+                                <button
+                                    type="button"
+                                    onClick={onClose}
+                                    className="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors p-1.5 rounded-full cursor-pointer active:scale-95 z-50"
+                                    aria-label="Close modal"
+                                >
+                                    <FaTimes size={16} />
+                                </button>
 
-                                <form onSubmit={handleSubmit} noValidate className="p-6">
-                                    <div className="flex justify-center">
+                                {/* Main Form - Two Column Grid */}
+                                <form onSubmit={handleSubmit} noValidate className="grid grid-cols-1 md:grid-cols-2 items-center p-5">
+
+                                    {/* Left Column - Illustration */}
+                                    <div className="hidden md:flex flex-col items-center justify-end bg-white pr-6">
                                         <img
-                                            src={TransparentFullLogo}
-                                            alt="Equathora"
-                                            className="h-14 w-auto"
+                                            src={news_bro}
+                                            alt="Reading illustration"
+                                            className="w-auto object-contain"
                                         />
                                     </div>
 
-                                    {/* Fix #3: server-level error kept separate from field errors */}
-                                    {saveError && (
-                                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
-                                            {saveError}
-                                        </div>
-                                    )}
+                                    {/* Right Column - Text and Form */}
+                                    <div className="flex flex-col ">
 
-                                    <p className="text-sm text-gray-600">
-                                        Get product updates, new challenge drops, and launch
-                                        announcements. No spam.
-                                    </p>
+                                        <h2 className="font-[Sansation] uppercase tracking-wider mb-2">
+                                            <span className="block text-xl font-bold text-[var(--secondary-color)]">Join</span>
+                                            <span className="block text-4xl font-extrabold !text-[var(--accent-color)] leading-tight">Equathora Briefs</span>
+                                        </h2>
 
-                                    <div className="space-y-4">
-                                        <div>
-                                            <label className="flex text-sm font-semibold text-[var(--secondary-color)] pb-2 items-end">
-                                                <FaUser className="h-5 w-5 pr-2" />
-                                                Full Name *
-                                            </label>
+                                        {/* Sub-text */}
+                                        <p className="text-sm text-gray-600 pb-5 max-w-sm">
+                                            Get product updates, new challenge drops, and launch announcements. No spam.
+                                        </p>
+
+                                        {/* Error Banner */}
+                                        {saveError && (
+                                            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm mb-6">
+                                                {saveError}
+                                            </div>
+                                        )}
+
+                                        {/* Form Fields */}
+                                        <div className="flex flex-col gap-2">
                                             <input
                                                 type="text"
                                                 name="full_name"
                                                 value={formData.full_name}
                                                 onChange={handleInputChange}
-                                                // Fix #3: native `required` alone won't catch whitespace-only
-                                                // values, so we handle validation ourselves and use noValidate
-                                                // on the form.
-                                                className={`text-black w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all ${errors.full_name
+                                                className={`text-sm text-black w-full px-5 py-3.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]/20 focus:border-[var(--accent-color)] transition-all ${
+                                                    errors.full_name
                                                         ? 'border-red-400 bg-red-50'
-                                                        : 'border-gray-300'
-                                                    }`}
-                                                placeholder="Enter your full name"
+                                                        : 'border-gray-200 bg-white placeholder:text-gray-300'
+                                                }`}
+                                                placeholder="Enter your full name *"
                                                 aria-invalid={!!errors.full_name}
-                                                aria-describedby={
-                                                    errors.full_name ? 'full-name-error' : undefined
-                                                }
+                                                aria-describedby={errors.full_name ? 'full-name-error' : undefined}
                                             />
                                             {errors.full_name && (
-                                                <p
-                                                    id="full-name-error"
-                                                    className="mt-1 text-xs text-red-600"
-                                                >
+                                                <p id="full-name-error" className="mt-1.5 text-xs text-red-600 pl-1">
                                                     {errors.full_name}
                                                 </p>
                                             )}
-                                        </div>
 
-                                        <div>
-                                            <label className="flex text-sm font-semibold text-[var(--secondary-color)] pb-2 items-end">
-                                                <FaEnvelope className="h-5 w-5 pr-2" />
-                                                Email *
-                                            </label>
                                             <input
                                                 type="email"
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleInputChange}
-                                                className={`text-black w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all ${errors.email
+                                                className={`text-sm text-black w-full px-5 py-3.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]/20 focus:border-[var(--accent-color)] transition-all ${
+                                                    errors.email
                                                         ? 'border-red-400 bg-red-50'
-                                                        : 'border-gray-300'
-                                                    }`}
-                                                placeholder="you@example.com"
+                                                        : 'border-gray-200 bg-white placeholder:text-gray-300'
+                                                }`}
+                                                placeholder="Enter your email address *"
                                                 aria-invalid={!!errors.email}
-                                                aria-describedby={
-                                                    errors.email ? 'email-error' : undefined
-                                                }
+                                                aria-describedby={errors.email ? 'email-error' : undefined}
                                             />
                                             {errors.email && (
-                                                <p
-                                                    id="email-error"
-                                                    className="mt-1 text-xs text-red-600"
-                                                >
+                                                <p id="email-error" className="mt-1.5 text-xs text-red-600 pl-1">
                                                     {errors.email}
                                                 </p>
                                             )}
                                         </div>
-                                    </div>
 
-                                    <div className="flex gap-3 pt-2">
-                                        <button
-                                            type="button"
-                                            onClick={onClose}
-                                            disabled={isLoading}
-                                            className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            disabled={isLoading}
-                                            className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white font-semibold rounded-md hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
-                                        >
-                                            {isLoading ? 'Saving...' : 'Subscribe'}
-                                        </button>
+
+                                        {/* CTA Buttons */}
+                                        <div className="flex gap-3 pt-2">
+                                            <button
+                                                type="button"
+                                                onClick={onClose}
+                                                disabled={isLoading}
+                                                className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                disabled={isLoading}
+                                                className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white font-semibold rounded-md hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                                            >
+                                                {isLoading ? 'Saving...' : 'Subscribe'}
+                                            </button>
+                                        </div>
                                     </div>
                                 </form>
-                            </>
+                            </div>
                         )}
                     </motion.div>
                 </div>
