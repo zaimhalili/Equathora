@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import EquathoraBriefsModal from '@/components/EquathoraBriefs/EquathoraBriefsModal.jsx';
 import { subscribeToEquathoraBriefs } from '@/lib/equathoraBriefsService.js';
 import { useAuth } from '@/hooks/useAuth.js';
+import EquathoraBriefsHero from "@/components/EquathoraBriefs/EquathoraBriefsHero.jsx";
 
 const EquathoraBriefsPage = () => {
     const [isBriefsModalOpen, setIsBriefsModalOpen] = useState(false);
@@ -24,105 +25,9 @@ const EquathoraBriefsPage = () => {
     return (
         <>
             <main className="w-full bg-[var(--main-color)] min-h-screen">
-                <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-                    <Navbar />
-                </header>
 
-                {/* Hero Section */}
-                <section className="relative overflow-hidden">
-                    {/* Animated Background Elements */}
-                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                        <div className="absolute top-20 -left-20 w-72 h-72 bg-[var(--accent-color)]/5 rounded-full blur-3xl"></div>
-                        <div className="absolute bottom-20 -right-20 w-96 h-96 bg-[var(--secondary-color)]/5 rounded-full blur-3xl"></div>
-                    </div>
-
-                    <div className="relative flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-                        <div className="flex flex-col items-center justify-center w-full max-w-7xl gap-8">
-                            {/* Badge */}
-                            <div className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-[var(--dark-accent-color)] to-[var(--accent-color)] text-white rounded-full text-sm font-semibold shadow-lg animate-bounce">
-                                <svg className="w-4 h-4" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="icon-gradient-bolt" x1="0%" y1="0%" x2="0%" y2="100%">
-                                            <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                                            <stop offset="100%" stopColor="var(--accent-color)" />
-                                        </linearGradient>
-                                    </defs>
-                                    <path fill="white" d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.7 20.8l-32 416C-.9 445.2 9.9 456 22.8 456.4c4.1.1 8.2-.3 12.1-1.6L266 420.1c10.2-3.3 17.5-12.6 17.5-23.2 0-6.6-2.7-12.8-7.4-17.3L150 256l119.3-99.3c11.3-9.4 14.8-25.6 7.8-38.8z" />
-                                </svg>
-                                <span>60+ Already Subscribed</span>
-                            </div>
-
-                            {/* Main Headline */}
-                            <h1 className="flex flex-col items-center justify-center text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] font-[Sansation] leading-tight text-center">
-                                <span>Master Math.</span>
-                                <span className="text-[var(--accent-color)] relative inline-block">
-                                    Get Weekly Math Briefs.
-                                    <motion.svg
-                                        className="absolute -bottom-2 left-0 w-full"
-                                        viewBox="0 0 200 8"
-                                        initial={{ pathLength: 0 }}
-                                        animate={{ pathLength: 1 }}
-                                        transition={{ delay: 0.8, duration: 0.8 }}
-                                    >
-                                        <motion.path
-                                            d="M0 4 Q50 0 100 4 Q150 8 200 4"
-                                            fill="none"
-                                            stroke="var(--accent-color)"
-                                            strokeWidth="3"
-                                            strokeLinecap="round"
-                                            initial={{ pathLength: 0 }}
-                                            animate={{ pathLength: 1 }}
-                                            transition={{ delay: 0.8, duration: 0.8 }}
-                                        />
-                                    </motion.svg>
-                                </span>
-                            </h1>
-
-                            {/* Subheadline */}
-                            <p className="flex items-center justify-center text-center text-sm sm:text-xl md:text-2xl text-[var(--secondary-color)] font-light w-full max-w-3xl leading-relaxed">
-                                Join Equathora Briefs for early feature announcements, fresh challenge drops, and practical updates for students and teachers.
-                            </p>
-
-                            {/* CTA Button */}
-                            <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
-                                <button
-                                    onClick={() => setIsBriefsModalOpen(true)}
-                                    className="flex items-center justify-center gap-3 px-12 py-5 bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white text-xl font-bold rounded-md transition-all w-full cursor-pointer"
-                                >
-                                    <span>Join Equathora Briefs</span>
-                                    <svg className="w-5 h-5" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-                                        <defs>
-                                            <linearGradient id="icon-gradient-arrow-1" x1="0%" y1="0%" x2="0%" y2="100%">
-                                                <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                                                <stop offset="100%" stopColor="var(--accent-color)" />
-                                            </linearGradient>
-                                        </defs>
-                                        <path fill="white" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z" />
-                                    </svg>
-                                </button>
-                                <p className="flex items-center justify-center text-sm text-[var(--secondary-color)]/60 text-center">
-                                    Weekly updates • No credit card required • Unsubscribe anytime
-                                </p>
-                            </div>
-
-                            {/* Trust Indicators */}
-                            <div className="flex flex-wrap items-center justify-center gap-6 pt-8 text-sm text-[var(--secondary-color)]/70">
-                                <div className="flex items-center justify-center gap-2">
-                                    <FaCheckCircle className="text-green-500" />
-                                    <span>Early bird perks</span>
-                                </div>
-                                <div className="flex items-center justify-center gap-2">
-                                    <FaCheckCircle className="text-green-500" />
-                                    <span>Priority support</span>
-                                </div>
-                                <div className="flex items-center justify-center gap-2">
-                                    <FaCheckCircle className="text-green-500" />
-                                    <span>Founder badge</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                {/*Hero Section*/}
+                <EquathoraBriefsHero  setIsBriefsModalOpen={setIsBriefsModalOpen}/>
 
                 {/* Benefits Grid */}
                 <section className="flex flex-col items-center justify-center w-full py-20 px-4 sm:px-6 lg:px-8 bg-white">
