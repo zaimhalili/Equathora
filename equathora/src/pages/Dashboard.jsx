@@ -101,7 +101,7 @@ const Dashboard = () => {
       {/* <BetaBanner /> */}
       <FeedbackBanner />
       {/* TODO: Check why the dark: doesn't work as it should */}
-      <main className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] dark:bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen ">
+      <main className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] dark:bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
         <header>
           <Navbar />
         </header>
@@ -274,7 +274,7 @@ const Dashboard = () => {
                   <div className="flex gap-3 max-w-[400px]">
                     <Link
                       to="/applymentor"
-                      className="flex items-center justify-center font-[Sansation] font-semibold text-[0.9375rem] !text-white dark:text-black bg-[var(--secondary-color)] rounded-md no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-2 py-2 px-2 text-wrap active:scale-95"
+                      className="flex items-center justify-center font-[Sansation] font-semibold text-[0.9375rem] !text-[var(--white)] bg-[var(--secondary-color)] rounded-md no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-2 py-2 px-2 text-wrap active:scale-95"
                     >
                       Apply Now
                     </Link>
