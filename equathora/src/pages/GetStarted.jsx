@@ -157,11 +157,13 @@ const GetStarted = () => {
                 [currentStep]: optionId
             });
         }
-    }; const handleContinue = () => {
+    };
+
+    const handleContinue = () => {
         if (currentStep < totalSteps - 1) {
             setCurrentStep(currentStep + 1);
         } else {
-            navigate('/dashboard', { state: { preferences: selectedOptions } });
+            navigate('/recommended', { state: { questionnaire: selectedOptions } });
         }
     };
 
@@ -187,7 +189,7 @@ const GetStarted = () => {
         if (!selectedOptions[currentStep]) return '';
         return encouragementMessages[currentStep] || '';
     };
-    
+
 
     return (
         <main className='flex flex-col w-full bg-[var(--main-color)] min-h-screen items-center justify-center px-4 sm:px-6 py-6 font-[Sansation]'>

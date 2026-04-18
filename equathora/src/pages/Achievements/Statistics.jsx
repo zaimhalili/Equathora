@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import './Statistics.css';
-import { getUserProgress, getStreakData, getWeeklyProgress, getDifficultyBreakdown, getTopicFrequency, getUserSubmissions } from '../../lib/databaseService';
+import { getUserProgress, getStreakData, getWeeklyProgress, getTopicFrequency, getUserSubmissions } from '../../lib/databaseService';
 import { getAllProblems } from '../../lib/problemService';
 import { supabase } from '../../lib/supabaseClient';
 import { formatTopicLabel } from '../../lib/utils';
@@ -35,6 +35,44 @@ const calculateAccuracy = (totalAttempts = 0, wrongSubmissions = 0, solvedCount 
   return 0;
 };
 
+const difficultyDisplayRank = {
+  beginner: 1,
+  easy: 2,
+  standard: 3,
+  intermediate: 4,
+  medium: 5,
+  challenging: 6,
+  hard: 7,
+  advanced: 8,
+  expert: 9,
+};
+
+const difficultyPalette = ['#2563eb', '#7c3aed', '#0f766e', '#be123c', '#0ea5e9', '#f97316', '#6366f1'];
+
+const normalizeDifficultyKey = (difficulty) => String(difficulty || '').trim().toLowerCase();
+
+const formatDifficultyLabel = (difficulty) => {
+  const raw = String(difficulty || '').trim();
+  if (!raw) return 'Unspecified';
+  return raw.charAt(0).toUpperCase() + raw.slice(1);
+};
+
+const getDifficultyColor = (difficultyKey, index) => {
+  if (difficultyKey === 'easy') return '#16a34a';
+  if (difficultyKey === 'medium') return '#d97706';
+  if (difficultyKey === 'hard') return '#a3142c';
+  return difficultyPalette[index % difficultyPalette.length];
+};
+
+const hexToRgba = (hex, alpha) => {
+  const safeHex = String(hex || '').replace('#', '');
+  if (!/^[a-fA-F0-9]{6}$/.test(safeHex)) return `rgba(255,255,255,${alpha})`;
+  const r = parseInt(safeHex.slice(0, 2), 16);
+  const g = parseInt(safeHex.slice(2, 4), 16);
+  const b = parseInt(safeHex.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
 const Statistics = () => {
   const [progress, setProgress] = useState({
     correctAnswers: 0,
@@ -48,7 +86,7 @@ const Statistics = () => {
     averageTime: '0m 0s',
     favoriteTopics: [],
     weeklyProgress: [0, 0, 0, 0, 0, 0, 0],
-    difficultyBreakdown: { easy: 0, medium: 0, hard: 0 }
+    difficultyBreakdown: []
   });
 
   useEffect(() => {
@@ -57,7 +95,7 @@ const Statistics = () => {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
 
-        const [userProgress, streakData, weeklyData, allProblems, completedRowsResult, difficultyData, topicData, allSubmissions] = await Promise.all([
+        const [userProgress, streakData, weeklyData, allProblems, completedRowsResult, topicData, allSubmissions] = await Promise.all([
           getUserProgress(),
           getStreakData(),
           getWeeklyProgress(),
@@ -66,7 +104,6 @@ const Statistics = () => {
             .from('user_completed_problems')
             .select('problem_id')
             .eq('user_id', session.user.id),
-          getDifficultyBreakdown(),
           getTopicFrequency(),
           getUserSubmissions()
         ]);
@@ -86,17 +123,39 @@ const Statistics = () => {
         const validCompletedIds = completedIds.filter(id => validProblemIds.has(String(id)));
         const solved = validCompletedIds.length;
 
-        // Calculate difficulty breakdown from completed problems (same as Profile)
         const completedProblems = allProblems.filter(p => validCompletedIds.includes(String(p.id)));
-        const easySolved = completedProblems.filter(p => p.difficulty === 'Easy').length;
-        const mediumSolved = completedProblems.filter(p => p.difficulty === 'Medium').length;
-        const hardSolved = completedProblems.filter(p => p.difficulty === 'Hard').length;
 
-        // Use calculated breakdown if database breakdown is empty
-        const calculatedBreakdown = { easy: easySolved, medium: mediumSolved, hard: hardSolved };
-        const finalDifficultyBreakdown = (difficultyData?.easy || difficultyData?.medium || difficultyData?.hard)
-          ? difficultyData
-          : calculatedBreakdown;
+        const difficultyMap = new Map();
+
+        (allProblems || []).forEach((problem) => {
+          const key = normalizeDifficultyKey(problem?.difficulty);
+          const label = formatDifficultyLabel(problem?.difficulty);
+          const existing = difficultyMap.get(key) || { key, label, solved: 0, total: 0 };
+          existing.total += 1;
+          difficultyMap.set(key, existing);
+        });
+
+        completedProblems.forEach((problem) => {
+          const key = normalizeDifficultyKey(problem?.difficulty);
+          const label = formatDifficultyLabel(problem?.difficulty);
+          const existing = difficultyMap.get(key) || { key, label, solved: 0, total: 0 };
+          existing.solved += 1;
+          if (existing.label === 'Unspecified' && label !== 'Unspecified') {
+            existing.label = label;
+          }
+          difficultyMap.set(key, existing);
+        });
+
+        const finalDifficultyBreakdown = Array.from(difficultyMap.values())
+          .sort((a, b) => {
+            const rankDiff = (difficultyDisplayRank[a.key] ?? 99) - (difficultyDisplayRank[b.key] ?? 99);
+            if (rankDiff !== 0) return rankDiff;
+            return a.label.localeCompare(b.label);
+          })
+          .map((difficulty, index) => ({
+            ...difficulty,
+            color: getDifficultyColor(difficulty.key, index),
+          }));
 
         // Get favorite topics from database topic frequency first
         let topTopics = (topicData || []).sort((a, b) => b.count - a.count).slice(0, 5).map(t => t.topic);
@@ -198,7 +257,7 @@ const Statistics = () => {
     averageTime: progress.averageTime,
     favoriteTopics: progress.favoriteTopics,
     weeklyProgress: progress.weeklyProgress,
-    difficultyBreakdown: progress.difficultyBreakdown
+    difficultyBreakdown: Array.isArray(progress.difficultyBreakdown) ? progress.difficultyBreakdown : []
   };
   const completionRate = stats.totalProblems > 0 ? Math.round((stats.solvedProblems / stats.totalProblems) * 100) : 0;
 
@@ -268,18 +327,27 @@ const Statistics = () => {
       <div className="difficulty-section">
         <h3>Problems by Difficulty</h3>
         <div className="difficulty-grid">
-          <div className="difficulty-item easy">
-            <div className="difficulty-count">{stats.difficultyBreakdown.easy}</div>
-            <div className="difficulty-label">Easy</div>
-          </div>
-          <div className="difficulty-item medium">
-            <div className="difficulty-count">{stats.difficultyBreakdown.medium}</div>
-            <div className="difficulty-label">Medium</div>
-          </div>
-          <div className="difficulty-item hard">
-            <div className="difficulty-count">{stats.difficultyBreakdown.hard}</div>
-            <div className="difficulty-label">Hard</div>
-          </div>
+          {stats.difficultyBreakdown.length > 0 ? (
+            stats.difficultyBreakdown.map((difficulty) => (
+              <div
+                key={difficulty.key || difficulty.label}
+                className="difficulty-item"
+                style={{
+                  '--difficulty-border': hexToRgba(difficulty.color, 0.3),
+                  '--difficulty-hover-border': hexToRgba(difficulty.color, 0.6),
+                  '--difficulty-hover-bg': hexToRgba(difficulty.color, 0.12),
+                }}
+              >
+                <div className="difficulty-count">{difficulty.solved}</div>
+                <div className="difficulty-label">{difficulty.label}</div>
+              </div>
+            ))
+          ) : (
+            <div className="difficulty-item">
+              <div className="difficulty-count">0</div>
+              <div className="difficulty-label">No data yet</div>
+            </div>
+          )}
         </div>
       </div>
 

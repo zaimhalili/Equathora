@@ -9,6 +9,62 @@ import { FaRocket, FaBug, FaStar, FaPalette, FaCode, FaCheckCircle } from 'react
 const SystemUpdates = () => {
     const updates = [
         {
+            version: "1.5.8",
+            date: "April 10-11, 2026",
+            type: "feature",
+            icon: <FaRocket className="text-xl" />,
+            color: "from-[var(--accent-color)] to-[var(--dark-accent-color)]",
+            title: "New Problems + Clearer Math Display",
+            changes: [
+                "Added 50 new Grade 10 Algebra and Trigonometry problems",
+                "Math symbols now look cleaner, especially around zeros, dots, and exponents",
+                "Fixed a few incorrect final answers and solution steps in older problems",
+                "Equivalent answers are matched more reliably (like fractions, decimals, and LaTeX forms)"
+            ]
+        },
+        {
+            version: "1.5.5",
+            date: "April 4, 2026",
+            type: "feature",
+            icon: <FaStar className="text-xl" />,
+            color: "from-[var(--accent-color)] to-[var(--dark-accent-color)]",
+            title: "Equathora Briefs Is Easier to Join",
+            changes: [
+                "Added a smoother newsletter signup flow",
+                "New success popups now clearly confirm when you are subscribed",
+                "Made signup prompts easier to notice without being distracting",
+                "Improved wording so updates are easier to understand at a glance"
+            ]
+        },
+        {
+            version: "1.5.2",
+            date: "February 12, 2026",
+            type: "improvement",
+            icon: <FaPalette className="text-xl" />,
+            color: "from-[var(--accent-color)] to-[var(--dark-accent-color)]",
+            title: "Cleaner Look + More Reliable Weekly Progress",
+            changes: [
+                "Updated page backgrounds for a cleaner and more consistent look",
+                "Weekly progress now updates more reliably",
+                "Added fallback checks so your progress is less likely to go out of sync",
+                "Improved visual consistency across multiple pages"
+            ]
+        },
+        {
+            version: "1.4.9",
+            date: "January 18-21, 2026",
+            type: "improvement",
+            icon: <FaCode className="text-xl" />,
+            color: "from-[var(--accent-color)] to-[var(--dark-accent-color)]",
+            title: "Readability and Filter Polish",
+            changes: [
+                "Updated text styling to improve readability across the app",
+                "Improved filter dropdown behavior on Learn page",
+                "Fixed dropdown layering so menus open correctly above other elements",
+                "Small visual polish for a smoother day-to-day experience"
+            ]
+        },
+        {
             version: "1.4.5",
             date: "January 15, 2026",
             type: "feature",
@@ -372,7 +428,7 @@ const SystemUpdates = () => {
                                 >
                                     {/* Header */}
                                     <div className="flex items-start gap-4 p-6 pb-4">
-                                        <div className={`bg-gradient-to-br ${update.color} p-3 rounded-md text-white flex-shrink-0`}>
+                                        <div className="bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] p-3 rounded-md text-white flex-shrink-0">
                                             {update.icon}
                                         </div>
                                         <div className="flex-1">

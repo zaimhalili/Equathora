@@ -44,6 +44,51 @@ const normalizeCompletedProblemId = (rawValue) => {
   return String(rawValue).trim();
 };
 
+const difficultyDisplayRank = {
+  beginner: 1,
+  easy: 2,
+  standard: 3,
+  intermediate: 4,
+  medium: 5,
+  challenging: 6,
+  hard: 7,
+  advanced: 8,
+  expert: 9,
+};
+
+const difficultyPalette = [
+  '#2563eb',
+  '#7c3aed',
+  '#0f766e',
+  '#be123c',
+  '#0ea5e9',
+  '#f97316',
+  '#6366f1'
+];
+
+const normalizeDifficultyKey = (difficulty) => String(difficulty || '').trim().toLowerCase();
+
+const formatDifficultyLabel = (difficulty) => {
+  const raw = String(difficulty || '').trim();
+  if (!raw) return 'Unspecified';
+  return raw.charAt(0).toUpperCase() + raw.slice(1);
+};
+
+const getDifficultyColor = (difficultyKey, index) => {
+  // Keep colors aligned with Learn active difficulty pills.
+  if (difficultyKey === 'easy') return '#16a34a';
+  if (difficultyKey === 'medium') return '#d97706';
+  if (difficultyKey === 'hard') return '#a3142c';
+  return difficultyPalette[index % difficultyPalette.length];
+};
+
+const getDifficultyChipBackground = (difficultyKey) => {
+  if (difficultyKey === 'easy') return 'rgba(34, 197, 94, 0.15)';
+  if (difficultyKey === 'medium') return 'rgba(229, 158, 11, 0.15)';
+  if (difficultyKey === 'hard') return 'rgba(163, 20, 44, 0.15)';
+  return 'rgba(43, 45, 66, 0.08)';
+};
+
 const calculateProfileAccuracy = (totalAttempts = 0, wrongSubmissions = 0, solvedCount = 0) => {
   if (totalAttempts > 0) {
     const correctSubmissions = totalAttempts - (wrongSubmissions || 0);
@@ -106,12 +151,16 @@ const Profile = () => {
           { data: profileRow },
           { data: progressRow },
           { data: streakRow },
-          { data: leaderboardRow }
+          { data: leaderboardRow },
+          { data: submissionsRow, error: submissionsError }
         ] = await Promise.all([
           supabase.from('profiles').select('*').eq('id', targetUserId).maybeSingle(),
           supabase.from('user_progress').select('*').eq('user_id', targetUserId).maybeSingle(),
           supabase.from('user_streak_data').select('*').eq('user_id', targetUserId).maybeSingle(),
-          supabase.from('leaderboard_view').select('*').eq('user_id', targetUserId).maybeSingle()
+          supabase.from('leaderboard_view').select('*').eq('user_id', targetUserId).maybeSingle(),
+          isSelf
+            ? supabase.from('user_submissions').select('problem_id, is_correct').eq('user_id', targetUserId)
+            : Promise.resolve({ data: [], error: null })
         ]);
 
         const { data: completedRows } = await supabase
@@ -151,28 +200,83 @@ const Profile = () => {
 
         // Calculate stats (scope solved to current problems list)
         const solved = completedProblems.length;
-        const wrongSubmissionsRaw = Number(progressRow?.wrong_submissions || 0);
-        const totalAttemptsRaw = Number(progressRow?.total_attempts || 0);
-        const wrongSubmissions = Number.isFinite(wrongSubmissionsRaw) ? wrongSubmissionsRaw : 0;
-        const totalAttempts = Number.isFinite(totalAttemptsRaw) ? totalAttemptsRaw : 0;
-
-        // Keep Profile accuracy semantics aligned with leaderboard calculations.
-        const correctSubmissions = totalAttempts > 0
+        const wrongSubmissionsRaw = Number(progressRow?.wrong_submissions ?? 0);
+        const totalAttemptsRaw = Number(progressRow?.total_attempts ?? 0);
+        let wrongSubmissions = Number.isFinite(wrongSubmissionsRaw) ? wrongSubmissionsRaw : 0;
+        let totalAttempts = Number.isFinite(totalAttemptsRaw) ? totalAttemptsRaw : 0;
+        let correctSubmissions = totalAttempts > 0
           ? Math.max(totalAttempts - wrongSubmissions, 0)
           : 0;
+
+        // Prefer per-submission counters for own profile when aggregated counters look stale.
+        const validProblemIdSet = new Set((problemList || []).map((problem) => String(problem.id)));
+        const validSubmissions = (submissionsRow || []).filter((submission) =>
+          validProblemIdSet.has(String(submission?.problem_id ?? ''))
+        );
+        const submissionAttempts = validSubmissions.length;
+        const submissionWrong = validSubmissions.filter((submission) => submission?.is_correct === false).length;
+        const submissionCorrect = Math.max(submissionAttempts - submissionWrong, 0);
+
+        const hasSubmissionSignal = isSelf && !submissionsError && submissionAttempts > 0;
+        const countersInconsistentWithSolved = correctSubmissions > solved;
+        const countersFarFromSubmissions = hasSubmissionSignal
+          ? Math.abs(totalAttempts - submissionAttempts) > Math.max(5, Math.floor(submissionAttempts * 0.5))
+          : false;
+
+        if (hasSubmissionSignal && (totalAttempts === 0 || countersInconsistentWithSolved || countersFarFromSubmissions)) {
+          totalAttempts = submissionAttempts;
+          wrongSubmissions = submissionWrong;
+          correctSubmissions = submissionCorrect;
+        } else if (isSelf && !hasSubmissionSignal && countersInconsistentWithSolved) {
+          correctSubmissions = solved;
+          totalAttempts = solved;
+          wrongSubmissions = 0;
+        }
+
         const accuracy = calculateProfileAccuracy(totalAttempts, wrongSubmissions, solved);
 
         // Use solved count from completedProblems filtered by valid IDs (consistent with YourTrack and Statistics)
         const finalSolved = solved;
 
-        // Calculate difficulty breakdowns
-        const easyProblems = problemList.filter(p => p.difficulty === 'Easy');
-        const mediumProblems = problemList.filter(p => p.difficulty === 'Medium');
-        const hardProblems = problemList.filter(p => p.difficulty === 'Hard');
+        const difficultyMap = new Map();
 
-        const easySolved = completedProblems.filter(p => p.difficulty === 'Easy').length;
-        const mediumSolved = completedProblems.filter(p => p.difficulty === 'Medium').length;
-        const hardSolved = completedProblems.filter(p => p.difficulty === 'Hard').length;
+        for (const problem of problemList) {
+          const key = normalizeDifficultyKey(problem?.difficulty);
+          const label = formatDifficultyLabel(problem?.difficulty);
+          const existing = difficultyMap.get(key) || { key, label, solved: 0, total: 0 };
+          existing.total += 1;
+          if (existing.label === 'Unspecified' && label !== 'Unspecified') {
+            existing.label = label;
+          }
+          difficultyMap.set(key, existing);
+        }
+
+        for (const problem of completedProblems) {
+          const key = normalizeDifficultyKey(problem?.difficulty);
+          const label = formatDifficultyLabel(problem?.difficulty);
+          const existing = difficultyMap.get(key) || { key, label, solved: 0, total: 0 };
+          existing.solved += 1;
+          difficultyMap.set(key, existing);
+        }
+
+        const difficultyBreakdown = Array.from(difficultyMap.values())
+          .sort((a, b) => {
+            const rankDiff = (difficultyDisplayRank[a.key] ?? 99) - (difficultyDisplayRank[b.key] ?? 99);
+            if (rankDiff !== 0) return rankDiff;
+            return a.label.localeCompare(b.label);
+          })
+          .map((difficulty, index) => ({
+            ...difficulty,
+            percentage: difficulty.total > 0
+              ? Math.round((difficulty.solved / difficulty.total) * 100)
+              : 0,
+            color: getDifficultyColor(difficulty.key, index)
+          }));
+
+        const totalProblemsCount = problemList.length;
+        const effectiveCurrentStreak = getEffectiveStreak(streakRow?.current_streak || 0, streakRow?.last_activity_date || null);
+        const rawReputation = Number(progressRow?.reputation ?? 0);
+        const reputationValue = Number.isFinite(rawReputation) ? Math.max(rawReputation, 0) : 0;
 
         let resolvedGlobalRank = leaderboardRow?.rank || 0;
         if (!resolvedGlobalRank) {
@@ -202,13 +306,12 @@ const Profile = () => {
               wrong: wrongSubmissions,
               total: totalAttempts
             },
-            currentStreak: getEffectiveStreak(streakRow?.current_streak || 0, streakRow?.last_activity_date || null),
+            currentStreak: effectiveCurrentStreak,
             longestStreak: streakRow?.longest_streak || 0,
-            reputation: progressRow?.reputation || 0,
+            reputation: reputationValue,
             globalRank: resolvedGlobalRank,
-            easy: { solved: easySolved, total: easyProblems.length, percentage: easyProblems.length > 0 ? Math.round((easySolved / easyProblems.length) * 100) : 0 },
-            medium: { solved: mediumSolved, total: mediumProblems.length, percentage: mediumProblems.length > 0 ? Math.round((mediumSolved / mediumProblems.length) * 100) : 0 },
-            hard: { solved: hardSolved, total: hardProblems.length, percentage: hardProblems.length > 0 ? Math.round((hardSolved / hardProblems.length) * 100) : 0 }
+            totalProblems: totalProblemsCount,
+            difficulties: difficultyBreakdown
           },
           mathTopics: [...new Set(completedProblems.map(p => p.topic).filter(Boolean))],
           problemsSolved: completedProblems.slice(-10).reverse()
@@ -237,22 +340,26 @@ const Profile = () => {
     return <LoadingSpinner message="Loading profile..." />;
   }
 
-  const totalProblems = userData.stats.easy.total + userData.stats.medium.total + userData.stats.hard.total;
-  const totalSolved = userData.stats.problemsSolved || (userData.stats.easy.solved + userData.stats.medium.solved + userData.stats.hard.solved);
+  const difficultyStats = Array.isArray(userData.stats.difficulties) ? userData.stats.difficulties : [];
+  const totalProblems = Number.isFinite(userData.stats.totalProblems)
+    ? userData.stats.totalProblems
+    : difficultyStats.reduce((sum, difficulty) => sum + Number(difficulty.total || 0), 0);
+  const totalSolved = Number.isFinite(userData.stats.problemsSolved)
+    ? userData.stats.problemsSolved
+    : difficultyStats.reduce((sum, difficulty) => sum + Number(difficulty.solved || 0), 0);
 
-  const getCircleProgress = (solved, total) => {
-    const percentage = (solved / total) * 100;
-    const circumference = 2 * Math.PI * 40; // radius = 40
-    const offset = circumference - (percentage / 100) * circumference;
-    return { percentage, offset, circumference };
-  };
+  const circleRadius = 80;
+  const circleCircumference = 2 * Math.PI * circleRadius;
+  const segmentCount = Math.max(difficultyStats.length, 1);
+  const segmentLength = circleCircumference / segmentCount;
+  const segmentGap = 4;
 
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className='bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed px-3 md:px-[30px] [@media(min-width:1600px)]:px-[12vw] pt-5 pb-20 lg:place-items-center'>
-        <div className='mx-auto px-[4vw] xl:px-[6vw] max-w-[1500px]'>
+      <main className='bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed flex justify-center'>
+        <div className='w-full max-w-[1500px] px-[4vw] xl:px-[6vw] pt-5 pb-20'>
           {/* Two Column Layout */}
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
 
@@ -370,9 +477,13 @@ const Profile = () => {
                     {viewingOwnProfile && <ProfileExportButtons />}
                   </div>
                   <div className='flex gap-2 md:gap-3 flex-wrap'>
-                    {userData.mathTopics.map((topic, i) => (
-                      <p key={i} className='rounded-md bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)] cursor-default'>{formatTopicLabel(topic)}</p>
-                    ))}
+                    {userData.mathTopics.length > 0 ? (
+                      userData.mathTopics.map((topic, i) => (
+                        <p key={i} className='rounded-md bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)] cursor-default'>{formatTopicLabel(topic)}</p>
+                      ))
+                    ) : (
+                      <p className='text-sm text-[var(--french-gray)] italic'>No topic data yet. Solve a few problems and your strongest topics will appear here.</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -388,7 +499,23 @@ const Profile = () => {
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
                 <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Statistics</h5>
-                <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
+                <div className='flex flex-wrap items-center gap-2 mb-3'>
+                  {difficultyStats.map((difficulty, index) => (
+                    <div
+                      key={`difficulty-top-${difficulty.key}-${index}`}
+                      className='inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-[11px] font-semibold'
+                      style={{
+                        color: difficulty.color,
+                        backgroundColor: getDifficultyChipBackground(difficulty.key)
+                      }}
+                    >
+                      <span className='inline-block w-2 h-2 rounded-full' style={{ backgroundColor: difficulty.color }} />
+                      <span>{difficulty.label}</span>
+                      <span className='opacity-75'>{difficulty.solved}/{difficulty.total}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className='flex justify-center items-center'>
                   {/* Circular Progress Indicator */}
                   <div
                     className='relative flex flex-col w-full md:flex-1 justify-center items-center cursor-pointer group'
@@ -402,52 +529,46 @@ const Profile = () => {
                         cx="100"
                         cy="100"
                         r="80"
-                        stroke="#e5e7eb"
+                        stroke="rgba(148,163,184,0.28)"
                         strokeWidth="12"
                         fill="none"
                       />
 
-                      {/* Easy segment (green) - 0 to 120 degrees */}
-                      <circle
-                        cx="100"
-                        cy="100"
-                        r="80"
-                        stroke="#10b981"
-                        strokeWidth="12"
-                        fill="none"
-                        strokeDasharray={`${getCircleProgress(userData.stats.easy.solved, userData.stats.easy.total).circumference * (userData.stats.easy.solved / (userData.stats.easy.total || 1)) / 3} ${502}`}
-                        strokeDashoffset="0"
-                        strokeLinecap="round"
-                        className="transition-all duration-500"
-                      />
+                      {difficultyStats.map((difficulty, index) => (
+                        <circle
+                          key={`track-${difficulty.key}-${index}`}
+                          cx="100"
+                          cy="100"
+                          r="80"
+                          stroke="rgba(148,163,184,0.35)"
+                          strokeWidth="12"
+                          fill="none"
+                          strokeDasharray={`${Math.max(segmentLength - segmentGap, 0)} ${circleCircumference}`}
+                          strokeDashoffset={`${-(segmentLength * index)}`}
+                          strokeLinecap="round"
+                        />
+                      ))}
 
-                      {/* Medium segment (yellow) - 125 to 245 degrees */}
-                      <circle
-                        cx="100"
-                        cy="100"
-                        r="80"
-                        stroke="#a16207"
-                        strokeWidth="12"
-                        fill="none"
-                        strokeDasharray={`${getCircleProgress(userData.stats.medium.solved, userData.stats.medium.total).circumference * (userData.stats.medium.solved / (userData.stats.medium.total || 1)) / 3} ${502}`}
-                        strokeDashoffset="-172"
-                        strokeLinecap="round"
-                        className="transition-all duration-500"
-                      />
+                      {difficultyStats.map((difficulty, index) => {
+                        const solvedRatio = difficulty.total > 0 ? difficulty.solved / difficulty.total : 0;
+                        const solvedLength = Math.max((segmentLength - segmentGap) * solvedRatio, 0);
 
-                      {/* Hard segment (red) - 250 to 370 degrees */}
-                      <circle
-                        cx="100"
-                        cy="100"
-                        r="80"
-                        stroke="var(--dark-accent-color)"
-                        strokeWidth="12"
-                        fill="none"
-                        strokeDasharray={`${getCircleProgress(userData.stats.hard.solved, userData.stats.hard.total).circumference * (userData.stats.hard.solved / (userData.stats.hard.total || 1)) / 3} ${502}`}
-                        strokeDashoffset="-344"
-                        strokeLinecap="round"
-                        className="transition-all duration-500"
-                      />
+                        return (
+                          <circle
+                            key={`solved-${difficulty.key}-${index}`}
+                            cx="100"
+                            cy="100"
+                            r="80"
+                            stroke={difficulty.color}
+                            strokeWidth="12"
+                            fill="none"
+                            strokeDasharray={`${solvedLength} ${circleCircumference}`}
+                            strokeDashoffset={`${-(segmentLength * index)}`}
+                            strokeLinecap="round"
+                            className="transition-all duration-500"
+                          />
+                        );
+                      })}
                     </svg>
 
                     {/* Center Text */}
@@ -455,7 +576,7 @@ const Profile = () => {
                       <div className={`transition-all duration-300 ${showAccuracy ? 'opacity-0 scale-90' : 'opacity-100 scale-100'} absolute`}>
                         <p className='text-xl text-[var(--secondary-color)]'><span className='text-4xl font-bold'>{totalSolved}</span>/{totalProblems}</p>
                         <div className='flex justify-center gap-1 items-center'>
-                          <FaCheckCircle className='text-[#10b981]' />
+                          <FaCheckCircle className='text-[#16a34a]' />
                           <p className='text-[var(--secondary-color)] text-md'>Solved</p>
                         </div>
                       </div>
@@ -463,24 +584,6 @@ const Profile = () => {
                         <p className='text-3xl font-bold text-[var(--secondary-color)]'>{userData.stats.accuracy === null ? 'N/A' : `${userData.stats.accuracy}%`}</p>
                         <p className='text-md font-medium text-[var(--secondary-color)]'>Accuracy</p>
                       </div>
-                    </div>
-                  </div>
-
-                  {/* Difficulty Breakdown */}
-                  <div className='w-full md:w-auto flex md:flex-col gap-2 md:gap-3 justify-center'>
-                    <div className='bg-[var(--french-gray)] rounded-md text-center flex flex-col font-bold py-2 px-3 md:px-4 flex-1 md:flex-none md:min-w-[100px]'>
-                      <p className='text-teal-700 text-sm md:text-base'>Easy:</p>
-                      <p className='text-sm md:text-base text-[var(--secondary-color)]'>{userData.stats.easy.solved}/{userData.stats.easy.total}</p>
-                    </div>
-
-                    <div className='bg-[var(--french-gray)] rounded-md text-center flex flex-col font-bold py-2 px-3 md:px-4 flex-1 md:flex-none md:min-w-[100px]'>
-                      <p className='text-yellow-700 text-sm md:text-base'>Medium:</p>
-                      <p className='text-sm md:text-base text-[var(--secondary-color)]'>{userData.stats.medium.solved}/{userData.stats.medium.total}</p>
-                    </div>
-
-                    <div className='bg-[var(--french-gray)] rounded-md text-center flex flex-col font-bold py-2 px-3 md:px-4 flex-1 md:flex-none md:min-w-[100px]'>
-                      <p className='text-[var(--dark-accent-color)] text-sm md:text-base'>Hard:</p>
-                      <p className='text-sm md:text-base text-[var(--secondary-color)]'>{userData.stats.hard.solved}/{userData.stats.hard.total}</p>
                     </div>
                   </div>
                 </div>

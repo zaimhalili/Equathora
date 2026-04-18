@@ -38,14 +38,14 @@ const SectionTitle = ({ children, sub }) => (
         <h2 className="font-[Sansation,sans-serif] font-bold text-xl lg:text-2xl text-[var(--secondary-color)]">
             {children}
         </h2>
-        {sub && <p className="text-sm text-[var(--french-gray)]">{sub}</p>}
+        {sub && <p className="text-sm text-[var(--mid-main-secondary)]">{sub}</p>}
     </div>
 );
 
 const InputField = ({ label, description, ...props }) => (
     <div className="flex flex-col gap-1.5">
         <label className="text-sm font-semibold text-[var(--secondary-color)]">{label}</label>
-        {description && <p className="text-xs text-[var(--french-gray)]">{description}</p>}
+        {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <input
             {...props}
             className="text-sm border rounded-md px-4 py-3 w-full border-[var(--french-gray)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
@@ -56,7 +56,7 @@ const InputField = ({ label, description, ...props }) => (
 const TextArea = ({ label, description, ...props }) => (
     <div className="flex flex-col gap-1.5">
         <label className="text-sm font-semibold text-[var(--secondary-color)]">{label}</label>
-        {description && <p className="text-xs text-[var(--french-gray)]">{description}</p>}
+        {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <textarea
             {...props}
             className="text-sm border rounded-md px-4 py-3 w-full border-[var(--french-gray)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif] resize-none h-28"
@@ -67,7 +67,7 @@ const TextArea = ({ label, description, ...props }) => (
 const SelectField = ({ label, description, options, ...props }) => (
     <div className="flex flex-col gap-1.5">
         <label className="text-sm font-semibold text-[var(--secondary-color)]">{label}</label>
-        {description && <p className="text-xs text-[var(--french-gray)]">{description}</p>}
+        {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <select
             {...props}
             className="text-sm cursor-pointer px-4 py-3 border rounded-md border-[var(--french-gray)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
@@ -83,7 +83,7 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
     <div className="flex items-center justify-between gap-4 py-2">
         <div className="flex flex-col gap-0.5 flex-1 min-w-0">
             <span className="text-sm font-semibold text-[var(--secondary-color)]">{label}</span>
-            {description && <span className="text-xs text-[var(--french-gray)]">{description}</span>}
+            {description && <span className="text-xs text-[var(--mid-main-secondary)]">{description}</span>}
         </div>
         <button
             type="button"
@@ -629,7 +629,7 @@ const Settings = () => {
                 {/* Header */}
                 <div className="w-full flex flex-col items-center gap-2 pt-8 pb-4 px-4">
                     <h1 className="font-bold text-3xl lg:text-4xl">Settings</h1>
-                    <p className="text-sm text-[var(--french-gray)]">Manage your account, security, and preferences</p>
+                    <p className="text-sm text-[var(--mid-main-secondary)]">Manage your account, security, and preferences</p>
                 </div>
 
                 {/* Content wrapper */}
@@ -776,7 +776,7 @@ const Settings = () => {
 
                             {/* Current email */}
                             <div className="flex flex-col gap-1 bg-gray-50 rounded-md px-4 py-3">
-                                <span className="text-xs font-semibold text-[var(--french-gray)]">Current email</span>
+                                <span className="text-xs font-semibold text-[var(--mid-main-secondary)]">Current email</span>
                                 <span className="text-sm font-bold">{currentEmail}</span>
                                 {authProvider !== 'email' && (
                                     <span className="text-xs text-[var(--accent-color)] font-semibold">
@@ -809,7 +809,7 @@ const Settings = () => {
                             {authProvider === 'email' && (
                                 <div className="flex flex-col gap-3 border-t border-gray-100 pt-4">
                                     <h3 className="text-base font-bold">Change Password</h3>
-                                    <p className="text-xs text-[var(--french-gray)]">
+                                    <p className="text-xs text-[var(--mid-main-secondary)]">
                                         Minimum 8 characters with uppercase, lowercase, and a number.
                                     </p>
                                     <InputField
@@ -828,7 +828,7 @@ const Settings = () => {
                                         placeholder="••••••••"
                                         autoComplete="new-password"
                                     />
-                                    <label className="flex items-center gap-2 cursor-pointer text-xs text-[var(--french-gray)]">
+                                    <label className="flex items-center gap-2 cursor-pointer text-xs text-[var(--mid-main-secondary)]">
                                         <input
                                             type="checkbox"
                                             checked={showPassword}
@@ -848,7 +848,7 @@ const Settings = () => {
 
                             {authProvider !== 'email' && (
                                 <div className="flex flex-col gap-2 border-t border-gray-100 pt-4">
-                                    <p className="text-sm text-[var(--french-gray)]">
+                                    <p className="text-sm text-[var(--mid-main-secondary)]">
                                         Your account is managed through {authProvider === 'google' ? 'Google' : authProvider}.
                                         Email and password changes must be made through your provider.
                                     </p>
@@ -1012,7 +1012,7 @@ const Settings = () => {
 
                             <div className="flex flex-col gap-3 border-t border-gray-100 pt-4">
                                 <h3 className="text-base font-bold">Data & Cookies</h3>
-                                <p className="text-xs text-[var(--french-gray)]">
+                                <p className="text-xs text-[var(--mid-main-secondary)]">
                                     We use essential cookies for authentication and localStorage for offline progress tracking.
                                     Optional cookies are used for analytics and personalization.
                                     Read our full{' '}
@@ -1053,7 +1053,7 @@ const Settings = () => {
                                         {cookieConsent === 'accepted' ? 'All Cookies Accepted' : 'Essential Only'}
                                     </span>
                                     {cookieConsent !== 'none' && (
-                                        <span className="text-[10px] text-[var(--french-gray)]">
+                                        <span className="text-[10px] text-[var(--mid-main-secondary)]">
                                             Set on {new Date(localStorage.getItem('equathora_cookie_consent_date') || '').toLocaleDateString()}
                                         </span>
                                     )}
@@ -1088,17 +1088,17 @@ const Settings = () => {
                                                 <span className="text-sm font-bold">Current Session</span>
                                                 <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Active</span>
                                             </div>
-                                            <span className="text-xs text-[var(--french-gray)] truncate">
+                                            <span className="text-xs text-[var(--mid-main-secondary)] truncate">
                                                 {currentSession.user_agent?.substring(0, 80)}...
                                             </span>
-                                            <span className="text-xs text-[var(--french-gray)]">
+                                            <span className="text-xs text-[var(--mid-main-secondary)]">
                                                 Last active: {new Date(currentSession.last_active).toLocaleString()}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
-                                <p className="text-sm text-[var(--french-gray)]">Unable to load session information.</p>
+                                <p className="text-sm text-[var(--mid-main-secondary)]">Unable to load session information.</p>
                             )}
 
                             <AnimatePresence>
@@ -1113,7 +1113,7 @@ const Settings = () => {
 
                             <div className="flex flex-col gap-2 border-t border-gray-100 pt-4">
                                 <h3 className="text-base font-bold">Security Tips</h3>
-                                <ul className="text-xs text-[var(--french-gray)] flex flex-col gap-1.5">
+                                <ul className="text-xs text-[var(--mid-main-secondary)] flex flex-col gap-1.5">
                                     <li className="flex items-start gap-2">
                                         <span className="text-[var(--accent-color)] font-bold shrink-0">•</span>
                                         Use a strong, unique password for your Equathora account

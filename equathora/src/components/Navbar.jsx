@@ -31,6 +31,7 @@ import Achievements from '../assets/images/achievementsDD.svg';
 import Events from '../assets/images/specialEvents.svg';
 import { getDailyProblemSlug } from '../lib/utils';
 import Books from '../assets/images/learningBooks.svg';
+import Sigma from '../assets/logo/TransparentSymbol.png';
 
 const getLowResAvatarUrl = (avatarUrl) => {
   if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
@@ -325,22 +326,24 @@ const Navbar = () => {
           <div className='w-full h-full mx-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
             <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
               <li>
-                <Link to="/dashboard" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
-                  <img src={Logo} alt="Logo" className='w-40 object-scale-down object-center scale-110' />
+                {/* Main Logo - Redirect to Dashboard */}
+                <Link to="/dashboard" className='!text-[var(--secondary-color)] flex justify-center items-center list-none font-bold relative'>
+                  <img src={Sigma} alt="Logo" className='w-6 h-6 absolute left-0 -top-[1px]' />
+                  <p className='font-[Sansation,Arial] pl-6 text-lg'>Equathora</p>
                 </Link>
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
                 <Dropdown
                   label="Learn"
                   items={learnItems} />
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
                 <Dropdown
                   label="Discover"
                   items={discoverItems}
                 />
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
                 <Dropdown
                   label="More"
                   items={moreItems} />

@@ -3,7 +3,7 @@
 // Retrieved 2025-11-08, License - CC BY-SA 4.0
 // Updated for React Router v6+
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const ScrollToTop = ({ children }) => {

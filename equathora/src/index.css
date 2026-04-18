@@ -51,7 +51,22 @@
   margin: 0;
   /* This is for debugging */
   /* border: 2px solid skyblue; */
-  font-family: Sansation;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: Sansation, sans-serif;
+}
+
+/* Keep MathJax glyph metrics untouched by app typography. */
+.mathjax-renderer mjx-container,
+.mathjax-renderer mjx-container * {
+  font-weight: 400 !important;
+  letter-spacing: normal !important;
+  font-stretch: normal !important;
 }
 
 

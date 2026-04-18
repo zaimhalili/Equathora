@@ -22,6 +22,7 @@ import Achievements from '../../assets/images/achievementsDD.svg';
 import Events from '../../assets/images/specialEvents.svg';
 import { getDailyProblemSlug } from '../../lib/utils';
 import Books from '../../assets/images/learningBooks.svg';
+import Sigma from '../../assets/logo/TransparentSymbol.png';
 
 const NavigationBar = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -197,8 +198,9 @@ const NavigationBar = () => {
                     <div className='w-full h-full flex items-center justify-between px-4 sm:px-6 md:px-[4vw] xl:px-[6vw] max-w-[1500px]' style={{ marginLeft: 'auto', marginRight: 'auto' }}>
                         <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
                             <li>
-                                <Link to="/" className='text-[var(--secondary-color)] flex justify-center items-center list-none font-bold'>
-                                    <img src={Logo} alt="Logo" className='w-28 sm:w-32 md:w-36 lg:w-40 object-scale-down object-center scale-110' />
+                                <Link to="/" className='!text-[var(--secondary-color)] flex justify-center items-center list-none font-bold relative'>
+                                    <img src={Sigma} alt="Logo" className='w-6 h-6 absolute left-0 -top-[1px]' />
+                                    <p className='font-[Sansation,Arial] pl-6 text-lg'>Equathora</p>
                                 </Link>
                             </li>
                             <li className='pl-6 lg:pl-4 shrink-0 hidden text-sm sm:text-base md:block text-[var(--secondary-color)]'>

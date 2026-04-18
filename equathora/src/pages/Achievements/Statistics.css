@@ -123,7 +123,7 @@
 
 .difficulty-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: clamp(0.75rem, 3vw, 1.5rem);
     width: 100%;
     font-family: 'Sansation', sans-serif;
@@ -131,7 +131,7 @@
 
 @media (max-width: 480px) {
     .difficulty-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
         gap: 0.75rem;
     }
 }
@@ -142,39 +142,19 @@
     border-radius: 6px;
     text-align: center;
     transition: all 0.3s ease;
-    border: 2px solid transparent;
+    border: 2px solid var(--difficulty-border, rgba(255, 255, 255, 0.15));
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .difficulty-item:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.difficulty-item.easy {
-    border-color: rgba(76, 175, 80, 0.3);
-}
-
-.difficulty-item.easy:hover {
-    border-color: rgba(76, 175, 80, 0.6);
-    background-color: rgba(76, 175, 80, 0.1);
-}
-
-.difficulty-item.medium {
-    border-color: rgba(255, 193, 7, 0.3);
-}
-
-.difficulty-item.medium:hover {
-    border-color: rgba(255, 193, 7, 0.6);
-    background-color: rgba(255, 193, 7, 0.1);
-}
-
-.difficulty-item.hard {
-    border-color: rgba(244, 67, 54, 0.3);
-}
-
-.difficulty-item.hard:hover {
-    border-color: rgba(244, 67, 54, 0.6);
-    background-color: rgba(244, 67, 54, 0.1);
+    border-color: var(--difficulty-hover-border, rgba(255, 255, 255, 0.3));
+    background-color: var(--difficulty-hover-bg, rgba(255, 255, 255, 0.08));
 }
 
 .difficulty-count {

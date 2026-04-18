@@ -23,6 +23,12 @@ const normalizeAnswer = (answer) => {
 
     let s = answer.toString().trim();
 
+    // Repair over-escaped LaTeX command prefixes (e.g. \\sqrt, \\frac) and
+    // accidental control-char command starts before parsing.
+    s = s
+        .replace(/\t(?=(?:imes|frac|dfrac|tfrac|sqrt|cdot|ext|pi|ightarrow)\b)/g, '\\')
+        .replace(/\\\\(?=(?:frac|dfrac|tfrac|sqrt|times|cdot|pi|Rightarrow|left|right|text|pm|mapsto|therefore)\b)/g, '\\');
+
     // ── Step 1: LaTeX → plain algebra ──────────────────────────────
     // \frac{a}{b} → a/b  (keep as fraction string, not float)
     s = s.replace(/\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}/g, '($1)/($2)');
