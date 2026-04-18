@@ -14,6 +14,11 @@ import {
     getCurrentSession,
     signOutAllOtherSessions,
 } from '../lib/notificationService';
+import {
+    normalizeThemePreference,
+    resolveThemePreference,
+    setThemePreference,
+} from '../lib/theme';
 
 // ============================================================================
 // REUSABLE UI PIECES
@@ -22,7 +27,7 @@ import {
 const SectionCard = ({ children, id }) => (
     <section
         id={id}
-        className="bg-white rounded-md w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
+        className="bg-[var(--surface-card)] rounded-md w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
     >
         {children}
     </section>
@@ -43,7 +48,7 @@ const InputField = ({ label, description, ...props }) => (
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <input
             {...props}
-            className="text-sm border rounded-md px-4 py-3 w-full border-[var(--mid-main-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
+            className="text-sm border rounded-md px-4 py-3 w-full border-[var(--french-gray)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
         />
     </div>
 );
@@ -54,7 +59,7 @@ const TextArea = ({ label, description, ...props }) => (
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <textarea
             {...props}
-            className="text-sm border rounded-md px-4 py-3 w-full border-[var(--mid-main-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif] resize-none h-28"
+            className="text-sm border rounded-md px-4 py-3 w-full border-[var(--french-gray)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif] resize-none h-28"
         />
     </div>
 );
@@ -65,7 +70,7 @@ const SelectField = ({ label, description, options, ...props }) => (
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <select
             {...props}
-            className="text-sm cursor-pointer px-4 py-3 border rounded-md border-[var(--mid-main-secondary)] appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif] bg-[url('data:image/svg+xml,%3csvg%20xmlns%3d%22http%3a%2f%2fwww.w3.org%2f2000%2fsvg%22%20viewBox%3d%220%200%2024%2024%22%20fill%3d%22none%22%20stroke%3d%22%23333%22%20stroke-width%3d%222%22%3e%3cpolyline%20points%3d%226%209%2012%2015%2018%209%22%3e%3c%2fpolyline%3e%3c%2fsvg%3e')] bg-no-repeat bg-[right_0.5rem_center] bg-[length:1.2em]"
+            className="text-sm cursor-pointer px-4 py-3 border rounded-md border-[var(--french-gray)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
         >
             {options.map(opt => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -86,10 +91,10 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
             aria-checked={checked}
             disabled={disabled}
             onClick={() => onChange(!checked)}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)]' : 'bg-gray-300'}`}
+            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 focus:ring-offset-[var(--surface-card)] disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)]' : 'bg-[var(--french-gray)]'}`}
         >
             <span
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-lg ring-0 transition-transform duration-200 translate-y-0.5 ${checked ? 'translate-x-[22px]' : 'translate-x-0.5'}`}
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--surface-card)] shadow-lg ring-0 transition-transform duration-200 translate-y-0.5 ${checked ? 'translate-x-[22px]' : 'translate-x-0.5'}`}
             />
         </button>
     </div>
@@ -190,6 +195,13 @@ const IconLaptop = () => (
     </svg>
 );
 
+const IconTheme = () => (
+    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
+        <defs><linearGradient id="icon-theme" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
+        <path fill="url(#icon-theme)" d="M361.5 37.4c-9.3-6.3-21.5-5.7-30.1 1.5c-8.6 7.1-11.8 19.9-8 30.4c4.9 13.4 7.6 27.8 7.6 42.8c0 68.5-55.5 124-124 124c-15 0-29.4-2.7-42.8-7.6c-10.5-3.8-23.3-.6-30.4 8c-7.2 8.6-7.8 20.8-1.5 30.1C157.2 414.8 281.7 474.7 406.4 431.3c50.7-17.7 90.4-57.4 108.1-108.1C557.9 198.5 498 73.9 361.5 37.4z" />
+    </svg>
+);
+
 const IconWarning = () => (
     <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
         <defs><linearGradient id="icon-warning" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
@@ -201,6 +213,7 @@ const sidebarSections = [
     { id: 'profile', label: 'Profile', icon: <IconUser /> },
     { id: 'account', label: 'Account & Security', icon: <IconLock /> },
     { id: 'notifications', label: 'Notifications', icon: <IconBell /> },
+    { id: 'appearance', label: 'Appearance', icon: <IconTheme /> },
     { id: 'privacy', label: 'Privacy', icon: <IconShield /> },
     { id: 'sessions', label: 'Sessions', icon: <IconLaptop /> },
     { id: 'danger', label: 'Danger Zone', icon: <IconWarning /> },
@@ -255,6 +268,7 @@ const Settings = () => {
         privacy_show_achievements: true,
         two_factor_enabled: false,
         session_timeout_minutes: 60,
+        theme: 'system',
     });
     const [settingsSaving, setSettingsSaving] = useState(false);
     const [settingsMessage, setSettingsMessage] = useState({ text: '', type: 'success' });
@@ -323,7 +337,9 @@ const Settings = () => {
 
                 // Fetch user settings
                 const userSettings = await getUserSettings();
-                setSettings(prev => ({ ...prev, ...userSettings }));
+                const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+                setSettings(prev => ({ ...prev, ...userSettings, theme: normalizedTheme }));
+                setThemePreference(normalizedTheme, { persist: true });
 
                 // Fetch session info
                 const sess = await getCurrentSession();
@@ -493,6 +509,10 @@ const Settings = () => {
     // SETTINGS HANDLERS
     // ========================================================================
     const handleSettingChange = (key, value) => {
+        if (key === 'theme') {
+            setThemePreference(value, { persist: true });
+        }
+
         setSettings(prev => ({ ...prev, [key]: value }));
     };
 
@@ -596,6 +616,9 @@ const Settings = () => {
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
+    const resolvedTheme = resolveThemePreference(settings.theme);
+    const isDarkModeEnabled = resolvedTheme === 'dark';
+
     // ========================================================================
     // RENDER
     // ========================================================================
@@ -620,7 +643,7 @@ const Settings = () => {
                                 title={section.label}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-md text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
                                     ? 'bg-[var(--accent-color)] text-white'
-                                    : 'text-[var(--secondary-color)] hover:bg-white/60'
+                                    : 'text-[var(--secondary-color)] hover:bg-[var(--surface-muted)]'
                                     }`}
                             >
                                 {section.icon}
@@ -638,7 +661,7 @@ const Settings = () => {
                                 title={section.label}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all shrink-0 cursor-pointer ${activeSection === section.id
                                     ? 'bg-[var(--accent-color)] text-white'
-                                    : 'bg-white text-[var(--secondary-color)] border border-[var(--mid-main-secondary)]'
+                                    : 'bg-[var(--surface-card)] text-[var(--secondary-color)] border border-[var(--french-gray)]'
                                     }`}
                             >
                                 {section.icon}
@@ -911,6 +934,46 @@ const Settings = () => {
 
                             <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start">
                                 Save Preferences
+                            </PrimaryButton>
+                        </SectionCard>
+
+                        {/* ============================================================ */}
+                        {/* APPEARANCE */}
+                        {/* ============================================================ */}
+                        <SectionCard id="appearance">
+                            <SectionTitle sub="Control how Equathora looks on this device">Appearance</SectionTitle>
+
+                            <div className="flex flex-col gap-3">
+                                <ToggleSwitch
+                                    label="Dark Mode"
+                                    description="Turn on a high-contrast dark interface for low-light usage"
+                                    checked={isDarkModeEnabled}
+                                    onChange={enabled => handleSettingChange('theme', enabled ? 'dark' : 'light')}
+                                />
+
+                                {settings.theme === 'system' && (
+                                    <p className="text-xs text-[var(--french-gray)]">
+                                        Currently following your device preference: <span className="font-semibold text-[var(--secondary-color)]">{resolvedTheme === 'dark' ? 'Dark' : 'Light'}</span>.
+                                    </p>
+                                )}
+
+                                <div>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleSettingChange('theme', 'system')}
+                                        className="cursor-pointer text-sm font-semibold px-4 py-2 border border-[var(--french-gray)] rounded-md bg-[var(--surface-card)] text-[var(--secondary-color)] hover:bg-[var(--surface-muted)] transition-colors"
+                                    >
+                                        Use Device Default Theme
+                                    </button>
+                                </div>
+                            </div>
+
+                            <AnimatePresence>
+                                <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
+                            </AnimatePresence>
+
+                            <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start">
+                                Save Appearance
                             </PrimaryButton>
                         </SectionCard>
 

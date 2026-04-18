@@ -6,7 +6,7 @@ const GoogleAuth = ({ onClick }) => { // 👈 Accept onClick as prop
     return (
         <>
             <div className="google-auth-container">
-                <button id="google-btn" onClick={onClick}>
+                <button id="google-btn" onClick={onClick} className=' theme-lock'>
                     <img
                         src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
                         alt="Google logo"

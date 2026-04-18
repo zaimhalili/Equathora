@@ -55,7 +55,7 @@ const LatestArticlesSection = () => {
                             >
                                 <Link
                                     to={`/blog/${post.slug}`}
-                                    className="group flex flex-col bg-white rounded-md border border-gray-100 overflow-hidden transition-all shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] duration-200 ease-out hover:scale-105"
+                                    className="group flex flex-col bg-white rounded-md border border-[var(--french-gray)] overflow-hidden transition-all shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] dark:shadow-black/20 dark:hover:shadow-black/70 duration-200 ease-out hover:scale-105"
                                 >
                                     {/* Image */}
                                     <div className="relative overflow-hidden h-44 sm:h-48">
@@ -80,7 +80,7 @@ const LatestArticlesSection = () => {
                                         <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)] line-clamp-2 transition-colors">
                                             {post.title}
                                         </h3>
-                                        <p className="text-[var(--mid-main-secondary)] text-xs sm:text-sm line-clamp-2">
+                                        <p className="text-[var(--mid-main-secondary)] theme-lock text-xs sm:text-sm line-clamp-2">
                                             {post.description}
                                         </p>
 

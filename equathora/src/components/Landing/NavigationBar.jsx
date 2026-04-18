@@ -92,7 +92,7 @@ const NavigationBar = () => {
         {
             to: '/equathora-briefs',
             text: "Equathora Briefs",
-            description: "Weekly product updates and challenge drops.",
+            description: "Weekly updates and challenge drops.",
             image: Daily
         },
         // Hidden for MVP - will be added after launch
@@ -246,14 +246,14 @@ const NavigationBar = () => {
                                             aria-hidden="true"
                                             className="absolute inset-0 rounded-[inherit] opacity-0 group-hover:opacity-100
                                             bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
-                                            transition-opacity duration-150 -z-10"
+                                            transition-opacity duration-150 -z-10 theme-lock"
                                         />
                                         Explore Problems
                                     </Link>
                                 </li>
-                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
+                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block !text-[var(--secondary-color)]'>
                                     <Link to="/login"
-                                        className="border-3 border-[var(--mid-main-secondary)] !text-black bg-[var(--mid-main-secondary)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center transition-all hover:border-[var(--mid-main-secondary)]/10 hover:bg-[var(--mid-main-secondary)]/70">Get Started</Link>
+                                        className="border-3 border-[var(--mid-main-secondary)] !text-[var(--secondary-color)] bg-[var(--mid-main-secondary)] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center transition-all hover:border-[var(--mid-main-secondary)]/10 hover:bg-[var(--mid-main-secondary)]/70 theme-lock dark:!text-[var(--main-color)]">Get Started</Link>
 
 
                                 </li>

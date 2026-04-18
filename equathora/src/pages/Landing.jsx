@@ -30,7 +30,7 @@ const Landing = () => {
         <>
             {/* <FeedbackBanner /> */}
             <div className="min-h-screen bg-white text-[var(--secondary-color)]">
-                <NavigationBar></NavigationBar>
+                <NavigationBar />
                 <HeroSection />
                 {/* <TrustedBySection /> */}
                 <ExercisesSection />
@@ -46,7 +46,7 @@ const Landing = () => {
                 <CTASection />
                 <EquathoraBriefsSection />
                 <Footer />
-                <div className="flex flex-col lg:flex-row items-center text-[var(--french-gray)] bg-[var(--secondary-color)] underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center font-[Sansation]">
+                <div className="flex flex-col lg:flex-row items-center text-[var(--french-gray)] bg-[var(--secondary-color)] underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center font-[Sansation] theme-lock">
                     <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="#freepik-link">
                         Student PNGs by Vecteezy
                     </a>

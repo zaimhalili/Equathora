@@ -142,7 +142,7 @@ const LoadingSpinner = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[linear-gradient(135deg,#ffffff_0%,#f8f9fa_100%)] flex items-center justify-center px-6">
+        <div className="min-h-screen bg-[var(--main-color)] flex items-center justify-center px-6">
             <div className="w-full max-w-xl">
                 <div className="relative h-5 w-full overflow-hidden rounded-full bg-[rgba(163,20,44,0.12)]">
                     <div
@@ -154,7 +154,7 @@ const LoadingSpinner = () => {
                         }}
                     />
                 </div>
-                <p className="mt-5 text-center text-base font-bold text-[var(--secondary-color)]">
+                <p className="pt-5 text-center text-base font-bold text-[var(--secondary-color)]">
                     Preparing your workspace...
                 </p>
             </div>

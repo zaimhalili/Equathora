@@ -336,7 +336,7 @@ const DEFAULT_SETTINGS = {
     privacy_show_achievements: true,
     two_factor_enabled: false,
     session_timeout_minutes: 60,
-    theme: 'light',
+    theme: 'system',
     language: 'en',
 };
 
