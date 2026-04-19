@@ -9,10 +9,7 @@ const LatestArticlesSection = () => {
     const displayedPosts = blogPosts.slice(0, 3);
 
     return (
-        <section className="w-full bg-white relative overflow-hidden flex justify-center">
-            {/* Background decorations */}
-            <div className="absolute top-20 right-20 w-32 h-32 border border-gray-100 rounded-full opacity-50" />
-            <div className="absolute bottom-10 left-10 w-24 h-24 border border-[var(--accent-color)]/10 rounded-full" />
+        <section className="w-full bg-[var(--white)] relative overflow-hidden flex justify-center">
 
             <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10">
                 <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
@@ -55,7 +52,7 @@ const LatestArticlesSection = () => {
                             >
                                 <Link
                                     to={`/blog/${post.slug}`}
-                                    className="group flex flex-col bg-white rounded-md border border-[var(--french-gray)] overflow-hidden transition-all shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] dark:shadow-black/20 dark:hover:shadow-black/70 duration-200 ease-out hover:scale-105"
+                                    className="group flex flex-col bg-[var(--white)] rounded-md border border-[var(--french-gray)] overflow-hidden transition-all shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] dark:shadow-black/20 dark:hover:shadow-black/70 duration-200 ease-out hover:scale-105"
                                 >
                                     {/* Image */}
                                     <div className="relative overflow-hidden h-44 sm:h-48">
@@ -65,7 +62,7 @@ const LatestArticlesSection = () => {
                                             className="w-full h-full object-cover transition-transform duration-500 "
                                         />
                                         <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
-                                            <span className="px-2.5 sm:px-3 py-1 bg-[var(--accent-color)] text-white text-[10px] sm:text-xs font-semibold rounded-full">
+                                            <span className="px-2.5 sm:px-3 py-1 bg-[var(--accent-color)] text-[var(--white)] text-[10px] sm:text-xs font-semibold rounded-full">
                                                 {post.category}
                                             </span>
                                         </div>

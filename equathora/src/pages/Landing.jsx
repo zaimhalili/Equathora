@@ -29,7 +29,7 @@ const Landing = () => {
     return (
         <>
             {/* <FeedbackBanner /> */}
-            <div className="min-h-screen bg-white text-[var(--secondary-color)]">
+            <div className="min-h-screen bg-[var(--white)] text-[var(--secondary-color)]">
                 <NavigationBar />
                 <HeroSection />
                 {/* <TrustedBySection /> */}

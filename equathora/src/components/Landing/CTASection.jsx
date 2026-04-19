@@ -32,7 +32,7 @@ const CTASection = () => {
     return (
         <section
             ref={containerRef}
-            className="w-full bg-white relative overflow-hidden flex justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10"
+            className="w-full bg-[var(--white)] relative overflow-hidden flex justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10"
         >
 
             <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-10 md:gap-12">
@@ -90,7 +90,7 @@ const CTASection = () => {
                     >
                         <Link
                             to="/login"
-                            className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1"
+                            className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-[var(--white)] font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1"
                         >
                             Start Your Journey
                             <motion.span
@@ -139,9 +139,9 @@ const CTASection = () => {
 
                             {/* Placeholder lines */}
                             <div className="flex flex-col gap-3">
-                                <div className="h-3 w-3/4 bg-white/10 rounded-full"></div>
-                                <div className="h-3 w-1/2 bg-white/10 rounded-full"></div>
-                                <div className="h-3 w-2/3 bg-white/10 rounded-full"></div>
+                                <div className="h-3 w-3/4 bg-[var(--white)]/10 rounded-full"></div>
+                                <div className="h-3 w-1/2 bg-[var(--white)]/10 rounded-full"></div>
+                                <div className="h-3 w-2/3 bg-[var(--white)]/10 rounded-full"></div>
                             </div>
 
                             {/* Chart bars */}
@@ -162,13 +162,13 @@ const CTASection = () => {
 
                         {/* Floating badge */}
                         <motion.div
-                            className="absolute -bottom-6 -left-6 px-5 py-4 rounded-md bg-white shadow-2xl border border-gray-100"
+                            className="absolute -bottom-6 -left-6 px-5 py-4 rounded-md bg-[var(--white)] shadow-2xl border border-gray-100"
                             animate={{ y: [0, -8, 0] }}
                             transition={{ duration: 3, repeat: Infinity }}
                         >
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-green-900 text-xl font-extrabold">
-                                    <FaCheck className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                                    <FaCheck className="w-3 h-3 sm:w-4 sm:h-4 text-[var(--white)]" />
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500">Problems solved</p>
@@ -179,7 +179,7 @@ const CTASection = () => {
 
                         {/* Math symbol */}
                         <motion.div
-                            className="absolute -top-4 -right-4 w-16 h-16 rounded-md bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-white text-2xl font-bold shadow-lg"
+                            className="absolute -top-4 -right-4 w-16 h-16 rounded-md bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-[var(--white)] text-2xl font-bold shadow-lg"
                             animate={{ rotate: [0, 5, -5, 0] }}
                             transition={{ duration: 4, repeat: Infinity }}
                         >

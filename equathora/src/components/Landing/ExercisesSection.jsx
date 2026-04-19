@@ -95,7 +95,7 @@ const ExercisesSection = () => {
 
     return (
         <div className="flex justify-center">
-            <section className="max-w-[1400px] mx-auto w-full bg-white relative overflow-hidden flex justify-center flex-col px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10">
+            <section className="max-w-[1400px] mx-auto w-full bg-[var(--[var(--white)])] relative overflow-hidden flex justify-center flex-col px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10">
                 {/* Decorative elements */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
@@ -150,7 +150,7 @@ const ExercisesSection = () => {
                             {exercises.map((exercise, index) => (
                                 <motion.div
                                     key={exercise.title}
-                                    className="bg-white rounded-md transition-all duration-300 p-3 sm:py-3 px-5 shadow-[0px_10px_35px_5px_rgba(141,153,174,0.1)] dark:shadow-black/20 flex items-center gap-6 h-22"
+                                    className="bg-[var(--white)] rounded-md transition-all duration-300 p-3 sm:py-3 px-5 shadow-[0px_10px_35px_5px_rgba(141,153,174,0.1)] dark:shadow-black/20 flex items-center gap-6 h-22"
                                     initial={{ opacity: 0, y: -30 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, amount: 0.2 }}

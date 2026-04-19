@@ -37,11 +37,11 @@ const WhyChooseSection = () => {
     ];
 
     return (
-        <section className="w-full bg-gradient-to-b from-white to-[var(--main-color)] relative overflow-hidden flex justify-center" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/batthern.png")' }}>
+        <section className="w-full bg-gradient-to-b from-[var(--white)] to-[var(--main-color)] relative overflow-hidden flex justify-center" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/batthern.png")' }}>
             {/* Background scrolling text - FASTER */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0">
                 <motion.div
-                    className="text-[40vw] lg:text-[30vw] font-bold text-[var(--french-gray)]/15 whitespace-nowrap select-none"
+                    className="text-[40vw] lg:text-[30vw] font-bold text-[var(--french-gray)]/15 [var(--white)]space-nowrap select-none"
                     animate={{ x: [-100, 2500] }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 >
@@ -109,7 +109,7 @@ const WhyChooseSection = () => {
                                     viewport={{ once: true, amount: 0.5 }}
                                     transition={{ delay: 0.08 * index, duration: 0.35, ease: "easeOut" }}
                                 >
-                                    <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 text-white flex-shrink-0">
+                                    <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 text-[var(--white)] flex-shrink-0">
                                         <svg className="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                                             <defs>
                                                 <linearGradient id="icon-gradient-check" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -134,14 +134,14 @@ const WhyChooseSection = () => {
                         >
                             <Link
                                 to="/learn"
-                                className="group inline-flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 !text-white text-base sm:text-lg font-semibold transition-all hover:!bg-[var(--accent-color)] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1 "
+                                className="group inline-flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 !text-[var(--white)] text-base sm:text-lg font-semibold transition-all hover:!bg-[var(--accent-color)] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1 "
                             >
                                 Explore problems
                                 <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                     <defs>
                                         <linearGradient id="icon-gradient-arrow" x1="0%" y1="0%" x2="0%" y2="100%">
-                                            <stop offset="0%" stopColor="white" />
-                                            <stop offset="100%" stopColor="white" />
+                                            <stop offset="0%" stopColor="[var(--white)]" />
+                                            <stop offset="100%" stopColor="[var(--white)]" />
                                         </linearGradient>
                                     </defs>
                                     <path fill="url(#icon-gradient-arrow)" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z" />
