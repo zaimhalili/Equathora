@@ -7,6 +7,7 @@ import {
   FaLinkedin,
   FaFacebook,
   FaReddit,
+  FaYoutube
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
@@ -61,16 +62,19 @@ const Footer = () => {
             </a>
 
             <a
-              href="https://www.reddit.com/user/Equathora/"
+              href="https://www.youtube.com/@Equathora"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Follow us on Reddit"
+              aria-label="Follow us on YouTube"
               className='socialMedia'
             >
-              <FaReddit />
+              <FaYoutube />
             </a>
           </div>
-          <div className="w-full flex justify-center"><Link to="/dashboard" className='cursor-pointer w-14'><img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '60px', width: '60px', margin: '1rem auto', borderRadius: '10px' }} /></Link></div>
+          <div className="w-full flex justify-center"><Link to="/dashboard" className='cursor-pointer w-14'>
+            <img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '60px', width: '60px', margin: '1rem auto', borderRadius: '10px' }} />
+          </Link>
+          </div>
 
 
         </div>

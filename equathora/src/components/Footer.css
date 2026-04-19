@@ -60,19 +60,22 @@
     transition: 0.2s ease-in-out;
 }
 
-.socialMedia:nth-child(2):hover {
-    border-radius: 10px;
-    color: #db1d9f;
-}
-
+/*  LinkedIn */
 .socialMedia:nth-child(1):hover {
     border-radius: 10px;
     color: #0077B5;
 }
 
+/* Instagram */
+.socialMedia:nth-child(2):hover {
+    border-radius: 10px;
+    color: #db1d9f;
+}
+
+/* YouTube */
 .socialMedia:nth-child(3):hover {
     border-radius: 10px;
-    color: #FF4500;
+    color: #FF0033;
 }
 
 #center h1 {
