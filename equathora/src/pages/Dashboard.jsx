@@ -101,7 +101,7 @@ const Dashboard = () => {
       {/* <BetaBanner /> */}
       <FeedbackBanner />
       {/* TODO: Check why the dark: doesn't work as it should */}
-      <main className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] dark:bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
+      <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
         <header>
           <Navbar />
         </header>

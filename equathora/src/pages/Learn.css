@@ -1,5 +1,5 @@
 #body-learn {
-    background: linear-gradient(180deg, var(--mid-main-secondary)45%, var(--main-color));
+    background: linear-gradient(360deg, var(--mid-main-secondary)15%, var(--main-color));
     background-attachment: fixed;
     min-height: 100vh;
 }
