@@ -18,7 +18,7 @@ const LeaderboardsLayout = () => {
                     className="leaderboard-opt-container"
                 >
                     <NavLink to="global" className={({ isActive }) =>
-                        isActive ? 'lb-option active bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]' : 'lb-option'
+                        isActive ? 'lb-option active bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-[var(--secondary-color)]' : 'lb-option'
                     }>
                         Global Leaderboard
                     </NavLink>

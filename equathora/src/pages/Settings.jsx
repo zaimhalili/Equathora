@@ -625,7 +625,7 @@ const Settings = () => {
     return (
         <div>
             <Navbar />
-            <main className="min-h-screen flex flex-col bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed text-[var(--secondary-color)] font-[Sansation,sans-serif]">
+            <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-[var(--secondary-color)] font-[Sansation,sans-serif]">
                 {/* Header */}
                 <div className="w-full flex flex-col items-center gap-2 pt-8 pb-4 px-4">
                     <h1 className="font-bold text-3xl lg:text-4xl">Settings</h1>

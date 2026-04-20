@@ -71,7 +71,7 @@
 }
 
 .sidebar-profile-link:hover {
-    background-color: white;
+    background-color: var(--white);
 }
 
 .sidebar-avatar {
@@ -99,7 +99,7 @@
     font-family: 'Sansation', sans-serif;
     font-size: 0.8rem;
     font-weight: 400;
-    color: var(--french-gray);
+    color: var(--mid-main-secondary);
 }
 
 .sidebar-streak {
@@ -113,7 +113,7 @@
 }
 
 .sidebar-streak:hover {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: var(--white);
 }
 
 .sidebar-streak-icon {
@@ -139,7 +139,7 @@
     font-family: 'Sansation', sans-serif;
     font-size: 0.8rem;
     font-weight: 400;
-    color: var(--french-gray);
+    color: var(--mid-main-secondary);
 }
 
 .sidebar-nav {
@@ -158,7 +158,7 @@
 }
 
 .sidebar-item:hover {
-    background-color: white;
+    background-color: var(--white);
     border-left-color: var(--accent-color);
 }
 
@@ -187,7 +187,7 @@
     font-family: 'Sansation', sans-serif;
     font-size: 0.75rem;
     font-weight: 400;
-    color: var(--french-gray);
+    color: var(--mid-main-secondary);
     transition: color 0.2s ease;
 }
 
@@ -209,10 +209,6 @@
     cursor: pointer;
     padding: 0;
     transition: all 0.2s ease;
-}
-
-.sidebar-more-toggle:hover {
-    background-color: rgba(0, 0, 0, 0.02);
 }
 
 .sidebar-more-header {
@@ -258,7 +254,7 @@
 }
 
 .sidebar-sub-item:hover {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--white);
     border-left-color: var(--accent-color);
 }
 

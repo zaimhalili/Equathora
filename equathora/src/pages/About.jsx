@@ -10,7 +10,7 @@ import AboutCtaSection from '../components/About/sections/AboutCtaSection';
 
 const About = () => {
     return (
-        <div className="font-[Sansation] w-full bg-[var(--main-color)] relative overflow-hidden min-h-screen flex items-center justify-center flex-col">
+        <div className="font-[Sansation] w-full bg-[var(--white)] relative overflow-hidden min-h-screen flex items-center justify-center flex-col">
             <Navbar />
             <main className="relative z-10 w-full flex flex-col items-center">
                 <AboutHeroSection />
@@ -19,7 +19,7 @@ const About = () => {
                 <AboutMissionSection />
                 <AboutFeaturesSection />
                 <AboutCtaSection />
-            </main>``
+            </main>
             <Footer />
         </div>
     );

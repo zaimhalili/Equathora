@@ -104,7 +104,7 @@ const YourTrack = () => {
                     <h3 className="font-[Sansation] text-[var(--secondary-color)] text-2xl font-bold">
                         Your Track
                     </h3>
-                    <span className="text-sm font-semibold text-[var(--dark-accent-color)] bg-[rgba(217,4,41,0.1)] px-3 py-1 rounded-md">
+                    <span className="text-sm font-semibold text-[var(--dark-accent-color)] px-3 py-1 rounded-md bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white">
                         Level {level}
                     </span>
                 </div>

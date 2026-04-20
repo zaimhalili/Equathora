@@ -250,15 +250,15 @@ const Notifications = () => {
     return (
         <>
             <Navbar />
-            <main className="w-full min-h-screen flex flex-col bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed font-[Sansation,sans-serif] text-[var(--secondary-color)]">
+            <main className="w-full min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed font-[Sansation,sans-serif] text-[var(--secondary-color)]">
                 {/* Header */}
                 <div className="w-full flex flex-col items-center gap-2 pt-8 pb-2 px-4">
                     <div className="flex items-center gap-3">
                         <h1 className="font-bold text-3xl lg:text-4xl">Notifications</h1>
                         {unreadCount > 0 && (
-                            <span className="bg-[var(--accent-color)] text-white text-sm font-bold px-3 py-1 rounded-md">
+                            <span className="bg-[var(--accent-color)] text-[var(--white)] text-sm font-bold px-3 py-1 rounded-md">
                                 {unreadCount}
-                            </span>
+                            </span> 
                         )}
                     </div>
                     <p className="text-sm text-[var(--raisin-black)]">Stay updated with your progress and activity</p>
@@ -273,9 +273,9 @@ const Notifications = () => {
                             <button
                                 key={opt.value}
                                 onClick={() => { setFilter(opt.value); setSelectedIds([]); }}
-                                className={`px-4 py-2 rounded-md text-xs font-semibold whitespace-nowrap transition-all shrink-0 cursor-pointer ${filter === opt.value
-                                    ? 'bg-gradient-to-t from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white'
-                                    : 'bg-white text-[var(--secondary-color)] hover:bg-gray-100'
+                                className={`px-4 py-2 rounded-md text-xs font-semibold [var(--white)]space-nowrap transition-all shrink-0 cursor-pointer ${filter === opt.value
+                                    ? 'bg-gradient-to-t from-[var(--accent-color)] to-[var(--dark-accent-color)] text-[var(--white)]'
+                                    : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-var(--mid-main-secondary)]'
                                 }`}
                             >
                                 {opt.label}
@@ -306,7 +306,7 @@ const Notifications = () => {
                                 `}
                             >
                                 {selectAll && (
-                                    <span className="text-white text-[12px] leading-none font-bold">
+                                    <span className="text-[var(--white)] text-[12px] leading-none font-bold">
                                         <FiCheck />
                                     </span>
                                 )}
@@ -320,14 +320,14 @@ const Notifications = () => {
                                     <button
                                         onClick={handleMarkSelectedRead}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-white text-[var(--secondary-color)] rounded-md border border-[var(--french-gray)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-md border border-[var(--french-gray)] text-xs font-semibold hover:bg-[var(--french-gray)]/20 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Mark read
                                     </button>
                                     <button
                                         onClick={handleMarkSelectedUnread}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-white text-[var(--secondary-color)] rounded-md border border-[var(--french-gray)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-md border border-[var(--french-gray)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Mark unread
                                     </button>
@@ -344,7 +344,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleMarkAllRead}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-[var(--accent-color)] text-white rounded-md text-xs font-semibold hover:bg-[var(--dark-accent-color)] transition-all cursor-pointer disabled:opacity-50"
+                                    className="px-3 py-1.5 bg-[var(--accent-color)] text-[var(--white)] rounded-md text-xs font-semibold hover:bg-[var(--dark-accent-color)] transition-all cursor-pointer disabled:opacity-50"
                                 >
                                     Mark all read
                                 </button>
@@ -353,7 +353,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleClearAll}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-white text-[var(--raisin-black)] rounded-md border border-[var(--french-gray)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
+                                    className="px-3 py-1.5 bg-[var(--white)] text-[var(--raisin-black)] rounded-md border border-[var(--french-gray)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
                                 >
                                     Clear all
                                 </button>
@@ -371,7 +371,7 @@ const Notifications = () => {
                         </div>
                     ) : filtered.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 gap-4">
-                            <div className="w-16 h-16 bg-gray-100 rounded-md flex items-center justify-center">
+                        <div className="w-16 h-16 bg-[var(--mid-main-secondary)]/10 rounded-md flex items-center justify-center">
                                 <svg className="w-8 h-8 text-[var(--french-gray)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                                 </svg>
@@ -392,8 +392,8 @@ const Notifications = () => {
                                             exit={{ opacity: 0, x: -20, height: 0 }}
                                             transition={{ duration: 0.2 }}
                                             className={`flex items-center gap-3 rounded-md p-4 transition-all cursor-pointer h-full border-l-4 ${!notification.read
-                                                ? `bg-white shadow-md ${config.borderColor}`
-                                                : 'bg-gray-50/80 border-gray-200 shadow-sm'
+                                                ? `bg-[var(--white)] shadow-md ${config.borderColor}`
+                                                : 'bg-[var(--mid-main-secondary)]/80 border-gray-200 shadow-sm'
                                             } hover:shadow-md`}
                                             onClick={() => handleNotificationClick(notification)}
                                         >
@@ -412,11 +412,11 @@ const Notifications = () => {
                                                     hover:ring-offset-1
                                                     ${selectedIds.includes(notification.id)
                                                         ? "border-[var(--accent-color)] bg-[var(--accent-color)]"
-                                                        : "border-[#8e8f92] bg-transparent"
+                                                        : " bg-transparent"
                                                     }`}
                                                 >
                                                     {selectedIds.includes(notification.id) && (
-                                                        <span className="text-white text-xs leading-none font-bold">
+                                                        <span className="text-[var(--white)] text-xs leading-none font-bold">
                                                         <FiCheck />
                                                     </span>
                                                     )}

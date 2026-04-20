@@ -6,7 +6,7 @@ import ScrollReveal from '../ScrollReveal';
 
 const AboutMissionSection = () => {
     return (
-        <section className="w-full flex justify-center bg-gradient-to-b from-white to-gray-50 py-20">
+        <section className="w-full flex justify-center bg-gradient-to-b from-[var(--white)] to-[var(--main-color)] py-20">
             <div className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw]">
                 <div className="flex flex-col lg:flex-row items-center gap-12">
                     <ScrollReveal direction="left" className="lg:w-1/2">
@@ -36,7 +36,7 @@ const AboutMissionSection = () => {
                                 <FaGraduationCap className="text-xl" />
                                 <span className="font-semibold">Student-First</span>
                             </motion.div>
-                            <motion.div className="cursor-default pointer-events-none flex items-center gap-2 bg-white border-2 border-[var(--accent-color)] text-[var(--accent-color)] px-5 py-3 rounded-md shadow-lg">
+                            <motion.div className="cursor-default pointer-events-none flex items-center gap-2 bg-[var(--white)] border-2 border-[var(--accent-color)] text-[var(--accent-color)] px-5 py-3 rounded-md shadow-lg theme-lock">
                                 <FaRocket className="text-xl" />
                                 <span className="font-semibold text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">Growth-Oriented</span>
                             </motion.div>

@@ -8,7 +8,7 @@ import ScrollReveal from '../ScrollReveal';
 
 const AboutPlatformStrengthsSection = () => {
     return (
-        <section className="w-full flex justify-center bg-gradient-to-b from-[#fafbfc] to-white py-16">
+        <section className="w-full flex justify-center py-16">
             <div className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw]">
                 <ScrollReveal direction="up">
                     <div className="flex flex-col items-center justify-center w-full pb-12">
@@ -63,10 +63,10 @@ const AboutPlatformStrengthsSection = () => {
                                 <motion.div
                                     whileHover={{ y: -5, boxShadow: '0 20px 30px rgba(141,153,174,0.4)' }}
                                     transition={{ type: 'spring', stiffness: 300 }}
-                                    className="relative flex flex-col bg-white rounded-md border border-gray-100 shadow-lg hover:shadow-2xl duration-300 ease-out p-6 w-full min-h-[160px]"
+                                    className="relative flex flex-col bg-[var(--[var(--white)])] rounded-md border border-[var(--french-gray)] shadow-lg hover:shadow-2xl duration-300 ease-out p-6 w-full min-h-[160px]"
                                 >
                                     <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-2">{feature.title}</h3>
-                                    <p className="text-sm text-gray-600 leading-relaxed">
+                                    <p className="text-sm text-[var(--mid-main-secondary)] leading-relaxed">
                                         {feature.desc}
                                     </p>
                                     <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

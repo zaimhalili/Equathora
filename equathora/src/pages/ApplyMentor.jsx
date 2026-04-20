@@ -28,14 +28,14 @@ const ApplyMentor = () => {
     };
 
     return (
-        <div className='text-[var(--secondary-color)] font-[Sansation] w-full bg-[var(--main-color)] '>
+        <div className='text-[var(--secondary-color)] font-[Sansation] w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))]'>
             <header><Navbar /></header>
 
             {/* Hero Section */}
             <Hero onOpenBriefsModal={() => setIsBriefsModalOpen(true)} />
 
             {/* Benefits Section */}
-            <section className='flex justify-center w-full '>
+            <section className='flex w-full flex-col items-center'>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -94,10 +94,10 @@ const ApplyMentor = () => {
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
-                                    className='relative bg-white p-5 rounded-md shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 flex flex-col gap-3 overflow-hidden group'
+                                    className='relative bg-[var(--white)] p-5 rounded-md shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 flex flex-col gap-3 overflow-hidden group'
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-200`}></div>
-                                    <div className={`relative w-12 h-12 bg-gradient-to-br ${benefit.gradient} rounded-md flex items-center justify-center text-white shadow-md`}>
+                                    <div className={`relative w-12 h-12 bg-gradient-to-br ${benefit.gradient} rounded-md flex items-center justify-center text-[var(--white)] shadow-md`}>
                                         {benefit.icon}
                                     </div>
                                     <h3 className='relative text-base md:text-lg font-bold'>{benefit.title}</h3>
@@ -107,10 +107,6 @@ const ApplyMentor = () => {
                         </div>
                     </div>
                 </motion.div>
-            </section>
-
-            {/* Who Can Apply Section */}
-            <section className='flex justify-center w-full bg-[var(--main-color)]'>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -133,7 +129,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.4 }}
-                                className='bg-white rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
+                                className='bg-[var(--white)] rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -143,7 +139,7 @@ const ApplyMentor = () => {
                                     />
                                 </div>
                                 <div className='flex flex-col p-5 gap-3'>
-                                    <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-md flex items-center justify-center text-white text-lg shadow-md'>
+                                    <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-md flex items-center justify-center text-[var(--white)] text-lg shadow-md'>
                                         <FaUsers />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Community Mentors</h3>
@@ -166,7 +162,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.5 }}
-                                className='bg-white rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
+                                className='bg-[var(--white)] rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -176,7 +172,7 @@ const ApplyMentor = () => {
                                     />
                                 </div>
                                 <div className='flex flex-col p-5 gap-3'>
-                                    <div className='w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-md flex items-center justify-center text-white text-lg shadow-md'>
+                                    <div className='w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-md flex items-center justify-center text-[var(--white)] text-lg shadow-md'>
                                         <FaChalkboardTeacher />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Teachers</h3>
@@ -196,7 +192,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.6 }}
-                                className='bg-white rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col  md:col-span-2 lg:col-span-1 hover:scale-102'
+                                className='bg-[var(--white)] rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col  md:col-span-2 lg:col-span-1 hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -206,7 +202,7 @@ const ApplyMentor = () => {
                                     />
                                 </div>
                                 <div className='flex flex-col p-5 gap-3'>
-                                    <div className='w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-md flex items-center justify-center text-white text-lg shadow-md'>
+                                    <div className='w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-md flex items-center justify-center text-[var(--white)] text-lg shadow-md'>
                                         <FaHeart />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Parents</h3>
@@ -224,9 +220,10 @@ const ApplyMentor = () => {
                     </div>
                 </motion.div>
             </section>
+            
 
             {/* Final CTA Section */}
-            <section className='relative w-full flex justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white overflow-hidden'>
+            <section className='relative w-full flex justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-[var(--white)] overflow-hidden theme-lock'>
                 <div className='absolute top-0 right-0 w-64 h-64 bg-[var(--accent-color)] rounded-full opacity-10 blur-3xl'></div>
                 <div className='absolute bottom-0 left-0 w-48 h-48 bg-blue-400 rounded-full opacity-10 blur-3xl'></div>
 
@@ -238,7 +235,7 @@ const ApplyMentor = () => {
                 >
                     <div className='flex flex-col lg:flex-row items-center gap-8'>
                         <div className='flex-1 flex flex-col text-center lg:text-left gap-5'>
-                            <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-[var(--secondary-color)]/20 border border-[var(--white-color)]/50 rounded-full text-white text-xs font-semibold self-center lg:self-start'>
+                            <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-[var(--secondary-color)]/20 border border-[var(--[var(--white)]-color)]/50 rounded-full text-[var(--white)] text-xs font-semibold self-center lg:self-start'>
                                 COMING SOON
                             </div>
                             <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>
@@ -297,8 +294,8 @@ const ApplyMentor = () => {
                 userData={user ? { name: user.user_metadata?.full_name || '', email: user.email } : null}
             />
 
-            <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-5 text-white/60 text-xs'>
-                <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
+            <div className='w-full bg-[var(--secondary-color)] border-t border-[var(--white)]/10 flex justify-center py-5 text-[var(--white)]/60 text-xs'>
+                <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-[var(--white)]/80 transition-colors no-underline'>
                     Education illustrations by Storyset
                 </a>
             </div>

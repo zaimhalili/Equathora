@@ -5,7 +5,7 @@ import ScrollReveal from '../ScrollReveal';
 
 const AboutIdentitySection = () => {
     return (
-        <section className="w-full flex justify-center py-14 sm:py-16 md:py-20 bg-white">
+        <section className="w-full flex justify-center py-14 sm:py-16 md:py-20 bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))]">
             <div className="w-full max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32">
                 <ScrollReveal direction="up" className="w-full pb-8 sm:pb-10">
                     <div className="flex flex-col gap-2 text-center items-center">

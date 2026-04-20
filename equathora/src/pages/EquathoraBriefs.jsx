@@ -24,13 +24,13 @@ const EquathoraBriefsPage = () => {
 
     return (
         <>
-            <main className="w-full bg-[var(--main-color)] min-h-screen">
+            <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] min-h-screen">
 
                 {/*Hero Section*/}
                 <EquathoraBriefsHero  setIsBriefsModalOpen={setIsBriefsModalOpen}/>
 
                 {/* Benefits Grid */}
-                <section className="flex flex-col items-center justify-center w-full py-20 px-4 sm:px-6 lg:px-8 bg-white">
+                <section className="flex flex-col items-center justify-center w-full py-20 px-4 sm:px-6 lg:px-8 bg-[var(--white)]">
                     <div className="flex flex-col items-center justify-center w-full max-w-7xl gap-16">
                         <div className="flex flex-col items-center justify-center text-center">
                             <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-4">
@@ -76,7 +76,7 @@ const EquathoraBriefsPage = () => {
                             ].map((benefit, index) => (
                                 <div
                                     key={index}
-                                    className="group relative flex flex-col items-start justify-start bg-white rounded-md p-8 border border-gray-200 hover:border-[var(--accent-color)]/30 hover:shadow-lg transition-all duration-300"
+                                    className="group relative flex flex-col items-start justify-start bg-[var(--white)] rounded-md p-8 border border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]/30 hover:shadow-lg transition-all duration-300"
                                 >
                                     <div className="flex items-center justify-center p-4 bg-[var(--accent-color)]/5 rounded-md text-[var(--accent-color)] group-hover:bg-[var(--accent-color)]/10 transition-all duration-300">
                                         <benefit.icon className="text-2xl" />
@@ -92,7 +92,7 @@ const EquathoraBriefsPage = () => {
                 {/* Stats Section */}
                 <section className="flex flex-col items-center justify-center w-full py-20 px-4 sm:px-6 lg:px-8 bg-[var(--secondary-color)]">
                     <div className="flex flex-col items-center justify-center w-full max-w-7xl">
-                        <div className="grid md:grid-cols-3 gap-8 text-center text-white w-full">
+                        <div className="grid md:grid-cols-3 gap-8 text-center text-[var(--white)] w-full">
                             <div className="flex flex-col items-center justify-center gap-2">
                                 <div className="text-5xl md:text-6xl font-black">50+</div>
                                 <div className="text-xl opacity-90">Subscribers</div>
@@ -110,7 +110,7 @@ const EquathoraBriefsPage = () => {
                 </section>
 
                 {/* FAQ Section */}
-                <section className="flex flex-col items-center justify-center w-full py-20 px-4 sm:px-6 lg:px-8 bg-white">
+                <section className="flex flex-col items-center justify-center w-full py-20 px-4 sm:px-6 lg:px-8 bg-[var(--white)]">
                     <div className="flex flex-col items-center justify-center w-full max-w-4xl gap-16">
                         <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] text-center">
                             Common Questions
@@ -139,7 +139,7 @@ const EquathoraBriefsPage = () => {
                                     a: 'Only to send curated updates and major product news. We never spam or share your data. Unsubscribe anytime.'
                                 }
                             ].map((faq, index) => (
-                                <div key={index} className="flex flex-col items-start justify-start bg-gray-50 rounded-md p-8 border border-gray-200 hover:border-[var(--accent-color)]/50 transition-all">
+                                <div key={index} className="flex flex-col items-start justify-start bg-[var(--mid-main-secondary)] rounded-md p-8 border border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]/50 transition-all">
                                     <h3 className="text-xl font-bold text-[var(--secondary-color)] pb-3">{faq.q}</h3>
                                     <p className="text-[var(--secondary-color)]/70 leading-relaxed">{faq.a}</p>
                                 </div>
@@ -149,11 +149,11 @@ const EquathoraBriefsPage = () => {
                 </section>
 
                 {/* Final CTA */}
-                <section className="relative flex flex-col items-center justify-center w-full py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+                <section className="relative flex flex-col items-center justify-center w-full py-20 px-4 sm:px-6 lg:px-8 overflow-hidden theme-lock">
                     <div className="absolute inset-0 bg-[var(--secondary-color)]"></div>
                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-20"></div>
 
-                    <div className="relative flex flex-col items-center justify-center w-full max-w-4xl text-center text-white gap-8">
+                    <div className="relative flex flex-col items-center justify-center w-full max-w-4xl text-center text-[var(--white)] gap-8">
                         <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold">
                             Stay In The Loop
                         </h2>
@@ -164,7 +164,7 @@ const EquathoraBriefsPage = () => {
                         <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
                             <button
                                 onClick={() => setIsBriefsModalOpen(true)}
-                                className="flex items-center justify-center gap-3 px-12 py-5 bg-white text-[var(--secondary-color)] text-xl font-bold rounded-md hover:bg-gray-100 transition-all w-full cursor-pointer"
+                                className="flex items-center justify-center gap-3 px-12 py-5 bg-[var(--white)] text-[var(--secondary-color)] text-xl font-bold rounded-md hover:bg-gray-100 transition-all w-full cursor-pointer"
                             >
                                 <span>Open Equathora Briefs Form</span>
                                 <svg className="w-5 h-5" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">

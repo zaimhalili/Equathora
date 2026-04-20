@@ -14,7 +14,7 @@ const AchievementsLayout = () => {
     <>
       <header><Navbar /></header>
 
-      <main className='achievements-body'>
+      <main className='achievements-body theme-lock'>
         <motion.div
           className="achievements-image-body"
         >
@@ -81,6 +81,7 @@ const AchievementsLayout = () => {
       <footer>
         <Footer></Footer>
         <a href="http://www.freepik.com" id='freepik-link' target="_blank"
+          className='theme-lock'
           rel="noopener noreferrer"
           aria-label="Freepik">Designed by upklyak / Freepik</a>
       </footer>

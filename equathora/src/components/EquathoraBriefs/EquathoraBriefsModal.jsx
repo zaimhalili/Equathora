@@ -102,7 +102,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                        className="absolute inset-0 bg-[var(--raisin-black)]/50 backdrop-blur-sm"
                     />
 
                     {/* Modal Container */}
@@ -111,7 +111,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-gray-100"
+                        className="relative bg-[var(--white)] rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-[var(--french-gray)]"
                     >
                         {isSubscribed ? (
                             <div className={` `}>
@@ -123,7 +123,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors p-1.5 rounded-full cursor-pointer active:scale-95 z-50"
+                                    className="absolute top-4 right-4 text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] transition-colors p-1.5 rounded-full cursor-pointer active:scale-95 z-50"
                                     aria-label="Close modal"
                                 >
                                     <FaTimes size={16} />
@@ -133,7 +133,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                 <form onSubmit={handleSubmit} noValidate className="grid grid-cols-1 md:grid-cols-2 items-center p-5">
 
                                     {/* Left Column - Illustration */}
-                                    <div className="hidden md:flex flex-col items-center justify-end bg-white pr-6">
+                                    <div className="hidden md:flex flex-col items-center justify-end bg-[var(--white)] pr-6">
                                         <img
                                             src={news_bro}
                                             alt="Reading illustration"
@@ -150,13 +150,13 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                         </h2>
 
                                         {/* Sub-text */}
-                                        <p className="text-sm text-gray-600 pb-5 max-w-sm">
+                                        <p className="text-sm text-[var(--mid-main-secondary)] pb-5 max-w-sm">
                                             Get product updates, new challenge drops, and launch announcements. No spam.
                                         </p>
 
                                         {/* Error Banner */}
                                         {saveError && (
-                                            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm mb-6">
+                                            <div className="bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 text-[var(--dark-accent-color)] px-4 py-3 rounded-md text-sm mb-6">
                                                 {saveError}
                                             </div>
                                         )}
@@ -168,17 +168,16 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 name="full_name"
                                                 value={formData.full_name}
                                                 onChange={handleInputChange}
-                                                className={`text-sm text-black w-full px-5 py-3.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]/20 focus:border-[var(--accent-color)] transition-all ${
-                                                    errors.full_name
-                                                        ? 'border-red-400 bg-red-50'
-                                                        : 'border-gray-200 bg-white placeholder:text-gray-300'
-                                                }`}
+                                                className={`text-sm text-[var(--secondary-color)] w-full px-5 py-3.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]/20 focus:border-[var(--accent-color)] transition-all ${errors.full_name
+                                                        ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/5'
+                                                        : 'border-[var(--french-gray)] bg-[var(--white)] placeholder:text-[var(--mid-main-secondary)]'
+                                                    }`}
                                                 placeholder="Enter your full name *"
                                                 aria-invalid={!!errors.full_name}
                                                 aria-describedby={errors.full_name ? 'full-name-error' : undefined}
                                             />
                                             {errors.full_name && (
-                                                <p id="full-name-error" className="mt-1.5 text-xs text-red-600 pl-1">
+                                                <p id="full-name-error" className="mt-1.5 text-xs text-[var(--dark-accent-color)] pl-1">
                                                     {errors.full_name}
                                                 </p>
                                             )}
@@ -188,17 +187,16 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 name="email"
                                                 value={formData.email}
                                                 onChange={handleInputChange}
-                                                className={`text-sm text-black w-full px-5 py-3.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]/20 focus:border-[var(--accent-color)] transition-all ${
-                                                    errors.email
-                                                        ? 'border-red-400 bg-red-50'
-                                                        : 'border-gray-200 bg-white placeholder:text-gray-300'
-                                                }`}
+                                                className={`text-sm text-[var(--secondary-color)] w-full px-5 py-3.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]/20 focus:border-[var(--accent-color)] transition-all ${errors.email
+                                                        ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/5'
+                                                        : 'border-[var(--french-gray)] bg-[var(--white)] placeholder:text-[var(--mid-main-secondary)]'
+                                                    }`}
                                                 placeholder="Enter your email address *"
                                                 aria-invalid={!!errors.email}
                                                 aria-describedby={errors.email ? 'email-error' : undefined}
                                             />
                                             {errors.email && (
-                                                <p id="email-error" className="mt-1.5 text-xs text-red-600 pl-1">
+                                                <p id="email-error" className="mt-1.5 text-xs text-[var(--dark-accent-color)] pl-1">
                                                     {errors.email}
                                                 </p>
                                             )}
@@ -211,14 +209,14 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 type="button"
                                                 onClick={onClose}
                                                 disabled={isLoading}
-                                                className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+                                                className="flex-1 px-6 py-3 border border-[var(--french-gray)] text-[var(--secondary-color)] font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
                                             >
                                                 Cancel
                                             </button>
                                             <button
                                                 type="submit"
                                                 disabled={isLoading}
-                                                className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white font-semibold rounded-md hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                                                className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-[var(--white)] font-semibold rounded-md hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                                             >
                                                 {isLoading ? 'Saving...' : 'Subscribe'}
                                             </button>

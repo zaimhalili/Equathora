@@ -55,7 +55,7 @@ const Premium = () => {
   }, [billing]);
   return (
     <div>
-      <main className="w-full bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed min-h-screen ">
+      <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen ">
         <header>
           <Navbar></Navbar>
         </header>

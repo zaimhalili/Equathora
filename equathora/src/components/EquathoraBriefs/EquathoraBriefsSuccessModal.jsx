@@ -16,7 +16,7 @@ const EquathoraBriefsSuccessModal = ({ onClose }) => {
             </div>
 
             <div className="p-8 sm:p-10 ">
-                <div className="mx-auto w-14 h-14 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white flex items-center justify-center shadow-lg shadow-[var(--dark-accent-color)]/30">
+                <div className="mx-auto w-14 h-14 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-[var(--white)] flex items-center justify-center shadow-lg shadow-[var(--dark-accent-color)]/30">
                     <FaCheckCircle className="text-5xl" />
                 </div>
 
@@ -31,7 +31,7 @@ const EquathoraBriefsSuccessModal = ({ onClose }) => {
                 <button
                     type="button"
                     onClick={onClose}
-                    className="px-10 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white font-semibold rounded-md hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all cursor-pointer active:scale-95"
+                    className="px-10 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-[var(--white)] font-semibold rounded-md hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all cursor-pointer active:scale-95"
                 >
                     Done
                 </button>

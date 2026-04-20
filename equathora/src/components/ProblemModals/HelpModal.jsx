@@ -8,10 +8,10 @@ const HelpModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     return (
-        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-[2px]' onClick={onClose}>
-            <div className='bg-white w-11/12 max-w-2xl rounded-md px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto custom-scrollbar' onClick={(e) => e.stopPropagation()} style={{
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
+            <div className='bg-[var(--white)] w-11/12 max-w-2xl rounded-md px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto custom-scrollbar' onClick={(e) => e.stopPropagation()} style={{
                 scrollbarWidth: 'thin',
-                scrollbarColor: 'rgba(217, 4, 41, 0.3) transparent'
+                scrollbarColor: 'var(--accent-color) transparent'
             }}>
                 <style>{`
                     .custom-scrollbar::-webkit-scrollbar {
@@ -22,12 +22,12 @@ const HelpModal = ({ isOpen, onClose }) => {
                         border-radius: 10px;
                     }
                     .custom-scrollbar::-webkit-scrollbar-thumb {
-                        background: rgba(217, 4, 41, 0.3);
+                        background: var(--light-accent-color);
                         border-radius: 10px;
                         transition: background 0.2s;
                     }
                     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                        background: rgba(217, 4, 41, 0.5);
+                        background: var(--accent-color);
                     }
                 `}</style>
                 <div className='flex justify-between items-start pb-4'>
@@ -35,7 +35,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                         <h2 className='font-[Sansation] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>How to Use This Page</h2>
                         <p className='font-[Sansation] text-[var(--secondary-color)] text-sm opacity-70 pt-2'>Quick guide to solving math problems</p>
                     </div>
-                    <button onClick={onClose} className='text-gray-400 hover:text-gray-600 transition-colors cursor-pointer'>
+                    <button onClick={onClose} className='text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] transition-colors cursor-pointer'>
                         <FaTimes className='text-xl' />
                     </button>
                 </div>
@@ -59,9 +59,9 @@ const HelpModal = ({ isOpen, onClose }) => {
                             <li>Use the math toolbar to insert equations, symbols, fractions, and expressions</li>
                             <li>Delete unwanted steps using the × button next to each step</li>
                         </ul>
-                        <div className='pt-3 p-3 bg-amber-50 border-2 border-amber-300 rounded-md flex flex-col'>
-                            <p className='font-[Sansation] text-sm font-bold text-amber-900'>⚠️ Important:</p>
-                            <p className='font-[Sansation] text-sm text-amber-800 leading-relaxed pt-1'>
+                        <div className='pt-3 p-3 bg-[var(--accent-color)]/5 border-2 border-[var(--accent-color)]/20 rounded-md flex flex-col'>
+                            <p className='font-[Sansation] text-sm font-bold text-[var(--secondary-color)]'>⚠️ Important:</p>
+                            <p className='font-[Sansation] text-sm text-[var(--secondary-color)] leading-relaxed pt-1'>
                                 Your <strong>final answer must be in the LAST step</strong> before submitting. The system checks your last step to determine if your solution is correct. Make sure your final answer is clear and simplified.
                             </p>
                         </div>
@@ -100,12 +100,12 @@ const HelpModal = ({ isOpen, onClose }) => {
                         </ul>
                     </div>
 
-                    <div className='bg-green-50 border-2 border-green-200 p-4 rounded-md flex flex-col'>
-                        <h3 className='font-[Sansation] font-bold text-lg text-green-800 pb-2 flex items-center gap-2'>
+                    <div className='bg-[var(--main-color)] border-2 border-[var(--french-gray)] p-4 rounded-md flex flex-col'>
+                        <h3 className='font-[Sansation] font-bold text-lg text-[var(--secondary-color)] pb-2 flex items-center gap-2'>
                             <FaLightbulb className='text-[var(--accent-color)]' /> Pro Tip</h3>
-                        <p className='font-[Sansation] text-sm text-green-700 leading-relaxed'>Try to solve the problem on your own before viewing hints or the solution. Use the sketch pad to visualize the problem. Learning mathematics happens best when you work through the challenge!</p>
+                        <p className='font-[Sansation] text-sm text-[var(--secondary-color)] leading-relaxed'>Try to solve the problem on your own before viewing hints or the solution. Use the sketch pad to visualize the problem. Learning mathematics happens best when you work through the challenge!</p>
                     </div>
-                    <button type="button" onClick={onClose} className='flex justify-center px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base cursor-pointer'>Got It!</button>
+                    <button type="button" onClick={onClose} className='flex justify-center px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-[var(--white)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base cursor-pointer'>Got It!</button>
                 </div>
 
 

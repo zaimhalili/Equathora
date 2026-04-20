@@ -388,7 +388,7 @@ const SystemUpdates = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full min-h-screen bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed font-[Sansation]">
+            <div className="w-full min-h-screen bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed font-[Sansation]">
                 <header>
                     <Navbar />
                 </header>
@@ -407,7 +407,7 @@ const SystemUpdates = () => {
                                     System Updates
                                 </h1>
                             </div>
-                            <p className="text-base text-gray-600 max-w-2xl">
+                            <p className="text-base text-[var(--mid-main-secondary)] max-w-2xl">
                                 Stay informed about the latest features, improvements, and bug fixes in Equathora
                             </p>
                         </div>
@@ -424,11 +424,11 @@ const SystemUpdates = () => {
                                     initial={{ opacity: 0, y: 15 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.45, delay: 0.1 * index }}
-                                    className="bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
+                                    className="bg-[var(--white)] rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
                                 >
                                     {/* Header */}
                                     <div className="flex items-start gap-4 p-6 pb-4">
-                                        <div className="bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] p-3 rounded-md text-white flex-shrink-0">
+                                        <div className="bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] p-3 rounded-md text-[var(--white)] flex-shrink-0 theme-lock">
                                             {update.icon}
                                         </div>
                                         <div className="flex-1">
@@ -440,7 +440,7 @@ const SystemUpdates = () => {
                                                     {update.type === 'bugfix' ? 'Bug Fix' : update.type.charAt(0).toUpperCase() + update.type.slice(1)}
                                                 </span>
                                             </div>
-                                            <div className="flex items-center gap-3 text-sm text-gray-500">
+                                            <div className="flex items-center gap-3 text-sm text-[var(--mid-main-secondary)]">
                                                 <span className="font-semibold">{update.version}</span>
                                                 <span>•</span>
                                                 <span>{update.date}</span>
@@ -452,7 +452,7 @@ const SystemUpdates = () => {
                                     <div className="px-6 pb-6">
                                         <ul className="flex flex-col gap-2">
                                             {update.changes.map((change, changeIndex) => (
-                                                <li key={changeIndex} className="flex items-start gap-2 text-gray-700 text-sm">
+                                                <li key={changeIndex} className="flex items-start gap-2 text-[var(--mid-main-secondary)] text-sm">
                                                     <FaCheckCircle className="text-green-500 flex-shrink-0 text-base pt-0.5" />
                                                     <span>{change}</span>
                                                 </li>
@@ -465,7 +465,7 @@ const SystemUpdates = () => {
 
                         {/* Subscribe Section */}
                         <div className="pt-8">
-                            <div className="bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] rounded-md p-8 text-center text-white shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
+                            <div className="bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] rounded-md p-8 text-center text-[var(--white)] shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
                                 <h3 className="text-2xl font-bold pb-3 font-[Sansation]">Stay Updated</h3>
                                 <p className="text-gray-300 text-base pb-4">
                                     Get notified about new features and updates directly in your notifications

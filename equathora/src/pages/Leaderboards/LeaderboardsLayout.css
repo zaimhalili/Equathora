@@ -2,7 +2,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, var(--mid-main-secondary)50%, var(--main-color));
+    background: linear-gradient(360deg, var(--mid-main-secondary)15%, var(--main-color));
     background-attachment: fixed;
 }
 
@@ -24,7 +24,6 @@
 }
 
 .lb-option {
-    color: rgb(0, 0, 0);
     font-family: 'Sansation', Arial, Helvetica, sans-serif;
     font-size: clamp(0.85rem, 2vw, 0.95rem);
     padding: 0.6rem 1.2rem;
@@ -34,7 +33,6 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
     transition: 0.150s ease-in-out;
 }
-
 .lb-option.active {
     color: rgb(255, 255, 255);
     border-color: var(--accent-color);

@@ -13,6 +13,8 @@ import ProfileExportButtons from '../components/ProfileExportButtons';
 import { generateProblemSlug } from '../lib/slugify';
 import { getCachedGlobalLeaderboard } from '../lib/leaderboardService';
 import { formatTopicLabel } from '../lib/utils';
+import { FaLandmark } from 'react-icons/fa';
+import { FaLocationArrow } from 'react-icons/fa';
 
 const getEffectiveStreak = (currentStreak = 0, lastActivityDate = null) => {
   if (!currentStreak || currentStreak <= 0) return 0;
@@ -83,10 +85,7 @@ const getDifficultyColor = (difficultyKey, index) => {
 };
 
 const getDifficultyChipBackground = (difficultyKey) => {
-  if (difficultyKey === 'easy') return 'rgba(34, 197, 94, 0.15)';
-  if (difficultyKey === 'medium') return 'rgba(229, 158, 11, 0.15)';
-  if (difficultyKey === 'hard') return 'rgba(163, 20, 44, 0.15)';
-  return 'rgba(43, 45, 66, 0.08)';
+  return 'var(--white)';
 };
 
 const calculateProfileAccuracy = (totalAttempts = 0, wrongSubmissions = 0, solvedCount = 0) => {
@@ -358,7 +357,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className='bg-[linear-gradient(180deg,var(--mid-main-secondary)45%,var(--main-color))] bg-fixed flex justify-center'>
+      <main className='bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed flex justify-center'>
         <div className='w-full max-w-[1500px] px-[4vw] xl:px-[6vw] pt-5 pb-20'>
           {/* Two Column Layout */}
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
@@ -398,7 +397,8 @@ const Profile = () => {
                     <p className='text-sm text-[var(--secondary-color)] italic'>{userData.bio}</p>
                   )}
                   {userData.location && (
-                    <p className='text-xs text-gray-600'>📍 {userData.location}</p>
+                    <p className='text-xs text-[var(--mid-main-secondary)] flex gap-1'>
+                      <FaLandmark></FaLandmark> {userData.location}</p>
                   )}
                   {userData.website && (
                     <a
@@ -428,14 +428,14 @@ const Profile = () => {
                   <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Community Stats</h5>
                   <div className='flex flex-col gap-4'>
                     <div className='flex gap-3 items-center'>
-                      <svg className="w-8 h-8" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                      <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                         <defs>
-                          <linearGradient id="icon-gradient-fire-navbar" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <linearGradient id="icon-gradient-fire-sidebar" x1="0%" y1="0%" x2="0%" y2="100%">
                             <stop offset="0%" stopColor="var(--dark-accent-color)" />
                             <stop offset="100%" stopColor="var(--accent-color)" />
                           </linearGradient>
                         </defs>
-                        <path fill="url(#icon-gradient-fire-navbar)" d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 53.8 77.7 84c11-14.4 23.5-30.1 37-42.9c7.9-7.4 20.1-7.4 28 .1c34.6 33 63.9 76.6 84.5 118c20.3 40.8 33.8 82.5 33.8 111.9C448 404.2 348.2 512 224 512C98.4 512 0 404.1 0 276.5c0-38.4 17.8-85.3 45.4-131.7C73.3 97.7 112.7 48.6 159.3 5.4zM225.7 416c25.3 0 47.7-7 68.8-21c42.1-29.4 53.4-88.2 28.1-134.4c-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5c-16.5-21-46-58.5-62.8-79.8c-6.3-8-18.3-8.1-24.7-.1c-33.8 42.5-50.8 69.3-50.8 99.4C112 375.4 162.6 416 225.7 416z" />
+                        <path fill="url(#icon-gradient-fire-sidebar)" d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 53.8 77.7 84c11-14.4 23.5-30.1 37-42.9c7.9-7.4 20.1-7.4 28 .1c34.6 33 63.9 76.6 84.5 118c20.3 40.8 33.8 82.5 33.8 111.9C448 404.2 348.2 512 224 512C98.4 512 0 404.1 0 276.5c0-38.4 17.8-85.3 45.4-131.7C73.3 97.7 112.7 48.6 159.3 5.4zM225.7 416c25.3 0 47.7-7 68.8-21c42.1-29.4 53.4-88.2 28.1-134.4c-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5c-16.5-21-46-58.5-62.8-79.8c-6.3-8-18.3-8.1-24.7-.1c-33.8 42.5-50.8 69.3-50.8 99.4C112 375.4 162.6 416 225.7 416z" />
                       </svg>
                       <div className='flex flex-col'>
                         <p className='text-sm md:text-base text-[var(--secondary-color)]'>Streak <span className='font-bold'>{userData.stats.currentStreak}</span></p>
@@ -451,7 +451,7 @@ const Profile = () => {
                       <div className='text-blue-500 text-2xl md:text-3xl'><FaChartLine /></div>
                       <div className='flex flex-col'>
                         <p className='text-sm md:text-base text-[var(--secondary-color)]'>Accuracy <span className='font-bold'>{userData.stats.accuracy === null ? 'N/A' : `${userData.stats.accuracy}%`}</span></p>
-                        <span className='text-xs text-[var(--french-gray)]'>
+                        <span className='text-xs text-[var(--mid-main-secondary)]'>
                           {userData.stats.accuracyDetail.total > 0
                             ? `${userData.stats.accuracyDetail.correct} correct · ${userData.stats.accuracyDetail.wrong} wrong`
                             : 'No attempts tracked'}
@@ -498,7 +498,7 @@ const Profile = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
-                <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Statistics</h5>
+                <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] pb-4'>Statistics</h5>
                 <div className='flex flex-wrap items-center gap-2 mb-3'>
                   {difficultyStats.map((difficulty, index) => (
                     <div
@@ -591,13 +591,13 @@ const Profile = () => {
 
               {/* Solved Problems Card */}
               <motion.div
-                className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col gap-5'
+                className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Solved Problems</h5>
-                <div className='flex flex-col gap-1 text-[var(--secondary-color)] hover:text-black'>
+                <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] pb-4'>Solved Problems</h5>
+                <div className='flex flex-col gap-1 text-[var(--secondary-color)] hover:text-[var(--raisin-black)]'>
                   {userData.problemsSolved.map((problem, i) => (
                     <motion.div
                       key={i}

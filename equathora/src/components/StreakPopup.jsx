@@ -25,7 +25,7 @@ const StreakPopup = ({ streak, onClose }) => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[9998]"
+                        className="fixed inset-0 bg-[var(--raisin-black)]/40 backdrop-blur-sm z-[9998]"
                         onClick={() => {
                             setShow(false);
                             setTimeout(onClose, 300);
@@ -44,7 +44,7 @@ const StreakPopup = ({ streak, onClose }) => {
                         }}
                         className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-white rounded-md shadow-2xl p-8 sm:p-12 max-w-md w-[90vw] border-4 border-[var(--accent-color)]">
+                        <div className="bg-[var(--white)] rounded-md shadow-2xl p-8 sm:p-12 max-w-md w-[90vw] border border-[var(--french-gray)]">
                             {/* Fire icon with animation */}
                             <motion.div
                                 initial={{ scale: 0, rotate: -180 }}
@@ -89,14 +89,14 @@ const StreakPopup = ({ streak, onClose }) => {
                                 <h2 className="text-3xl sm:text-4xl font-black text-[var(--secondary-color)] mb-3">
                                     {streak} Day Streak!
                                 </h2>
-                                <p className="text-base sm:text-lg text-gray-600 mb-4">
+                                <p className="text-base sm:text-lg text-[var(--secondary-color)]/70 mb-4">
                                     You're on fire! Keep solving daily to maintain your streak.
                                 </p>
                                 <motion.div
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{ delay: 0.4, type: "spring" }}
-                                    className="inline-block bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-6 py-2 rounded-full text-sm font-bold"
+                                    className="inline-block bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-[var(--white)] px-6 py-2 rounded-full text-sm font-bold"
                                 >
                                     Keep it up!
                                 </motion.div>

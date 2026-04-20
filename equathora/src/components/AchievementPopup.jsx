@@ -57,7 +57,7 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[9998]"
+                        className="fixed inset-0 bg-[var(--raisin-black)]/40 backdrop-blur-sm z-[9998]"
                         onClick={handleDismissAll}
                     />
 
@@ -70,17 +70,17 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                         transition={{ type: 'spring', damping: 20, stiffness: 300 }}
                         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-white rounded-md shadow-2xl max-w-sm w-[90vw] overflow-hidden border-4 border-[var(--accent-color)]">
+                        <div className="bg-[var(--white)] rounded-md shadow-2xl max-w-sm w-[90vw] overflow-hidden border-[var(--french-gray)] border">
                             {/* Header bar */}
                             <div className={`flex items-center justify-center gap-2 bg-gradient-to-r ${rarity.bg} px-4 py-3`}>
-                                <svg className="w-5 h-5 text-white" viewBox="0 0 576 512" fill="currentColor">
+                                <svg className="w-5 h-5 text-[var(--white)]" viewBox="0 0 576 512" fill="currentColor">
                                     <path d="M400 0H176c-26.5 0-48.1 21.8-47.1 48.2c.2 5.3 .4 10.6 .7 15.8H24C10.7 64 0 74.7 0 88c0 92.6 33.5 157 78.5 200.7c44.3 43.1 98.3 64.8 138.1 75.8c23.4 6.5 39.4 26 39.4 45.6c0 20.9-17 37.9-37.9 37.9H192c-17.7 0-32 14.3-32 32s14.3 32 32 32H384c17.7 0 32-14.3 32-32s-14.3-32-32-32h-26.1c-20.9 0-37.9-17-37.9-37.9c0-19.6 15.9-39.2 39.4-45.6c39.9-11 93.9-32.7 138.2-75.8C542.5 245 576 180.6 576 88c0-13.3-10.7-24-24-24H446.4c.3-5.2 .5-10.4 .7-15.8C448.1 21.8 426.5 0 400 0zM48.9 112h84.4c9.1 90.1 29.2 150.3 51.9 190.6c-24.9-11-68.8-38.8-97.6-89.2C70.5 183.8 56.1 143.2 48.9 112zm384.2 0c-7.2 31.2-21.6 71.8-38.8 101.4c-28.8 50.4-72.7 78.2-97.6 89.2c22.7-40.3 42.8-100.5 51.9-190.6h84.4z" />
                                 </svg>
-                                <span className="text-white text-sm font-bold uppercase tracking-wider">Achievement Unlocked!</span>
+                                <span className="text-[var(--white)] text-sm font-bold uppercase tracking-wider">Achievement Unlocked!</span>
                             </div>
 
                             {/* Content */}
-                            <div className="flex flex-col items-center gap-4 px-6 py-8">
+                            <div className="flex flex-col items-center gap-4 px-6 py-8 bg-[var(--white)]">
                                 {/* Icon with glow */}
                                 <motion.div
                                     initial={{ scale: 0, rotate: -180 }}
@@ -114,7 +114,7 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                                     <h2 className="text-2xl font-black text-[var(--secondary-color)]">
                                         {current.title}
                                     </h2>
-                                    <p className="text-sm text-gray-500">{current.description}</p>
+                                    <p className="text-sm text-[var(--secondary-color)]/70">{current.description}</p>
                                     <span className={`text-xs font-bold uppercase tracking-widest ${rarity.text}`}>
                                         {current.rarity}
                                     </span>
@@ -122,7 +122,7 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
 
                                 {/* Counter */}
                                 {achievements.length > 1 && (
-                                    <p className="text-xs text-gray-400">
+                                    <p className="text-xs text-[var(--mid-main-secondary)]">
                                         {currentIndex + 1} / {achievements.length}
                                     </p>
                                 )}
@@ -137,14 +137,14 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                                     {achievements.length > 1 && !isLast && (
                                         <button
                                             onClick={handleDismissAll}
-                                            className="bg-gray-200 text-gray-600 px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-300 transition-colors"
+                                            className="bg-[var(--french-gray)] text-[var(--secondary-color)] px-5 py-2 rounded-full text-sm font-bold hover:bg-[var(--french-gray)]/80 transition-colors"
                                         >
                                             Skip All
                                         </button>
                                     )}
                                     <button
                                         onClick={handleNext}
-                                        className="bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-6 py-2 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
+                                        className="bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-[var(--white)] px-6 py-2 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
                                     >
                                         {isLast ? 'Awesome!' : 'Next'}
                                     </button>

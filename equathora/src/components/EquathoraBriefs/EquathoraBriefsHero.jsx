@@ -26,7 +26,7 @@ const EquathoraBriefsHero = ({setIsBriefsModalOpen}) => {
 
 
             {/* Hero Section */}
-            <section className="relative font-[Sansation] bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white flex justify-center overflow-hidden">
+            <section className="relative font-[Sansation] bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white flex justify-center overflow-hidden theme-lock">
 
                 {/* Animated Background Elements */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
