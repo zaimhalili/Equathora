@@ -48,7 +48,7 @@ const InputField = ({ label, description, ...props }) => (
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <input
             {...props}
-            className="text-sm border rounded-md px-4 py-3 w-full border-[var(--french-gray)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
+            className="text-sm border rounded-md px-4 py-3 w-full border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
         />
     </div>
 );
@@ -59,7 +59,7 @@ const TextArea = ({ label, description, ...props }) => (
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <textarea
             {...props}
-            className="text-sm border rounded-md px-4 py-3 w-full border-[var(--french-gray)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif] resize-none h-28"
+            className="text-sm border rounded-md px-4 py-3 w-full border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif] resize-none h-28"
         />
     </div>
 );
@@ -70,7 +70,7 @@ const SelectField = ({ label, description, options, ...props }) => (
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <select
             {...props}
-            className="text-sm cursor-pointer px-4 py-3 border rounded-md border-[var(--french-gray)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
+            className="text-sm cursor-pointer px-4 py-3 border rounded-md border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
         >
             {options.map(opt => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -91,7 +91,7 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
             aria-checked={checked}
             disabled={disabled}
             onClick={() => onChange(!checked)}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 focus:ring-offset-[var(--surface-card)] disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)]' : 'bg-[var(--french-gray)]'}`}
+            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 focus:ring-offset-[var(--surface-card)] disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)]' : 'bg-[var(--mid-main-secondary)]'}`}
         >
             <span
                 className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--surface-card)] shadow-lg ring-0 transition-transform duration-200 translate-y-0.5 ${checked ? 'translate-x-[22px]' : 'translate-x-0.5'}`}
@@ -106,10 +106,10 @@ const PrimaryButton = ({ children, onClick, disabled, loading, className = '', t
         title={title}
         onClick={onClick}
         disabled={disabled || loading}
-        className={`cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-bold text-sm rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
+        className={`cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-[var(--white)] font-bold text-sm rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
     >
         {loading && (
-            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin h-4 w-4 text-[var(--white)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -124,10 +124,10 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
         onClick={onClick}
         disabled={disabled || loading}
         title={title}
-        className="cursor-pointer py-2.5 px-5 bg-red-600 text-white font-bold text-sm rounded-md hover:bg-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="cursor-pointer py-2.5 px-5 bg-red-600 text-[var(--white)] font-bold text-sm rounded-md hover:bg-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
     >
         {loading && (
-            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin h-4 w-4 text-[var(--white)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -213,7 +213,7 @@ const sidebarSections = [
     { id: 'profile', label: 'Profile', icon: <IconUser /> },
     { id: 'account', label: 'Account & Security', icon: <IconLock /> },
     { id: 'notifications', label: 'Notifications', icon: <IconBell /> },
-    { id: 'appearance', label: 'Appearance', icon: <IconTheme /> },
+    // { id: 'appearance', label: 'Appearance', icon: <IconTheme /> },
     { id: 'privacy', label: 'Privacy', icon: <IconShield /> },
     { id: 'sessions', label: 'Sessions', icon: <IconLaptop /> },
     { id: 'danger', label: 'Danger Zone', icon: <IconWarning /> },
@@ -635,15 +635,15 @@ const Settings = () => {
                 {/* Content wrapper */}
                 <div className="w-full flex flex-col lg:flex-row gap-6 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-[1500px] self-center flex-1">
                     {/* Sidebar (desktop) */}
-                    <nav className="hidden lg:flex flex-col gap-1 w-56 shrink-0 sticky top-24 self-start">
+                    <nav className="hidden lg:flex flex-col gap-1 w-56 shrink-0 sticky top-24 self-start bg-[var(--white)] rounded-md">
                         {sidebarSections.map(section => (
                             <button
                                 key={section.id}
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-md text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
-                                    ? 'bg-[var(--accent-color)] text-white'
-                                    : 'text-[var(--secondary-color)] hover:bg-[var(--surface-muted)]'
+                                className={`flex items-center gap-3 px-4 py-3 text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
+                                    ? 'bg-[var(--accent-color)] text-[var(--white)]'
+                                    : 'text-[var(--secondary-color)] hover:bg-[var(--mid-main-secondary)]'
                                     }`}
                             >
                                 {section.icon}
@@ -659,9 +659,9 @@ const Settings = () => {
                                 key={section.id}
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all shrink-0 cursor-pointer ${activeSection === section.id
-                                    ? 'bg-[var(--accent-color)] text-white'
-                                    : 'bg-[var(--surface-card)] text-[var(--secondary-color)] border border-[var(--french-gray)]'
+                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold [var(--white)]space-nowrap transition-all shrink-0 cursor-pointer ${activeSection === section.id
+                                    ? 'bg-[var(--accent-color)] text-[var(--white)]'
+                                    : 'bg-[var(--surface-card)] text-[var(--secondary-color)] border border-[var(--mid-main-secondary)]'
                                     }`}
                             >
                                 {section.icon}
@@ -671,7 +671,7 @@ const Settings = () => {
                     </div>
 
                     {/* Main sections */}
-                    <div className="flex flex-col gap-6 flex-1 min-w-0">
+                    <div className="flex flex-col gap-6 flex-1 min-w-0 bg-[var(--white)]  rounded-md">
 
                         {/* ============================================================ */}
                         {/* PROFILE SECTION */}
@@ -940,7 +940,7 @@ const Settings = () => {
                         {/* ============================================================ */}
                         {/* APPEARANCE */}
                         {/* ============================================================ */}
-                        <SectionCard id="appearance">
+                        {/* <SectionCard id="appearance">
                             <SectionTitle sub="Control how Equathora looks on this device">Appearance</SectionTitle>
 
                             <div className="flex flex-col gap-3">
@@ -952,7 +952,7 @@ const Settings = () => {
                                 />
 
                                 {settings.theme === 'system' && (
-                                    <p className="text-xs text-[var(--french-gray)]">
+                                    <p className="text-xs text-[var(--mid-main-secondary)]">
                                         Currently following your device preference: <span className="font-semibold text-[var(--secondary-color)]">{resolvedTheme === 'dark' ? 'Dark' : 'Light'}</span>.
                                     </p>
                                 )}
@@ -961,7 +961,7 @@ const Settings = () => {
                                     <button
                                         type="button"
                                         onClick={() => handleSettingChange('theme', 'system')}
-                                        className="cursor-pointer text-sm font-semibold px-4 py-2 border border-[var(--french-gray)] rounded-md bg-[var(--surface-card)] text-[var(--secondary-color)] hover:bg-[var(--surface-muted)] transition-colors"
+                                        className="cursor-pointer text-sm font-semibold px-4 py-2 border border-[var(--mid-main-secondary)] rounded-md bg-[var(--surface-card)] text-[var(--secondary-color)] hover:bg-[var(--surface-muted)] transition-colors"
                                     >
                                         Use Device Default Theme
                                     </button>
@@ -975,7 +975,7 @@ const Settings = () => {
                             <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start">
                                 Save Appearance
                             </PrimaryButton>
-                        </SectionCard>
+                        </SectionCard> */}
 
                         {/* ============================================================ */}
                         {/* PRIVACY */}

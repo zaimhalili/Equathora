@@ -71,7 +71,7 @@
 #search-filtering {
     width: 100%;
     margin-bottom: 1.5rem;
-    background-color: rgba(237, 242, 244, 0.6);
+    background-color: var(--white);
     backdrop-filter: blur(10px);
     border-radius: 6px;
     padding: 1.25rem;
@@ -89,7 +89,6 @@
     align-items: center;
     flex: 1;
     min-width: 280px;
-    height: 44px;
 }
 
 #problem-searchbar:focus {
@@ -445,11 +444,8 @@ ENHANCED FILTERING SYSTEM
     width: 100%;
 }
 
-.search-row #searchbar-and-icon {
-    flex: 1;
-    position: relative;
-}
 
+/*  clear searchbar */
 .clear-search-btn {
     position: absolute;
     right: 0.75rem;
@@ -467,28 +463,6 @@ ENHANCED FILTERING SYSTEM
 
 .clear-search-btn:active {
     scale: 0.95;
-}
-
-/* Clear all button in search row */
-.clear-all-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    flex-shrink: 0;
-    height: 44px;
-    padding: 0 0.75rem;
-}
-
-.clear-all-btn:active {
-    scale: .95;
 }
 
 /* Filter Rows Container */
@@ -658,11 +632,6 @@ ENHANCED FILTERING SYSTEM
         width: 100%;
     }
 
-    .clear-all-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
     .filter-row {
         flex-direction: column;
         align-items: flex-start;
@@ -688,9 +657,6 @@ ENHANCED FILTERING SYSTEM
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
-    .search-row #searchbar-and-icon {
-        flex: 1;
-    }
 
     .filter-row-label {
         min-width: 80px;
@@ -745,8 +711,8 @@ ENHANCED FILTERING SYSTEM
 }
 
 .filter-dropdown-trigger.has-value {
-    background-color: rgba(217, 4, 41, 0.05);
-    border-color: var(--accent-color);
+    background-color: var(--main-color);
+    border: 1px solid var(--accent-color);
 }
 
 .filter-dropdown-text {

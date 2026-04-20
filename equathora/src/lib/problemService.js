@@ -1,6 +1,6 @@
 import { supabase } from './supabaseClient';
 import { getInProgressProblems } from '../lib/progressStorage';
-import { getFavorites } from './databaseService';
+import { getFavorites, getCompletedProblems } from './databaseService';
 import { generateProblemSlug, extractIdFromSlug } from './slugify';
 
 const DEFAULT_LOCAL_BACKEND = 'http://localhost:5104';
@@ -193,6 +193,116 @@ export async function getProblems(
 
         return facets;
     };
+
+    const matchesStatusFilter = (problem, statusValue) => {
+        if (statusValue === 'completed') return problem.completed;
+        if (statusValue === 'in-progress') return problem.inProgress;
+        if (statusValue === 'notstarted') return !problem.completed && !problem.inProgress;
+        if (statusValue === 'favorite') return problem.favourite;
+        return false;
+    };
+
+    // Keep Learn in sync with Profile/Dashboard: derive completion state from
+    // user_completed_problems + local in-progress state for authenticated users.
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const userId = session?.user?.id;
+
+        if (userId) {
+            const [favoriteProblemIds, completedProblemIds] = await Promise.all([
+                getFavorites(),
+                getCompletedProblems()
+            ]);
+
+            if (includesFavorite && (!favoriteProblemIds || favoriteProblemIds.length === 0)) {
+                const safePage = page ?? 1;
+                const safePageSize = pageSize ?? 50;
+                return {
+                    data: [],
+                    count: 0,
+                    page: safePage,
+                    pageSize: safePageSize,
+                    facets: buildFacets([]),
+                };
+            }
+
+            let problemsQuery = supabase
+                .from('problems')
+                .select('*')
+                .eq('is_active', true);
+
+            if (problemId !== null && problemId !== undefined) {
+                problemsQuery = problemsQuery.eq('id', problemId);
+            }
+
+            if (slug && String(slug).trim()) {
+                problemsQuery = problemsQuery.eq('slug', String(slug).trim());
+            }
+
+            if (Array.isArray(difficulties) && difficulties.length > 0) {
+                problemsQuery = problemsQuery.in('difficulty', difficulties);
+            }
+
+            if (Array.isArray(topics) && topics.length > 0) {
+                problemsQuery = problemsQuery.in('topic', topics);
+            }
+
+            if (Array.isArray(grades) && grades.length > 0) {
+                problemsQuery = problemsQuery.in('grade', grades);
+            }
+
+            if (searchTerm && String(searchTerm).trim()) {
+                const escapedSearch = String(searchTerm).trim();
+                problemsQuery = problemsQuery.or(`title.ilike.%${escapedSearch}%,description.ilike.%${escapedSearch}%,topic.ilike.%${escapedSearch}%`);
+            }
+
+            if (includesFavorite) {
+                problemsQuery = problemsQuery.in('id', favoriteProblemIds);
+            }
+
+            const { data: allProblems, error: allProblemsError } = await problemsQuery;
+            if (allProblemsError) throw allProblemsError;
+
+            const favoriteSet = new Set((favoriteProblemIds || []).map((id) => String(id)));
+            const completedSet = new Set((completedProblemIds || []).map((id) => String(id)));
+            const inProgressSet = new Set((getInProgressProblems() || []).map((id) => String(id)));
+
+            const enrichedProblems = (allProblems || []).map((problem) => {
+                const normalizedProblemId = String(problem.id);
+                const isCompleted = completedSet.has(normalizedProblemId);
+                const isInProgress = !isCompleted && inProgressSet.has(normalizedProblemId);
+
+                return {
+                    ...problem,
+                    completed: isCompleted,
+                    inProgress: isInProgress,
+                    favourite: favoriteSet.has(normalizedProblemId)
+                };
+            });
+
+            const statusFilteredProblems = statusFilters.length > 0
+                ? enrichedProblems.filter((problem) =>
+                    statusFilters.some((statusValue) => matchesStatusFilter(problem, statusValue))
+                )
+                : enrichedProblems;
+
+            const sortedProblems = applyLocalSort(statusFilteredProblems, sort);
+            const safePage = page ?? 1;
+            const safePageSize = pageSize ?? 50;
+            const startIndex = Math.max(0, (safePage - 1) * safePageSize);
+            const pagedProblems = sortedProblems.slice(startIndex, startIndex + safePageSize);
+
+            return {
+                data: pagedProblems,
+                count: sortedProblems.length,
+                page: safePage,
+                pageSize: safePageSize,
+                facets: buildFacets(sortedProblems),
+            };
+        }
+    } catch (userProgressError) {
+        console.warn('User-aware problem fetch failed, falling back to backend source:', userProgressError);
+    }
 
     if (includesFavorite) {
         try {

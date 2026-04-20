@@ -1,191 +1,139 @@
-.problem-card {
+/* Minimalist Problem Card Redesign */
+.problem-card.minimal {
     display: flex;
     flex-direction: column;
-    background-color: var(--main-color);
-    /* border: 1.5px solid rgba(43, 45, 66, 0.12); */
-    border-radius: 6px;
-    padding: 1rem;
-    transition: all 0.3s ease;
-    cursor: pointer;
+    background-color: var(--white);
+    border: 1px solid var(--french-gray);
+    border-radius: 6px; /* specifically requested */
+    padding: 1rem 1.25rem;
     text-decoration: none;
-    color: var(--secondary-color);
-    font-family: 'Sansation', sans-serif;
+    color: inherit;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    min-height: 140px; /* guarantees consistent base size */
     position: relative;
-    overflow: hidden;
-    min-height: 120px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
-.problem-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent-color), var(--dark-accent-color));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
+.problem-card.minimal:hover {
+    border-color: var(--mid-main-secondary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
 }
 
-.problem-card:hover::before {
-    transform: scaleX(1);
+.problem-card.minimal:active {
+    transform: translateY(0) scale(0.98);
 }
 
-.problem-card:hover {
-    box-shadow: 0 0 25px rgba(141, 153, 174, 0.7);
+/* Optional subtle background or border if completed */
+.problem-card.minimal.is-completed {
+    border-color: var(--accent-color);
+    background-color: var(--main-color);
+}
+.problem-card.minimal.is-completed:hover {
+    border-color: var(--dark-accent-color);
 }
 
-/* .problem-card.completed {
-} */
-
-.problem-card.completed::before {
-    background: linear-gradient(90deg, #22c55e, #16a34a);
-}
-
-.problem-card-header {
+/* TOP ROW */
+.pc-top-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.pc-topic {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--mid-main-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.pc-icon-sm {
+    font-size: 0.7rem;
+    opacity: 0.7;
+}
+
+.pc-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pc-icon-premium,
+.pc-icon-fav {
+    font-size: 0.9rem;
+}
+
+.pc-icon-premium { color: var(--secondary-color); }
+.pc-icon-fav { color: var(--accent-color); }
+
+/* TITLE - handles arbitrary lengths by clamping and pushing content nicely */
+.pc-title-wrapper {
+    flex-grow: 1; /* Pushes the bottom row down so cards remain consistent height */
+    display: flex;
     align-items: flex-start;
     margin-bottom: 1rem;
-    gap: 1rem;
 }
 
-.problem-title {
-    font-size: 1.1rem;
-    font-weight: 700;
+.pc-title {
+    font-size: 1rem;
+    font-weight: 600;
     color: var(--secondary-color);
-    margin: 0;
-    line-height: 1.3;
-    flex: 1;
-}
-
-.problem-icons {
-    display: flex;
-    gap: 0.5rem;
-    flex-shrink: 0;
-}
-
-.favourite-icon {
-    color: #f59e0b;
-    font-size: 1rem;
-    filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.3));
-}
-
-.premium-icon {
-    color: #a855f7;
-    font-size: 1rem;
-    filter: drop-shadow(0 2px 4px rgba(168, 85, 247, 0.3));
-}
-
-.problem-description {
-    font-size: 0.875rem;
-    color: rgba(43, 45, 66, 0.7);
     line-height: 1.4;
-    margin: 0 0 1rem 0;
-    flex: 1;
+    margin: 0;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; /* maximum 2 lines for consistency */
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-.problem-footer {
+/* BOTTOM ROW */
+.pc-bottom-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
     margin-top: auto;
-    flex-wrap: wrap;
+    border-top: 1px solid var(--french-gray);
+    padding-top: 0.75rem;
 }
 
-.footer-left {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.difficulty-badge {
-    padding: 0.35rem 0.875rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.topic-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.3rem 0.65rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    background-color: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
-    white-space: nowrap;
-}
-
-.topic-icon {
-    font-size: 0.65rem;
-}
-
-.status-badge {
-    display: flex;
-    align-items: center;
-}
-
-.status {
+.pc-difficulty {
     display: flex;
     align-items: center;
     gap: 0.4rem;
     font-size: 0.8rem;
     font-weight: 600;
-    padding: 0.35rem 0.75rem;
-    border-radius: 6px;
+    color: var(--diff-color, var(--mid-main-secondary));
 }
 
-.completed-status {
-    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
-    color: white;
+.pc-icon-diff {
+    font-size: 0.8rem;
 }
 
-.progress-status {
-    background-color: rgba(245, 158, 11, 0.1);
-    color: #d97706;
+.pc-status {
+    display: flex;
+    align-items: center;
 }
 
-.unsolved-status {
-    background-color: rgba(107, 114, 128, 0.1);
-    color: #6b7280;
+.pc-status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
-/* Responsive Design */
-@media only screen and (max-width: 480px) {
-    .problem-card {
-        padding: 0.875rem;
-        min-height: 110px;
-    }
-
-    .problem-title {
-        font-size: 1.1rem;
-    }
-
-    .problem-description {
-        display: none;
-        font-size: 0.9rem;
-    }
-
-    .problem-footer {
-        align-items: flex-start;
-        gap: 0.75rem;
-    }
-
-    .difficulty-badge,
-    .status {
-        font-size: 0.8rem;
-    }
+.pc-icon-status {
+    font-size: 0.85rem;
 }
+
+/* Status colors using palette */
+.pc-status-item.success { color: var(--secondary-color); }
+.pc-status-item.warning { color: var(--accent-color); }
+.pc-status-item.neutral { color: var(--mid-main-secondary); }

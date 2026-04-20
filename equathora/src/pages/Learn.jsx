@@ -511,7 +511,7 @@ const Learn = () => {
                   </button>
                 )}
               </div>
-              {activeFilterCount > 0 && (
+              {/* {activeFilterCount > 0 && (
                 <button
                   type="button"
                   className="clear-all-btn"
@@ -519,7 +519,7 @@ const Learn = () => {
                 >
                   <FaTimes /> Clear all ({activeFilterCount})
                 </button>
-              )}
+              )} */}
             </div>
 
             {/* Filter Dropdowns Grid */}

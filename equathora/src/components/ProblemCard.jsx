@@ -1,95 +1,74 @@
 import React from 'react';
 import './ProblemCard.css';
 import { Link } from 'react-router-dom';
-import { FaStar, FaRegStar, FaCrown, FaCheckCircle, FaClock, FaTag } from 'react-icons/fa';
+import { FaStar, FaCrown, FaCheckCircle, FaRegCircle, FaAdjust, FaChartBar, FaLayerGroup } from 'react-icons/fa';
 import { generateProblemSlug } from '../lib/slugify';
-import MathJaxRenderer from './MathJaxRenderer';
 import { formatTopicLabel } from '../lib/utils';
 
 const ProblemCard = ({ problem }) => {
     const getDifficultyColor = (difficulty) => {
         switch ((difficulty || '').toLowerCase()) {
-            case 'beginner':
-                return '#38bdf8';
-            case 'easy':
-                return '#22c55e';
+            case 'beginner': return '#38bdf8';
+            case 'easy': return '#22c55e';
             case 'standard':
-            case 'intermediate':
-                return '#14b8a6';
-            case 'medium':
-                return '#e59e0b';
-            case 'challenging':
-                return '#f97316';
-            case 'hard':
-                return '#a3142c';
+            case 'intermediate': return '#14b8a6';
+            case 'medium': return '#e59e0b';
+            case 'challenging': return '#f97316';
+            case 'hard': return '#ef4444';
             case 'advanced':
-            case 'expert':
-                return '#7c3aed';
-            default:
-                return '#6b7280';
+            case 'expert': return '#8b5cf6';
+            default: return 'var(--mid-main-secondary)';
         }
     };
 
-    // Generate slug for the problem URL
+    const getDifficultyLabel = (difficulty) => {
+        return (difficulty || 'Unknown').charAt(0).toUpperCase() + (difficulty || 'unknown').slice(1);
+    };
+
     const problemSlug = problem.slug || generateProblemSlug(problem.title, problem.id);
+    const difficultyColor = getDifficultyColor(problem.difficulty);
 
     return (
         <Link
             to={`/problems/${problemSlug}`}
-            className={`problem-card active:scale-95 ${problem.completed ? 'completed' : ''}`}
+            className={`problem-card minimal ${problem.completed ? 'is-completed' : ''}`}
         >
-            <div className="problem-card-header">
-                <h3 className="problem-title">{problem.title}</h3>
-                <div className="problem-icons">
-                    {problem.favourite && (
-                        <FaStar className="favourite-icon" />
-                    )}
-                    {problem.premium && (
-                        <FaCrown className="premium-icon" />
-                    )}
+            <div className="pc-top-row">
+                <div className="pc-topic">
+                    <FaLayerGroup className="pc-icon-sm" />
+                    <span>{problem.topic ? formatTopicLabel(problem.topic) : 'General'}</span>
+                </div>
+                <div className="pc-actions">
+                    {problem.premium && <FaCrown className="pc-icon-premium" title="Premium Equivalent" />}
+                    {problem.favourite && <FaStar className="pc-icon-fav" title="Favourite" />}
                 </div>
             </div>
 
-            <MathJaxRenderer
-                content={problem.description}
-                className="problem-description"
-                as="p"
-            />
+            <div className="pc-title-wrapper">
+                <h3 className="pc-title">{problem.title}</h3>
+            </div>
 
-            <div className="problem-footer">
-                <div className="footer-left">
-                    <span
-                        className="difficulty-badge"
-                        style={{
-                            backgroundColor: `${getDifficultyColor(problem.difficulty)}20`,
-                            color: getDifficultyColor(problem.difficulty)
-                        }}
-                    >
-                        {problem.difficulty}
-                    </span>
-                    {problem.topic && (
-                        <span className="topic-badge">
-                            <FaTag className="topic-icon" />
-                            {formatTopicLabel(problem.topic)}
-                        </span>
-                    )}
+            <div className="pc-bottom-row">
+                <div className="pc-difficulty" style={{ '--diff-color': difficultyColor }}>
+                    <FaChartBar className="pc-icon-diff" />
+                    <span>{getDifficultyLabel(problem.difficulty)}</span>
                 </div>
-
-                <div className="status-badge">
-                    {problem.completed && (
-                        <span className="status completed-status">
-                            <FaCheckCircle /> Completed
-                        </span>
-                    )}
-                    {problem.inProgress && !problem.completed && (
-                        <span className="status progress-status">
-                            <FaClock /> In Progress
-                        </span>
-                    )}
-                    {!problem.completed && !problem.inProgress && (
-                        <span className="status unsolved-status">
-                            Not Started
-                        </span>
+                <div className="pc-status">
+                    {problem.completed ? (
+                        <div className="pc-status-item success">
+                            <FaCheckCircle className="pc-icon-status" />
+                            <span>Done</span>
+                        </div>
+                    ) : problem.inProgress ? (
+                        <div className="pc-status-item warning">
+                            <FaAdjust className="pc-icon-status" />
+                            <span>In Progress</span>
+                        </div>
+                    ) : (
+                        <div className="pc-status-item neutral">
+                            <FaRegCircle className="pc-icon-status" />
+                            <span>Start</span>
+                        </div>
                     )}
                 </div>
             </div>
