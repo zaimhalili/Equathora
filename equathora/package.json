@@ -21,7 +21,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.22",
     "jspdf": "^4.2.1",
-    "mathjs": "^15.1.1",
+    "mathjs": "^15.2.0",
     "mathlive": "^0.107.0",
     "motion": "^12.23.22",
     "posthog-js": "^1.364.1",
