@@ -306,7 +306,7 @@ export default function App() {
                         <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
                         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
                         <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>}></Route>
-                        {/*<Route path="/submit-problem" element={<AdminRoute><SubmitProblem /></AdminRoute>}></Route>*/}
+                        <Route path="/submit-problem" element={<AdminRoute><SubmitProblem /></AdminRoute>}></Route>
 
 
 

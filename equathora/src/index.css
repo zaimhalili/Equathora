@@ -3,6 +3,7 @@
 @import "tailwindcss";
 
 @layer colors {
+
   :root,
   :root[data-theme='dark'] .theme-lock {
     /* Core Equathora palette */
@@ -157,7 +158,8 @@ select {
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--text-subtle);
+  color: var(--mid-main-secondary) !important;
+  opacity: 1;
 }
 
 /* Custom scrollbar styles for problem description */
