@@ -10,6 +10,7 @@ import AdminSolutionGenerator from '@/components/Admin/AdminSolutionGenerator';
 import AdminFinance from '@/components/Admin/AdminFinance';
 import AdminLogs from '@/components/Admin/AdminLogs';
 import AdminEmailBriefs from '@/components/Admin/AdminEmailBriefs';
+import AdminReviewProblems from '@/components/Admin/AdminReviewProblems';
 
 const TAB_COMPONENTS = {
     // analytics: <AdminAnalytics />,
@@ -19,7 +20,8 @@ const TAB_COMPONENTS = {
     solutionGenerator: <AdminSolutionGenerator />,
     finance: <AdminFinance />,
     logs: <AdminLogs />,
-    emailBriefs: <AdminEmailBriefs />
+    emailBriefs: <AdminEmailBriefs />,
+    AdminReviewProblems: <AdminReviewProblems />
 }
 
 const TAB_DATA_SOURCE = {
@@ -31,6 +33,7 @@ const TAB_DATA_SOURCE = {
     finance: 'Mock',
     logs: 'Mock',
     emailBriefs: 'Real',
+    adminReviewProblems: 'Real',
 };
 
 const AdminDashboard = () => {
@@ -62,7 +65,7 @@ const AdminDashboard = () => {
         { id: 'finance', label: 'Finance' },
         { id: 'logs', label: 'Logs' },
         { id: 'emailBriefs', label: 'Email Briefs' },
-
+        { id: 'reviewProblems', label: 'Review Problems'}
     ]
     return (
         <>
@@ -79,7 +82,7 @@ const AdminDashboard = () => {
                             type='button'
                             key={tab.id}
                             onClick={() => handleTabSelect(tab.id)}
-                            className={`xl:text-xl w-full text-center px-3 py-2 cursor-pointer shadow-md ${selected === tab.id ? 'bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] z-10 relative font-black ' : 'bg-[var(--main-color)] text-[var(--secondary-color)] hover:bg-gray-300 font-medium'}`}>{tab.label}</button>
+                            className={`xl:text-xl w-full text-center px-3 py-2 cursor-pointer shadow-md ${selected === tab.id ? 'bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] z-10 relative font-black text-white' : 'bg-[var(--main-color)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] font-medium'}`}>{tab.label}</button>
                     ))}
                 </aside>
                 <section className='bg-[var(--main-color)] w-2/3 xl:w-7/8 absolute right-0 overflow-y-scroll h-[calc(100vh-7.5vh)] max-h-[calc(100vh-7.5vh)]'>

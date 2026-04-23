@@ -74,7 +74,7 @@ const SubmitProblem = () => {
 
             <main className='flex w-full justify-center items-center'>
                 <section className='flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8 w-full'>
-                    <article className='w-full max-w-[980px] flex flex-col gap-3 text-center md:text-left'>
+                    <article className='w-full flex flex-col gap-3 text-center md:text-left'>
                         <h1 className="text-4xl text-[var(--secondary-color)] font-extrabold tracking-tight">Submit a New Problem</h1>
                         <p className="text-md lg:text-lg font-normal leading-[1.2] text-[var(--secondary-color)] opacity-80">
                             Help expand Equathora by contributing high-quality challenges. Each submission is reviewed by AI checks and then manually approved before publishing.
@@ -86,7 +86,7 @@ const SubmitProblem = () => {
 
                     <form
                         onSubmit={handleSubmit}
-                        className="w-full max-w-[980px] flex flex-col gap-6"
+                        className="w-full flex flex-col gap-6"
                         aria-label="Submit a new math problem"
                     >
                         <section className={cardClasses} aria-labelledby="general-information-heading">
