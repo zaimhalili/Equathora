@@ -1,7 +1,7 @@
 .legal-page {
     min-height: 100vh;
-    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
-    color: #22223b;
+    background-color: var(--white);
+    color: var(--secondary-color);
     font-family: 'Sansation', Arial, sans-serif;
     padding: 0;
     display: flex;
@@ -10,7 +10,7 @@
 }
 
 .legal-content {
-    background: #fff;
+    background: var(--white);
     border-radius: 6px;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
     max-width: 700px;
@@ -21,7 +21,7 @@
 
 .legal-content h1 {
     font-size: 2.2rem;
-    color: black;
+    color: var(--secondary-color);
     font-weight: bold;
 }
 

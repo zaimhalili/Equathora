@@ -15,7 +15,7 @@ export function getSystemTheme() {
         return 'light';
     }
 
-    return window.matchMedia(SYSTEM_THEME_QUERY).matches ? 'dark' : 'light';  // change dark to light for default theme
+    return window.matchMedia(SYSTEM_THEME_QUERY).matches ? 'light' : 'light';  // change dark to light for default theme
 }
 
 export function resolveThemePreference(themePreference) {
