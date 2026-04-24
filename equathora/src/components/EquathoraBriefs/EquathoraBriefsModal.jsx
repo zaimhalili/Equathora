@@ -144,19 +144,19 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                     {/* Right Column - Text and Form */}
                                     <div className="flex flex-col ">
 
-                                        <h2 className="font-[Sansation] uppercase tracking-wider mb-2">
+                                        <h2 className="font-[Sansation] uppercase tracking-wider pb-2">
                                             <span className="block text-xl font-bold text-[var(--secondary-color)]">Join</span>
                                             <span className="block text-4xl font-extrabold !text-[var(--accent-color)] leading-tight">Equathora Briefs</span>
                                         </h2>
 
                                         {/* Sub-text */}
-                                        <p className="text-sm text-[var(--mid-main-secondary)] pb-5 max-w-sm">
+                                        <p className="text-sm text-[var(--mid-main-secondary)] pb-3 max-w-sm">
                                             Get product updates, new challenge drops, and launch announcements. No spam.
                                         </p>
 
                                         {/* Error Banner */}
                                         {saveError && (
-                                            <div className="bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 text-[var(--dark-accent-color)] px-4 py-3 rounded-md text-sm mb-6">
+                                            <div className="bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 text-[var(--dark-accent-color)] px-4 py-3 rounded-md text-sm pb-6">
                                                 {saveError}
                                             </div>
                                         )}
@@ -177,7 +177,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 aria-describedby={errors.full_name ? 'full-name-error' : undefined}
                                             />
                                             {errors.full_name && (
-                                                <p id="full-name-error" className="mt-1.5 text-xs text-[var(--dark-accent-color)] pl-1">
+                                                <p id="full-name-error" className="pt-1.5 text-xs text-[var(--dark-accent-color)] pl-1">
                                                     {errors.full_name}
                                                 </p>
                                             )}
@@ -196,7 +196,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 aria-describedby={errors.email ? 'email-error' : undefined}
                                             />
                                             {errors.email && (
-                                                <p id="email-error" className="mt-1.5 text-xs text-[var(--dark-accent-color)] pl-1">
+                                                <p id="email-error" className="pt-1.5 text-xs text-[var(--dark-accent-color)] pl-1">
                                                     {errors.email}
                                                 </p>
                                             )}
@@ -204,7 +204,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
 
 
                                         {/* CTA Buttons */}
-                                        <div className="flex gap-3 pt-2">
+                                        <div className="flex gap-3 pt-5">
                                             <button
                                                 type="button"
                                                 onClick={onClose}

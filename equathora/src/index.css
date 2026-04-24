@@ -4,54 +4,54 @@
 
 @layer colors {
 
-  :root,
-  :root[data-theme='dark'] .theme-lock {
-    /* Core Equathora palette */
-    --raisin-black: #202231;
-    --secondary-color: #2b2d42;
-    --mid-main-secondary: #8d99ae;
-    --french-gray: #c3ccd8;
-    --main-color: #edf2f4;
-    --light-accent-color: #ef233c;
-    --accent-color: #d70427;
-    --dark-accent-color: #a3142c;
-    --white: #ffffff;
-  }
+    :root,
+    :root[data-theme='dark'] .theme-lock {
+        /* Core Equathora palette */
+        --raisin-black: #202231;
+        --secondary-color: #2b2d42;
+        --mid-main-secondary: #8d99ae;
+        --french-gray: #c3ccd8;
+        --main-color: #edf2f4;
+        --light-accent-color: #ef233c;
+        --accent-color: #d70427;
+        --dark-accent-color: #a3142c;
+        --white: #ffffff;
+    }
 
-  :root[data-theme='dark'] {
-    --raisin-black: #edf2f4;
-    --secondary-color: #edf2f4;
-    /* Mid main secondary turns into main color */
-    --mid-main-secondary: #8d99ae;
-    --french-gray: #2b2d42;
-    --main-color: #202231;
-    --light-accent-color: #ef233c;
-    --accent-color: #ef233c;
-    --dark-accent-color: #d70427;
-    --white: #2b2d42;
-  }
+    :root[data-theme='dark'] {
+        --raisin-black: #edf2f4;
+        --secondary-color: #edf2f4;
+        /* Mid main secondary turns into main color */
+        --mid-main-secondary: #8d99ae;
+        --french-gray: #2b2d42;
+        --main-color: #202231;
+        --light-accent-color: #ef233c;
+        --accent-color: #ef233c;
+        --dark-accent-color: #d70427;
+        --white: #2b2d42;
+    }
 }
 
 :root {
-  color-scheme: light;
-  color: var(--secondary-color);
-  background-color: var(--main-color);
+    color-scheme: light;
+    color: var(--secondary-color);
+    background-color: var(--main-color);
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 :root[data-theme='dark'] {
-  color-scheme: dark;
+    color-scheme: dark;
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  /* This is for debugging */
-  /* border: 2px solid skyblue; */
+    box-sizing: border-box;
+    margin: 0;
+    /* This is for debugging */
+    /* outline: 2px solid skyblue; */
 }
 
 body,
@@ -59,65 +59,65 @@ button,
 input,
 select,
 textarea {
-  font-family: Sansation, sans-serif;
+    font-family: Sansation, sans-serif;
 }
 
 /* Keep MathJax glyph metrics untouched by app typography. */
 .mathjax-renderer mjx-container,
 .mathjax-renderer mjx-container * {
-  font-weight: 400 !important;
-  letter-spacing: normal !important;
-  font-stretch: normal !important;
+    font-weight: 400 !important;
+    letter-spacing: normal !important;
+    font-stretch: normal !important;
 }
 
 
 @keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
+    0% {
+        background-position: 0% 50%;
+    }
 
-  50% {
-    background-position: 100% 50%;
-  }
+    50% {
+        background-position: 100% 50%;
+    }
 
-  100% {
-    background-position: 0% 50%;
-  }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .animate-gradient {
-  animation: gradient 8s linear infinite;
+    animation: gradient 8s linear infinite;
 }
 
 @keyframes float {
 
-  0%,
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
 
-  50% {
-    transform: translateY(-20px) rotate(5deg);
-  }
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
 }
 
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+    animation: float 6s ease-in-out infinite;
 }
 
 html,
 body {
-  overflow-x: hidden;
-  max-width: 100vw;
+    overflow-x: hidden;
+    max-width: 100vw;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  background-color: var(--main-color);
-  color: var(--secondary-color);
-  transition: background-color 180ms ease, color 180ms ease;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: var(--main-color);
+    color: var(--secondary-color);
+    transition: background-color 180ms ease, color 180ms ease;
 }
 
 /* Keep admin interactions clearly clickable without touching every component. */
@@ -128,57 +128,57 @@ body {
 .admin-interactive input[type="button"],
 .admin-interactive input[type="submit"],
 .admin-interactive input[type="reset"] {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 #root {
-  overflow-x: hidden;
-  width: 100%;
-  background-color: inherit;
+    overflow-x: hidden;
+    width: 100%;
+    background-color: inherit;
 }
 
 a {
-  font-weight: 600;
-  color: inherit;
-  text-decoration: inherit;
+    font-weight: 600;
+    color: inherit;
+    text-decoration: inherit;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 2px;
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
 }
 
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {
-  background-color: var(--surface-card);
-  color: var(--secondary-color);
-  border-color: var(--french-gray);
+    background-color: var(--surface-card);
+    color: var(--secondary-color);
+    border-color: var(--french-gray);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--mid-main-secondary) !important;
-  opacity: 1;
+    color: var(--mid-main-secondary) !important;
+    opacity: 1;
 }
 
 /* Custom scrollbar styles for problem description */
 .problem-description-scroll::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 
 .problem-description-scroll::-webkit-scrollbar-track {
-  background: var(--surface-elevated);
-  border-radius: 10px;
+    background: var(--surface-elevated);
+    border-radius: 10px;
 }
 
 .problem-description-scroll::-webkit-scrollbar-thumb {
-  background: var(--french-gray);
-  border-radius: 10px;
+    background: var(--french-gray);
+    border-radius: 10px;
 }
 
 .problem-description-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+    background: var(--text-muted);
 }
 
 input[type="text"]:-webkit-autofill,
@@ -193,22 +193,22 @@ input[type="email"]:-webkit-autofill:focus,
 .inputAuth:-webkit-autofill:hover,
 .inputAuth:-webkit-autofill:focus,
 .inputAuth:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px var(--autofill-bg) inset !important;
-  box-shadow: 0 0 0 1000px var(--autofill-bg) inset !important;
-  -webkit-text-fill-color: var(--autofill-text) !important;
-  background-color: var(--autofill-bg) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--autofill-bg) inset !important;
+    box-shadow: 0 0 0 1000px var(--autofill-bg) inset !important;
+    -webkit-text-fill-color: var(--autofill-text) !important;
+    background-color: var(--autofill-bg) !important;
 }
 
 .inputAuth:-moz-autofill {
-  box-shadow: 0 0 0 1000px var(--autofill-bg) inset !important;
-  -moz-text-fill-color: var(--autofill-text) !important;
-  background-color: var(--autofill-bg) !important;
+    box-shadow: 0 0 0 1000px var(--autofill-bg) inset !important;
+    -moz-text-fill-color: var(--autofill-text) !important;
+    background-color: var(--autofill-bg) !important;
 }
 
 button {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 select {
-  cursor: pointer;
+    cursor: pointer;
 }

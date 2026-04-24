@@ -393,7 +393,7 @@ const Notifications = () => {
                                             transition={{ duration: 0.2 }}
                                             className={`flex items-center gap-3 rounded-md p-4 transition-all cursor-pointer h-full border-l-4 ${!notification.read
                                                 ? `bg-[var(--white)] shadow-md ${config.borderColor}`
-                                                : 'bg-[var(--mid-main-secondary)]/80 border-gray-200 shadow-sm'
+                                                : 'bg-[var(--mid-main-secondary)]/100 border-gray-200 shadow-sm text-[var(--white)] '
                                             } hover:shadow-md`}
                                             onClick={() => handleNotificationClick(notification)}
                                         >
@@ -412,7 +412,7 @@ const Notifications = () => {
                                                     hover:ring-offset-1
                                                     ${selectedIds.includes(notification.id)
                                                         ? "border-[var(--accent-color)] bg-[var(--accent-color)]"
-                                                        : " bg-transparent"
+                                                        : "bg-transparent"
                                                     }`}
                                                 >
                                                     {selectedIds.includes(notification.id) && (

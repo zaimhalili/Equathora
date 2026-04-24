@@ -20,13 +20,13 @@ import Navbar from "@/components/Navbar.jsx";
 const EquathoraBriefsHero = ({setIsBriefsModalOpen}) => {
     return (
         <>
-            <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+            <header className="bg-[var(--[var(--white)])]/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
                 <Navbar />
             </header>
 
 
             {/* Hero Section */}
-            <section className="relative font-[Sansation] bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white flex justify-center overflow-hidden theme-lock">
+            <section className="relative font-[Sansation] bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-[var(--[var(--white)])] flex justify-center overflow-hidden theme-lock">
 
                 {/* Animated Background Elements */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -38,7 +38,7 @@ const EquathoraBriefsHero = ({setIsBriefsModalOpen}) => {
 
                     <div className="flex  flex-1 flex-col justify-center w-full gap-8">
                         {/* Badge */}
-                        <div className="flex items-center w-54 gap-2 px-4 py-2 bg-gradient-to-r from-[var(--dark-accent-color)] to-[var(--accent-color)] text-white rounded-full text-sm font-semibold shadow-lg animate-bounce">
+                        <div className="flex items-center w-54 gap-2 px-4 py-2 bg-gradient-to-r from-[var(--dark-accent-color)] to-[var(--accent-color)] text-[var(--white)] rounded-full text-sm font-semibold shadow-lg animate-bounce">
                             <svg className="w-4 h-4" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <linearGradient id="icon-gradient-bolt" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -46,7 +46,7 @@ const EquathoraBriefsHero = ({setIsBriefsModalOpen}) => {
                                         <stop offset="100%" stopColor="var(--accent-color)" />
                                     </linearGradient>
                                 </defs>
-                                <path fill="white" d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.7 20.8l-32 416C-.9 445.2 9.9 456 22.8 456.4c4.1.1 8.2-.3 12.1-1.6L266 420.1c10.2-3.3 17.5-12.6 17.5-23.2 0-6.6-2.7-12.8-7.4-17.3L150 256l119.3-99.3c11.3-9.4 14.8-25.6 7.8-38.8z" />
+                                <path fill="[var(--white)]" d="M296 160H180.6l42.6-129.8C227.2 15 215.7 0 200 0H56C44 0 33.8 8.9 32.7 20.8l-32 416C-.9 445.2 9.9 456 22.8 456.4c4.1.1 8.2-.3 12.1-1.6L266 420.1c10.2-3.3 17.5-12.6 17.5-23.2 0-6.6-2.7-12.8-7.4-17.3L150 256l119.3-99.3c11.3-9.4 14.8-25.6 7.8-38.8z" />
                             </svg>
                             <span>60+ Already Subscribed</span>
                         </div>
@@ -86,7 +86,7 @@ const EquathoraBriefsHero = ({setIsBriefsModalOpen}) => {
                         <div className="flex flex-col items-center justify-center w-full max-w-md pt-4 gap-4">
                             <button
                                 onClick={() => setIsBriefsModalOpen(true)}
-                                className="flex items-center justify-center gap-3 py-2 px-12 bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-white text-xl font-bold rounded-md transition-all w-full cursor-pointer"
+                                className="flex items-center justify-center gap-3 py-2 px-12 bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)] text-[var(--white)] text-xl font-bold rounded-md transition-all w-full cursor-pointer"
                             >
                                 <span className={`text-[var(--primary-color)]`}>Join Equathora Briefs</span>
                                 <svg className="w-5 h-5" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
@@ -96,7 +96,7 @@ const EquathoraBriefsHero = ({setIsBriefsModalOpen}) => {
                                             <stop offset="100%" stopColor="var(--accent-color)" />
                                         </linearGradient>
                                     </defs>
-                                    <path fill="white" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z" />
+                                    <path fill="[var(--white)]" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z" />
                                 </svg>
                             </button>
                             <p className="flex items-center justify-center text-sm text-[var(--primary-color)]/60 text-center">
@@ -106,15 +106,15 @@ const EquathoraBriefsHero = ({setIsBriefsModalOpen}) => {
 
                         {/* Trust Indicators */}
                         <div className="flex flex-wrap items-center  gap-6 text-sm text-[var(--primary-color)]/70">
-                            <div className='flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded'>
+                            <div className='flex items-center gap-1.5 bg-[var(--white)]/5 px-3 py-1.5 rounded'>
                                 <FaCheckCircle className='text-green-400 flex-shrink-0' />
                                 <span>Early bird perks</span>
                             </div>
-                            <div className='flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded'>
+                            <div className='flex items-center gap-1.5 bg-[var(--white)]/5 px-3 py-1.5 rounded'>
                                 <FaCheckCircle className='text-green-400 flex-shrink-0' />
                                 <span>Priority support</span>
                             </div>
-                            <div className='flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded'>
+                            <div className='flex items-center gap-1.5 bg-[var(--white)]/5 px-3 py-1.5 rounded'>
                                 <FaCheckCircle className='text-green-400 flex-shrink-0' />
                                 <span>Founder badge</span>
                             </div>
