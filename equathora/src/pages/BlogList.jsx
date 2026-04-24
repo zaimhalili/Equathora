@@ -17,7 +17,7 @@ const BlogList = () => {
                     <h1 className='text-4xl font-bold font-[Sansation] text-[var(--secondary-color)] mb-8'>
                         Equathora Blog
                     </h1>
-                    <p className='text-lg text-gray-600 mb-12'>
+                    <p className='text-lg text-gray-600 pb-12'>
                         Updates, insights, and thoughts on mathematical reasoning and education.
                     </p>
 
@@ -26,7 +26,7 @@ const BlogList = () => {
                             <Link
                                 key={post.id}
                                 to={`/blog/${post.slug}`}
-                                className='bg-white rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer flex flex-col'
+                                className='bg-[var(--white)] rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer flex flex-col'
                             >
                                 <img
                                     src={post.thumbnail}

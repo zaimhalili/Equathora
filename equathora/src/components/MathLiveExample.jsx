@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/MathLiveExample.css";
-import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb, FaCheckCircle } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb, FaCheckCircle, FaPlus } from "react-icons/fa";
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
 
 const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
@@ -18,9 +18,9 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
                 </div>
 
                 <div className='flex w-full justify-between gap-3 pt-7'>
-                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-[var(--french-gray)] rounded-md bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base'>Cancel</button>
+                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-[var(--french-gray)] rounded-md bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base theme-lock'>Cancel</button>
 
-                    <button type="button" className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-[var(--white)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base' onClick={onConfirm}>Clear All</button>
+                    <button type="button" className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-whitehover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base' onClick={onConfirm}>Clear All</button>
                 </div>
             </div>
         </div>
@@ -257,8 +257,9 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                             <p>Clear All</p>
                         </button>
                         <div className="flex gap-2 w-full sm:w-auto sm:order-2">
-                            <button className="ml-btn addStep" onClick={addField}>
-                                + Add New Line
+                            <button className="ml-btn addStep flex gap-1 items-center" onClick={addField}>
+                                <FaPlus />
+                                Add New Line
                             </button>
                             <button className="ml-btn submit flex-1" onClick={handleSubmit}>
                                 Submit Solution

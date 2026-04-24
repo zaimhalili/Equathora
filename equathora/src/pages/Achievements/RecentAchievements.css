@@ -26,13 +26,14 @@
     font-family: 'Sansation', sans-serif;
     font-size: clamp(1.7rem, 5vw, 3.2rem);
     text-align: center;
-    color: white;
+    color: var(--white);
 }
 
 .rec-achievements p {
     text-align: center;
     padding: 1rem 0;
     height: 80px;
+    color: var(--white);
 }
 
 .rec-achievements .block-container {

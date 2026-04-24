@@ -115,11 +115,12 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
 
             {/* Popup */}
             {shareNow && (
-                <div className={`flex flex-col gap-1 absolute ${getPositionClasses()} pt-2 bg-white border-2 border-[var(--accent-color)] rounded-md shadow-2xl p-4 z-50 min-w-[280px]`}>
-                    <h3 className="text-lg font-semibold text-gray-800 border-b-2 border-[var(--accent-color)] pb-2">
+                <div className={`flex flex-col gap-1 absolute ${getPositionClasses()} pt-2 bg-[var(--white)] border-2 border-[var(--accent-color)] rounded-md shadow-2xl p-4 z-50 min-w-[280px]`}>
+                    <h3 className="text-lg font-semibold text-[var(--secondary-color)] border-b-2 border-[var(--accent-color)] pb-2">
                         Share via
                     </h3>
                     <div className="grid grid-cols-3 gap-3">
+                        {/* TODO: Use a map method to make this code more readable */}
                         {/* WhatsApp */}
                         <button
                             onClick={handleWhatsAppShare}
@@ -127,7 +128,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on WhatsApp"
                         >
                             <FaWhatsapp className="text-3xl text-green-500 group-hover:scale-110 transition-transform" />
-                            <span className="text-xs text-gray-600">WhatsApp</span>
+                            <span className="text-xs text-[var(--mid-main-secondary)]">WhatsApp</span>
                         </button>
 
                         {/* Twitter */}
@@ -137,7 +138,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on Twitter"
                         >
                             <FaTwitter className="text-3xl text-blue-400 group-hover:scale-110 transition-transform" />
-                            <span className="text-xs text-gray-600">Twitter</span>
+                            <span className="text-xs text-[var(--mid-main-secondary)]">Twitter</span>
                         </button>
 
                         {/* LinkedIn */}
@@ -147,7 +148,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on LinkedIn"
                         >
                             <FaLinkedin className="text-3xl text-blue-700 group-hover:scale-110 transition-transform" />
-                            <span className="text-xs text-gray-600">LinkedIn</span>
+                            <span className="text-xs text-[var(--mid-main-secondary)]">LinkedIn</span>
                         </button>
 
                         {/* Facebook */}
@@ -157,7 +158,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on Facebook"
                         >
                             <FaFacebookMessenger className="text-3xl text-blue-600 group-hover:scale-110 transition-transform" />
-                            <span className="text-xs text-gray-600">Facebook</span>
+                            <span className="text-xs text-[var(--mid-main-secondary)]">Facebook</span>
                         </button>
 
                         {/* Reddit */}
@@ -167,7 +168,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on Reddit"
                         >
                             <FaReddit className="text-3xl text-orange-600 group-hover:scale-110 transition-transform" />
-                            <span className="text-xs text-gray-600">Reddit</span>
+                            <span className="text-xs text-[var(--mid-main-secondary)]">Reddit</span>
                         </button>
 
                         {/* Telegram */}
@@ -177,7 +178,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on Telegram"
                         >
                             <FaTelegram className="text-3xl text-blue-500 group-hover:scale-110 transition-transform" />
-                            <span className="text-xs text-gray-600">Telegram</span>
+                            <span className="text-xs text-[var(--mid-main-secondary)]">Telegram</span>
                         </button>
                     </div>
 
