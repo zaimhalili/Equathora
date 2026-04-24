@@ -135,6 +135,7 @@ function PageTitleUpdater() {
 export default function App() {
     const navigate = useNavigate();
     const location = useLocation();
+    const shouldEnableVercelAnalytics = import.meta.env.PROD || import.meta.env.VITE_ENABLE_VERCEL_ANALYTICS === "true";
 
     const canUseSpeedInsights = useMemo(() => {
         const isEnabled = import.meta.env.VITE_ENABLE_SPEED_INSIGHTS === "true";
@@ -340,7 +341,7 @@ export default function App() {
             <CookieConsent />
 
             {/* Analytics */}
-            <Analytics />
+            {shouldEnableVercelAnalytics ? <Analytics /> : null}
             {canUseSpeedInsights ? <LazySpeedInsights /> : null}
         </>
     );

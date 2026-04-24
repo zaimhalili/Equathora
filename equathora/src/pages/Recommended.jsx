@@ -89,7 +89,7 @@ const Recommended = () => {
             <>
                 <Navbar />
                 <main className="recommended-shell w-full font-[Sansation] text-[var(--secondary-color)]">
-                    <section className="px-auto flex w-full max-w-[1500px] flex-col items-start gap-4 px-[4vw] pb-12 pt-8 xl:px-[6vw]">
+                    <section className="mx-auto flex w-full max-w-[1500px] flex-col items-start gap-4 px-[4vw] pb-12 pt-8 xl:px-[6vw]">
                         <h1 className="text-3xl font-extrabold">Recommended Study Plan</h1>
                         <p className="recommended-muted text-sm">
                             {error || 'The recommendation plan is unavailable right now.'}
@@ -114,7 +114,7 @@ const Recommended = () => {
         <>
             <Navbar />
             <main className="recommended-shell w-full font-[Sansation] text-[var(--secondary-color)]">
-                <section className="px-auto flex w-full max-w-[1500px] flex-col gap-5 px-[4vw] pb-10 pt-5 xl:px-[6vw]">
+                <section className="mx-auto flex w-full max-w-[1500px] flex-col gap-5 px-[4vw] pb-10 pt-5 xl:px-[6vw]">
                     <header className="recommended-card flex flex-col gap-4 p-5 md:p-6">
                         <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                             <div className="flex flex-col gap-1">

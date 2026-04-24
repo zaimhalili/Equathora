@@ -72,7 +72,7 @@ const ProblemGroup = () => {
           </header>
           <div className="flex justify-center items-center pt-20">
             <div className="text-center text-[var(--secondary-color)]">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--accent-color)] px-auto pb-4"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--accent-color)] mx-auto pb-4"></div>
               <p>Loading...</p>
             </div>
           </div>

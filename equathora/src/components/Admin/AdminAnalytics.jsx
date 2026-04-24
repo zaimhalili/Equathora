@@ -344,7 +344,7 @@ const AdminAnalytics = () => {
                         </span>
                     </header>
                     <div className='h-72 w-full'>
-                        <ResponsiveContainer>
+                        <ResponsiveContainer width='100%' height='100%' minWidth={0}>
                             <AreaChart data={activeTrendData} margin={{ left: 0, right: 10, top: 10, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id='dauFill' x1='0' y1='0' x2='0' y2='1'>
@@ -378,7 +378,7 @@ const AdminAnalytics = () => {
                         </span>
                     </header>
                     <div className='h-72 w-full'>
-                        <ResponsiveContainer>
+                        <ResponsiveContainer width='100%' height='100%' minWidth={0}>
                             <PieChart>
                                 <Pie
                                     data={issueDistributionData}
@@ -418,7 +418,7 @@ const AdminAnalytics = () => {
                         </span>
                     </header>
                     <div className='h-72 w-full'>
-                        <ResponsiveContainer>
+                        <ResponsiveContainer width='100%' height='100%' minWidth={0}>
                             <BarChart data={activeTrendData} margin={{ left: -5, right: 10, top: 10, bottom: 0 }}>
                                 <CartesianGrid stroke={palette.french} vertical={false} />
                                 <XAxis dataKey='label' tick={{ fill: palette.secondary, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -440,7 +440,7 @@ const AdminAnalytics = () => {
                         </span>
                     </header>
                     <div className='h-72 w-full'>
-                        <ResponsiveContainer>
+                        <ResponsiveContainer width='100%' height='100%' minWidth={0}>
                             <AreaChart data={analytics.retention} margin={{ left: -15, right: 10, top: 10, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id='retentionFill' x1='0' y1='0' x2='0' y2='1'>

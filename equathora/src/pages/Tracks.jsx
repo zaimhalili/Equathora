@@ -334,7 +334,7 @@ const Tracks = () => {
 
                         {/* Insights */}
                         <motion.div
-                            className="pt-8 bg-white/90 backdrop-blur-sm rounded-md p-6 shadow-lg border border-gray-200 max-w-4xl px-auto"
+                            className="pt-8 bg-white/90 backdrop-blur-sm rounded-md p-6 shadow-lg border border-gray-200 max-w-4xl mx-auto"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.5 }}

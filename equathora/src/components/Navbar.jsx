@@ -323,7 +323,7 @@ const Navbar = () => {
       {/* <OverflowChecker></OverflowChecker> */}
       <header className='w-full bg-[var(--main-color)] h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
         <nav aria-label="Primary" className='w-full h-full flex justify-center'>
-          <div className='w-full h-full px-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
+          <div className='w-full h-full mx-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
             <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
               <li>
                 {/* Main Logo - Redirect to Dashboard */}

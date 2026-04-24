@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
+import { FiMenu, FiX } from 'react-icons/fi';
 
 // Components
 import AdminAnalytics from '@/components/Admin/AdminAnalytics';
@@ -21,8 +22,8 @@ const TAB_COMPONENTS = {
     finance: <AdminFinance />,
     logs: <AdminLogs />,
     emailBriefs: <AdminEmailBriefs />,
-    AdminReviewProblems: <AdminReviewProblems />
-}
+    reviewProblems: <AdminReviewProblems />
+};
 
 const TAB_DATA_SOURCE = {
     analytics: 'Real',
@@ -33,12 +34,13 @@ const TAB_DATA_SOURCE = {
     finance: 'Mock',
     logs: 'Mock',
     emailBriefs: 'Real',
-    adminReviewProblems: 'Real',
+    reviewProblems: 'Mock',
 };
 
 const AdminDashboard = () => {
     const [selected, setSelected] = useState('problems');
     const [isSwitching, setIsSwitching] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
         setIsSwitching(true);
@@ -54,6 +56,7 @@ const AdminDashboard = () => {
     const handleTabSelect = (tabId) => {
         if (tabId === selected) return;
         setSelected(tabId);
+        setIsSidebarOpen(false);
     };
 
     const tabs = [
@@ -65,32 +68,68 @@ const AdminDashboard = () => {
         { id: 'finance', label: 'Finance' },
         { id: 'logs', label: 'Logs' },
         { id: 'emailBriefs', label: 'Email Briefs' },
-        { id: 'reviewProblems', label: 'Review Problems'}
-    ]
+        { id: 'reviewProblems', label: 'Review Problems' }
+    ];
     return (
         <>
             <header>
                 <Navbar></Navbar>
             </header>
-            <main className='admin-interactive flex relative max-h-[calc(100vh-7.5vh)] overflow-hidden'>
-                <aside className='bg-[var(--main-color)] min-h-screen sticky left-0 w-1/3 xl:w-1/8 shadow-2xl z-4 overflow-hidden h-[calc(100vh-7.5vh)] max-h-[calc(100vh-7.5vh)]'>
-                    {/* <h1 className='text-xl bg-[var(--dark-accent-color)] w-full text-center py-2 cursor-pointer shadow-md pb-4 font-black'>Admin Tools</h1> */}
+            <main className='admin-interactive relative flex h-[calc(100vh-7.5vh)] max-h-[calc(100vh-7.5vh)] overflow-hidden bg-[var(--main-color)]'>
+                {isSidebarOpen && (
+                    <button
+                        type='button'
+                        aria-label='Close admin navigation overlay'
+                        onClick={() => setIsSidebarOpen(false)}
+                        className='absolute inset-0 z-20 bg-black/35 md:hidden'
+                    />
+                )}
 
-                    {/* Admin Tabs */}
+                <aside className={`absolute inset-y-0 left-0 z-30 w-[84vw] max-w-[320px] overflow-y-auto border-r bg-[var(--main-color)] shadow-2xl transition-transform duration-200 md:static md:z-10 md:w-[280px] md:max-w-none md:min-w-[240px] md:translate-x-0 md:border-none ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ borderColor: 'var(--french-gray)' }}>
+                    <div className='sticky top-0 z-10 border-b bg-[var(--main-color)] px-3 py-2 md:hidden' style={{ borderColor: 'var(--french-gray)' }}>
+                        <div className='flex items-center justify-between'>
+                            <p className='text-sm font-black text-[var(--secondary-color)]'>Admin Modules</p>
+                            <button
+                                type='button'
+                                onClick={() => setIsSidebarOpen(false)}
+                                className='rounded-md border px-2 py-1 text-sm font-semibold'
+                                style={{ borderColor: 'var(--mid-main-secondary)' }}
+                            >
+                                <span className='inline-flex items-center gap-1'>
+                                    <FiX />
+                                    Close
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
                     {tabs.map(tab => (
                         <button
                             type='button'
                             key={tab.id}
                             onClick={() => handleTabSelect(tab.id)}
-                            className={`xl:text-xl w-full text-center px-3 py-2 cursor-pointer shadow-md ${selected === tab.id ? 'bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] z-10 relative font-black text-white' : 'bg-[var(--main-color)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] font-medium'}`}>{tab.label}</button>
+                            className={`w-full px-3 py-3 text-left text-sm shadow-sm transition md:text-base xl:text-xl ${selected === tab.id ? 'bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] relative z-10 font-black text-white' : 'bg-[var(--main-color)] font-medium text-[var(--secondary-color)] hover:bg-[var(--french-gray)]'}`}
+                        >
+                            {tab.label}
+                        </button>
                     ))}
                 </aside>
-                <section className='bg-[var(--main-color)] w-2/3 xl:w-7/8 absolute right-0 overflow-y-scroll h-[calc(100vh-7.5vh)] max-h-[calc(100vh-7.5vh)]'>
-                    <div className='sticky top-0 z-20 flex items-center justify-between border-b px-3 py-2 text-xs font-semibold' style={{ borderColor: 'var(--french-gray)', backgroundColor: 'var(--main-color)' }}>
-                        <span style={{ color: 'var(--mid-main-secondary)' }}>
+
+                <section className='flex-1 min-w-0 overflow-y-auto bg-[var(--main-color)] h-[calc(100vh-7.5vh)] max-h-[calc(100vh-7.5vh)]'>
+                    <div className='sticky top-0 z-20 flex flex-wrap items-center justify-between gap-2 border-b px-3 py-2 text-xs font-semibold' style={{ borderColor: 'var(--french-gray)', backgroundColor: 'var(--main-color)' }}>
+                        <button
+                            type='button'
+                            onClick={() => setIsSidebarOpen(true)}
+                            className='inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-semibold md:hidden'
+                            style={{ borderColor: 'var(--mid-main-secondary)' }}
+                        >
+                            <FiMenu />
+                            Modules
+                        </button>
+                        <span className='truncate' style={{ color: 'var(--mid-main-secondary)' }}>
                             {isSwitching ? 'Loading module...' : 'Module ready'}
                         </span>
-                        <span className='rounded-md px-2 py-1' style={{ backgroundColor: TAB_DATA_SOURCE[selected] === 'Real' ? 'var(--secondary-color)' : 'var(--mid-main-secondary)', color: 'var(--main-color)' }}>
+                        <span className='rounded-md px-2 py-1 whitespace-nowrap' style={{ backgroundColor: TAB_DATA_SOURCE[selected] === 'Real' ? 'var(--secondary-color)' : 'var(--mid-main-secondary)', color: 'var(--main-color)' }}>
                             Data Source: {TAB_DATA_SOURCE[selected]}
                         </span>
                     </div>

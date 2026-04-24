@@ -440,7 +440,7 @@ const AdminUserManagement = () => {
                         </span>
                     </header>
                     <div className='h-72 w-full'>
-                        <ResponsiveContainer>
+                        <ResponsiveContainer width='100%' height='100%' minWidth={0}>
                             <BarChart data={activeGraphData} margin={{ left: -8, right: 10, top: 10, bottom: 0 }}>
                                 <CartesianGrid stroke={palette.french} vertical={false} />
                                 <XAxis dataKey='label' tick={{ fill: palette.secondary, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -462,7 +462,7 @@ const AdminUserManagement = () => {
                         </span>
                     </header>
                     <div className='h-72 w-full'>
-                        <ResponsiveContainer>
+                        <ResponsiveContainer width='100%' height='100%' minWidth={0}>
                             <PieChart>
                                 <Pie
                                     data={roleDistribution}
@@ -502,7 +502,7 @@ const AdminUserManagement = () => {
                         </span>
                     </header>
                     <div className='h-64 w-full'>
-                        <ResponsiveContainer>
+                        <ResponsiveContainer width='100%' height='100%' minWidth={0}>
                             <LineChart data={activeGraphData} margin={{ left: -10, right: 10, top: 10, bottom: 0 }}>
                                 <CartesianGrid stroke={palette.french} vertical={false} />
                                 <XAxis dataKey='label' tick={{ fill: palette.secondary, fontSize: 11 }} axisLine={false} tickLine={false} />

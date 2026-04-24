@@ -616,7 +616,7 @@ const Discover = () => {
             {/* ── Path Section (relative container for SVG overlay) ── */}
             <div
               ref={containerRef}
-              className="relative px-auto"
+              className="relative mx-auto"
             >
               {/* SVG Connector Layer — absolute overlay */}
               <SVGConnectorLayer

@@ -1,7 +1,5 @@
 import { supabase } from './supabaseClient';
 
-const DEFAULT_LOCAL_BACKEND = 'http://localhost:5104';
-
 const normalizeBase = (value) => {
     if (!value || typeof value !== 'string') return '';
     return value.trim().replace(/\/$/, '');
@@ -18,8 +16,6 @@ const buildApiBaseCandidates = () => {
         import.meta.env.VITE_BACKEND_URL ||
         import.meta.env.VITE_API_BASE_URL
     );
-    const runtimeHost = typeof window !== 'undefined' ? window.location.hostname : '';
-    const isLocalRuntime = runtimeHost === 'localhost' || runtimeHost === '127.0.0.1';
 
     const candidates = [];
 
@@ -29,12 +25,19 @@ const buildApiBaseCandidates = () => {
 
     candidates.push('');
 
-    if (isLocalRuntime && !explicit) {
-        candidates.push(DEFAULT_LOCAL_BACKEND);
-    }
-
     return [...new Set(candidates)];
 };
+
+const isMissingSupabaseResourceError = (error) => {
+    const status = Number(error?.status || error?.code || 0);
+    const message = String(error?.message || '').toLowerCase();
+    return status === 404
+        || status === 42
+        || message.includes('does not exist')
+        || message.includes('relation') && message.includes('user_attempts');
+};
+
+let hasLoggedBackendFallback = false;
 
 const fetchProblemsPage = async ({ page, pageSize }) => {
     const params = new URLSearchParams({
@@ -196,7 +199,9 @@ const fetchAdminProblemDetailFromSupabase = async (problemId) => {
 
         attemptRows = Array.isArray(attempts) ? attempts : [];
     } catch (attemptsError) {
-        console.warn('Could not read user_attempts for problem detail; using 0 metrics.', attemptsError);
+        if (!isMissingSupabaseResourceError(attemptsError)) {
+            console.warn('Could not read user_attempts for problem detail; using 0 metrics.', attemptsError);
+        }
     }
 
     const solvedCount = attemptRows.filter((row) => row?.is_correct).length;
@@ -250,7 +255,9 @@ const fetchAllAdminProblemDetailsFromSupabase = async () => {
 
         attempts = Array.isArray(attemptsData) ? attemptsData : [];
     } catch (attemptsError) {
-        console.warn('Could not read user_attempts for bulk details; using 0 metrics.', attemptsError);
+        if (!isMissingSupabaseResourceError(attemptsError)) {
+            console.warn('Could not read user_attempts for bulk details; using 0 metrics.', attemptsError);
+        }
     }
 
     const statsByProblemId = attempts.reduce((map, row) => {
@@ -388,7 +395,9 @@ const attachProgressFromSupabase = async (rows) => {
     try {
         attempts = await fetchAllSupabaseAttempts();
     } catch (error) {
-        console.warn('Could not load user_attempts for admin problems metrics:', error);
+        if (!isMissingSupabaseResourceError(error)) {
+            console.warn('Could not load user_attempts for admin problems metrics:', error);
+        }
     }
 
     const statsByProblem = attempts.reduce((map, row) => {
@@ -500,7 +509,10 @@ export async function getAllAdminProblems({ pageSize = 100 } = {}) {
             source: 'backend'
         };
     } catch (backendError) {
-        console.warn('Admin problems backend fetch failed. Falling back to Supabase.', backendError);
+        if (!hasLoggedBackendFallback) {
+            console.warn('Admin problems backend fetch failed. Falling back to Supabase.', backendError);
+            hasLoggedBackendFallback = true;
+        }
         try {
             return await fetchAllProblemsFromSupabase({ pageSize: safePageSize });
         } catch (supabaseError) {
