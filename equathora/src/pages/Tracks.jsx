@@ -334,18 +334,18 @@ const Tracks = () => {
 
                         {/* Insights */}
                         <motion.div
-                            className="mt-8 bg-white/90 backdrop-blur-sm rounded-md p-6 shadow-lg border border-gray-200 max-w-4xl mx-auto"
+                            className="pt-8 bg-white/90 backdrop-blur-sm rounded-md p-6 shadow-lg border border-gray-200 max-w-4xl px-auto"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.5 }}
                         >
-                            <h3 className="text-lg font-bold text-[var(--secondary-color)] mb-4 flex items-center gap-2">
+                            <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-4 flex items-center gap-2">
                                 <FaChartLine className="text-[var(--accent-color)]" />
                                 Your Learning Insights
                             </h3>
                             <div className="grid md:grid-cols-2 gap-4">
                                 <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
-                                    <h4 className="font-semibold text-blue-800 mb-2">Focus Area</h4>
+                                    <h4 className="font-semibold text-blue-800 pb-2">Focus Area</h4>
                                     <p className="text-sm text-blue-700">
                                         {loading ? 'Loading...' : (
                                             mostTimeTrackStats.timeSpent > 0
@@ -355,7 +355,7 @@ const Tracks = () => {
                                     </p>
                                 </div>
                                 <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
-                                    <h4 className="font-semibold text-orange-800 mb-2 flex items-center gap-1">
+                                    <h4 className="font-semibold text-orange-800 pb-2 flex items-center gap-1">
                                         <FaExclamationTriangle />
                                         Review Needed
                                     </h4>
@@ -404,10 +404,10 @@ const Tracks = () => {
                                         {/* Track Header */}
                                         <div className="relative p-5 bg-gradient-to-br from-[var(--secondary-color)] to-[var(--mid-main-secondary)] overflow-hidden">
                                             {/* Decorative Elements */}
-                                            <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -mr-10 -mt-10" />
-                                            <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full -ml-8 -mb-8" />
+                                            <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -pr-10 -pt-10" />
+                                            <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full -ml-8 -pb-8" />
 
-                                            <div className="relative flex items-start justify-between gap-3 mb-3">
+                                            <div className="relative flex items-start justify-between gap-3 pb-3">
                                                 <div className="flex items-center gap-3 flex-1">
                                                     <div className={`text-3xl ${track.iconColor} bg-white/10 p-3 rounded-md backdrop-blur-sm`}>
                                                         <IconComponent />
@@ -417,7 +417,7 @@ const Tracks = () => {
                                                             {track.name}
                                                         </h3>
                                                         {track.recommended && (
-                                                            <span className="inline-block mt-1 px-2 py-1 bg-yellow-400 text-[var(--secondary-color)] text-xs font-bold rounded-full">
+                                                            <span className="inline-block pt-1 px-2 py-1 bg-yellow-400 text-[var(--secondary-color)] text-xs font-bold rounded-full">
                                                                 Recommended
                                                             </span>
                                                         )}
@@ -461,7 +461,7 @@ const Tracks = () => {
 
                                             {/* Progress */}
                                             <div>
-                                                <div className="flex items-center justify-between mb-2">
+                                                <div className="flex items-center justify-between pb-2">
                                                     <span className="text-xs font-semibold text-[var(--secondary-color)] font-['Sansation']">
                                                         Progress
                                                     </span>
@@ -480,13 +480,13 @@ const Tracks = () => {
                                             {/* Track Stats */}
                                             <div className="grid grid-cols-2 gap-3">
                                                 <div className="bg-gray-50 p-3 rounded-md text-center">
-                                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium mb-1">Attempted</p>
+                                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium pb-1">Attempted</p>
                                                     <p className="text-lg font-bold text-[var(--secondary-color)]">
                                                         {loading ? '...' : trackData.attempted}
                                                     </p>
                                                 </div>
                                                 <div className="bg-gray-50 p-3 rounded-md text-center">
-                                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium mb-1">Wrong</p>
+                                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium pb-1">Wrong</p>
                                                     <p className="text-lg font-bold text-red-600">
                                                         {loading ? '...' : trackData.wrong}
                                                     </p>

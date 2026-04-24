@@ -148,7 +148,7 @@ const HelpCenter = () => {
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-5 group-hover:opacity-10 transition-opacity duration-200`}></div>
                                     <div className="relative">
-                                        <div className={`w-11 h-11 rounded-md bg-gradient-to-br ${link.color} text-[var(--white)] flex items-center justify-center mb-3 shadow-md`}>
+                                        <div className={`w-11 h-11 rounded-md bg-gradient-to-br ${link.color} text-[var(--white)] flex items-center justify-center pb-3 shadow-md`}>
                                             {link.icon}
                                         </div>
                                         <h3 className="text-lg font-bold text-[var(--secondary-color)]">{link.title}</h3>

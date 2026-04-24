@@ -1043,7 +1043,7 @@ const Settings = () => {
                                     }}
                                 />
 
-                                <div className="flex items-center gap-2 mt-1">
+                                <div className="flex items-center gap-2 pt-1">
                                     <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${cookieConsent === 'accepted'
                                         ? 'bg-green-100 text-green-700'
                                         : 'bg-amber-100 text-amber-700'

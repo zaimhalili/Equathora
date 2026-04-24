@@ -44,13 +44,13 @@ const StreakPopup = ({ streak, onClose }) => {
                         }}
                         className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-[var(--white)] rounded-md shadow-2xl p-8 sm:p-12 max-w-md w-[90vw] border border-[var(--french-gray)]">
+                        <div className="bg-[var(--white)] rounded-md shadow-2xl p-8 sm:p-12 max-w-md w-[90vw] border border-[var(--mid-main-secondary)]">
                             {/* Fire icon with animation */}
                             <motion.div
                                 initial={{ scale: 0, rotate: -180 }}
                                 animate={{ scale: 1, rotate: 0 }}
                                 transition={{ delay: 0.2, type: "spring", damping: 15 }}
-                                className="flex justify-center mb-6"
+                                className="flex justify-center pb-6"
                             >
                                 <div className="relative">
                                     <svg className="w-24 h-24 sm:w-32 sm:h-32" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
@@ -86,10 +86,10 @@ const StreakPopup = ({ streak, onClose }) => {
                                 transition={{ delay: 0.3 }}
                                 className="text-center"
                             >
-                                <h2 className="text-3xl sm:text-4xl font-black text-[var(--secondary-color)] mb-3">
+                                <h2 className="text-3xl sm:text-4xl font-black text-[var(--secondary-color)] pb-3">
                                     {streak} Day Streak!
                                 </h2>
-                                <p className="text-base sm:text-lg text-[var(--secondary-color)]/70 mb-4">
+                                <p className="text-base sm:text-lg text-[var(--secondary-color)]/70 pb-4">
                                     You're on fire! Keep solving daily to maintain your streak.
                                 </p>
                                 <motion.div

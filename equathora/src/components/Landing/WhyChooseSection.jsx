@@ -50,7 +50,7 @@ const WhyChooseSection = () => {
             </div>
 
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto relative z-10">
+            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 px-auto relative z-10">
                 <div className="flex flex-col items-center text-center gap-8 sm:gap-10 md:gap-12">
 
                     {/* Content - Centered */}

@@ -373,7 +373,7 @@ const Profile = () => {
               <div className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col gap-6'>
                 {/* Profile Header Section */}
                 <div className='flex flex-col gap-5'>
-                  <div className='flex gap-4 items-center mb-4'>
+                  <div className='flex gap-4 items-center pb-4'>
                     <img
                       src={userData.avatar_url && userData.avatar_url.trim() !== ''
                         ? userData.avatar_url
@@ -421,11 +421,11 @@ const Profile = () => {
                   )}
                 </div>
 
-                <hr className='border-t-2 border-[var(--french-gray)]' />
+                <hr className='border-t-2 border-[var(--mid-main-secondary)]' />
 
                 {/* Community Stats Section */}
                 <div className='flex flex-col gap-5'>
-                  <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] mb-4'>Community Stats</h5>
+                  <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] pb-4'>Community Stats</h5>
                   <div className='flex flex-col gap-4'>
                     <div className='flex gap-3 items-center'>
                       <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
@@ -468,7 +468,7 @@ const Profile = () => {
                   />
                 </div>
 
-                <hr className='border-t-2 border-[var(--french-gray)]' />
+                <hr className='border-t-2 border-[var(--mid-main-secondary)]' />
 
                 {/* Topics Section */}
                 <div className='flex flex-col gap-5'>
@@ -499,7 +499,7 @@ const Profile = () => {
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
                 <h5 className='font-bold text-xl md:text-2xl text-[var(--secondary-color)] pb-4'>Statistics</h5>
-                <div className='flex flex-wrap items-center gap-2 mb-3'>
+                <div className='flex flex-wrap items-center gap-2 pb-3'>
                   {difficultyStats.map((difficulty, index) => (
                     <div
                       key={`difficulty-top-${difficulty.key}-${index}`}

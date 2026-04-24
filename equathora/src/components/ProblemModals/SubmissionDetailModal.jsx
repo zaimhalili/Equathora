@@ -82,7 +82,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                         )}
                         <div className='flex flex-col gap-3'>
                             {submission.steps && submission.steps.map((step, index) => (
-                                <div key={index} className='bg-[var(--white)] p-4 rounded-md border border-[var(--french-gray)]'>
+                                <div key={index} className='bg-[var(--white)] p-4 rounded-md border border-[var(--mid-main-secondary)]'>
                                     <div className='flex items-center gap-2 pb-2'>
                                         <span className='bg-[var(--accent-color)] text-[var(--white)] rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold'>
                                             {index + 1}

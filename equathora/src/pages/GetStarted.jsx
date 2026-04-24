@@ -254,7 +254,7 @@ const GetStarted = () => {
                                 onClick={() => handleSelection(option.id)}
                                 className={`group flex items-center gap-2.5 p-2.5 rounded-md border-2 transition-colors duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
                                     ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
-                                    : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                    : 'border-[var(--mid-main-secondary)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                     }`}
                             >
                                 <div className='text-lg flex-shrink-0'>{option.icon}</div>
@@ -285,7 +285,7 @@ const GetStarted = () => {
                                     onClick={() => handleSelection(option.id)}
                                     className={`flex flex-row items-center justify-center gap-2 px-3 py-2 rounded-md border-2 transition-colors duration-200 cursor-pointer ${isSelected
                                         ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
-                                        : 'border-[var(--french-gray)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                        : 'border-[var(--mid-main-secondary)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                         }`}
                                 >
                                     <div className='text-lg flex items-center'>{option.icon}</div>

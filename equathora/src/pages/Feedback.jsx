@@ -303,7 +303,7 @@ const Feedback = () => {
                         </div>
 
                         <div className="bg-green-50 border-l-4 border-green-500 rounded-md p-4">
-                            <h3 className="font-bold text-green-900 mb-2 font-[Sansation]">📧 Instant Delivery</h3>
+                            <h3 className="font-bold text-green-900 pb-2 font-[Sansation]">📧 Instant Delivery</h3>
                             <p className="text-sm text-green-800 font-[Sansation]">
                                 Your feedback will be sent directly to our team via email. We read every submission and typically respond within 24-48 hours.
                                 Thank you for helping us improve Equathora!

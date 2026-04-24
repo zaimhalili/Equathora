@@ -152,7 +152,7 @@ const CategoryLabel = ({ label, index, completedCount, totalCount }) => (
     transition={{ duration: 0.4, delay: index * 0.08 }}
   >
     <span className="h-px flex-1 max-w-16 md:max-w-24 bg-gradient-to-r from-transparent to-[var(--french-gray)]/60" />
-    <div className="flex items-center gap-2.5 bg-white/80 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm border border-[var(--french-gray)]/20">
+    <div className="flex items-center gap-2.5 bg-white/80 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm border border-[var(--mid-main-secondary)]/20">
       <span className="text-xs md:text-sm font-bold tracking-wide uppercase text-[var(--secondary-color)] font-[Sansation,sans-serif]">
         {label}
       </span>
@@ -541,7 +541,7 @@ const Discover = () => {
 
                 {/* Progress stats strip — dashboard-style cards */}
                 <motion.div
-                  className="flex flex-wrap justify-center gap-2 md:gap-3 mt-4 w-full"
+                  className="flex flex-wrap justify-center gap-2 md:gap-3 pt-4 w-full"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
@@ -570,12 +570,12 @@ const Discover = () => {
 
                 {/* Progress bar */}
                 <motion.div
-                  className="w-full max-w-md mt-2"
+                  className="w-full max-w-md pt-2"
                   initial={{ opacity: 0, scaleX: 0.6 }}
                   animate={{ opacity: 1, scaleX: 1 }}
                   transition={{ delay: 0.45, duration: 0.5 }}
                 >
-                  <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center justify-between pb-1.5">
                     <span className="text-xs text-[var(--mid-main-secondary)] font-medium">
                       Overall Progress
                     </span>
@@ -595,7 +595,7 @@ const Discover = () => {
 
                 {/* Scroll hint */}
                 <motion.div
-                  className="flex flex-col items-center gap-1 mt-2"
+                  className="flex flex-col items-center gap-1 pt-2"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.8 }}
@@ -616,7 +616,7 @@ const Discover = () => {
             {/* ── Path Section (relative container for SVG overlay) ── */}
             <div
               ref={containerRef}
-              className="relative mx-auto"
+              className="relative px-auto"
             >
               {/* SVG Connector Layer — absolute overlay */}
               <SVGConnectorLayer

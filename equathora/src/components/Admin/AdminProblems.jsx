@@ -453,7 +453,7 @@ const AdminProblems = () => {
                 <div className='flex flex-wrap items-start justify-between gap-3'>
                     <div>
                         <h1 className='text-2xl font-black md:text-3xl'>Problem Library</h1>
-                        <p className='mt-1 pb-2 text-sm md:text-base'>
+                        <p className='pt-1 pb-2 text-sm md:text-base'>
                             Searchable table and quality analytics from live backend data. All rows are fetched across every page.
                         </p>
                     </div>
@@ -489,7 +489,7 @@ const AdminProblems = () => {
                     </div>
                 </div>
 
-                <div className='mt-3 flex flex-wrap items-center gap-2'>
+                <div className='pt-3 flex flex-wrap items-center gap-2'>
                     <span
                         className='rounded-md px-2 py-1 text-xs font-semibold'
                         style={{ backgroundColor: palette.secondary, color: palette.main }}
@@ -541,24 +541,24 @@ const AdminProblems = () => {
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4'>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Filtered Problems</p>
-                    <p className='mt-1 text-2xl font-black'>{overview.total}</p>
+                    <p className='pt-1 text-2xl font-black'>{overview.total}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Completed</p>
-                    <p className='mt-1 text-2xl font-black'>{overview.published}</p>
+                    <p className='pt-1 text-2xl font-black'>{overview.published}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>In Progress</p>
-                    <p className='mt-1 text-2xl font-black'>{overview.review}</p>
+                    <p className='pt-1 text-2xl font-black'>{overview.review}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Avg Solve Rate</p>
-                    <p className='mt-1 text-2xl font-black'>{overview.avgSolveRate}%</p>
+                    <p className='pt-1 text-2xl font-black'>{overview.avgSolveRate}%</p>
                 </article>
             </div>
 
             <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                <h2 className='mb-3 text-lg font-bold'>Search and Filters</h2>
+                <h2 className='pb-3 text-lg font-bold'>Search and Filters</h2>
 
                 <div className='grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4'>
                     <input
@@ -613,7 +613,7 @@ const AdminProblems = () => {
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-5'>
                 <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Problem Flow (Created / Completed / In Progress)</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             {range === 'month' ? 'Last 30 days' : 'Last 7 days'}
@@ -635,7 +635,7 @@ const AdminProblems = () => {
                 </article>
 
                 <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Difficulty Mix (Filtered)</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Dynamic
@@ -675,7 +675,7 @@ const AdminProblems = () => {
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-3'>
                 <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Average Solve Rate Trend</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Quality signal
@@ -695,7 +695,7 @@ const AdminProblems = () => {
                 </article>
 
                 <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <h3 className='mb-3 text-sm font-semibold md:text-base'>Review Queue Snapshot</h3>
+                    <h3 className='pb-3 text-sm font-semibold md:text-base'>Review Queue Snapshot</h3>
                     <div className='space-y-2'>
                         <div className='rounded-lg border p-3' style={{ borderColor: palette.french }}>
                             <p className='text-xs font-semibold' style={{ color: palette.mid }}>In Progress Problems</p>
@@ -714,7 +714,7 @@ const AdminProblems = () => {
             </div>
 
             <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                <header className='mb-3 flex items-center justify-between gap-2'>
+                <header className='pb-3 flex items-center justify-between gap-2'>
                     <h2 className='text-lg font-bold'>All Problems Table</h2>
                     <div className='flex items-center gap-2'>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
@@ -732,10 +732,10 @@ const AdminProblems = () => {
                     </div>
                 </header>
 
-                <p className='mb-3 text-xs font-semibold' style={{ color: palette.mid }}>
+                <p className='pb-3 text-xs font-semibold' style={{ color: palette.mid }}>
                     Loaded {loadMeta.fetched.toLocaleString()} / {loadMeta.count.toLocaleString()} problems in {loadMeta.pagesFetched.toLocaleString()} request(s). No table pagination is applied.
                 </p>
-                <p className='mb-3 text-xs font-semibold' style={{ color: palette.mid }}>
+                <p className='pb-3 text-xs font-semibold' style={{ color: palette.mid }}>
                     Ordered by ID (ascending). Full details are preloaded first, then row click opens instantly with no extra fetch.
                 </p>
 
@@ -801,7 +801,7 @@ const AdminProblems = () => {
                             style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                             onClick={(event) => event.stopPropagation()}
                         >
-                            <header className='mb-3 flex flex-wrap items-center justify-between gap-2'>
+                            <header className='pb-3 flex flex-wrap items-center justify-between gap-2'>
                                 <div>
                                     <h3 className='text-base font-bold md:text-lg'>Problem Reader</h3>
                                     <p className='text-xs font-semibold' style={{ color: palette.mid }}>
@@ -865,30 +865,30 @@ const AdminProblems = () => {
                                         <p><span className='font-semibold'>Solve Rate:</span> {Number(selectedProblemDetails.solveRate ?? selectedProblem.solveRate).toFixed(1)}%</p>
                                     </div>
 
-                                    <div className='mt-3'>
+                                    <div className='pt-3'>
                                         <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Description</p>
-                                        <p className='mt-1 whitespace-pre-wrap text-sm'>
+                                        <p className='pt-1 whitespace-pre-wrap text-sm'>
                                             {selectedProblemDetails.description || selectedProblem.description || 'No description available.'}
                                         </p>
                                     </div>
 
-                                    <div className='mt-3'>
+                                    <div className='pt-3'>
                                         <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Solution</p>
-                                        <p className='mt-1 whitespace-pre-wrap text-sm'>
+                                        <p className='pt-1 whitespace-pre-wrap text-sm'>
                                             {selectedProblemDetails.solution || 'No solution available.'}
                                         </p>
                                     </div>
 
-                                    <div className='mt-3 grid grid-cols-1 gap-3 md:grid-cols-2'>
+                                    <div className='pt-3 grid grid-cols-1 gap-3 md:grid-cols-2'>
                                         <div>
                                             <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Answer</p>
-                                            <p className='mt-1 whitespace-pre-wrap text-sm'>
+                                            <p className='pt-1 whitespace-pre-wrap text-sm'>
                                                 {selectedProblemDetails.answer || 'No answer available.'}
                                             </p>
                                         </div>
                                         <div>
                                             <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Accepted Answers</p>
-                                            <ul className='mt-1 list-disc pl-5 text-sm'>
+                                            <ul className='pt-1 list-disc pl-5 text-sm'>
                                                 {(Array.isArray(selectedProblemDetails.acceptedAnswers) && selectedProblemDetails.acceptedAnswers.length > 0
                                                     ? selectedProblemDetails.acceptedAnswers
                                                     : ['No accepted answers configured.'])
@@ -897,9 +897,9 @@ const AdminProblems = () => {
                                         </div>
                                     </div>
 
-                                    <div className='mt-3'>
+                                    <div className='pt-3'>
                                         <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Hints</p>
-                                        <ul className='mt-1 list-disc pl-5 text-sm'>
+                                        <ul className='pt-1 list-disc pl-5 text-sm'>
                                             {(Array.isArray(selectedProblemDetails.hints) && selectedProblemDetails.hints.length > 0
                                                 ? selectedProblemDetails.hints
                                                 : ['No hints available.'])
@@ -913,7 +913,7 @@ const AdminProblems = () => {
                 )}
 
                 {orderedFilteredProblems.length === 0 && (
-                    <p className='mt-3 text-sm font-semibold' style={{ color: palette.accentDark }}>
+                    <p className='pt-3 text-sm font-semibold' style={{ color: palette.accentDark }}>
                         No problems matched current filters.
                     </p>
                 )}

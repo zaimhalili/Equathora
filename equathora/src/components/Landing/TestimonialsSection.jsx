@@ -69,7 +69,7 @@ const TestimonialsSection = () => {
     return (
         <>
             <section className='flex justify-center text-[var(--secondary-color)] font-[Sansation,Arial]'>
-                <div className='max-w-[1400px] mx-auto w-full bg-[var(--[var(--white)])] relative overflow-hidden flex flex-col lg:flex-row justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 gap-3 sm:gap-5 md:gap-8 lg:gap-10'>
+                <div className='max-w-[1400px] px-auto w-full bg-[var(--[var(--white)])] relative overflow-hidden flex flex-col lg:flex-row justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 gap-3 sm:gap-5 md:gap-8 lg:gap-10'>
 
                     {/* Left Side - Header & Navigation Arrows */}
                     <div className='flex flex-col w-full lg:w-1/2 pr-0 lg:pr-36'>
@@ -80,14 +80,14 @@ const TestimonialsSection = () => {
                         <div className='pt-3 sm:pt-5 md:pt-6 flex gap-3'>
                             <button type="button"
                                 onClick={next}
-                                className='rounded-full border border-[var(--french-gray)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
+                                className='rounded-full border border-[var(--mid-main-secondary)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
                             transition-opacity duration-150 text-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)] hover:text-[var(--main-color)] hover:border-[var(--main-color)] active:scale-95'>
                                 <FaArrowLeft className='md:w-6 md:h-6' />
                             </button>
                             <button
                                 type="button"
                                 onClick={prev}
-                                className='rounded-full border border-[var(--french-gray)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
+                                className='rounded-full border border-[var(--mid-main-secondary)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
                             transition-opacity duration-150 text-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)] hover:text-[var(--main-color)] hover:border-[var(--main-color)] active:scale-95'>
                                 <FaArrowRight className='md:w-6 md:h-6' />
                             </button>

@@ -31,13 +31,13 @@ const LatestArticlesSection = () => {
                             </p>
                         </div>
                         <Link
-                                to={blogPosts.length > 0 ? `/blog/${blogPosts[0].slug}` : "/blogs"}
-                                className="group relative text-sm sm:text-base !text-[var(--secondary-color)] font-medium transition-all flex items-center gap-2 min-w-[140px]"
-                            >
-                                <FaArrowRight className="text-xs sm:text-sm opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
-                                <span className="transition-transform duration-300">View all articles</span>
-                                <FaArrowRight className="text-xs sm:text-sm opacity-100 group-hover:translate-x-4 group-hover:opacity-0 transition-all duration-300" />
-                            </Link>
+                            to={blogPosts.length > 0 ? `/blog/${blogPosts[0].slug}` : "/blogs"}
+                            className="group relative text-sm sm:text-base !text-[var(--secondary-color)] font-medium transition-all flex items-center gap-2 min-w-[140px]"
+                        >
+                            <FaArrowRight className="text-xs sm:text-sm opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
+                            <span className="transition-transform duration-300">View all articles</span>
+                            <FaArrowRight className="text-xs sm:text-sm opacity-100 group-hover:translate-x-4 group-hover:opacity-0 transition-all duration-300" />
+                        </Link>
                     </motion.div>
 
                     {/* Articles grid */}
@@ -52,7 +52,7 @@ const LatestArticlesSection = () => {
                             >
                                 <Link
                                     to={`/blog/${post.slug}`}
-                                    className="group flex flex-col bg-[var(--white)] rounded-md border border-[var(--french-gray)] overflow-hidden transition-all shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] dark:shadow-black/20 dark:hover:shadow-black/70 duration-200 ease-out hover:scale-105"
+                                    className="group flex flex-col bg-[var(--white)] rounded-md border border-[var(--mid-main-secondary)] overflow-hidden transition-all shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] dark:shadow-black/20 dark:hover:shadow-black/70 duration-200 ease-out hover:scale-105"
                                 >
                                     {/* Image */}
                                     <div className="relative overflow-hidden h-44 sm:h-48">

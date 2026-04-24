@@ -63,7 +63,7 @@ const AboutPlatformStrengthsSection = () => {
                                 <motion.div
                                     whileHover={{ y: -5, boxShadow: '0 20px 30px rgba(141,153,174,0.4)' }}
                                     transition={{ type: 'spring', stiffness: 300 }}
-                                    className="relative flex flex-col bg-[var(--[var(--white)])] rounded-md border border-[var(--french-gray)] shadow-lg hover:shadow-2xl duration-300 ease-out p-6 w-full min-h-[160px]"
+                                    className="relative flex flex-col bg-[var(--[var(--white)])] rounded-md border border-[var(--mid-main-secondary)] shadow-lg hover:shadow-2xl duration-300 ease-out p-6 w-full min-h-[160px]"
                                 >
                                     <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-2">{feature.title}</h3>
                                     <p className="text-sm text-[var(--mid-main-secondary)] leading-relaxed">

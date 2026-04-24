@@ -209,7 +209,7 @@ const AdminAnalytics = () => {
                 <div className='flex flex-wrap items-center justify-between gap-3'>
                     <div>
                         <h1 className='text-2xl font-black md:text-3xl'>Admin Analytics</h1>
-                        <p className='mt-1 text-sm md:text-base' style={{ color: palette.secondary }}>
+                        <p className='pt-1 text-sm md:text-base' style={{ color: palette.secondary }}>
                             Real-time product and engagement metrics from backend data.
                         </p>
                     </div>
@@ -245,7 +245,7 @@ const AdminAnalytics = () => {
                     </div>
                 </div>
 
-                <div className='mt-3 flex flex-wrap items-center gap-2'>
+                <div className='pt-3 flex flex-wrap items-center gap-2'>
                     <span
                         className='rounded-md px-2 py-1 text-xs font-semibold'
                         style={{ backgroundColor: palette.secondary, color: palette.main }}
@@ -292,23 +292,23 @@ const AdminAnalytics = () => {
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5'>
                 <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Avg DAU</p>
-                    <p className='mt-1 text-2xl font-black'>{formatNumber(overviewStats.avgDau)}</p>
+                    <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.avgDau)}</p>
                 </article>
                 <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Signups</p>
-                    <p className='mt-1 text-2xl font-black'>{formatNumber(overviewStats.totalSignups)}</p>
+                    <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.totalSignups)}</p>
                 </article>
                 <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Solved</p>
-                    <p className='mt-1 text-2xl font-black'>{formatNumber(overviewStats.totalSolved)}</p>
+                    <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.totalSolved)}</p>
                 </article>
                 <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Issue Signals</p>
-                    <p className='mt-1 text-2xl font-black'>{formatNumber(overviewStats.totalReports)}</p>
+                    <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.totalReports)}</p>
                 </article>
                 <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Issues / 1k Solves</p>
-                    <p className='mt-1 text-2xl font-black'>{formatNumber(overviewStats.reportsPerThousand)}</p>
+                    <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.reportsPerThousand)}</p>
                 </article>
             </div>
 
@@ -325,8 +325,8 @@ const AdminAnalytics = () => {
                                 <h2 className='text-sm font-semibold'>{card.title}</h2>
                                 <Icon className='text-lg' style={{ color: card.accent }} />
                             </div>
-                            <p className='mt-2 text-2xl font-black'>{card.value}</p>
-                            <p className='mt-1 text-xs' style={{ color: palette.mid }}>{card.hint}</p>
+                            <p className='pt-2 text-2xl font-black'>{card.value}</p>
+                            <p className='pt-1 text-xs' style={{ color: palette.mid }}>{card.hint}</p>
                         </article>
                     );
                 })}
@@ -334,7 +334,7 @@ const AdminAnalytics = () => {
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-5'>
                 <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Active Users Trend</h3>
                         <span
                             className='rounded-md px-2 py-1 text-xs'
@@ -368,7 +368,7 @@ const AdminAnalytics = () => {
                 </article>
 
                 <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Issue Type Distribution</h3>
                         <span
                             className='rounded-md px-2 py-1 text-xs'
@@ -411,7 +411,7 @@ const AdminAnalytics = () => {
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-6'>
                 <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Signups, Solves & Issue Signals</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             {range === 'month' ? 'Monthly trend' : 'Weekly trend'}
@@ -433,7 +433,7 @@ const AdminAnalytics = () => {
                 </article>
 
                 <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Retention Curve</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Cohort
@@ -459,7 +459,7 @@ const AdminAnalytics = () => {
                 </article>
 
                 <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3'>
+                    <header className='pb-3'>
                         <h3 className='text-sm font-semibold md:text-base'>System Health</h3>
                     </header>
                     <div className='flex flex-col gap-3'>
@@ -476,7 +476,7 @@ const AdminAnalytics = () => {
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-2'>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Moderation Alerts</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Generated from live signals
@@ -497,7 +497,7 @@ const AdminAnalytics = () => {
                 </article>
 
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Top Topics Snapshot</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Live topic ranking

@@ -54,7 +54,7 @@
 
 .problem-node--locked {
     border-style: dashed;
-    border-color: var(--french-gray);
+    border-color: var(--mid-main-secondary);
     color: color-mix(in srgb, var(--secondary-color) 66%, transparent);
     background: color-mix(in srgb, var(--french-gray) 70%, var(--main-color) 30%);
 }

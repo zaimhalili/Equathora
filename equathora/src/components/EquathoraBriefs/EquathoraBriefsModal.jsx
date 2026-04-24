@@ -111,7 +111,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative bg-[var(--white)] rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-[var(--french-gray)]"
+                        className="relative bg-[var(--white)] rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-[var(--mid-main-secondary)]"
                     >
                         {isSubscribed ? (
                             <div className={` `}>
@@ -169,8 +169,8 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 value={formData.full_name}
                                                 onChange={handleInputChange}
                                                 className={`text-sm text-[var(--secondary-color)] w-full px-5 py-3.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]/20 focus:border-[var(--accent-color)] transition-all ${errors.full_name
-                                                        ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/5'
-                                                        : 'border-[var(--french-gray)] bg-[var(--white)] placeholder:text-[var(--mid-main-secondary)]'
+                                                    ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/5'
+                                                    : 'border-[var(--mid-main-secondary)] bg-[var(--white)] placeholder:text-[var(--mid-main-secondary)]'
                                                     }`}
                                                 placeholder="Enter your full name *"
                                                 aria-invalid={!!errors.full_name}
@@ -188,8 +188,8 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 value={formData.email}
                                                 onChange={handleInputChange}
                                                 className={`text-sm text-[var(--secondary-color)] w-full px-5 py-3.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]/20 focus:border-[var(--accent-color)] transition-all ${errors.email
-                                                        ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/5'
-                                                        : 'border-[var(--french-gray)] bg-[var(--white)] placeholder:text-[var(--mid-main-secondary)]'
+                                                    ? 'border-[var(--accent-color)] bg-[var(--accent-color)]/5'
+                                                    : 'border-[var(--mid-main-secondary)] bg-[var(--white)] placeholder:text-[var(--mid-main-secondary)]'
                                                     }`}
                                                 placeholder="Enter your email address *"
                                                 aria-invalid={!!errors.email}
@@ -209,7 +209,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 type="button"
                                                 onClick={onClose}
                                                 disabled={isLoading}
-                                                className="flex-1 px-6 py-3 border border-[var(--french-gray)] text-[var(--secondary-color)] font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+                                                className="flex-1 px-6 py-3 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
                                             >
                                                 Cancel
                                             </button>

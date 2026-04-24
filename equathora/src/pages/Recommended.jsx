@@ -89,7 +89,7 @@ const Recommended = () => {
             <>
                 <Navbar />
                 <main className="recommended-shell w-full font-[Sansation] text-[var(--secondary-color)]">
-                    <section className="mx-auto flex w-full max-w-[1500px] flex-col items-start gap-4 px-[4vw] pb-12 pt-8 xl:px-[6vw]">
+                    <section className="px-auto flex w-full max-w-[1500px] flex-col items-start gap-4 px-[4vw] pb-12 pt-8 xl:px-[6vw]">
                         <h1 className="text-3xl font-extrabold">Recommended Study Plan</h1>
                         <p className="recommended-muted text-sm">
                             {error || 'The recommendation plan is unavailable right now.'}
@@ -114,7 +114,7 @@ const Recommended = () => {
         <>
             <Navbar />
             <main className="recommended-shell w-full font-[Sansation] text-[var(--secondary-color)]">
-                <section className="mx-auto flex w-full max-w-[1500px] flex-col gap-5 px-[4vw] pb-10 pt-5 xl:px-[6vw]">
+                <section className="px-auto flex w-full max-w-[1500px] flex-col gap-5 px-[4vw] pb-10 pt-5 xl:px-[6vw]">
                     <header className="recommended-card flex flex-col gap-4 p-5 md:p-6">
                         <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                             <div className="flex flex-col gap-1">
@@ -360,7 +360,7 @@ const Recommended = () => {
                                 <p className="pb-2 text-sm font-bold">Average solve time by topic</p>
                                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                                     {plan.topicInsights.slice(0, 6).map((topic) => (
-                                        <div key={`topic-${topic.topic}`} className="rounded-md border border-[var(--french-gray)] px-2 py-2">
+                                        <div key={`topic-${topic.topic}`} className="rounded-md border border-[var(--mid-main-secondary)] px-2 py-2">
                                             <div className="flex items-center justify-between">
                                                 <p className="text-xs font-semibold">{topic.topic}</p>
                                                 <p className="text-xs font-bold">{topic.accuracy}%</p>
@@ -383,7 +383,7 @@ const Recommended = () => {
                                         return (
                                             <div
                                                 key={`week-${label}`}
-                                                className="flex flex-col items-center gap-1 rounded-md border border-[var(--french-gray)] px-1 py-2"
+                                                className="flex flex-col items-center gap-1 rounded-md border border-[var(--mid-main-secondary)] px-1 py-2"
                                             >
                                                 <p className="text-[10px] font-semibold">{label}</p>
                                                 <span
@@ -489,7 +489,7 @@ const Recommended = () => {
 
                             {plan.recoveryMode.enabled ? (
                                 <div className="recommended-card-soft flex items-start gap-2 p-3 text-[var(--accent-color)]">
-                                    <FaExclamationTriangle className="mt-0.5" />
+                                    <FaExclamationTriangle className="pt-0.5" />
                                     <div>
                                         <p className="text-sm font-bold">Recovery mode is active</p>
                                         <p className="text-xs font-semibold">{plan.recoveryMode.reason}</p>
@@ -500,7 +500,7 @@ const Recommended = () => {
                                 </div>
                             ) : (
                                 <div className="recommended-card-soft flex items-start gap-2 p-3">
-                                    <FaFire className="mt-0.5 text-[var(--accent-color)]" />
+                                    <FaFire className="pt-0.5 text-[var(--accent-color)]" />
                                     <div>
                                         <p className="text-sm font-bold">You are in growth mode</p>
                                         <p className="recommended-muted text-xs">
@@ -546,7 +546,7 @@ const Recommended = () => {
                                 ) : (
                                     <div className="flex max-h-36 flex-col gap-2 overflow-y-auto pr-1">
                                         {reflectionNotes.slice(0, 4).map((note) => (
-                                            <div key={note.id} className="rounded-md border border-[var(--french-gray)] px-2 py-2">
+                                            <div key={note.id} className="rounded-md border border-[var(--mid-main-secondary)] px-2 py-2">
                                                 <p className="line-clamp-2 text-xs">{note.note}</p>
                                                 <p className="recommended-muted pt-1 text-[10px]">
                                                     {new Date(note.createdAt).toLocaleString()}

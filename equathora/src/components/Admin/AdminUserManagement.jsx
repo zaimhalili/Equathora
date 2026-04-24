@@ -274,7 +274,7 @@ const AdminUserManagement = () => {
                 <div className='flex flex-wrap items-start justify-between gap-3'>
                     <div>
                         <h1 className='text-2xl font-black md:text-3xl'>User Management</h1>
-                        <p className='mt-1 text-sm md:text-base'>
+                        <p className='pt-1 text-sm md:text-base'>
                             Live user data from Supabase with admin actions for role/status/verification and session reset.
                         </p>
                     </div>
@@ -310,7 +310,7 @@ const AdminUserManagement = () => {
                     </div>
                 </div>
 
-                <div className='mt-3 flex flex-wrap items-center gap-2'>
+                <div className='pt-3 flex flex-wrap items-center gap-2'>
                     <span
                         className='rounded-md px-2 py-1 text-xs font-semibold'
                         style={{ backgroundColor: palette.secondary, color: palette.main }}
@@ -357,28 +357,28 @@ const AdminUserManagement = () => {
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5'>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Filtered Users</p>
-                    <p className='mt-1 text-2xl font-black'>{overview.total}</p>
+                    <p className='pt-1 text-2xl font-black'>{overview.total}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Active Users</p>
-                    <p className='mt-1 text-2xl font-black'>{overview.active}</p>
+                    <p className='pt-1 text-2xl font-black'>{overview.active}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Suspended Users</p>
-                    <p className='mt-1 text-2xl font-black'>{overview.suspended}</p>
+                    <p className='pt-1 text-2xl font-black'>{overview.suspended}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Pending Mentor Verif.</p>
-                    <p className='mt-1 text-2xl font-black'>{overview.pendingMentor}</p>
+                    <p className='pt-1 text-2xl font-black'>{overview.pendingMentor}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Total Attempts</p>
-                    <p className='mt-1 text-2xl font-black'>{overview.totalSessions}</p>
+                    <p className='pt-1 text-2xl font-black'>{overview.totalSessions}</p>
                 </article>
             </div>
 
             <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                <h2 className='mb-3 text-lg font-bold'>Search and Filters</h2>
+                <h2 className='pb-3 text-lg font-bold'>Search and Filters</h2>
 
                 <div className='grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4'>
                     <input
@@ -433,7 +433,7 @@ const AdminUserManagement = () => {
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-5'>
                 <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>User Activity and Account Events</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             {range === 'month' ? 'Last 30 days' : 'Last 7 days'}
@@ -455,7 +455,7 @@ const AdminUserManagement = () => {
                 </article>
 
                 <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Role Distribution</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Filter-aware
@@ -495,7 +495,7 @@ const AdminUserManagement = () => {
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-3'>
                 <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between'>
+                    <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Daily Active Users Trend</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Engagement
@@ -515,7 +515,7 @@ const AdminUserManagement = () => {
                 </article>
 
                 <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <h3 className='mb-3 text-sm font-semibold md:text-base'>Action Queue Snapshot</h3>
+                    <h3 className='pb-3 text-sm font-semibold md:text-base'>Action Queue Snapshot</h3>
                     <div className='space-y-2'>
                         <div className='rounded-lg border p-3' style={{ borderColor: palette.french }}>
                             <p className='text-xs font-semibold' style={{ color: palette.mid }}>Mentor Verifications Pending</p>
@@ -535,7 +535,7 @@ const AdminUserManagement = () => {
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-3'>
                 <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <header className='mb-3 flex items-center justify-between gap-2'>
+                    <header className='pb-3 flex items-center justify-between gap-2'>
                         <h2 className='text-lg font-bold'>Users Table</h2>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             {filteredUsers.length} users
@@ -591,21 +591,21 @@ const AdminUserManagement = () => {
                     </div>
 
                     {filteredUsers.length === 0 && (
-                        <p className='mt-3 text-sm font-semibold' style={{ color: palette.accentDark }}>
+                        <p className='pt-3 text-sm font-semibold' style={{ color: palette.accentDark }}>
                             No users matched current filters.
                         </p>
                     )}
                 </article>
 
                 <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <h3 className='mb-3 text-sm font-semibold md:text-base'>Selected Profile</h3>
+                    <h3 className='pb-3 text-sm font-semibold md:text-base'>Selected Profile</h3>
 
                     {selectedUser ? (
                         <div className='space-y-3'>
                             <div className='rounded-lg border p-3' style={{ borderColor: palette.french }}>
                                 <p className='font-semibold'>{selectedUser.name}</p>
                                 <p className='text-xs' style={{ color: palette.mid }}>{selectedUser.email}</p>
-                                <p className='mt-2 text-xs'>Joined: {selectedUser.joinedAt}</p>
+                                <p className='pt-2 text-xs'>Joined: {selectedUser.joinedAt}</p>
                                 <p className='text-xs'>Total Attempts: {selectedUser.sessions}</p>
                                 <p className='text-xs'>Reports: {selectedUser.reports}</p>
                             </div>

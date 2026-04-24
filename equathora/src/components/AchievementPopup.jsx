@@ -70,7 +70,7 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                         transition={{ type: 'spring', damping: 20, stiffness: 300 }}
                         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-[var(--white)] rounded-md shadow-2xl max-w-sm w-[90vw] overflow-hidden border-[var(--french-gray)] border">
+                        <div className="bg-[var(--white)] rounded-md shadow-2xl max-w-sm w-[90vw] overflow-hidden border-[var(--mid-main-secondary)] border">
                             {/* Header bar */}
                             <div className={`flex items-center justify-center gap-2 bg-gradient-to-r ${rarity.bg} px-4 py-3`}>
                                 <svg className="w-5 h-5 text-[var(--white)]" viewBox="0 0 576 512" fill="currentColor">

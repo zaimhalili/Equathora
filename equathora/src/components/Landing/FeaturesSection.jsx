@@ -114,9 +114,9 @@ const FeaturesSection = () => {
                             {features.map((feature, index) => (
                                 <motion.div
                                     key={feature.title}
-                                    className={`relative flex flex-col items-center text-center w-full max-w-lg ${index === 0 ? 'mx-auto' :
-                                            index === 1 ? 'ml-auto mr-0 lg:mr-12' :
-                                                'mx-auto'
+                                    className={`relative flex flex-col items-center text-center w-full max-w-lg ${index === 0 ? 'px-auto' :
+                                        index === 1 ? 'ml-auto pr-0 lg:pr-12' :
+                                            'px-auto'
                                         }`}
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}

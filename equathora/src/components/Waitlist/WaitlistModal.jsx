@@ -80,7 +80,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                         <EquathoraBriefsSuccessModal onClose={onClose} />
                     ) : (
                         <>
-                            <div className="sticky top-0 bg-[var(--white)] border-b border-[var(--french-gray)] px-6 py-4 flex items-center justify-between z-10">
+                            <div className="sticky top-0 bg-[var(--white)] border-b border-[var(--mid-main-secondary)] px-6 py-4 flex items-center justify-between z-10">
                                 <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Sansation]">Join Equathora Briefs</h2>
                                 <button
                                     type="button"
@@ -119,7 +119,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                             value={formData.full_name}
                                             onChange={handleInputChange}
                                             required
-                                            className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--french-gray)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                                            className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
                                             placeholder="Enter your full name"
                                         />
                                     </div>
@@ -135,7 +135,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                             value={formData.email}
                                             onChange={handleInputChange}
                                             required
-                                            className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--french-gray)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                                            className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
                                             placeholder="you@example.com"
                                         />
                                     </div>
@@ -146,7 +146,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                         type="button"
                                         onClick={onClose}
                                         disabled={isLoading}
-                                        className="flex-1 px-6 py-3 border border-[var(--french-gray)] text-[var(--secondary-color)] font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+                                        className="flex-1 px-6 py-3 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
                                     >
                                         Cancel
                                     </button>

@@ -203,7 +203,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     className="relative bg-[var(--white)] rounded-md shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                 >
                     {/* Header */}
-                    <div className="sticky top-0 bg-[var(--white)] border-b border-[var(--french-gray)] px-6 py-4 flex items-center justify-between z-10">
+                    <div className="sticky top-0 bg-[var(--white)] border-b border-[var(--mid-main-secondary)] px-6 py-4 flex items-center justify-between z-10">
                         <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Sansation]">Edit Profile</h2>
                         <button
                             onClick={onClose}
@@ -228,7 +228,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                 <img
                                     src={avatarPreview || '/src/assets/images/guestAvatar.png'}
                                     alt="Profile"
-                                    className="w-32 h-32 rounded-full object-cover border-4 border-[var(--french-gray)]"
+                                    className="w-32 h-32 rounded-full object-cover border-4 border-[var(--mid-main-secondary)]"
                                 />
                                 <button
                                     type="button"
@@ -262,7 +262,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     value={formData.full_name}
                                     onChange={handleInputChange}
                                     required
-                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--french-gray)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
                                     placeholder="Enter your full name"
                                 />
                             </div>
@@ -280,7 +280,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     onChange={handleInputChange}
                                     required
                                     pattern="^[a-zA-Z0-9_]{3,20}$"
-                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--french-gray)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
                                     placeholder="username_123"
                                 />
                                 <p className="text-xs text-[var(--mid-main-secondary)] pt-2">3-20 characters, letters, numbers, and underscores only</p>
@@ -297,7 +297,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     onChange={handleInputChange}
                                     rows={4}
                                     maxLength={200}
-                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--french-gray)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all resize-none"
+                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all resize-none"
                                     placeholder="Tell us about yourself... (max 200 characters)"
                                 />
                                 <p className="text-xs text-[var(--mid-main-secondary)] pt-1 text-right">{formData.bio.length}/200</p>
@@ -314,7 +314,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     name="location"
                                     value={formData.location}
                                     onChange={handleInputChange}
-                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--french-gray)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
                                     placeholder="City, Country"
                                 />
                             </div>
@@ -328,7 +328,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                 type="button"
                                 onClick={onClose}
                                 disabled={isLoading}
-                                className="flex-1 px-6 py-3 border border-[var(--french-gray)] text-[var(--secondary-color)] font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+                                className="flex-1 px-6 py-3 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
                             >
                                 Cancel
                             </button>

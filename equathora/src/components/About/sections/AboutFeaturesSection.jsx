@@ -41,7 +41,7 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="up" delay={0.1} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ y: -8 }}
-                            className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--french-gray)] hover:border-[var(--accent-color)]/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                            className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                         >
                             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--accent-color)]/10 to-transparent rounded-bl-full"></div>
                             <motion.div
@@ -80,7 +80,7 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="left" delay={0.2} className="w-full md:w-[calc(33.333%-0.67rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ scale: 1.02 }}
-                            className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--french-gray)] hover:border-[var(--accent-color)]/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
+                            className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
                         >
                             <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full group-hover:scale-125 transition-transform duration-500"></div>
                             <motion.div
@@ -101,7 +101,7 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="right" delay={0.3} className="flex-1">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
-                                className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--french-gray)] hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 group-hover:from-green-500/10 group-hover:to-emerald-500/10 transition-all duration-300"></div>
                                 <motion.div
@@ -161,7 +161,7 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="up" delay={0.4} className="flex-1">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
-                                className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--french-gray)] hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-orange-500/10 to-transparent rounded-tl-full"></div>
                                 <motion.div
@@ -180,7 +180,7 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="right" delay={0.45} className="flex-1">
                             <motion.div
                                 whileHover={{ y: -8 }}
-                                className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--french-gray)] hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 group-hover:from-blue-500/10 group-hover:to-cyan-500/10 transition-all duration-300"></div>
                                 <motion.div

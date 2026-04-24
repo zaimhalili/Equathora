@@ -310,7 +310,7 @@ math-field:hover {
 
 .ml-btn.addStep {
     color: var(--secondary-color);
-    border-color: var(--french-gray);
+    border-color: var(--mid-main-secondary);
     font-family: 'Sansation', sans-serif;
     font-weight: 500;
     background-color: var(--white);

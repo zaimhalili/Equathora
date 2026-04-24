@@ -98,7 +98,7 @@ const YourTrack = () => {
     const progressLabel = `You have solved ${solved} of ${total} problems`;
 
     return (
-        <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] mt-8 gap-8">
+        <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] pt-8 gap-8">
             <div className="flex flex-col w-full gap-3 p-0">
                 <div className="flex items-center justify-between p-0">
                     <h3 className="font-[Sansation] text-[var(--secondary-color)] text-2xl font-bold">
@@ -147,7 +147,7 @@ const YourTrack = () => {
                 </div>
 
                 {/* Mini Stats Grid */}
-                <div className="grid grid-cols-3 gap-3 mt-2 p-0 md:max-w-1/2 justify-items-center lg:justify-items-start theme-lock">
+                <div className="grid grid-cols-3 gap-3 pt-2 p-0 md:max-w-1/2 justify-items-center lg:justify-items-start theme-lock">
                     <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full">
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Current Streak</div>
                         <div className="text-2xl font-bold text-[var(--accent-color)] flex items-center gap-1 justify-center lg:justify-start">

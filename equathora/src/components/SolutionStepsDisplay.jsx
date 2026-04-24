@@ -137,7 +137,7 @@ const SolutionStepsDisplay = ({ solution }) => {
                                 {/* Math content box — rendered by MathJax */}
                                 {math && (
                                     <div
-                                        className="rounded-md border-2 border-[var(--french-gray)] bg-white px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-[var(--secondary-color)] overflow-x-auto"
+                                        className="rounded-md border-2 border-[var(--mid-main-secondary)] bg-white px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-[var(--secondary-color)] overflow-x-auto"
                                         dangerouslySetInnerHTML={{ __html: math }}
                                     />
                                 )}

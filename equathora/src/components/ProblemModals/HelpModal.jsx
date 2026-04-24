@@ -100,7 +100,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                         </ul>
                     </div>
 
-                    <div className='bg-[var(--main-color)] border-2 border-[var(--french-gray)] p-4 rounded-md flex flex-col'>
+                    <div className='bg-[var(--main-color)] border-2 border-[var(--mid-main-secondary)] p-4 rounded-md flex flex-col'>
                         <h3 className='font-[Sansation] font-bold text-lg text-[var(--secondary-color)] pb-2 flex items-center gap-2'>
                             <FaLightbulb className='text-[var(--accent-color)]' /> Pro Tip</h3>
                         <p className='font-[Sansation] text-sm text-[var(--secondary-color)] leading-relaxed'>Try to solve the problem on your own before viewing hints or the solution. Use the sketch pad to visualize the problem. Learning mathematics happens best when you work through the challenge!</p>

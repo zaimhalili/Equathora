@@ -93,7 +93,7 @@ const AdminEmailBriefs = () => {
                 <div className='flex flex-wrap items-start justify-between gap-3'>
                     <div>
                         <h1 className='text-2xl font-black md:text-3xl'>Email Briefs Waitlist</h1>
-                        <p className='mt-1 text-sm md:text-base'>View all waitlist subscribers, copy BCC-ready emails, and export list data.</p>
+                        <p className='pt-1 text-sm md:text-base'>View all waitlist subscribers, copy BCC-ready emails, and export list data.</p>
                     </div>
 
                     <div className='flex items-center gap-2'>
@@ -124,15 +124,15 @@ const AdminEmailBriefs = () => {
             <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
                 <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Filtered Subscribers</p>
-                    <p className='mt-2 text-3xl font-black'>{filteredRows.length.toLocaleString()}</p>
+                    <p className='pt-2 text-3xl font-black'>{filteredRows.length.toLocaleString()}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Unique Emails</p>
-                    <p className='mt-2 text-3xl font-black'>{uniqueEmails.length.toLocaleString()}</p>
+                    <p className='pt-2 text-3xl font-black'>{uniqueEmails.length.toLocaleString()}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Ready For BCC</p>
-                    <p className='mt-2 text-3xl font-black'>{uniqueEmails.length ? 'Yes' : 'No'}</p>
+                    <p className='pt-2 text-3xl font-black'>{uniqueEmails.length ? 'Yes' : 'No'}</p>
                 </article>
             </div>
 
@@ -162,13 +162,13 @@ const AdminEmailBriefs = () => {
                 </div>
 
                 {!!copied && (
-                    <p className='mt-3 text-sm font-semibold' style={{ color: copied.startsWith('Copied') ? 'var(--secondary-color)' : 'var(--accent-color)' }}>
+                    <p className='pt-3 text-sm font-semibold' style={{ color: copied.startsWith('Copied') ? 'var(--secondary-color)' : 'var(--accent-color)' }}>
                         {copied}
                     </p>
                 )}
 
-                <div className='mt-3'>
-                    <p className='mb-1 text-xs font-semibold uppercase tracking-wide text-[var(--mid-main-secondary)]'>BCC preview</p>
+                <div className='pt-3'>
+                    <p className='pb-1 text-xs font-semibold uppercase tracking-wide text-[var(--mid-main-secondary)]'>BCC preview</p>
                     <textarea
                         readOnly
                         value={bccString}
@@ -189,7 +189,7 @@ const AdminEmailBriefs = () => {
                 ) : error ? (
                     <div className='px-4 py-6'>
                         <p className='text-sm font-semibold' style={{ color: 'var(--accent-color)' }}>{error}</p>
-                        <p className='mt-1 text-xs text-[var(--mid-main-secondary)]'>Ensure RLS policy allows admin reads for this table.</p>
+                        <p className='pt-1 text-xs text-[var(--mid-main-secondary)]'>Ensure RLS policy allows admin reads for this table.</p>
                     </div>
                 ) : !filteredRows.length ? (
                     <p className='px-4 py-6 text-sm'>No subscribers found for current filter.</p>

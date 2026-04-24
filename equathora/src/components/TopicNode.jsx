@@ -37,7 +37,7 @@ const TopicNode = forwardRef(({
     /* ── status-driven style tokens ── */
     const statusStyles = {
         locked: {
-            card: 'bg-white/60 border-[var(--french-gray)]/20 shadow-sm',
+            card: 'bg-white/60 border-[var(--mid-main-secondary)]/20 shadow-sm',
             iconBg: 'bg-[var(--french-gray)]/10',
             useGradientIcon: false,
         },
@@ -73,27 +73,27 @@ const TopicNode = forwardRef(({
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 4, scale: 0.97 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 z-50 w-64 pointer-events-auto"
+                        className="absolute bottom-full left-1/2 -translate-x-1/2 pb-3 z-50 w-64 pointer-events-auto"
                     >
-                        <div className="bg-white rounded-xl shadow-xl border border-[var(--french-gray)]/15 p-4 font-[Sansation,sans-serif]">
+                        <div className="bg-white rounded-xl shadow-xl border border-[var(--mid-main-secondary)]/15 p-4 font-[Sansation,sans-serif]">
                             {/* Header */}
-                            <h4 className="text-sm font-bold text-[var(--secondary-color)] mb-1">
+                            <h4 className="text-sm font-bold text-[var(--secondary-color)] pb-1">
                                 {topic.title}
                             </h4>
-                            <p className="text-xs text-[var(--mid-main-secondary)] leading-relaxed mb-3">
+                            <p className="text-xs text-[var(--mid-main-secondary)] leading-relaxed pb-3">
                                 {topic.description}
                             </p>
 
                             {/* Problem count info */}
                             {problemCount > 0 && (
-                                <p className="text-xs font-semibold text-[var(--secondary-color)] mb-2">
+                                <p className="text-xs font-semibold text-[var(--secondary-color)] pb-2">
                                     {problemCount} problem{problemCount !== 1 ? 's' : ''} available
                                 </p>
                             )}
 
                             {/* Problem links (first 4) */}
                             {problems.length > 0 && (
-                                <div className="flex flex-col gap-1.5 mb-3 max-h-28 overflow-y-auto">
+                                <div className="flex flex-col gap-1.5 pb-3 max-h-28 overflow-y-auto">
                                     {problems.slice(0, 4).map((p) => (
                                         <Link
                                             key={p.id}
@@ -115,8 +115,8 @@ const TopicNode = forwardRef(({
 
                             {/* Prerequisites for locked */}
                             {status === 'locked' && prereqNames.length > 0 && (
-                                <div className="mb-2.5 pt-2 border-t border-[var(--french-gray)]/15">
-                                    <p className="text-[10px] font-semibold text-[var(--mid-main-secondary)] uppercase tracking-wide mb-1">
+                                <div className="pb-2.5 pt-2 border-t border-[var(--mid-main-secondary)]/15">
+                                    <p className="text-[10px] font-semibold text-[var(--mid-main-secondary)] uppercase tracking-wide pb-1">
                                         Requires
                                     </p>
                                     <div className="flex flex-wrap gap-1">
@@ -140,7 +140,7 @@ const TopicNode = forwardRef(({
                         </div>
                         {/* Arrow */}
                         <div className="flex justify-center">
-                            <div className="w-3 h-3 bg-white border-r border-b border-[var(--french-gray)]/15 rotate-45 -mt-1.5" />
+                            <div className="w-3 h-3 bg-white border-r border-b border-[var(--mid-main-secondary)]/15 rotate-45 -pt-1.5" />
                         </div>
                     </motion.div>
                 )}
@@ -183,7 +183,7 @@ const TopicNode = forwardRef(({
                 )}
 
                 {/* Gradient icon */}
-                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${s.iconBg} mb-3`}>
+                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${s.iconBg} pb-3`}>
                     {s.useGradientIcon ? (
                         <svg width="0" height="0" className="absolute">
                             <defs>
@@ -204,12 +204,12 @@ const TopicNode = forwardRef(({
                 </div>
 
                 {/* Title */}
-                <h3 className="text-base font-bold text-center text-[var(--secondary-color)] leading-snug mb-1">
+                <h3 className="text-base font-bold text-center text-[var(--secondary-color)] leading-snug pb-1">
                     {topic.title}
                 </h3>
 
                 {/* Category label */}
-                <p className="text-xs text-[var(--mid-main-secondary)] text-center mb-3">
+                <p className="text-xs text-[var(--mid-main-secondary)] text-center pb-3">
                     {topic.category}
                 </p>
 

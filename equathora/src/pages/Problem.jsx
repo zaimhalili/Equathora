@@ -729,21 +729,21 @@ const Problem = () => {
                     {/* Left side - Back button and Navigation */}
                     <div className="flex items-center gap-2">
                         <Link to="/learn" className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-md hover:bg-[var(--french-gray)] hover:text-[var(--main-color)] h-9 md:h-10">
-                            <FaArrowLeft/>
+                            <FaArrowLeft />
                             <span className="hidden md:inline">Back to Exercises</span>
                             <span className="md:hidden">Back</span>
                         </Link>
                         <div className="flex items-center gap-1.5">
                             <button
                                 onClick={() => prevProblemSlug && navigate(`/problems/${prevProblemSlug}`)}
-                                className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-md transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
+                                className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-md transition-all duration-200 bg-transparent border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                                 title={prevProblem ? `Previous: ${prevProblem.title}` : ''}
                             >
                                 <FaChevronLeft className="text-sm" />
                             </button>
                             <button
                                 onClick={() => nextProblemSlug && navigate(`/problems/${nextProblemSlug}`)}
-                                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-md transition-all duration-200 bg-transparent border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
+                                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-md transition-all duration-200 bg-transparent border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                                 title={nextProblem ? `Next: ${nextProblem.title}` : ''}
                             >
                                 <span className="hidden sm:inline text-xs md:text-sm font-medium">Next</span>
@@ -982,7 +982,7 @@ const Problem = () => {
                                 {/* Inline feedback for incorrect answers only */}
                                 {submissionFeedback && !submissionFeedback.isCorrect && (
                                     <div className="rounded-xl px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
-                                        <div className="flex items-center gap-2 mb-1.5">
+                                        <div className="flex items-center gap-2 pb-1.5">
                                             <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-red-400">
                                                 <FaTimesCircle />
                                             </div>
@@ -1072,7 +1072,7 @@ const Problem = () => {
                                         </div>
 
                                         {showDrawingPad && (
-                                            <div className="rounded-md border border-[var(--french-gray)] bg-[var(--french-gray)]/20 p-3 md:p-4 flex flex-col gap-3">
+                                            <div className="rounded-md border border-[var(--mid-main-secondary)] bg-[var(--french-gray)]/20 p-3 md:p-4 flex flex-col gap-3">
                                                 <div className="flex flex-wrap items-center justify-between gap-2">
                                                     <div className="flex items-center gap-2">
                                                         <span className="text-[10px] md:text-xs font-semibold text-[var(--secondary-color)] uppercase tracking-[0.05em]">Sketch</span>
@@ -1080,14 +1080,14 @@ const Problem = () => {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('var(--secondary-color)')}
-                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'black' ? 'bg-[var(--secondary-color)] text-[var(--main-color)] border-[var(--secondary-color)]' : 'text-[var(--secondary-color)] border-[var(--french-gray)] hover:border-[var(--secondary-color)]'}`}
+                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'black' ? 'bg-[var(--secondary-color)] text-[var(--main-color)] border-[var(--secondary-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--secondary-color)]'}`}
                                                             >
                                                                 Black
                                                             </button>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('red')}
-                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-[var(--accent-color)] text-[var(--main-color)] border-[var(--accent-color)]' : 'text-[var(--secondary-color)] border-[var(--french-gray)] hover:border-[var(--accent-color)]'}`}
+                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-[var(--accent-color)] text-[var(--main-color)] border-[var(--accent-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]'}`}
                                                             >
                                                                 Red
                                                             </button>
@@ -1098,7 +1098,7 @@ const Problem = () => {
                                                             type="button"
                                                             onClick={undoStroke}
                                                             disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--french-gray)] text-[var(--french-gray)]' : 'text-[var(--secondary-color)] border-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'}`}
+                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--secondary-color)] border-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'}`}
                                                         >
                                                             Undo
                                                         </button>
@@ -1106,14 +1106,14 @@ const Problem = () => {
                                                             type="button"
                                                             onClick={clearCanvas}
                                                             disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--french-gray)] text-[var(--french-gray)]' : 'text-[var(--accent-color)] border-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-[var(--main-color)]'}`}
+                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--accent-color)] border-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-[var(--main-color)]'}`}
                                                         >
                                                             Clear
                                                         </button>
                                                     </div>
                                                 </div>
 
-                                                <div className="rounded-md border border-[var(--french-gray)] bg-[var(--main-color)] overflow-hidden shadow-sm">
+                                                <div className="rounded-md border border-[var(--mid-main-secondary)] bg-[var(--main-color)] overflow-hidden shadow-sm">
                                                     <canvas
                                                         ref={canvasRef}
                                                         className="w-full h-48 md:h-56 bg-[var(--main-color)] cursor-crosshair"
@@ -1139,7 +1139,7 @@ const Problem = () => {
                                             <div>
                                                 <h3 className="text-sm md:text-base pb-2 md:pb-3 text-[var(--secondary-color)] font-bold font-[Sansation,sans-serif]">Examples</h3>
                                                 {examples.map((example, index) => (
-                                                    <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/40 rounded-md mb-2 md:mb-3 last:mb-0">
+                                                    <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/40 rounded-md pb-2 md:pb-3 last:pb-0">
                                                         <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 font-[Sansation,sans-serif]">Example {index + 1}:</div>
                                                         <div className="flex flex-col gap-1.5 md:gap-2">
                                                             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Sansation,sans-serif]">
@@ -1152,7 +1152,7 @@ const Problem = () => {
                                                             </div>
                                                         </div>
                                                         {example.explanation && (
-                                                            <div className="mt-2 pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed font-[Sansation,sans-serif]">
+                                                            <div className="pt-2 pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed font-[Sansation,sans-serif]">
                                                                 {example.explanation}
                                                             </div>
                                                         )}
@@ -1164,11 +1164,11 @@ const Problem = () => {
                                         {/* Hints Section - Collapsible like LeetCode */}
                                         <div>
                                             {problem.hints && problem.hints.length > 0 && (
-                                                <div className="border-t border-[var(--french-gray)]">
+                                                <div className="border-t border-[var(--mid-main-secondary)]">
 
                                                     <div className="flex flex-col">
                                                         {problem.hints.map((hint, index) => (
-                                                            <div key={index} className="border-t border-[var(--french-gray)] overflow-hidden">
+                                                            <div key={index} className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
                                                                 <button
                                                                     className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
                                                                     onClick={() => toggleHint(index)}
@@ -1180,7 +1180,7 @@ const Problem = () => {
                                                                     <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints[index] ? 'rotate-180' : ''}`} />
                                                                 </button>
                                                                 <div className={`transition-all duration-300 ease-in-out ${openHints[index] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                                                    <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--french-gray)]">
+                                                                    <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--mid-main-secondary)]">
                                                                         <p className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed font-[Sansation] m-0">
                                                                             {hint}
                                                                         </p>
@@ -1196,7 +1196,7 @@ const Problem = () => {
                                             {similarQuestions && similarQuestions.length > 0 && (
                                                 <div className="">
                                                     <div className="flex flex-col">
-                                                        <div className="border-t border-[var(--french-gray)] overflow-hidden">
+                                                        <div className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
                                                             <button
                                                                 className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
                                                                 onClick={() => toggleHint('similar')}
@@ -1208,7 +1208,7 @@ const Problem = () => {
                                                                 <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
                                                             </button>
                                                             <div className={`transition-all duration-300 ease-in-out ${openHints['similar'] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                                                <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--french-gray)] flex flex-col">
+                                                                <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--mid-main-secondary)] flex flex-col">
                                                                     {similarQuestions.map((question, index) => (
                                                                         <Link
                                                                             key={index}
