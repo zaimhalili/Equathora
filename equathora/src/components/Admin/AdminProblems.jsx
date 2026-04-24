@@ -15,17 +15,6 @@ import {
 } from 'recharts';
 import { getAllAdminProblems, getAllAdminProblemDetails, getAdminProblemDetails } from '@/lib/adminProblemsService';
 
-const palette = {
-    raisinBlack: 'var(--raisin-black)',
-    secondary: 'var(--secondary-color)',
-    mid: 'var(--mid-main-secondary)',
-    french: 'var(--french-gray)',
-    main: 'var(--main-color)',
-    accentLight: 'var(--light-accent-color)',
-    accent: 'var(--accent-color)',
-    accentDark: 'var(--dark-accent-color)'
-};
-
 const emptyLoadMeta = {
     count: 0,
     fetched: 0,
@@ -34,16 +23,54 @@ const emptyLoadMeta = {
 };
 
 const tooltipStyle = {
-    backgroundColor: palette.main,
-    border: `1px solid ${palette.mid}`,
+    backgroundColor: 'var(--main-color)',
+    border: '1px solid var(--mid-main-secondary)',
     borderRadius: '10px',
-    color: palette.secondary
+    color: 'var(--secondary-color)'
 };
 
 const badgeStyleByStatus = {
-    Completed: { backgroundColor: palette.secondary, color: palette.main },
-    'In Progress': { backgroundColor: palette.accent, color: palette.main },
-    'Not Started': { backgroundColor: palette.mid, color: palette.raisinBlack }
+    Completed: { backgroundColor: 'var(--secondary-color)', color: 'var(--main-color)' },
+    'In Progress': { backgroundColor: 'var(--accent-color)', color: 'var(--main-color)' },
+    'Not Started': { backgroundColor: 'var(--mid-main-secondary)', color: 'var(--raisin-black)' }
+};
+
+const difficultyDisplayRank = {
+    beginner: 1,
+    easy: 2,
+    standard: 3,
+    intermediate: 4,
+    medium: 5,
+    challenging: 6,
+    hard: 7,
+    advanced: 8,
+    expert: 9,
+    unknown: 99
+};
+
+const difficultyColorPalette = [
+    '#2563eb',
+    '#7c3aed',
+    '#0f766e',
+    '#be123c',
+    '#0ea5e9',
+    '#f97316',
+    '#6366f1'
+];
+
+const normalizeDifficultyKey = (difficulty) => String(difficulty || '').trim().toLowerCase();
+
+const formatDifficultyLabel = (difficulty) => {
+    const raw = String(difficulty || '').trim();
+    if (!raw) return 'Unknown';
+    return raw.charAt(0).toUpperCase() + raw.slice(1);
+};
+
+const getDifficultyColor = (difficultyKey, index) => {
+    if (difficultyKey === 'easy') return '#16a34a';
+    if (difficultyKey === 'medium') return '#d97706';
+    if (difficultyKey === 'hard') return '#a3142c';
+    return difficultyColorPalette[index % difficultyColorPalette.length];
 };
 
 const dateFilterPass = (rowDate, selectedDate) => {
@@ -336,18 +363,28 @@ const AdminProblems = () => {
     }, [filteredProblems, range, weekIndex]);
 
     const difficultyDistribution = useMemo(() => {
-        const base = [
-            { name: 'Easy', value: 0, color: palette.secondary },
-            { name: 'Medium', value: 0, color: palette.mid },
-            { name: 'Hard', value: 0, color: palette.accent }
-        ];
+        const distribution = filteredProblems.reduce((map, row) => {
+            const key = normalizeDifficultyKey(row?.difficulty) || 'unknown';
+            const existing = map.get(key) || {
+                key,
+                name: formatDifficultyLabel(row?.difficulty),
+                value: 0
+            };
+            existing.value += 1;
+            map.set(key, existing);
+            return map;
+        }, new Map());
 
-        filteredProblems.forEach((row) => {
-            const target = base.find((item) => item.name === row.difficulty);
-            if (target) target.value += 1;
-        });
-
-        return base;
+        return Array.from(distribution.values())
+            .sort((a, b) => {
+                const rankDiff = (difficultyDisplayRank[a.key] ?? 99) - (difficultyDisplayRank[b.key] ?? 99);
+                if (rankDiff !== 0) return rankDiff;
+                return a.name.localeCompare(b.name);
+            })
+            .map((item, index) => ({
+                ...item,
+                color: getDifficultyColor(item.key, index)
+            }));
     }, [filteredProblems]);
 
     const overview = useMemo(() => {
@@ -442,12 +479,12 @@ const AdminProblems = () => {
     const canGoNextWeek = range === 'week' && weekIndex > 0;
 
     return (
-        <section className='flex flex-col gap-6 px-3 py-2 md:px-5' style={{ color: palette.secondary }}>
+        <section className='flex flex-col gap-6 px-3 py-2 md:px-5' style={{ color: 'var(--secondary-color)' }}>
             <header
                 className='rounded-xl border p-5'
                 style={{
-                    borderColor: palette.mid,
-                    background: `linear-gradient(135deg, ${palette.main}, ${palette.french})`
+                    borderColor: 'var(--mid-main-secondary)',
+                    background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))'
                 }}
             >
                 <div className='flex flex-wrap items-start justify-between gap-3'>
@@ -467,9 +504,9 @@ const AdminProblems = () => {
                             }}
                             className='rounded-md border px-3 py-1.5 text-sm font-semibold transition'
                             style={{
-                                borderColor: range === 'week' ? palette.accent : palette.mid,
-                                backgroundColor: range === 'week' ? palette.accent : palette.main,
-                                color: range === 'week' ? palette.main : palette.secondary
+                                borderColor: range === 'week' ? 'var(--accent-color)' : 'var(--mid-main-secondary)',
+                                backgroundColor: range === 'week' ? 'var(--accent-color)' : 'var(--main-color)',
+                                color: range === 'week' ? 'var(--main-color)' : 'var(--secondary-color)'
                             }}
                         >
                             Last Week
@@ -479,9 +516,9 @@ const AdminProblems = () => {
                             onClick={() => setRange('month')}
                             className='rounded-md border px-3 py-1.5 text-sm font-semibold transition'
                             style={{
-                                borderColor: range === 'month' ? palette.accent : palette.mid,
-                                backgroundColor: range === 'month' ? palette.accent : palette.main,
-                                color: range === 'month' ? palette.main : palette.secondary
+                                borderColor: range === 'month' ? 'var(--accent-color)' : 'var(--mid-main-secondary)',
+                                backgroundColor: range === 'month' ? 'var(--accent-color)' : 'var(--main-color)',
+                                color: range === 'month' ? 'var(--main-color)' : 'var(--secondary-color)'
                             }}
                         >
                             Last Month
@@ -492,7 +529,7 @@ const AdminProblems = () => {
                 <div className='pt-3 flex flex-wrap items-center gap-2'>
                     <span
                         className='rounded-md px-2 py-1 text-xs font-semibold'
-                        style={{ backgroundColor: palette.secondary, color: palette.main }}
+                        style={{ backgroundColor: 'var(--secondary-color)', color: 'var(--main-color)' }}
                     >
                         {rangeLabel}
                     </span>
@@ -504,7 +541,7 @@ const AdminProblems = () => {
                                 disabled={!canGoPrevWeek}
                                 onClick={() => setWeekIndex((prev) => prev + 1)}
                                 className='rounded-md border px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
-                                style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                                style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                             >
                                 Previous Week
                             </button>
@@ -513,7 +550,7 @@ const AdminProblems = () => {
                                 disabled={!canGoNextWeek}
                                 onClick={() => setWeekIndex((prev) => prev - 1)}
                                 className='rounded-md border px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
-                                style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                                style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                             >
                                 Next Week
                             </button>
@@ -521,12 +558,12 @@ const AdminProblems = () => {
                     )}
 
                     {loading && (
-                        <span className='text-xs font-semibold' style={{ color: palette.mid }}>
+                        <span className='text-xs font-semibold' style={{ color: 'var(--mid-main-secondary)' }}>
                             Loading all problems...
                         </span>
                     )}
                     {!loading && !detailsReady && !error && (
-                        <span className='text-xs font-semibold' style={{ color: palette.mid }}>
+                        <span className='text-xs font-semibold' style={{ color: 'var(--mid-main-secondary)' }}>
                             Preloading full problem details...
                         </span>
                     )}
@@ -539,25 +576,25 @@ const AdminProblems = () => {
             </header>
 
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4'>
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Filtered Problems</p>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                    <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Filtered Problems</p>
                     <p className='pt-1 text-2xl font-black'>{overview.total}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Completed</p>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                    <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Completed</p>
                     <p className='pt-1 text-2xl font-black'>{overview.published}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>In Progress</p>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                    <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>In Progress</p>
                     <p className='pt-1 text-2xl font-black'>{overview.review}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
-                    <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Avg Solve Rate</p>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                    <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Avg Solve Rate</p>
                     <p className='pt-1 text-2xl font-black'>{overview.avgSolveRate}%</p>
                 </article>
             </div>
 
-            <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+            <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <h2 className='pb-3 text-lg font-bold'>Search and Filters</h2>
 
                 <div className='grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4'>
@@ -566,22 +603,22 @@ const AdminProblems = () => {
                         onChange={(event) => setSearch(event.target.value)}
                         placeholder='Search by title or ID...'
                         className='rounded-md border px-3 py-2 text-sm outline-none'
-                        style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                        style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                     />
 
-                    <select value={topic} onChange={(event) => setTopic(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                    <select value={topic} onChange={(event) => setTopic(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                         {options.topics.map((value) => <option key={value} value={value}>{value}</option>)}
                     </select>
 
-                    <select value={difficulty} onChange={(event) => setDifficulty(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                    <select value={difficulty} onChange={(event) => setDifficulty(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                         {options.difficulties.map((value) => <option key={value} value={value}>{value}</option>)}
                     </select>
 
-                    <select value={source} onChange={(event) => setSource(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                    <select value={source} onChange={(event) => setSource(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                         {options.sources.map((value) => <option key={value} value={value}>{value}</option>)}
                     </select>
 
-                    <select value={status} onChange={(event) => setStatus(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                    <select value={status} onChange={(event) => setStatus(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                         {options.statuses.map((value) => <option key={value} value={value}>{value}</option>)}
                     </select>
 
@@ -590,7 +627,7 @@ const AdminProblems = () => {
                         value={date}
                         onChange={(event) => setDate(event.target.value)}
                         className='rounded-md border px-3 py-2 text-sm'
-                        style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                        style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                     />
 
                     <button
@@ -604,7 +641,7 @@ const AdminProblems = () => {
                             setDate('');
                         }}
                         className='rounded-md border px-3 py-2 text-sm font-semibold'
-                        style={{ borderColor: palette.accent, backgroundColor: palette.accent, color: palette.main }}
+                        style={{ borderColor: 'var(--accent-color)', backgroundColor: 'var(--accent-color)', color: 'var(--main-color)' }}
                     >
                         Reset Filters
                     </button>
@@ -612,32 +649,32 @@ const AdminProblems = () => {
             </article>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-5'>
-                <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Problem Flow (Created / Completed / In Progress)</h3>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: 'var(--french-gray)', color: 'var(--secondary-color)' }}>
                             {range === 'month' ? 'Last 30 days' : 'Last 7 days'}
                         </span>
                     </header>
                     <div className='h-72 w-full'>
                         <ResponsiveContainer width='100%' height='100%' minWidth={0}>
                             <BarChart data={activeGraphData} margin={{ left: -8, right: 10, top: 10, bottom: 0 }}>
-                                <CartesianGrid stroke={palette.french} vertical={false} />
-                                <XAxis dataKey='label' tick={{ fill: palette.secondary, fontSize: 11 }} axisLine={false} tickLine={false} />
-                                <YAxis tick={{ fill: palette.secondary, fontSize: 11 }} axisLine={false} tickLine={false} />
+                                <CartesianGrid stroke={'var(--french-gray)'} vertical={false} />
+                                <XAxis dataKey='label' tick={{ fill: 'var(--secondary-color)', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: 'var(--secondary-color)', fontSize: 11 }} axisLine={false} tickLine={false} />
                                 <Tooltip contentStyle={tooltipStyle} />
-                                <Bar dataKey='created' fill={palette.secondary} radius={[6, 6, 0, 0]} />
-                                <Bar dataKey='published' fill={palette.accentDark} radius={[6, 6, 0, 0]} />
-                                <Bar dataKey='flagged' fill={palette.accent} radius={[6, 6, 0, 0]} />
+                                <Bar dataKey='created' fill={'var(--secondary-color)'} radius={[6, 6, 0, 0]} />
+                                <Bar dataKey='published' fill={'var(--dark-accent-color)'} radius={[6, 6, 0, 0]} />
+                                <Bar dataKey='flagged' fill={'var(--accent-color)'} radius={[6, 6, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </article>
 
-                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Difficulty Mix (Filtered)</h3>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: 'var(--french-gray)', color: 'var(--secondary-color)' }}>
                             Dynamic
                         </span>
                     </header>
@@ -674,50 +711,50 @@ const AdminProblems = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-3'>
-                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Average Solve Rate Trend</h3>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: 'var(--french-gray)', color: 'var(--secondary-color)' }}>
                             Quality signal
                         </span>
                     </header>
                     <div className='h-64 w-full'>
                         <ResponsiveContainer width='100%' height='100%' minWidth={0}>
                             <LineChart data={activeGraphData} margin={{ left: -10, right: 10, top: 10, bottom: 0 }}>
-                                <CartesianGrid stroke={palette.french} vertical={false} />
-                                <XAxis dataKey='label' tick={{ fill: palette.secondary, fontSize: 11 }} axisLine={false} tickLine={false} />
-                                <YAxis tick={{ fill: palette.secondary, fontSize: 11 }} unit='%' axisLine={false} tickLine={false} />
+                                <CartesianGrid stroke={'var(--french-gray)'} vertical={false} />
+                                <XAxis dataKey='label' tick={{ fill: 'var(--secondary-color)', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: 'var(--secondary-color)', fontSize: 11 }} unit='%' axisLine={false} tickLine={false} />
                                 <Tooltip contentStyle={tooltipStyle} />
-                                <Line type='monotone' dataKey='avgSolveRate' stroke={palette.accentDark} strokeWidth={2.5} dot={false} />
+                                <Line type='monotone' dataKey='avgSolveRate' stroke={'var(--dark-accent-color)'} strokeWidth={2.5} dot={false} />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
                 </article>
 
-                <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <h3 className='pb-3 text-sm font-semibold md:text-base'>Review Queue Snapshot</h3>
                     <div className='space-y-2'>
-                        <div className='rounded-lg border p-3' style={{ borderColor: palette.french }}>
-                            <p className='text-xs font-semibold' style={{ color: palette.mid }}>In Progress Problems</p>
+                        <div className='rounded-lg border p-3' style={{ borderColor: 'var(--french-gray)' }}>
+                            <p className='text-xs font-semibold' style={{ color: 'var(--mid-main-secondary)' }}>In Progress Problems</p>
                             <p className='text-xl font-black'>{filteredProblems.filter((item) => item.status === 'In Progress').length}</p>
                         </div>
-                        <div className='rounded-lg border p-3' style={{ borderColor: palette.french }}>
-                            <p className='text-xs font-semibold' style={{ color: palette.mid }}>Low Solve-Rate Problems (&lt;50%)</p>
+                        <div className='rounded-lg border p-3' style={{ borderColor: 'var(--french-gray)' }}>
+                            <p className='text-xs font-semibold' style={{ color: 'var(--mid-main-secondary)' }}>Low Solve-Rate Problems (&lt;50%)</p>
                             <p className='text-xl font-black'>{filteredProblems.filter((item) => item.attempts > 0 && item.solveRate < 50).length}</p>
                         </div>
-                        <div className='rounded-lg border p-3' style={{ borderColor: palette.french }}>
-                            <p className='text-xs font-semibold' style={{ color: palette.mid }}>No Attempts Yet</p>
+                        <div className='rounded-lg border p-3' style={{ borderColor: 'var(--french-gray)' }}>
+                            <p className='text-xs font-semibold' style={{ color: 'var(--mid-main-secondary)' }}>No Attempts Yet</p>
                             <p className='text-xl font-black'>{filteredProblems.filter((item) => item.attempts === 0).length}</p>
                         </div>
                     </div>
                 </article>
             </div>
 
-            <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+            <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <header className='pb-3 flex items-center justify-between gap-2'>
                     <h2 className='text-lg font-bold'>All Problems Table</h2>
                     <div className='flex items-center gap-2'>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: 'var(--french-gray)', color: 'var(--secondary-color)' }}>
                             {orderedFilteredProblems.length} rows
                         </span>
                         <button
@@ -725,24 +762,24 @@ const AdminProblems = () => {
                             onClick={handleExportJson}
                             disabled={exporting || loading || !orderedAllProblems.length}
                             className='rounded-md border px-3 py-1.5 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
-                            style={{ borderColor: palette.accentDark, backgroundColor: palette.accentDark, color: palette.main }}
+                            style={{ borderColor: 'var(--dark-accent-color)', backgroundColor: 'var(--dark-accent-color)', color: 'var(--main-color)' }}
                         >
                             {exporting ? 'Exporting...' : 'Download JSON'}
                         </button>
                     </div>
                 </header>
 
-                <p className='pb-3 text-xs font-semibold' style={{ color: palette.mid }}>
+                <p className='pb-3 text-xs font-semibold' style={{ color: 'var(--mid-main-secondary)' }}>
                     Loaded {loadMeta.fetched.toLocaleString()} / {loadMeta.count.toLocaleString()} problems in {loadMeta.pagesFetched.toLocaleString()} request(s). No table pagination is applied.
                 </p>
-                <p className='pb-3 text-xs font-semibold' style={{ color: palette.mid }}>
+                <p className='pb-3 text-xs font-semibold' style={{ color: 'var(--mid-main-secondary)' }}>
                     Ordered by ID (ascending). Full details are preloaded first, then row click opens instantly with no extra fetch.
                 </p>
 
                 <div className='overflow-x-auto'>
                     <table className='min-w-full text-left text-sm'>
                         <thead>
-                            <tr style={{ color: palette.mid }}>
+                            <tr style={{ color: 'var(--mid-main-secondary)' }}>
                                 <th className='pb-2 pr-4 font-semibold'>ID</th>
                                 <th className='pb-2 pr-4 font-semibold'>Title</th>
                                 <th className='pb-2 pr-4 font-semibold'>Topic</th>
@@ -761,8 +798,8 @@ const AdminProblems = () => {
                                     key={row.id}
                                     className='cursor-pointer border-t transition-colors'
                                     style={{
-                                        borderColor: palette.french,
-                                        backgroundColor: row.id === selectedProblemId ? palette.french : 'transparent',
+                                        borderColor: 'var(--french-gray)',
+                                        backgroundColor: row.id === selectedProblemId ? 'var(--french-gray)' : 'transparent',
                                         opacity: detailsReady ? 1 : 0.65
                                     }}
                                     onClick={() => openProblemReader(row)}
@@ -798,13 +835,13 @@ const AdminProblems = () => {
                     <div className='fixed inset-0 z-[1300] flex items-center justify-center bg-black/55 px-3 py-6' onClick={() => setIsReaderOpen(false)}>
                         <article
                             className='max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-xl border p-4 md:p-5'
-                            style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                            style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                             onClick={(event) => event.stopPropagation()}
                         >
                             <header className='pb-3 flex flex-wrap items-center justify-between gap-2'>
                                 <div>
                                     <h3 className='text-base font-bold md:text-lg'>Problem Reader</h3>
-                                    <p className='text-xs font-semibold' style={{ color: palette.mid }}>
+                                    <p className='text-xs font-semibold' style={{ color: 'var(--mid-main-secondary)' }}>
                                         #{selectedProblem.id} • {selectedProblem.title}
                                     </p>
                                 </div>
@@ -814,7 +851,7 @@ const AdminProblems = () => {
                                         onClick={() => goToProblemByIndex(selectedProblemIndex - 1)}
                                         disabled={selectedProblemIndex <= 0}
                                         className='rounded-md border px-3 py-1.5 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
-                                        style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                                        style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                                     >
                                         Previous
                                     </button>
@@ -823,7 +860,7 @@ const AdminProblems = () => {
                                         onClick={() => goToProblemByIndex(selectedProblemIndex + 1)}
                                         disabled={selectedProblemIndex < 0 || selectedProblemIndex >= orderedFilteredProblems.length - 1}
                                         className='rounded-md border px-3 py-1.5 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
-                                        style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                                        style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                                     >
                                         Next
                                     </button>
@@ -831,7 +868,7 @@ const AdminProblems = () => {
                                         type='button'
                                         onClick={() => setIsReaderOpen(false)}
                                         className='rounded-md border px-3 py-1.5 text-xs font-semibold'
-                                        style={{ borderColor: palette.mid, backgroundColor: palette.main }}
+                                        style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                                     >
                                         Close
                                     </button>
@@ -839,7 +876,7 @@ const AdminProblems = () => {
                             </header>
 
                             {detailsLoading && (
-                                <p className='text-sm font-semibold' style={{ color: palette.mid }}>Loading problem details...</p>
+                                <p className='text-sm font-semibold' style={{ color: 'var(--mid-main-secondary)' }}>Loading problem details...</p>
                             )}
 
                             {!!detailsError && (
@@ -866,14 +903,14 @@ const AdminProblems = () => {
                                     </div>
 
                                     <div className='pt-3'>
-                                        <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Description</p>
+                                        <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Description</p>
                                         <p className='pt-1 whitespace-pre-wrap text-sm'>
                                             {selectedProblemDetails.description || selectedProblem.description || 'No description available.'}
                                         </p>
                                     </div>
 
                                     <div className='pt-3'>
-                                        <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Solution</p>
+                                        <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Solution</p>
                                         <p className='pt-1 whitespace-pre-wrap text-sm'>
                                             {selectedProblemDetails.solution || 'No solution available.'}
                                         </p>
@@ -881,13 +918,13 @@ const AdminProblems = () => {
 
                                     <div className='pt-3 grid grid-cols-1 gap-3 md:grid-cols-2'>
                                         <div>
-                                            <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Answer</p>
+                                            <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Answer</p>
                                             <p className='pt-1 whitespace-pre-wrap text-sm'>
                                                 {selectedProblemDetails.answer || 'No answer available.'}
                                             </p>
                                         </div>
                                         <div>
-                                            <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Accepted Answers</p>
+                                            <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Accepted Answers</p>
                                             <ul className='pt-1 list-disc pl-5 text-sm'>
                                                 {(Array.isArray(selectedProblemDetails.acceptedAnswers) && selectedProblemDetails.acceptedAnswers.length > 0
                                                     ? selectedProblemDetails.acceptedAnswers
@@ -898,7 +935,7 @@ const AdminProblems = () => {
                                     </div>
 
                                     <div className='pt-3'>
-                                        <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Hints</p>
+                                        <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Hints</p>
                                         <ul className='pt-1 list-disc pl-5 text-sm'>
                                             {(Array.isArray(selectedProblemDetails.hints) && selectedProblemDetails.hints.length > 0
                                                 ? selectedProblemDetails.hints
@@ -913,7 +950,7 @@ const AdminProblems = () => {
                 )}
 
                 {orderedFilteredProblems.length === 0 && (
-                    <p className='pt-3 text-sm font-semibold' style={{ color: palette.accentDark }}>
+                    <p className='pt-3 text-sm font-semibold' style={{ color: 'var(--dark-accent-color)' }}>
                         No problems matched current filters.
                     </p>
                 )}
@@ -923,3 +960,4 @@ const AdminProblems = () => {
 };
 
 export default AdminProblems;
+

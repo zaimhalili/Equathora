@@ -91,10 +91,10 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
             aria-checked={checked}
             disabled={disabled}
             onClick={() => onChange(!checked)}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 focus:ring-offset-[var(--surface-card)] disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)]' : 'bg-[var(--mid-main-secondary)]'}`}
+            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 focus:ring-offset-[var(--surface-card)] disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)] border-[var(--dark-accent-color)]' : 'bg-[var(--french-gray)] border-[var(--mid-main-secondary)]'}`}
         >
             <span
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[var(--surface-card)] shadow-lg ring-0 transition-transform duration-200 translate-y-0.5 ${checked ? 'translate-x-[22px]' : 'translate-x-0.5'}`}
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full border border-[var(--secondary-color)] bg-[var(--white)] shadow-md ring-0 transition-transform duration-200 translate-y-0.5 ${checked ? 'translate-x-[22px]' : 'translate-x-0.5'}`}
             />
         </button>
     </div>
@@ -161,51 +161,44 @@ const StatusBanner = ({ message, type = 'success' }) => {
 // ============================================================================
 
 const IconUser = () => (
-    <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
-        <defs><linearGradient id="icon-user" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
-        <path fill="url(#icon-user)" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
+    <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
+        <path fill="currentColor" d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
     </svg>
 );
 
 const IconLock = () => (
-    <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
-        <defs><linearGradient id="icon-lock" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
-        <path fill="url(#icon-lock)" d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z" />
+    <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
+        <path fill="currentColor" d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z" />
     </svg>
 );
 
 const IconBell = () => (
-    <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
-        <defs><linearGradient id="icon-bell" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
-        <path fill="url(#icon-bell)" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z" />
+    <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
+        <path fill="currentColor" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z" />
     </svg>
 );
 
 const IconShield = () => (
-    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
-        <defs><linearGradient id="icon-shield" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
-        <path fill="url(#icon-shield)" d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0zm0 66.8V444.8C394 378 431.1 230.1 432 141.4L256 66.8l0 0z" />
+    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
+        <path fill="currentColor" d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0zm0 66.8V444.8C394 378 431.1 230.1 432 141.4L256 66.8l0 0z" />
     </svg>
 );
 
 const IconLaptop = () => (
-    <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
-        <defs><linearGradient id="icon-laptop" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
-        <path fill="url(#icon-laptop)" d="M128 32C92.7 32 64 60.7 64 96V352h64V96H512V352h64V96c0-35.3-28.7-64-64-64H128zM19.2 384C8.6 384 0 392.6 0 403.2C0 445.6 34.4 480 76.8 480H563.2c42.4 0 76.8-34.4 76.8-76.8c0-10.6-8.6-19.2-19.2-19.2H19.2z" />
+    <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
+        <path fill="currentColor" d="M128 32C92.7 32 64 60.7 64 96V352h64V96H512V352h64V96c0-35.3-28.7-64-64-64H128zM19.2 384C8.6 384 0 392.6 0 403.2C0 445.6 34.4 480 76.8 480H563.2c42.4 0 76.8-34.4 76.8-76.8c0-10.6-8.6-19.2-19.2-19.2H19.2z" />
     </svg>
 );
 
 const IconTheme = () => (
-    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
-        <defs><linearGradient id="icon-theme" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
-        <path fill="url(#icon-theme)" d="M361.5 37.4c-9.3-6.3-21.5-5.7-30.1 1.5c-8.6 7.1-11.8 19.9-8 30.4c4.9 13.4 7.6 27.8 7.6 42.8c0 68.5-55.5 124-124 124c-15 0-29.4-2.7-42.8-7.6c-10.5-3.8-23.3-.6-30.4 8c-7.2 8.6-7.8 20.8-1.5 30.1C157.2 414.8 281.7 474.7 406.4 431.3c50.7-17.7 90.4-57.4 108.1-108.1C557.9 198.5 498 73.9 361.5 37.4z" />
+    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
+        <path fill="currentColor" d="M361.5 37.4c-9.3-6.3-21.5-5.7-30.1 1.5c-8.6 7.1-11.8 19.9-8 30.4c4.9 13.4 7.6 27.8 7.6 42.8c0 68.5-55.5 124-124 124c-15 0-29.4-2.7-42.8-7.6c-10.5-3.8-23.3-.6-30.4 8c-7.2 8.6-7.8 20.8-1.5 30.1C157.2 414.8 281.7 474.7 406.4 431.3c50.7-17.7 90.4-57.4 108.1-108.1C557.9 198.5 498 73.9 361.5 37.4z" />
     </svg>
 );
 
 const IconWarning = () => (
-    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4">
-        <defs><linearGradient id="icon-warning" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
-        <path fill="url(#icon-warning)" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
+        <path fill="currentColor" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
     </svg>
 );
 
@@ -641,9 +634,9 @@ const Settings = () => {
                                 key={section.id}
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
-                                className={`flex items-center gap-3 px-4 py-3 text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
+                                className={`flex items-center gap-3 rounded-md px-4 py-3 text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
                                     ? 'bg-[var(--accent-color)] text-[var(--white)]'
-                                    : 'text-[var(--secondary-color)] hover:bg-[var(--mid-main-secondary)]'
+                                    : 'bg-[var(--surface-card)] text-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
                                     }`}
                             >
                                 {section.icon}
@@ -659,9 +652,9 @@ const Settings = () => {
                                 key={section.id}
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold [var(--white)]space-nowrap transition-all shrink-0 cursor-pointer ${activeSection === section.id
+                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all shrink-0 cursor-pointer ${activeSection === section.id
                                     ? 'bg-[var(--accent-color)] text-[var(--white)]'
-                                    : 'bg-[var(--surface-card)] text-[var(--secondary-color)] border border-[var(--mid-main-secondary)]'
+                                    : 'bg-[var(--surface-card)] text-[var(--secondary-color)] border border-[var(--mid-main-secondary)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
                                     }`}
                             >
                                 {section.icon}
