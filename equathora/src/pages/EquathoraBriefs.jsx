@@ -29,7 +29,7 @@ const EquathoraBriefsPage = () => {
 
                 {/* Benefits Section */}
                 <section className="flex flex-col items-center justify-center w-full py-20 px-4 sm:px-6 lg:px-8">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -101,7 +101,7 @@ const EquathoraBriefsPage = () => {
                 {/* Interactive Stats Section */}
                 <section className="flex flex-col items-center justify-center w-full py-16 px-4 sm:px-6 lg:px-8 bg-[var(--white)] relative overflow-hidden border-y border-[var(--mid-main-secondary)]/20">
                     <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--main-color)1px,transparent_1px),linear-gradient(180deg,var(--main-color)1px,transparent_1px)] bg-[size:40px_40px] opacity-30"></div>
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -113,7 +113,7 @@ const EquathoraBriefsPage = () => {
                                 { value: "2026", label: "Launch Date", delay: 0.2 },
                                 { value: "100%", label: "Free to Join", delay: 0.3 }
                             ].map((stat, idx) => (
-                                <motion.div 
+                                <motion.div
                                     key={idx}
                                     initial={{ scale: 0.5, opacity: 0 }}
                                     whileInView={{ scale: 1, opacity: 1 }}
@@ -131,7 +131,7 @@ const EquathoraBriefsPage = () => {
 
                 {/* FAQ Section (Accessible Accordion) */}
                 <section className="flex flex-col items-center justify-center w-full py-20 px-4 sm:px-6 lg:px-8">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
@@ -185,7 +185,7 @@ const EquathoraBriefsPage = () => {
                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-50 pointer-events-none"></div>
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[var(--accent-color)]/20 rounded-full blur-[120px] pointer-events-none"></div>
 
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}

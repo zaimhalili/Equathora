@@ -9,7 +9,7 @@ import {
 } from 'react-icons/fa';
 import Navbar from "@/components/Navbar.jsx";
 
-const EquathoraBriefsHero = ({setIsBriefsModalOpen}) => {
+const EquathoraBriefsHero = ({ setIsBriefsModalOpen }) => {
     return (
         <section className='relative bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white flex flex-col justify-between overflow-hidden theme-lock'>
             <header className="bg-transparent border-b border-white/10 z-50">
@@ -20,7 +20,7 @@ const EquathoraBriefsHero = ({setIsBriefsModalOpen}) => {
             <div className='px-[4vw] xl:px-[6vw] max-w-[1500px] py-12 lg:py-20 gap-8 mx-auto w-full'>
                 <div className='absolute top-0 right-0 w-72 h-72 bg-[var(--accent-color)] rounded-full opacity-20 blur-3xl -translate-y-1/2 translate-x-1/2'></div>
                 <div className='absolute bottom-0 left-0 w-64 h-64 bg-[var(--accent-color)] rounded-full opacity-20 blur-3xl translate-y-1/2 -translate-x-1/2'></div>
-                
+
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
