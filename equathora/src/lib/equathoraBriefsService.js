@@ -1,6 +1,7 @@
 import { supabase } from './supabaseClient';
 
 const SUBSCRIBE_ERROR_MESSAGE = 'Something went wrong on our side. Please try again in a little while.';
+const UNSUBSCRIBE_ERROR_MESSAGE = 'Could not update your email subscription right now. Please try again.';
 
 // Fix #6: compute API candidates once at module load since env vars and
 // window.location never change at runtime.
@@ -29,11 +30,8 @@ const API_BASE_CANDIDATES = (() => {
         }
     }
 
-    // For non-local runtimes, same-origin API calls allow reverse-proxy setups.
-    // In local dev, avoid same-origin backend calls unless an explicit API URL is set.
-    if (!isLocalRuntime) {
-        candidates.push('');
-    }
+    // Same-origin API calls support reverse-proxy setups (including local Vite proxy).
+    candidates.push('');
 
     // Only use an explicit backend URL. Avoid implicit localhost fallback,
     // which causes noisy ERR_CONNECTION_REFUSED logs when backend is not running.
@@ -92,6 +90,50 @@ const subscribeViaBackend = async (payload) => {
     return { ok: false, failures };
 };
 
+const unsubscribeViaBackend = async (email) => {
+    const failures = [];
+
+    if (API_BASE_CANDIDATES.length === 0) {
+        return { ok: false, failures };
+    }
+
+    for (const apiBase of API_BASE_CANDIDATES) {
+        const requestUrl = `${apiBase}/api/briefs/unsubscribe`;
+        const displayUrl = apiBase === '' ? `(same-origin)/api/briefs/unsubscribe` : requestUrl;
+
+        try {
+            const response = await fetch(requestUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            if (response.ok) {
+                return { ok: true, failures };
+            }
+
+            let responseDetail = '';
+            try {
+                const text = await response.text();
+                if (text) {
+                    responseDetail = ` | ${text.slice(0, 300)}`;
+                }
+            } catch {
+                // Ignore body-read errors and keep status-based failure output.
+            }
+
+            failures.push(`${displayUrl} -> ${response.status} ${response.statusText}${responseDetail}`);
+        } catch (error) {
+            failures.push(`${displayUrl} -> network error: ${error?.message || 'unknown error'}`);
+        }
+    }
+
+    return { ok: false, failures };
+};
+
 const subscribeViaSupabase = async (payload) => {
     try {
         const { error } = await supabase
@@ -123,6 +165,29 @@ const subscribeViaSupabase = async (payload) => {
     }
 };
 
+const unsubscribeViaSupabase = async (email) => {
+    try {
+        const { error } = await supabase
+            .from('equathora_briefs_list')
+            .delete()
+            .eq('email', email);
+
+        if (!error) {
+            return { ok: true, failure: null };
+        }
+
+        return {
+            ok: false,
+            failure: `supabase delete failed: ${error?.code || 'unknown'} ${error?.message || ''}`.trim(),
+        };
+    } catch (error) {
+        return {
+            ok: false,
+            failure: `supabase network error: ${error?.message || 'unknown error'}`,
+        };
+    }
+};
+
 // Fix #8: validate fields individually so the error message identifies the
 // specific missing/invalid field rather than grouping both together.
 const validatePayload = (payload) => {
@@ -130,6 +195,12 @@ const validatePayload = (payload) => {
         throw new Error('Please enter your full name.');
     }
     if (!payload.email) {
+        throw new Error('Please enter your email address.');
+    }
+};
+
+const validateEmailOnly = (email) => {
+    if (!email) {
         throw new Error('Please enter your email address.');
     }
 };
@@ -165,4 +236,50 @@ export async function subscribeToEquathoraBriefs(data) {
     });
 
     throw new Error(SUBSCRIBE_ERROR_MESSAGE);
+}
+
+export async function unsubscribeFromEquathoraBriefs(emailInput) {
+    const email = String(emailInput || '').trim().toLowerCase();
+
+    validateEmailOnly(email);
+
+    const backendResult = await unsubscribeViaBackend(email);
+    if (backendResult.ok) return;
+
+    const supabaseResult = await unsubscribeViaSupabase(email);
+    if (supabaseResult.ok) return;
+
+    console.error('Equathora briefs unsubscribe failed', {
+        backendFailures: backendResult.failures,
+        supabaseFailure: supabaseResult.failure,
+    });
+
+    throw new Error(UNSUBSCRIBE_ERROR_MESSAGE);
+}
+
+export async function isSubscribedToEquathoraBriefs(emailInput) {
+    const email = String(emailInput || '').trim().toLowerCase();
+
+    if (!email) return false;
+
+    try {
+        const { data, error } = await supabase
+            .from('equathora_briefs_list')
+            .select('email')
+            .eq('email', email)
+            .limit(1)
+            .maybeSingle();
+
+        if (error) {
+            throw error;
+        }
+
+        return Boolean(data?.email);
+    } catch (error) {
+        console.warn('Unable to resolve briefs subscription status', {
+            email,
+            reason: error?.message || 'unknown error',
+        });
+        return false;
+    }
 }

@@ -45,7 +45,7 @@ const ApplyMentor = () => {
                     <div className='flex flex-col items-center gap-6'>
                         <div className='text-center flex flex-col gap-2'>
                             <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>Why Become a Mentor?</h2>
-                            <p className='text-sm md:text-base text-gray-600 max-w-2xl'>
+                            <p className='text-sm md:text-base text-[var(--mid-main-secondary)] max-w-2xl'>
                                 Join a vibrant community making math accessible and enjoyable for everyone
                             </p>
                         </div>
@@ -53,37 +53,37 @@ const ApplyMentor = () => {
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full'>
                             {[
                                 {
-                                    icon: <FaGraduationCap className='text-xl' />,
+                                    icon: <FaGraduationCap className='text-xl text-white' />,
                                     title: 'Reinforce Expertise',
                                     description: 'Master subjects by teaching. Solidify understanding while helping others learn.',
                                     gradient: 'from-blue-500 to-cyan-500'
                                 },
                                 {
-                                    icon: <FaUsers className='text-xl' />,
+                                    icon: <FaUsers className='text-xl text-white' />,
                                     title: 'Build Network',
                                     description: 'Connect with educators, students, and mentors worldwide.',
                                     gradient: 'from-purple-500 to-pink-500'
                                 },
                                 {
-                                    icon: <FaHeart className='text-xl' />,
+                                    icon: <FaHeart className='text-xl text-white' />,
                                     title: 'Make Impact',
                                     description: 'Inspire students to fall in love with mathematics and logic.',
                                     gradient: 'from-red-500 to-orange-500'
                                 },
                                 {
-                                    icon: <FaStar className='text-xl' />,
+                                    icon: <FaStar className='text-xl text-white' />,
                                     title: 'Earn Recognition',
                                     description: 'Build reputation with badges and testimonials from students.',
                                     gradient: 'from-yellow-500 to-orange-500'
                                 },
                                 {
-                                    icon: <FaCheckCircle className='text-xl' />,
+                                    icon: <FaCheckCircle className='text-xl text-white' />,
                                     title: 'Flexible Schedule',
                                     description: 'Mentor on your time. No commitments, contribute when you can.',
                                     gradient: 'from-green-500 to-teal-500'
                                 },
                                 {
-                                    icon: <FaChalkboardTeacher className='text-xl' />,
+                                    icon: <FaChalkboardTeacher className='text-xl text-white' />,
                                     title: 'Free Tools',
                                     description: 'Access platform features to track progress and engage students.',
                                     gradient: 'from-indigo-500 to-blue-500'
@@ -101,7 +101,7 @@ const ApplyMentor = () => {
                                         {benefit.icon}
                                     </div>
                                     <h3 className='relative text-base md:text-lg font-bold'>{benefit.title}</h3>
-                                    <p className='relative text-sm text-gray-600 leading-relaxed'>{benefit.description}</p>
+                                    <p className='relative text-sm text-[var(--mid-main-secondary)] leading-relaxed'>{benefit.description}</p>
                                 </motion.div>
                             ))}
                         </div>
@@ -118,7 +118,7 @@ const ApplyMentor = () => {
                             <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>
                                 Who Can <span className='text-[var(--accent-color)]'>Apply?</span>
                             </h2>
-                            <p className='text-sm md:text-base text-gray-600 max-w-2xl'>
+                            <p className='text-sm md:text-base text-[var(--mid-main-secondary)] max-w-2xl'>
                                 All backgrounds welcome, share your passion for teaching
                             </p>
                         </div>
@@ -143,7 +143,7 @@ const ApplyMentor = () => {
                                         <FaUsers />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Community Mentors</h3>
-                                    <p className='text-sm text-gray-600 leading-relaxed'>
+                                    <p className='text-sm text-[var(--mid-main-secondary)] leading-relaxed'>
                                         Guide students publicly, answer questions, and share solutions that inspire the community.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>
@@ -176,7 +176,7 @@ const ApplyMentor = () => {
                                         <FaChalkboardTeacher />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Teachers</h3>
-                                    <p className='text-sm text-gray-600 leading-relaxed'>
+                                    <p className='text-sm text-[var(--mid-main-secondary)] leading-relaxed'>
                                         Track student progress, assign problems, and provide personalized classroom feedback.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>
@@ -206,7 +206,7 @@ const ApplyMentor = () => {
                                         <FaHeart />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Parents</h3>
-                                    <p className='text-sm text-gray-600 leading-relaxed'>
+                                    <p className='text-sm text-[var(--mid-main-secondary)] leading-relaxed'>
                                         Monitor your child's learning journey and provide encouragement where needed.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>

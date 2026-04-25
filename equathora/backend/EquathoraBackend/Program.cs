@@ -287,9 +287,60 @@ app.MapPost("/api/briefs/subscribe", async (BriefsSubscriptionRequest req, AppDb
     }
     catch (Exception ex)
     {
-        logger.LogError(ex, "Failed to save Equathora briefs subscription for {Email}", normalizedEmail);
+        var atIndex = normalizedEmail.IndexOf('@');
+        var redactedEmail = "***";
+
+        if (atIndex > 0 && atIndex < normalizedEmail.Length - 1)
+        {
+            var localPart = normalizedEmail[..atIndex];
+            var domainPart = normalizedEmail[(atIndex + 1)..];
+
+            var visibleLocal = localPart[..Math.Min(2, localPart.Length)];
+            var dotIndex = domainPart.IndexOf('.');
+            var domainName = dotIndex >= 0 ? domainPart[..dotIndex] : domainPart;
+            var domainSuffix = dotIndex >= 0 ? domainPart[dotIndex..] : string.Empty;
+            var visibleDomain = domainName[..Math.Min(2, domainName.Length)];
+
+            redactedEmail = $"{visibleLocal}***@{visibleDomain}***{domainSuffix}";
+        }
+
+        var logSafeEmail = redactedEmail.Replace("\r", string.Empty).Replace("\n", string.Empty);
+
+        logger.LogError(ex, "Failed to save Equathora briefs subscription for {Email}", logSafeEmail);
         return Results.Problem(
             detail: "Unable to save subscription right now.",
+            statusCode: StatusCodes.Status500InternalServerError);
+    }
+});
+
+app.MapPost("/api/briefs/unsubscribe", async (BriefsUnsubscribeRequest req, AppDbContext db, ILogger<Program> logger) =>
+{
+    var normalizedEmail = (req.Email ?? string.Empty).Trim().ToLowerInvariant();
+
+    if (string.IsNullOrWhiteSpace(normalizedEmail) || normalizedEmail.Length > 255)
+    {
+        return Results.BadRequest(new { error = "Please provide a valid email address." });
+    }
+
+    if (!Regex.IsMatch(normalizedEmail, "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100)))
+    {
+        return Results.BadRequest(new { error = "Please provide a valid email address." });
+    }
+
+    try
+    {
+        await db.Database.ExecuteSqlInterpolatedAsync($@"
+            DELETE FROM public.equathora_briefs_list
+            WHERE email = {normalizedEmail};
+        ");
+
+        return Results.Ok(new { message = "Unsubscribed successfully." });
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Failed to remove Equathora briefs subscription for {Email}", normalizedEmail);
+        return Results.Problem(
+            detail: "Unable to update subscription right now.",
             statusCode: StatusCodes.Status500InternalServerError);
     }
 });
@@ -1531,3 +1582,4 @@ sealed class AnalyticsCountRow
 }
 
 sealed record BriefsSubscriptionRequest(string FullName, string Email);
+sealed record BriefsUnsubscribeRequest(string Email);

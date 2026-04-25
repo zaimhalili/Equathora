@@ -19,6 +19,11 @@ import {
     resolveThemePreference,
     setThemePreference,
 } from '../lib/theme';
+import {
+    subscribeToEquathoraBriefs,
+    unsubscribeFromEquathoraBriefs,
+    isSubscribedToEquathoraBriefs,
+} from '../lib/equathoraBriefsService';
 
 // ============================================================================
 // REUSABLE UI PIECES
@@ -43,12 +48,12 @@ const SectionTitle = ({ children, sub }) => (
 );
 
 const InputField = ({ label, description, ...props }) => (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-1.5 theme-lock">
         <label className="text-sm font-semibold text-[var(--secondary-color)]">{label}</label>
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <input
             {...props}
-            className="text-sm border rounded-md px-4 py-3 w-full border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
+            className="text-lg font-black border rounded-md px-4 py-3 w-full border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
         />
     </div>
 );
@@ -106,10 +111,10 @@ const PrimaryButton = ({ children, onClick, disabled, loading, className = '', t
         title={title}
         onClick={onClick}
         disabled={disabled || loading}
-        className={`cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-[var(--white)] font-bold text-sm rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
+        className={`cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-bold text-sm rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
     >
         {loading && (
-            <svg className="animate-spin h-4 w-4 text-[var(--white)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -124,10 +129,10 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
         onClick={onClick}
         disabled={disabled || loading}
         title={title}
-        className="cursor-pointer py-2.5 px-5 bg-red-600 text-[var(--white)] font-bold text-sm rounded-md hover:bg-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-bold text-lg rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
     >
         {loading && (
-            <svg className="animate-spin h-4 w-4 text-[var(--white)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -331,7 +336,15 @@ const Settings = () => {
                 // Fetch user settings
                 const userSettings = await getUserSettings();
                 const normalizedTheme = normalizeThemePreference(userSettings?.theme);
-                setSettings(prev => ({ ...prev, ...userSettings, theme: normalizedTheme }));
+                const accountEmail = String(session.user.email || '').trim().toLowerCase();
+                const isBriefsSubscribed = await isSubscribedToEquathoraBriefs(accountEmail);
+
+                setSettings(prev => ({
+                    ...prev,
+                    ...userSettings,
+                    theme: normalizedTheme,
+                    email_notifications: isBriefsSubscribed,
+                }));
                 setThemePreference(normalizedTheme, { persist: true });
 
                 // Fetch session info
@@ -509,6 +522,72 @@ const Settings = () => {
         setSettings(prev => ({ ...prev, [key]: value }));
     };
 
+    const handleEmailNotificationsToggle = async (enabled) => {
+        const previousValue = settings.email_notifications;
+        const nextSettings = { ...settings, email_notifications: enabled };
+
+        setSettings(prev => ({ ...prev, email_notifications: enabled }));
+        setSettingsSaving(true);
+        setSettingsMessage({ text: '', type: 'success' });
+
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                throw new Error('Please sign in again and retry.');
+            }
+
+            const accountEmail = String(session.user?.email || '').trim().toLowerCase();
+            if (!accountEmail) {
+                throw new Error('Your account email could not be found.');
+            }
+
+            if (enabled) {
+                const fallbackName = accountEmail.includes('@')
+                    ? accountEmail.split('@')[0]
+                    : 'Equathora User';
+                const accountName = String(
+                    profileData.full_name
+                    || session.user?.user_metadata?.full_name
+                    || session.user?.user_metadata?.name
+                    || fallbackName
+                ).trim();
+
+                await subscribeToEquathoraBriefs({
+                    full_name: accountName,
+                    email: accountEmail,
+                });
+            } else {
+                await unsubscribeFromEquathoraBriefs(accountEmail);
+            }
+
+            const settingsSaved = await saveUserSettings(nextSettings);
+            if (!settingsSaved) {
+                setSettingsMessage({
+                    text: enabled
+                        ? 'Added to Equathora Briefs, but could not persist this preference yet.'
+                        : 'Removed from Equathora Briefs, but could not persist this preference yet.',
+                    type: 'warning',
+                });
+                return;
+            }
+
+            setSettingsMessage({
+                text: enabled
+                    ? 'Email notifications enabled. You were added to Equathora Briefs.'
+                    : 'Email notifications disabled. You were removed from Equathora Briefs.',
+                type: 'success',
+            });
+        } catch (error) {
+            setSettings(prev => ({ ...prev, email_notifications: previousValue }));
+            setSettingsMessage({
+                text: error?.message || 'Could not update email notification preference right now.',
+                type: 'error',
+            });
+        } finally {
+            setSettingsSaving(false);
+        }
+    };
+
     const handleSaveSettings = async () => {
         setSettingsSaving(true);
         setSettingsMessage({ text: '', type: 'success' });
@@ -621,8 +700,8 @@ const Settings = () => {
             <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-[var(--secondary-color)] font-[Sansation,sans-serif]">
                 {/* Header */}
                 <div className="w-full flex flex-col items-center gap-2 pt-8 pb-4 px-4">
-                    <h1 className="font-bold text-3xl lg:text-4xl">Settings</h1>
-                    <p className="text-sm text-[var(--mid-main-secondary)]">Manage your account, security, and preferences</p>
+                    <h1 className="font-bold text-4xl">Settings</h1>
+                    <p className="text-md text-[var(--secondary-color)]">Manage your account, security, and preferences</p>
                 </div>
 
                 {/* Content wrapper */}
@@ -768,11 +847,11 @@ const Settings = () => {
                             <SectionTitle sub="Manage your email, password, and security settings">Account & Security</SectionTitle>
 
                             {/* Current email */}
-                            <div className="flex flex-col gap-1 bg-gray-50 rounded-md px-4 py-3">
+                            <div className="flex flex-col gap-1 bg-[var(--main-color)] rounded-md px-4 py-3">
                                 <span className="text-xs font-semibold text-[var(--mid-main-secondary)]">Current email</span>
                                 <span className="text-sm font-bold">{currentEmail}</span>
                                 {authProvider !== 'email' && (
-                                    <span className="text-xs text-[var(--accent-color)] font-semibold">
+                                    <span className="text-xs text-[var(--mid-main-secondary)] font-semibold">
                                         Signed in via {authProvider === 'google' ? 'Google' : authProvider}
                                     </span>
                                 )}
@@ -780,7 +859,7 @@ const Settings = () => {
 
                             {/* Change email */}
                             {authProvider === 'email' && (
-                                <div className="flex flex-col gap-3 border-t border-gray-100 pt-4">
+                                <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
                                     <h3 className="text-base font-bold">Change Email</h3>
                                     <InputField
                                         label="New Email Address"
@@ -800,7 +879,7 @@ const Settings = () => {
 
                             {/* Change password */}
                             {authProvider === 'email' && (
-                                <div className="flex flex-col gap-3 border-t border-gray-100 pt-4">
+                                <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
                                     <h3 className="text-base font-bold">Change Password</h3>
                                     <p className="text-xs text-[var(--mid-main-secondary)]">
                                         Minimum 8 characters with uppercase, lowercase, and a number.
@@ -840,7 +919,7 @@ const Settings = () => {
                             )}
 
                             {authProvider !== 'email' && (
-                                <div className="flex flex-col gap-2 border-t border-gray-100 pt-4">
+                                <div className="flex flex-col gap-2 border-t border-[var(--mid-main-secondary)] pt-4">
                                     <p className="text-sm text-[var(--mid-main-secondary)]">
                                         Your account is managed through {authProvider === 'google' ? 'Google' : authProvider}.
                                         Email and password changes must be made through your provider.
@@ -864,7 +943,7 @@ const Settings = () => {
                                 />
 
                                 <div className={`flex flex-col gap-1 transition-opacity ${!settings.notifications_enabled ? 'opacity-40 pointer-events-none' : ''}`}>
-                                    <div className="border-t border-gray-100 pt-2">
+                                    <div className="border-t border-[var(--mid-main-secondary)] pt-2">
                                         <ToggleSwitch
                                             label="Achievement Alerts"
                                             description="Notified when you unlock a new achievement"
@@ -909,13 +988,13 @@ const Settings = () => {
                                         />
                                     </div>
 
-                                    <div className="border-t border-gray-100 pt-3">
+                                    <div className="border-t border-[var(--mid-main-secondary)] pt-3">
                                         <ToggleSwitch
                                             label="Email Notifications"
                                             description="Receive important updates via email (weekly digest)"
                                             checked={settings.email_notifications}
-                                            onChange={v => handleSettingChange('email_notifications', v)}
-                                            disabled={!settings.notifications_enabled}
+                                            onChange={handleEmailNotificationsToggle}
+                                            disabled={!settings.notifications_enabled || settingsSaving}
                                         />
                                     </div>
                                 </div>
@@ -1003,7 +1082,7 @@ const Settings = () => {
                                 />
                             </div>
 
-                            <div className="flex flex-col gap-3 border-t border-gray-100 pt-4">
+                            <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
                                 <h3 className="text-base font-bold">Data & Cookies</h3>
                                 <p className="text-xs text-[var(--mid-main-secondary)]">
                                     We use essential cookies for authentication and localStorage for offline progress tracking.
@@ -1057,7 +1136,7 @@ const Settings = () => {
                                 <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
                             </AnimatePresence>
 
-                            <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start">
+                            <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start text-white">
                                 Save Privacy Settings
                             </PrimaryButton>
                         </SectionCard>
@@ -1070,7 +1149,7 @@ const Settings = () => {
 
                             {currentSession ? (
                                 <div className="flex flex-col gap-3">
-                                    <div className="flex items-start gap-4 bg-gray-50 rounded-md px-4 py-4">
+                                    <div className="flex items-start gap-4 bg-[var(--main-color)] rounded-md px-4 py-4">
                                         <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full shrink-0">
                                             <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1099,7 +1178,7 @@ const Settings = () => {
                             </AnimatePresence>
 
                             <div className="flex items-center gap-3">
-                                <PrimaryButton onClick={handleSignOutOthers} loading={sessionLoading}>
+                                <PrimaryButton onClick={handleSignOutOthers} loading={sessionLoading} className='text-white'>
                                     Sign Out Other Sessions
                                 </PrimaryButton>
                             </div>
