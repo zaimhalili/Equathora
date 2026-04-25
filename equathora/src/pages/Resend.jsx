@@ -3,6 +3,7 @@ import './Resend.css';
 import BackgroundPolygons from '../components/BackgroundPolygons';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
+import Sigma from '../assets/logo/TransparentSymbol.png';
 import { supabase } from '../lib/supabaseClient';
 
 const Resend = () => {
@@ -41,7 +42,10 @@ const Resend = () => {
     <main id='body-resend'>
       <section id='resend-container'>
         <article id='resend-logo-name'>
-          <img src={Logo} alt="Logo" className='w-70' />
+          <p className='font-[Sansation,Arial] pl-6 text-3xl font-black relative select-none'>
+            <img src={Sigma} alt="Logo" className='w-11 h-11 absolute -left-5 -top-[11px] pointer-events-none' />
+            Equathora
+          </p>
         </article>
         <article id='resend-text-container'>
           <h3>Resend confirmation instructions</h3>

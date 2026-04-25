@@ -9,6 +9,7 @@ import GoogleAuth from '../components/GoogleAuth.jsx';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import Sigma from '../assets/logo/TransparentSymbol.png';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -83,20 +84,23 @@ const Login = () => {
     <>
       <main id='body-login'>
         <section id='login-container'>
-          <div id='login-logo-name'>
-            <img src={Logo} alt="Logo" id='login-logoIMG' className='w-70' />
+          <div id='login-logo-name' className='relative'>
+            <p className='font-[Sansation,Arial] pl-6 text-3xl font-black relative select-none'>
+              <img src={Sigma} alt="Logo" className='w-11 h-11 absolute -left-5 -top-[11px] pointer-events-none' />
+              Equathora
+            </p>
           </div>
           <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleLogin} /></div>
 
           <form id='auth' onSubmit={handleLogin}>
             {error && (
               <div style={{
-                backgroundColor: '#fee',
-                border: '1px solid #fcc',
+                backgroundColor: 'var(--white)',
+                border: '1px solid var(--raisin-black)',
                 borderRadius: '8px',
                 padding: '12px 16px',
                 marginBottom: '16px',
-                color: '#c33',
+                color: 'var(--accent-color',
                 fontSize: '14px',
                 fontFamily: 'Sansation, sans-serif'
               }}>
@@ -162,7 +166,7 @@ const Login = () => {
             </div>
           </form>
         </section>
-        <aside id="background-container"><BackgroundPolygons /></aside>
+        <aside id="background-container" className='pointer-events-none'><BackgroundPolygons /></aside>
       </main>
     </>
   );

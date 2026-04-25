@@ -10,6 +10,7 @@ import '../components/Auth.css';
 import { supabase } from '../lib/supabaseClient';
 import { notifyWelcome } from '../lib/notificationService';
 import { validatePassword } from "../utils/passwordUtil";
+import Sigma from '../assets/logo/TransparentSymbol.png';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 
 const Signup = () => {
@@ -123,19 +124,22 @@ const Signup = () => {
     <main id='body-signup'>
       <section id='signup-container'>
         <div id='signup-logo-name'>
-          <img src={Logo} alt="Logo" id='signup-logoIMG' className='w-70' />
+          <p className='font-[Sansation,Arial] pl-6 text-3xl font-black relative select-none'>
+            <img src={Sigma} alt="Logo" className='w-11 h-11 absolute -left-5 -top-[11px] pointer-events-none' />
+            Equathora
+          </p>
         </div>
         <div style={{ width: '100%' }}><GoogleAuth onClick={GoogleSignup} /></div>
 
         <form id='auth' onSubmit={handleSignup}>
           {error && (
             <div style={{
-              backgroundColor: '#fee',
-              border: '1px solid #fcc',
+              backgroundColor: 'var(--white)',
+              border: '1px solid var(--raisin-black)',
               borderRadius: '8px',
               padding: '12px 16px',
               marginBottom: '16px',
-              color: '#c33',
+              color: 'var(--accent-color)',
               fontSize: '14px',
               fontFamily: 'Sansation, sans-serif'
             }}>

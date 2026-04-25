@@ -2,11 +2,11 @@
 import React from 'react';
 import './GoogleAuth.css';
 
-const GoogleAuth = ({ onClick }) => { // 👈 Accept onClick as prop
+const GoogleAuth = ({ onClick }) => { 
     return (
         <>
             <div className="google-auth-container">
-                <button id="google-btn" onClick={onClick} className=' theme-lock'>
+                <button id="google-btn" onClick={onClick}>
                     <img
                         src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
                         alt="Google logo"

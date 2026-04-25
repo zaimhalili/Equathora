@@ -111,7 +111,7 @@
 }
 
 .auth-other-options-text {
-    color: black;
+    color: var(--secondary-color);
 }
 
 .other-option-link {

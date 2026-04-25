@@ -1,5 +1,4 @@
-// src/components/BackgroundPolygons.jsx
-import React from 'react';// Import your local image
+import React from 'react';
 import './BackgroundPolygons.css';
 import '../pages/Signup.css';
 
