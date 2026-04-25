@@ -73,15 +73,15 @@ const Hero = ({ onOpenBriefsModal }) => {
 
                                 {/* Trust Indicators */}
                                 <div className='flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs text-gray-400'>
-                                    <div className='flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded'>
+                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-[var(--white)]'>
                                         <FaCheckCircle className='text-green-400 flex-shrink-0' />
                                         <span>No commitment</span>
                                     </div>
-                                    <div className='flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded'>
+                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-[var(--white)]'>
                                         <FaCheckCircle className='text-green-400 flex-shrink-0' />
                                         <span>2 min signup</span>
                                     </div>
-                                    <div className='flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded'>
+                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-[var(--white)]'>
                                         <FaCheckCircle className='text-green-400 flex-shrink-0' />
                                         <span>Always free</span>
                                     </div>

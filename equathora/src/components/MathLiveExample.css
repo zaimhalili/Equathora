@@ -73,7 +73,6 @@
 .ml-steps-container {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
     padding-bottom: 1rem;
 }
 
@@ -132,12 +131,11 @@ math-field {
     --placeholder-color: var(--mid-main-secondary);
     --contains-highlight-background-color: var(--french-gray);
 
-    font-size: clamp(14px, 2vw, 20px);
-    color: #000;
+    font-size: clamp(22px, 2vw, 25px);
+    color: black;
     background: white;
     border: 2px solid var(--french-gray);
     padding: 0;
-    border-radius: 6px;
     display: block;
     min-height: 3rem;
     flex: 1;
@@ -157,7 +155,7 @@ math-field:hover {
     position: sticky;
     bottom: 0;
     background: var(--main-color);
-    padding: 1rem 1rem 1rem 1rem;
+    padding: 1rem;
     border-top: 2px dashed var(--french-gray);
     z-index: 10;
     flex-shrink: 0;
@@ -456,6 +454,7 @@ math-field::part(content) {
     left: 0 !important;
     right: 0 !important;
     z-index: 10001 !important;
+    cursor: pointer !important;
 }
 
 .ML__keyboard-toolbar {
@@ -465,6 +464,7 @@ math-field::part(content) {
     gap: 2px !important;
     padding: 4px !important;
     overflow-x: auto !important;
+    cursor: pointer !important;
 }
 
 .ML__keyboard-toolbar .ML__button {
@@ -472,6 +472,7 @@ math-field::part(content) {
     min-width: 32px !important;
     padding: 6px 8px !important;
     font-size: 13px !important;
+    cursor: pointer !important;
 }
 
 math-field:focus {

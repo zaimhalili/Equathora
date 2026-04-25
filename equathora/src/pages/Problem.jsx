@@ -1181,9 +1181,11 @@ const Problem = () => {
                                                                 </button>
                                                                 <div className={`transition-all duration-300 ease-in-out ${openHints[index] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                                                                     <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--mid-main-secondary)]">
-                                                                        <p className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed font-[Sansation] m-0">
-                                                                            {hint}
-                                                                        </p>
+                                                                        <MathJaxRenderer
+                                                                            content={hint}
+                                                                            className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed font-[Sansation] m-0"
+                                                                            as="p"
+                                                                        />
                                                                     </div>
                                                                 </div>
                                                             </div>
