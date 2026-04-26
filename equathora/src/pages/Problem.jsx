@@ -952,7 +952,7 @@ const Problem = () => {
                                 </button>
 
                                 {/* Need Help Button / Mentorship */}
-                                <button type="button" onClick={() => {
+                                {/* <button type="button" onClick={() => {
                                     setShowDescription(false);
                                     setShowSolution(false);
                                     setShowSubmissions(false);
@@ -968,7 +968,7 @@ const Problem = () => {
                                     </span>
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Need Help</span>}
                                     <FaGraduationCap className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
-                                </button>
+                                </button> */}
                             </div>
 
                             {/* Mobile Only - Toggle Collapse/Expand */}
@@ -1275,8 +1275,8 @@ const Problem = () => {
                                     </div>
                                 </div>}
 
-                                {/* Show Mentor Chat State Check */}
-                                {showMentorChat && <MentorChat />}
+                                {/* Show Mentor Chat State Check
+                                {showMentorChat && <MentorChat />} */}
                             </div>
                         </article>
                     </aside>
