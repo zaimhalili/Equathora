@@ -107,6 +107,8 @@ Program.cs
 *.pdf
 *.txt
 *.md
+*.drawio
+*.excalibur
 
 # Private books content - ignore any books directory anywhere in the repo
 **/books/

@@ -1,4 +1,3 @@
-// ProblemDetail.jsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Navbar from '@/components/Navbar.jsx';
 import { useParams, Link, useNavigate } from 'react-router-dom';
@@ -13,16 +12,16 @@ import ProblemMobileMenu from '../components/ProblemMobileMenu.jsx';
 import StreakPopup from '../components/StreakPopup.jsx';
 import AchievementPopup from '../components/AchievementPopup.jsx';
 import InsightPanel from '../components/InsightPanel.jsx';
+import MentorChat from '../components/ProblemModals/MentorChat.jsx';
 import {
     ReportModal,
     HelpModal,
     ViewSolutionModal,
     SubmissionDetailModal
 } from '../components/ProblemModals';
-import { FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft } from 'react-icons/fa';
-import { FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle } from 'react-icons/fa';
-import { FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar } from 'react-icons/fa';
-import { FaRegStar, FaPencilAlt } from 'react-icons/fa';
+import {
+    FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaRegStar, FaPencilAlt, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft, FaGraduationCap
+} from 'react-icons/fa';
 import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
 import {
@@ -184,6 +183,7 @@ const Problem = () => {
     const [showReportModal, setShowReportModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
     const [showSubmissions, setShowSubmissions] = useState(false);
+    const [showMentorChat, setShowMentorChat] = useState(false);
     const [reportReason, setReportReason] = useState('');
     const [reportDetails, setReportDetails] = useState('');
     const [selectedSubmission, setSelectedSubmission] = useState(null);
@@ -353,6 +353,7 @@ const Problem = () => {
         setShowSolutionPopup(false);
         setShowDescription(true);
         setShowSubmissions(false);
+        setShowMentorChat(false);
         setShowTop(false);
         setDescriptionCollapsed(false);
         setOpenHints({});
@@ -723,7 +724,7 @@ const Problem = () => {
         <>
             {/* <FeedbackBanner /> */}
             {/* <Navbar></Navbar> */}
-            <main className="flex flex-col text-[var(--secondary-color)]">
+            <main className="flex flex-col text-[var(--secondary-color)] bg-[var(--mid-main-secondary)] ">
                 {/* Navigation Header */}
                 <header className="flex items-center justify-between gap-2 md:gap-3 font-[Sansation,sans-serif] bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0">
                     {/* Left side - Back button and Navigation */}
@@ -824,11 +825,13 @@ const Problem = () => {
                     onClose={() => {
                         setShowSolutionPopup(false);
                         setShowDescription(true);
+                        setShowMentorChat(false);
                     }}
                     onConfirm={() => {
                         setShowSolution(true);
                         setShowSolutionPopup(false);
                         setSolutionViewed(true);
+                        setShowMentorChat(false);
                     }}
                 />
 
@@ -891,16 +894,19 @@ const Problem = () => {
 
                 {/* Main Content */}
                 <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 lg:max-h-[calc(100vh-80px)] lg:overflow-hidden">
-                    {/* Description Side */}
-                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] lg:h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2'}`}>
+                    {/* Description Side Left Side */}
+                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] lg:h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 xl:min-h-[calc(100vh-100px)]'}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
                             <div className={`flex gap-1 ${descriptionCollapsed ? 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full' : ''}`}>
+
+                                {/* Description Button */}
                                 <button type="button" onClick={() => {
                                     setShowDescription(true);
                                     setShowSolutionPopup(false);
                                     setShowSolution(false);
                                     setShowTop(false);
                                     setShowSubmissions(false);
+                                    setShowMentorChat(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Description</span>
@@ -908,10 +914,12 @@ const Problem = () => {
                                     <FaFileAlt className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
                                 </button>
 
+                                {/* Solutions Button */}
                                 <button type="button" onClick={() => {
                                     setShowDescription(false);
                                     setShowTop(false);
                                     setShowSubmissions(false);
+                                    setShowMentorChat(false);
                                     if (!solutionViewed && !isCompleted) {
                                         setShowSolutionPopup(true);
                                     } else {
@@ -924,16 +932,42 @@ const Problem = () => {
                                     <FaCalculator className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
                                 </button>
 
+                                {/* Submissions Button */}
                                 <button type="button" onClick={() => {
                                     setShowDescription(false);
                                     setShowSolution(false);
                                     setShowSubmissions(true);
                                     setShowTop(false);
+                                    setShowMentorChat(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
-                                    <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Submissions</span>
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 
+                                ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} 
+                                ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
+                                    style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
+                                    <span className={descriptionCollapsed ? 'lg:hidden' : ''}>
+                                        Submissions
+                                    </span>
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Submissions</span>}
                                     <FaList className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
+                                </button>
+
+                                {/* Need Help Button / Mentorship */}
+                                <button type="button" onClick={() => {
+                                    setShowDescription(false);
+                                    setShowSolution(false);
+                                    setShowSubmissions(false);
+                                    setShowTop(false);
+                                    setShowMentorChat(true);
+                                    if (descriptionCollapsed) setDescriptionCollapsed(false);
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 
+                                ${showMentorChat && !showDescription ? 'bg-[var(--main-color)]' : ''} 
+                                ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
+                                    style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Need Help" : ""}>
+                                    <span className={descriptionCollapsed ? 'lg:hidden' : ''}>
+                                        Need Help
+                                    </span>
+                                    {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Need Help</span>}
+                                    <FaGraduationCap className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
                                 </button>
                             </div>
 
@@ -1002,65 +1036,8 @@ const Problem = () => {
                                     </div>
                                 )}
 
-                                {showSolution ? (
-                                    <SolutionStepsDisplay
-                                        solution={problem.solution}
-                                    />
-                                ) : showSubmissions ? (
-                                    <div>
-                                        <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Sansation,sans-serif] pb-4">Your Submissions</h2>
-                                        <div className="flex flex-col gap-2">
-                                            {submissions.map((submission) => (
-                                                <div
-                                                    key={submission.id}
-                                                    onClick={() => {
-                                                        setSelectedSubmission(submission);
-                                                        setShowSubmissionDetail(true);
-                                                    }}
-                                                    className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-md border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/30' :
-                                                        submission.status === 'wrong' ? 'border-red-500 hover:bg-[var(--french-gray)]/30' :
-                                                            'border-yellow-500 hover:bg-[var(--french-gray)]/30'
-                                                        }`}
-                                                >
-                                                    <div className="flex flex-wrap justify-between items-center gap-2">
-                                                        <div className="flex items-center gap-2 min-w-0 flex-1">
-                                                            {submission.status === 'accepted' && <FaCheckCircle className="text-green-600 text-xs flex-shrink-0" />}
-                                                            {submission.status === 'wrong' && <FaTimesCircle className="text-red-600 text-xs flex-shrink-0" />}
-                                                            <span className={`text-xs font-semibold truncate ${submission.status === 'accepted' ? 'text-green-600' :
-                                                                submission.status === 'wrong' ? 'text-red-600' :
-                                                                    'text-yellow-600'
-                                                                }`}>
-                                                                {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong' : 'Pending'}
-                                                            </span>
-                                                            <span className="text-[10px] text-gray-500 hidden sm:inline">•</span>
-                                                            <span className="text-[10px] text-gray-500 hidden sm:inline">{submission.steps.length} steps</span>
-                                                        </div>
-                                                        <div className="flex items-center gap-3 text-[10px] text-gray-500 flex-shrink-0">
-                                                            {typeof submission.metadata?.hintsUsed === 'number' && (
-                                                                <span>{submission.metadata.hintsUsed} hints</span>
-                                                            )}
-                                                            {submission.metadata?.timeSpentLabel && (
-                                                                <span>{submission.metadata.timeSpentLabel}</span>
-                                                            )}
-                                                            <div className="flex items-center gap-1">
-                                                                <FaClock className="text-[8px]" />
-                                                                <span>{new Date(submission.timestamp).toLocaleString('en-US', {
-                                                                    month: 'short',
-                                                                    day: 'numeric',
-                                                                    hour: 'numeric',
-                                                                    minute: '2-digit'
-                                                                })}</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            {submissions.length === 0 && (
-                                                <p className="text-center text-sm text-gray-500 py-8">No submissions yet. Start solving to see your history!</p>
-                                            )}
-                                        </div>
-                                    </div>
-                                ) : (
+                                {/* Show Description State Check */}
+                                {showDescription &&
                                     <>
                                         {/* Problem Description */}
                                         <div>
@@ -1236,14 +1213,76 @@ const Problem = () => {
                                             )}
                                         </div>
                                     </>
-                                )}
+                                }
 
+                                {/* Show Solution State Check */}
+                                {showSolution && <SolutionStepsDisplay
+                                    solution={problem.solution}
+                                />}
+
+                                {/* Show Submissions State Check */}
+                                {showSubmissions && <div>
+                                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Sansation,sans-serif] pb-4">Your Submissions</h2>
+                                    <div className="flex flex-col gap-2">
+                                        {submissions.map((submission) => (
+                                            <div
+                                                key={submission.id}
+                                                onClick={() => {
+                                                    setSelectedSubmission(submission);
+                                                    setShowSubmissionDetail(true);
+                                                }}
+                                                className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-md border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/30' :
+                                                    submission.status === 'wrong' ? 'border-red-500 hover:bg-[var(--french-gray)]/30' :
+                                                        'border-yellow-500 hover:bg-[var(--french-gray)]/30'
+                                                    }`}
+                                            >
+                                                <div className="flex flex-wrap justify-between items-center gap-2">
+                                                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                                                        {submission.status === 'accepted' && <FaCheckCircle className="text-green-600 text-xs flex-shrink-0" />}
+                                                        {submission.status === 'wrong' && <FaTimesCircle className="text-red-600 text-xs flex-shrink-0" />}
+                                                        <span className={`text-xs font-semibold truncate ${submission.status === 'accepted' ? 'text-green-600' :
+                                                            submission.status === 'wrong' ? 'text-red-600' :
+                                                                'text-yellow-600'
+                                                            }`}>
+                                                            {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong' : 'Pending'}
+                                                        </span>
+                                                        <span className="text-[10px] text-gray-500 hidden sm:inline">•</span>
+                                                        <span className="text-[10px] text-gray-500 hidden sm:inline">{submission.steps.length} steps</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-3 text-[10px] text-gray-500 flex-shrink-0">
+                                                        {typeof submission.metadata?.hintsUsed === 'number' && (
+                                                            <span>{submission.metadata.hintsUsed} hints</span>
+                                                        )}
+                                                        {submission.metadata?.timeSpentLabel && (
+                                                            <span>{submission.metadata.timeSpentLabel}</span>
+                                                        )}
+                                                        <div className="flex items-center gap-1">
+                                                            <FaClock className="text-[8px]" />
+                                                            <span>{new Date(submission.timestamp).toLocaleString('en-US', {
+                                                                month: 'short',
+                                                                day: 'numeric',
+                                                                hour: 'numeric',
+                                                                minute: '2-digit'
+                                                            })}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {submissions.length === 0 && (
+                                            <p className="text-center text-sm text-gray-500 py-8">No submissions yet. Start solving to see your history!</p>
+                                        )}
+                                    </div>
+                                </div>}
+
+                                {/* Show Mentor Chat State Check */}
+                                {showMentorChat && <MentorChat />}
                             </div>
                         </article>
                     </aside>
 
 
-                    {/* Solution Side - Math Live*/}
+                    {/* Solving Side - Math Live*/}
                     <article className={`flex justify-start items-stretch flex-col w-full min-h-[500px] lg:h-full overflow-hidden rounded-md transition-all duration-300 ${descriptionCollapsed ? 'lg:w-full' : 'lg:w-1/2'}`}>
                         <MathLiveExample
                             key={`ml-${problem?.id}-${timerResetSeq}`}
