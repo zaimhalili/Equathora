@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
  * MathJaxRenderer - Renders text with LaTeX equations using MathJax
  * Automatically wraps mathematical expressions in $ delimiters
  */
-const MathJaxRenderer = ({ content, className = '', as = 'div' }) => {
+const MathJaxRenderer = ({ content, className = '', as = 'div', preferInlineMath = true }) => {
     const containerRef = useRef(null);
     const Component = as;
 
@@ -16,7 +16,12 @@ const MathJaxRenderer = ({ content, className = '', as = 'div' }) => {
         // Repair accidental control-char command prefixes and over-escaped LaTeX commands.
         normalized = normalized
             .replace(/\t(?=(?:imes|frac|dfrac|tfrac|sqrt|cdot|ext|pi|ightarrow)\b)/g, '\\')
-            .replace(/\\\\(?=(?:frac|dfrac|tfrac|sqrt|times|cdot|pi|Rightarrow|left|right|text|pm|mapsto|therefore)\b)/g, '\\');
+            .replace(/\\\\(?=(?:frac|dfrac|tfrac|sqrt|times|cdot|pi|Rightarrow|left|right|text|pm|mapsto|therefore)\b)/g, '\\')
+            // Normalize over-escaped math delimiters so we can consistently force inline rendering.
+            .replace(/\\\\\[/g, '\\[')
+            .replace(/\\\\\]/g, '\\]')
+            .replace(/\\\\\(/g, '\\(')
+            .replace(/\\\\\)/g, '\\)');
 
         return normalized;
     };
@@ -34,6 +39,13 @@ const MathJaxRenderer = ({ content, className = '', as = 'div' }) => {
             .replace(/[\t\r\n]+/g, ' ')
             .replace(/\s+/g, ' ')
             .trim();
+
+        // Convert display delimiters to inline when rendering prose to avoid forced line breaks.
+        if (preferInlineMath) {
+            clean = clean
+                .replace(/\\\[([\s\S]*?)\\\]/g, '\\($1\\)')
+                .replace(/\$\$([\s\S]*?)\$\$/g, '\\($1\\)');
+        }
 
         // If user already included delimiters or MathJax markers, leave as-is
         if (/\$[^$]+\$|\\\(|\\\[/.test(clean)) return clean;
@@ -95,7 +107,7 @@ const MathJaxRenderer = ({ content, className = '', as = 'div' }) => {
         typesetMath();
     }, [content]);
 
-    const mergedClassName = ['mathjax-renderer', className].filter(Boolean).join(' ');
+    const mergedClassName = ['mathjax-renderer', preferInlineMath ? 'mathjax-renderer-inline' : '', className].filter(Boolean).join(' ');
     return <Component ref={containerRef} className={mergedClassName} />;
 };
 

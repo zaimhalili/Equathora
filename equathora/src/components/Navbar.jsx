@@ -311,7 +311,7 @@ const Navbar = () => {
     <span className='relative flex items-center justify-center w-6 h-6 leading-none'>
       <FaBell className='w-6 h-6 block' />
       {unreadNotificationCount > 0 && (
-        <span className='absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-[var(--accent-color)] text-white text-[10px] leading-[18px] text-center font-bold'>
+        <span className='absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white text-[10px] leading-[18px] text-center font-bold'>
           {unreadNotificationCount > 99 ? '99+' : unreadNotificationCount}
         </span>
       )}

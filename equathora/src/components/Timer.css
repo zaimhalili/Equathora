@@ -1,6 +1,6 @@
 .stopwatch {
     padding: 0 0.75rem;
-    background-color: var(--accent-color);
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
     color: white;
     display: flex;
     align-items: center;

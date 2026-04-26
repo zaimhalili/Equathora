@@ -269,8 +269,7 @@ math-field:hover {
 }
 
 .ml-btn.submit {
-    background: var(--accent-color);
-    border-color: var(--accent-color);
+    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
     font-family: 'Sansation', sans-serif;
     font-weight: 700;
     color: white;
@@ -278,7 +277,7 @@ math-field:hover {
 }
 
 .ml-btn.submit:hover {
-    background: var(--dark-accent-color)
+    background: linear-gradient(360deg, var(--dark-accent-color), var(--dark-accent-color));
 }
 
 .ml-next-btn {

@@ -82,7 +82,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             </div>
 
                             {item.notificationsNo && (
-                                <div className="ml-auto flex items-center justify-center rounded-full h-5 w-5 text-[var(--white)] !bg-[var(--accent-color)] text-center">
+                                    <div className="ml-auto flex items-center justify-center rounded-full h-5 w-5 text-[var(--white)] !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-center">
                                     <h4 className='flex h-full items-center'>
                                         {item.notificationsNo}
                                     </h4>

@@ -912,7 +912,7 @@ const Problem = () => {
                                     setShowDescription(false);
                                     setShowTop(false);
                                     setShowSubmissions(false);
-                                    if (!solutionViewed) {
+                                    if (!solutionViewed && !isCompleted) {
                                         setShowSolutionPopup(true);
                                     } else {
                                         setShowSolution(true);
@@ -1152,7 +1152,7 @@ const Problem = () => {
                                                             </div>
                                                         </div>
                                                         {example.explanation && (
-                                                            <div className="pt-2 pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed font-[Sansation,sans-serif]">
+                                                            <div className="pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed font-[Sansation,sans-serif]">
                                                                 {example.explanation}
                                                             </div>
                                                         )}

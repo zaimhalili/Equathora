@@ -75,6 +75,18 @@ textarea {
     font-stretch: normal !important;
 }
 
+/* Keep display-delimited math inline in prose descriptions/hints. */
+.mathjax-renderer-inline mjx-container[display="true"] {
+    display: inline-block !important;
+    margin: 0 !important;
+    vertical-align: baseline;
+}
+
+.mathjax-renderer-inline mjx-container[display="true"] mjx-math,
+.mathjax-renderer-inline mjx-container[display="true"] svg {
+    display: inline !important;
+}
+
 
 @keyframes gradient {
     0% {
