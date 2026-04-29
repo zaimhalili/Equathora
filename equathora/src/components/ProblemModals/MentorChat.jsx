@@ -67,7 +67,7 @@ const MentorChat = () => {
             {/* Messages from both parties Chatting Area */}
             <aside className='flex-1 min-h-0 overflow-y-auto px-4 py-3 flex flex-col gap-3'>
                 {messages.map((msg) => (
-                    <div key={msg.id} className='w-full flex justify-end'>
+                    <div key={msg.id} className='w-full flex justify-end overflow-hidden'>
                         <div className='bg-[var(--french-gray)] w-fit max-w-[75%] rounded-md text-[var(--secondary-color)] px-3 py-2 text-right'>
                             {msg.text}
                         </div>
