@@ -952,7 +952,7 @@ const Problem = () => {
                                 </button>
 
                                 {/* Need Help Button / Mentorship */}
-                                {/* <button type="button" onClick={() => {
+                                <button type="button" onClick={() => {
                                     setShowDescription(false);
                                     setShowSolution(false);
                                     setShowSubmissions(false);
@@ -968,7 +968,7 @@ const Problem = () => {
                                     </span>
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Need Help</span>}
                                     <FaGraduationCap className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
-                                </button> */}
+                                </button>
                             </div>
 
                             {/* Mobile Only - Toggle Collapse/Expand */}
@@ -988,7 +988,7 @@ const Problem = () => {
 
                         <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex-col p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'max-h-[60vh] lg:max-h-full opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
 
-                            <div className={`w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 overflow-y-auto flex-1 problem-description-scroll lg:max-h-[calc(100vh-180px)]`}>
+                            <div className={`w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll ${showMentorChat ? 'overflow-hidden lg:max-h-full' : 'overflow-y-auto lg:max-h-[calc(100vh-180px)]'}`}>
                                 {/* Problem Title & Badges */}
                                 <div>
                                     <h1 className="font-[Sansation,sans-serif] text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold pb-2 md:pb-3">{problem.title}</h1>
@@ -1275,8 +1275,8 @@ const Problem = () => {
                                     </div>
                                 </div>}
 
-                                {/* Show Mentor Chat State Check
-                                {showMentorChat && <MentorChat />} */}
+                                {/* Show Mentor Chat State Check */}
+                                {showMentorChat && <MentorChat />}
                             </div>
                         </article>
                     </aside>
