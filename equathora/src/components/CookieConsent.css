@@ -20,7 +20,7 @@
 }
 
 .cookie-consent-banner {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    background: linear-gradient(135deg, var(--white) 0%, var(--french-gray) 100%);
     border-top: 3px solid var(--accent-color);
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
     padding: 1rem 4vw;
@@ -98,7 +98,7 @@
 .cookie-btn-decline {
     background: transparent;
     border: 1px solid #d1d5db;
-    color: #374151;
+    color: var(--secondary-color);
 }
 
 .cookie-btn-decline:hover {
