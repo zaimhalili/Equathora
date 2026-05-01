@@ -49,7 +49,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             key={i}
                             onClick={item.onClick}
                             role="menuitem"
-                            className='flex w-full p-2.5 gap-2.5 border-t border-x-0 border-b-0 border-[var(--mid-main-secondary)] items-center hover:bg-[var(--[var(--white)])] hover:rounded-[5px_5px_10px_10px] text-[var(--secondary-color)] text-left bg-transparent cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                            className='flex w-full p-2.5 gap-2.5 border-t border-x-0 border-b-0 border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] hover:rounded-[5px_5px_10px_10px] text-[var(--secondary-color)] text-left bg-transparent cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
                         >
                             <img
                                 src={item.image}
@@ -82,7 +82,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             </div>
 
                             {item.notificationsNo && (
-                                    <div className="ml-auto flex items-center justify-center rounded-full h-5 w-5 text-[var(--white)] !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-center">
+                                <div className="ml-auto flex items-center justify-center rounded-full h-5 w-5 text-[var(--white)] !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-center">
                                     <h4 className='flex h-full items-center'>
                                         {item.notificationsNo}
                                     </h4>
