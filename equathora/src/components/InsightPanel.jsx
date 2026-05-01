@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './InsightPanel.css';
+import { FaCheck } from 'react-icons/fa';
 
 /**
  * InsightPanel -- Navbar-attached feedback ribbon
@@ -38,12 +39,6 @@ const InsightPanel = ({
 
     if (!visible) return null;
 
-    const difficultyNorm = (difficulty || '').toLowerCase();
-    const difficultyClass =
-        difficultyNorm === 'easy' ? 'difficulty-easy' :
-            difficultyNorm === 'medium' ? 'difficulty-medium' :
-                difficultyNorm === 'hard' ? 'difficulty-hard' : '';
-
     return (
         <div className="insight-panel-overlay">
             <div className={`insight-panel${closing ? ' closing' : ''}`}>
@@ -54,9 +49,7 @@ const InsightPanel = ({
                         <div className="insight-top-row">
                             <div className="insight-status">
                                 <div className="insight-check-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                                        <polyline points="20 6 9 17 4 12" />
-                                    </svg>
+                                    <FaCheck className='h-3 w-3 !text-white'></FaCheck>
                                 </div>
                                 <span className="insight-title">Correct</span>
                             </div>
@@ -109,15 +102,6 @@ const InsightPanel = ({
                         {/* Row 2: Insight text + tags */}
                         <div className="insight-bottom-row">
                             <p className="insight-text">{insight}</p>
-
-                            <div className="insight-tags">
-                                {topic && (
-                                    <span className="insight-tag topic">{topic}</span>
-                                )}
-                                {difficulty && difficultyClass && (
-                                    <span className={`insight-tag ${difficultyClass}`}>{difficulty}</span>
-                                )}
-                            </div>
                         </div>
                     </div>
                 </div>

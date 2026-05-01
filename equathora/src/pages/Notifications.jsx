@@ -256,7 +256,7 @@ const Notifications = () => {
                     <div className="flex items-center gap-3">
                         <h1 className="font-bold text-3xl lg:text-4xl">Notifications</h1>
                         {unreadCount > 0 && (
-                            <span className="bg-[var(--accent-color)] text-[var(--white)] text-sm font-bold px-3 py-1 rounded-md">
+                            <span className="bg-[var(--accent-color)] text-white text-sm font-bold px-3 py-1 rounded-md">
                                 {unreadCount}
                             </span>
                         )}
@@ -274,7 +274,7 @@ const Notifications = () => {
                                 key={opt.value}
                                 onClick={() => { setFilter(opt.value); setSelectedIds([]); }}
                                 className={`px-4 py-2 rounded-md text-xs font-semibold [var(--white)]space-nowrap transition-all shrink-0 cursor-pointer ${filter === opt.value
-                                    ? 'bg-gradient-to-t from-[var(--accent-color)] to-[var(--dark-accent-color)] text-[var(--white)]'
+                                    ? 'bg-gradient-to-t from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white'
                                     : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-var(--mid-main-secondary)]'
                                     }`}
                             >
@@ -306,7 +306,7 @@ const Notifications = () => {
                                 `}
                             >
                                 {selectAll && (
-                                    <span className="text-[var(--white)] text-[12px] leading-none font-bold">
+                                    <span className="text-white text-[12px] leading-none font-bold">
                                         <FiCheck />
                                     </span>
                                 )}
@@ -344,7 +344,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleMarkAllRead}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-[var(--accent-color)] text-[var(--white)] rounded-md text-xs font-semibold hover:bg-[var(--dark-accent-color)] transition-all cursor-pointer disabled:opacity-50"
+                                    className="px-3 py-1.5 bg-[var(--accent-color)] text-white rounded-md text-xs font-semibold hover:bg-[var(--dark-accent-color)] transition-all cursor-pointer disabled:opacity-50"
                                 >
                                     Mark all read
                                 </button>
@@ -393,7 +393,7 @@ const Notifications = () => {
                                             transition={{ duration: 0.2 }}
                                             className={`flex items-center gap-3 rounded-md p-4 transition-all cursor-pointer h-full border-l-4 ${!notification.read
                                                 ? `bg-[var(--white)] shadow-md ${config.borderColor}`
-                                                : 'bg-[var(--mid-main-secondary)]/100 border-gray-200 shadow-sm text-[var(--white)] '
+                                                : 'bg-[var(--mid-main-secondary)]/100 border-gray-200 shadow-sm text-white '
                                                 } hover:shadow-md`}
                                             onClick={() => handleNotificationClick(notification)}
                                         >
@@ -416,7 +416,7 @@ const Notifications = () => {
                                                         }`}
                                                 >
                                                     {selectedIds.includes(notification.id) && (
-                                                        <span className="text-[var(--white)] text-xs leading-none font-bold">
+                                                        <span className="text-white text-xs leading-none font-bold">
                                                             <FiCheck />
                                                         </span>
                                                     )}

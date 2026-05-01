@@ -24,6 +24,11 @@ import {
     unsubscribeFromEquathoraBriefs,
     isSubscribedToEquathoraBriefs,
 } from '../lib/equathoraBriefsService';
+import {
+    requestPushPermission,
+    getPushSubscriptionStatus,
+    updateUserProperties,
+} from '../lib/oneSignalService';
 
 // ============================================================================
 // REUSABLE UI PIECES
@@ -32,7 +37,7 @@ import {
 const SectionCard = ({ children, id }) => (
     <section
         id={id}
-        className="bg-[var(--surface-card)] rounded-md w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
+        className="bg-[var(--white)] rounded-md w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
     >
         {children}
     </section>
@@ -48,7 +53,7 @@ const SectionTitle = ({ children, sub }) => (
 );
 
 const InputField = ({ label, description, ...props }) => (
-    <div className="flex flex-col gap-1.5 theme-lock">
+    <div className="flex flex-col gap-1.5">
         <label className="text-sm font-semibold text-[var(--secondary-color)]">{label}</label>
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <input
@@ -96,10 +101,10 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
             aria-checked={checked}
             disabled={disabled}
             onClick={() => onChange(!checked)}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 focus:ring-offset-[var(--surface-card)] disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)] border-[var(--dark-accent-color)]' : 'bg-[var(--french-gray)] border-[var(--mid-main-secondary)]'}`}
+            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer overflow-hidden rounded-full  transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)] border-[var(--dark-accent-color)]' : 'bg-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)]'}`}
         >
             <span
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full border border-[var(--secondary-color)] bg-[var(--white)] shadow-md ring-0 transition-transform duration-200 translate-y-0.5 ${checked ? 'translate-x-[22px]' : 'translate-x-0.5'}`}
+                className={`pointer-events-none inline-block h-5 w-5 shadow-black/70 transform rounded-full bg-white shadow-md ring-0 transition-transform duration-200 translate-y-[1.5px] ${checked ? 'translate-x-[21.5px]' : 'translate-x-[2px]'}`}
             />
         </button>
     </div>
@@ -211,7 +216,7 @@ const sidebarSections = [
     { id: 'profile', label: 'Profile', icon: <IconUser /> },
     { id: 'account', label: 'Account & Security', icon: <IconLock /> },
     { id: 'notifications', label: 'Notifications', icon: <IconBell /> },
-    // { id: 'appearance', label: 'Appearance', icon: <IconTheme /> },
+    { id: 'appearance', label: 'Appearance', icon: <IconTheme /> },
     { id: 'privacy', label: 'Privacy', icon: <IconShield /> },
     { id: 'sessions', label: 'Sessions', icon: <IconLaptop /> },
     { id: 'danger', label: 'Danger Zone', icon: <IconWarning /> },
@@ -253,6 +258,7 @@ const Settings = () => {
     // Settings / preferences state
     const [settings, setSettings] = useState({
         notifications_enabled: true,
+        push_notifications_enabled: false,
         email_notifications: false,
         achievement_notifications: true,
         streak_reminders: true,
@@ -588,6 +594,59 @@ const Settings = () => {
         }
     };
 
+    const handlePushNotificationsToggle = async (enabled) => {
+        const previousValue = settings.push_notifications_enabled;
+        const nextSettings = { ...settings, push_notifications_enabled: enabled };
+
+        setSettings(prev => ({ ...prev, push_notifications_enabled: enabled }));
+        setSettingsSaving(true);
+        setSettingsMessage({ text: '', type: 'success' });
+
+        try {
+            if (enabled) {
+                // Request browser permission for push notifications
+                const permission = await requestPushPermission();
+                if (!permission) {
+                    throw new Error('Push notification permission denied. Check your browser settings.');
+                }
+
+                // Update user properties in OneSignal for segmentation
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    await updateUserProperties({
+                        push_notifications_enabled: true,
+                        opted_in_date: new Date().toISOString(),
+                    });
+                }
+            }
+
+            // Save preference to database
+            const settingsSaved = await saveUserSettings(nextSettings);
+            if (!settingsSaved) {
+                setSettingsMessage({
+                    text: 'Preference registered but could not save to database.',
+                    type: 'warning',
+                });
+                return;
+            }
+
+            setSettingsMessage({
+                text: enabled
+                    ? 'Push notifications enabled! You\'ll receive instant alerts.'
+                    : 'Push notifications disabled.',
+                type: 'success',
+            });
+        } catch (error) {
+            setSettings(prev => ({ ...prev, push_notifications_enabled: previousValue }));
+            setSettingsMessage({
+                text: error?.message || 'Could not update push notification preference right now.',
+                type: 'error',
+            });
+        } finally {
+            setSettingsSaving(false);
+        }
+    };
+
     const handleSaveSettings = async () => {
         setSettingsSaving(true);
         setSettingsMessage({ text: '', type: 'success' });
@@ -714,8 +773,8 @@ const Settings = () => {
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
                                 className={`flex items-center gap-3 rounded-md px-4 py-3 text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
-                                    ? 'bg-[var(--accent-color)] text-[var(--white)]'
-                                    : 'bg-[var(--surface-card)] text-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
+                                    ? 'bg-[var(--accent-color)] text-white'
+                                    : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
                                     }`}
                             >
                                 {section.icon}
@@ -732,7 +791,7 @@ const Settings = () => {
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all shrink-0 cursor-pointer ${activeSection === section.id
-                                    ? 'bg-[var(--accent-color)] text-[var(--white)]'
+                                    ? 'bg-[var(--accent-color)] text-white'
                                     : 'bg-[var(--surface-card)] text-[var(--secondary-color)] border border-[var(--mid-main-secondary)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
                                     }`}
                             >
@@ -996,6 +1055,13 @@ const Settings = () => {
                                             onChange={handleEmailNotificationsToggle}
                                             disabled={!settings.notifications_enabled || settingsSaving}
                                         />
+                                        <ToggleSwitch
+                                            label="Push Notifications"
+                                            description="Instant browser alerts for streaks, achievements & challenges"
+                                            checked={settings.push_notifications_enabled}
+                                            onChange={handlePushNotificationsToggle}
+                                            disabled={!settings.notifications_enabled || settingsSaving}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -1012,7 +1078,7 @@ const Settings = () => {
                         {/* ============================================================ */}
                         {/* APPEARANCE */}
                         {/* ============================================================ */}
-                        {/* <SectionCard id="appearance">
+                        <SectionCard id="appearance">
                             <SectionTitle sub="Control how Equathora looks on this device">Appearance</SectionTitle>
 
                             <div className="flex flex-col gap-3">
@@ -1047,7 +1113,7 @@ const Settings = () => {
                             <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start">
                                 Save Appearance
                             </PrimaryButton>
-                        </SectionCard> */}
+                        </SectionCard>
 
                         {/* ============================================================ */}
                         {/* PRIVACY */}

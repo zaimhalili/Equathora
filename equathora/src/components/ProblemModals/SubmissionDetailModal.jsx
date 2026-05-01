@@ -63,13 +63,13 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                     </button>
                 </div>
 
-                <div className='flex flex-col gap-4 py-5 '>
+                <div className='flex flex-col gap-4 pb-5 '>
                     <div className='bg-[var(--french-gray)]/10 p-4 rounded-md'>
                         <div className='flex justify-between items-center pb-3'>
                             <h3 className='font-[Sansation] font-bold text-sm text-[var(--secondary-color)]'>Your Solution Steps</h3>
                             <button
                                 onClick={handleCopySteps}
-                                className='flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[var(--accent-color)] border border-[var(--accent-color)] rounded-md hover:bg-[var(--accent-color)] hover:text-[var(--white)] transition-colors duration-75 cursor-pointer'
+                                className='flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[var(--accent-color)] border border-[var(--accent-color)] rounded-md hover:bg-[var(--accent-color)] hover:text-white transition-colors duration-75 cursor-pointer'
                             >
                                 <FaCopy />
                                 Copy Steps
@@ -84,7 +84,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                             {submission.steps && submission.steps.map((step, index) => (
                                 <div key={index} className='bg-[var(--white)] p-4 rounded-md border border-[var(--mid-main-secondary)]'>
                                     <div className='flex items-center gap-2 pb-2'>
-                                        <span className='bg-[var(--accent-color)] text-[var(--white)] rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold'>
+                                        <span className='bg-[var(--accent-color)] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold'>
                                             {index + 1}
                                         </span>
                                         <span className='text-xs font-semibold text-[var(--mid-main-secondary)]'>Step {index + 1}</span>
@@ -111,9 +111,9 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
 
 
                     {submission.metadata && (
-                        <div className='grid grid-cols-2 md:grid-cols-3 gap-3'>
+                        <div className='flex flex-wrap gap-3'>
                             {submission.metadata.timeSpent !== undefined && (
-                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-md'>
+                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-md border-[var(--mid-main-secondary)] border flex-1'>
                                     <div className='text-xs text-[var(--mid-main-secondary)] pb-1'>Time Spent</div>
                                     <div className='font-bold text-[var(--secondary-color)]'>
                                         {submission.metadata.timeSpentLabel || formatMinutesSeconds(submission.metadata.timeSpent)}
@@ -121,13 +121,13 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                                 </div>
                             )}
                             {submission.metadata.attempts && (
-                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-md'>
+                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-md border-[var(--mid-main-secondary)] border flex-1'>
                                     <div className='text-xs text-[var(--mid-main-secondary)] pb-1'>Attempt #</div>
                                     <div className='font-bold text-[var(--secondary-color)]'>{submission.metadata.attempts}</div>
                                 </div>
                             )}
                             {submission.metadata.hintsUsed !== undefined && (
-                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-md'>
+                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-md border-[var(--mid-main-secondary)] border flex-1'>
                                     <div className='text-xs text-[var(--mid-main-secondary)] pb-1'>Hints Used</div>
                                     <div className='font-bold text-[var(--secondary-color)]'>{submission.metadata.hintsUsed}</div>
                                 </div>
@@ -139,7 +139,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                 <button
                     type="button"
                     onClick={onClose}
-                    className='cursor-pointer px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-[var(--white)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'
+                    className='cursor-pointer px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'
                 >
                     Close
                 </button>
