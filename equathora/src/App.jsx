@@ -241,7 +241,7 @@ export default function App() {
                 })();
 
                 identifyPostHogUser(session.user);
-                
+
                 // Identify user in OneSignal
                 void identifyUser({
                     userId: session.user.id,

@@ -8,7 +8,7 @@ const ONESIGNAL_APP_ID = '33aeba5a-e1a5-4f07-b6cc-9a25beb110c4';
 // Initialize OneSignal
 export async function initializeOneSignal() {
     if (typeof window === 'undefined') return;
-    
+
     // Check if OneSignal is already loaded
     if (typeof OneSignal === 'undefined') {
         console.warn('OneSignal SDK not yet loaded. Will retry on next mount.');
@@ -32,7 +32,7 @@ export async function initializeOneSignal() {
 function setupEventHandlers() {
     // Handle notification display
     OneSignal.on('notificationDisplay', onNotificationDisplay);
-    
+
     // Handle notification click
     OneSignal.on('notificationClick', onNotificationClick);
 }
@@ -55,7 +55,7 @@ export async function requestPushPermission() {
             console.warn('OneSignal not loaded');
             return false;
         }
-        
+
         const permission = await OneSignal.Notifications.requestPermission();
         return permission;
     } catch (error) {
@@ -68,7 +68,7 @@ export async function requestPushPermission() {
 export async function getPushSubscriptionStatus() {
     try {
         if (typeof OneSignal === 'undefined') return false;
-        
+
         const subscription = await OneSignal.User.pushSubscription.id;
         return !!subscription;
     } catch (error) {
@@ -116,7 +116,7 @@ export async function identifyUser({ userId, email, phone, properties = {} }) {
 export async function updateUserProperties(properties) {
     try {
         if (typeof OneSignal === 'undefined') return false;
-        
+
         // properties: { streak_days: 5, level: 'intermediate', topics: 'algebra,geometry' }
         await OneSignal.User.addProperties(properties);
         return true;
@@ -130,7 +130,7 @@ export async function updateUserProperties(properties) {
 export async function logoutOneSignalUser() {
     try {
         if (typeof OneSignal === 'undefined') return false;
-        
+
         await OneSignal.logout();
         return true;
     } catch (error) {
@@ -143,7 +143,7 @@ export async function logoutOneSignalUser() {
 export async function unsubscribeFromPush() {
     try {
         if (typeof OneSignal === 'undefined') return false;
-        
+
         if (OneSignal.User?.pushSubscription?.id) {
             await OneSignal.User.pushSubscription.optOut();
         }
@@ -158,7 +158,7 @@ export async function unsubscribeFromPush() {
 export async function resubscribeToPush() {
     try {
         if (typeof OneSignal === 'undefined') return false;
-        
+
         if (OneSignal.User?.pushSubscription?.id) {
             await OneSignal.User.pushSubscription.optIn();
         }
