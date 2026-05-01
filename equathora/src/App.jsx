@@ -8,7 +8,6 @@ import OverflowChecker from "./pages/OverflowChecker";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
-import CookieConsent from "./components/CookieConsent";
 import { supabase } from "./lib/supabaseClient";
 import { getUserSettings } from "./lib/notificationService";
 import { initializeOneSignal, identifyUser } from "./lib/oneSignalService";
@@ -352,9 +351,6 @@ export default function App() {
                     </Routes>
                 </div>
             </Suspense>
-
-            {/* Cookie Consent Banner */}
-            <CookieConsent />
 
             {/* Analytics */}
             {shouldEnableVercelAnalytics ? <Analytics /> : null}

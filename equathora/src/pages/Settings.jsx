@@ -273,14 +273,14 @@ const Settings = () => {
         two_factor_enabled: false,
         session_timeout_minutes: 60,
         theme: 'system',
+        cookie_consent: 'none',
+        cookie_consent_date: '',
     });
     const [settingsSaving, setSettingsSaving] = useState(false);
     const [settingsMessage, setSettingsMessage] = useState({ text: '', type: 'success' });
 
     // Cookie preference state
-    const [cookieConsent, setCookieConsent] = useState(() => {
-        return localStorage.getItem('equathora_cookie_consent') || 'none';
-    });
+    const [cookieConsent, setCookieConsent] = useState('none');
 
     // Session state
     const [currentSession, setCurrentSession] = useState(null);
@@ -344,13 +344,30 @@ const Settings = () => {
                 const normalizedTheme = normalizeThemePreference(userSettings?.theme);
                 const accountEmail = String(session.user.email || '').trim().toLowerCase();
                 const isBriefsSubscribed = await isSubscribedToEquathoraBriefs(accountEmail);
+                const legacyCookieConsent = localStorage.getItem('equathora_cookie_consent');
+                const legacyCookieConsentDate = localStorage.getItem('equathora_cookie_consent_date') || '';
+                const cookieConsentValue = userSettings?.cookie_consent || legacyCookieConsent || 'none';
+                const cookieConsentDate = cookieConsentValue === 'none'
+                    ? ''
+                    : (userSettings?.cookie_consent_date || legacyCookieConsentDate || new Date().toISOString());
+
+                if (!userSettings?.cookie_consent && (legacyCookieConsent === 'accepted' || legacyCookieConsent === 'declined')) {
+                    await saveUserSettings({
+                        ...userSettings,
+                        cookie_consent: cookieConsentValue,
+                        cookie_consent_date: cookieConsentDate || new Date().toISOString(),
+                    });
+                }
 
                 setSettings(prev => ({
                     ...prev,
                     ...userSettings,
+                    cookie_consent: cookieConsentValue,
+                    cookie_consent_date: cookieConsentDate,
                     theme: normalizedTheme,
                     email_notifications: isBriefsSubscribed,
                 }));
+                setCookieConsent(cookieConsentValue);
                 setThemePreference(normalizedTheme, { persist: true });
 
                 // Fetch session info
@@ -587,6 +604,58 @@ const Settings = () => {
             setSettings(prev => ({ ...prev, email_notifications: previousValue }));
             setSettingsMessage({
                 text: error?.message || 'Could not update email notification preference right now.',
+                type: 'error',
+            });
+        } finally {
+            setSettingsSaving(false);
+        }
+    };
+
+    const handleCookieConsentToggle = async (enabled) => {
+        const previousValue = cookieConsent;
+        const previousDate = settings.cookie_consent_date;
+        const nextCookieConsent = enabled ? 'accepted' : 'declined';
+        const nextCookieConsentDate = new Date().toISOString();
+        const nextSettings = {
+            ...settings,
+            cookie_consent: nextCookieConsent,
+            cookie_consent_date: nextCookieConsentDate,
+        };
+
+        setCookieConsent(nextCookieConsent);
+        setSettings(prev => ({
+            ...prev,
+            cookie_consent: nextCookieConsent,
+            cookie_consent_date: nextCookieConsentDate,
+        }));
+        setSettingsSaving(true);
+        setSettingsMessage({ text: '', type: 'success' });
+
+        try {
+            const settingsSaved = await saveUserSettings(nextSettings);
+            if (!settingsSaved) {
+                setSettingsMessage({
+                    text: 'Preference registered but could not save to database.',
+                    type: 'warning',
+                });
+                return;
+            }
+
+            setSettingsMessage({
+                text: enabled
+                    ? 'All cookies enabled. Analytics and personalization are now active.'
+                    : 'Optional cookies disabled. Only essential cookies will be used.',
+                type: 'success',
+            });
+        } catch (error) {
+            setCookieConsent(previousValue);
+            setSettings(prev => ({
+                ...prev,
+                cookie_consent: previousValue,
+                cookie_consent_date: previousDate,
+            }));
+            setSettingsMessage({
+                text: error?.message || 'Could not update cookie preference right now.',
                 type: 'error',
             });
         } finally {
@@ -1167,18 +1236,7 @@ const Settings = () => {
                                             : 'Only essential cookies are active — no analytics or personalization data is collected'
                                     }
                                     checked={cookieConsent === 'accepted'}
-                                    onChange={(enabled) => {
-                                        const newConsent = enabled ? 'accepted' : 'declined';
-                                        setCookieConsent(newConsent);
-                                        localStorage.setItem('equathora_cookie_consent', newConsent);
-                                        localStorage.setItem('equathora_cookie_consent_date', new Date().toISOString());
-                                        setSettingsMessage({
-                                            text: enabled
-                                                ? 'All cookies enabled. Analytics and personalization are now active.'
-                                                : 'Optional cookies disabled. Only essential cookies will be used.',
-                                            type: 'success'
-                                        });
-                                    }}
+                                    onChange={handleCookieConsentToggle}
                                 />
 
                                 <div className="flex items-center gap-2 pt-1">
@@ -1192,7 +1250,7 @@ const Settings = () => {
                                     </span>
                                     {cookieConsent !== 'none' && (
                                         <span className="text-[10px] text-[var(--mid-main-secondary)]">
-                                            Set on {new Date(localStorage.getItem('equathora_cookie_consent_date') || '').toLocaleDateString()}
+                                            Set on {settings.cookie_consent_date ? new Date(settings.cookie_consent_date).toLocaleDateString() : 'recently'}
                                         </span>
                                     )}
                                 </div>

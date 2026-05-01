@@ -338,6 +338,8 @@ const DEFAULT_SETTINGS = {
     session_timeout_minutes: 60,
     theme: 'system',
     language: 'en',
+    cookie_consent: 'none',
+    cookie_consent_date: '',
 };
 
 export async function getUserSettings() {

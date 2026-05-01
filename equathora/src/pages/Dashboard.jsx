@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import BetaBanner from '../components/BetaBanner.jsx';
+import CookieConsent from '../components/CookieConsent.jsx';
 import Teacher from '../assets/images/teacher.svg';
 import YourTrack from '../components/YourTrack.jsx';
 import Books from '../assets/images/learningBooks.svg';
@@ -100,6 +101,8 @@ const Dashboard = () => {
         <>
             {/* <BetaBanner /> */}
             <FeedbackBanner />
+            <CookieConsent />
+
             {/* TODO: Check why the dark: doesn't work as it should */}
             <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
                 <header>
@@ -299,6 +302,7 @@ const Dashboard = () => {
                 >
                     <CommunityPosts />
                 </motion.article>
+
 
                 <footer>
                     <Footer />
