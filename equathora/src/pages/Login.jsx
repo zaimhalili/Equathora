@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import '../components/Auth.css';
@@ -12,6 +12,11 @@ import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import Sigma from '../assets/logo/TransparentSymbol.png';
 
 const Login = () => {
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -110,6 +115,7 @@ const Login = () => {
 
             <h5 className='typeOfInput'>EMAIL</h5>
             <input
+              ref={inputRef}
               type="email"
               className='inputAuth'
               placeholder='Enter your email address'

@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Resend.css';
 import BackgroundPolygons from '../components/BackgroundPolygons';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import { supabase } from '../lib/supabaseClient';
 import Sigma from '../assets/logo/TransparentSymbol.png';
+import { useReducedMotionConfig } from 'framer-motion';
 
 const ForgotPassword = () => {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -58,6 +64,7 @@ const ForgotPassword = () => {
 
             <h5 className='typeOfInput resend'>EMAIL</h5>
             <input
+              ref={inputRef}
               type="email"
               className='inputAuth'
               placeholder='Enter your email address'

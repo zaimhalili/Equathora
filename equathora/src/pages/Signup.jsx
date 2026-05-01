@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
@@ -14,6 +14,11 @@ import Sigma from '../assets/logo/TransparentSymbol.png';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 
 const Signup = () => {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -149,6 +154,7 @@ const Signup = () => {
 
           <h5 className='typeOfInput'>USERNAME</h5>
           <input
+            ref={inputRef}
             type="text"
             className='inputAuth'
             placeholder='Choose a unique username'

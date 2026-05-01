@@ -11,7 +11,7 @@
 .inputAuth {
     background-color: transparent;
     border: 1px solid var(--dark-accent-color);
-    width: 100%;
+    width: 100% !important;
     height: 50px;
     border-radius: 6px;
     resize: none;

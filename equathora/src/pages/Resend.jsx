@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Resend.css';
 import BackgroundPolygons from '../components/BackgroundPolygons';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,10 @@ import Sigma from '../assets/logo/TransparentSymbol.png';
 import { supabase } from '../lib/supabaseClient';
 
 const Resend = () => {
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current.focus()
+  }, []);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -59,6 +63,7 @@ const Resend = () => {
 
             <h5 className='typeOfInput resend'>EMAIL</h5>
             <input
+              ref={inputRef}
               type="email"
               className='inputAuth'
               placeholder='Enter your email address'
