@@ -295,7 +295,7 @@ const Navbar = () => {
       onClick: async () => {
         await clearUserData();
         await supabase.auth.signOut();
-        window.location.href = '/login';
+        window.location.href = '/';
       }
     }
     // Hidden for MVP

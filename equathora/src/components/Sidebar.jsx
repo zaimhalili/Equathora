@@ -1,4 +1,5 @@
 // Sidebar.jsx
+// TODO: Add admin to the sidebar (Careful to only allow yourself as an admin)
 import React, { useState, useEffect } from 'react';
 import './Sidebar.css';
 import { Link, useNavigate } from 'react-router-dom';
