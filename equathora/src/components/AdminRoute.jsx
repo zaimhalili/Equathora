@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
-const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL || "halilizaim@gmail.com").toLowerCase();
+const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL).toLowerCase();
 
 const AdminRoute = ({ children }) => {
     const { loading, isAuth, user } = useAuth();

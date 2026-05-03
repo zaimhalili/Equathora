@@ -25,7 +25,7 @@ const getLowResAvatarUrl = (avatarUrl) => {
 };
 
 const Sidebar = ({ isOpen, onClose }) => {
-    const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL || 'halilizaim@gmail.com').toLowerCase();
+    const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL).toLowerCase();
 
     const [moreExpanded, setMoreExpanded] = useState(false);
     const [dailyProblemSlug, setDailyProblemSlug] = useState('');
