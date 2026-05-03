@@ -99,16 +99,12 @@ const Dashboard = () => {
 
     return (
         <>
-            {/* <BetaBanner /> */}
             <FeedbackBanner />
             <CookieConsent />
-
-            {/* TODO: Check why the dark: doesn't work as it should */}
             <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
                 <header>
                     <Navbar />
                 </header>
-                {/* <LoadingSpinner></LoadingSpinner> */}
 
                 {/* Hero Section */}
                 <div className='flex w-full justify-center items-center'>

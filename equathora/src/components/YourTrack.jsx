@@ -5,6 +5,7 @@ import { getUserProgress, getStreakData, getCompletedProblems } from '../lib/dat
 import { getAllProblems } from '../lib/problemService';
 import { supabase } from '../lib/supabaseClient';
 import { getSubmissions } from '../lib/progressStorage';
+import { FaArrowRight } from 'react-icons/fa';
 
 const fallbackStats = {
     problemsSolved: 0,
@@ -129,9 +130,9 @@ const YourTrack = () => {
                     </Link>
                     <Link
                         to="/achievements/stats"
-                        className="w-10 h-10 flex items-center justify-center transition-transform duration-300 ease-in hover:translate-x-2 hover:scale-110"
+                        className="w-10 h-10 flex items-center justify-center transition-transform duration-150 ease-in hover:translate-x-2 hover:scale-110"
                     >
-                        <img src={LilArrow} alt="arrow" className="w-full h-full" />
+                        <FaArrowRight className='h-full w-full text-white' />
                     </Link>
                 </div>
 
@@ -191,7 +192,6 @@ const YourTrack = () => {
                     <span>Updated just now</span>
                 </div>
             </div>
-            {/* Mentor CTA Section */}
 
         </article>
     );
