@@ -1,4 +1,5 @@
 import { supabase } from './supabaseClient';
+import { getAdminApiHeaders } from './adminAuth';
 
 const normalizeBase = (value) => {
     if (!value || typeof value !== 'string') return '';

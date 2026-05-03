@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
 import { getDailyProblemSlug } from '../lib/utils';
 import { getStreakData } from '../lib/databaseService';
+import { useUserProfile } from '../hooks/useUserProfile';
 
 const getLowResAvatarUrl = (avatarUrl) => {
     if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
@@ -25,13 +26,12 @@ const getLowResAvatarUrl = (avatarUrl) => {
 };
 
 const Sidebar = ({ isOpen, onClose }) => {
-    const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL).toLowerCase();
+    const { profile } = useUserProfile();
 
     const [moreExpanded, setMoreExpanded] = useState(false);
     const [dailyProblemSlug, setDailyProblemSlug] = useState('');
     const [currentStreak, setCurrentStreak] = useState(0);
     const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
-    const [currentUserEmail, setCurrentUserEmail] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -53,8 +53,6 @@ const Sidebar = ({ isOpen, onClose }) => {
             try {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) return;
-
-                setCurrentUserEmail((session.user?.email || '').toLowerCase());
 
                 const metadata = session.user?.user_metadata || {};
                 const avatarUrl = metadata.avatar_url || metadata.picture || metadata.image || metadata.photo_url || '';
@@ -168,7 +166,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             </svg>
         },
         // TODO: Add admin dashboard on the sidebar for mobile breakpoints
-        ...(currentUserEmail === ADMIN_EMAIL
+        ...(profile?.role === 'admin'
             ? [{
                 to: '/adminDashboard',
                 text: 'Admin Dashboard',

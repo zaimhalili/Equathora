@@ -1,3 +1,5 @@
+import { getAdminApiHeaders } from './adminAuth';
+
 const DEFAULT_LOCAL_BACKEND = 'http://localhost:5104';
 
 const emptyAnalyticsPayload = {
@@ -80,10 +82,12 @@ export async function getAdminAnalytics({ range = 'week', weekOffset = 0 } = {})
         const requestUrl = `${apiBase}${endpoint}`;
 
         try {
+            const adminHeaders = await getAdminApiHeaders();
             const response = await fetch(requestUrl, {
                 method: 'GET',
                 headers: {
-                    Accept: 'application/json'
+                    Accept: 'application/json',
+                    ...(adminHeaders || {})
                 }
             });
 

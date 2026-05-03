@@ -9,6 +9,10 @@
   "ConnectionStrings": {
     "DefaultConnection": "Host=localhost;Port=5432;Database=equathora_dev;Username=equathora_user;Password=YOUR_PASSWORD_HERE"
   },
+  "Supabase": {
+    "Url": "https://your-project.supabase.co",
+    "AnonKey": "your-public-anon-key"
+  },
   "BackendSharedSecret": "generate-a-random-secret-here",
   "JWT": {
     "SecretKey": "generate-a-random-string-at-least-32-characters-long",

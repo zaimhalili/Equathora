@@ -10,6 +10,7 @@ import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
 import { getStreakData } from '../lib/databaseService';
 import { getUnreadCount } from '../lib/notificationService';
+import { useUserProfile } from '../hooks/useUserProfile';
 //Dropdown svgs
 import Daily from '../assets/images/questionMark.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
@@ -50,14 +51,13 @@ const getLowResAvatarUrl = (avatarUrl) => {
 };
 
 const Navbar = () => {
-  const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL).toLowerCase();
+  const { profile } = useUserProfile();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dailyProblemSlug, setDailyProblemSlug] = useState('');
   const [currentStreak, setCurrentStreak] = useState(0);
   const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
-  const [currentUserEmail, setCurrentUserEmail] = useState('');
 
   useEffect(() => {
     const loadDailyProblem = async () => {
@@ -76,8 +76,6 @@ const Navbar = () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
-
-        setCurrentUserEmail((session.user?.email || '').toLowerCase());
 
         const metadata = session.user?.user_metadata || {};
         const avatarUrl = metadata.avatar_url || metadata.picture || metadata.image || metadata.photo_url || '';
@@ -279,7 +277,7 @@ const Navbar = () => {
       description: "Manage your account and preferences",
       image: Settings
     },
-    ...(currentUserEmail === ADMIN_EMAIL
+    ...(profile?.role === 'admin'
       ? [{
         to: '/adminDashboard',
         text: "Admin Dashboard",

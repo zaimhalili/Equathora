@@ -1,11 +1,9 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-
-const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL).toLowerCase();
+import { useUserProfile } from "../hooks/useUserProfile";
 
 const AdminRoute = ({ children }) => {
-    const { loading, isAuth, user } = useAuth();
+    const { user, profile, loading } = useUserProfile();
 
     if (loading) {
         return (
@@ -15,13 +13,13 @@ const AdminRoute = ({ children }) => {
         );
     }
 
-    if (!isAuth) {
+    if (!user) {
         return <Navigate to="/login" replace />;
     }
 
-    const currentEmail = (user?.email || "").toLowerCase();
-    if (currentEmail !== ADMIN_EMAIL) {
-        return <Navigate to="/" replace />;
+    const currentRole = String(profile?.role || '').toLowerCase();
+    if (currentRole !== 'admin') {
+        return <Navigate to="/dashboard" replace />;
     }
 
     return children;
