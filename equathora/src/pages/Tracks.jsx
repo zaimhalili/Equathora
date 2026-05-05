@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 import { FaStar, FaClock, FaCheckCircle, FaFire, FaLightbulb } from 'react-icons/fa';
 import { FaRocket, FaTrophy, FaBookmark, FaRegBookmark, FaChartLine } from 'react-icons/fa';
-import { FaBullseye, FaExclamationTriangle, FaPlay, FaCalculator, FaRulerCombined, FaBolt, FaSortNumericUp, FaLink, FaChartBar, FaSquareRootAlt, FaInfinity } from 'react-icons/fa';
+import { FaBullseye, FaExclamationTriangle, FaPlay, FaCalculator, FaRulerCombined, FaBolt, FaSortNumericUp, FaLink, FaChartBar, FaSquareRootAlt, FaInfinity, FaDumbbell } from 'react-icons/fa';
 import { getUserProgress, getStreakData, getCompletedProblems, getUserSubmissions } from '../lib/databaseService';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
@@ -14,6 +14,7 @@ const Tracks = () => {
     const [bookmarked, setBookmarked] = useState({});
     const [userStats, setUserStats] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [startedTrack, setStartedTrack] = useState(false);
 
     const toggleBookmark = (e, id) => {
         e.preventDefault();
@@ -247,7 +248,7 @@ const Tracks = () => {
                             <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-extrabold">
                                 Your Math Journey
                             </h1>
-                            <p className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] w-4/5 lg:w-[60%] cursor-default text-[var(--secondary-color)]">
+                            <p className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] lg:w-[60%] cursor-default text-[var(--secondary-color)]">
                                 Follow structured learning paths designed to build your mathematical skills progressively. Each track guides you through concepts with increasing complexity.
                             </p>
 
@@ -276,10 +277,34 @@ const Tracks = () => {
                         <YourTrack></YourTrack>
 
                         {/* Tracks Grid */}
-                        <div className="pt-8 flex gap-3 justify-between flex-wrap w-full">
-                            <div className='bg-[var(--white)] h-35 flex-wrap w-1/2 rounded-md'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, pariatur.</div>
-                            <div className='bg-[var(--white)] h-35 flex-wrap w-1/2'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, pariatur.</div>
-                            <div className='bg-[var(--white)] h-35 flex-wrap w-1/2'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos, pariatur.</div>
+                        <div className="pt-8 flex gap-3 flex-wrap w-full">
+
+
+                            {tracks.map((track, index) => (
+                                <div key={track.id} className='bg-[var(--white)] flex flex-col h-fit w-full sm:w-1/2 rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer'>
+                                    <div className="flex h-1/3 justify-between items-center">
+                                        <div className="flex gap-3 items-center">
+                                            <FaTrophy className='text-md text-[var(--dark-accent-color)]'></FaTrophy>
+                                            <p className='text-md text-[var(--secondary-color)] font-bold'>{track.topic}</p>
+                                        </div>
+
+                                        <div className=''><FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />
+                                        </div>
+                                    </div>
+                                    <div className="flex h-1/3 items-center gap-3">
+                                        <FaDumbbell className='text-sm text-[var(--secondary-color)]' />
+                                        <p>4/100 Exercises</p>
+                                    </div>
+                                    {/* Mini Progress Bar */}
+                                    {startedTrack && (
+                                        <div className="flex h-1/3">
+                                            <div className='flex-1 h-2 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group'></div>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+
+
                             <motion.div
                                 className="flex"
                                 variants={containerVariants}
