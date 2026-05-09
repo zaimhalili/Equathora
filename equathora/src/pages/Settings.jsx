@@ -24,11 +24,6 @@ import {
     unsubscribeFromEquathoraBriefs,
     isSubscribedToEquathoraBriefs,
 } from '../lib/equathoraBriefsService';
-import {
-    requestPushPermission,
-    getPushSubscriptionStatus,
-    updateUserProperties,
-} from '../lib/oneSignalService';
 
 // ============================================================================
 // REUSABLE UI PIECES
@@ -119,7 +114,7 @@ const PrimaryButton = ({ children, onClick, disabled, loading, className = '', t
         className={`cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-bold text-sm rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
     >
         {loading && (
-            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -137,7 +132,7 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
         className="cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-bold text-lg rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
     >
         {loading && (
-            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -258,7 +253,6 @@ const Settings = () => {
     // Settings / preferences state
     const [settings, setSettings] = useState({
         notifications_enabled: true,
-        push_notifications_enabled: false,
         email_notifications: false,
         achievement_notifications: true,
         streak_reminders: true,
@@ -663,59 +657,6 @@ const Settings = () => {
         }
     };
 
-    const handlePushNotificationsToggle = async (enabled) => {
-        const previousValue = settings.push_notifications_enabled;
-        const nextSettings = { ...settings, push_notifications_enabled: enabled };
-
-        setSettings(prev => ({ ...prev, push_notifications_enabled: enabled }));
-        setSettingsSaving(true);
-        setSettingsMessage({ text: '', type: 'success' });
-
-        try {
-            if (enabled) {
-                // Request browser permission for push notifications
-                const permission = await requestPushPermission();
-                if (!permission) {
-                    throw new Error('Push notification permission denied. Check your browser settings.');
-                }
-
-                // Update user properties in OneSignal for segmentation
-                const { data: { session } } = await supabase.auth.getSession();
-                if (session) {
-                    await updateUserProperties({
-                        push_notifications_enabled: true,
-                        opted_in_date: new Date().toISOString(),
-                    });
-                }
-            }
-
-            // Save preference to database
-            const settingsSaved = await saveUserSettings(nextSettings);
-            if (!settingsSaved) {
-                setSettingsMessage({
-                    text: 'Preference registered but could not save to database.',
-                    type: 'warning',
-                });
-                return;
-            }
-
-            setSettingsMessage({
-                text: enabled
-                    ? 'Push notifications enabled! You\'ll receive instant alerts.'
-                    : 'Push notifications disabled.',
-                type: 'success',
-            });
-        } catch (error) {
-            setSettings(prev => ({ ...prev, push_notifications_enabled: previousValue }));
-            setSettingsMessage({
-                text: error?.message || 'Could not update push notification preference right now.',
-                type: 'error',
-            });
-        } finally {
-            setSettingsSaving(false);
-        }
-    };
-
     const handleSaveSettings = async () => {
         setSettingsSaving(true);
         setSettingsMessage({ text: '', type: 'success' });
@@ -827,8 +768,8 @@ const Settings = () => {
             <Navbar />
             <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-[var(--secondary-color)] font-[Sansation,sans-serif]">
                 {/* Header */}
-                <div className="w-full flex flex-col items-center gap-2 pt-8 pb-4 px-4">
-                    <h1 className="font-bold text-4xl">Settings</h1>
+                <div className="flex flex-col items-center w-full gap-2 px-4 pt-8 pb-4">
+                    <h1 className="text-4xl font-bold">Settings</h1>
                     <p className="text-md text-[var(--secondary-color)]">Manage your account, security, and preferences</p>
                 </div>
 
@@ -853,7 +794,7 @@ const Settings = () => {
                     </nav>
 
                     {/* Mobile tabs */}
-                    <div className="lg:hidden flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+                    <div className="flex gap-2 pb-2 overflow-x-auto lg:hidden scrollbar-none">
                         {sidebarSections.map(section => (
                             <button
                                 key={section.id}
@@ -880,7 +821,7 @@ const Settings = () => {
                             <SectionTitle sub="Your public identity on Equathora">Profile Information</SectionTitle>
 
                             <div className="flex flex-col gap-4">
-                                <div className="flex flex-col sm:flex-row gap-4">
+                                <div className="flex flex-col gap-4 sm:flex-row">
                                     <div className="flex-1">
                                         <InputField
                                             label="Full Name"
@@ -913,7 +854,7 @@ const Settings = () => {
                                     maxLength={300}
                                 />
 
-                                <div className="flex flex-col sm:flex-row gap-4">
+                                <div className="flex flex-col gap-4 sm:flex-row">
                                     <div className="flex-1">
                                         <InputField
                                             label="Location"
@@ -1124,13 +1065,6 @@ const Settings = () => {
                                             onChange={handleEmailNotificationsToggle}
                                             disabled={!settings.notifications_enabled || settingsSaving}
                                         />
-                                        <ToggleSwitch
-                                            label="Push Notifications"
-                                            description="Instant browser alerts for streaks, achievements & challenges"
-                                            checked={settings.push_notifications_enabled}
-                                            onChange={handlePushNotificationsToggle}
-                                            disabled={!settings.notifications_enabled || settingsSaving}
-                                        />
                                     </div>
                                 </div>
                             </div>
@@ -1279,7 +1213,7 @@ const Settings = () => {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </div>
-                                        <div className="flex flex-col gap-1 flex-1 min-w-0">
+                                        <div className="flex flex-col flex-1 min-w-0 gap-1">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-sm font-bold">Current Session</span>
                                                 <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Active</span>
@@ -1307,7 +1241,7 @@ const Settings = () => {
                                 </PrimaryButton>
                             </div>
 
-                            <div className="flex flex-col gap-2 border-t border-gray-100 pt-4">
+                            <div className="flex flex-col gap-2 pt-4 border-t border-gray-100">
                                 <h3 className="text-base font-bold">Security Tips</h3>
                                 <ul className="text-xs text-[var(--mid-main-secondary)] flex flex-col gap-1.5">
                                     <li className="flex items-start gap-2">
@@ -1341,7 +1275,7 @@ const Settings = () => {
                             <SectionTitle sub="Irreversible actions — proceed with extreme caution">Danger Zone</SectionTitle>
 
                             {/* Reset Progress */}
-                            <div className="flex flex-col gap-3 border-2 border-orange-200 bg-orange-50 rounded-md p-5">
+                            <div className="flex flex-col gap-3 p-5 border-2 border-orange-200 rounded-md bg-orange-50">
                                 <h3 className="text-base font-bold text-orange-800">Reset All Progress</h3>
                                 <p className="text-sm text-orange-700">
                                     This will permanently delete all your solved problems, streaks, XP, and achievements.
@@ -1356,7 +1290,7 @@ const Settings = () => {
                             </div>
 
                             {/* Delete Account */}
-                            <div className="flex flex-col gap-3 border-2 border-red-200 bg-red-50 rounded-md p-5">
+                            <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-md bg-red-50">
                                 <h3 className="text-base font-bold text-red-800">Delete Account</h3>
                                 <p className="text-sm text-red-700">
                                     This will permanently remove your account and all associated data.

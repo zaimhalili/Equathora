@@ -10,7 +10,6 @@ import AdminRoute from "./components/AdminRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { supabase } from "./lib/supabaseClient";
 import { getUserSettings } from "./lib/notificationService";
-import { initializeOneSignal, identifyUser } from "./lib/oneSignalService";
 import {
     normalizeThemePreference,
     setThemePreference,
@@ -157,9 +156,6 @@ export default function App() {
         initPostHog();
     }, []);
 
-    useEffect(() => {
-        initializeOneSignal();
-    }, []);
 
     useEffect(() => {
         const cleanupSystemThemeSync = syncThemeWithSystemPreference();
@@ -211,15 +207,6 @@ export default function App() {
 
                 identifyPostHogUser(session.user);
 
-                // Identify user in OneSignal
-                void identifyUser({
-                    userId: session.user.id,
-                    email: session.user.email,
-                    properties: {
-                        username: session.user.user_metadata?.username || '',
-                        full_name: session.user.user_metadata?.full_name || '',
-                    }
-                });
 
                 void capturePostHogEvent('user_signed_in', {
                     email: session.user?.email || null

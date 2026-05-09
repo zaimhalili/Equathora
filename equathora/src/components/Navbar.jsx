@@ -9,7 +9,7 @@ import OverflowChecker from "../pages/OverflowChecker";
 import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
 import { getStreakData } from '../lib/databaseService';
-import { getUnreadCount } from '../lib/notificationService';
+import { getUnreadCount, NOTIFICATION_EVENTS } from '../lib/notificationService';
 import { useUserProfile } from '../hooks/useUserProfile';
 //Dropdown svgs
 import Daily from '../assets/images/questionMark.svg';
@@ -72,7 +72,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const fetchStreak = async () => {
+    const refreshNavbarSignals = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
@@ -90,53 +90,21 @@ const Navbar = () => {
         console.error('Failed to fetch streak:', error);
       }
     };
-    fetchStreak();
+    void refreshNavbarSignals();
 
-    // Refresh streak on focus
-    window.addEventListener('focus', fetchStreak);
-    window.addEventListener('equathora:streak-updated', fetchStreak);
-
-    return () => {
-      window.removeEventListener('focus', fetchStreak);
-      window.removeEventListener('equathora:streak-updated', fetchStreak);
-    };
-  }, []);
-
-  useEffect(() => {
-    let channel;
-    let isMounted = true;
-
-    const setupNotificationSubscription = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
-      channel = supabase
-        .channel(`navbar-notifications-${session.user.id}`)
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'user_notifications',
-            filter: `user_id=eq.${session.user.id}`
-          },
-          async () => {
-            const unreadCount = await getUnreadCount();
-            if (isMounted) {
-              setUnreadNotificationCount(unreadCount);
-            }
-          }
-        )
-        .subscribe();
+    const handleNotificationCreated = () => {
+      void refreshNavbarSignals();
     };
 
-    setupNotificationSubscription();
+    // Refresh on focus or when in-app notifications are created.
+    window.addEventListener('focus', refreshNavbarSignals);
+    window.addEventListener('equathora:streak-updated', refreshNavbarSignals);
+    window.addEventListener(NOTIFICATION_EVENTS.CREATED, handleNotificationCreated);
 
     return () => {
-      isMounted = false;
-      if (channel) {
-        supabase.removeChannel(channel);
-      }
+      window.removeEventListener('focus', refreshNavbarSignals);
+      window.removeEventListener('equathora:streak-updated', refreshNavbarSignals);
+      window.removeEventListener(NOTIFICATION_EVENTS.CREATED, handleNotificationCreated);
     };
   }, []);
 

@@ -7,13 +7,13 @@ import { FiCheck } from "react-icons/fi";
 
 import {
     getNotifications,
-    getUnreadCount,
     markNotificationRead,
     markAllNotificationsRead,
     markNotificationsReadByIds,
     markNotificationsUnreadByIds,
     deleteNotification,
     deleteAllNotifications,
+    NOTIFICATION_EVENTS,
     NOTIFICATION_TYPES,
 } from '../lib/notificationService';
 
@@ -142,6 +142,36 @@ const Notifications = () => {
 
     useEffect(() => {
         loadNotifications();
+    }, [loadNotifications]);
+
+    useEffect(() => {
+        const handleNotificationCreated = (event) => {
+            const notification = event.detail;
+            if (!notification?.id) {
+                void loadNotifications();
+                return;
+            }
+
+            setNotifications(prev => {
+                if (prev.some(existing => existing.id === notification.id)) {
+                    return prev;
+                }
+
+                return [notification, ...prev].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            });
+        };
+
+        const handleFocus = () => {
+            void loadNotifications();
+        };
+
+        window.addEventListener(NOTIFICATION_EVENTS.CREATED, handleNotificationCreated);
+        window.addEventListener('focus', handleFocus);
+
+        return () => {
+            window.removeEventListener(NOTIFICATION_EVENTS.CREATED, handleNotificationCreated);
+            window.removeEventListener('focus', handleFocus);
+        };
     }, [loadNotifications]);
 
     // ========================================================================
@@ -426,7 +456,7 @@ const Notifications = () => {
 
                                             <div className="flex flex-col gap-1 flex-1 min-w-0">
 
-                                                <p className={`flex gap-3 text-lg leading-snug ${!notification.read ? 'font-semibold' : ''}`}>
+                                                <div className={`flex gap-3 text-lg leading-snug ${!notification.read ? 'font-semibold' : ''}`}>
                                                     {notification.title}
                                                     <div className="flex items-center gap-2 flex-wrap">
                                                         <span className={`
@@ -440,7 +470,7 @@ const Notifications = () => {
                                                             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-color)] animate-pulse shrink-0" />
                                                         )}
                                                     </div>
-                                                </p>
+                                                </div>
                                                 <p className="text-xs text-[var(--raisin-black)] leading-relaxed">
                                                     {notification.message}
                                                 </p>

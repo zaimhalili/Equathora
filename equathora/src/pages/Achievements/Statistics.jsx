@@ -111,7 +111,7 @@ const Statistics = () => {
         const completedRows = completedRowsResult?.data || [];
 
         const totalProblems = allProblems.length || 0;
-        // Filter completed IDs to only count valid current problems (same as YourTrack)
+        // Filter completed IDs to only count valid current problems (same as YourTrack.jsx)
         const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
         const completedIds = Array.from(
           new Set(
@@ -415,7 +415,7 @@ const Statistics = () => {
         <h3>Your Favorite Topics</h3>
         <div className="topics-list">
           {stats.favoriteTopics.map((topic, index) => (
-            <div key={index} className="topic-tag  rounded-full">
+            <div key={index} className="rounded-full topic-tag">
               {topic === 'No data yet' ? topic : formatTopicLabel(topic)}
             </div>
           ))}

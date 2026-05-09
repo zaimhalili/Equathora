@@ -455,7 +455,7 @@ const Learn = () => {
               <h1>Explore the Math <br />exercises on <span className="text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)65%)] relative inline-block">
                 Equathora
                 <motion.svg
-                  className="absolute -bottom-0 left-0 w-full"
+                  className="absolute left-0 w-full -bottom-0"
                   viewBox="0 0 200 8"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}

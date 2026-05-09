@@ -15,7 +15,7 @@ const Tracks = () => {
     const [bookmarked, setBookmarked] = useState({});
     const [userStats, setUserStats] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [startedTrack, setStartedTrack] = useState(false);
+    const [startedTrack, setStartedTrack] = useState(true);
 
     const toggleBookmark = (e, id) => {
         e.preventDefault();
@@ -102,18 +102,6 @@ const Tracks = () => {
                 });
             } catch (error) {
                 console.error('Error fetching user stats:', error);
-                setUserStats({
-                    totalProblems: 0,
-                    completedProblems: 0,
-                    attemptedProblems: 0,
-                    currentStreak: 0,
-                    totalTimeSpent: 0,
-                    trackStats: {
-                        'polynomial_simplification': { completed: 0, attempted: 0, wrong: 0, timeSpent: 0, problems: 0 },
-                        'polynomial_operations': { completed: 0, attempted: 0, wrong: 0, timeSpent: 0, problems: 0 },
-                        'polynomial_equations': { completed: 0, attempted: 0, wrong: 0, timeSpent: 0, problems: 0 }
-                    }
-                });
             } finally {
                 setLoading(false);
             }
@@ -145,7 +133,20 @@ const Tracks = () => {
             iconColor: 'text-green-500',
             description: 'Master the art of simplifying polynomial expressions by combining like terms and reducing complex expressions.',
             recommended: true,
-            reason: 'Perfect starting point for algebra mastery'
+            reason: 'Perfect starting point for algebra mastery',
+            joined: startedTrack,
+        },
+        {
+            id: 2,
+            name: 'Polynomial Simplification Track',
+            topic: 'polynomial_simplification',
+            difficulty: 'Easy',
+            icon: FaSquareRootAlt,
+            iconColor: 'text-green-500',
+            description: 'Master the art of simplifying polynomial expressions by combining like terms and reducing complex expressions.',
+            recommended: true,
+            reason: 'Perfect starting point for algebra mastery',
+            joined: startedTrack,
         }
     ];
 
@@ -153,12 +154,6 @@ const Tracks = () => {
         switch (difficulty.toLowerCase()) {
             case 'easy':
                 return 'text-green-600 bg-green-50 border-green-200';
-            case 'medium':
-                return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-            case 'hard':
-                return 'text-red-600 bg-red-50 border-red-200';
-            default:
-                return 'text-gray-600 bg-gray-50 border-gray-200';
         }
     };
 
@@ -196,42 +191,6 @@ const Tracks = () => {
     const mostTimeTrackStats = userStats ? getTrackData(mostTimeTrack.topic) : { timeSpent: 0 };
     const mostWrongTrackStats = userStats ? getTrackData(mostWrongTrack.topic) : { wrong: 0 };
 
-    // Animation variants
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1
-            }
-        }
-    };
-
-    const cardVariants = {
-        hidden: { opacity: 0, y: 20, scale: 0.95 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            transition: {
-                duration: 0.5,
-                ease: [0.22, 1, 0.36, 1]
-            }
-        }
-    };
-
-    const statVariants = {
-        hidden: { scale: 0, opacity: 0 },
-        visible: {
-            scale: 1,
-            opacity: 1,
-            transition: {
-                type: 'spring',
-                stiffness: 200,
-                damping: 15
-            }
-        }
-    };
 
     return (
         <>
@@ -264,181 +223,40 @@ const Tracks = () => {
 
                         {/* Tracks Grid */}
                         <div className="flex flex-wrap w-full gap-3 pt-8">
-
-
-                            {tracks.map((track, index) => (
-                                <div key={track.id} className='bg-[var(--white)] flex flex-col h-fit w-full sm:w-1/2 rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer'>
-                                    <div className="flex items-center justify-between h-1/3">
-                                        <div className="flex items-center gap-3">
-                                            <FaTrophy className='text-md text-[var(--dark-accent-color)]'></FaTrophy>
-                                            <p className='text-md text-[var(--secondary-color)] font-bold'>{track.topic}</p>
-                                        </div>
-
-                                        <div className=''><FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />
-                                        </div>
+                            {tracks.map((track) => (
+                                <div key={track.id} className='bg-[var(--white)] flex w-full rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-103 transition-all duration-200 shadow-md hover:shadow-2xl cursor-pointer ease-in-out sm:w-[calc(50%-6px)]'>
+                                    <div className='flex items-center self-stretch justify-center flex-shrink-0 aspect-square'>
+                                        <FaTrophy className='w-full h-full text-[var(--dark-accent-color)]' />
                                     </div>
-                                    <div className="flex items-center gap-3 h-1/3">
-                                        <FaDumbbell className='text-sm text-[var(--secondary-color)]' />
-                                        <p>4/100 Exercises</p>
-                                    </div>
-                                    {/* Mini Progress Bar */}
-                                    {startedTrack && (
-                                        <div className="flex h-1/3">
-                                            <div className='flex-1 h-2 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group' />
+                                    <div className='flex flex-col w-full gap-3'>
+                                        <div className="flex items-center justify-between gap-3 h-1/3">
+                                            <p className='text-md text-[var(--secondary-color)] font-bold'>{formatTopicLabel(track.topic)}</p>
+                                            {track.joined && <div className="flex items-center gap-3 bg-[var(--main-color)] px-2 rounded-md py-1"><FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />Joined</div>}
+
+
                                         </div>
-                                    )}
+                                        <div className="flex items-center gap-3 h-1/3">
+                                            <FaDumbbell className='text-sm text-[var(--secondary-color)]' />
+                                            <p>4/100 Exercises</p>
+                                        </div>
+                                        {/* Mini Progress Bar */}
+                                        {startedTrack && (
+                                            <div className="flex h-1/3">
+                                                <div className='flex-1 h-2 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group' />
+                                            </div>
+                                        )}
+
+                                    </div>
+
                                 </div>
                             ))}
-
-
-                            <motion.div
-                                className="flex theme-lock"
-                                variants={containerVariants}
-                                initial="hidden"
-                                animate="visible"
-                            >
-                                {tracks.map((track, index) => {
-                                    const IconComponent = track.icon;
-                                    const trackData = getTrackData(track.topic);
-                                    const progress = trackData.problems > 0 ? Math.round((trackData.completed / trackData.problems) * 100) : 0;
-                                    return (
-                                        <motion.div
-                                            key={track.id}
-                                            variants={cardVariants}
-                                            initial="hidden"
-                                            animate="visible"
-                                            whileHover={{ scale: 1.02, y: -5 }}
-                                            transition={{ duration: 0.2 }}
-                                        >
-                                            <Link
-                                                to={`/learn?topic=${track.topic}`}
-                                                className="group relative bg-white rounded-md overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[var(--accent-color)] flex flex-col animate-in fade-in slide-in-from-bottom-4"
-                                                style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'backwards' }}
-                                            >
-                                                {/* Shimmer Effect */}
-                                                <div className="absolute inset-0 transition-transform duration-1000 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
-                                                {/* Track Header */}
-                                                <div className="relative p-5 bg-gradient-to-br from-[var(--secondary-color)] to-[var(--mid-main-secondary)] overflow-hidden">
-                                                    {/* Decorative Elements */}
-                                                    <div className="absolute top-0 right-0 w-20 h-20 rounded-full bg-white/5 -pr-10 -pt-10" />
-                                                    <div className="absolute bottom-0 left-0 w-16 h-16 -ml-8 rounded-full bg-white/5 -pb-8" />
-
-                                                    <div className="relative flex items-start justify-between gap-3 pb-3">
-                                                        <div className="flex items-center flex-1 gap-3">
-                                                            <div className={`text-3xl ${track.iconColor} bg-white/10 p-3 rounded-md backdrop-blur-sm`}>
-                                                                <IconComponent />
-                                                            </div>
-                                                            <div className="flex-1">
-                                                                <h3 className="text-lg font-bold text-white font-['Sansation'] leading-tight">
-                                                                    {track.name}
-                                                                </h3>
-                                                                {track.recommended && (
-                                                                    <span className="inline-block pt-1 px-2 py-1 bg-yellow-400 text-[var(--secondary-color)] text-xs font-bold rounded-full">
-                                                                        Recommended
-                                                                    </span>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <div className="bg-yellow-400 p-1.5 rounded-md shadow-sm">
-                                                                <FaStar className="text-[var(--secondary-color)] text-sm" />
-                                                            </div>
-                                                            <button
-                                                                onClick={(e) => toggleBookmark(e, track.id)}
-                                                                className="bg-white/20 hover:bg-white/30 p-1.5 rounded-md transition-colors duration-200"
-                                                            >
-                                                                {bookmarked[track.id] ? (
-                                                                    <FaBookmark className="text-sm text-white" />
-                                                                ) : (
-                                                                    <FaRegBookmark className="text-sm text-white" />
-                                                                )}
-                                                            </button>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="flex justify-center">
-                                                        <span className={`inline-block px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${getDifficultyColor(track.difficulty)}`}>
-                                                            {track.difficulty}
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                {/* Track Body */}
-                                                <div className="flex flex-col flex-1 gap-4 p-5">
-                                                    <p className="text-[var(--secondary-color)] font-['Sansation'] text-sm leading-relaxed text-center">
-                                                        {track.description}
-                                                    </p>
-
-                                                    <div className="px-3 py-2 bg-[var(--main-color)] rounded-md border-l-3 border-[var(--accent-color)]">
-                                                        <p className="text-[var(--secondary-color)] font-['Sansation'] text-xs font-medium text-center">
-                                                            {track.reason}
-                                                        </p>
-                                                    </div>
-
-                                                    {/* Progress */}
-                                                    <div>
-                                                        <div className="flex items-center justify-between pb-2">
-                                                            <span className="text-xs font-semibold text-[var(--secondary-color)] font-['Sansation']">
-                                                                Progress
-                                                            </span>
-                                                            <span className="text-xs font-semibold text-[var(--accent-color)] font-['Sansation']">
-                                                                {loading ? '...' : `${trackData.completed}/${trackData.problems}`}
-                                                            </span>
-                                                        </div>
-                                                        <div className="relative w-full h-2 overflow-hidden bg-gray-200 rounded-full">
-                                                            <div
-                                                                className="absolute top-0 left-0 h-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--light-accent-color)] rounded-full transition-all duration-700 ease-out"
-                                                                style={{ width: `${progress}%` }}
-                                                            />
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Track Stats */}
-                                                    <div className="grid grid-cols-2 gap-3">
-                                                        <div className="p-3 text-center rounded-md bg-gray-50">
-                                                            <p className="text-xs text-[var(--mid-main-secondary)] font-medium pb-1">Attempted</p>
-                                                            <p className="text-lg font-bold text-[var(--secondary-color)]">
-                                                                {loading ? '...' : trackData.attempted}
-                                                            </p>
-                                                        </div>
-                                                        <div className="p-3 text-center rounded-md bg-gray-50">
-                                                            <p className="text-xs text-[var(--mid-main-secondary)] font-medium pb-1">Wrong</p>
-                                                            <p className="text-lg font-bold text-red-600">
-                                                                {loading ? '...' : trackData.wrong}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="flex items-center justify-center pt-3 border-t border-gray-100">
-                                                        <div className="flex items-center gap-1.5">
-                                                            <FaClock className="text-[var(--mid-main-secondary)] text-xs" />
-                                                            <span className="text-xs text-[var(--secondary-color)] font-['Sansation'] font-medium">
-                                                                {loading ? '...' : formatTime(trackData.timeSpent)}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {/* Action Button */}
-                                                <div className="p-5 pt-0">
-                                                    <div className="flex items-center justify-center gap-2 py-3 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-md transition-colors duration-300">
-                                                        <FaPlay className="text-sm text-white" />
-                                                        <span className="text-white font-semibold text-sm font-['Sansation']">Start Track</span>
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        </motion.div>
-                                    );
-                                })}
-                            </motion.div>
                         </div>
                     </div>
 
 
                 </div>
 
-            </div>
+            </div >
             <Footer />
         </>
     );
