@@ -355,7 +355,7 @@ export async function getProblems(
             let progressMap = new Map();
             if (userId && allFavoriteProblems?.length) {
                 const { data: attemptsRows, error: attemptsError } = await supabase
-                    .from('user_attempts')
+                    .from('attempts')
                     .select('problem_id, is_correct')
                     .eq('user_id', userId)
                     .in('problem_id', allFavoriteProblems.map((problem) => problem.id));

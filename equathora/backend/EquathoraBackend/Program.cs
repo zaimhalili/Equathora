@@ -377,31 +377,31 @@ app.MapGet("/api/admin/users", async (
 
     var profiles = await db.Database.SqlQuery<AdminProfileRow>($@"
         SELECT
-            id AS \"Id\",
-            email AS \"Email\",
-            username AS \"Username\",
-            full_name AS \"FullName\",
-            display_name AS \"DisplayName\",
-            role AS \"Role\",
-            account_status AS \"AccountStatus\",
-            is_suspended AS \"IsSuspended\",
-            is_active AS \"IsActive\",
-            mentor_verification AS \"MentorVerification\",
-            mentor_status AS \"MentorStatus\",
-            created_at AS \"CreatedAt\",
-            joined_at AS \"JoinedAt\",
-            inserted_at AS \"InsertedAt\",
-            last_seen_at AS \"LastSeenAt\",
-            updated_at AS \"UpdatedAt\"
+            id AS ""Id"",
+            email AS ""Email"",
+            username AS ""Username"",
+            full_name AS ""FullName"",
+            display_name AS ""DisplayName"",
+            role AS ""Role"",
+            account_status AS ""AccountStatus"",
+            is_suspended AS ""IsSuspended"",
+            is_active AS ""IsActive"",
+            mentor_verification AS ""MentorVerification"",
+            mentor_status AS ""MentorStatus"",
+            created_at AS ""CreatedAt"",
+            joined_at AS ""JoinedAt"",
+            inserted_at AS ""InsertedAt"",
+            last_seen_at AS ""LastSeenAt"",
+            updated_at AS ""UpdatedAt""
         FROM profiles
     ").ToListAsync();
 
     var progress = await db.Database.SqlQuery<AdminProgressRow>($@"
         SELECT
-            user_id AS \"UserId\",
-            total_attempts AS \"TotalAttempts\",
-            wrong_submissions AS \"WrongSubmissions\",
-            correct_answers AS \"CorrectAnswers\"
+            user_id AS ""UserId"",
+            total_attempts AS ""TotalAttempts"",
+            wrong_submissions AS ""WrongSubmissions"",
+            correct_answers AS ""CorrectAnswers""
         FROM user_progress
     ").ToListAsync();
 
@@ -600,7 +600,7 @@ app.MapGet("/api/admin/analytics", async (
             .Select(p => new { p.Id, p.Topic })
             .ToListAsync();
 
-        var problemsById = problems.ToDictionary(p => p.Id.ToString(), p => p.Topic ?? "Uncategorized");
+        var problemsById = problems.ToDictionary(p => p.Id, p => p.Topic ?? "Uncategorized");
 
         var attemptsInWindow = submissionsForRolling
             .Where(a => a.CreatedAt >= startInclusive && a.CreatedAt < endExclusive)
@@ -1691,7 +1691,7 @@ static async Task<IResult?> RequireAdminAsync(
 
         var adminRole = await db.Database
             .SqlQuery<AdminRoleRow>($@"
-                SELECT role AS \"Role\"
+                SELECT role AS ""Role""
                 FROM profiles
                 WHERE id = { userId}
         LIMIT 1
@@ -1751,6 +1751,15 @@ sealed class AnalyticsUserRow
 {
     public Guid UserId { get; set; }
     public string ProblemId { get; set; } = string.Empty;
+    public bool IsCorrect { get; set; }
+    public int TimeSpentSeconds { get; set; }
+    public DateTime CreatedAt { get; set; }
+}
+
+sealed class AnalyticsSubmissionRow
+{
+    public Guid UserId { get; set; }
+    public int ProblemId { get; set; }
     public bool IsCorrect { get; set; }
     public int TimeSpentSeconds { get; set; }
     public DateTime CreatedAt { get; set; }

@@ -35,7 +35,7 @@ const isMissingSupabaseResourceError = (error) => {
     return status === 404
         || status === 42
         || message.includes('does not exist')
-        || message.includes('relation') && message.includes('user_attempts');
+        || message.includes('relation') && message.includes('attempts');
 };
 
 let hasLoggedBackendFallback = false;
@@ -190,7 +190,7 @@ const fetchAdminProblemDetailFromSupabase = async (problemId) => {
     let attemptRows = [];
     try {
         const { data: attempts, error: attemptsError } = await supabase
-            .from('user_attempts')
+            .from('attempts')
             .select('is_correct')
             .eq('problem_id', problemId);
 
@@ -201,7 +201,7 @@ const fetchAdminProblemDetailFromSupabase = async (problemId) => {
         attemptRows = Array.isArray(attempts) ? attempts : [];
     } catch (attemptsError) {
         if (!isMissingSupabaseResourceError(attemptsError)) {
-            console.warn('Could not read user_attempts for problem detail; using 0 metrics.', attemptsError);
+            console.warn('Could not read attempts for problem detail; using 0 metrics.', attemptsError);
         }
     }
 
@@ -247,7 +247,7 @@ const fetchAllAdminProblemDetailsFromSupabase = async () => {
     let attempts = [];
     try {
         const { data: attemptsData, error: attemptsError } = await supabase
-            .from('user_attempts')
+            .from('attempts')
             .select('problem_id, is_correct');
 
         if (attemptsError) {
@@ -257,7 +257,7 @@ const fetchAllAdminProblemDetailsFromSupabase = async () => {
         attempts = Array.isArray(attemptsData) ? attemptsData : [];
     } catch (attemptsError) {
         if (!isMissingSupabaseResourceError(attemptsError)) {
-            console.warn('Could not read user_attempts for bulk details; using 0 metrics.', attemptsError);
+            console.warn('Could not read attempts for bulk details; using 0 metrics.', attemptsError);
         }
     }
 
@@ -368,7 +368,7 @@ const fetchAllSupabaseAttempts = async ({ pageSize = 2000 } = {}) => {
         const end = start + pageSize - 1;
 
         const { data, error } = await supabase
-            .from('user_attempts')
+            .from('attempts')
             .select('problem_id, is_correct')
             .range(start, end);
 
@@ -397,7 +397,7 @@ const attachProgressFromSupabase = async (rows) => {
         attempts = await fetchAllSupabaseAttempts();
     } catch (error) {
         if (!isMissingSupabaseResourceError(error)) {
-            console.warn('Could not load user_attempts for admin problems metrics:', error);
+            console.warn('Could not load attempts for admin problems metrics:', error);
         }
     }
 
