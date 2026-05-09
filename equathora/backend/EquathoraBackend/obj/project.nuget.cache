@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kRSmgS5D0mg=",
+  "dgSpecHash": "MyhMycyWeL0=",
   "success": true,
-  "projectFilePath": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25-26\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
+  "projectFilePath": "C:\\Users\\halil\\Desktop\\ITTS\\WebDevelopment\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\halil\\.nuget\\packages\\aspnetcoreratelimit\\5.0.0\\aspnetcoreratelimit.5.0.0.nupkg.sha512",
     "C:\\Users\\halil\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
@@ -70,9 +70,9 @@
       "code": "NU1603",
       "level": "Warning",
       "message": "EquathoraBackend depends on MathNet.Numerics (>= 6.0.0-beta01) but MathNet.Numerics 6.0.0-beta01 was not found. MathNet.Numerics 6.0.0-beta1 was resolved instead.",
-      "projectPath": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25-26\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
+      "projectPath": "C:\\Users\\halil\\Desktop\\ITTS\\WebDevelopment\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\halil\\OneDrive - TURKIYE MAARIF VAKFI\\Desktop\\ITTS 24-25-26\\Web Development\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
+      "filePath": "C:\\Users\\halil\\Desktop\\ITTS\\WebDevelopment\\Equathora\\equathora\\backend\\EquathoraBackend\\EquathoraBackend.csproj",
       "libraryId": "MathNet.Numerics",
       "targetGraphs": [
         "net9.0"

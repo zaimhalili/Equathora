@@ -9,6 +9,7 @@ import { getUserProgress, getStreakData, getCompletedProblems, getUserSubmission
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
 import YourTrack from '@/components/YourTrack';
+import { formatTopicLabel } from '@/lib/utils';
 
 const Tracks = () => {
     const [bookmarked, setBookmarked] = useState({});
@@ -236,11 +237,11 @@ const Tracks = () => {
         <>
             <Navbar />
             <div className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
-                <div className='flex w-full justify-center items-center'>
+                <div className='flex items-center justify-center w-full'>
                     {/* Header */}
                     <div className="flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6">
                         <motion.div
-                            className="text-center flex flex-col gap-3"
+                            className="flex flex-col gap-3 text-center"
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
@@ -253,37 +254,22 @@ const Tracks = () => {
                             </p>
 
                             {/* User Stats */}
-                            {/* <motion.div
-                                className="flex justify-between w-full theme-lock pt-3"
-                                variants={containerVariants}
-                                initial="hidden"
-                                animate="visible"
-                            >
-                                <motion.div
-                                    className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white flex items-center gap-2 px-4 py-3 text-[var(--secondary-color)] rounded-md shadow-md hover:scale-110 transition-all duration-300 hover:shadow-xl"
-                                    variants={statVariants}
-                                    whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
-                                >
-                                    <FaClock className="text-[var(--dark-accent-color)] text-lg" />
-                                    <div className="text-left">
+                            {/* 
                                         <p className="text-xs font-medium">Time Spent</p>
                                         <p className="text-sm font-bold text-[var(--secondary-color)]">
                                             {loading ? '...' : `${Math.round(userStats?.totalTimeSpent || 0)} min`}
-                                        </p>
-                                    </div>
-                                </motion.div>
-                            </motion.div> */}
+                                        </p> */}
                         </motion.div>
                         <YourTrack></YourTrack>
 
                         {/* Tracks Grid */}
-                        <div className="pt-8 flex gap-3 flex-wrap w-full">
+                        <div className="flex flex-wrap w-full gap-3 pt-8">
 
 
                             {tracks.map((track, index) => (
                                 <div key={track.id} className='bg-[var(--white)] flex flex-col h-fit w-full sm:w-1/2 rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer'>
-                                    <div className="flex h-1/3 justify-between items-center">
-                                        <div className="flex gap-3 items-center">
+                                    <div className="flex items-center justify-between h-1/3">
+                                        <div className="flex items-center gap-3">
                                             <FaTrophy className='text-md text-[var(--dark-accent-color)]'></FaTrophy>
                                             <p className='text-md text-[var(--secondary-color)] font-bold'>{track.topic}</p>
                                         </div>
@@ -291,14 +277,14 @@ const Tracks = () => {
                                         <div className=''><FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />
                                         </div>
                                     </div>
-                                    <div className="flex h-1/3 items-center gap-3">
+                                    <div className="flex items-center gap-3 h-1/3">
                                         <FaDumbbell className='text-sm text-[var(--secondary-color)]' />
                                         <p>4/100 Exercises</p>
                                     </div>
                                     {/* Mini Progress Bar */}
                                     {startedTrack && (
                                         <div className="flex h-1/3">
-                                            <div className='flex-1 h-2 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group'></div>
+                                            <div className='flex-1 h-2 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group' />
                                         </div>
                                     )}
                                 </div>
@@ -306,7 +292,7 @@ const Tracks = () => {
 
 
                             <motion.div
-                                className="flex"
+                                className="flex theme-lock"
                                 variants={containerVariants}
                                 initial="hidden"
                                 animate="visible"
@@ -330,16 +316,16 @@ const Tracks = () => {
                                                 style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'backwards' }}
                                             >
                                                 {/* Shimmer Effect */}
-                                                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                                                <div className="absolute inset-0 transition-transform duration-1000 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
                                                 {/* Track Header */}
                                                 <div className="relative p-5 bg-gradient-to-br from-[var(--secondary-color)] to-[var(--mid-main-secondary)] overflow-hidden">
                                                     {/* Decorative Elements */}
-                                                    <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -pr-10 -pt-10" />
-                                                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full -ml-8 -pb-8" />
+                                                    <div className="absolute top-0 right-0 w-20 h-20 rounded-full bg-white/5 -pr-10 -pt-10" />
+                                                    <div className="absolute bottom-0 left-0 w-16 h-16 -ml-8 rounded-full bg-white/5 -pb-8" />
 
                                                     <div className="relative flex items-start justify-between gap-3 pb-3">
-                                                        <div className="flex items-center gap-3 flex-1">
+                                                        <div className="flex items-center flex-1 gap-3">
                                                             <div className={`text-3xl ${track.iconColor} bg-white/10 p-3 rounded-md backdrop-blur-sm`}>
                                                                 <IconComponent />
                                                             </div>
@@ -363,9 +349,9 @@ const Tracks = () => {
                                                                 className="bg-white/20 hover:bg-white/30 p-1.5 rounded-md transition-colors duration-200"
                                                             >
                                                                 {bookmarked[track.id] ? (
-                                                                    <FaBookmark className="text-white text-sm" />
+                                                                    <FaBookmark className="text-sm text-white" />
                                                                 ) : (
-                                                                    <FaRegBookmark className="text-white text-sm" />
+                                                                    <FaRegBookmark className="text-sm text-white" />
                                                                 )}
                                                             </button>
                                                         </div>
@@ -379,7 +365,7 @@ const Tracks = () => {
                                                 </div>
 
                                                 {/* Track Body */}
-                                                <div className="p-5 flex-1 flex flex-col gap-4">
+                                                <div className="flex flex-col flex-1 gap-4 p-5">
                                                     <p className="text-[var(--secondary-color)] font-['Sansation'] text-sm leading-relaxed text-center">
                                                         {track.description}
                                                     </p>
@@ -400,7 +386,7 @@ const Tracks = () => {
                                                                 {loading ? '...' : `${trackData.completed}/${trackData.problems}`}
                                                             </span>
                                                         </div>
-                                                        <div className="relative w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                                                        <div className="relative w-full h-2 overflow-hidden bg-gray-200 rounded-full">
                                                             <div
                                                                 className="absolute top-0 left-0 h-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--light-accent-color)] rounded-full transition-all duration-700 ease-out"
                                                                 style={{ width: `${progress}%` }}
@@ -410,13 +396,13 @@ const Tracks = () => {
 
                                                     {/* Track Stats */}
                                                     <div className="grid grid-cols-2 gap-3">
-                                                        <div className="bg-gray-50 p-3 rounded-md text-center">
+                                                        <div className="p-3 text-center rounded-md bg-gray-50">
                                                             <p className="text-xs text-[var(--mid-main-secondary)] font-medium pb-1">Attempted</p>
                                                             <p className="text-lg font-bold text-[var(--secondary-color)]">
                                                                 {loading ? '...' : trackData.attempted}
                                                             </p>
                                                         </div>
-                                                        <div className="bg-gray-50 p-3 rounded-md text-center">
+                                                        <div className="p-3 text-center rounded-md bg-gray-50">
                                                             <p className="text-xs text-[var(--mid-main-secondary)] font-medium pb-1">Wrong</p>
                                                             <p className="text-lg font-bold text-red-600">
                                                                 {loading ? '...' : trackData.wrong}
@@ -437,7 +423,7 @@ const Tracks = () => {
                                                 {/* Action Button */}
                                                 <div className="p-5 pt-0">
                                                     <div className="flex items-center justify-center gap-2 py-3 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-md transition-colors duration-300">
-                                                        <FaPlay className="text-white text-sm" />
+                                                        <FaPlay className="text-sm text-white" />
                                                         <span className="text-white font-semibold text-sm font-['Sansation']">Start Track</span>
                                                     </div>
                                                 </div>
