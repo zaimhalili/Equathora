@@ -1,15 +1,9 @@
 import { supabase } from './supabaseClient';
-import { buildApiBaseCandidates, getAdminApiHeaders } from './adminAuth';
 
 const toTitleCase = (value) => {
     const raw = String(value || '').trim();
     if (!raw) return '';
     return raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
-};
-
-const isJsonContentType = (contentType) => {
-    const normalized = String(contentType || '').toLowerCase();
-    return normalized.includes('application/json') || normalized.includes('+json');
 };
 
 const pickProfileValue = (profile, keys) => {
@@ -23,44 +17,49 @@ const pickProfileValue = (profile, keys) => {
     return undefined;
 };
 
-const fetchAdminUsersFromBackend = async () => {
-    const endpoint = '/api/admin/users';
-    const baseCandidates = buildApiBaseCandidates();
+const fetchSupabaseTable = async (table, select, chunkSize = 1000) => {
+    const rows = [];
+    let from = 0;
 
-    for (const apiBase of baseCandidates) {
-        const requestUrl = `${apiBase}${endpoint}`;
+    while (true) {
+        const to = from + chunkSize - 1;
+        const { data, error } = await supabase
+            .from(table)
+            .select(select)
+            .range(from, to);
 
-        try {
-            const adminHeaders = await getAdminApiHeaders();
-            if (!adminHeaders) {
-                throw new Error('Missing admin session.');
-            }
-
-            const response = await fetch(requestUrl, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                    ...adminHeaders
-                },
-                credentials: 'omit'
-            });
-
-            if (!response.ok) {
-                continue;
-            }
-
-            const contentType = response.headers.get('content-type') || '';
-            if (!isJsonContentType(contentType)) {
-                continue;
-            }
-
-            return await response.json();
-        } catch {
-            // Try next candidate.
+        if (error) {
+            throw error;
         }
+
+        if (!data || data.length === 0) {
+            break;
+        }
+
+        rows.push(...data);
+
+        if (data.length < chunkSize) {
+            break;
+        }
+
+        from += chunkSize;
     }
 
-    throw new Error('Admin users endpoint unavailable.');
+    return rows;
+};
+
+const fetchAdminUsersFromSupabase = async () => {
+    const profiles = await fetchSupabaseTable(
+        'profiles',
+        'id,role,full_name,username,display_name,account_status,is_suspended,is_active,mentor_verification,created_at,updated_at,last_seen_at,joined_at,inserted_at'
+    );
+
+    const progress = await fetchSupabaseTable(
+        'user_progress',
+        'user_id,total_attempts,wrong_submissions'
+    );
+
+    return { profiles, progress };
 };
 
 const mapRoleLabel = (rawRole) => {
@@ -134,12 +133,15 @@ const getDisplayName = (profile) => {
     return pickProfileValue(profile, ['full_name', 'fullName'])
         || pickProfileValue(profile, ['username'])
         || pickProfileValue(profile, ['display_name', 'displayName'])
-        || pickProfileValue(profile, ['email'])?.split('@')?.[0]
         || 'Unknown User';
 };
 
+const getEmailValue = (profile) => {
+    return pickProfileValue(profile, ['email', 'user_email', 'contact_email']) || '-';
+};
+
 export async function getAdminUsers() {
-    const { profiles, progress } = await fetchAdminUsersFromBackend();
+    const { profiles, progress } = await fetchAdminUsersFromSupabase();
 
     const progressByUserId = (progress || []).reduce((map, row) => {
         map.set(String(row.userId || row.user_id), row);
@@ -156,7 +158,7 @@ export async function getAdminUsers() {
         return {
             id: userId,
             name: getDisplayName(profile),
-            email: profile.email || '-',
+            email: getEmailValue(profile),
             role,
             permission: mapPermissionLabel(role),
             status: inferStatus(profile),

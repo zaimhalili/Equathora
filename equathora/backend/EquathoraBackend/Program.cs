@@ -1693,7 +1693,7 @@ static async Task<IResult?> RequireAdminAsync(
             .SqlQuery<AdminRoleRow>($@"
                 SELECT role AS ""Role""
                 FROM profiles
-                WHERE id = { userId}
+                WHERE id = {userId}
         LIMIT 1
             ")
             .FirstOrDefaultAsync();

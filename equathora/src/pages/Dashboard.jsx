@@ -15,13 +15,10 @@ import { Link } from 'react-router-dom';
 import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
 import { getDailyProblemSlug } from '../lib/utils';
-import { migrateLocalStorageToDatabase, needsMigration } from '../lib/migrateStorage';
 import { supabase } from '../lib/supabaseClient';
-import { notifyWelcome, getNotifications } from '../lib/notificationService';
 import LoadingSpinner from '@/components/LoadingSpinner.jsx';
 
 const Dashboard = () => {
-    const [migrationStatus, setMigrationStatus] = useState(null);
     const [username, setUsername] = useState("Friend");
     const [dailyProblemSlug, setDailyProblemSlug] = useState('');
 
@@ -56,46 +53,7 @@ const Dashboard = () => {
         fetchUsername();
     }, []);
 
-    // Auto-migrate localStorage data on first visit
-    useEffect(() => {
-        const checkAndMigrate = async () => {
-            const needs = await needsMigration();
-            if (needs) {
-                console.log('Starting localStorage migration...');
-                const result = await migrateLocalStorageToDatabase();
-                setMigrationStatus(result);
-                if (result.success) {
-                    console.log('Migration complete:', result.message);
-                }
-            }
-        };
-        checkAndMigrate();
-    }, []);
 
-    // Send welcome notification for first-time users (Google OAuth users)
-    useEffect(() => {
-        const checkAndSendWelcome = async () => {
-            try {
-                const { data: { session } } = await supabase.auth.getSession();
-                if (!session?.user) return;
-
-                // Check if user has any notifications (indicator they've been welcomed)
-                const notifications = await getNotifications({ limit: 1 });
-                if (notifications.length === 0) {
-                    // First time user - send welcome notification
-                    const username = session.user.user_metadata?.full_name ||
-                        session.user.user_metadata?.name ||
-                        session.user.user_metadata?.username ||
-                        session.user.email?.split('@')[0] ||
-                        'there';
-                    await notifyWelcome(username);
-                }
-            } catch (error) {
-                console.error('Failed to check/send welcome notification:', error);
-            }
-        };
-        checkAndSendWelcome();
-    }, []);
 
     return (
         <>

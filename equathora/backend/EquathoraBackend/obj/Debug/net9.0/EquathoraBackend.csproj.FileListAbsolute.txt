@@ -328,3 +328,4 @@ C:\Users\halil\Desktop\ITTS\WebDevelopment\Equathora\equathora\backend\Equathora
 C:\Users\halil\Desktop\ITTS\WebDevelopment\Equathora\equathora\backend\EquathoraBackend\obj\Debug\net9.0\EquathoraBackend.pdb
 C:\Users\halil\Desktop\ITTS\WebDevelopment\Equathora\equathora\backend\EquathoraBackend\obj\Debug\net9.0\EquathoraBackend.genruntimeconfig.cache
 C:\Users\halil\Desktop\ITTS\WebDevelopment\Equathora\equathora\backend\EquathoraBackend\obj\Debug\net9.0\ref\EquathoraBackend.dll
+C:\Users\halil\Desktop\ITTS\WebDevelopment\Equathora\equathora\backend\EquathoraBackend\bin\Debug\net9.0\appsettings.json

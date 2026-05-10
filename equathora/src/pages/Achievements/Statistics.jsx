@@ -355,7 +355,7 @@ const Statistics = () => {
       <div className="activity-section">
         <h3>Weekly Activity</h3>
         <div className="activity-chart-container">
-          <ResponsiveContainer width="100%" height={250}>
+          <ResponsiveContainer width="100%" height={250} minWidth={0} minHeight={0}>
             <AreaChart
               data={(() => {
                 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];

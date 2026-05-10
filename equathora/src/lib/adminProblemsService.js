@@ -1,180 +1,40 @@
 import { supabase } from './supabaseClient';
-import { getAdminApiHeaders } from './adminAuth';
-
-const normalizeBase = (value) => {
-    if (!value || typeof value !== 'string') return '';
-    return value.trim().replace(/\/$/, '');
-};
-
-const isJsonContentType = (contentType) => {
-    const normalized = String(contentType || '').toLowerCase();
-    return normalized.includes('application/json') || normalized.includes('+json');
-};
-
-const buildApiBaseCandidates = () => {
-    const explicit = normalizeBase(
-        import.meta.env.VITE_API_URL ||
-        import.meta.env.VITE_BACKEND_URL ||
-        import.meta.env.VITE_API_BASE_URL
-    );
-
-    const candidates = [];
-
-    if (explicit) {
-        candidates.push(explicit);
-    }
-
-    candidates.push('');
-
-    return [...new Set(candidates)];
-};
 
 const isMissingSupabaseResourceError = (error) => {
     const status = Number(error?.status || error?.code || 0);
+    const code = String(error?.code || '').toUpperCase();
     const message = String(error?.message || '').toLowerCase();
     return status === 404
         || status === 42
+        || code === 'PGRST205'
         || message.includes('does not exist')
+        || message.includes('schema cache')
         || message.includes('relation') && message.includes('attempts');
 };
 
-let hasLoggedBackendFallback = false;
+const attemptsTableFlagKey = 'equathora_attempts_table_missing';
+let attemptsTableUnavailable = false;
 
-const fetchProblemsPage = async ({ page, pageSize }) => {
-    const params = new URLSearchParams({
-        page: String(page),
-        pageSize: String(pageSize),
-        sort: 'newest'
-    });
-
-    const endpoint = `/api/problems?${params.toString()}`;
-    const baseCandidates = buildApiBaseCandidates();
-    const failures = [];
-
-    for (const apiBase of baseCandidates) {
-        const requestUrl = `${apiBase}${endpoint}`;
-
-        try {
-            const response = await fetch(requestUrl, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json'
-                },
-                credentials: 'omit'
-            });
-
-            const contentType = response.headers.get('content-type') || '';
-
-            if (!response.ok) {
-                let details = '';
-
-                if (isJsonContentType(contentType)) {
-                    try {
-                        const errBody = await response.json();
-                        details = errBody?.error || errBody?.message || '';
-                    } catch {
-                        // Ignore malformed JSON errors and continue with status details.
-                    }
-                }
-
-                failures.push(
-                    details
-                        ? `${requestUrl} -> ${response.status} ${response.statusText}: ${details}`
-                        : `${requestUrl} -> ${response.status} ${response.statusText}`
-                );
-                continue;
-            }
-
-            if (!isJsonContentType(contentType)) {
-                failures.push(`${requestUrl} -> non-JSON (${contentType || 'unknown'})`);
-                continue;
-            }
-
-            const body = await response.json();
-            return {
-                data: Array.isArray(body?.data) ? body.data : [],
-                count: Number(body?.count || 0),
-                page: Number(body?.page || page),
-                pageSize: Number(body?.pageSize || pageSize)
-            };
-        } catch (error) {
-            failures.push(`${requestUrl} -> network error: ${error?.message || 'unknown error'}`);
-        }
+const readAttemptsTableFlag = () => {
+    try {
+        if (typeof window === 'undefined') return false;
+        return window.localStorage.getItem(attemptsTableFlagKey) === 'true';
+    } catch {
+        return false;
     }
-
-    const error = new Error('Backend problems API is currently unavailable.');
-    error.details = failures;
-    throw error;
 };
 
-const fetchAdminProblemDetailFromBackend = async (problemId) => {
-    const endpoint = `/api/admin/problems/${problemId}`;
-    const baseCandidates = buildApiBaseCandidates();
-
-    for (const apiBase of baseCandidates) {
-        const requestUrl = `${apiBase}${endpoint}`;
-
-        try {
-            const response = await fetch(requestUrl, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json'
-                },
-                credentials: 'omit'
-            });
-
-            if (!response.ok) {
-                continue;
-            }
-
-            const contentType = response.headers.get('content-type') || '';
-            if (!isJsonContentType(contentType)) {
-                continue;
-            }
-
-            return await response.json();
-        } catch {
-            // Try next candidate.
-        }
+const markAttemptsTableMissing = () => {
+    attemptsTableUnavailable = true;
+    try {
+        if (typeof window === 'undefined') return;
+        window.localStorage.setItem(attemptsTableFlagKey, 'true');
+    } catch {
+        // Ignore localStorage failures.
     }
-
-    throw new Error('Detail endpoint unavailable');
 };
 
-const fetchAllAdminProblemDetailsFromBackend = async () => {
-    const endpoint = '/api/admin/problems/details';
-    const baseCandidates = buildApiBaseCandidates();
-
-    for (const apiBase of baseCandidates) {
-        const requestUrl = `${apiBase}${endpoint}`;
-
-        try {
-            const response = await fetch(requestUrl, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json'
-                },
-                credentials: 'omit'
-            });
-
-            if (!response.ok) {
-                continue;
-            }
-
-            const contentType = response.headers.get('content-type') || '';
-            if (!isJsonContentType(contentType)) {
-                continue;
-            }
-
-            const body = await response.json();
-            return Array.isArray(body?.data) ? body.data : [];
-        } catch {
-            // Try next candidate.
-        }
-    }
-
-    throw new Error('Bulk detail endpoint unavailable');
-};
+attemptsTableUnavailable = readAttemptsTableFlag();
 
 const fetchAdminProblemDetailFromSupabase = async (problemId) => {
     const { data: problem, error } = await supabase
@@ -188,20 +48,24 @@ const fetchAdminProblemDetailFromSupabase = async (problemId) => {
     }
 
     let attemptRows = [];
-    try {
-        const { data: attempts, error: attemptsError } = await supabase
-            .from('attempts')
-            .select('is_correct')
-            .eq('problem_id', problemId);
+    if (!attemptsTableUnavailable) {
+        try {
+            const { data: attempts, error: attemptsError } = await supabase
+                .from('attempts')
+                .select('is_correct')
+                .eq('problem_id', problemId);
 
-        if (attemptsError) {
-            throw attemptsError;
-        }
+            if (attemptsError) {
+                throw attemptsError;
+            }
 
-        attemptRows = Array.isArray(attempts) ? attempts : [];
-    } catch (attemptsError) {
-        if (!isMissingSupabaseResourceError(attemptsError)) {
-            console.warn('Could not read attempts for problem detail; using 0 metrics.', attemptsError);
+            attemptRows = Array.isArray(attempts) ? attempts : [];
+        } catch (attemptsError) {
+            if (isMissingSupabaseResourceError(attemptsError)) {
+                markAttemptsTableMissing();
+            } else {
+                console.warn('Could not read attempts for problem detail; using 0 metrics.', attemptsError);
+            }
         }
     }
 
@@ -245,19 +109,23 @@ const fetchAllAdminProblemDetailsFromSupabase = async () => {
     }
 
     let attempts = [];
-    try {
-        const { data: attemptsData, error: attemptsError } = await supabase
-            .from('attempts')
-            .select('problem_id, is_correct');
+    if (!attemptsTableUnavailable) {
+        try {
+            const { data: attemptsData, error: attemptsError } = await supabase
+                .from('attempts')
+                .select('problem_id, is_correct');
 
-        if (attemptsError) {
-            throw attemptsError;
-        }
+            if (attemptsError) {
+                throw attemptsError;
+            }
 
-        attempts = Array.isArray(attemptsData) ? attemptsData : [];
-    } catch (attemptsError) {
-        if (!isMissingSupabaseResourceError(attemptsError)) {
-            console.warn('Could not read attempts for bulk details; using 0 metrics.', attemptsError);
+            attempts = Array.isArray(attemptsData) ? attemptsData : [];
+        } catch (attemptsError) {
+            if (isMissingSupabaseResourceError(attemptsError)) {
+                markAttemptsTableMissing();
+            } else {
+                console.warn('Could not read attempts for bulk details; using 0 metrics.', attemptsError);
+            }
         }
     }
 
@@ -308,13 +176,9 @@ const fetchAllAdminProblemDetailsFromSupabase = async () => {
 
 export async function getAllAdminProblemDetails() {
     try {
-        return await fetchAllAdminProblemDetailsFromBackend();
+        return await fetchAllAdminProblemDetailsFromSupabase();
     } catch {
-        try {
-            return await fetchAllAdminProblemDetailsFromSupabase();
-        } catch {
-            throw new Error('Failed to preload problem details right now. Please try again shortly.');
-        }
+        throw new Error('Failed to preload problem details right now. Please try again shortly.');
     }
 }
 
@@ -325,13 +189,9 @@ export async function getAdminProblemDetails(problemId) {
     }
 
     try {
-        return await fetchAdminProblemDetailFromBackend(numericId);
+        return await fetchAdminProblemDetailFromSupabase(numericId);
     } catch {
-        try {
-            return await fetchAdminProblemDetailFromSupabase(numericId);
-        } catch {
-            throw new Error('Failed to load problem details right now. Please try again shortly.');
-        }
+        throw new Error('Failed to load problem details right now. Please try again shortly.');
     }
 }
 
@@ -359,6 +219,10 @@ const fetchSupabaseProblemsPage = async ({ page, pageSize }) => {
 };
 
 const fetchAllSupabaseAttempts = async ({ pageSize = 2000 } = {}) => {
+    if (attemptsTableUnavailable) {
+        return [];
+    }
+
     let page = 1;
     const allAttempts = [];
     const maxPages = 2000;
@@ -373,6 +237,10 @@ const fetchAllSupabaseAttempts = async ({ pageSize = 2000 } = {}) => {
             .range(start, end);
 
         if (error) {
+            if (isMissingSupabaseResourceError(error)) {
+                markAttemptsTableMissing();
+                return [];
+            }
             throw error;
         }
 
@@ -478,47 +346,10 @@ const fetchAllProblemsFromSupabase = async ({ pageSize }) => {
 
 export async function getAllAdminProblems({ pageSize = 100 } = {}) {
     const safePageSize = Math.max(1, Math.min(100, Number(pageSize) || 100));
-    const allRows = [];
-
-    let page = 1;
-    let totalExpected = 0;
-    const maxPages = 2000;
-
     try {
-        while (page <= maxPages) {
-            const current = await fetchProblemsPage({ page, pageSize: safePageSize });
-
-            if (page === 1) {
-                totalExpected = current.count;
-            }
-
-            allRows.push(...current.data);
-
-            if (!current.data.length || allRows.length >= totalExpected) {
-                break;
-            }
-
-            page += 1;
-        }
-
-        return {
-            data: allRows,
-            count: totalExpected,
-            fetched: allRows.length,
-            pageSize: safePageSize,
-            pagesFetched: page,
-            source: 'backend'
-        };
-    } catch (backendError) {
-        if (!hasLoggedBackendFallback) {
-            console.warn('Admin problems backend fetch failed. Falling back to Supabase.', backendError);
-            hasLoggedBackendFallback = true;
-        }
-        try {
-            return await fetchAllProblemsFromSupabase({ pageSize: safePageSize });
-        } catch (supabaseError) {
-            console.error('Admin problems fallback also failed.', supabaseError);
-            throw new Error('Failed to load problem data right now. Please try again shortly.');
-        }
+        return await fetchAllProblemsFromSupabase({ pageSize: safePageSize });
+    } catch (supabaseError) {
+        console.error('Admin problems fetch failed.', supabaseError);
+        throw new Error('Failed to load problems right now. Please try again shortly.');
     }
 }
