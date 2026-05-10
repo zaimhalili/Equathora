@@ -49,10 +49,15 @@ const fetchSupabaseTable = async (table, select, chunkSize = 1000) => {
 };
 
 const fetchAdminUsersFromSupabase = async () => {
-    const profiles = await fetchSupabaseTable(
-        'profiles',
-        'id,role,full_name,username,display_name,account_status,is_suspended,is_active,mentor_verification,created_at,updated_at,last_seen_at,joined_at,inserted_at'
-    );
+    let profiles = [];
+    try {
+        profiles = await fetchSupabaseTable(
+            'profiles',
+            'id,role,full_name,username,account_status,is_suspended,is_active,mentor_verification,created_at,updated_at,last_seen_at,joined_at,inserted_at'
+        );
+    } catch (error) {
+        profiles = await fetchSupabaseTable('profiles', '*');
+    }
 
     const progress = await fetchSupabaseTable(
         'user_progress',
