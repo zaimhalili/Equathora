@@ -105,7 +105,12 @@ const Footer = () => {
                 </div>
 
                 <div className="footer-bottom">
-                    <p className="footer-copyright">© 2025 equathora. All rights reserved.</p>
+                    <p className="footer-copyright">© 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong></p>
+
+                    <p className="footer-copyright">
+                        Building products around learning, logic, and productivity.
+                        Interested in collaborating?<strong> Let’s connect.</strong>
+                    </p>
                     <p className="footer-credit">
                         Page design inspired by <a href="https://exercism.org" target="_blank" rel="noopener noreferrer" aria-label="Exercism">Exercism</a> - code practice & mentorship
                     </p>
