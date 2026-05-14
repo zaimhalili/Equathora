@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
@@ -15,7 +15,8 @@ const Tracks = () => {
     const [bookmarked, setBookmarked] = useState({});
     const [userStats, setUserStats] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [startedTrack, setStartedTrack] = useState(true);
+    const [facets, setFacets] = useState({ topics: [] })
+    const [startedTrack, setStartedTrack] = useState({});
 
     const toggleBookmark = (e, id) => {
         e.preventDefault();
@@ -48,20 +49,6 @@ const Tracks = () => {
                         wrong: 0,
                         timeSpent: 0,
                         problems: 0
-                    },
-                    'polynomial_operations': {
-                        completed: 0,
-                        attempted: 0,
-                        wrong: 0,
-                        timeSpent: 0,
-                        problems: 0
-                    },
-                    'polynomial_equations': {
-                        completed: 0,
-                        attempted: 0,
-                        wrong: 0,
-                        timeSpent: 0,
-                        problems: 0
                     }
                 };
 
@@ -71,6 +58,7 @@ const Tracks = () => {
                         trackStats[problem.topic].problems++;
                     }
                 });
+
 
                 // Count completed problems by topic
                 completed.forEach(pid => {
@@ -110,6 +98,38 @@ const Tracks = () => {
         fetchUserStats();
     }, []);
 
+    const toggleStartedTrack = (topic) => {
+        setStartedTrack(prev => ({
+            ...prev,
+            [topic]: !prev[topic]
+        }));
+    };
+
+    const availableTopics = useMemo(() => {
+        if (!facets.topic || typeof facets.topic !== 'object') return [];
+        return Object.entries(facets.topic)
+            .map(([topic, count]) => ({ value: topic, label: formatTopicLabel(topic), count }))
+    }, [facets]);
+
+
+    const tracks = useMemo(() => {
+        return availableTopics.map((topicItem, index) => {
+            return {
+                id: index + 1,
+                name: topicItem.label,
+                topic: topicItem.value,
+                difficulty: 'Easy',
+                icon: FaSquareRootAlt,
+                iconColor: 'text-green-500',
+                description: `Master the art of ${topicItem.label.toLowerCase()} by solving practice challenges.`,
+                recommended: index === 0,
+                reason: 'Perfect starting point for algebra mastery',
+                joined: !!startedTrack[topicItem.value], // Kontrollon nëse është aktivizuar në state
+            };
+        });
+    }, [availableTopics, startedTrack]);
+
+
     const getTrackData = (topic) => {
         if (!userStats || !userStats.trackStats[topic]) {
             return { completed: 0, attempted: 0, wrong: 0, timeSpent: 0, problems: 0 };
@@ -121,40 +141,6 @@ const Tracks = () => {
         if (minutes === 0) return '0 minutes';
         if (minutes < 60) return `${Math.round(minutes)} minutes`;
         return `${(minutes / 60).toFixed(1)} hours`;
-    };
-
-    const tracks = [
-        {
-            id: 1,
-            name: 'Polynomial Simplification Track',
-            topic: 'polynomial_simplification',
-            difficulty: 'Easy',
-            icon: FaSquareRootAlt,
-            iconColor: 'text-green-500',
-            description: 'Master the art of simplifying polynomial expressions by combining like terms and reducing complex expressions.',
-            recommended: true,
-            reason: 'Perfect starting point for algebra mastery',
-            joined: startedTrack,
-        },
-        {
-            id: 2,
-            name: 'Polynomial Simplification Track',
-            topic: 'polynomial_simplification',
-            difficulty: 'Easy',
-            icon: FaSquareRootAlt,
-            iconColor: 'text-green-500',
-            description: 'Master the art of simplifying polynomial expressions by combining like terms and reducing complex expressions.',
-            recommended: true,
-            reason: 'Perfect starting point for algebra mastery',
-            joined: startedTrack,
-        }
-    ];
-
-    const getDifficultyColor = (difficulty) => {
-        switch (difficulty.toLowerCase()) {
-            case 'easy':
-                return 'text-green-600 bg-green-50 border-green-200';
-        }
     };
 
     // Calculate user insights from database data
@@ -223,15 +209,15 @@ const Tracks = () => {
 
                         {/* Tracks Grid */}
                         <div className="flex flex-wrap w-full gap-3 pt-8">
-                            {tracks.map((track) => (
-                                <div key={track.id} className='bg-[var(--white)] flex w-full rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-103 transition-all duration-200 shadow-md hover:shadow-2xl cursor-pointer ease-in-out sm:w-[calc(50%-6px)]'>
+                            {availableTopics.map((track) => (
+                                <div key={track.value} className='bg-[var(--white)] flex w-full rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-103 transition-all duration-200 shadow-md hover:shadow-2xl cursor-pointer ease-in-out sm:w-[calc(50%-6px)]'>
                                     <div className='flex items-center self-stretch justify-center flex-shrink-0 aspect-square'>
                                         <FaTrophy className='w-full h-full text-[var(--dark-accent-color)]' />
                                     </div>
                                     <div className='flex flex-col w-full gap-3'>
                                         <div className="flex items-center justify-between gap-3 h-1/3">
-                                            <p className='text-md text-[var(--secondary-color)] font-bold'>{formatTopicLabel(track.topic)}</p>
-                                            {track.joined && <div className="flex items-center gap-3 bg-[var(--main-color)] px-2 rounded-md py-1"><FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />Joined</div>}
+                                            <p className='text-md text-[var(--secondary-color)] font-bold'>{formatTopicLabel(track.count)}</p>
+                                            {/* {track.joined && <div className="flex items-center gap-3 bg-[var(--main-color)] px-2 rounded-md py-1"><FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />Joined</div>} */}
 
 
                                         </div>
