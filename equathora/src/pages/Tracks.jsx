@@ -2,9 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
-import { FaStar, FaClock, FaCheckCircle, FaFire, FaLightbulb } from 'react-icons/fa';
-import { FaRocket, FaTrophy, FaBookmark, FaRegBookmark, FaChartLine } from 'react-icons/fa';
-import { FaBullseye, FaExclamationTriangle, FaPlay, FaCalculator, FaRulerCombined, FaBolt, FaSortNumericUp, FaLink, FaChartBar, FaSquareRootAlt, FaInfinity, FaDumbbell } from 'react-icons/fa';
+import { FaCheckCircle, FaTrophy, FaDumbbell } from 'react-icons/fa';
 import { getUserProgress, getStreakData, getCompletedProblems, getUserSubmissions } from '../lib/databaseService';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
@@ -12,21 +10,15 @@ import YourTrack from '@/components/YourTrack';
 import { formatTopicLabel } from '@/lib/utils';
 
 const Tracks = () => {
-    const [bookmarked, setBookmarked] = useState({});
     const [userStats, setUserStats] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [facets, setFacets] = useState({ topics: [] })
-    const [startedTrack, setStartedTrack] = useState({});
-
-    const toggleBookmark = (e, id) => {
-        e.preventDefault();
-        setBookmarked(prev => ({ ...prev, [id]: !prev[id] }));
-    };
+    const [topics, setTopics] = useState([]);
 
     useEffect(() => {
+        let isActive = true;
+        let channel;
+
         const fetchUserStats = async () => {
             try {
-                // Fetch problems from backend
                 const { data: problemsData, error: problemsError } = await supabase
                     .from('problems')
                     .select('id, topic')
@@ -41,93 +33,114 @@ const Tracks = () => {
                     getUserSubmissions()
                 ]);
 
-                // Calculate track-specific stats using database topics
-                const trackStats = {
-                    'polynomial_simplification': {
-                        completed: 0,
-                        attempted: 0,
-                        wrong: 0,
-                        timeSpent: 0,
-                        problems: 0
-                    }
-                };
+                const topicStatsMap = new Map();
+                const problemTopicMap = new Map();
 
-                // Count total problems per topic
-                problemsData.forEach(problem => {
-                    if (trackStats[problem.topic]) {
-                        trackStats[problem.topic].problems++;
+                (problemsData || []).forEach((problem) => {
+                    const topicKey = String(problem.topic || '').trim();
+                    if (!topicKey) return;
+                    problemTopicMap.set(String(problem.id), topicKey);
+                    if (!topicStatsMap.has(topicKey)) {
+                        topicStatsMap.set(topicKey, {
+                            completed: 0,
+                            attempted: 0,
+                            wrong: 0,
+                            timeSpent: 0,
+                            problems: 0
+                        });
                     }
+                    topicStatsMap.get(topicKey).problems += 1;
                 });
 
-
-                // Count completed problems by topic
-                completed.forEach(pid => {
-                    const problem = problemsData.find(p => String(p.id) === String(pid));
-                    if (problem && trackStats[problem.topic]) {
-                        trackStats[problem.topic].completed++;
-                    }
+                (completed || []).forEach((pid) => {
+                    const topicKey = problemTopicMap.get(String(pid));
+                    if (!topicKey || !topicStatsMap.has(topicKey)) return;
+                    topicStatsMap.get(topicKey).completed += 1;
                 });
 
-                // Count attempts and wrong answers by topic
-                submissions.forEach(sub => {
-                    const problem = problemsData.find(p => String(p.id) === String(sub.problem_id));
-                    if (problem && trackStats[problem.topic]) {
-                        trackStats[problem.topic].attempted++;
-                        if (!sub.is_correct) {
-                            trackStats[problem.topic].wrong++;
-                        }
-                        trackStats[problem.topic].timeSpent += (sub.time_spent || 0) / 60; // Convert to minutes
+                (submissions || []).forEach((submission) => {
+                    const topicKey = problemTopicMap.get(String(submission.problem_id));
+                    if (!topicKey || !topicStatsMap.has(topicKey)) return;
+                    const stats = topicStatsMap.get(topicKey);
+                    stats.attempted += 1;
+                    if (!submission.is_correct) {
+                        stats.wrong += 1;
                     }
+                    const timeSeconds = submission.time_spent_seconds ?? submission.time_spent ?? 0;
+                    stats.timeSpent += Number(timeSeconds || 0) / 60;
                 });
 
+                const trackStats = Object.fromEntries(topicStatsMap.entries());
+                const topicList = Array.from(topicStatsMap.keys()).sort((a, b) =>
+                    formatTopicLabel(a).localeCompare(formatTopicLabel(b))
+                );
+
+                if (!isActive) return;
+
+                setTopics(topicList);
                 setUserStats({
-                    totalProblems: problemsData.length,
-                    completedProblems: completed.length,
-                    attemptedProblems: submissions.length,
+                    totalProblems: problemsData?.length || 0,
+                    completedProblems: completed?.length || 0,
+                    attemptedProblems: submissions?.length || 0,
                     currentStreak: streak?.current_streak || 0,
                     totalTimeSpent: progress?.total_time_minutes || 0,
                     trackStats
                 });
             } catch (error) {
                 console.error('Error fetching user stats:', error);
-            } finally {
-                setLoading(false);
             }
         };
 
+        const subscribeToUpdates = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            const userId = session?.user?.id;
+
+            channel = supabase.channel('tracks-updates')
+                .on(
+                    'postgres_changes',
+                    { event: '*', schema: 'public', table: 'problems' },
+                    () => fetchUserStats()
+                )
+                .on(
+                    'postgres_changes',
+                    {
+                        event: '*',
+                        schema: 'public',
+                        table: 'user_submissions',
+                        ...(userId ? { filter: `user_id=eq.${userId}` } : {})
+                    },
+                    () => fetchUserStats()
+                )
+                .on(
+                    'postgres_changes',
+                    {
+                        event: '*',
+                        schema: 'public',
+                        table: 'user_completed_problems',
+                        ...(userId ? { filter: `user_id=eq.${userId}` } : {})
+                    },
+                    () => fetchUserStats()
+                )
+                .subscribe();
+        };
+
         fetchUserStats();
+        subscribeToUpdates();
+
+        return () => {
+            isActive = false;
+            if (channel) {
+                supabase.removeChannel(channel);
+            }
+        };
     }, []);
 
-    const toggleStartedTrack = (topic) => {
-        setStartedTrack(prev => ({
-            ...prev,
-            [topic]: !prev[topic]
-        }));
-    };
-
     const availableTopics = useMemo(() => {
-        if (!facets.topic || typeof facets.topic !== 'object') return [];
-        return Object.entries(facets.topic)
-            .map(([topic, count]) => ({ value: topic, label: formatTopicLabel(topic), count }))
-    }, [facets]);
-
-
-    const tracks = useMemo(() => {
-        return availableTopics.map((topicItem, index) => {
-            return {
-                id: index + 1,
-                name: topicItem.label,
-                topic: topicItem.value,
-                difficulty: 'Easy',
-                icon: FaSquareRootAlt,
-                iconColor: 'text-green-500',
-                description: `Master the art of ${topicItem.label.toLowerCase()} by solving practice challenges.`,
-                recommended: index === 0,
-                reason: 'Perfect starting point for algebra mastery',
-                joined: !!startedTrack[topicItem.value], // Kontrollon nëse është aktivizuar në state
-            };
-        });
-    }, [availableTopics, startedTrack]);
+        return topics.map((topic) => ({
+            value: topic,
+            label: formatTopicLabel(topic)
+        }));
+    }, [topics]);
 
 
     const getTrackData = (topic) => {
@@ -136,47 +149,6 @@ const Tracks = () => {
         }
         return userStats.trackStats[topic];
     };
-
-    const formatTime = (minutes) => {
-        if (minutes === 0) return '0 minutes';
-        if (minutes < 60) return `${Math.round(minutes)} minutes`;
-        return `${(minutes / 60).toFixed(1)} hours`;
-    };
-
-    // Calculate user insights from database data
-    const getMostTimeTrack = () => {
-        if (!userStats || !userStats.trackStats) return tracks[0];
-        let maxTime = 0;
-        let maxTrack = tracks[0];
-        tracks.forEach(track => {
-            const stats = userStats.trackStats[track.topic];
-            if (stats && stats.timeSpent > maxTime) {
-                maxTime = stats.timeSpent;
-                maxTrack = track;
-            }
-        });
-        return maxTrack;
-    };
-
-    const getMostWrongTrack = () => {
-        if (!userStats || !userStats.trackStats) return tracks[0];
-        let maxWrong = 0;
-        let maxTrack = tracks[0];
-        tracks.forEach(track => {
-            const stats = userStats.trackStats[track.topic];
-            if (stats && stats.wrong > maxWrong) {
-                maxWrong = stats.wrong;
-                maxTrack = track;
-            }
-        });
-        return maxTrack;
-    };
-
-    const mostTimeTrack = getMostTimeTrack();
-    const mostWrongTrack = getMostWrongTrack();
-    const mostTimeTrackStats = userStats ? getTrackData(mostTimeTrack.topic) : { timeSpent: 0 };
-    const mostWrongTrackStats = userStats ? getTrackData(mostWrongTrack.topic) : { wrong: 0 };
-
 
     return (
         <>
@@ -209,33 +181,50 @@ const Tracks = () => {
 
                         {/* Tracks Grid */}
                         <div className="flex flex-wrap w-full gap-3 pt-8">
-                            {availableTopics.map((track) => (
-                                <div key={track.value} className='bg-[var(--white)] flex w-full rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-103 transition-all duration-200 shadow-md hover:shadow-2xl cursor-pointer ease-in-out sm:w-[calc(50%-6px)]'>
-                                    <div className='flex items-center self-stretch justify-center flex-shrink-0 aspect-square'>
-                                        <FaTrophy className='w-full h-full text-[var(--dark-accent-color)]' />
-                                    </div>
-                                    <div className='flex flex-col w-full gap-3'>
-                                        <div className="flex items-center justify-between gap-3 h-1/3">
-                                            <p className='text-md text-[var(--secondary-color)] font-bold'>{formatTopicLabel(track.count)}</p>
-                                            {/* {track.joined && <div className="flex items-center gap-3 bg-[var(--main-color)] px-2 rounded-md py-1"><FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />Joined</div>} */}
+                            {availableTopics.map((track) => {
+                                const stats = getTrackData(track.value);
+                                const solvedCount = stats.completed;
+                                const totalCount = stats.problems;
+                                const progressPercent = totalCount > 0
+                                    ? Math.min(100, Math.round((solvedCount / totalCount) * 100))
+                                    : 0;
+                                const isStarted = stats.attempted > 0 || solvedCount > 0;
 
-
+                                return (
+                                    <Link
+                                        key={track.value}
+                                        to={`/learn?topic=${encodeURIComponent(track.value)}`}
+                                        className='bg-[var(--white)] flex w-full rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-103 transition-all duration-200 shadow-md hover:shadow-2xl cursor-pointer ease-in-out sm:w-[calc(50%-6px)]'
+                                    >
+                                        <div className='flex items-center self-stretch justify-center flex-shrink-0 aspect-square'>
+                                            <FaTrophy className='w-full h-full text-[var(--dark-accent-color)]' />
                                         </div>
-                                        <div className="flex items-center gap-3 h-1/3">
-                                            <FaDumbbell className='text-sm text-[var(--secondary-color)]' />
-                                            <p>4/100 Exercises</p>
-                                        </div>
-                                        {/* Mini Progress Bar */}
-                                        {startedTrack && (
-                                            <div className="flex h-1/3">
-                                                <div className='flex-1 h-2 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group' />
+                                        <div className='flex flex-col w-full gap-3'>
+                                            <div className="flex items-center justify-between gap-3 h-1/3">
+                                                <p className='text-md text-[var(--secondary-color)] font-bold'>{track.label}</p>
+                                                {isStarted && (
+                                                    <div className="flex items-center gap-2 bg-[var(--main-color)] px-2 rounded-md py-1">
+                                                        <FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />
+                                                        <span className='text-xs font-semibold text-[var(--secondary-color)]'>Started</span>
+                                                    </div>
+                                                )}
                                             </div>
-                                        )}
-
-                                    </div>
-
-                                </div>
-                            ))}
+                                            <div className="flex items-center gap-3 h-1/3">
+                                                <FaDumbbell className='text-sm text-[var(--secondary-color)]' />
+                                                <p>{solvedCount}/{totalCount} Exercises</p>
+                                            </div>
+                                            <div className="flex h-1/3">
+                                                <div className='flex-1 h-2 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden'>
+                                                    <div
+                                                        className='h-full bg-[var(--main-color)] transition-all duration-300'
+                                                        style={{ width: `${progressPercent}%` }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </div>
 
