@@ -115,35 +115,21 @@ const Navbar = () => {
       description: "Solve a fresh daily challenge.",
       image: Daily
     },
-    // Hidden for MVP - will be added after launch
-    // {
-    //   to: '/learn',
-    //   text: "Your Track",
-    //   description: "Track topics and problems solved.",
-    //   image: Journey
-    // },
+    {
+      to: '/tracks',
+      text: "Your Track",
+      description: "Track topics and problems solved.",
+      image: Journey
+    },
     {
       to: '/learn',
       text: "Browse Problems",
       description: "Explore all available challenges.",
       image: Books
-    },
-    // {
-    //   to: "/learn",
-    //   text: "Favourite Problems",
-    //   description: "Quickly revisit starred problems.",
-    //   image: Favourite,
-    //   state: { filter: 'favourite' }
-    // }
+    }
   ]
 
   const discoverItems = [
-    {
-      to: '/tracks',
-      text: "Tracks",
-      description: "Follow topic-by-topic learning paths.",
-      image: Choice
-    },
     {
       to: '/leaderboards/global',
       text: "Leaderboards",
