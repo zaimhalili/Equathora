@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
@@ -8,10 +8,12 @@ import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
 import YourTrack from '@/components/YourTrack';
 import { formatTopicLabel } from '@/lib/utils';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const Tracks = () => {
     const [userStats, setUserStats] = useState(null);
     const [topics, setTopics] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         let isActive = true;
@@ -88,6 +90,10 @@ const Tracks = () => {
                 });
             } catch (error) {
                 console.error('Error fetching user stats:', error);
+            } finally {
+                if (isActive) {
+                    setLoading(false);
+                }
             }
         };
 
@@ -135,20 +141,34 @@ const Tracks = () => {
         };
     }, []);
 
+    const getTrackData = useCallback((topic) => {
+        if (!userStats || !userStats.trackStats[topic]) {
+            return { completed: 0, attempted: 0, wrong: 0, timeSpent: 0, problems: 0 };
+        }
+        return userStats.trackStats[topic];
+    }, [userStats]);
+
     const availableTopics = useMemo(() => {
         return topics.map((topic) => ({
             value: topic,
             label: formatTopicLabel(topic)
         }));
     }, [topics]);
+    const orderedTopics = useMemo(() => {
+        if (!userStats) return [];
+        return [...availableTopics].sort((a, b) => {
+            const aStats = getTrackData(a.value);
+            const bStats = getTrackData(b.value);
+            const aStarted = aStats.attempted > 0 || aStats.completed > 0;
+            const bStarted = bStats.attempted > 0 || bStats.completed > 0;
+            if (aStarted !== bStarted) return aStarted ? -1 : 1;
+            return a.label.localeCompare(b.label);
+        });
+    }, [availableTopics, getTrackData, userStats]);
 
-
-    const getTrackData = (topic) => {
-        if (!userStats || !userStats.trackStats[topic]) {
-            return { completed: 0, attempted: 0, wrong: 0, timeSpent: 0, problems: 0 };
-        }
-        return userStats.trackStats[topic];
-    };
+    if (loading) {
+        return <LoadingSpinner message="Loading tracks..." />;
+    }
 
     return (
         <>
@@ -181,7 +201,7 @@ const Tracks = () => {
 
                         {/* Tracks Grid */}
                         <div className="flex flex-wrap w-full gap-3 pt-8">
-                            {availableTopics.map((track) => {
+                            {orderedTopics.map((track) => {
                                 const stats = getTrackData(track.value);
                                 const solvedCount = stats.completed;
                                 const totalCount = stats.problems;
@@ -189,6 +209,7 @@ const Tracks = () => {
                                     ? Math.min(100, Math.round((solvedCount / totalCount) * 100))
                                     : 0;
                                 const isStarted = stats.attempted > 0 || solvedCount > 0;
+                                const progressLabel = `You have solved ${solvedCount} of ${totalCount} problems`;
 
                                 return (
                                     <Link
@@ -214,11 +235,18 @@ const Tracks = () => {
                                                 <p>{solvedCount}/{totalCount} Exercises</p>
                                             </div>
                                             <div className="flex h-1/3">
-                                                <div className='flex-1 h-2 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden'>
+                                                <div className='flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group'>
                                                     <div
-                                                        className='h-full bg-[var(--main-color)] transition-all duration-300'
+                                                        className="h-full rounded-md bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] transition-all duration-500 relative"
+                                                        role="progressbar"
+                                                        aria-label={progressLabel}
+                                                        aria-valuenow={Math.round(progressPercent)}
+                                                        aria-valuemin={0}
+                                                        aria-valuemax={100}
                                                         style={{ width: `${progressPercent}%` }}
-                                                    />
+                                                    >
+                                                        <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
