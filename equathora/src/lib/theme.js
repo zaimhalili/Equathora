@@ -1,4 +1,3 @@
-const THEME_STORAGE_KEY = 'equathora_theme_preference';
 const SYSTEM_THEME_QUERY = '(prefers-color-scheme: dark)';
 
 const VALID_THEME_PREFERENCES = new Set(['light', 'dark', 'system']);
@@ -24,11 +23,11 @@ export function resolveThemePreference(themePreference) {
 }
 
 export function getStoredThemePreference() {
-    if (typeof window === 'undefined') {
+    if (typeof document === 'undefined') {
         return 'system';
     }
 
-    const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+    const storedTheme = document.documentElement?.dataset?.themePreference || 'system';
     return normalizeThemePreference(storedTheme);
 }
 
@@ -50,17 +49,11 @@ export function applyThemePreference(themePreference) {
 
 export function setThemePreference(themePreference, { persist = true } = {}) {
     const normalizedPreference = normalizeThemePreference(themePreference);
-
-    if (persist && typeof window !== 'undefined') {
-        window.localStorage.setItem(THEME_STORAGE_KEY, normalizedPreference);
-    }
-
     return applyThemePreference(normalizedPreference);
 }
 
 export function initializeTheme() {
-    const initialPreference = getStoredThemePreference();
-    return applyThemePreference(initialPreference);
+    return applyThemePreference('system');
 }
 
 export function syncThemeWithSystemPreference() {

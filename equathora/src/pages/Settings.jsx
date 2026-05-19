@@ -362,7 +362,7 @@ const Settings = () => {
                     email_notifications: isBriefsSubscribed,
                 }));
                 setCookieConsent(cookieConsentValue);
-                setThemePreference(normalizedTheme, { persist: true });
+                setThemePreference(normalizedTheme, { persist: false });
 
                 // Fetch session info
                 const sess = await getCurrentSession();
@@ -531,12 +531,33 @@ const Settings = () => {
     // ========================================================================
     // SETTINGS HANDLERS
     // ========================================================================
-    const handleSettingChange = (key, value) => {
+    const handleSettingChange = async (key, value) => {
+        const previousValue = settings[key];
+        const nextSettings = { ...settings, [key]: value };
+
         if (key === 'theme') {
-            setThemePreference(value, { persist: true });
+            setThemePreference(value, { persist: false });
         }
 
-        setSettings(prev => ({ ...prev, [key]: value }));
+        setSettings(nextSettings);
+        setSettingsSaving(true);
+        setSettingsMessage({ text: '', type: 'success' });
+
+        try {
+            const success = await saveUserSettings(nextSettings);
+            if (!success) {
+                throw new Error('Failed to save preference.');
+            }
+            setSettingsMessage({ text: 'Preferences updated.', type: 'success' });
+        } catch (error) {
+            setSettings(prev => ({ ...prev, [key]: previousValue }));
+            if (key === 'theme') {
+                setThemePreference(previousValue, { persist: false });
+            }
+            setSettingsMessage({ text: error?.message || 'Could not save preference.', type: 'error' });
+        } finally {
+            setSettingsSaving(false);
+        }
     };
 
     const handleEmailNotificationsToggle = async (enabled) => {
@@ -1073,9 +1094,6 @@ const Settings = () => {
                                 <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
                             </AnimatePresence>
 
-                            <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start">
-                                Save Preferences
-                            </PrimaryButton>
                         </SectionCard>
 
                         {/* ============================================================ */}
@@ -1113,9 +1131,6 @@ const Settings = () => {
                                 <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
                             </AnimatePresence>
 
-                            <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start">
-                                Save Appearance
-                            </PrimaryButton>
                         </SectionCard>
 
                         {/* ============================================================ */}
@@ -1194,9 +1209,6 @@ const Settings = () => {
                                 <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
                             </AnimatePresence>
 
-                            <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start text-white">
-                                Save Privacy Settings
-                            </PrimaryButton>
                         </SectionCard>
 
                         {/* ============================================================ */}
