@@ -138,13 +138,12 @@ const Navbar = () => {
   ]
 
   const discoverItems = [
-    // Hidden for MVP - will be added after launch
-    // {
-    //   to: '/tracks',
-    //   text: "Tracks",
-    //   description: "Personalized problem suggestions.",
-    //   image: Choice
-    // },
+    {
+      to: '/tracks',
+      text: "Tracks",
+      description: "Follow topic-by-topic learning paths.",
+      image: Choice
+    },
     {
       to: '/leaderboards/global',
       text: "Leaderboards",

@@ -215,7 +215,7 @@ const Tracks = () => {
                                     <Link
                                         key={track.value}
                                         to={`/learn?topic=${encodeURIComponent(track.value)}`}
-                                        className='bg-[var(--white)] flex w-full rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-103 transition-all duration-200 shadow-md hover:shadow-2xl cursor-pointer ease-in-out sm:w-[calc(50%-6px)]'
+                                        className='bg-[var(--white)] flex w-full rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-103 transition-all duration-200 shadow-md hover:shadow-2xl cursor-pointer ease-in-out sm:w-[calc(50%-6px)] lg:w-[calc(33.333%-8px)]'
                                     >
                                         <div className='flex items-center self-stretch justify-center flex-shrink-0 aspect-square'>
                                             <FaTrophy className='w-full h-full text-[var(--dark-accent-color)]' />
@@ -235,7 +235,7 @@ const Tracks = () => {
                                                 <p>{solvedCount}/{totalCount} Exercises</p>
                                             </div>
                                             <div className="flex h-1/3">
-                                                <div className='flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group'>
+                                                <div className='flex-1 h-3 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group'>
                                                     <div
                                                         className="h-full rounded-md bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] transition-all duration-500 relative"
                                                         role="progressbar"
