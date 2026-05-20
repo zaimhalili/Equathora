@@ -169,6 +169,22 @@
     flex-shrink: 0;
 }
 
+.sidebar-icon-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.sidebar-gradient-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.sidebar-gradient-icon path {
+    fill: url(#sidebar-icon-gradient);
+}
+
 .sidebar-item-text {
     flex: 1;
 }
