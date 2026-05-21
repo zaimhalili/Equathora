@@ -185,11 +185,6 @@ const GetStarted = () => {
 
     const currentStepData = steps[currentStep];
 
-    const getFeedbackMessage = () => {
-        if (!selectedOptions[currentStep]) return '';
-        return encouragementMessages[currentStep] || '';
-    };
-
 
     return (
         <main className='flex flex-col w-full bg-[var(--main-color)] min-h-screen items-center justify-center px-4 sm:px-6 py-6 font-[Sansation]'>
@@ -217,12 +212,6 @@ const GetStarted = () => {
                         {currentStep + 1} / {totalSteps}
                     </span>
                 </div>
-
-                {getFeedbackMessage() && (
-                    <div className='px-4 py-2 bg-green-50 border border-green-200 text-green-700 rounded-md text-sm font-medium text-center'>
-                        {getFeedbackMessage()}
-                    </div>
-                )}
             </div>
 
             {/* Content Section */}
@@ -252,9 +241,9 @@ const GetStarted = () => {
                             <button
                                 key={option.id}
                                 onClick={() => handleSelection(option.id)}
-                                className={`group flex items-center gap-2.5 p-2.5 rounded-md border-2 transition-colors duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
+                                className={`group flex items-center gap-2.5 p-2.5 rounded-md border-2 duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
                                     ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
-                                    : 'border-[var(--mid-main-secondary)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                    : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)] transition-all'
                                     }`}
                             >
                                 <div className='text-lg flex-shrink-0'>{option.icon}</div>
@@ -285,7 +274,7 @@ const GetStarted = () => {
                                     onClick={() => handleSelection(option.id)}
                                     className={`flex flex-row items-center justify-center gap-2 px-3 py-2 rounded-md border-2 transition-colors duration-200 cursor-pointer ${isSelected
                                         ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
-                                        : 'border-[var(--mid-main-secondary)] bg-white text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                        : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                         }`}
                                 >
                                     <div className='text-lg flex items-center'>{option.icon}</div>
@@ -303,7 +292,7 @@ const GetStarted = () => {
                     onClick={handleContinue}
                     disabled={!canContinue()}
                     className={`w-60 px-8 py-3 rounded-full font-semibold text-sm ${canContinue()
-                        ? 'bg-[var(--secondary-color)] text-white hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-pointer'
+                        ? 'bg-[var(--secondary-color)] text-[var(--white)] hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:scale-95 cursor-pointer transition-all'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                         }`}
                 >

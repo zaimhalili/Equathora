@@ -131,6 +131,7 @@
     border-color: var(--accent-color);
     color: var(--main-color);
     background: linear-gradient(135deg, var(--dark-accent-color), var(--accent-color));
+    color: white;
 }
 
 .recommended-stat-value {
