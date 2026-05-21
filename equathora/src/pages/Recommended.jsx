@@ -18,19 +18,21 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { useRecommendedPlan } from '../hooks/useRecommendedPlan';
 import { PROBLEM_NODE_STATUS } from '../utils/recommendationEngine';
 const cardBase =
-    'rounded-md border border-[color-mix(in_srgb,var(--secondary-color)_14%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_92%,white)]';
+    'rounded-md border border-[color-mix(in_srgb,var(--secondary-color)_14%,transparent)] bg-[var(--main-color)] shadow-sm shadow-[color-mix(in_srgb,var(--secondary-color)_8%,transparent)]';
 const cardSoft =
-    'rounded-md border border-[color-mix(in_srgb,var(--secondary-color)_10%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_96%,white)]';
-const mutedText = 'text-[color-mix(in_srgb,var(--secondary-color)_76%,transparent)]';
+    'rounded-md border border-[color-mix(in_srgb,var(--secondary-color)_12%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_96%,white)]';
+const mutedText = 'text-[color-mix(in_srgb,var(--secondary-color)_70%,transparent)]';
 const pillBase =
-    'rounded-md border border-[color-mix(in_srgb,var(--secondary-color)_16%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_97%,white)] px-3 py-1.5 text-sm font-semibold text-[var(--secondary-color)]';
+    'rounded-md border border-[color-mix(in_srgb,var(--secondary-color)_16%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_97%,white)] px-3 py-2 text-sm font-semibold text-[var(--secondary-color)]';
 const pillActive =
-    'border-[var(--accent-color)] bg-[linear-gradient(135deg,var(--dark-accent-color),var(--accent-color))] text-white';
-const badgeBase = 'inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-semibold';
+    'border-[var(--accent-color)] bg-[var(--accent-color)] text-[var(--main-color)]';
+const badgeBase = 'inline-flex items-center gap-1 rounded-md border px-2 py-1 text-sm font-semibold';
 const problemNodeBase =
-    'inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border-2 bg-[var(--main-color)] text-sm font-bold text-[var(--secondary-color)] transition-all duration-200 hover:-translate-y-0.5';
+    'inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border-2 bg-[var(--main-color)] text-sm font-bold text-[var(--secondary-color)]';
 const pathConnectorBase =
-    'flex-1 min-w-4 h-0.5 bg-[color-mix(in_srgb,var(--mid-main-secondary)_70%,transparent)]';
+    'flex-1 min-w-4 h-0.5 bg-[color-mix(in_srgb,var(--mid-main-secondary)_60%,transparent)]';
+const sectionTitle = 'text-xl font-bold tracking-tight';
+const sectionSubtitle = 'text-base leading-relaxed';
 
 const WEEKDAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -52,13 +54,13 @@ const getStatusText = (status) => {
 
 const getStatusNodeClass = (status) => {
     if (status === PROBLEM_NODE_STATUS.SOLVED) {
-        return 'border-[var(--accent-color)] bg-[linear-gradient(135deg,var(--dark-accent-color),var(--accent-color))] text-[var(--main-color)] shadow-[0_4px_14px_color-mix(in_srgb,var(--dark-accent-color)_35%,transparent)]';
+        return 'border-[var(--accent-color)] bg-[color-mix(in_srgb,var(--accent-color)_18%,var(--main-color)_82%)] text-[var(--accent-color)]';
     }
     if (status === PROBLEM_NODE_STATUS.IN_PROGRESS) {
         return 'border-[var(--accent-color)] bg-[color-mix(in_srgb,var(--accent-color)_12%,var(--main-color)_88%)] text-[var(--accent-color)]';
     }
     if (status === PROBLEM_NODE_STATUS.AVAILABLE) {
-        return 'border-[var(--secondary-color)] shadow-[0_0_0_2px_color-mix(in_srgb,var(--secondary-color)_15%,transparent)]';
+        return 'border-[var(--secondary-color)]';
     }
     return 'border-dashed border-[var(--mid-main-secondary)] bg-[color-mix(in_srgb,var(--french-gray)_70%,var(--main-color)_30%)] text-[color-mix(in_srgb,var(--secondary-color)_66%,transparent)]';
 };
@@ -69,7 +71,7 @@ const getDifficultyBadgeClass = (difficulty) => {
         return 'text-[var(--secondary-color)] border-[color-mix(in_srgb,var(--secondary-color)_16%,transparent)] bg-[color-mix(in_srgb,var(--french-gray)_80%,white)]';
     }
     if (normalized === 'hard' || normalized === 'advanced' || normalized === 'expert') {
-        return 'text-[var(--main-color)] border-[var(--dark-accent-color)] bg-[linear-gradient(140deg,var(--dark-accent-color),var(--accent-color))]';
+        return 'text-[var(--accent-color)] border-[var(--dark-accent-color)] bg-[color-mix(in_srgb,var(--dark-accent-color)_10%,var(--main-color)_90%)]';
     }
     return 'text-[var(--accent-color)] border-[color-mix(in_srgb,var(--accent-color)_30%,transparent)] bg-[color-mix(in_srgb,var(--light-accent-color)_10%,var(--main-color)_90%)]';
 };
@@ -100,7 +102,7 @@ const Recommended = () => {
         return (
             <>
                 <Navbar />
-                <main className="flex min-h-screen items-center justify-center bg-[linear-gradient(180deg,var(--mid-main-secondary)_38%,var(--main-color)_100%)] bg-fixed font-[Sansation]">
+                <main className="flex min-h-screen items-center justify-center bg-[var(--main-color)] font-[Sansation]">
                     <LoadingSpinner />
                 </main>
             </>
@@ -111,7 +113,7 @@ const Recommended = () => {
         return (
             <>
                 <Navbar />
-                <main className="min-h-screen w-full bg-[linear-gradient(180deg,var(--mid-main-secondary)_38%,var(--main-color)_100%)] bg-fixed font-[Sansation] text-[var(--secondary-color)]">
+                <main className="min-h-screen w-full bg-[var(--main-color)] font-[Sansation] text-[var(--secondary-color)]">
                     <section className="mx-auto flex w-full max-w-[1500px] flex-col items-start gap-4 px-[4vw] pb-12 pt-8 xl:px-[6vw]">
                         <h1 className="text-3xl font-extrabold">Recommended Study Plan</h1>
                         <p className={`${mutedText} text-base`}>
@@ -136,23 +138,23 @@ const Recommended = () => {
     return (
         <>
             <Navbar />
-            <main className="min-h-screen w-full bg-[linear-gradient(180deg,var(--mid-main-secondary)_38%,var(--main-color)_100%)] bg-fixed font-[Sansation] text-[var(--secondary-color)]">
-                <section className="mx-auto flex w-full max-w-[1500px] flex-col gap-5 px-[4vw] pb-10 pt-5 xl:px-[6vw]">
-                    <header className={`${cardBase} flex flex-col gap-4 p-5 md:p-6`}>
+            <main className="min-h-screen w-full bg-[var(--main-color)] font-[Sansation] text-[var(--secondary-color)]">
+                <section className="mx-auto flex w-full max-w-[1400px] flex-col gap-6 px-[4vw] pb-12 pt-6 xl:px-[6vw]">
+                    <header className={`${cardBase} flex flex-col gap-4 p-6`}>
                         <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                             <div className="flex flex-col gap-1">
                                 <h1 className="text-3xl font-extrabold md:text-4xl">{plan.personalizedHeader.greeting}</h1>
-                                <p className={`${mutedText} text-base md:text-lg`}>
-                                    Your adaptive plan updates continuously from solve accuracy, time spent, and revision needs.
+                                <p className={`${mutedText} ${sectionSubtitle}`}>
+                                    Follow these steps to build confidence, stay consistent, and see exactly what to do next.
                                 </p>
                             </div>
 
-                            <div className="rounded-md border border-[var(--mid-main-secondary)] bg-[var(--main-color)] px-3 py-2 text-sm font-semibold">
+                            <div className="rounded-md border border-[var(--mid-main-secondary)] bg-[color-mix(in_srgb,var(--main-color)_96%,white)] px-3 py-2 text-sm font-semibold">
                                 {plan.learnerBandLabel}
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
                             <div className={`${cardSoft} p-3`}>
                                 <p className={`${mutedText} text-sm`}>Current level</p>
                                 <p className="text-base font-bold capitalize">{plan.personalizedHeader.levelLabel}</p>
@@ -171,45 +173,38 @@ const Recommended = () => {
                             </div>
                         </div>
 
+                        <div className={`${cardSoft} flex flex-col gap-2 p-3 text-sm md:flex-row md:items-center md:justify-between`}>
+                            <p className={`${mutedText} text-sm`}>
+                                Updated from {plan.overallStats.totalAttempts} attempts and {plan.overallStats.totalTimeMinutes} minutes logged.
+                            </p>
+                            <details className="text-sm">
+                                <summary className="cursor-pointer font-semibold text-[var(--secondary-color)]">How recommendations are built</summary>
+                                <p className={`${mutedText} mt-2 text-sm`}>
+                                    We use your submissions, streak activity, and onboarding profile to rank problems and set daily targets.
+                                </p>
+                            </details>
+                        </div>
+
                         {!hasSession && (
-                            <div className="rounded-md border border-[var(--accent-color)] bg-[var(--main-color)] px-3 py-2 text-sm font-semibold text-[var(--accent-color)]">
+                            <div className="rounded-md border border-[var(--accent-color)] bg-[color-mix(in_srgb,var(--main-color)_95%,white)] px-3 py-2 text-sm font-semibold text-[var(--accent-color)]">
                                 Sign in to use full progress tracking. Right now, this plan is generated from your questionnaire and public problem data.
                             </div>
                         )}
                     </header>
 
-                    <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-                        <article className={`${cardBase} flex flex-col gap-4 p-5 xl:col-span-2`}>
-                            <div className="flex items-center justify-between">
-                                <h2 className="flex items-center gap-2 text-xl font-bold">
+                    <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                        <article className={`${cardBase} flex flex-col gap-5 p-6 xl:col-span-2`}>
+                            <div className="flex flex-col gap-2">
+                                <h2 className={`flex items-center gap-2 ${sectionTitle}`}>
                                     <FaRocket className="text-[var(--accent-color)]" />
-                                    Today&apos;s Action
+                                    Step 1: Start your next session
                                 </h2>
-                                <span className={pillBase}>
-                                    {formatMinutes(todayAction?.estimatedMinutes || 0)} total
-                                </span>
+                                <p className={`${mutedText} ${sectionSubtitle}`}>
+                                    Focus on the next three problems in order. This keeps the learning path simple and progressive.
+                                </p>
                             </div>
 
-                            {todayAction?.nextProblems?.length > 0 ? (
-                                <div className="grid gap-2 md:grid-cols-3">
-                                    {todayAction.nextProblems.map((problem, index) => (
-                                        <div key={`today-${problem.id}`} className={`${cardSoft} flex flex-col gap-1 p-3`}>
-                                            <p className="text-sm font-bold">#{index + 1}</p>
-                                            <p className="line-clamp-2 text-base font-semibold">{problem.title}</p>
-                                            <p className={`${mutedText} text-sm`}>{problem.topic || 'General Concepts'}</p>
-                                            <p className="text-sm font-semibold">
-                                                {problem.timeSpentSeconds > 0
-                                                    ? `Spent ${formatDuration(problem.timeSpentSeconds)}`
-                                                    : `Estimated ${formatMinutes(problem.estimatedMinutes)}`}
-                                            </p>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className={`${mutedText} text-base`}>No available problems right now. Refresh after your next solve.</p>
-                            )}
-
-                            <div className="flex flex-wrap items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-3">
                                 {startProblem ? (
                                     <Link
                                         to={`/problems/${startProblem.slug}`}
@@ -228,17 +223,42 @@ const Recommended = () => {
                                     </button>
                                 )}
 
+                                <span className={pillBase}>
+                                    {formatMinutes(todayAction?.estimatedMinutes || 0)} total
+                                </span>
                                 <span className={`${mutedText} text-sm`}>
                                     Suggested daily commitment: {formatMinutes(todayAction?.recommendedDailyMinutes || plan.dailyMinutes)}
                                 </span>
                             </div>
+
+                            {todayAction?.nextProblems?.length > 0 ? (
+                                <ol className="grid gap-3 md:grid-cols-3">
+                                    {todayAction.nextProblems.map((problem, index) => (
+                                        <li key={`today-${problem.id}`} className={`${cardSoft} flex flex-col gap-2 p-3`}>
+                                            <p className="text-sm font-semibold text-[var(--mid-main-secondary)]">Step {index + 1}</p>
+                                            <p className="line-clamp-2 text-base font-semibold">{problem.title}</p>
+                                            <p className={`${mutedText} text-sm`}>{problem.topic || 'General Concepts'}</p>
+                                            <p className="text-sm font-semibold">
+                                                {problem.timeSpentSeconds > 0
+                                                    ? `Spent ${formatDuration(problem.timeSpentSeconds)}`
+                                                    : `Estimated ${formatMinutes(problem.estimatedMinutes)}`}
+                                            </p>
+                                        </li>
+                                    ))}
+                                </ol>
+                            ) : (
+                                <p className={`${mutedText} text-base`}>No available problems right now. Refresh after your next solve.</p>
+                            )}
                         </article>
 
-                        <aside className={`${cardBase} flex flex-col gap-4 p-5`}>
+                        <aside className={`${cardBase} flex flex-col gap-4 p-6`}>
                             <h2 className="flex items-center gap-2 text-lg font-bold">
                                 <FaClock className="text-[var(--accent-color)]" />
-                                Smart Session Mode
+                                Step 2: Pick a session length
                             </h2>
+                            <p className={`${mutedText} text-base`}>
+                                Choose a time window and we will fit a focused problem set.
+                            </p>
 
                             <div className="flex flex-wrap gap-2" role="group" aria-label="Choose session duration">
                                 {[15, 30, 60].map((minutes) => (
@@ -273,13 +293,15 @@ const Recommended = () => {
                         </aside>
                     </div>
 
-                    <article className={`${cardBase} flex flex-col gap-4 p-5`}>
-                        <div className="flex items-center justify-between">
-                            <h2 className="flex items-center gap-2 text-xl font-bold">
+                    <article className={`${cardBase} flex flex-col gap-5 p-6`}>
+                        <div className="flex flex-col gap-2">
+                            <h2 className={`flex items-center gap-2 ${sectionTitle}`}>
                                 <FaBullseye className="text-[var(--accent-color)]" />
-                                Recommended Path
+                                Step 3: Follow your path
                             </h2>
-                            <span className={`${mutedText} text-sm`}>Circle states: locked, available, in progress, solved</span>
+                            <p className={`${mutedText} ${sectionSubtitle}`}>
+                                Track progress in order. Each node opens the next so you do not have to guess.
+                            </p>
                         </div>
 
                         <div className="overflow-x-auto pb-1">
@@ -307,9 +329,7 @@ const Recommended = () => {
                                             </button>
                                             {next ? (
                                                 <span
-                                                    className={`${pathConnectorBase} ${connectorSolved
-                                                            ? 'bg-[linear-gradient(90deg,var(--dark-accent-color),var(--accent-color))]'
-                                                            : ''
+                                                    className={`${pathConnectorBase} ${connectorSolved ? 'bg-[var(--accent-color)]' : ''
                                                         }`}
                                                 />
                                             ) : null}
@@ -318,57 +338,64 @@ const Recommended = () => {
                                 })}
                             </div>
                         </div>
-
-                        <div className="grid grid-cols-1 gap-3 sm:[grid-template-columns:repeat(auto-fit,minmax(200px,1fr))]">
-                            {pathNodes.map((node) => (
-                                <div
-                                    key={`node-${node.id}`}
-                                    className="flex items-center gap-3 rounded-md border border-[color-mix(in_srgb,var(--secondary-color)_12%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_96%,white)] p-3"
-                                >
-                                    <span
-                                        className={`${problemNodeBase} ${getStatusNodeClass(node.status)}`}
-                                        aria-hidden="true"
+                        <details className="rounded-md border border-[color-mix(in_srgb,var(--secondary-color)_12%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_97%,white)] p-4">
+                            <summary className="cursor-pointer text-base font-semibold text-[var(--secondary-color)]">
+                                View full path details
+                            </summary>
+                            <div className="mt-4 grid grid-cols-1 gap-3 sm:[grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
+                                {pathNodes.map((node) => (
+                                    <div
+                                        key={`node-${node.id}`}
+                                        className="flex items-center gap-3 rounded-md border border-[color-mix(in_srgb,var(--secondary-color)_12%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_96%,white)] p-3"
                                     >
-                                        {node.status === PROBLEM_NODE_STATUS.SOLVED ? '✓' : node.status === PROBLEM_NODE_STATUS.IN_PROGRESS ? '…' : ''}
-                                    </span>
+                                        <span
+                                            className={`${problemNodeBase} ${getStatusNodeClass(node.status)}`}
+                                            aria-hidden="true"
+                                        >
+                                            {node.status === PROBLEM_NODE_STATUS.SOLVED ? '✓' : node.status === PROBLEM_NODE_STATUS.IN_PROGRESS ? '…' : ''}
+                                        </span>
 
-                                    <div className="flex min-w-0 flex-1 flex-col gap-1">
-                                        <div className="flex items-start justify-between gap-2">
-                                            <p className="line-clamp-1 text-base font-semibold">{node.title}</p>
-                                            <span className={`${badgeBase} ${getDifficultyBadgeClass(node.difficultyBucket)}`}>
-                                                {node.difficultyBucket}
-                                            </span>
+                                        <div className="flex min-w-0 flex-1 flex-col gap-1">
+                                            <div className="flex items-start justify-between gap-2">
+                                                <p className="line-clamp-1 text-base font-semibold">{node.title}</p>
+                                                <span className={`${badgeBase} ${getDifficultyBadgeClass(node.difficultyBucket)}`}>
+                                                    {node.difficultyBucket}
+                                                </span>
+                                            </div>
+
+                                            <p className={`${mutedText} line-clamp-1 text-sm`}>{node.topic || 'General Concepts'}</p>
+                                            <p className="text-sm font-semibold">{getStatusText(node.status)}</p>
+
+                                            <p className={`${mutedText} text-sm`}>
+                                                {node.timeSpentSeconds > 0
+                                                    ? `You spent ${formatDuration(node.timeSpentSeconds)} on this problem.`
+                                                    : `Estimated time: ${formatMinutes(node.estimatedMinutes)}.`}
+                                            </p>
+
+                                            {node.status !== PROBLEM_NODE_STATUS.LOCKED && node.slug ? (
+                                                <Link
+                                                    to={`/problems/${node.slug}`}
+                                                    className="w-fit rounded-md border border-[var(--mid-main-secondary)] px-2 py-1 text-sm font-semibold !text-[var(--secondary-color)] transition-all hover:border-[var(--secondary-color)]"
+                                                >
+                                                    Open Problem
+                                                </Link>
+                                            ) : null}
                                         </div>
-
-                                        <p className={`${mutedText} line-clamp-1 text-sm`}>{node.topic || 'General Concepts'}</p>
-                                        <p className="text-sm font-semibold">{getStatusText(node.status)}</p>
-
-                                        <p className={`${mutedText} text-sm`}>
-                                            {node.timeSpentSeconds > 0
-                                                ? `You spent ${formatDuration(node.timeSpentSeconds)} on this problem.`
-                                                : `Estimated time: ${formatMinutes(node.estimatedMinutes)}.`}
-                                        </p>
-
-                                        {node.status !== PROBLEM_NODE_STATUS.LOCKED && node.slug ? (
-                                            <Link
-                                                to={`/problems/${node.slug}`}
-                                                className="w-fit rounded-md border border-[var(--mid-main-secondary)] px-2 py-1 text-sm font-semibold !text-[var(--secondary-color)] transition-all hover:border-[var(--secondary-color)]"
-                                            >
-                                                Open Problem
-                                            </Link>
-                                        ) : null}
                                     </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
+                        </details>
                     </article>
 
-                    <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-                        <article className={`${cardBase} flex flex-col gap-4 p-5 xl:col-span-2`}>
-                            <h2 className="flex items-center gap-2 text-xl font-bold">
+                    <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                        <article className={`${cardBase} flex flex-col gap-4 p-6 xl:col-span-2`}>
+                            <h2 className={`flex items-center gap-2 ${sectionTitle}`}>
                                 <FaSignal className="text-[var(--accent-color)]" />
-                                Learning Insights
+                                Insights when you want them
                             </h2>
+                            <p className={`${mutedText} ${sectionSubtitle}`}>
+                                Keep the headline metrics visible, and expand for deeper details.
+                            </p>
 
                             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
                                 <div className={`${cardSoft} p-3`}>
@@ -391,9 +418,11 @@ const Recommended = () => {
                                 </div>
                             </div>
 
-                            <div className={`${cardSoft} overflow-hidden p-3`}>
-                                <p className="pb-2 text-base font-bold">Average solve time by topic</p>
-                                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                            <details className={`${cardSoft} p-3`}>
+                                <summary className="cursor-pointer text-base font-semibold text-[var(--secondary-color)]">
+                                    Topic insights
+                                </summary>
+                                <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-2">
                                     {plan.topicInsights.slice(0, 6).map((topic) => (
                                         <div key={`topic-${topic.topic}`} className="rounded-md border border-[var(--mid-main-secondary)] px-2 py-2">
                                             <div className="flex items-center justify-between">
@@ -406,11 +435,13 @@ const Recommended = () => {
                                         </div>
                                     ))}
                                 </div>
-                            </div>
+                            </details>
 
-                            <div className={`${cardSoft} p-3`}>
-                                <p className="pb-2 text-base font-bold">Streak trend this week</p>
-                                <div className="grid grid-cols-7 gap-1">
+                            <details className={`${cardSoft} p-3`}>
+                                <summary className="cursor-pointer text-base font-semibold text-[var(--secondary-color)]">
+                                    Streak trend this week
+                                </summary>
+                                <div className="mt-3 grid grid-cols-7 gap-2">
                                     {WEEKDAY_LABELS.map((label, index) => {
                                         const dayCount = weeklyProgress.find((item) => Number(item.day_index) === index)?.count || 0;
                                         const isActive = dayCount > 0;
@@ -418,11 +449,14 @@ const Recommended = () => {
                                         return (
                                             <div
                                                 key={`week-${label}`}
-                                                className="flex flex-col items-center gap-1 rounded-md border border-[var(--mid-main-secondary)] px-1 py-2"
+                                                className="flex flex-col items-center gap-1 rounded-md border border-[var(--mid-main-secondary)] px-2 py-2"
                                             >
-                                                <p className="text-xs font-semibold">{label}</p>
+                                                <p className="text-sm font-semibold">{label}</p>
                                                 <span
-                                                    className={`inline-flex h-7 w-7 items-center justify-center rounded-md text-xs font-bold ${isActive ? 'bg-[var(--accent-color)] text-[var(--main-color)]' : 'bg-[var(--main-color)] text-[var(--secondary-color)]'}`}
+                                                    className={`inline-flex h-7 w-7 items-center justify-center rounded-md text-sm font-bold ${isActive
+                                                            ? 'bg-[color-mix(in_srgb,var(--accent-color)_20%,var(--main-color)_80%)] text-[var(--accent-color)]'
+                                                            : 'bg-[var(--main-color)] text-[var(--secondary-color)]'
+                                                        }`}
                                                 >
                                                     {dayCount}
                                                 </span>
@@ -430,15 +464,18 @@ const Recommended = () => {
                                         );
                                     })}
                                 </div>
-                            </div>
+                            </details>
                         </article>
 
                         <aside className="flex flex-col gap-5">
-                            <article className={`${cardBase} flex flex-col gap-3 p-5`}>
+                            <article className={`${cardBase} flex flex-col gap-3 p-6`}>
                                 <h2 className="flex items-center gap-2 text-lg font-bold">
                                     <FaUndoAlt className="text-[var(--accent-color)]" />
-                                    Revision Focus
+                                    Focus this week
                                 </h2>
+                                <p className={`${mutedText} text-base`}>
+                                    Keep attention on the topic that needs the most care, then return to your path.
+                                </p>
 
                                 {plan.revisionFocus.length === 0 ? (
                                     <p className={`${mutedText} text-base`}>
@@ -455,10 +492,10 @@ const Recommended = () => {
                                 )}
                             </article>
 
-                            <article className={`${cardBase} flex flex-col gap-3 p-5`}>
+                            <article className={`${cardBase} flex flex-col gap-3 p-6`}>
                                 <h2 className="flex items-center gap-2 text-lg font-bold">
                                     <FaTrophy className="text-[var(--accent-color)]" />
-                                    Milestones & Weekly Summary
+                                    Milestones and weekly focus
                                 </h2>
 
                                 <div className="flex flex-col gap-2">
@@ -476,56 +513,64 @@ const Recommended = () => {
                                     )}
                                 </div>
 
-                                <div className={`${cardSoft} p-3`}>
-                                    <p className="text-sm font-bold">What improved</p>
-                                    <p className={`${mutedText} text-sm`}>{plan.weeklySummary.improved}</p>
-                                    <p className="pt-2 text-sm font-bold">Needs work</p>
-                                    <p className={`${mutedText} text-sm`}>{plan.weeklySummary.needsWork}</p>
-                                    <p className="pt-2 text-sm font-bold">Next-week focus</p>
-                                    <p className={`${mutedText} text-sm`}>{plan.weeklySummary.nextWeekFocus}</p>
-                                </div>
+                                <details className={`${cardSoft} p-3`}>
+                                    <summary className="cursor-pointer text-base font-semibold text-[var(--secondary-color)]">
+                                        Weekly summary
+                                    </summary>
+                                    <div className="mt-2">
+                                        <p className="text-sm font-bold">What improved</p>
+                                        <p className={`${mutedText} text-sm`}>{plan.weeklySummary.improved}</p>
+                                        <p className="pt-2 text-sm font-bold">Needs work</p>
+                                        <p className={`${mutedText} text-sm`}>{plan.weeklySummary.needsWork}</p>
+                                        <p className="pt-2 text-sm font-bold">Next-week focus</p>
+                                        <p className={`${mutedText} text-sm`}>{plan.weeklySummary.nextWeekFocus}</p>
+                                    </div>
+                                </details>
                             </article>
                         </aside>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-                        <article className={`${cardBase} flex flex-col gap-4 p-5`}>
-                            <h2 className="flex items-center gap-2 text-xl font-bold">
+                    <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                        <article className={`${cardBase} flex flex-col gap-4 p-6`}>
+                            <h2 className={`flex items-center gap-2 ${sectionTitle}`}>
                                 <FaLightbulb className="text-[var(--accent-color)]" />
                                 Getting Started Guide
                             </h2>
-
-                            <div className={`${cardSoft} p-3`}>
-                                <p className="pb-2 text-base font-bold">How to work effectively on Equathora</p>
-                                <ol className="flex list-decimal flex-col gap-1 pl-4 text-base">
+                            <details className={`${cardSoft} p-3`} open>
+                                <summary className="cursor-pointer text-base font-semibold text-[var(--secondary-color)]">
+                                    Core steps
+                                </summary>
+                                <ol className="mt-2 flex list-decimal flex-col gap-2 pl-4 text-base">
                                     {plan.guide.coreSteps.map((step, index) => (
                                         <li key={`guide-step-${index}`} className={mutedText}>
                                             {step}
                                         </li>
                                     ))}
                                 </ol>
-                            </div>
+                            </details>
 
-                            <div className={`${cardSoft} p-3`}>
-                                <p className="pb-2 text-base font-bold">Suggested first-week routine</p>
-                                <ul className="flex list-disc flex-col gap-1 pl-4 text-base">
+                            <details className={`${cardSoft} p-3`}>
+                                <summary className="cursor-pointer text-base font-semibold text-[var(--secondary-color)]">
+                                    Suggested first-week routine
+                                </summary>
+                                <ul className="mt-2 flex list-disc flex-col gap-2 pl-4 text-base">
                                     {plan.guide.firstWeekRoutine.map((step, index) => (
                                         <li key={`routine-${index}`} className={mutedText}>
                                             {step}
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            </details>
                         </article>
 
-                        <article className={`${cardBase} flex flex-col gap-4 p-5`}>
-                            <h2 className="flex items-center gap-2 text-xl font-bold">
+                        <article className={`${cardBase} flex flex-col gap-4 p-6`}>
+                            <h2 className={`flex items-center gap-2 ${sectionTitle}`}>
                                 <FaCheckCircle className="text-[var(--accent-color)]" />
                                 Reflection Notes
                             </h2>
 
                             {plan.recoveryMode.enabled ? (
-                                <div className={`${cardSoft} flex items-start gap-2 p-3 text-[var(--accent-color)]`}>
+                                <div className={`${cardSoft} flex items-start gap-3 p-3 text-[var(--accent-color)]`}>
                                     <FaExclamationTriangle className="pt-0.5" />
                                     <div>
                                         <p className="text-base font-bold">Recovery mode is active</p>
@@ -536,7 +581,7 @@ const Recommended = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <div className={`${cardSoft} flex items-start gap-2 p-3`}>
+                                <div className={`${cardSoft} flex items-start gap-3 p-3`}>
                                     <FaFire className="pt-0.5 text-[var(--accent-color)]" />
                                     <div>
                                         <p className="text-base font-bold">You are in growth mode</p>
@@ -587,7 +632,7 @@ const Recommended = () => {
                                         {reflectionNotes.slice(0, 4).map((note) => (
                                             <div key={note.id} className="rounded-md border border-[var(--mid-main-secondary)] px-2 py-2">
                                                 <p className="line-clamp-2 text-sm">{note.note}</p>
-                                                <p className={`${mutedText} pt-1 text-xs`}>
+                                                <p className={`${mutedText} pt-1 text-sm`}>
                                                     {new Date(note.createdAt).toLocaleString()}
                                                 </p>
                                             </div>
