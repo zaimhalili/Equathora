@@ -278,7 +278,7 @@ const Navbar = () => {
             <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
               <li>
                 {/* Main Logo - Redirect to Dashboard */}
-                <Link to="/dashboard" className='!text-[var(--secondary-color)] flex justify-center items-center list-none font-bold relative'>
+                <Link to="/dashboard" className='!text-[var(--secondary-color)] flex justify-center items-center list-none font-bold relative' title='Dashboard'>
                   <img src={Sigma} alt="Logo" className='w-6 h-6 absolute left-0 -top-[1px]' />
                   <p className='font-[Sansation,Arial] pl-6 text-lg'>Equathora</p>
                 </Link>
@@ -301,10 +301,11 @@ const Navbar = () => {
               </li>
             </ul>
 
+            {/* Streak */}
             <div className='flex justify-end items-center shrink-0'>
               <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
                 <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
-                  <Link to="/achievements/stats" className='flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors'>
+                  <Link to="/achievements/stats" className='flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors' title='Your Streak'>
                     <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                       <defs>
                         <linearGradient id="icon-gradient-fire-navbar" x1="0%" y1="0%" x2="0%" y2="100%">
