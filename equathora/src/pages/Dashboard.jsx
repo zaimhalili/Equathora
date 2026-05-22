@@ -65,7 +65,7 @@ const Dashboard = () => {
                 </header>
 
                 {/* Hero Section */}
-                <div className='flex w-full justify-center items-center'>
+                <div className='flex w-full justify-center items-center pb-6'>
                     <div className='flex flex-col lg:flex-row justify-start items-center lg:items-start px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>
                         <section className="flex flex-col justify-start w-full lg:w-[70%]">
                             <motion.article
@@ -201,15 +201,15 @@ const Dashboard = () => {
                             <div className="w-full">
                                 <div className="w-full bg-[var(--white)] border border-[rgba(43,45,66,0.12)] rounded-md p-8">
                                     {/* Header with Badge */}
-                                    <div className="flex flex-col pb-4">
-                                        <img src={Mentor} alt="Mentor" className="opacity-90 w-14 h-14" />
-                                        <h3 className="font-[Sansation] font-semibold text-xl text-[var(--secondary-color)] pb-1.5 leading-[1.3]">
+                                    <div className="flex flex-col items-center w-full gap-3 pb-1">
+                                        <img src={Mentor} alt="Mentor" className="w-32 h-full" />
+                                        <h3 className="font-[Sansation] font-semibold text-2xl text-[var(--secondary-color)] leading-[1.3]">
                                             Become a Mentor
                                         </h3>
                                     </div>
 
                                     {/* Value Proposition */}
-                                    <p className="font-[Sansation] text-[0.9375rem] text-[var(--secondary-color)] leading-relaxed opacity-90 pb-6">
+                                    <p className="font-[Sansation] text-sm text-[var(--secondary-color)] leading-relaxed text-center pb-4 opacity-90">
                                         Guide learners, reinforce your expertise, and make a meaningful impact in the mathematics community.
                                     </p>
 
@@ -217,7 +217,7 @@ const Dashboard = () => {
                                     <div className="flex flex-col gap-2.5 pb-6">
                                         <div className="flex items-start gap-2.5">
                                             <span className="text-[var(--accent-color)] font-bold text-sm pt-0.5">✓</span>
-                                            <span className="font-[Sansation] text-sm text-[var(--secondary-color)] opacity-80">Flexible scheduling that fits your lifestyle</span>
+                                            <span className="font-[Sansation] text-sm text-[var(--secondary-color)] opacity-90">Flexible scheduling that fits your lifestyle</span>
                                         </div>
                                         <div className="flex items-start gap-2.5">
                                             <span className="text-[var(--accent-color)] font-bold text-sm pt-0.5">✓</span>
@@ -233,13 +233,13 @@ const Dashboard = () => {
                                     <div className="flex gap-3 max-w-[400px]">
                                         <Link
                                             to="/applymentor"
-                                            className="flex items-center justify-center font-[Sansation] font-semibold text-[0.9375rem] !text-[var(--white)] bg-[var(--secondary-color)] rounded-md no-underline transition-all duration-200 hover:bg-[var(--raisin-black)] text-center flex-2 py-2 px-2 text-wrap active:scale-95"
+                                            className="flex items-center justify-center font-[Sansation] font-semibold text-sm !text-[var(--white)] bg-[var(--secondary-color)] rounded-md no-underline transition-all duration-200 hover:bg-transparent hover:!text-[var(--secondary-color)] hover:outline-1 hover:outline-[var(--secondary-color)] text-center flex-2 py-2 px-2 text-wrap active:scale-95"
                                         >
                                             Apply Now
                                         </Link>
                                         <Link
                                             to="/applymentor"
-                                            className="flex items-center justify-center font-[Sansation] font-medium text-[0.9375rem] !text-[var(--secondary-color)] bg-transparent border border-[rgba(43,45,66,0.2)] rounded-md no-underline transition-all duration-200 hover:border-[var(--secondary-color)] hover:bg-[rgba(43,45,66,0.02)] text-center py-2 px-2 md:flex-1 active:scale-95"
+                                            className="flex items-center justify-center font-[Sansation] font-medium text-sm !text-[var(--secondary-color)] bg-transparent border rounded-md no-underline transition-all duration-200 border-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:!text-[var(--white)] text-center py-2 px-2 md:flex-1 active:scale-95"
                                         >
                                             Learn More
                                         </Link>
