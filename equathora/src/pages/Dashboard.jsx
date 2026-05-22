@@ -5,7 +5,7 @@ import Footer from '../components/Footer.jsx';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import BetaBanner from '../components/BetaBanner.jsx';
 import CookieConsent from '../components/CookieConsent.jsx';
-import Teacher from '../assets/images/teacher.svg';
+import Teacher from '../assets/images/Professor-pana.svg';
 import YourTrack from '../components/YourTrack.jsx';
 import Books from '../assets/images/learningBooks.svg';
 import Mentoring from '../assets/images/mentoring.svg';
@@ -67,7 +67,7 @@ const Dashboard = () => {
                 {/* Hero Section */}
                 <div className='flex w-full justify-center items-center'>
                     <div className='flex flex-col lg:flex-row justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>
-                        <section className="flex flex-col items-center justify-center w-full lg:w-[70%]">
+                        <section className="flex flex-col justify-start w-full lg:w-[70%]">
                             <motion.article
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -184,7 +184,7 @@ const Dashboard = () => {
                             transition={{ duration: 0.5, delay: 0.4 }}
                             className='flex flex-col w-full lg:w-[30%] gap-8'
                         >
-                            <figure className="hidden lg:flex justify-center max-h-[200px]">
+                            <figure className="hidden lg:flex justify-center">
                                 <img src={Teacher} alt="teacher" loading='lazy' className="" />
                             </figure>
 

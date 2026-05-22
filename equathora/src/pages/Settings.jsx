@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { supabase } from '../lib/supabaseClient';
 import { resetAllUserProgress } from '../lib/progressStorage';
 import {
@@ -224,6 +225,7 @@ const sidebarSections = [
 const Settings = () => {
     const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState('profile');
+    const [isLoading, setIsLoading] = useState(true);
 
     // Profile state
     const [profileData, setProfileData] = useState({
@@ -297,6 +299,7 @@ const Settings = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
+                setIsLoading(true);
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) {
                     navigate('/login');
@@ -369,11 +372,17 @@ const Settings = () => {
                 setCurrentSession(sess);
             } catch (error) {
                 console.error('Error loading settings:', error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
         loadData();
     }, [navigate]);
+
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
     // PROFILE HANDLERS
     const handleSaveProfile = async () => {
         setProfileSaving(true);
