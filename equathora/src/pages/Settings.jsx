@@ -17,6 +17,7 @@ import {
 } from '../lib/notificationService';
 import {
     normalizeThemePreference,
+    getStoredThemePreference,
     resolveThemePreference,
     setThemePreference,
 } from '../lib/theme';
@@ -338,7 +339,11 @@ const Settings = () => {
 
                 // Fetch user settings
                 const userSettings = await getUserSettings();
+                const storedPreference = getStoredThemePreference();
                 const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+                const resolvedPreference = (normalizedTheme === 'system' && storedPreference !== 'system')
+                    ? storedPreference
+                    : normalizedTheme;
                 const accountEmail = String(session.user.email || '').trim().toLowerCase();
                 const isBriefsSubscribed = await isSubscribedToEquathoraBriefs(accountEmail);
                 const legacyCookieConsent = localStorage.getItem('equathora_cookie_consent');
@@ -361,11 +366,11 @@ const Settings = () => {
                     ...userSettings,
                     cookie_consent: cookieConsentValue,
                     cookie_consent_date: cookieConsentDate,
-                    theme: normalizedTheme,
+                    theme: resolvedPreference,
                     email_notifications: isBriefsSubscribed,
                 }));
                 setCookieConsent(cookieConsentValue);
-                setThemePreference(normalizedTheme, { persist: false });
+                setThemePreference(resolvedPreference, { persist: true });
 
                 // Fetch session info
                 const sess = await getCurrentSession();
@@ -545,7 +550,7 @@ const Settings = () => {
         const nextSettings = { ...settings, [key]: value };
 
         if (key === 'theme') {
-            setThemePreference(value, { persist: false });
+            setThemePreference(value, { persist: true });
         }
 
         setSettings(nextSettings);
@@ -561,7 +566,7 @@ const Settings = () => {
         } catch (error) {
             setSettings(prev => ({ ...prev, [key]: previousValue }));
             if (key === 'theme') {
-                setThemePreference(previousValue, { persist: false });
+                setThemePreference(previousValue, { persist: true });
             }
             setSettingsMessage({ text: error?.message || 'Could not save preference.', type: 'error' });
         } finally {

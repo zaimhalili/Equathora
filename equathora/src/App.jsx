@@ -12,6 +12,7 @@ import { supabase } from "./lib/supabaseClient";
 import { getUserSettings } from "./lib/notificationService";
 import {
     normalizeThemePreference,
+    getStoredThemePreference,
     setThemePreference,
     syncThemeWithSystemPreference
 } from "./lib/theme";
@@ -172,8 +173,12 @@ export default function App() {
 
                 const userSettings = await getUserSettings();
                 if (isDisposed) return;
-
-                setThemePreference(normalizeThemePreference(userSettings?.theme), { persist: false });
+                const storedPreference = getStoredThemePreference();
+                const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+                const nextTheme = (normalizedTheme === 'system' && storedPreference !== 'system')
+                    ? storedPreference
+                    : normalizedTheme;
+                setThemePreference(nextTheme, { persist: true });
             } catch (error) {
                 console.error("Error syncing theme preference:", error);
             }
@@ -199,7 +204,12 @@ export default function App() {
                 void (async () => {
                     try {
                         const userSettings = await getUserSettings();
-                        setThemePreference(normalizeThemePreference(userSettings?.theme), { persist: false });
+                        const storedPreference = getStoredThemePreference();
+                        const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+                        const nextTheme = (normalizedTheme === 'system' && storedPreference !== 'system')
+                            ? storedPreference
+                            : normalizedTheme;
+                        setThemePreference(nextTheme, { persist: true });
                     } catch (error) {
                         console.error('Error syncing signed-in theme preference:', error);
                     }
