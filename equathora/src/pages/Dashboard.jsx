@@ -66,7 +66,7 @@ const Dashboard = () => {
 
                 {/* Hero Section */}
                 <div className='flex w-full justify-center items-center'>
-                    <div className='flex flex-col lg:flex-row justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>
+                    <div className='flex flex-col lg:flex-row justify-start items-center lg:items-start px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>
                         <section className="flex flex-col justify-start w-full lg:w-[70%]">
                             <motion.article
                                 initial={{ opacity: 0, y: 20 }}
