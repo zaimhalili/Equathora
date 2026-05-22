@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar.jsx';
 import { useSearchParams } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
 import './Learn.css';
-import Idea from '../assets/images/idea.svg';
+import Idea from '../assets/images/Mathematics-bro.svg';
 import { FaSearch, FaTimes, FaChevronDown, FaFilter } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -664,6 +664,11 @@ const Learn = () => {
 
         <footer>
           <Footer />
+          <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
+            <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
+              Education illustrations by Storyset
+            </a>
+          </div>
         </footer>
       </main>
 
