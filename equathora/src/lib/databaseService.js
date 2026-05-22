@@ -790,13 +790,18 @@ export async function incrementDifficultyBreakdown(difficulty) {
 
 export async function getAchievementProgress() {
     try {
-        const [progress, topicFreq, weekly, difficulty, streak] = await Promise.all([
+        const [progress, topicFreq, weekly, difficulty, streak, completedProblemIds] = await Promise.all([
             getUserProgress(),
             getTopicFrequency(),
             getWeeklyProgress(),
             getDifficultyBreakdown(),
-            getStreakData()
+            getStreakData(),
+            getCompletedProblems()
         ]);
+
+        const uniqueCompletedIds = Array.isArray(completedProblemIds)
+            ? Array.from(new Set(completedProblemIds.map(id => String(id))))
+            : [];
 
         return {
             ...progress,
@@ -804,7 +809,9 @@ export async function getAchievementProgress() {
             weeklyProgress: weekly,
             difficultyBreakdown: difficulty,
             currentStreak: streak.current_streak,
-            longestStreak: streak.longest_streak
+            longestStreak: streak.longest_streak,
+            solved_problems: uniqueCompletedIds,
+            problemsSolved: uniqueCompletedIds.length
         };
     } catch (error) {
         console.error('Error getting achievement progress:', error);

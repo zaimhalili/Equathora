@@ -30,15 +30,6 @@ const EquathoraBriefsHero = ({ setIsBriefsModalOpen }) => {
                     <div className='flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 w-full'>
                         {/* Left Content */}
                         <div className='flex flex-col flex-1 text-center lg:text-left gap-6'>
-                            <motion.div
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.4, delay: 0.1 }}
-                                className='inline-flex items-center justify-center px-4 py-2 bg-[var(--white)]/10 rounded-full text-xs font-semibold backdrop-blur-sm border border-[var(--white)]/20 self-center lg:self-start gap-2 shadow-lg hover:shadow-xl transition-all'
-                            >
-                                <FaStar className='text-[var(--accent-color)]' />
-                                <span className="text-[var(--white)]">Weekly Math Excellence</span>
-                            </motion.div>
 
                             <motion.h1
                                 initial={{ opacity: 0, y: 10 }}

@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { FaEnvelope, FaTimes, FaUser } from 'react-icons/fa';
 import EquathoraBriefsSuccessModal from './EquathoraBriefsSuccessModal.jsx';
-import news_bro from '../../assets/images/News-bro.svg';
+import news_bro from '../../assets/images/News-cuate.svg';
 
 
 const FRIENDLY_SAVE_ERROR = 'Something did not work. Please try again shortly.';

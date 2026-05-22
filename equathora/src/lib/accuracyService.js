@@ -25,3 +25,34 @@ export const computeAccuracyFromSubmissions = ({ submissions = [], validProblemI
 
     return { accuracy: 0, correct: 0, wrong: 0, total: 0 };
 };
+
+export const computeAccuracyFromSources = ({
+    submissions = null,
+    validProblemIds = null,
+    solvedCount = 0,
+    totalAttempts = null,
+    wrongSubmissions = null
+} = {}) => {
+    if (Array.isArray(submissions) && submissions.length > 0) {
+        return computeAccuracyFromSubmissions({ submissions, validProblemIds, solvedCount });
+    }
+
+    const attempts = Number.isFinite(Number(totalAttempts)) ? Number(totalAttempts) : 0;
+    const wrong = Number.isFinite(Number(wrongSubmissions)) ? Number(wrongSubmissions) : 0;
+    const correct = Math.max(attempts - wrong, 0);
+
+    if (attempts > 0) {
+        return {
+            accuracy: Math.max(0, Math.min(100, Math.round((correct / attempts) * 100))),
+            correct,
+            wrong,
+            total: attempts
+        };
+    }
+
+    if (solvedCount > 0) {
+        return { accuracy: null, correct: 0, wrong: 0, total: 0 };
+    }
+
+    return { accuracy: 0, correct: 0, wrong: 0, total: 0 };
+};

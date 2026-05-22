@@ -24,15 +24,6 @@ const Hero = ({ onOpenBriefsModal }) => {
                     <div className='flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 w-full '>
                         {/* Left Content */}
                         <div className='flex flex-col flex-1 text-center lg:text-left gap-4'>
-                            <motion.div
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.4, delay: 0.1 }}
-                                className='inline-flex items-center justify-center px-3 py-1.5 bg-[var(--accent-color)]/20 rounded-md text-xs font-semibold backdrop-blur-sm border border-[var(--accent-color)]/30 self-center lg:self-start gap-2'
-                            >
-                                <FaStar className='text-[var(--accent-color)]' />
-                                <span>FREE TO JOIN</span>
-                            </motion.div>
 
                             <motion.h1
                                 initial={{ opacity: 0, y: 10 }}

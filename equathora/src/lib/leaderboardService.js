@@ -1,4 +1,5 @@
 import { supabase } from './supabaseClient';
+import { computeAccuracyFromSources } from './accuracyService';
 
 /**
  * Leaderboard Service for Equathora
@@ -623,10 +624,20 @@ export async function getCurrentUserRank() {
             .eq('user_id', session.user.id)
             .maybeSingle();
 
-        const hasProgressCounters = typeof progressRow?.total_attempts === 'number';
-        const accuracy = hasProgressCounters
-            ? calculateAccuracy(progressRow.total_attempts || 0, progressRow.wrong_submissions || 0, problemsSolved)
-            : (data.accuracy_percentage ?? calculateAccuracy(0, 0, problemsSolved));
+        const { data: submissionsRow } = await supabase
+            .from('user_submissions')
+            .select('problem_id, is_correct')
+            .eq('user_id', session.user.id);
+
+        const activeProblemIds = await getActiveProblemIdSet();
+        const accuracyStats = computeAccuracyFromSources({
+            submissions: submissionsRow || [],
+            validProblemIds: activeProblemIds,
+            solvedCount: problemsSolved,
+            totalAttempts: progressRow?.total_attempts,
+            wrongSubmissions: progressRow?.wrong_submissions
+        });
+        const accuracy = accuracyStats.accuracy;
         const currentStreak = streakRow
             ? getEffectiveStreak(streakRow.current_streak ?? 0, streakRow.last_activity_date ?? null)
             : 0;

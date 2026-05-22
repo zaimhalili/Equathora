@@ -5,6 +5,7 @@ import { getUserProgress, getStreakData, getWeeklyProgress, getTopicFrequency, g
 import { getAllProblems } from '../../lib/problemService';
 import { supabase } from '../../lib/supabaseClient';
 import { formatTopicLabel } from '../../lib/utils';
+import { computeAccuracyFromSources } from '../../lib/accuracyService';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const normalizeCompletedProblemId = (rawValue) => {
@@ -20,19 +21,6 @@ const normalizeCompletedProblemId = (rawValue) => {
   }
 
   return String(rawValue).trim();
-};
-
-const calculateAccuracy = (totalAttempts = 0, wrongSubmissions = 0, solvedCount = 0) => {
-  if (totalAttempts > 0) {
-    const correctSubmissions = totalAttempts - (wrongSubmissions || 0);
-    return Math.max(0, Math.min(100, Math.round((correctSubmissions / totalAttempts) * 100)));
-  }
-
-  if (solvedCount > 0) {
-    return null;
-  }
-
-  return 0;
 };
 
 const difficultyDisplayRank = {
@@ -170,8 +158,15 @@ const Statistics = () => {
         const totalAttemptsRaw = Number(userProgress?.total_attempts || 0);
         const wrongSubmissions = Number.isFinite(wrongSubmissionsRaw) ? wrongSubmissionsRaw : 0;
         const totalAttempts = Number.isFinite(totalAttemptsRaw) ? totalAttemptsRaw : 0;
-        const correctAnswers = totalAttempts > 0 ? Math.max(totalAttempts - wrongSubmissions, 0) : 0;
-        const accuracyRate = calculateAccuracy(totalAttempts, wrongSubmissions, solved);
+        const accuracyStats = computeAccuracyFromSources({
+          submissions: allSubmissions || [],
+          validProblemIds,
+          solvedCount: solved,
+          totalAttempts,
+          wrongSubmissions
+        });
+        const correctAnswers = accuracyStats.correct || 0;
+        const accuracyRate = accuracyStats.accuracy;
         let totalTimeMinutes = userProgress?.total_time_minutes || 0;
 
         // DB-only time source: use aggregated minutes, then fallback to persisted DB submissions.
@@ -222,8 +217,8 @@ const Statistics = () => {
 
         setProgress({
           correctAnswers: correctAnswers,
-          wrongSubmissions: wrongSubmissions,
-          totalAttempts: totalAttempts,
+          wrongSubmissions: accuracyStats.wrong,
+          totalAttempts: accuracyStats.total,
           accuracyRate: accuracyRate,
           totalProblems,
           solvedProblems: solved,
