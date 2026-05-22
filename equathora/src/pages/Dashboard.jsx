@@ -174,10 +174,19 @@ const Dashboard = () => {
                             >
                                 <YourTrack />
                             </motion.div>
+                            {/* Community Posts - That Leads to Forum, Blog and News Page */}
+                            <motion.article
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.9 }}
+                                className='w-full'
+                            >
+                                <CommunityPosts />
+                            </motion.article>
 
                         </section>
 
-                        {/* Aside Section - Image and Apply to be a Mentor */}
+                        {/* Aside Right Section - Image and Apply to be a Mentor */}
                         <motion.aside
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -192,18 +201,11 @@ const Dashboard = () => {
                             <div className="w-full">
                                 <div className="w-full bg-[var(--white)] border border-[rgba(43,45,66,0.12)] rounded-md p-8">
                                     {/* Header with Badge */}
-                                    <div className="flex items-start justify-between pb-4">
-                                        <div>
-                                            <h3 className="font-[Sansation] font-semibold text-xl text-[var(--secondary-color)] pb-1.5 leading-[1.3]">
-                                                Become a Mentor
-                                            </h3>
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-xs font-medium text-[var(--accent-color)] bg-[rgba(217,4,41,0.08)] rounded py-1 px-2">
-                                                    FREE TO JOIN
-                                                </span>
-                                            </div>
-                                        </div>
+                                    <div className="flex flex-col pb-4">
                                         <img src={Mentor} alt="Mentor" className="opacity-90 w-14 h-14" />
+                                        <h3 className="font-[Sansation] font-semibold text-xl text-[var(--secondary-color)] pb-1.5 leading-[1.3]">
+                                            Become a Mentor
+                                        </h3>
                                     </div>
 
                                     {/* Value Proposition */}
@@ -247,15 +249,6 @@ const Dashboard = () => {
                         </motion.aside>
                     </div>
                 </div>
-
-                {/* Community Posts - That Leads to Forum, Blog and News Page */}
-                <motion.article
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.9 }}
-                >
-                    <CommunityPosts />
-                </motion.article>
 
 
                 <footer>
