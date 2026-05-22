@@ -273,8 +273,8 @@ export default function App() {
                         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="/terms-of-service" element={<TermsOfService />} />
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
-                        <Route path="/recommended" element={<Recommended />} />
-                        <Route path="/getStarted" element={<GetStarted />} />
+                        {/* <Route path="/recommended" element={<Recommended />} /> */}
+                        {/* <Route path="/getStarted" element={<GetStarted />} /> */}
                         {/* <Route path="/premium" element={<Premium />} /> */}
 
 
