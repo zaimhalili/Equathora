@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { FiCheck } from "react-icons/fi";
 import { FaBell } from 'react-icons/fa';
+import Bro from '../assets/images/notifications-bro.svg';
 
 import {
     getNotifications,
@@ -388,7 +389,6 @@ const Notifications = () => {
                             )}
                         </div>
                     </div>
-
                     {/* Notification list */}
                     {loading ? (
                         <div className="flex items-center justify-center py-20">
@@ -399,8 +399,8 @@ const Notifications = () => {
                         </div>
                     ) : filtered.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 gap-4">
-                            <div className="w-16 h-16 shadow-2xl rounded-full flex items-center justify-center">
-                                <FaBell className='w-6 h-6 block text-shadow-2xs' />
+                            <div className="flex items-center justify-center">
+                                <img src={Bro} alt="Notifications bro" className='w-72 h-full' />
                             </div>
                             <h3 className="text-lg font-bold">No notifications</h3>
                         </div>
@@ -484,12 +484,12 @@ const Notifications = () => {
                     )}
 
                     {/* Link to settings */}
-                    <div className="flex justify-center pt-20">
+                    <div className="flex justify-center absolute bottom-0 self-center-safe">
                         <Link
                             to="/settings"
                             className="text-sm text-[var(--accent-color)] hover:!underline font-semibold"
                         >
-                            Manage notification preferences 
+                            Manage notification preferences
                         </Link>
                     </div>
                 </div>
