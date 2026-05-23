@@ -200,7 +200,7 @@ const Tracks = () => {
                         <YourTrack></YourTrack>
 
                         {/* Tracks Grid */}
-                        <div className="flex flex-wrap w-full gap-3 pt-8">
+                        <div className="flex flex-wrap w-full gap-3 py-8">
                             {orderedTopics.map((track) => {
                                 const stats = getTrackData(track.value);
                                 const solvedCount = stats.completed;
