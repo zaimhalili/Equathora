@@ -7,6 +7,8 @@ import { FaChartBar, FaFlask } from 'react-icons/fa';
 import { MdScience, MdTimeline, MdSpeed, MdGroup, MdSelfImprovement } from 'react-icons/md';
 import { IoMdCalculator } from 'react-icons/io';
 import { BiMath } from 'react-icons/bi';
+import WelcomeTeacher from '../assets/images/welcomeTeacher.svg';
+import Mascot from '../assets/images/mascot.png';
 
 const GetStarted = () => {
     const navigate = useNavigate();
@@ -216,88 +218,98 @@ const GetStarted = () => {
 
             {/* Content Section */}
             <article className='flex flex-col items-center justify-around flex-1 w-full max-w-xl text-center'>
-                <div className='flex flex-col gap-2 pb-6'>
-                    {currentStepData.icon && (
-                        <div className='pb-2'>
-                            {currentStepData.icon}
+                <div className='w-full'>
+                    <div className='flex flex-col gap-2 pb-2 pt-20 min-h-[140px]'>
+                        {currentStepData.icon && (
+                            <div className='pb-2'>
+                                {currentStepData.icon}
+                            </div>
+                        )}
+                        <h1 className='text-2xl sm:text-3xl font-bold text-[var(--secondary-color)]'>
+                            {currentStepData.title}
+                        </h1>
+                        <p className='text-sm sm:text-base text-[var(--secondary-color)] opacity-60'>
+                            {currentStepData.subtitle}
+                        </p>
+                        {currentStepData.description && (
+                            <p className='text-xs sm:text-sm text-[var(--secondary-color)] opacity-50 pt-1'>
+                                {currentStepData.description}
+                            </p>
+                        )}
+                    </div>
+
+                    {(currentStepData.type === 'selection' || currentStepData.type === 'multi-selection') && (
+                        <div className='w-full pt-6 pb-6 min-h-[260px] sm:min-h-[300px] flex flex-col justify-start'>
+                            {currentStepData.type === 'selection' && (
+                                <div className='flex flex-col gap-2 w-full'>
+                                    {currentStepData.options.map((option) => (
+                                        <button
+                                            key={option.id}
+                                            onClick={() => handleSelection(option.id)}
+                                            className={`group flex items-center gap-2.5 p-2.5 rounded-md border-2 duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
+                                                ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
+                                                : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)] transition-all'
+                                                }`}
+                                        >
+                                            <div className='text-lg flex-shrink-0'>{option.icon}</div>
+                                            <div className='flex-1'>
+                                                <div className='font-semibold text-xs'>{option.label}</div>
+                                                {option.description && (
+                                                    <div className={`text-[11px] pt-0.5 leading-tight ${selectedOptions[currentStep] === option.id ? 'opacity-90' : 'opacity-50'
+                                                        }`}>
+                                                        {option.description}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className='text-base flex-shrink-0 w-4'>
+                                                {selectedOptions[currentStep] === option.id ? '✓' : ''}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+
+                            {currentStepData.type === 'multi-selection' && (
+                                <div className='grid grid-cols-2 gap-2 w-full'>
+                                    {currentStepData.options.map((option) => {
+                                        const isSelected = (selectedOptions[currentStep] || []).includes(option.id);
+                                        return (
+                                            <button
+                                                key={option.id}
+                                                onClick={() => handleSelection(option.id)}
+                                                className={`flex flex-row items-center justify-center gap-2 px-3 py-2 rounded-md border-2 transition-colors duration-200 cursor-pointer ${isSelected
+                                                    ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
+                                                    : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                                    }`}
+                                            >
+                                                <div className='text-lg flex items-center'>{option.icon}</div>
+                                                <div className='text-xs font-semibold flex-1 text-left leading-tight'>{option.label}</div>
+                                                <div className='text-sm w-4 flex items-center justify-center'>
+                                                    {isSelected ? '✓' : ''}
+                                                </div>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
                     )}
-                    <h1 className='text-2xl sm:text-3xl font-bold text-[var(--secondary-color)]'>
-                        {currentStepData.title}
-                    </h1>
-                    <p className='text-sm sm:text-base text-[var(--secondary-color)] opacity-60'>
-                        {currentStepData.subtitle}
-                    </p>
-                    {currentStepData.description && (
-                        <p className='text-xs sm:text-sm text-[var(--secondary-color)] opacity-50 pt-1'>
-                            {currentStepData.description}
-                        </p>
+
+                    {currentStepData.type === 'welcome' && (
+                        <img src={WelcomeTeacher} alt="Teacher" />
                     )}
+                    <button
+                        onClick={handleContinue}
+                        disabled={!canContinue()}
+                        className={`w-60 px-8 py-3 rounded-full font-semibold text-sm ${canContinue()
+                            ? 'bg-[var(--secondary-color)] text-[var(--white)] hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:scale-95 cursor-pointer transition-all'
+                            : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
+                            }`}
+                    >
+                        {currentStep === totalSteps - 1 ? 'Start Learning' : 'Continue'}
+                    </button>
                 </div>
 
-                {currentStepData.type === 'selection' && (
-                    <div className='flex flex-col gap-2 w-full pb-6'>
-                        {currentStepData.options.map((option) => (
-                            <button
-                                key={option.id}
-                                onClick={() => handleSelection(option.id)}
-                                className={`group flex items-center gap-2.5 p-2.5 rounded-md border-2 duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
-                                    ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
-                                    : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)] transition-all'
-                                    }`}
-                            >
-                                <div className='text-lg flex-shrink-0'>{option.icon}</div>
-                                <div className='flex-1'>
-                                    <div className='font-semibold text-xs'>{option.label}</div>
-                                    {option.description && (
-                                        <div className={`text-[11px] pt-0.5 leading-tight ${selectedOptions[currentStep] === option.id ? 'opacity-90' : 'opacity-50'
-                                            }`}>
-                                            {option.description}
-                                        </div>
-                                    )}
-                                </div>
-                                <div className='text-base flex-shrink-0 w-4'>
-                                    {selectedOptions[currentStep] === option.id ? '✓' : ''}
-                                </div>
-                            </button>
-                        ))}
-                    </div>
-                )}
-
-                {currentStepData.type === 'multi-selection' && (
-                    <div className='grid grid-cols-2 gap-2 w-full pb-6'>
-                        {currentStepData.options.map((option) => {
-                            const isSelected = (selectedOptions[currentStep] || []).includes(option.id);
-                            return (
-                                <button
-                                    key={option.id}
-                                    onClick={() => handleSelection(option.id)}
-                                    className={`flex flex-row items-center justify-center gap-2 px-3 py-2 rounded-md border-2 transition-colors duration-200 cursor-pointer ${isSelected
-                                        ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
-                                        : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
-                                        }`}
-                                >
-                                    <div className='text-lg flex items-center'>{option.icon}</div>
-                                    <div className='text-xs font-semibold flex-1 text-left leading-tight'>{option.label}</div>
-                                    <div className='text-sm w-4 flex items-center justify-center'>
-                                        {isSelected ? '✓' : ''}
-                                    </div>
-                                </button>
-                            );
-                        })}
-                    </div>
-                )}
-
-                <button
-                    onClick={handleContinue}
-                    disabled={!canContinue()}
-                    className={`w-60 px-8 py-3 rounded-full font-semibold text-sm ${canContinue()
-                        ? 'bg-[var(--secondary-color)] text-[var(--white)] hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:scale-95 cursor-pointer transition-all'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
-                        }`}
-                >
-                    {currentStep === totalSteps - 1 ? 'Start Learning' : 'Continue'}
-                </button>
             </article>
         </main>
     );
