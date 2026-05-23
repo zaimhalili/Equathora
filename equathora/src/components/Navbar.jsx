@@ -280,7 +280,7 @@ const Navbar = () => {
                 {/* Main Logo - Redirect to Dashboard */}
                 <Link to="/dashboard" className='!text-[var(--secondary-color)] flex justify-center items-center list-none font-bold relative' title='Dashboard'>
                   <img src={Sigma} alt="Logo" className='w-6 h-6 absolute left-0 -top-[1px]' />
-                  <p className='font-[Sansation,Arial] pl-6 text-lg'>Equathora</p>
+                  <p className='font-[Sansation,Arial] pl-6 text-lg font-black'>Equathora</p>
                 </Link>
               </li>
               <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>

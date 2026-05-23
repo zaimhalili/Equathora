@@ -8,6 +8,7 @@ import './AchievementsLayout.css';
 import AchievementsDD from '../../assets/images/achievementsDD.svg';
 import Statistics from '../../assets/images/statistics.svg';
 import Events from '../../assets/images/specialEvents.svg';
+import { FaMapMarked } from 'react-icons/fa';
 
 const AchievementsLayout = () => {
   return (
@@ -18,6 +19,7 @@ const AchievementsLayout = () => {
         <motion.div
           className="achievements-image-body"
         >
+          <FaMapMarked className='text-white text-6xl'></FaMapMarked>
           <h1>Your Learning <span id='prg-hover'>Progress</span></h1>
           <h3>Exploring your time on Equathora</h3>
 
