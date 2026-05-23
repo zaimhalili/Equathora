@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { FiCheck } from "react-icons/fi";
+import { FaBell } from 'react-icons/fa';
 
 import {
     getNotifications,
@@ -16,10 +17,6 @@ import {
     NOTIFICATION_EVENTS,
     NOTIFICATION_TYPES,
 } from '../lib/notificationService';
-
-// ============================================================================
-// NOTIFICATION TYPE CONFIG
-// ============================================================================
 
 const typeConfig = {
     achievement: {
@@ -282,7 +279,7 @@ const Notifications = () => {
             <Navbar />
             <main className="w-full min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed font-[Sansation,sans-serif] text-[var(--secondary-color)]">
                 {/* Header */}
-                <div className="w-full flex flex-col items-center gap-2 pt-8 pb-2 px-4">
+                <div className="w-full flex flex-col items-center gap-2 pt-8 pb-8 px-4">
                     <div className="flex items-center gap-3">
                         <h1 className="font-bold text-3xl lg:text-4xl">Notifications</h1>
                         {unreadCount > 0 && (
@@ -303,9 +300,9 @@ const Notifications = () => {
                             <button
                                 key={opt.value}
                                 onClick={() => { setFilter(opt.value); setSelectedIds([]); }}
-                                className={`px-4 py-2 rounded-md text-xs font-semibold [var(--white)]space-nowrap transition-all shrink-0 cursor-pointer ${filter === opt.value
+                                className={`px-4 py-2 rounded-md text-xs font-semibold [var(--white)]space-nowrap active:scale-95 transition-all shrink-0 cursor-pointer ${filter === opt.value
                                     ? 'bg-gradient-to-t from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white'
-                                    : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-var(--mid-main-secondary)]'
+                                    : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-gray-200 '
                                     }`}
                             >
                                 {opt.label}
@@ -315,34 +312,35 @@ const Notifications = () => {
 
                     {/* Action bar */}
                     <div className="flex items-center justify-between gap-3 flex-wrap">
-                        <label className="pl-5 flex items-center gap-2 cursor-pointer">
-                            <div
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleSelectAll();
-                                }}
-                                className={`
+                        {selectedIds.length > 0 && (
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <div
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleSelectAll();
+                                    }}
+                                    className={`
                                     w-5 h-5 flex items-center justify-center
                                     border rounded-md cursor-pointer
                                     transition-all duration-200
-                                    hover:ring-2
-                                    hover:ring-[var(--accent-color)]
                                     hover:ring-offset-1
                                     active:scale-90
                                     ${selectAll
-                                        ? "border-[var(--accent-color)] bg-[var(--accent-color)]"
-                                        : " bg-transparent"
-                                    }
+                                            ? "border-[var(--accent-color)] bg-[var(--accent-color)]"
+                                            : " bg-transparent"
+                                        }
                                 `}
-                            >
-                                {selectAll && (
-                                    <span className="text-white text-[12px] leading-none font-bold">
-                                        <FiCheck />
-                                    </span>
-                                )}
-                            </div>
-                            <span className="text-xs font-semibold">Select all</span>
-                        </label>
+                                >
+                                    {selectAll && (
+                                        <span className="text-white text-[12px] leading-none font-bold">
+                                            <FiCheck />
+                                        </span>
+                                    )}
+                                </div>
+                                <span className="text-xs font-semibold">Select all</span>
+                            </label>
+                        )}
+
 
                         <div className="flex items-center gap-2 flex-wrap">
                             {selectedIds.length > 0 && (
@@ -350,21 +348,21 @@ const Notifications = () => {
                                     <button
                                         onClick={handleMarkSelectedRead}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-md border border-[var(--mid-main-secondary)] text-xs font-semibold hover:bg-[var(--french-gray)]/20 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-md text-xs font-semibold hover:bg-gray-200 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Mark read
                                     </button>
                                     <button
                                         onClick={handleMarkSelectedUnread}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-md border border-[var(--mid-main-secondary)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-md text-xs font-semibold hover:bg-gray-200 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Mark unread
                                     </button>
                                     <button
                                         onClick={handleDeleteSelected}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-red-50 text-red-600 rounded-md border border-red-200 text-xs font-semibold hover:bg-red-100 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-red-50 text-[var(--accent-color)] rounded-md text-xs font-semibold hover:bg-red-100 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Delete ({selectedIds.length})
                                     </button>
@@ -401,13 +399,10 @@ const Notifications = () => {
                         </div>
                     ) : filtered.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 gap-4">
-                            <div className="w-16 h-16 bg-[var(--mid-main-secondary)]/10 rounded-md flex items-center justify-center">
-                                <svg className="w-8 h-8 text-[var(--french-gray)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                </svg>
+                            <div className="w-16 h-16 shadow-2xl rounded-full flex items-center justify-center">
+                                <FaBell className='w-6 h-6 block text-shadow-2xs' />
                             </div>
                             <h3 className="text-lg font-bold">No notifications</h3>
-                            <p className="text-sm text-[var(--raisin-black)]">You're all caught up!</p>
                         </div>
                     ) : (
                         <div className="flex flex-col gap-3">
@@ -489,12 +484,12 @@ const Notifications = () => {
                     )}
 
                     {/* Link to settings */}
-                    <div className="flex justify-center pt-4">
+                    <div className="flex justify-center pt-20">
                         <Link
                             to="/settings"
-                            className="text-sm text-[var(--accent-color)] hover:underline font-semibold"
+                            className="text-sm text-[var(--accent-color)] hover:!underline font-semibold"
                         >
-                            Manage notification preferences →
+                            Manage notification preferences 
                         </Link>
                     </div>
                 </div>
