@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Logo from '../assets/logo/TransparentFullLogo.png';
 import { Link } from 'react-router-dom';
-import { FaBell, FaTrophy, FaBars } from 'react-icons/fa';
+import { FaBell, FaTrophy, FaBars, FaDiscord } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
 import Dropdown from './Dropdown';
@@ -175,6 +175,12 @@ const Navbar = () => {
       text: "About equathora",
       description: "Learn about its mission and vision.",
       image: AboutUs
+    }, {
+      to: "https://discord.gg/s6tNSbyhB7",
+      text: "Join our Discord",
+      description: "Meet the Equathora community.",
+      icon: <FaDiscord size={40} aria-hidden="true" color='var(--accent-color)' />,
+      external: true
     }
   ]
 
