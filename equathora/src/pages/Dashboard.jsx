@@ -91,7 +91,7 @@ const Dashboard = () => {
                                     Tackle fun math and logic challenges with guided support to master your topics. <span className="font-semibold">Equathora is open, student-centered, and built to grow with you.</span>
                                 </motion.h4>
 
-                                {/* Where To Start Section */}
+                                {/* Where To Start Section/ 4 Main Blocks */}
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -103,18 +103,19 @@ const Dashboard = () => {
                                     </h3>
 
                                     {/* Blocks - Squares */}
-                                    <div className="w-full pt-2 gap-0.5 lg:gap-[1px] flex flex-wrap justify-center sm:justify-start">
+                                    <div className="w-full pt-2 gap-[1px] flex flex-wrap justify-center sm:justify-start">
                                         <motion.div
                                             initial={{ opacity: 0, scale: 0.9 }}
                                             animate={{ opacity: 1, scale: 1 }}
+                                            className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
                                         >
                                             <Link
                                                 to={`/problems/${dailyProblemSlug}`}
-                                                className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
+                                                className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
                                                 <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation,sans-serif] text-lg font-normal w-full text-center flex items-center justify-center">
-                                                    Solve the daily challenge
+                                                    Daily challenge
                                                 </h6>
                                             </Link>
                                         </motion.div>
@@ -122,10 +123,11 @@ const Dashboard = () => {
                                         <motion.div
                                             initial={{ opacity: 0, scale: 0.9 }}
                                             animate={{ opacity: 1, scale: 1 }}
+                                            className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
                                         >
                                             <Link
                                                 to="/learn"
-                                                className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
+                                                className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
                                                 <img src={Books} alt="books" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -137,10 +139,11 @@ const Dashboard = () => {
                                         <motion.div
                                             initial={{ opacity: 0, scale: 0.9 }}
                                             animate={{ opacity: 1, scale: 1 }}
+                                            className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
                                         >
                                             <Link
                                                 to="/applyMentor"
-                                                className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
+                                                className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
                                                 <img src={Mentoring} alt="mentoring" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
@@ -152,10 +155,11 @@ const Dashboard = () => {
                                         <motion.div
                                             initial={{ opacity: 0, scale: 0.9 }}
                                             animate={{ opacity: 1, scale: 1 }}
+                                            className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
                                         >
                                             <Link
                                                 to="/leaderboards/global"
-                                                className="w-40 h-35 lg:w-[11rem] lg:h-[10rem] bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-md hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
+                                                className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
                                                 <img src={Leaderboards} alt="leaderboards" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center ">
