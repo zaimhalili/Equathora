@@ -101,7 +101,7 @@ const EquathoraBriefsPage = () => {
                             <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2 relative z-10'>Join the Equathora Discord community
                                 <FaDiscord className='text-[var(--dark-accent-color)] absolute -right-20  -bottom-5 -rotate-30 text-9xl -z-10' />
                             </h2>
-                            <p className='text-sm sm:text-xl md:text-2xl max-w-3xl text-center font-light'>We share solutions, announcements, and <strong> friendly discussion</strong>, plus direct feedback channels for new Equathora features. Meet learners, mentors, and challenge creators who keep math fun and consistent.</p>
+                            <p className='text-sm sm:text-xl md:text-2xl max-w-3xl text-center font-light'>We share solutions, announcements, and <strong> friendly discussion</strong>, plus direct feedback channels for new Equathora features. Meet learners, mentors, and challenge creators who keep math <strong>fun and consistent.</strong> </p>
                             <a href='https://discord.gg/s6tNSbyhB7' target='_blank' rel="noopener noreferrer" className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white flex justify-center rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-1/5'>Join Equathora Discord</a>
                         </section>
                     </div>
