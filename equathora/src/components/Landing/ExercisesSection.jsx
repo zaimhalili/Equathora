@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Screenshot from "../../assets/images/sc.png";
+import Screenshot from "../../assets/images/screenshotNew.png";
 
 const ExercisesSection = () => {
     const exercises = [
