@@ -27,12 +27,12 @@ const EquathoraBriefsPage = () => {
         <>
             <Navbar />
             <main className='w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen'>
-                <div className='flex w-full justify-center items-center pb-20'>
-                    <div className='flex flex-col justify-start items-center lg:items-start px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-20 gap-14'>
+                <div className='flex w-full justify-center items-center pb-12 sm:pb-16 lg:pb-20'>
+                    <div className='flex flex-col justify-start items-center lg:items-start px-4 sm:px-[4vw] xl:px-[6vw] max-w-[1500px] pt-6 sm:pt-8 lg:pt-20 gap-10 sm:gap-12 lg:gap-14'>
                         {/* Hero Section */}
-                        <section className='w-full flex flex-col items-center gap-6'>
-                            <div className='flex flex-col items-center'>
-                                <FaMailBulk className='text-5xl' />
+                        <section className='w-full flex flex-col items-center gap-4 sm:gap-6'>
+                            <div className='flex flex-col items-center gap-2'>
+                                <FaMailBulk className='text-3xl sm:text-5xl' />
                                 <h1 className='text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)] pb-2'>Join {' '}
                                     <span className="text-[var(--accent-color)] relative inline-block">
                                         Equathora Briefs
@@ -55,16 +55,16 @@ const EquathoraBriefsPage = () => {
                                             />
                                         </motion.svg>
                                     </span></h1>
-                                <h3 className='text-sm sm:text-xl md:text-2xl font-light'>Get <strong> weekly math practice</strong>, learning tips, and Equathora <strong>updates</strong> made for students.</h3>
+                                <h3 className='text-sm sm:text-xl md:text-2xl font-light text-center sm:text-left'>Get <strong> weekly math practice</strong>, learning tips, and Equathora <strong>updates</strong> made for students.</h3>
                             </div>
 
-                            <button type='button' className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold text-white rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-1/5' onClick={() => setIsBriefsModalOpen(true)}>Get weekly updates</button>
+                            <button type='button' className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold text-white rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full sm:w-2/3 md:w-1/3 lg:w-1/5' onClick={() => setIsBriefsModalOpen(true)}>Get weekly updates</button>
                         </section>
 
-                        <section className='bg-[var(--main-color)] w-full flex gap-10 p-10 rounded-md shadow-[0_0_25px_rgba(141,153,174,0.7)]'>
-                            <div className='flex flex-col lg:w-2/3 '>
-                                <FaBookmark className='text-3xl' />
-                                <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] py-2'>Get Equathora Briefs for {' '}
+                        <section className='bg-[var(--main-color)] w-full flex flex-col lg:flex-row gap-6 lg:gap-10 p-6 sm:p-8 lg:p-10 rounded-md shadow-[0_0_25px_rgba(141,153,174,0.7)]'>
+                            <div className='flex flex-col lg:w-2/3 gap-2'>
+                                <FaBookmark className='text-2xl sm:text-3xl' />
+                                <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] py-2 text-center lg:text-left'>Get Equathora Briefs for {' '}
                                     <span className="text-[var(--secondary-color)] relative inline-block">
                                         math challenges
                                         <motion.svg
@@ -86,23 +86,23 @@ const EquathoraBriefsPage = () => {
                                             />
                                         </motion.svg>
                                     </span>, insights, and updates.</h2>
-                                <p className='text-sm sm:text-xl md:text-2xl max-w-3xl font-light'>Equathora Briefs delivers weekly math and logic practice, study tips, and platform news to help you learn faster. Expect concise explanations, new problem highlights, and <strong>announcements</strong>  that keep your progress on track. <br />
+                                <p className='text-sm sm:text-xl md:text-2xl max-w-3xl font-light text-center lg:text-left'>Equathora Briefs delivers weekly math and logic practice, study tips, and platform news to help you learn faster. Expect concise explanations, new problem highlights, and <strong>announcements</strong>  that keep your progress on track. <br />
                                     <br />Each issue is crafted for <strong> students and mentors</strong>, with clear guidance, fresh challenge picks, and updates on Equathora <strong>features</strong> and <strong>community events</strong>.
                                 </p>
                             </div>
-                            <div className='w-1/3 flex justify-center'>
-                                <img src={Mail} alt="Mail" className='w-72' />
+                            <div className='w-full lg:w-1/3 flex justify-center'>
+                                <img src={Mail} alt="Mail" className='w-52 sm:w-64 lg:w-72' />
                             </div>
                         </section>
 
                         {/* Join our community/discord */}
-                        <section className='w-full flex flex-col items-center gap-6'>
-                            <img src={CommunityBro} alt="Community" className='w-50' />
-                            <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2 relative z-10'>Join the Equathora Discord community
-                                <FaDiscord className='text-[var(--dark-accent-color)] absolute -right-20  -bottom-5 -rotate-30 text-9xl -z-10' />
+                        <section className='w-full flex flex-col items-center gap-4 sm:gap-6'>
+                            <img src={CommunityBro} alt="Community" className='w-40 sm:w-52 lg:w-50' />
+                            <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2 relative z-10 text-center'>Join the Equathora Discord community
+                                <FaDiscord className='text-[var(--dark-accent-color)] absolute -right-6 sm:-right-12 lg:-right-20 -bottom-3 sm:-bottom-4 lg:-bottom-5 -rotate-30 text-6xl sm:text-8xl lg:text-9xl -z-10' />
                             </h2>
                             <p className='text-sm sm:text-xl md:text-2xl max-w-3xl text-center font-light'>We share solutions, announcements, and <strong> friendly discussion</strong>, plus direct feedback channels for new Equathora features. Meet learners, mentors, and challenge creators who keep math <strong>fun and consistent.</strong> </p>
-                            <a href='https://discord.gg/s6tNSbyhB7' target='_blank' rel="noopener noreferrer" className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white flex justify-center rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-1/5'>Join Equathora Discord</a>
+                            <a href='https://discord.gg/s6tNSbyhB7' target='_blank' rel="noopener noreferrer" className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white flex justify-center rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full sm:w-2/3 md:w-1/3 lg:w-1/5'>Join Equathora Discord</a>
                         </section>
                     </div>
                 </div>
