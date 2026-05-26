@@ -5,33 +5,26 @@ import ScrollReveal from '../ScrollReveal';
 
 const AboutIdentitySection = () => {
     return (
-        <section className="w-full flex justify-center py-14 sm:py-16 md:py-20 bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))]">
+        <section className="w-full flex justify-center py-14 sm:py-16 md:py-20 bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] ">
             <div className="w-full max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32">
                 <ScrollReveal direction="up" className="w-full pb-8 sm:pb-10">
                     <div className="flex flex-col gap-2 text-center items-center">
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-[1.1] text-[var(--secondary-color)]">
+                        <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2">
                             Equathora Brand Identity and Learning Approach
                         </h2>
-                        <p className="text-sm sm:text-base md:text-lg font-light text-[var(--secondary-color)]/80 leading-relaxed max-w-2xl">
+                        <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
                             Learn how the Equathora name and design language support mathematical reasoning, focused practice, and long-term student progress.
                         </p>
                     </div>
                 </ScrollReveal>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-12 items-start">
-                    <ScrollReveal direction="left" className="lg:col-span-7 flex flex-col gap-4 sm:gap-6">
+                <div className="flex flex-col">
+                    <ScrollReveal direction="left" className="w-full flex gap-4 sm:gap-6">
                         <div className="flex flex-col gap-2">
-                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.14em] text-[var(--secondary-color)]/55">The name</p>
                             <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-[1.15] text-[var(--secondary-color)]">
                                 Meaning Behind the Name Equathora
                             </h3>
-                        </div>
-
-                        <div className="w-full flex justify-center lg:justify-start">
-                            <img src={Problem} alt="Problem Screenshot" className="object-contain rounded-md w-full max-w-[560px] drop-shadow-2xl" />
-                        </div>
-
-                        <div className="flex flex-col gap-4 sm:gap-5 border-l-2 border-[var(--secondary-color)]/12 pl-4 sm:pl-5">
+                            <div className="flex flex-col gap-4 sm:gap-5 border-l-2 border-[var(--secondary-color)]/12 pl-4 sm:pl-5">
                             <motion.div
                                 initial={{ opacity: 0, x: -20 }}
                                 whileInView={{ opacity: 1, x: 0 }}
@@ -71,11 +64,17 @@ const AboutIdentitySection = () => {
                                 </p>
                             </motion.div>
                         </div>
+                        </div>
+
+                        <div className="w-full flex justify-center lg:justify-start">
+                            <img src={Problem} alt="Problem Screenshot" className="object-contain rounded-md w-full  drop-shadow-2xl" />
+                        </div>
+
+                        
                     </ScrollReveal>
 
-                    <ScrollReveal direction="right" delay={0.2} className="lg:col-span-5 flex flex-col gap-4 sm:gap-6">
+                    <ScrollReveal direction="right" delay={0.2} className="w-1/2 flex flex-col gap-4 sm:gap-6">
                         <div className="flex flex-col gap-2">
-                            <p className="text-[10px] sm:text-xs uppercase tracking-[0.14em] text-[var(--secondary-color)]/55">The color</p>
                             <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-[1.1] text-[var(--secondary-color)]">
                                 Why Red Is Used in the Equathora Interface
                             </h3>

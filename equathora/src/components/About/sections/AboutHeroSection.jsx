@@ -29,7 +29,7 @@ const AboutHeroSection = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)] max-w-4xl"
+                        className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)]"
                     >
                         Building stronger thinkers,
                         <br />
@@ -61,7 +61,7 @@ const AboutHeroSection = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.25, duration: 0.55 }}
-                        className="text-xs sm:text-sm md:text-base text-[var(--secondary-color)]/70 leading-relaxed max-w-2xl"
+                        className="text-xs sm:text-sm md:text-base text-[var(--secondary-color)]/70 leading-relaxed max-w-lg"
                     >
                         We design focused math practice that values clarity over speed, depth over noise, and long-term reasoning over short-term memorization.
                     </motion.p>
