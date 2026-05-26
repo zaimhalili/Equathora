@@ -5,7 +5,7 @@ import { FaQuestionCircle, FaChevronDown } from 'react-icons/fa';
 import { FaChevronUp, FaLightbulb, FaShieldAlt, FaRocket } from 'react-icons/fa';
 import { FaStar, FaClock, FaTrophy, FaArrowRight, FaUsers, FaComments, FaHeadset } from 'react-icons/fa';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
-import shrug from '../assets/images/shrug-pana.svg'
+import shrug from '../assets/images/Shrug-pana.svg'
 
 const HelpCenter = () => {
     const [openFaq, setOpenFaq] = useState(null);
