@@ -1,7 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -360,12 +363,69 @@ app.MapGet("/api/profile", [Authorize] (ClaimsPrincipal user) =>
     return Results.Ok(new { id, email });
 });
 
-app.MapGet("/api/admin/analytics", async (
+app.MapGet("/api/admin/users", async (
+    HttpContext httpContext,
     AppDbContext db,
+    IConfiguration config,
+    ILogger<Program> logger) =>
+{
+    var adminCheck = await RequireAdminAsync(httpContext, db, config, logger);
+    if (adminCheck is not null)
+    {
+        return adminCheck;
+    }
+
+    var profiles = await db.Database.SqlQuery<AdminProfileRow>($@"
+        SELECT
+            id AS ""Id"",
+            email AS ""Email"",
+            username AS ""Username"",
+            full_name AS ""FullName"",
+            display_name AS ""DisplayName"",
+            role AS ""Role"",
+            account_status AS ""AccountStatus"",
+            is_suspended AS ""IsSuspended"",
+            is_active AS ""IsActive"",
+            mentor_verification AS ""MentorVerification"",
+            mentor_status AS ""MentorStatus"",
+            created_at AS ""CreatedAt"",
+            joined_at AS ""JoinedAt"",
+            inserted_at AS ""InsertedAt"",
+            last_seen_at AS ""LastSeenAt"",
+            updated_at AS ""UpdatedAt""
+        FROM profiles
+    ").ToListAsync();
+
+    var progress = await db.Database.SqlQuery<AdminProgressRow>($@"
+        SELECT
+            user_id AS ""UserId"",
+            total_attempts AS ""TotalAttempts"",
+            wrong_submissions AS ""WrongSubmissions"",
+            correct_answers AS ""CorrectAnswers""
+        FROM user_progress
+    ").ToListAsync();
+
+    return Results.Ok(new
+    {
+        profiles,
+        progress
+    });
+});
+
+app.MapGet("/api/admin/analytics", async (
+    HttpContext httpContext,
+    AppDbContext db,
+    IConfiguration config,
     ILogger<Program> logger,
     string? range,
     int? weekOffset) =>
 {
+    var adminCheck = await RequireAdminAsync(httpContext, db, config, logger);
+    if (adminCheck is not null)
+    {
+        return adminCheck;
+    }
+
     var normalizedRange = string.Equals(range, "month", StringComparison.OrdinalIgnoreCase) ? "month" : "week";
     var normalizedWeekOffset = Math.Max(0, weekOffset ?? 0);
     var days = normalizedRange == "month" ? 30 : 7;
@@ -540,7 +600,7 @@ app.MapGet("/api/admin/analytics", async (
             .Select(p => new { p.Id, p.Topic })
             .ToListAsync();
 
-        var problemsById = problems.ToDictionary(p => p.Id.ToString(), p => p.Topic ?? "Uncategorized");
+        var problemsById = problems.ToDictionary(p => p.Id, p => p.Topic ?? "Uncategorized");
 
         var attemptsInWindow = submissionsForRolling
             .Where(a => a.CreatedAt >= startInclusive && a.CreatedAt < endExclusive)
@@ -1193,9 +1253,17 @@ app.MapGet("/api/problems", async (
 });
 
 app.MapGet("/api/admin/problems/{problemId:int}", async (
+    HttpContext httpContext,
     AppDbContext db,
+    IConfiguration config,
     int problemId) =>
 {
+    var adminCheck = await RequireAdminAsync(httpContext, db, config);
+    if (adminCheck is not null)
+    {
+        return adminCheck;
+    }
+
     var problem = await db.Problems
         .AsNoTracking()
         .Where(p => p.IsActive && p.Id == problemId)
@@ -1264,8 +1332,17 @@ app.MapGet("/api/admin/problems/{problemId:int}", async (
     });
 });
 
-app.MapGet("/api/admin/problems/details", async (AppDbContext db) =>
+app.MapGet("/api/admin/problems/details", async (
+    HttpContext httpContext,
+    AppDbContext db,
+    IConfiguration config) =>
 {
+    var adminCheck = await RequireAdminAsync(httpContext, db, config);
+    if (adminCheck is not null)
+    {
+        return adminCheck;
+    }
+
     var problems = await db.Problems
         .AsNoTracking()
         .Where(p => p.IsActive)
@@ -1554,16 +1631,135 @@ using (var scope = app.Services.CreateScope())
 
 app.Run();
 
+static bool TryGetBearerToken(HttpContext httpContext, out string accessToken)
+{
+    accessToken = string.Empty;
+
+    var authorizationHeader = httpContext.Request.Headers.Authorization.ToString();
+    if (string.IsNullOrWhiteSpace(authorizationHeader) ||
+        !authorizationHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+    {
+        return false;
+    }
+
+    accessToken = authorizationHeader["Bearer ".Length..].Trim();
+    return !string.IsNullOrWhiteSpace(accessToken);
+}
+
+static async Task<IResult?> RequireAdminAsync(
+    HttpContext httpContext,
+    AppDbContext db,
+    IConfiguration config,
+    ILogger<Program>? logger = null)
+{
+    if (!TryGetBearerToken(httpContext, out var accessToken))
+    {
+        return Results.Unauthorized();
+    }
+
+    var supabaseUrl = config["Supabase:Url"] ?? config["VITE_SUPABASE_URL"];
+    var supabaseAnonKey = config["Supabase:AnonKey"] ?? config["VITE_SUPABASE_ANON_KEY"];
+
+    if (string.IsNullOrWhiteSpace(supabaseUrl) || string.IsNullOrWhiteSpace(supabaseAnonKey))
+    {
+        logger?.LogError("Supabase auth configuration is missing for admin authorization checks.");
+        return Results.Problem(
+            detail: "Admin authorization is not configured.",
+            statusCode: StatusCodes.Status500InternalServerError);
+    }
+
+    try
+    {
+        using var httpClient = new HttpClient();
+        using var request = new HttpRequestMessage(HttpMethod.Get, $"{supabaseUrl.TrimEnd('/')}/auth/v1/user");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        request.Headers.TryAddWithoutValidation("apikey", supabaseAnonKey);
+
+        using var response = await httpClient.SendAsync(request);
+        if (!response.IsSuccessStatusCode)
+        {
+            return Results.Unauthorized();
+        }
+
+        await using var responseStream = await response.Content.ReadAsStreamAsync();
+        using var document = await JsonDocument.ParseAsync(responseStream);
+        if (!document.RootElement.TryGetProperty("id", out var idElement) ||
+            !Guid.TryParse(idElement.GetString(), out var userId))
+        {
+            return Results.Unauthorized();
+        }
+
+        var adminRole = await db.Database
+            .SqlQuery<AdminRoleRow>($@"
+                SELECT role AS ""Role""
+                FROM profiles
+                WHERE id = {userId}
+        LIMIT 1
+            ")
+            .FirstOrDefaultAsync();
+
+        if (!string.Equals(adminRole?.Role, "admin", StringComparison.OrdinalIgnoreCase))
+        {
+            return Results.Forbid();
+        }
+    }
+    catch (Exception ex)
+    {
+        logger?.LogError(ex, "Failed to verify admin session.");
+        return Results.Problem(
+            detail: "Unable to verify admin access.",
+            statusCode: StatusCodes.Status503ServiceUnavailable);
+    }
+
+    return null;
+}
+
+sealed class AdminRoleRow
+{
+    public string Role { get; set; } = string.Empty;
+}
+
+sealed class AdminProfileRow
+{
+    public Guid Id { get; set; }
+    public string? Email { get; set; }
+    public string? Username { get; set; }
+    public string? FullName { get; set; }
+    public string? DisplayName { get; set; }
+    public string? Role { get; set; }
+    public string? AccountStatus { get; set; }
+    public bool? IsSuspended { get; set; }
+    public bool? IsActive { get; set; }
+    public string? MentorVerification { get; set; }
+    public string? MentorStatus { get; set; }
+    public DateTime? CreatedAt { get; set; }
+    public DateTime? JoinedAt { get; set; }
+    public DateTime? InsertedAt { get; set; }
+    public DateTime? LastSeenAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+}
+
+sealed class AdminProgressRow
+{
+    public Guid UserId { get; set; }
+    public int TotalAttempts { get; set; }
+    public int WrongSubmissions { get; set; }
+    public int CorrectAnswers { get; set; }
+}
+
 sealed class AnalyticsUserRow
 {
     public Guid UserId { get; set; }
+    public string ProblemId { get; set; } = string.Empty;
+    public bool IsCorrect { get; set; }
+    public int TimeSpentSeconds { get; set; }
     public DateTime CreatedAt { get; set; }
 }
 
 sealed class AnalyticsSubmissionRow
 {
     public Guid UserId { get; set; }
-    public string ProblemId { get; set; } = string.Empty;
+    public int ProblemId { get; set; }
     public bool IsCorrect { get; set; }
     public int TimeSpentSeconds { get; set; }
     public DateTime CreatedAt { get; set; }

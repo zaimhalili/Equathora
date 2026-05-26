@@ -1,28 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
-import { FaStar, FaClock, FaCheckCircle, FaFire, FaLightbulb } from 'react-icons/fa';
-import { FaRocket, FaTrophy, FaBookmark, FaRegBookmark, FaChartLine } from 'react-icons/fa';
-import { FaBullseye, FaExclamationTriangle, FaPlay, FaCalculator, FaRulerCombined, FaBolt, FaSortNumericUp, FaLink, FaChartBar, FaSquareRootAlt, FaInfinity } from 'react-icons/fa';
+import { FaCheckCircle, FaTrophy, FaDumbbell } from 'react-icons/fa';
 import { getUserProgress, getStreakData, getCompletedProblems, getUserSubmissions } from '../lib/databaseService';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
+import YourTrack from '@/components/YourTrack';
+import { formatTopicLabel } from '@/lib/utils';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const Tracks = () => {
-    const [bookmarked, setBookmarked] = useState({});
     const [userStats, setUserStats] = useState(null);
+    const [topics, setTopics] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const toggleBookmark = (e, id) => {
-        e.preventDefault();
-        setBookmarked(prev => ({ ...prev, [id]: !prev[id] }));
-    };
-
     useEffect(() => {
+        let isActive = true;
+        let channel;
+
         const fetchUserStats = async () => {
             try {
-                // Fetch problems from backend
                 const { data: problemsData, error: problemsError } = await supabase
                     .from('problems')
                     .select('id, topic')
@@ -37,486 +35,231 @@ const Tracks = () => {
                     getUserSubmissions()
                 ]);
 
-                // Calculate track-specific stats using database topics
-                const trackStats = {
-                    'polynomial_simplification': {
-                        completed: 0,
-                        attempted: 0,
-                        wrong: 0,
-                        timeSpent: 0,
-                        problems: 0
-                    },
-                    'polynomial_operations': {
-                        completed: 0,
-                        attempted: 0,
-                        wrong: 0,
-                        timeSpent: 0,
-                        problems: 0
-                    },
-                    'polynomial_equations': {
-                        completed: 0,
-                        attempted: 0,
-                        wrong: 0,
-                        timeSpent: 0,
-                        problems: 0
-                    }
-                };
+                const topicStatsMap = new Map();
+                const problemTopicMap = new Map();
 
-                // Count total problems per topic
-                problemsData.forEach(problem => {
-                    if (trackStats[problem.topic]) {
-                        trackStats[problem.topic].problems++;
+                (problemsData || []).forEach((problem) => {
+                    const topicKey = String(problem.topic || '').trim();
+                    if (!topicKey) return;
+                    problemTopicMap.set(String(problem.id), topicKey);
+                    if (!topicStatsMap.has(topicKey)) {
+                        topicStatsMap.set(topicKey, {
+                            completed: 0,
+                            attempted: 0,
+                            wrong: 0,
+                            timeSpent: 0,
+                            problems: 0
+                        });
                     }
+                    topicStatsMap.get(topicKey).problems += 1;
                 });
 
-                // Count completed problems by topic
-                completed.forEach(pid => {
-                    const problem = problemsData.find(p => String(p.id) === String(pid));
-                    if (problem && trackStats[problem.topic]) {
-                        trackStats[problem.topic].completed++;
-                    }
+                (completed || []).forEach((pid) => {
+                    const topicKey = problemTopicMap.get(String(pid));
+                    if (!topicKey || !topicStatsMap.has(topicKey)) return;
+                    topicStatsMap.get(topicKey).completed += 1;
                 });
 
-                // Count attempts and wrong answers by topic
-                submissions.forEach(sub => {
-                    const problem = problemsData.find(p => String(p.id) === String(sub.problem_id));
-                    if (problem && trackStats[problem.topic]) {
-                        trackStats[problem.topic].attempted++;
-                        if (!sub.is_correct) {
-                            trackStats[problem.topic].wrong++;
-                        }
-                        trackStats[problem.topic].timeSpent += (sub.time_spent || 0) / 60; // Convert to minutes
+                (submissions || []).forEach((submission) => {
+                    const topicKey = problemTopicMap.get(String(submission.problem_id));
+                    if (!topicKey || !topicStatsMap.has(topicKey)) return;
+                    const stats = topicStatsMap.get(topicKey);
+                    stats.attempted += 1;
+                    if (!submission.is_correct) {
+                        stats.wrong += 1;
                     }
+                    const timeSeconds = submission.time_spent_seconds ?? submission.time_spent ?? 0;
+                    stats.timeSpent += Number(timeSeconds || 0) / 60;
                 });
 
+                const trackStats = Object.fromEntries(topicStatsMap.entries());
+                const topicList = Array.from(topicStatsMap.keys()).sort((a, b) =>
+                    formatTopicLabel(a).localeCompare(formatTopicLabel(b))
+                );
+
+                if (!isActive) return;
+
+                setTopics(topicList);
                 setUserStats({
-                    totalProblems: problemsData.length,
-                    completedProblems: completed.length,
-                    attemptedProblems: submissions.length,
+                    totalProblems: problemsData?.length || 0,
+                    completedProblems: completed?.length || 0,
+                    attemptedProblems: submissions?.length || 0,
                     currentStreak: streak?.current_streak || 0,
                     totalTimeSpent: progress?.total_time_minutes || 0,
                     trackStats
                 });
             } catch (error) {
                 console.error('Error fetching user stats:', error);
-                setUserStats({
-                    totalProblems: 0,
-                    completedProblems: 0,
-                    attemptedProblems: 0,
-                    currentStreak: 0,
-                    totalTimeSpent: 0,
-                    trackStats: {
-                        'polynomial_simplification': { completed: 0, attempted: 0, wrong: 0, timeSpent: 0, problems: 0 },
-                        'polynomial_operations': { completed: 0, attempted: 0, wrong: 0, timeSpent: 0, problems: 0 },
-                        'polynomial_equations': { completed: 0, attempted: 0, wrong: 0, timeSpent: 0, problems: 0 }
-                    }
-                });
             } finally {
-                setLoading(false);
+                if (isActive) {
+                    setLoading(false);
+                }
             }
         };
 
+        const subscribeToUpdates = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            const userId = session?.user?.id;
+
+            channel = supabase.channel('tracks-updates')
+                .on(
+                    'postgres_changes',
+                    { event: '*', schema: 'public', table: 'problems' },
+                    () => fetchUserStats()
+                )
+                .on(
+                    'postgres_changes',
+                    {
+                        event: '*',
+                        schema: 'public',
+                        table: 'user_submissions',
+                        ...(userId ? { filter: `user_id=eq.${userId}` } : {})
+                    },
+                    () => fetchUserStats()
+                )
+                .on(
+                    'postgres_changes',
+                    {
+                        event: '*',
+                        schema: 'public',
+                        table: 'user_completed_problems',
+                        ...(userId ? { filter: `user_id=eq.${userId}` } : {})
+                    },
+                    () => fetchUserStats()
+                )
+                .subscribe();
+        };
+
         fetchUserStats();
+        subscribeToUpdates();
+
+        return () => {
+            isActive = false;
+            if (channel) {
+                supabase.removeChannel(channel);
+            }
+        };
     }, []);
 
-    const getTrackData = (topic) => {
+    const getTrackData = useCallback((topic) => {
         if (!userStats || !userStats.trackStats[topic]) {
             return { completed: 0, attempted: 0, wrong: 0, timeSpent: 0, problems: 0 };
         }
         return userStats.trackStats[topic];
-    };
+    }, [userStats]);
 
-    const formatTime = (minutes) => {
-        if (minutes === 0) return '0 minutes';
-        if (minutes < 60) return `${Math.round(minutes)} minutes`;
-        return `${(minutes / 60).toFixed(1)} hours`;
-    };
-
-    const tracks = [
-        {
-            id: 1,
-            name: 'Polynomial Simplification Track',
-            topic: 'polynomial_simplification',
-            difficulty: 'Easy',
-            icon: FaSquareRootAlt,
-            iconColor: 'text-green-500',
-            description: 'Master the art of simplifying polynomial expressions by combining like terms and reducing complex expressions.',
-            recommended: true,
-            reason: 'Perfect starting point for algebra mastery'
-        },
-        {
-            id: 2,
-            name: 'Polynomial Operations Track',
-            topic: 'polynomial_operations',
-            difficulty: 'Medium',
-            icon: FaSortNumericUp,
-            iconColor: 'text-blue-500',
-            description: 'Add, subtract, multiply, and divide polynomials. Learn advanced manipulation techniques.',
-            recommended: false,
-            reason: 'Build on your simplification skills'
-        },
-        {
-            id: 3,
-            name: 'Polynomial Equations Track',
-            topic: 'polynomial_equations',
-            difficulty: 'Hard',
-            icon: FaBolt,
-            iconColor: 'text-orange-500',
-            description: 'Solve complex polynomial equations using factoring, quadratic formula, and advanced algebraic techniques.',
-            recommended: true,
-            reason: 'Challenge yourself with equation solving'
-        }
-    ];
-
-    const getDifficultyColor = (difficulty) => {
-        switch (difficulty.toLowerCase()) {
-            case 'easy':
-                return 'text-green-600 bg-green-50 border-green-200';
-            case 'medium':
-                return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-            case 'hard':
-                return 'text-red-600 bg-red-50 border-red-200';
-            default:
-                return 'text-gray-600 bg-gray-50 border-gray-200';
-        }
-    };
-
-    // Calculate user insights from database data
-    const getMostTimeTrack = () => {
-        if (!userStats || !userStats.trackStats) return tracks[0];
-        let maxTime = 0;
-        let maxTrack = tracks[0];
-        tracks.forEach(track => {
-            const stats = userStats.trackStats[track.topic];
-            if (stats && stats.timeSpent > maxTime) {
-                maxTime = stats.timeSpent;
-                maxTrack = track;
-            }
+    const availableTopics = useMemo(() => {
+        return topics.map((topic) => ({
+            value: topic,
+            label: formatTopicLabel(topic)
+        }));
+    }, [topics]);
+    const orderedTopics = useMemo(() => {
+        if (!userStats) return [];
+        return [...availableTopics].sort((a, b) => {
+            const aStats = getTrackData(a.value);
+            const bStats = getTrackData(b.value);
+            const aStarted = aStats.attempted > 0 || aStats.completed > 0;
+            const bStarted = bStats.attempted > 0 || bStats.completed > 0;
+            if (aStarted !== bStarted) return aStarted ? -1 : 1;
+            return a.label.localeCompare(b.label);
         });
-        return maxTrack;
-    };
+    }, [availableTopics, getTrackData, userStats]);
 
-    const getMostWrongTrack = () => {
-        if (!userStats || !userStats.trackStats) return tracks[0];
-        let maxWrong = 0;
-        let maxTrack = tracks[0];
-        tracks.forEach(track => {
-            const stats = userStats.trackStats[track.topic];
-            if (stats && stats.wrong > maxWrong) {
-                maxWrong = stats.wrong;
-                maxTrack = track;
-            }
-        });
-        return maxTrack;
-    };
-
-    const mostTimeTrack = getMostTimeTrack();
-    const mostWrongTrack = getMostWrongTrack();
-    const mostTimeTrackStats = userStats ? getTrackData(mostTimeTrack.topic) : { timeSpent: 0 };
-    const mostWrongTrackStats = userStats ? getTrackData(mostWrongTrack.topic) : { wrong: 0 };
-
-    // Animation variants
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1
-            }
-        }
-    };
-
-    const cardVariants = {
-        hidden: { opacity: 0, y: 20, scale: 0.95 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            transition: {
-                duration: 0.5,
-                ease: [0.22, 1, 0.36, 1]
-            }
-        }
-    };
-
-    const statVariants = {
-        hidden: { scale: 0, opacity: 0 },
-        visible: {
-            scale: 1,
-            opacity: 1,
-            transition: {
-                type: 'spring',
-                stiffness: 200,
-                damping: 15
-            }
-        }
-    };
+    if (loading) {
+        return <LoadingSpinner message="Loading tracks..." />;
+    }
 
     return (
         <>
             <Navbar />
-            <div className="bg-gradient-to-b from-[var(--mid-main-secondary)] via-[var(--main-color)] to-[var(--main-color)] min-h-screen pt-24 font-[Sansation]">
-                {/* Hero Header */}
-                <div className="px-6 md:px-16 lg:px-32 xl:px-48 pb-12 flex justify-center">
-                    <motion.div
-                        className="text-center flex items-center flex-col gap-3"
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h1 className="text-5xl md:text-6xl font-extrabold pb-4 text-[var(--secondary-color)] leading-tight">
-                            Your Math Journey
-                        </h1>
-                        <p className="text-[var(--secondary-color)] font-['Sansation'] text-lg md:text-xl leading-relaxed max-w-2xl">
-                            Follow structured learning paths designed to build your mathematical skills progressively. Each track guides you through concepts with increasing complexity.
-                        </p>
-
-                        {/* User Stats */}
+            <div className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
+                <div className='flex items-center justify-center w-full'>
+                    {/* Header */}
+                    <div className="flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6">
                         <motion.div
-                            className="flex justify-between w-full"
-                            variants={containerVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            <motion.div
-                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-md shadow-sm border border-gray-200"
-                                variants={statVariants}
-                                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
-                            >
-                                <FaCheckCircle className="text-green-500 text-lg" />
-                                <div className="text-left text-white">
-                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium">Completed</p>
-                                    <p className="text-sm font-bold text-[var(--secondary-color)]">
-                                        {loading ? '...' : `${userStats?.completedProblems || 0}/${userStats?.totalProblems || 0}`}
-                                    </p>
-                                </div>
-                            </motion.div>
-                            <motion.div
-                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-md shadow-sm border border-gray-200"
-                                variants={statVariants}
-                                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
-                            >
-                                <FaBullseye className="text-blue-500 text-lg" />
-                                <div className="text-left">
-                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium">Attempted</p>
-                                    <p className="text-sm font-bold text-[var(--secondary-color)]">
-                                        {loading ? '...' : (userStats?.attemptedProblems || 0)}
-                                    </p>
-                                </div>
-                            </motion.div>
-                            <motion.div
-                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-md shadow-sm border border-gray-200"
-                                variants={statVariants}
-                                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
-                            >
-                                <FaClock className="text-orange-500 text-lg" />
-                                <div className="text-left">
-                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium">Time Spent</p>
-                                    <p className="text-sm font-bold text-[var(--secondary-color)]">
-                                        {loading ? '...' : `${Math.round(userStats?.totalTimeSpent || 0)} min`}
-                                    </p>
-                                </div>
-                            </motion.div>
-                            <motion.div
-                                className="flex items-center gap-2 px-4 py-3 text-white backdrop-blur-sm rounded-md shadow-sm border border-gray-200"
-                                variants={statVariants}
-                                whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
-                            >
-                                <FaFire className="text-red-500 text-lg" />
-                                <div className="text-left">
-                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium">Current Streak</p>
-                                    <p className="text-sm font-bold text-[var(--secondary-color)]">
-                                        {loading ? '...' : `${userStats?.currentStreak || 0} Days`}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        </motion.div>
-
-                        {/* Insights */}
-                        <motion.div
-                            className="pt-8 bg-white/90 backdrop-blur-sm rounded-md p-6 shadow-lg border border-gray-200 max-w-4xl mx-auto"
-                            initial={{ opacity: 0, y: 20 }}
+                            className="flex flex-col gap-3 text-center"
+                            initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4, duration: 0.5 }}
+                            transition={{ duration: 0.6 }}
                         >
-                            <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-4 flex items-center gap-2">
-                                <FaChartLine className="text-[var(--accent-color)]" />
-                                Your Learning Insights
-                            </h3>
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
-                                    <h4 className="font-semibold text-blue-800 pb-2">Focus Area</h4>
-                                    <p className="text-sm text-blue-700">
-                                        {loading ? 'Loading...' : (
-                                            mostTimeTrackStats.timeSpent > 0
-                                                ? `You spend the most time on ${mostTimeTrack.name} (${formatTime(mostTimeTrackStats.timeSpent)}). Consider practicing more problems in this area to improve efficiency.`
-                                                : 'Start solving problems to see your focus areas!'
-                                        )}
-                                    </p>
-                                </div>
-                                <div className="bg-orange-50 p-4 rounded-md border border-orange-200">
-                                    <h4 className="font-semibold text-orange-800 pb-2 flex items-center gap-1">
-                                        <FaExclamationTriangle />
-                                        Review Needed
-                                    </h4>
-                                    <p className="text-sm text-orange-700">
-                                        {loading ? 'Loading...' : (
-                                            mostWrongTrackStats.wrong > 0
-                                                ? `${mostWrongTrack.name} has the most incorrect attempts (${mostWrongTrackStats.wrong} wrongs). Review the fundamentals and try similar problems.`
-                                                : 'Keep up the great work! No incorrect attempts yet.'
-                                        )}
-                                    </p>
-                                </div>
-                            </div>
+                            <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-extrabold">
+                                Your Math Journey
+                            </h1>
+                            <p className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] lg:w-[60%] cursor-default text-[var(--secondary-color)]">
+                                Follow structured learning paths designed to build your mathematical skills progressively. Each track guides you through concepts with increasing complexity.
+                            </p>
+
+                            {/* User Stats */}
+                            {/* 
+                                        <p className="text-xs font-medium">Time Spent</p>
+                                        <p className="text-sm font-bold text-[var(--secondary-color)]">
+                                            {loading ? '...' : `${Math.round(userStats?.totalTimeSpent || 0)} min`}
+                                        </p> */}
                         </motion.div>
-                    </motion.div>
-                </div>
+                        <YourTrack></YourTrack>
 
-                {/* Tracks Grid */}
-                <div className="px-6 md:px-16 lg:px-32 xl:px-48 pb-20">
-                    <motion.div
-                        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
-                    >
-                        {tracks.map((track, index) => {
-                            const IconComponent = track.icon;
-                            const trackData = getTrackData(track.topic);
-                            const progress = trackData.problems > 0 ? Math.round((trackData.completed / trackData.problems) * 100) : 0;
-                            return (
-                                <motion.div
-                                    key={track.id}
-                                    variants={cardVariants}
-                                    initial="hidden"
-                                    animate="visible"
-                                    whileHover={{ scale: 1.02, y: -5 }}
-                                    transition={{ duration: 0.2 }}
-                                >
+                        {/* Tracks Grid */}
+                        <div className="flex flex-wrap w-full gap-3 py-8">
+                            {orderedTopics.map((track) => {
+                                const stats = getTrackData(track.value);
+                                const solvedCount = stats.completed;
+                                const totalCount = stats.problems;
+                                const progressPercent = totalCount > 0
+                                    ? Math.min(100, Math.round((solvedCount / totalCount) * 100))
+                                    : 0;
+                                const isStarted = stats.attempted > 0 || solvedCount > 0;
+                                const progressLabel = `You have solved ${solvedCount} of ${totalCount} problems`;
+
+                                return (
                                     <Link
-                                        to={`/learn?topic=${track.topic}`}
-                                        className="group relative bg-white rounded-md overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[var(--accent-color)] flex flex-col animate-in fade-in slide-in-from-bottom-4"
-                                        style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'backwards' }}
+                                        key={track.value}
+                                        to={`/learn?topic=${encodeURIComponent(track.value)}`}
+                                        className='bg-[var(--white)] flex w-full rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-103 transition-all duration-200 shadow-md hover:shadow-2xl cursor-pointer ease-in-out sm:w-[calc(50%-6px)] lg:w-[calc(33.333%-8px)]'
                                     >
-                                        {/* Shimmer Effect */}
-                                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
-                                        {/* Track Header */}
-                                        <div className="relative p-5 bg-gradient-to-br from-[var(--secondary-color)] to-[var(--mid-main-secondary)] overflow-hidden">
-                                            {/* Decorative Elements */}
-                                            <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -pr-10 -pt-10" />
-                                            <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full -ml-8 -pb-8" />
-
-                                            <div className="relative flex items-start justify-between gap-3 pb-3">
-                                                <div className="flex items-center gap-3 flex-1">
-                                                    <div className={`text-3xl ${track.iconColor} bg-white/10 p-3 rounded-md backdrop-blur-sm`}>
-                                                        <IconComponent />
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <h3 className="text-lg font-bold text-white font-['Sansation'] leading-tight">
-                                                            {track.name}
-                                                        </h3>
-                                                        {track.recommended && (
-                                                            <span className="inline-block pt-1 px-2 py-1 bg-yellow-400 text-[var(--secondary-color)] text-xs font-bold rounded-full">
-                                                                Recommended
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <div className="bg-yellow-400 p-1.5 rounded-md shadow-sm">
-                                                        <FaStar className="text-[var(--secondary-color)] text-sm" />
-                                                    </div>
-                                                    <button
-                                                        onClick={(e) => toggleBookmark(e, track.id)}
-                                                        className="bg-white/20 hover:bg-white/30 p-1.5 rounded-md transition-colors duration-200"
-                                                    >
-                                                        {bookmarked[track.id] ? (
-                                                            <FaBookmark className="text-white text-sm" />
-                                                        ) : (
-                                                            <FaRegBookmark className="text-white text-sm" />
-                                                        )}
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex justify-center">
-                                                <span className={`inline-block px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${getDifficultyColor(track.difficulty)}`}>
-                                                    {track.difficulty}
-                                                </span>
-                                            </div>
+                                        <div className='flex items-center self-stretch justify-center flex-shrink-0 aspect-square'>
+                                            <FaTrophy className='w-full h-full text-[var(--dark-accent-color)]' />
                                         </div>
-
-                                        {/* Track Body */}
-                                        <div className="p-5 flex-1 flex flex-col gap-4">
-                                            <p className="text-[var(--secondary-color)] font-['Sansation'] text-sm leading-relaxed text-center">
-                                                {track.description}
-                                            </p>
-
-                                            <div className="px-3 py-2 bg-[var(--main-color)] rounded-md border-l-3 border-[var(--accent-color)]">
-                                                <p className="text-[var(--secondary-color)] font-['Sansation'] text-xs font-medium text-center">
-                                                    {track.reason}
-                                                </p>
+                                        <div className='flex flex-col w-full gap-3'>
+                                            <div className="flex items-center justify-between gap-3 h-1/3">
+                                                <p className='text-md text-[var(--secondary-color)] font-bold'>{track.label}</p>
+                                                {isStarted && (
+                                                    <div className="flex items-center gap-2 bg-[var(--main-color)] px-2 rounded-md py-1">
+                                                        <FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />
+                                                        <span className='text-xs font-semibold text-[var(--secondary-color)]'>Started</span>
+                                                    </div>
+                                                )}
                                             </div>
-
-                                            {/* Progress */}
-                                            <div>
-                                                <div className="flex items-center justify-between pb-2">
-                                                    <span className="text-xs font-semibold text-[var(--secondary-color)] font-['Sansation']">
-                                                        Progress
-                                                    </span>
-                                                    <span className="text-xs font-semibold text-[var(--accent-color)] font-['Sansation']">
-                                                        {loading ? '...' : `${trackData.completed}/${trackData.problems}`}
-                                                    </span>
-                                                </div>
-                                                <div className="relative w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                                            <div className="flex items-center gap-3 h-1/3">
+                                                <FaDumbbell className='text-sm text-[var(--secondary-color)]' />
+                                                <p>{solvedCount}/{totalCount} Exercises</p>
+                                            </div>
+                                            <div className="flex h-1/3">
+                                                <div className='flex-1 h-3 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group'>
                                                     <div
-                                                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--light-accent-color)] rounded-full transition-all duration-700 ease-out"
-                                                        style={{ width: `${progress}%` }}
-                                                    />
+                                                        className="h-full rounded-md bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] transition-all duration-500 relative"
+                                                        role="progressbar"
+                                                        aria-label={progressLabel}
+                                                        aria-valuenow={Math.round(progressPercent)}
+                                                        aria-valuemin={0}
+                                                        aria-valuemax={100}
+                                                        style={{ width: `${progressPercent}%` }}
+                                                    >
+                                                        <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-
-                                            {/* Track Stats */}
-                                            <div className="grid grid-cols-2 gap-3">
-                                                <div className="bg-gray-50 p-3 rounded-md text-center">
-                                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium pb-1">Attempted</p>
-                                                    <p className="text-lg font-bold text-[var(--secondary-color)]">
-                                                        {loading ? '...' : trackData.attempted}
-                                                    </p>
-                                                </div>
-                                                <div className="bg-gray-50 p-3 rounded-md text-center">
-                                                    <p className="text-xs text-[var(--mid-main-secondary)] font-medium pb-1">Wrong</p>
-                                                    <p className="text-lg font-bold text-red-600">
-                                                        {loading ? '...' : trackData.wrong}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex items-center justify-center pt-3 border-t border-gray-100">
-                                                <div className="flex items-center gap-1.5">
-                                                    <FaClock className="text-[var(--mid-main-secondary)] text-xs" />
-                                                    <span className="text-xs text-[var(--secondary-color)] font-['Sansation'] font-medium">
-                                                        {loading ? '...' : formatTime(trackData.timeSpent)}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Action Button */}
-                                        <div className="p-5 pt-0">
-                                            <div className="flex items-center justify-center gap-2 py-3 bg-[var(--accent-color)] group-hover:bg-[var(--dark-accent-color)] rounded-md transition-colors duration-300">
-                                                <FaPlay className="text-white text-sm" />
-                                                <span className="text-white font-semibold text-sm font-['Sansation']">Start Track</span>
                                             </div>
                                         </div>
                                     </Link>
-                                </motion.div>
-                            );
-                        })}
-                    </motion.div>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+
                 </div>
-            </div>
+
+            </div >
             <Footer />
         </>
     );

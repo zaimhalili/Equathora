@@ -95,7 +95,7 @@ const TestimonialsSection = () => {
                     </div>
 
                     {/* Right Side - Testimonial Slider */}
-                    <div className='w-full lg:w-1/2 flex relative min-h-70 md:min-h-60 lg:min-h-80'>
+                    <div className='w-full lg:w-1/2 flex relative min-h-80 md:min-h-60 lg:min-h-80'>
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={index}

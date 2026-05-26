@@ -8,11 +8,11 @@ import OverflowChecker from "./pages/OverflowChecker";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
-import CookieConsent from "./components/CookieConsent";
 import { supabase } from "./lib/supabaseClient";
 import { getUserSettings } from "./lib/notificationService";
 import {
     normalizeThemePreference,
+    getStoredThemePreference,
     setThemePreference,
     syncThemeWithSystemPreference
 } from "./lib/theme";
@@ -157,6 +157,7 @@ export default function App() {
         initPostHog();
     }, []);
 
+
     useEffect(() => {
         const cleanupSystemThemeSync = syncThemeWithSystemPreference();
         return cleanupSystemThemeSync;
@@ -172,8 +173,12 @@ export default function App() {
 
                 const userSettings = await getUserSettings();
                 if (isDisposed) return;
-
-                setThemePreference(normalizeThemePreference(userSettings?.theme), { persist: true });
+                const storedPreference = getStoredThemePreference();
+                const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+                const nextTheme = (normalizedTheme === 'system' && storedPreference !== 'system')
+                    ? storedPreference
+                    : normalizedTheme;
+                setThemePreference(nextTheme, { persist: true });
             } catch (error) {
                 console.error("Error syncing theme preference:", error);
             }
@@ -192,36 +197,6 @@ export default function App() {
         });
     }, [location.pathname]);
 
-    // Clean up old localStorage data to prevent conflicts with database
-    // useEffect(() => {
-    //   const cleanupOldLocalStorage = async () => {
-    //     try {
-    //       const { data: { session } } = await supabase.auth.getSession();
-    //       if (session) {
-    //         // Clear old localStorage progress data (now using database)
-    //         const keysToRemove = [];
-    //         for (let i = 0; i < localStorage.length; i++) {
-    //           const key = localStorage.key(i);
-    //           if (key && (
-    //             key.includes('equathora_completed_problems') ||
-    //             key.includes('COMPLETED_PROBLEMS')
-    //           )) {
-    //             keysToRemove.push(key);
-    //           }
-    //         }
-    //         keysToRemove.forEach(key => {
-    //           console.log('Clearing old localStorage key:', key);
-    //           localStorage.removeItem(key);
-    //         });
-    //       }
-    //     } catch (error) {
-    //       console.error('Error cleaning localStorage:', error);
-    //     }
-    //   };
-
-    //   cleanupOldLocalStorage();
-    // }, []);
-
     // Handle OAuth callback and redirect to dashboard
     useEffect(() => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -229,13 +204,20 @@ export default function App() {
                 void (async () => {
                     try {
                         const userSettings = await getUserSettings();
-                        setThemePreference(normalizeThemePreference(userSettings?.theme), { persist: true });
+                        const storedPreference = getStoredThemePreference();
+                        const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+                        const nextTheme = (normalizedTheme === 'system' && storedPreference !== 'system')
+                            ? storedPreference
+                            : normalizedTheme;
+                        setThemePreference(nextTheme, { persist: true });
                     } catch (error) {
                         console.error('Error syncing signed-in theme preference:', error);
                     }
                 })();
 
                 identifyPostHogUser(session.user);
+
+
                 void capturePostHogEvent('user_signed_in', {
                     email: session.user?.email || null
                 });
@@ -336,9 +318,6 @@ export default function App() {
                     </Routes>
                 </div>
             </Suspense>
-
-            {/* Cookie Consent Banner */}
-            <CookieConsent />
 
             {/* Analytics */}
             {shouldEnableVercelAnalytics ? <Analytics /> : null}

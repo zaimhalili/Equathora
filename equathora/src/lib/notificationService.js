@@ -44,6 +44,10 @@ export const NOTIFICATION_ROUTES = {
     leaderboard: '/leaderboards/global',
 };
 
+export const NOTIFICATION_EVENTS = {
+    CREATED: 'equathora:notification-created',
+};
+
 // ============================================================================
 // FETCH NOTIFICATIONS
 // ============================================================================
@@ -119,6 +123,13 @@ export async function createNotification({ type, title, message, link = null, me
             .single();
 
         if (error) throw error;
+
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent(NOTIFICATION_EVENTS.CREATED, {
+                detail: data,
+            }));
+        }
+
         return data;
     } catch (error) {
         console.error('Error creating notification:', error);
@@ -338,6 +349,8 @@ const DEFAULT_SETTINGS = {
     session_timeout_minutes: 60,
     theme: 'system',
     language: 'en',
+    cookie_consent: 'none',
+    cookie_consent_date: '',
 };
 
 export async function getUserSettings() {

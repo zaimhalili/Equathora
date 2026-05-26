@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { supabase } from '../lib/supabaseClient';
 import { resetAllUserProgress } from '../lib/progressStorage';
 import {
@@ -16,6 +17,7 @@ import {
 } from '../lib/notificationService';
 import {
     normalizeThemePreference,
+    getStoredThemePreference,
     resolveThemePreference,
     setThemePreference,
 } from '../lib/theme';
@@ -32,7 +34,7 @@ import {
 const SectionCard = ({ children, id }) => (
     <section
         id={id}
-        className="bg-[var(--surface-card)] rounded-md w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
+        className="bg-[var(--white)] rounded-md w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
     >
         {children}
     </section>
@@ -48,7 +50,7 @@ const SectionTitle = ({ children, sub }) => (
 );
 
 const InputField = ({ label, description, ...props }) => (
-    <div className="flex flex-col gap-1.5 theme-lock">
+    <div className="flex flex-col gap-1.5">
         <label className="text-sm font-semibold text-[var(--secondary-color)]">{label}</label>
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <input
@@ -96,10 +98,10 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
             aria-checked={checked}
             disabled={disabled}
             onClick={() => onChange(!checked)}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 focus:ring-offset-[var(--surface-card)] disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)] border-[var(--dark-accent-color)]' : 'bg-[var(--french-gray)] border-[var(--mid-main-secondary)]'}`}
+            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer overflow-hidden rounded-full  transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)] border-[var(--dark-accent-color)]' : 'bg-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)]'}`}
         >
             <span
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full border border-[var(--secondary-color)] bg-[var(--white)] shadow-md ring-0 transition-transform duration-200 translate-y-0.5 ${checked ? 'translate-x-[22px]' : 'translate-x-0.5'}`}
+                className={`pointer-events-none inline-block h-5 w-5 shadow-black/70 transform rounded-full bg-white shadow-md ring-0 transition-transform duration-200 translate-y-[1.5px] ${checked ? 'translate-x-[21.5px]' : 'translate-x-[2px]'}`}
             />
         </button>
     </div>
@@ -114,7 +116,7 @@ const PrimaryButton = ({ children, onClick, disabled, loading, className = '', t
         className={`cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-bold text-sm rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
     >
         {loading && (
-            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -132,7 +134,7 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
         className="cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-bold text-lg rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
     >
         {loading && (
-            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
@@ -211,7 +213,7 @@ const sidebarSections = [
     { id: 'profile', label: 'Profile', icon: <IconUser /> },
     { id: 'account', label: 'Account & Security', icon: <IconLock /> },
     { id: 'notifications', label: 'Notifications', icon: <IconBell /> },
-    // { id: 'appearance', label: 'Appearance', icon: <IconTheme /> },
+    { id: 'appearance', label: 'Appearance', icon: <IconTheme /> },
     { id: 'privacy', label: 'Privacy', icon: <IconShield /> },
     { id: 'sessions', label: 'Sessions', icon: <IconLaptop /> },
     { id: 'danger', label: 'Danger Zone', icon: <IconWarning /> },
@@ -224,6 +226,7 @@ const sidebarSections = [
 const Settings = () => {
     const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState('profile');
+    const [isLoading, setIsLoading] = useState(true);
 
     // Profile state
     const [profileData, setProfileData] = useState({
@@ -267,14 +270,14 @@ const Settings = () => {
         two_factor_enabled: false,
         session_timeout_minutes: 60,
         theme: 'system',
+        cookie_consent: 'none',
+        cookie_consent_date: '',
     });
     const [settingsSaving, setSettingsSaving] = useState(false);
     const [settingsMessage, setSettingsMessage] = useState({ text: '', type: 'success' });
 
     // Cookie preference state
-    const [cookieConsent, setCookieConsent] = useState(() => {
-        return localStorage.getItem('equathora_cookie_consent') || 'none';
-    });
+    const [cookieConsent, setCookieConsent] = useState('none');
 
     // Session state
     const [currentSession, setCurrentSession] = useState(null);
@@ -297,6 +300,7 @@ const Settings = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
+                setIsLoading(true);
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) {
                     navigate('/login');
@@ -335,28 +339,55 @@ const Settings = () => {
 
                 // Fetch user settings
                 const userSettings = await getUserSettings();
+                const storedPreference = getStoredThemePreference();
                 const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+                const resolvedPreference = (normalizedTheme === 'system' && storedPreference !== 'system')
+                    ? storedPreference
+                    : normalizedTheme;
                 const accountEmail = String(session.user.email || '').trim().toLowerCase();
                 const isBriefsSubscribed = await isSubscribedToEquathoraBriefs(accountEmail);
+                const legacyCookieConsent = localStorage.getItem('equathora_cookie_consent');
+                const legacyCookieConsentDate = localStorage.getItem('equathora_cookie_consent_date') || '';
+                const cookieConsentValue = userSettings?.cookie_consent || legacyCookieConsent || 'none';
+                const cookieConsentDate = cookieConsentValue === 'none'
+                    ? ''
+                    : (userSettings?.cookie_consent_date || legacyCookieConsentDate || new Date().toISOString());
+
+                if (!userSettings?.cookie_consent && (legacyCookieConsent === 'accepted' || legacyCookieConsent === 'declined')) {
+                    await saveUserSettings({
+                        ...userSettings,
+                        cookie_consent: cookieConsentValue,
+                        cookie_consent_date: cookieConsentDate || new Date().toISOString(),
+                    });
+                }
 
                 setSettings(prev => ({
                     ...prev,
                     ...userSettings,
-                    theme: normalizedTheme,
+                    cookie_consent: cookieConsentValue,
+                    cookie_consent_date: cookieConsentDate,
+                    theme: resolvedPreference,
                     email_notifications: isBriefsSubscribed,
                 }));
-                setThemePreference(normalizedTheme, { persist: true });
+                setCookieConsent(cookieConsentValue);
+                setThemePreference(resolvedPreference, { persist: true });
 
                 // Fetch session info
                 const sess = await getCurrentSession();
                 setCurrentSession(sess);
             } catch (error) {
                 console.error('Error loading settings:', error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
         loadData();
     }, [navigate]);
+
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
     // PROFILE HANDLERS
     const handleSaveProfile = async () => {
         setProfileSaving(true);
@@ -514,12 +545,33 @@ const Settings = () => {
     // ========================================================================
     // SETTINGS HANDLERS
     // ========================================================================
-    const handleSettingChange = (key, value) => {
+    const handleSettingChange = async (key, value) => {
+        const previousValue = settings[key];
+        const nextSettings = { ...settings, [key]: value };
+
         if (key === 'theme') {
             setThemePreference(value, { persist: true });
         }
 
-        setSettings(prev => ({ ...prev, [key]: value }));
+        setSettings(nextSettings);
+        setSettingsSaving(true);
+        setSettingsMessage({ text: '', type: 'success' });
+
+        try {
+            const success = await saveUserSettings(nextSettings);
+            if (!success) {
+                throw new Error('Failed to save preference.');
+            }
+            setSettingsMessage({ text: 'Preferences updated.', type: 'success' });
+        } catch (error) {
+            setSettings(prev => ({ ...prev, [key]: previousValue }));
+            if (key === 'theme') {
+                setThemePreference(previousValue, { persist: true });
+            }
+            setSettingsMessage({ text: error?.message || 'Could not save preference.', type: 'error' });
+        } finally {
+            setSettingsSaving(false);
+        }
     };
 
     const handleEmailNotificationsToggle = async (enabled) => {
@@ -581,6 +633,58 @@ const Settings = () => {
             setSettings(prev => ({ ...prev, email_notifications: previousValue }));
             setSettingsMessage({
                 text: error?.message || 'Could not update email notification preference right now.',
+                type: 'error',
+            });
+        } finally {
+            setSettingsSaving(false);
+        }
+    };
+
+    const handleCookieConsentToggle = async (enabled) => {
+        const previousValue = cookieConsent;
+        const previousDate = settings.cookie_consent_date;
+        const nextCookieConsent = enabled ? 'accepted' : 'declined';
+        const nextCookieConsentDate = new Date().toISOString();
+        const nextSettings = {
+            ...settings,
+            cookie_consent: nextCookieConsent,
+            cookie_consent_date: nextCookieConsentDate,
+        };
+
+        setCookieConsent(nextCookieConsent);
+        setSettings(prev => ({
+            ...prev,
+            cookie_consent: nextCookieConsent,
+            cookie_consent_date: nextCookieConsentDate,
+        }));
+        setSettingsSaving(true);
+        setSettingsMessage({ text: '', type: 'success' });
+
+        try {
+            const settingsSaved = await saveUserSettings(nextSettings);
+            if (!settingsSaved) {
+                setSettingsMessage({
+                    text: 'Preference registered but could not save to database.',
+                    type: 'warning',
+                });
+                return;
+            }
+
+            setSettingsMessage({
+                text: enabled
+                    ? 'All cookies enabled. Analytics and personalization are now active.'
+                    : 'Optional cookies disabled. Only essential cookies will be used.',
+                type: 'success',
+            });
+        } catch (error) {
+            setCookieConsent(previousValue);
+            setSettings(prev => ({
+                ...prev,
+                cookie_consent: previousValue,
+                cookie_consent_date: previousDate,
+            }));
+            setSettingsMessage({
+                text: error?.message || 'Could not update cookie preference right now.',
                 type: 'error',
             });
         } finally {
@@ -699,8 +803,8 @@ const Settings = () => {
             <Navbar />
             <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-[var(--secondary-color)] font-[Sansation,sans-serif]">
                 {/* Header */}
-                <div className="w-full flex flex-col items-center gap-2 pt-8 pb-4 px-4">
-                    <h1 className="font-bold text-4xl">Settings</h1>
+                <div className="flex flex-col items-center w-full gap-2 px-4 pt-8 pb-4">
+                    <h1 className="text-4xl font-bold">Settings</h1>
                     <p className="text-md text-[var(--secondary-color)]">Manage your account, security, and preferences</p>
                 </div>
 
@@ -714,8 +818,8 @@ const Settings = () => {
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
                                 className={`flex items-center gap-3 rounded-md px-4 py-3 text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
-                                    ? 'bg-[var(--accent-color)] text-[var(--white)]'
-                                    : 'bg-[var(--surface-card)] text-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
+                                    ? 'bg-[var(--accent-color)] text-white'
+                                    : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
                                     }`}
                             >
                                 {section.icon}
@@ -725,14 +829,14 @@ const Settings = () => {
                     </nav>
 
                     {/* Mobile tabs */}
-                    <div className="lg:hidden flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+                    <div className="flex gap-2 pb-2 overflow-x-auto lg:hidden scrollbar-none">
                         {sidebarSections.map(section => (
                             <button
                                 key={section.id}
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all shrink-0 cursor-pointer ${activeSection === section.id
-                                    ? 'bg-[var(--accent-color)] text-[var(--white)]'
+                                    ? 'bg-[var(--accent-color)] text-white'
                                     : 'bg-[var(--surface-card)] text-[var(--secondary-color)] border border-[var(--mid-main-secondary)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
                                     }`}
                             >
@@ -752,7 +856,7 @@ const Settings = () => {
                             <SectionTitle sub="Your public identity on Equathora">Profile Information</SectionTitle>
 
                             <div className="flex flex-col gap-4">
-                                <div className="flex flex-col sm:flex-row gap-4">
+                                <div className="flex flex-col gap-4 sm:flex-row">
                                     <div className="flex-1">
                                         <InputField
                                             label="Full Name"
@@ -785,7 +889,7 @@ const Settings = () => {
                                     maxLength={300}
                                 />
 
-                                <div className="flex flex-col sm:flex-row gap-4">
+                                <div className="flex flex-col gap-4 sm:flex-row">
                                     <div className="flex-1">
                                         <InputField
                                             label="Location"
@@ -1004,15 +1108,12 @@ const Settings = () => {
                                 <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
                             </AnimatePresence>
 
-                            <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start">
-                                Save Preferences
-                            </PrimaryButton>
                         </SectionCard>
 
                         {/* ============================================================ */}
                         {/* APPEARANCE */}
                         {/* ============================================================ */}
-                        {/* <SectionCard id="appearance">
+                        <SectionCard id="appearance">
                             <SectionTitle sub="Control how Equathora looks on this device">Appearance</SectionTitle>
 
                             <div className="flex flex-col gap-3">
@@ -1044,10 +1145,7 @@ const Settings = () => {
                                 <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
                             </AnimatePresence>
 
-                            <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start">
-                                Save Appearance
-                            </PrimaryButton>
-                        </SectionCard> */}
+                        </SectionCard>
 
                         {/* ============================================================ */}
                         {/* PRIVACY */}
@@ -1101,18 +1199,7 @@ const Settings = () => {
                                             : 'Only essential cookies are active — no analytics or personalization data is collected'
                                     }
                                     checked={cookieConsent === 'accepted'}
-                                    onChange={(enabled) => {
-                                        const newConsent = enabled ? 'accepted' : 'declined';
-                                        setCookieConsent(newConsent);
-                                        localStorage.setItem('equathora_cookie_consent', newConsent);
-                                        localStorage.setItem('equathora_cookie_consent_date', new Date().toISOString());
-                                        setSettingsMessage({
-                                            text: enabled
-                                                ? 'All cookies enabled. Analytics and personalization are now active.'
-                                                : 'Optional cookies disabled. Only essential cookies will be used.',
-                                            type: 'success'
-                                        });
-                                    }}
+                                    onChange={handleCookieConsentToggle}
                                 />
 
                                 <div className="flex items-center gap-2 pt-1">
@@ -1126,7 +1213,7 @@ const Settings = () => {
                                     </span>
                                     {cookieConsent !== 'none' && (
                                         <span className="text-[10px] text-[var(--mid-main-secondary)]">
-                                            Set on {new Date(localStorage.getItem('equathora_cookie_consent_date') || '').toLocaleDateString()}
+                                            Set on {settings.cookie_consent_date ? new Date(settings.cookie_consent_date).toLocaleDateString() : 'recently'}
                                         </span>
                                     )}
                                 </div>
@@ -1136,9 +1223,6 @@ const Settings = () => {
                                 <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
                             </AnimatePresence>
 
-                            <PrimaryButton onClick={handleSaveSettings} loading={settingsSaving} className="self-start text-white">
-                                Save Privacy Settings
-                            </PrimaryButton>
                         </SectionCard>
 
                         {/* ============================================================ */}
@@ -1155,7 +1239,7 @@ const Settings = () => {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </div>
-                                        <div className="flex flex-col gap-1 flex-1 min-w-0">
+                                        <div className="flex flex-col flex-1 min-w-0 gap-1">
                                             <div className="flex items-center gap-2">
                                                 <span className="text-sm font-bold">Current Session</span>
                                                 <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Active</span>
@@ -1183,7 +1267,7 @@ const Settings = () => {
                                 </PrimaryButton>
                             </div>
 
-                            <div className="flex flex-col gap-2 border-t border-gray-100 pt-4">
+                            <div className="flex flex-col gap-2 pt-4 border-t border-gray-100">
                                 <h3 className="text-base font-bold">Security Tips</h3>
                                 <ul className="text-xs text-[var(--mid-main-secondary)] flex flex-col gap-1.5">
                                     <li className="flex items-start gap-2">
@@ -1217,7 +1301,7 @@ const Settings = () => {
                             <SectionTitle sub="Irreversible actions — proceed with extreme caution">Danger Zone</SectionTitle>
 
                             {/* Reset Progress */}
-                            <div className="flex flex-col gap-3 border-2 border-orange-200 bg-orange-50 rounded-md p-5">
+                            <div className="flex flex-col gap-3 p-5 border-2 border-orange-200 rounded-md bg-orange-50">
                                 <h3 className="text-base font-bold text-orange-800">Reset All Progress</h3>
                                 <p className="text-sm text-orange-700">
                                     This will permanently delete all your solved problems, streaks, XP, and achievements.
@@ -1232,7 +1316,7 @@ const Settings = () => {
                             </div>
 
                             {/* Delete Account */}
-                            <div className="flex flex-col gap-3 border-2 border-red-200 bg-red-50 rounded-md p-5">
+                            <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-md bg-red-50">
                                 <h3 className="text-base font-bold text-red-800">Delete Account</h3>
                                 <p className="text-sm text-red-700">
                                     This will permanently remove your account and all associated data.

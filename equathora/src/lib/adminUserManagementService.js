@@ -6,6 +6,67 @@ const toTitleCase = (value) => {
     return raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
 };
 
+const pickProfileValue = (profile, keys) => {
+    for (const key of keys) {
+        const value = profile?.[key];
+        if (value !== undefined && value !== null && value !== '') {
+            return value;
+        }
+    }
+
+    return undefined;
+};
+
+const fetchSupabaseTable = async (table, select, chunkSize = 1000) => {
+    const rows = [];
+    let from = 0;
+
+    while (true) {
+        const to = from + chunkSize - 1;
+        const { data, error } = await supabase
+            .from(table)
+            .select(select)
+            .range(from, to);
+
+        if (error) {
+            throw error;
+        }
+
+        if (!data || data.length === 0) {
+            break;
+        }
+
+        rows.push(...data);
+
+        if (data.length < chunkSize) {
+            break;
+        }
+
+        from += chunkSize;
+    }
+
+    return rows;
+};
+
+const fetchAdminUsersFromSupabase = async () => {
+    let profiles = [];
+    try {
+        profiles = await fetchSupabaseTable(
+            'profiles',
+            'id,role,full_name,username,account_status,is_suspended,is_active,mentor_verification,created_at,updated_at,last_seen_at,joined_at,inserted_at'
+        );
+    } catch (error) {
+        profiles = await fetchSupabaseTable('profiles', '*');
+    }
+
+    const progress = await fetchSupabaseTable(
+        'user_progress',
+        'user_id,total_attempts,wrong_submissions'
+    );
+
+    return { profiles, progress };
+};
+
 const mapRoleLabel = (rawRole) => {
     const role = String(rawRole || '').toLowerCase();
     if (role === 'admin') return 'Admin';
@@ -15,13 +76,15 @@ const mapRoleLabel = (rawRole) => {
 };
 
 const inferStatus = (profile) => {
-    const accountStatus = String(profile?.account_status || '').toLowerCase();
+    const accountStatus = String(
+        pickProfileValue(profile, ['account_status', 'accountStatus']) || ''
+    ).toLowerCase();
     if (accountStatus === 'suspended') return 'Suspended';
     if (accountStatus === 'inactive') return 'Inactive';
     if (accountStatus === 'active') return 'Active';
 
-    if (profile?.is_suspended === true) return 'Suspended';
-    if (profile?.is_active === false) return 'Inactive';
+    if (pickProfileValue(profile, ['is_suspended', 'isSuspended']) === true) return 'Suspended';
+    if (pickProfileValue(profile, ['is_active', 'isActive']) === false) return 'Inactive';
     return 'Active';
 };
 
@@ -32,7 +95,9 @@ const mapPermissionLabel = (roleLabel) => {
 };
 
 const inferVerification = (profile, roleLabel) => {
-    const raw = String(profile?.mentor_verification || profile?.mentor_status || '').trim();
+    const raw = String(
+        pickProfileValue(profile, ['mentor_verification', 'mentorVerification', 'mentor_status', 'mentorStatus']) || ''
+    ).trim();
     if (raw) {
         const normalized = raw.toLowerCase();
         if (normalized === 'verified') return 'Verified';
@@ -70,32 +135,21 @@ const pickProfileTimestamp = (profile, candidates) => {
 };
 
 const getDisplayName = (profile) => {
-    return profile?.full_name
-        || profile?.username
-        || profile?.display_name
-        || profile?.email?.split('@')?.[0]
+    return pickProfileValue(profile, ['full_name', 'fullName'])
+        || pickProfileValue(profile, ['username'])
+        || pickProfileValue(profile, ['display_name', 'displayName'])
         || 'Unknown User';
 };
 
+const getEmailValue = (profile) => {
+    return pickProfileValue(profile, ['email', 'user_email', 'contact_email']) || '-';
+};
+
 export async function getAdminUsers() {
-    const { data: profiles, error: profileError } = await supabase
-        .from('profiles')
-        .select('*');
+    const { profiles, progress } = await fetchAdminUsersFromSupabase();
 
-    if (profileError) {
-        throw new Error(profileError.message || 'Failed to fetch users.');
-    }
-
-    const { data: progressRows, error: progressError } = await supabase
-        .from('user_progress')
-        .select('user_id,total_attempts,wrong_submissions');
-
-    if (progressError) {
-        throw new Error(progressError.message || 'Failed to fetch user progress.');
-    }
-
-    const progressByUserId = (progressRows || []).reduce((map, row) => {
-        map.set(String(row.user_id), row);
+    const progressByUserId = (progress || []).reduce((map, row) => {
+        map.set(String(row.userId || row.user_id), row);
         return map;
     }, new Map());
 
@@ -109,7 +163,7 @@ export async function getAdminUsers() {
         return {
             id: userId,
             name: getDisplayName(profile),
-            email: profile.email || '-',
+            email: getEmailValue(profile),
             role,
             permission: mapPermissionLabel(role),
             status: inferStatus(profile),
@@ -157,15 +211,15 @@ export async function updateAdminUserStatus(user) {
     const patch = {};
     const profile = user?.rawProfile || {};
 
-    if (Object.prototype.hasOwnProperty.call(profile, 'account_status')) {
+    if (Object.prototype.hasOwnProperty.call(profile, 'account_status') || Object.prototype.hasOwnProperty.call(profile, 'accountStatus')) {
         patch.account_status = nextStatus.toLowerCase();
     }
 
-    if (Object.prototype.hasOwnProperty.call(profile, 'is_suspended')) {
+    if (Object.prototype.hasOwnProperty.call(profile, 'is_suspended') || Object.prototype.hasOwnProperty.call(profile, 'isSuspended')) {
         patch.is_suspended = nextStatus === 'Suspended';
     }
 
-    if (Object.prototype.hasOwnProperty.call(profile, 'is_active')) {
+    if (Object.prototype.hasOwnProperty.call(profile, 'is_active') || Object.prototype.hasOwnProperty.call(profile, 'isActive')) {
         patch.is_active = nextStatus === 'Active';
     }
 

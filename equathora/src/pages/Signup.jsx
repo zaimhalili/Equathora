@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import './Signup.css';
 import '../components/Auth.css';
 import { supabase } from '../lib/supabaseClient';
-import { notifyWelcome } from '../lib/notificationService';
 import { validatePassword } from "../utils/passwordUtil";
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
@@ -88,12 +87,6 @@ const Signup = () => {
         // Email confirmation required
         navigate(`/verify?email=${encodeURIComponent(email)}`);
       } else if (data?.session) {
-        // Auto-confirmed, send welcome notification
-        try {
-          await notifyWelcome(username || data.user.user_metadata?.username || 'there');
-        } catch (err) {
-          console.error('Failed to send welcome notification:', err);
-        }
         navigate('/dashboard');
       }
     } catch (err) {

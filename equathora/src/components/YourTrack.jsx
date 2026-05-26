@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { getUserProgress, getStreakData, getCompletedProblems } from '../lib/databaseService';
 import { getAllProblems } from '../lib/problemService';
 import { supabase } from '../lib/supabaseClient';
-import { getSubmissions } from '../lib/progressStorage';
+import { computeAccuracyFromSubmissions } from '../lib/accuracyService';
+import { FaArrowRight } from 'react-icons/fa';
 
 const fallbackStats = {
     problemsSolved: 0,
@@ -31,40 +32,34 @@ const YourTrack = () => {
                 if (!session) return;
 
                 // Fetch from database
-                const [userProgress, streakData, allProblems, completedProblemIds] = await Promise.all([
+                const [userProgress, streakData, allProblems, completedProblemIds, submissionsResponse] = await Promise.all([
                     getUserProgress(),
                     getStreakData(),
                     getAllProblems(),
-                    getCompletedProblems()
+                    getCompletedProblems(),
+                    supabase
+                        .from('user_submissions')
+                        .select('problem_id, is_correct')
+                        .eq('user_id', session.user.id)
                 ]);
 
                 const totalProblems = allProblems.length || 0;
                 const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
                 const solved = (completedProblemIds || []).filter(id => validProblemIds.has(String(id))).length;
-                let correctAnswers = userProgress?.correct_answers || 0;
-                let wrongSubmissions = userProgress?.wrong_submissions || 0;
-                let totalAttempts = userProgress?.total_attempts || 0;
-
-                // If backend counters aren't being maintained yet, fall back to local submissions.
-                if (totalAttempts > 0 && correctAnswers === 0 && wrongSubmissions === 0) {
-                    const local = (getSubmissions() || []).filter(s => validProblemIds.has(String(s.problemId)));
-                    if (local.length > 0) {
-                        const localCorrect = local.filter(s => s.isCorrect).length;
-                        correctAnswers = localCorrect;
-                        wrongSubmissions = local.length - localCorrect;
-                        totalAttempts = local.length;
-                    }
-                }
-
-                const accuracy = totalAttempts > 0 ? Math.round((correctAnswers / totalAttempts) * 100) : 0;
+                const submissions = submissionsResponse?.data || [];
+                const accuracyStats = computeAccuracyFromSubmissions({
+                    submissions,
+                    validProblemIds,
+                    solvedCount: solved
+                });
 
                 setStats({
                     problemsSolved: solved,
-                    accuracy: accuracy,
+                    accuracy: accuracyStats.accuracy,
                     currentStreak: streakData?.current_streak || 0,
                     longestStreak: streakData?.longest_streak || 0,
                     totalProblems: totalProblems,
-                    totalAttempts: totalAttempts
+                    totalAttempts: accuracyStats.total
                 });
             } catch (error) {
                 console.error('Failed to fetch stats:', error);
@@ -112,7 +107,7 @@ const YourTrack = () => {
                 {/* Progress Bar */}
                 <div className="flex items-center justify-between w-full gap-3 p-0">
                     <Link
-                        to="/achievements/stats"
+                        to="/tracks"
                         className="flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group"
                     >
                         <div
@@ -128,10 +123,10 @@ const YourTrack = () => {
                         </div>
                     </Link>
                     <Link
-                        to="/achievements/stats"
-                        className="w-10 h-10 flex items-center justify-center transition-transform duration-300 ease-in hover:translate-x-2 hover:scale-110"
+                        to="/tracks"
+                        className="w-10 h-10 flex items-center justify-center transition-transform duration-150 ease-in hover:translate-x-2 hover:scale-110"
                     >
-                        <img src={LilArrow} alt="arrow" className="w-full h-full" />
+                        <FaArrowRight className='h-full w-full text-white' />
                     </Link>
                 </div>
 
@@ -181,7 +176,7 @@ const YourTrack = () => {
                     <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full">
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Accuracy</div>
                         <div className="text-2xl font-bold text-[var(--secondary-color)] justify-center lg:justify-start flex">
-                            {avgAccuracy}%
+                            {avgAccuracy === null ? 'N/A' : `${avgAccuracy}%`}
                         </div>
                     </div>
                 </div>
@@ -191,7 +186,6 @@ const YourTrack = () => {
                     <span>Updated just now</span>
                 </div>
             </div>
-            {/* Mentor CTA Section */}
 
         </article>
     );

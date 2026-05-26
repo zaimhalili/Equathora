@@ -131,9 +131,9 @@ math-field {
     --placeholder-color: var(--mid-main-secondary);
     --contains-highlight-background-color: var(--french-gray);
 
-    font-size: clamp(22px, 2vw, 25px);
-    color: black;
-    background: white;
+    font-size: 25px;
+    color: var(--black);
+    background: var(--white);
     border: 2px solid var(--french-gray);
     padding: 0;
     display: block;
@@ -184,7 +184,7 @@ math-field:hover {
 
 .ml-feedback-card.error {
     background: rgba(248, 113, 113, 0.1);
-    border-color: rgba(248, 113, 113, 0.3);
+    border-color: var(--accent-color);
     animation: slideDown 0.3s ease-out, shake 0.5s ease-out;
 }
 
@@ -213,7 +213,7 @@ math-field:hover {
 }
 
 .ml-feedback-icon.error {
-    background: #f87171;
+    background: var(--dark-accent-color);
 }
 
 .ml-feedback-title {
@@ -226,7 +226,7 @@ math-field:hover {
 }
 
 .ml-feedback-card.error .ml-feedback-title {
-    color: #b91c1c;
+    color: var(--accent-color);
 }
 
 .ml-feedback-message {
@@ -240,7 +240,7 @@ math-field:hover {
 }
 
 .ml-feedback-card.error .ml-feedback-message {
-    color: #991b1b;
+    color: var(--accent-color);
 }
 
 .ml-btn {
@@ -433,6 +433,14 @@ math-field::part(content) {
 
 /* Hide virtual keyboard toggle button on mobile */
 @media (max-width: 768px) {
+    math-field {
+        font-size: clamp(24px, 6vw, 28px) !important;
+    }
+
+    math-field::part(content) {
+        font-size: inherit !important;
+    }
+
     math-field::part(virtual-keyboard-toggle) {
         display: none !important;
     }
@@ -604,8 +612,12 @@ math-field:focus-within {
 
     /* Improve virtual keyboard layout on mobile */
     math-field {
-        font-size: 18px;
+        font-size: clamp(24px, 6vw, 26px) !important;
         padding: 0 !important;
+    }
+
+    math-field::part(content) {
+        font-size: inherit !important;
     }
 }
 
@@ -652,8 +664,12 @@ math-field:focus-within {
     }
 
     math-field {
-        font-size: 18px;
+        font-size: clamp(24px, 6vw, 28px) !important;
         padding: 0;
+    }
+
+    math-field::part(content) {
+        font-size: inherit !important;
     }
 
     .ml-toolbar {
@@ -774,7 +790,7 @@ math-field:focus-within {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #1e40af;
+    color: var(--rare-blue);
     transition: color 0.150s;
 }
 
@@ -787,7 +803,7 @@ math-field:focus-within {
 }
 
 .ml-format-hints:hover .ml-format-hints-title {
-    color: #1e3a8a;
+    filter: saturate(1.5);
 }
 
 .ml-format-hints-list {

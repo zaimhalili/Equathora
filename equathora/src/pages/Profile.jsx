@@ -13,6 +13,7 @@ import ProfileExportButtons from '../components/ProfileExportButtons';
 import { generateProblemSlug } from '../lib/slugify';
 import { getCachedGlobalLeaderboard } from '../lib/leaderboardService';
 import { formatTopicLabel } from '../lib/utils';
+import { computeAccuracyFromSubmissions } from '../lib/accuracyService';
 import { FaLandmark } from 'react-icons/fa';
 import { FaLocationArrow } from 'react-icons/fa';
 
@@ -88,18 +89,6 @@ const getDifficultyChipBackground = (difficultyKey) => {
   return 'var(--white)';
 };
 
-const calculateProfileAccuracy = (totalAttempts = 0, wrongSubmissions = 0, solvedCount = 0) => {
-  if (totalAttempts > 0) {
-    const correctSubmissions = totalAttempts - (wrongSubmissions || 0);
-    return Math.max(0, Math.min(100, Math.round((correctSubmissions / totalAttempts) * 100)));
-  }
-
-  if (solvedCount > 0) {
-    return null;
-  }
-
-  return 0;
-};
 
 const Profile = () => {
   const { profile } = useParams();
@@ -199,40 +188,32 @@ const Profile = () => {
 
         // Calculate stats (scope solved to current problems list)
         const solved = completedProblems.length;
-        const wrongSubmissionsRaw = Number(progressRow?.wrong_submissions ?? 0);
-        const totalAttemptsRaw = Number(progressRow?.total_attempts ?? 0);
-        let wrongSubmissions = Number.isFinite(wrongSubmissionsRaw) ? wrongSubmissionsRaw : 0;
-        let totalAttempts = Number.isFinite(totalAttemptsRaw) ? totalAttemptsRaw : 0;
-        let correctSubmissions = totalAttempts > 0
-          ? Math.max(totalAttempts - wrongSubmissions, 0)
-          : 0;
+        let accuracyStats = { accuracy: 0, correct: 0, wrong: 0, total: 0 };
+        if (isSelf && !submissionsError) {
+          const validProblemIdSet = new Set((problemList || []).map((problem) => String(problem.id)));
+          accuracyStats = computeAccuracyFromSubmissions({
+            submissions: submissionsRow || [],
+            validProblemIds: validProblemIdSet,
+            solvedCount: solved
+          });
+        } else {
+          const wrongSubmissionsRaw = Number(progressRow?.wrong_submissions ?? 0);
+          const totalAttemptsRaw = Number(progressRow?.total_attempts ?? 0);
+          const wrongSubmissions = Number.isFinite(wrongSubmissionsRaw) ? wrongSubmissionsRaw : 0;
+          const totalAttempts = Number.isFinite(totalAttemptsRaw) ? totalAttemptsRaw : 0;
+          const correctSubmissions = Math.max(totalAttempts - wrongSubmissions, 0);
 
-        // Prefer per-submission counters for own profile when aggregated counters look stale.
-        const validProblemIdSet = new Set((problemList || []).map((problem) => String(problem.id)));
-        const validSubmissions = (submissionsRow || []).filter((submission) =>
-          validProblemIdSet.has(String(submission?.problem_id ?? ''))
-        );
-        const submissionAttempts = validSubmissions.length;
-        const submissionWrong = validSubmissions.filter((submission) => submission?.is_correct === false).length;
-        const submissionCorrect = Math.max(submissionAttempts - submissionWrong, 0);
-
-        const hasSubmissionSignal = isSelf && !submissionsError && submissionAttempts > 0;
-        const countersInconsistentWithSolved = correctSubmissions > solved;
-        const countersFarFromSubmissions = hasSubmissionSignal
-          ? Math.abs(totalAttempts - submissionAttempts) > Math.max(5, Math.floor(submissionAttempts * 0.5))
-          : false;
-
-        if (hasSubmissionSignal && (totalAttempts === 0 || countersInconsistentWithSolved || countersFarFromSubmissions)) {
-          totalAttempts = submissionAttempts;
-          wrongSubmissions = submissionWrong;
-          correctSubmissions = submissionCorrect;
-        } else if (isSelf && !hasSubmissionSignal && countersInconsistentWithSolved) {
-          correctSubmissions = solved;
-          totalAttempts = solved;
-          wrongSubmissions = 0;
+          if (totalAttempts > 0) {
+            accuracyStats = {
+              accuracy: Math.max(0, Math.min(100, Math.round((correctSubmissions / totalAttempts) * 100))),
+              correct: correctSubmissions,
+              wrong: wrongSubmissions,
+              total: totalAttempts
+            };
+          } else if (solved > 0) {
+            accuracyStats = { accuracy: null, correct: 0, wrong: 0, total: 0 };
+          }
         }
-
-        const accuracy = calculateProfileAccuracy(totalAttempts, wrongSubmissions, solved);
 
         // Use solved count from completedProblems filtered by valid IDs (consistent with YourTrack and Statistics)
         const finalSolved = solved;
@@ -299,11 +280,11 @@ const Profile = () => {
           status: isSelf ? 'Online' : 'Viewing',
           stats: {
             problemsSolved: finalSolved,
-            accuracy: accuracy,
+            accuracy: accuracyStats.accuracy,
             accuracyDetail: {
-              correct: correctSubmissions,
-              wrong: wrongSubmissions,
-              total: totalAttempts
+              correct: accuracyStats.correct,
+              wrong: accuracyStats.wrong,
+              total: accuracyStats.total
             },
             currentStreak: effectiveCurrentStreak,
             longestStreak: streakRow?.longest_streak || 0,

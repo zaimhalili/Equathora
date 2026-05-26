@@ -22,7 +22,7 @@
 
 .special-events p {
     color: var(--white);
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
 .events-list {
@@ -53,15 +53,15 @@
 }
 
 .event-item h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
     color: var(--dark-accent-color);
 }
 
 .event-item time {
-    font-size: 2rem;
+    font-size: 1.2rem;
     color: gold;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     font-weight: 700;
 }
 

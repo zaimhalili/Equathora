@@ -657,7 +657,7 @@ const AdminProblems = () => {
                         </span>
                     </header>
                     <div className='h-72 w-full'>
-                        <ResponsiveContainer width='100%' height='100%' minWidth={0}>
+                        <ResponsiveContainer width='100%' height='100%' minWidth={0} minHeight={0}>
                             <BarChart data={activeGraphData} margin={{ left: -8, right: 10, top: 10, bottom: 0 }}>
                                 <CartesianGrid stroke={'var(--french-gray)'} vertical={false} />
                                 <XAxis dataKey='label' tick={{ fill: 'var(--secondary-color)', fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -679,7 +679,7 @@ const AdminProblems = () => {
                         </span>
                     </header>
                     <div className='h-72 w-full'>
-                        <ResponsiveContainer width='100%' height='100%' minWidth={0}>
+                        <ResponsiveContainer width='100%' height='100%' minWidth={0} minHeight={0}>
                             <PieChart>
                                 <Pie
                                     data={difficultyDistribution}
@@ -719,7 +719,7 @@ const AdminProblems = () => {
                         </span>
                     </header>
                     <div className='h-64 w-full'>
-                        <ResponsiveContainer width='100%' height='100%' minWidth={0}>
+                        <ResponsiveContainer width='100%' height='100%' minWidth={0} minHeight={0}>
                             <LineChart data={activeGraphData} margin={{ left: -10, right: 10, top: 10, bottom: 0 }}>
                                 <CartesianGrid stroke={'var(--french-gray)'} vertical={false} />
                                 <XAxis dataKey='label' tick={{ fill: 'var(--secondary-color)', fontSize: 11 }} axisLine={false} tickLine={false} />

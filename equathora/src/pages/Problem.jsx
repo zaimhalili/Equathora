@@ -202,12 +202,29 @@ const Problem = () => {
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [newAchievements, setNewAchievements] = useState([]);
     const [showInsightPanel, setShowInsightPanel] = useState(false);
+
+    // Track theme dynamically from data-theme attribute
+    const [currentTheme, setCurrentTheme] = useState(() =>
+        typeof document !== 'undefined' ? document.documentElement.dataset.theme || 'light' : 'light'
+    );
+
     const prevProblemIdRef = useRef(problem?.id);
     const canvasRef = useRef(null);
     const isDrawingRef = useRef(false);
     const currentStrokeRef = useRef([]);
     const sessionStartRef = useRef(Date.now());
     const strokesCacheRef = useRef({});
+
+    const resolveColor = useCallback((color) => {
+        if (typeof color === 'string' && color.startsWith('var(')) {
+            const varName = color.slice(4, -1).trim();
+            return getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || 'black';
+        }
+        if (color === 'var(--secondary-color)' || color === 'black') {
+            return document.documentElement.dataset.theme === 'dark' ? '#ffffff' : '#000000';
+        }
+        return color;
+    }, []);
 
     const redrawCanvas = useCallback((paths) => {
         const canvas = canvasRef.current;
@@ -219,7 +236,7 @@ const Problem = () => {
         const allStrokes = paths || strokes;
         allStrokes.forEach((stroke) => {
             if (!stroke?.points?.length) return;
-            ctx.strokeStyle = stroke.color || 'black';
+            ctx.strokeStyle = resolveColor(stroke.color) || 'black';
             ctx.lineWidth = 3;
             ctx.lineCap = 'round';
             ctx.beginPath();
@@ -232,7 +249,7 @@ const Problem = () => {
 
         // Also draw current stroke if actively drawing
         if (isDrawingRef.current && currentStrokeRef.current.length > 0) {
-            ctx.strokeStyle = drawingColor;
+            ctx.strokeStyle = resolveColor(drawingColor) || 'black';
             ctx.lineWidth = 3;
             ctx.lineCap = 'round';
             ctx.beginPath();
@@ -242,7 +259,7 @@ const Problem = () => {
             });
             ctx.stroke();
         }
-    }, [strokes, drawingColor]);
+    }, [strokes, drawingColor, resolveColor]);
 
     const getCanvasPoint = useCallback((event) => {
         const canvas = canvasRef.current;
@@ -279,7 +296,7 @@ const Problem = () => {
         const ctx = canvas.getContext('2d');
         const lastPoint = currentStrokeRef.current[currentStrokeRef.current.length - 1];
 
-        ctx.strokeStyle = drawingColor;
+        ctx.strokeStyle = resolveColor(drawingColor) || 'black';
         ctx.lineWidth = 3;
         ctx.lineCap = 'round';
         ctx.beginPath();
@@ -288,7 +305,7 @@ const Problem = () => {
         ctx.stroke();
 
         currentStrokeRef.current.push(point);
-    }, [drawingColor, getCanvasPoint]);
+    }, [drawingColor, getCanvasPoint, resolveColor]);
 
     const endDrawing = useCallback(() => {
         if (!isDrawingRef.current) return;
@@ -323,6 +340,26 @@ const Problem = () => {
     useEffect(() => {
         setTimerRunning(!isCompleted);
     }, [slug, isCompleted]);
+
+    useEffect(() => {
+        const observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                    setCurrentTheme(document.documentElement.dataset.theme || 'light');
+                    // Also trigger a redraw of the canvas to update stroke colors dynamically
+                    setTimerResetSeq(prev => prev + 1); // just to force an update check though redrawCanvas called below
+                    const canvas = canvasRef.current;
+                    if (canvas && strokesCacheRef.current[problem?.id]) {
+                        // we'll rely on the existing effect for ShowDrawingPad to redraw, but let's call it softly 
+                    }
+                }
+            }
+        });
+        if (typeof document !== 'undefined') {
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+        }
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         sessionStartRef.current = Date.now();
@@ -415,7 +452,7 @@ const Problem = () => {
         if (strokes.length > 0 && problem?.id) {
             strokesCacheRef.current[problem.id] = strokes;
         }
-    }, [strokes, showDrawingPad, redrawCanvas, problem?.id]);
+    }, [strokes, showDrawingPad, redrawCanvas, problem?.id, currentTheme]);
 
     // Warn user before refresh/close if drawings exist
     useEffect(() => {
@@ -888,7 +925,7 @@ const Problem = () => {
                             setSolutionViewed(true);
                         }}
                         onDismiss={() => setShowInsightPanel(false)}
-                        autoDismissSeconds={12}
+                        autoDismissSeconds={600}
                     />
                 )}
 
@@ -1017,10 +1054,10 @@ const Problem = () => {
                                 {submissionFeedback && !submissionFeedback.isCorrect && (
                                     <div className="rounded-xl px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
                                         <div className="flex items-center gap-2 pb-1.5">
-                                            <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-red-400">
-                                                <FaTimesCircle />
+                                            <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-[var(--dark-accent-color)]">
+                                                <FaTimesCircle className='text-white' />
                                             </div>
-                                            <span className="text-sm font-bold font-[Sansation,sans-serif] text-red-600">
+                                            <span className="text-sm font-bold font-[Sansation,sans-serif] text-[var(--accent-color)]">
                                                 Incorrect
                                             </span>
                                             {submissionFeedback.isPracticeMode && (
@@ -1030,7 +1067,7 @@ const Problem = () => {
                                                 <span className="text-[10px] text-gray-400 font-[Sansation,sans-serif]">Attempt {submissionFeedback.attemptNumber}</span>
                                             )}
                                         </div>
-                                        <p className="text-xs md:text-[0.82rem] leading-relaxed font-[Sansation,sans-serif] text-red-600/85">
+                                        <p className="text-xs md:text-[0.82rem] leading-relaxed font-[Sansation,sans-serif] text-[var(--accent-color)]/85">
                                             {submissionFeedback.message}
                                         </p>
                                     </div>
@@ -1057,9 +1094,9 @@ const Problem = () => {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('var(--secondary-color)')}
-                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'black' ? 'bg-[var(--secondary-color)] text-[var(--main-color)] border-[var(--secondary-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--secondary-color)]'}`}
+                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'bg-[var(--secondary-color)] text-[var(--main-color)] border-[var(--secondary-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--secondary-color)]'}`}
                                                             >
-                                                                Black
+                                                                {currentTheme === 'dark' ? 'White' : 'Black'}
                                                             </button>
                                                             <button
                                                                 type="button"
@@ -1083,7 +1120,7 @@ const Problem = () => {
                                                             type="button"
                                                             onClick={clearCanvas}
                                                             disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--accent-color)] border-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-[var(--main-color)]'}`}
+                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--accent-color)] border-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white'}`}
                                                         >
                                                             Clear
                                                         </button>
@@ -1231,8 +1268,8 @@ const Problem = () => {
                                                     setSelectedSubmission(submission);
                                                     setShowSubmissionDetail(true);
                                                 }}
-                                                className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-md border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/30' :
-                                                    submission.status === 'wrong' ? 'border-red-500 hover:bg-[var(--french-gray)]/30' :
+                                                className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-md border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/70' :
+                                                    submission.status === 'wrong' ? 'border-[var(--accent-color)] hover:bg-[var(--french-gray)]/30' :
                                                         'border-yellow-500 hover:bg-[var(--french-gray)]/30'
                                                     }`}
                                             >
@@ -1241,15 +1278,15 @@ const Problem = () => {
                                                         {submission.status === 'accepted' && <FaCheckCircle className="text-green-600 text-xs flex-shrink-0" />}
                                                         {submission.status === 'wrong' && <FaTimesCircle className="text-red-600 text-xs flex-shrink-0" />}
                                                         <span className={`text-xs font-semibold truncate ${submission.status === 'accepted' ? 'text-green-600' :
-                                                            submission.status === 'wrong' ? 'text-red-600' :
+                                                            submission.status === 'wrong' ? 'text-[var(--accent-color)]' :
                                                                 'text-yellow-600'
                                                             }`}>
                                                             {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong' : 'Pending'}
                                                         </span>
-                                                        <span className="text-[10px] text-gray-500 hidden sm:inline">•</span>
-                                                        <span className="text-[10px] text-gray-500 hidden sm:inline">{submission.steps.length} steps</span>
+                                                        <span className="text-[10px] text-[vvar(--mid-main-secondary)] hidden sm:inline">•</span>
+                                                        <span className="text-[10px] text-[vvar(--mid-main-secondary)] hidden sm:inline">{submission.steps.length} steps</span>
                                                     </div>
-                                                    <div className="flex items-center gap-3 text-[10px] text-gray-500 flex-shrink-0">
+                                                    <div className="flex items-center gap-3 text-[10px] text-[vvar(--mid-main-secondary)] flex-shrink-0">
                                                         {typeof submission.metadata?.hintsUsed === 'number' && (
                                                             <span>{submission.metadata.hintsUsed} hints</span>
                                                         )}
@@ -1270,7 +1307,7 @@ const Problem = () => {
                                             </div>
                                         ))}
                                         {submissions.length === 0 && (
-                                            <p className="text-center text-sm text-gray-500 py-8">No submissions yet. Start solving to see your history!</p>
+                                            <p className="text-center text-sm text-[vvar(--mid-main-secondary)] py-8">No submissions yet. Start solving to see your history!</p>
                                         )}
                                     </div>
                                 </div>}

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import MathJaxRenderer from './MathJaxRenderer';
 
 /**
  * SolutionStepsDisplay — renders solution text as numbered steps
@@ -136,10 +137,13 @@ const SolutionStepsDisplay = ({ solution }) => {
 
                                 {/* Math content box — rendered by MathJax */}
                                 {math && (
-                                    <div
-                                        className="rounded-md border-2 border-[var(--mid-main-secondary)] bg-white px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-[var(--secondary-color)] overflow-x-auto"
-                                        dangerouslySetInnerHTML={{ __html: math }}
-                                    />
+                                    <div className="rounded-md border-2 border-[var(--mid-main-secondary)] bg-[var(--white)] px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-[var(--secondary-color)] overflow-x-auto">
+                                        <MathJaxRenderer
+                                            content={math}
+                                            className="solution-step-math"
+                                            preferInlineMath={true}
+                                        />
+                                    </div>
                                 )}
                             </div>
                         ))}

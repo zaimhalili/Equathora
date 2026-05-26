@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Logo from '../assets/logo/TransparentFullLogo.png';
 import { Link } from 'react-router-dom';
-import { FaBell, FaTrophy, FaBars } from 'react-icons/fa';
+import { FaBell, FaTrophy, FaBars, FaDiscord } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
 import Dropdown from './Dropdown';
@@ -9,7 +9,8 @@ import OverflowChecker from "../pages/OverflowChecker";
 import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
 import { getStreakData } from '../lib/databaseService';
-import { getUnreadCount } from '../lib/notificationService';
+import { getUnreadCount, NOTIFICATION_EVENTS } from '../lib/notificationService';
+import { useUserProfile } from '../hooks/useUserProfile';
 //Dropdown svgs
 import Daily from '../assets/images/questionMark.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
@@ -50,14 +51,13 @@ const getLowResAvatarUrl = (avatarUrl) => {
 };
 
 const Navbar = () => {
-  const ADMIN_EMAIL = (import.meta.env.VITE_ADMIN_EMAIL || 'halilizaim@gmail.com').toLowerCase();
+  const { profile } = useUserProfile();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dailyProblemSlug, setDailyProblemSlug] = useState('');
   const [currentStreak, setCurrentStreak] = useState(0);
   const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
-  const [currentUserEmail, setCurrentUserEmail] = useState('');
 
   useEffect(() => {
     const loadDailyProblem = async () => {
@@ -72,12 +72,10 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const fetchStreak = async () => {
+    const refreshNavbarSignals = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
-
-        setCurrentUserEmail((session.user?.email || '').toLowerCase());
 
         const metadata = session.user?.user_metadata || {};
         const avatarUrl = metadata.avatar_url || metadata.picture || metadata.image || metadata.photo_url || '';
@@ -92,53 +90,21 @@ const Navbar = () => {
         console.error('Failed to fetch streak:', error);
       }
     };
-    fetchStreak();
+    void refreshNavbarSignals();
 
-    // Refresh streak on focus
-    window.addEventListener('focus', fetchStreak);
-    window.addEventListener('equathora:streak-updated', fetchStreak);
-
-    return () => {
-      window.removeEventListener('focus', fetchStreak);
-      window.removeEventListener('equathora:streak-updated', fetchStreak);
-    };
-  }, []);
-
-  useEffect(() => {
-    let channel;
-    let isMounted = true;
-
-    const setupNotificationSubscription = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
-      channel = supabase
-        .channel(`navbar-notifications-${session.user.id}`)
-        .on(
-          'postgres_changes',
-          {
-            event: '*',
-            schema: 'public',
-            table: 'user_notifications',
-            filter: `user_id=eq.${session.user.id}`
-          },
-          async () => {
-            const unreadCount = await getUnreadCount();
-            if (isMounted) {
-              setUnreadNotificationCount(unreadCount);
-            }
-          }
-        )
-        .subscribe();
+    const handleNotificationCreated = () => {
+      void refreshNavbarSignals();
     };
 
-    setupNotificationSubscription();
+    // Refresh on focus or when in-app notifications are created.
+    window.addEventListener('focus', refreshNavbarSignals);
+    window.addEventListener('equathora:streak-updated', refreshNavbarSignals);
+    window.addEventListener(NOTIFICATION_EVENTS.CREATED, handleNotificationCreated);
 
     return () => {
-      isMounted = false;
-      if (channel) {
-        supabase.removeChannel(channel);
-      }
+      window.removeEventListener('focus', refreshNavbarSignals);
+      window.removeEventListener('equathora:streak-updated', refreshNavbarSignals);
+      window.removeEventListener(NOTIFICATION_EVENTS.CREATED, handleNotificationCreated);
     };
   }, []);
 
@@ -149,36 +115,21 @@ const Navbar = () => {
       description: "Solve a fresh daily challenge.",
       image: Daily
     },
-    // Hidden for MVP - will be added after launch
-    // {
-    //   to: '/learn',
-    //   text: "Your Track",
-    //   description: "Track topics and problems solved.",
-    //   image: Journey
-    // },
+    {
+      to: '/tracks',
+      text: "Your Track",
+      description: "Track topics and problems solved.",
+      image: Journey
+    },
     {
       to: '/learn',
       text: "Browse Problems",
       description: "Explore all available challenges.",
       image: Books
-    },
-    // {
-    //   to: "/learn",
-    //   text: "Favourite Problems",
-    //   description: "Quickly revisit starred problems.",
-    //   image: Favourite,
-    //   state: { filter: 'favourite' }
-    // }
+    }
   ]
 
   const discoverItems = [
-    // Hidden for MVP - will be added after launch
-    // {
-    //   to: '/tracks',
-    //   text: "Tracks",
-    //   description: "Personalized problem suggestions.",
-    //   image: Choice
-    // },
     {
       to: '/leaderboards/global',
       text: "Leaderboards",
@@ -224,6 +175,12 @@ const Navbar = () => {
       text: "About equathora",
       description: "Learn about its mission and vision.",
       image: AboutUs
+    }, {
+      to: "https://discord.gg/s6tNSbyhB7",
+      text: "Join our Discord",
+      description: "Meet the Equathora community.",
+      icon: <FaDiscord size={40} aria-hidden="true" color='var(--accent-color)' />,
+      external: true
     }
   ]
 
@@ -279,7 +236,7 @@ const Navbar = () => {
       description: "Manage your account and preferences",
       image: Settings
     },
-    ...(currentUserEmail === ADMIN_EMAIL
+    ...(profile?.role === 'admin'
       ? [{
         to: '/adminDashboard',
         text: "Admin Dashboard",
@@ -295,7 +252,7 @@ const Navbar = () => {
       onClick: async () => {
         await clearUserData();
         await supabase.auth.signOut();
-        window.location.href = '/login';
+        window.location.href = '/';
       }
     }
     // Hidden for MVP
@@ -327,9 +284,9 @@ const Navbar = () => {
             <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
               <li>
                 {/* Main Logo - Redirect to Dashboard */}
-                <Link to="/dashboard" className='!text-[var(--secondary-color)] flex justify-center items-center list-none font-bold relative'>
+                <Link to="/dashboard" className='!text-[var(--secondary-color)] flex justify-center items-center list-none font-bold relative' title='Dashboard'>
                   <img src={Sigma} alt="Logo" className='w-6 h-6 absolute left-0 -top-[1px]' />
-                  <p className='font-[Sansation,Arial] pl-6 text-lg'>Equathora</p>
+                  <p className='font-[Sansation,Arial] pl-6 text-lg font-black'>Equathora</p>
                 </Link>
               </li>
               <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
@@ -350,10 +307,11 @@ const Navbar = () => {
               </li>
             </ul>
 
+            {/* Streak */}
             <div className='flex justify-end items-center shrink-0'>
               <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
                 <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
-                  <Link to="/achievements/stats" className='flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors'>
+                  <Link to="/achievements/stats" className='flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors' title='Your Streak'>
                     <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                       <defs>
                         <linearGradient id="icon-gradient-fire-navbar" x1="0%" y1="0%" x2="0%" y2="100%">

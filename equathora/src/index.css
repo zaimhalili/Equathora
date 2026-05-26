@@ -16,6 +16,10 @@
         --accent-color: #d70427;
         --dark-accent-color: #a3142c;
         --white: #ffffff;
+        --black: #000000;
+
+        /* Exceptions */
+        --rare-blue:#1e40af;
     }
 
     :root[data-theme='dark'] {
@@ -29,6 +33,10 @@
         --accent-color: #ef233c;
         --dark-accent-color: #d70427;
         --white: #2b2d42;
+        --black: white;
+
+        /* Exceptions */
+        --rare-blue: #809dff;
     }
 }
 
