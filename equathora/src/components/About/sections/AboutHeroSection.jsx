@@ -24,7 +24,7 @@ const AboutHeroSection = () => {
             </div>
 
             <div className="relative z-10 w-full flex justify-center">
-                <div className="w-full max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 pt-40 sm:pt-24 md:pt-30 lg:pt-20 xl:pt-40 pb-14 sm:pb-16 md:pb-18 lg:pb-20 flex flex-col items-center text-center gap-5 sm:gap-6">
+                <div className="w-full max-w-[1500px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 pt-40 sm:pt-24 md:pt-30 lg:pt-20 xl:pt-40 pb-14 sm:pb-16 md:pb-18 lg:pb-20 flex flex-col items-center text-center gap-5 sm:gap-6">
                     <motion.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}

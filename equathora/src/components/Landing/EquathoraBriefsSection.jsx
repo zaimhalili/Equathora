@@ -6,7 +6,7 @@ import { FaEnvelope, FaArrowRight } from 'react-icons/fa';
 const EquathoraBriefsSection = () => {
     return (
         <section className="w-full bg-[var(--secondary-color)] relative overflow-hidden flex justify-center theme-lock">
-            <div className="max-w-[1400px] relative z-10 px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-10">
+            <div className="max-w-[1500px] relative z-10 px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-10">
                 <motion.div
                     className="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 md:gap-12"
                     initial={{ opacity: 0, y: 20 }}

@@ -139,7 +139,7 @@ const Recommended = () => {
         <>
             <Navbar />
             <main className="min-h-screen w-full bg-[var(--main-color)] font-[Sansation] text-[var(--secondary-color)]">
-                <section className="mx-auto flex w-full max-w-[1400px] flex-col gap-6 px-[4vw] pb-12 pt-6 xl:px-[6vw]">
+                <section className="mx-auto flex w-full max-w-[1500px] flex-col gap-6 px-[4vw] pb-12 pt-6 xl:px-[6vw]">
                     <header className={`${cardBase} flex flex-col gap-4 p-6`}>
                         <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                             <div className="flex flex-col gap-1">

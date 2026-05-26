@@ -11,7 +11,7 @@ const LatestArticlesSection = () => {
     return (
         <section className="w-full bg-[var(--white)] relative overflow-hidden flex justify-center">
 
-            <div className="max-w-[1400px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10">
+            <div className="max-w-[1500px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10">
                 <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
 
                     {/* Section header - Centered */}
