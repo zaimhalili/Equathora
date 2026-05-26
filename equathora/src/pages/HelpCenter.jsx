@@ -5,6 +5,7 @@ import { FaQuestionCircle, FaChevronDown } from 'react-icons/fa';
 import { FaChevronUp, FaLightbulb, FaShieldAlt, FaRocket } from 'react-icons/fa';
 import { FaStar, FaClock, FaTrophy, FaArrowRight, FaUsers, FaComments, FaHeadset } from 'react-icons/fa';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
+import shrug from '../assets/images/shrug-pana.svg'
 
 const HelpCenter = () => {
     const [openFaq, setOpenFaq] = useState(null);
@@ -106,10 +107,6 @@ const HelpCenter = () => {
                         <div className="w-full flex flex-col lg:flex-row items-center gap-8">
                             {/* Left: Content */}
                             <div className="flex-1 flex flex-col gap-4">
-                                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--white)]/10 border border-[var(--white)]/30 text-xs font-semibold w-fit">
-                                    <FaHeadset />
-                                    SUPPORT CENTER
-                                </div>
                                 <div className="flex items-center gap-3">
                                     <div className="w-12 h-12 rounded-md bg-[var(--white)]/15 flex items-center justify-center text-xl">
                                         <FaQuestionCircle />
@@ -127,7 +124,7 @@ const HelpCenter = () => {
                             <div className="flex-1 flex justify-center lg:justify-end">
                                 <div className="relative">
                                     <img
-                                        src="https://illustrations.popsy.co/amber/question-mark.svg"
+                                        src={shrug}
                                         alt="Help illustration"
                                         className="w-40 lg:w-48 drop-shadow-2xl"
                                     />
@@ -148,7 +145,7 @@ const HelpCenter = () => {
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-5 group-hover:opacity-10 transition-opacity duration-200`}></div>
                                     <div className="relative">
-                                        <div className={`w-11 h-11 rounded-md bg-gradient-to-br ${link.color} text-[var(--white)] flex items-center justify-center text-white shadow-md`}>
+                                        <div className={`w-11 h-11 rounded-md bg-gradient-to-br ${link.color} flex items-center justify-center text-white shadow-md`}>
                                             {link.icon}
                                         </div>
                                         <h3 className="text-lg font-bold text-[var(--secondary-color)]">{link.title}</h3>
@@ -287,6 +284,11 @@ const HelpCenter = () => {
 
                 <footer>
                     <Footer />
+                    <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
+                        <a href="https://storyset.com/people" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
+                            People illustrations by Storyset
+                        </a>
+                    </div>
                 </footer>
             </div>
         </>
