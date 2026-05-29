@@ -293,7 +293,7 @@ const Notifications = () => {
                 </div>
 
                 {/* Content */}
-                <div className="w-full flex flex-col gap-4 px-4 sm:px-8 lg:px-24 xl:px-36 pb-12 max-w-[1500px] self-center flex-1">
+                <div className="w-full flex flex-col gap-4 px-[4vw] xl:px-[6vw] pb-12 max-w-[1500px] self-center flex-1">
 
                     {/* Filter tabs */}
                     <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
@@ -487,7 +487,7 @@ const Notifications = () => {
                     <div className="flex justify-center absolute bottom-0 self-center-safe">
                         <Link
                             to="/settings"
-                            className="text-sm text-[var(--accent-color)] hover:!underline font-semibold"
+                            className="text-sm text-[var(--accent-color)] !underline font-semibold"
                         >
                             Manage notification preferences
                         </Link>

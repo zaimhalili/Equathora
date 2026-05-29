@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
-import { FaCheckCircle, FaTrophy, FaDumbbell } from 'react-icons/fa';
+import { FaCheckCircle, FaDumbbell } from 'react-icons/fa';
 import { getUserProgress, getStreakData, getCompletedProblems, getUserSubmissions } from '../lib/databaseService';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
@@ -159,12 +159,78 @@ const Tracks = () => {
         return [...availableTopics].sort((a, b) => {
             const aStats = getTrackData(a.value);
             const bStats = getTrackData(b.value);
-            const aStarted = aStats.attempted > 0 || aStats.completed > 0;
-            const bStarted = bStats.attempted > 0 || bStats.completed > 0;
+            const aStarted = aStats.completed > 0;
+            const bStarted = bStats.completed > 0;
             if (aStarted !== bStarted) return aStarted ? -1 : 1;
             return a.label.localeCompare(b.label);
         });
     }, [availableTopics, getTrackData, userStats]);
+
+    const startedTopics = useMemo(
+        () => orderedTopics.filter((topic) => getTrackData(topic.value).completed > 0),
+        [orderedTopics, getTrackData]
+    );
+
+    const otherTopics = useMemo(
+        () => orderedTopics.filter((topic) => getTrackData(topic.value).completed === 0),
+        [orderedTopics, getTrackData]
+    );
+
+    const renderTrackCard = (track) => {
+        const stats = getTrackData(track.value);
+        const solvedCount = stats.completed;
+        const totalCount = stats.problems;
+        const progressPercent = totalCount > 0
+            ? Math.min(100, Math.round((solvedCount / totalCount) * 100))
+            : 0;
+        const isStarted = solvedCount > 0;
+        const isFinished = totalCount > 0 && solvedCount >= totalCount;
+        const progressLabel = `You have solved ${solvedCount} of ${totalCount} problems`;
+
+        return (
+            <Link
+                key={track.value}
+                to={`/learn?topic=${encodeURIComponent(track.value)}`}
+                className='bg-[var(--white)] flex w-full rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-103 transition-all duration-200 shadow-md hover:shadow-2xl cursor-pointer ease-in-out sm:w-[calc(50%-6px)] lg:w-[calc(33.333%-8px)]'
+            >
+                <div className='flex flex-col w-full gap-3'>
+                    <div className="flex items-center justify-between gap-3 h-1/3">
+                        <p className='text-md text-[var(--secondary-color)] font-bold'>{track.label}</p>
+                        {isFinished ? (
+                            <div className="flex items-center gap-2 bg-[var(--main-color)] px-2 rounded-md py-1">
+                                <FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />
+                                <span className='text-xs font-semibold text-[var(--secondary-color)]'>Finished</span>
+                            </div>
+                        ) : isStarted ? (
+                            <div className="flex items-center gap-2 bg-[var(--main-color)] px-2 rounded-md py-1">
+                                <FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />
+                                <span className='text-xs font-semibold text-[var(--secondary-color)]'>Started</span>
+                            </div>
+                        ) : null}
+                    </div>
+                    <div className="flex items-center gap-3 h-1/3">
+                        <FaDumbbell className='text-sm text-[var(--secondary-color)]' />
+                        <p>{solvedCount}/{totalCount} Exercises</p>
+                    </div>
+                    <div className="flex h-1/3">
+                        <div className='flex-1 h-2 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group'>
+                            <div
+                                className="h-full rounded-md bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] transition-all duration-500 relative"
+                                role="progressbar"
+                                aria-label={progressLabel}
+                                aria-valuenow={Math.round(progressPercent)}
+                                aria-valuemin={0}
+                                aria-valuemax={100}
+                                style={{ width: `${progressPercent}%` }}
+                            >
+                                <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Link>
+        );
+    };
 
     if (loading) {
         return <LoadingSpinner message="Loading tracks..." />;
@@ -201,58 +267,11 @@ const Tracks = () => {
 
                         {/* Tracks Grid */}
                         <div className="flex flex-wrap w-full gap-3 py-8">
-                            {orderedTopics.map((track) => {
-                                const stats = getTrackData(track.value);
-                                const solvedCount = stats.completed;
-                                const totalCount = stats.problems;
-                                const progressPercent = totalCount > 0
-                                    ? Math.min(100, Math.round((solvedCount / totalCount) * 100))
-                                    : 0;
-                                const isStarted = stats.attempted > 0 || solvedCount > 0;
-                                const progressLabel = `You have solved ${solvedCount} of ${totalCount} problems`;
-
-                                return (
-                                    <Link
-                                        key={track.value}
-                                        to={`/learn?topic=${encodeURIComponent(track.value)}`}
-                                        className='bg-[var(--white)] flex w-full rounded-md pt-4 pb-6 px-6 gap-3 hover:scale-103 transition-all duration-200 shadow-md hover:shadow-2xl cursor-pointer ease-in-out sm:w-[calc(50%-6px)] lg:w-[calc(33.333%-8px)]'
-                                    >
-                                        <div className='flex items-center self-stretch justify-center flex-shrink-0 aspect-square'>
-                                            <FaTrophy className='w-full h-full text-[var(--dark-accent-color)]' />
-                                        </div>
-                                        <div className='flex flex-col w-full gap-3'>
-                                            <div className="flex items-center justify-between gap-3 h-1/3">
-                                                <p className='text-md text-[var(--secondary-color)] font-bold'>{track.label}</p>
-                                                {isStarted && (
-                                                    <div className="flex items-center gap-2 bg-[var(--main-color)] px-2 rounded-md py-1">
-                                                        <FaCheckCircle className='text-[var(--secondary-color)] rounded-full text-md' />
-                                                        <span className='text-xs font-semibold text-[var(--secondary-color)]'>Started</span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div className="flex items-center gap-3 h-1/3">
-                                                <FaDumbbell className='text-sm text-[var(--secondary-color)]' />
-                                                <p>{solvedCount}/{totalCount} Exercises</p>
-                                            </div>
-                                            <div className="flex h-1/3">
-                                                <div className='flex-1 h-3 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group'>
-                                                    <div
-                                                        className="h-full rounded-md bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] transition-all duration-500 relative"
-                                                        role="progressbar"
-                                                        aria-label={progressLabel}
-                                                        aria-valuenow={Math.round(progressPercent)}
-                                                        aria-valuemin={0}
-                                                        aria-valuemax={100}
-                                                        style={{ width: `${progressPercent}%` }}
-                                                    >
-                                                        <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                );
-                            })}
+                            {startedTopics.map(renderTrackCard)}
+                            {startedTopics.length > 0 && otherTopics.length > 0 ? (
+                                <div className="w-full h-4" />
+                            ) : null}
+                            {otherTopics.map(renderTrackCard)}
                         </div>
                     </div>
 
