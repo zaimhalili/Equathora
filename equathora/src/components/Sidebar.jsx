@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Sidebar.css';
 import { Link, useNavigate } from 'react-router-dom';
 import GuestAvatar from '../assets/images/guestAvatar.png';
-import X from '../assets/images/x.svg';
+import { FaTimes } from 'react-icons/fa';
 import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
 import { getDailyProblemSlug } from '../lib/utils';
@@ -279,43 +279,42 @@ const Sidebar = ({ isOpen, onClose }) => {
                 style={{ right: isOpen ? '0' : '-320px' }}
             >
                 <div className="sidebar-header">
-                    <div className="sidebar-close" onClick={onClose}>
-                        <img src={X} alt="Close" className="x-icon" />
-                    </div>
+                    <button className="sidebar-close" onClick={onClose} aria-label="Close sidebar">
+                        <FaTimes size={20} />
+                    </button>
                 </div>
 
                 <div className="sidebar-content">
-                    <div className="sidebar-profile">
-                        <Link to="/profile/myprofile" className="sidebar-profile-link" onClick={onClose}>
-                            <img src={profileAvatarSrc} alt="avatar" className="sidebar-avatar" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />
-                            <div className="sidebar-profile-info">
-                                <h4>Your Profile</h4>
-                                <p>View & edit</p>
+                    <nav className="sidebar-nav">
+                        <div className="sidebar-profile">
+                            <Link to="/profile/myprofile" className="sidebar-profile-link" onClick={onClose}>
+                                <img src={profileAvatarSrc} alt="avatar" className="sidebar-avatar" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />
+                                <div className="sidebar-profile-info">
+                                    <h4>Your Profile</h4>
+                                    <p>View & edit</p>
+                                </div>
+                            </Link>
+                        </div>
+
+                        {/* Streak Display */}
+                        <Link to="/achievements/stats" className="sidebar-streak" onClick={onClose}>
+                            <div className="sidebar-streak-icon">
+                                <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="icon-gradient-fire-sidebar" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stopColor="var(--dark-accent-color)" />
+                                            <stop offset="100%" stopColor="var(--accent-color)" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path fill="url(#icon-gradient-fire-sidebar)" d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 53.8 77.7 84c11-14.4 23.5-30.1 37-42.9c7.9-7.4 20.1-7.4 28 .1c34.6 33 63.9 76.6 84.5 118c20.3 40.8 33.8 82.5 33.8 111.9C448 404.2 348.2 512 224 512C98.4 512 0 404.1 0 276.5c0-38.4 17.8-85.3 45.4-131.7C73.3 97.7 112.7 48.6 159.3 5.4zM225.7 416c25.3 0 47.7-7 68.8-21c42.1-29.4 53.4-88.2 28.1-134.4c-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5c-16.5-21-46-58.5-62.8-79.8c-6.3-8-18.3-8.1-24.7-.1c-33.8 42.5-50.8 69.3-50.8 99.4C112 375.4 162.6 416 225.7 416z" />
+                                </svg>
+                            </div>
+                            <div className="sidebar-streak-text">
+                                <h4>{currentStreak} Day Streak</h4>
+                                <p>Keep solving daily!</p>
                             </div>
                         </Link>
-                    </div>
-                    
 
-                    {/* Streak Display */}
-                    <Link to="/achievements/stats" className="sidebar-streak" onClick={onClose}>
-                        <div className="sidebar-streak-icon">
-                            <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <linearGradient id="icon-gradient-fire-sidebar" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                                        <stop offset="100%" stopColor="var(--accent-color)" />
-                                    </linearGradient>
-                                </defs>
-                                <path fill="url(#icon-gradient-fire-sidebar)" d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 53.8 77.7 84c11-14.4 23.5-30.1 37-42.9c7.9-7.4 20.1-7.4 28 .1c34.6 33 63.9 76.6 84.5 118c20.3 40.8 33.8 82.5 33.8 111.9C448 404.2 348.2 512 224 512C98.4 512 0 404.1 0 276.5c0-38.4 17.8-85.3 45.4-131.7C73.3 97.7 112.7 48.6 159.3 5.4zM225.7 416c25.3 0 47.7-7 68.8-21c42.1-29.4 53.4-88.2 28.1-134.4c-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5c-16.5-21-46-58.5-62.8-79.8c-6.3-8-18.3-8.1-24.7-.1c-33.8 42.5-50.8 69.3-50.8 99.4C112 375.4 162.6 416 225.7 416z" />
-                            </svg>
-                        </div>
-                        <div className="sidebar-streak-text">
-                            <h4>{currentStreak} Day Streak</h4>
-                            <p>Keep solving daily!</p>
-                        </div>
-                    </Link>
-
-                    <nav className="sidebar-nav">
                         {sidebarItems.map((item, index) => {
                             return (
                                 <Link
@@ -385,32 +384,32 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 })}
                             </div>
                         </div>
-                    </nav>
 
-                    <div className="sidebar-footer">
-                        <button
-                            onClick={() => {
-                                LogOut();
-                            }}
-                            className="sidebar-logout"
-                        >
-                            <div className="sidebar-item-icon">
-                                <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                                    <defs>
-                                        <linearGradient id="icon-gradient-logout" x1="0%" y1="0%" x2="0%" y2="100%">
-                                            <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                                            <stop offset="100%" stopColor="var(--accent-color)" />
-                                        </linearGradient>
-                                    </defs>
-                                    <path fill="url(#icon-gradient-logout)" d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
-                                </svg>
-                            </div>
-                            <div className="sidebar-item-text">
-                                <h4>Sign Out</h4>
-                                <p>Securely log out</p>
-                            </div>
-                        </button>
-                    </div>
+                        <div className="sidebar-footer">
+                            <button
+                                onClick={() => {
+                                    LogOut();
+                                }}
+                                className="sidebar-logout"
+                            >
+                                <div className="sidebar-item-icon">
+                                    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
+                                        <defs>
+                                            <linearGradient id="icon-gradient-logout" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" stopColor="var(--dark-accent-color)" />
+                                                <stop offset="100%" stopColor="var(--accent-color)" />
+                                            </linearGradient>
+                                        </defs>
+                                        <path fill="url(#icon-gradient-logout)" d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+                                    </svg>
+                                </div>
+                                <div className="sidebar-item-text">
+                                    <h4>Sign Out</h4>
+                                    <p>Securely log out</p>
+                                </div>
+                            </button>
+                        </div>
+                    </nav>
                 </div>
             </aside>
         </>

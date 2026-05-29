@@ -9,6 +9,7 @@ import { supabase } from '../lib/supabaseClient';
 import YourTrack from '@/components/YourTrack';
 import { formatTopicLabel } from '@/lib/utils';
 import LoadingSpinner from '../components/LoadingSpinner';
+import Journey from '../assets/images/Journey-pana.svg';
 
 const Tracks = () => {
     const [userStats, setUserStats] = useState(null);
@@ -244,17 +245,26 @@ const Tracks = () => {
                     {/* Header */}
                     <div className="flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6">
                         <motion.div
-                            className="flex flex-col gap-3 text-center"
+                            className="flex flex-col justify-center w-full lg:flex-row lg:justify-between gap-3 text-center"
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                         >
-                            <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-extrabold">
-                                Your Math Journey
-                            </h1>
-                            <p className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] lg:w-[60%] cursor-default text-[var(--secondary-color)]">
-                                Follow structured learning paths designed to build your mathematical skills progressively. Each track guides you through concepts with increasing complexity.
-                            </p>
+                            {/* Header */}
+                            <div className="flex flex-col lg:w-2/3 order-2 lg:order-1 justify-center">
+                                <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-extrabold">
+                                    Your Math Journey
+                                </h1>
+                                <p className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] lg:w-[80%] cursor-default text-[var(--secondary-color)]">
+                                    Follow structured learning paths designed to build your mathematical skills progressively. Each track guides you through concepts with increasing complexity.
+                                </p>
+                            </div>
+                            {/* Journey Image */}
+                            <div className='lg:w-1/3 flex justify-center order-1 lg:order-2 '>
+                                <img src={Journey} alt="Journey" className='w-30 lg:w-stretch rounded-full'/>
+                            </div>
+
+                            
 
                             {/* User Stats */}
                             {/* 
