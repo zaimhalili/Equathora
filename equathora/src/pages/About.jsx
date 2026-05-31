@@ -15,7 +15,6 @@ const About = () => {
             <main className="relative z-10 w-full flex flex-col items-center">
                 <AboutHeroSection />
                 <AboutIdentitySection />
-                <div className='backdrop-blur-md w-full h-20 -translate-y-10'></div>
                 <AboutPlatformStrengthsSection />
                 <AboutMissionSection />
                 <AboutFeaturesSection />

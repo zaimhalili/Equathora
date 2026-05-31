@@ -6,7 +6,7 @@ import { FaArrowRight } from 'react-icons/fa';
 const AboutHeroSection = () => {
     return (
         <section
-            className="w-full relative bg-[var(--main-color)] overflow-hidden flex justify-center"
+            className="w-full relative bg-[var(--main-color)] overflow-hidden flex justify-center shadow-[0_10px_25px_rgba(0,0,0,0.18)]"
             style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay' }}
         >
             <div className="absolute inset-0">
