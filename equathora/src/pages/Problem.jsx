@@ -605,9 +605,7 @@ const Problem = () => {
             setShowSolutionPopup(false);
             setSolutionViewed(true);
 
-            // If solution was viewed before solving, give 0 points
-            const finalScore = solutionViewed ? 0 : validation.score;
-            markProblemCompleted(problem.id, finalScore, timeSpentSeconds);
+            markProblemCompleted(problem.id, validation.score, timeSpentSeconds);
 
             // Remove from in-progress since it's now completed
             removeProblemFromInProgress(problem.id);

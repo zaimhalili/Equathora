@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { FaTimes, FaClock, FaCheckCircle, FaTimesCircle, FaCopy } from 'react-icons/fa';
-import { MathfieldElement } from 'mathlive';
+import { FaTimes, FaClock, FaCopy, FaCheck } from 'react-icons/fa';
 import useBodyScrollLock from '../../hooks/useBodyScrollLock';
 
 const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
@@ -10,11 +9,16 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
 
     const formatMinutesSeconds = (totalSeconds = 0) => {
         const seconds = Math.max(0, Math.round(totalSeconds));
+        if (seconds >= 3600) {
+            const hours = Math.floor(seconds / 3600);
+            const remaining = seconds % 3600;
+            const minutes = Math.floor(remaining / 60);
+            const remainingSeconds = remaining % 60;
+            return `${hours}h ${String(minutes).padStart(2, '0')}m ${String(remainingSeconds).padStart(2, '0')}s`;
+        }
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
-        const mm = String(minutes).padStart(2, '0');
-        const ss = String(remainingSeconds).padStart(2, '0');
-        return `${mm}:${ss}`;
+        return `${minutes}m ${String(remainingSeconds).padStart(2, '0')}s`;
     };
 
     const handleCopySteps = () => {
@@ -33,29 +37,42 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
         });
     };
 
+    const formatTimestamp = (value) => {
+        if (!value) return '';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return String(value);
+        return date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit'
+        });
+    };
+
     if (!isOpen || !submission) return null;
 
     return (
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
-            <div className='bg-[var(--white)] w-11/12 max-w-2xl rounded-md px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
+            <div className='bg-[var(--white)] w-11/12 max-w-2xl rounded-md px-6 py-6 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-start pb-4'>
                     <div className='flex-1'>
                         <div className='flex items-center gap-3 pb-2'>
-                            <h2 className='font-[Sansation] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>
+                            <h2 className='font-[Sansation] font-bold text-2xl text-[var(--secondary-color)] leading-tight'>
                                 Submission Details
                             </h2>
                             <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 text-center ${submission.status === 'accepted' ? 'bg-[var(--french-gray)] text-[var(--secondary-color)]' :
-                                submission.status === 'wrong' ? 'bg-[var(--accent-color)] text-[var(--dark-accent-color)]' :
+                                submission.status === 'wrong' ? 'bg-[var(--accent-color)]/10 text-[var(--dark-accent-color)]' :
                                     'bg-[var(--main-color)] text-[var(--secondary-color)]'
                                 }`}>
-                                {submission.status === 'accepted' && <FaCheckCircle />}
+                                {submission.status === 'accepted' && <FaCheck />}
                                 {submission.status === 'wrong' && <FaTimes />}
                                 {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong Answer' : 'Pending'}
                             </span>
                         </div>
                         <div className='flex items-center gap-2 text-sm text-[var(--mid-main-secondary)]'>
                             <FaClock className='text-xs' />
-                            <span>{submission.timestamp}</span>
+                            <span>{formatTimestamp(submission.timestamp)}</span>
                         </div>
                     </div>
                     <button onClick={onClose} className='text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] transition-colors duration-75 cursor-pointer'>
@@ -80,24 +97,23 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                                 {copyMessage}
                             </div>
                         )}
-                        <div className='flex flex-col gap-3'>
+                        <div className='flex flex-col gap-1.5'>
                             {submission.steps && submission.steps.map((step, index) => (
-                                <div key={index} className='bg-[var(--white)] p-4 rounded-md border border-[var(--mid-main-secondary)]'>
-                                    <div className='flex items-center gap-2 pb-2'>
-                                        <span className='bg-[var(--accent-color)] text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold'>
+                                <div key={index} className='bg-[var(--white)] p-2.5 rounded-md border border-[var(--mid-main-secondary)]'>
+                                    <div className='flex items-center gap-2 pb-1'>
+                                        <span className='bg-[var(--secondary-color)] text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold'>
                                             {index + 1}
                                         </span>
-                                        <span className='text-xs font-semibold text-[var(--mid-main-secondary)]'>Step {index + 1}</span>
                                     </div>
-                                    <div className='pl-8'>
+                                    <div className='pl-6'>
                                         <math-field
                                             read-only
                                             style={{
-                                                fontSize: '1.1rem',
-                                                padding: '8px',
+                                                fontSize: '1rem',
+                                                padding: '4px',
                                                 border: 'none',
                                                 backgroundColor: 'transparent',
-                                                color: 'var(--secondary-color)'
+                                                color: 'var(--secondary-color) !important'
                                             }}
                                         >
                                             {step.latex}
@@ -115,7 +131,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                             {submission.metadata.timeSpent !== undefined && (
                                 <div className='bg-[var(--french-gray)]/10 p-3 rounded-md border-[var(--mid-main-secondary)] border flex-1'>
                                     <div className='text-xs text-[var(--mid-main-secondary)] pb-1'>Time Spent</div>
-                                    <div className='font-bold text-[var(--secondary-color)]'>
+                                    <div className='text-sm font-bold text-[var(--secondary-color)]'>
                                         {submission.metadata.timeSpentLabel || formatMinutesSeconds(submission.metadata.timeSpent)}
                                     </div>
                                 </div>
@@ -123,13 +139,13 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                             {submission.metadata.attempts && (
                                 <div className='bg-[var(--french-gray)]/10 p-3 rounded-md border-[var(--mid-main-secondary)] border flex-1'>
                                     <div className='text-xs text-[var(--mid-main-secondary)] pb-1'>Attempt #</div>
-                                    <div className='font-bold text-[var(--secondary-color)]'>{submission.metadata.attempts}</div>
+                                    <div className='text-sm font-bold text-[var(--secondary-color)]'>{submission.metadata.attempts}</div>
                                 </div>
                             )}
                             {submission.metadata.hintsUsed !== undefined && (
                                 <div className='bg-[var(--french-gray)]/10 p-3 rounded-md border-[var(--mid-main-secondary)] border flex-1'>
                                     <div className='text-xs text-[var(--mid-main-secondary)] pb-1'>Hints Used</div>
-                                    <div className='font-bold text-[var(--secondary-color)]'>{submission.metadata.hintsUsed}</div>
+                                    <div className='text-sm font-bold text-[var(--secondary-color)]'>{submission.metadata.hintsUsed}</div>
                                 </div>
                             )}
                         </div>

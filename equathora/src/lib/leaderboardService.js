@@ -174,20 +174,6 @@ export function calculateUserXP(userProgress, streakData) {
  * @param {boolean} solutionViewed - Whether the solution was viewed before solving
  */
 export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt, hintsUsed = 0, solutionViewed = false) {
-    // If solution was viewed before solving, give 0 XP
-    if (solutionViewed) {
-        return {
-            totalXP: 0,
-            breakdown: {
-                baseXP: 0,
-                firstAttemptBonus: 0,
-                speedBonus: 0,
-                hintPenalty: 0,
-                note: 'Solution viewed - no XP awarded'
-            }
-        };
-    }
-
     let baseXP = 0;
 
     // Base XP by difficulty
@@ -229,7 +215,10 @@ export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt,
 
     // Calculate total, ensuring minimum of 10 XP for correct answer
     const rawTotal = baseXP + firstAttemptBonus + speedBonus - hintPenalty;
-    const totalXP = Math.max(10, rawTotal);
+    let totalXP = Math.max(10, rawTotal);
+    if (solutionViewed) {
+        totalXP = Math.max(10, Math.round(totalXP * 0.7));
+    }
 
     return {
         totalXP,
@@ -237,7 +226,8 @@ export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt,
             baseXP,
             firstAttemptBonus,
             speedBonus,
-            hintPenalty: -hintPenalty
+            hintPenalty: -hintPenalty,
+            ...(solutionViewed ? { note: 'Solution viewed - 70% XP' } : {})
         }
     };
 }
