@@ -113,7 +113,9 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                                                 padding: '4px',
                                                 border: 'none',
                                                 backgroundColor: 'transparent',
-                                                color: 'var(--secondary-color) !important'
+                                                color: 'var(--secondary-color)',
+                                                '--ml-text-color': 'var(--secondary-color)',
+                                                '--ml-secondary-text-color': 'var(--secondary-color)'
                                             }}
                                         >
                                             {step.latex}
@@ -132,7 +134,9 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                                 <div className='bg-[var(--french-gray)]/10 p-3 rounded-md border-[var(--mid-main-secondary)] border flex-1'>
                                     <div className='text-xs text-[var(--mid-main-secondary)] pb-1'>Time Spent</div>
                                     <div className='text-sm font-bold text-[var(--secondary-color)]'>
-                                        {submission.metadata.timeSpentLabel || formatMinutesSeconds(submission.metadata.timeSpent)}
+                                        {submission.metadata.timeSpent !== undefined
+                                            ? formatMinutesSeconds(submission.metadata.timeSpent)
+                                            : submission.metadata.timeSpentLabel}
                                     </div>
                                 </div>
                             )}

@@ -20,7 +20,7 @@ import {
     SubmissionDetailModal
 } from '../components/ProblemModals';
 import {
-    FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaRegStar, FaPencilAlt, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaStar, FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft, FaGraduationCap
+    FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaRegStar, FaPencilAlt, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaTimes, FaStar, FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft, FaGraduationCap
 } from 'react-icons/fa';
 import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
@@ -1059,7 +1059,7 @@ const Problem = () => {
                                     <div className="rounded-xl px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
                                         <div className="flex items-center gap-2 pb-1.5">
                                             <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-[var(--dark-accent-color)]">
-                                                <FaTimesCircle className='text-white' />
+                                                <FaTimes className='text-white' />
                                             </div>
                                             <span className="text-sm font-bold font-[Sansation,sans-serif] text-[var(--accent-color)]">
                                                 Incorrect
