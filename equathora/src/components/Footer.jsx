@@ -104,7 +104,7 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="footer-bottom">
+                <div className="footer-bottom flex flex-col">
                     <p className="footer-copyright">© 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong></p>
 
                     <p className="footer-copyright">

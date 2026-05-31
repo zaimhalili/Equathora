@@ -31,11 +31,10 @@ const AboutHeroSection = () => {
                         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
                         className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)]"
                     >
-                        Building stronger thinkers,
-                        <br />
-                        one problem at a time at{' '}
+                        Building stronger thinkers,<br />
+                        {' '}
                         <span className="text-[var(--accent-color)] relative inline-block">
-                            Equathora
+                            one problem at a time
                             <motion.svg
                                 className="absolute -bottom-2 left-0 w-full"
                                 viewBox="0 0 200 8"
@@ -47,7 +46,7 @@ const AboutHeroSection = () => {
                                     d="M0 4 Q50 0 100 4 Q150 8 200 4"
                                     fill="none"
                                     stroke="var(--accent-color)"
-                                    strokeWidth="3"
+                                    strokeWidth="2"
                                     strokeLinecap="round"
                                     initial={{ pathLength: 0 }}
                                     animate={{ pathLength: 1 }}

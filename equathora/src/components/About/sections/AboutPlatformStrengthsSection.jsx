@@ -13,9 +13,9 @@ const AboutPlatformStrengthsSection = () => {
                 <ScrollReveal direction="up">
                     <div className="flex flex-col items-center justify-center w-full pb-12">
                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--secondary-color)] pb-4">
-                            What Equathora{' '}
+                            What We{' '}
                             <span className="text-[var(--secondary-color)] relative inline-block">
-                                Does Best
+                                Do Best
                                 <motion.svg
                                     className="absolute -bottom-0 left-0 w-full"
                                     viewBox="0 0 200 8"

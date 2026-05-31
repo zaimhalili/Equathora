@@ -22,6 +22,11 @@ const About = () => {
                 <AboutCtaSection />
             </main>
             <Footer />
+            <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
+                <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
+                    Education illustrations by Storyset
+                </a>
+            </div>
         </div>
     );
 };

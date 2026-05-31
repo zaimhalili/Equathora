@@ -11,10 +11,10 @@ const AboutIdentitySection = () => {
                 <ScrollReveal direction="up" className="w-full pb-8 sm:pb-10">
                     <div className="flex flex-col gap-2 text-center items-center">
                         <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2">
-                            Equathora Brand Identity and Learning Approach
+                            Brand Identity
                         </h2>
                         <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
-                            Learn how the Equathora name and design language support mathematical reasoning, focused practice, and long-term student progress.
+                            Learn how the name and design language support mathematical reasoning, focused practice, and long-term student progress.
                         </p>
                     </div>
                 </ScrollReveal>
