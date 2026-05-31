@@ -24,6 +24,7 @@ import {
 } from 'react-icons/fa';
 import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
+import { formatTopicLabel } from '../lib/utils';
 import {
     isProblemCompleted,
     isFavorite as checkFavorite,
@@ -35,7 +36,9 @@ import {
     recordProblemStats,
     markProblemInProgress,
     removeProblemFromInProgress,
-    getUserStats
+    getUserStats,
+    hasViewedSolution,
+    markSolutionViewed
 } from '../lib/progressStorage';
 import { validateAnswer } from '../lib/answerValidation';
 import { recordSubmission, updateStreakForCorrectSolve } from '../lib/databaseService';
@@ -397,7 +400,7 @@ const Problem = () => {
         setHintsOpened([]);
         setSelectedSubmission(null);
         setShowSubmissionDetail(false);
-        setSolutionViewed(false);
+        setSolutionViewed(problem ? hasViewedSolution(problem.id) : false);
         setReportReason('');
         setReportDetails('');
         setShowReportModal(false);
@@ -867,6 +870,9 @@ const Problem = () => {
                     onConfirm={() => {
                         setShowSolution(true);
                         setShowSolutionPopup(false);
+                        if (problem?.id) {
+                            markSolutionViewed(problem.id);
+                        }
                         setSolutionViewed(true);
                         setShowMentorChat(false);
                     }}
@@ -1042,7 +1048,7 @@ const Problem = () => {
                                             <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-[var(--secondary-color)]">Free</span>
                                         )}
                                         {problem.topic && (
-                                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--mid-main-secondary)] text-white">{problem.topic}</span>
+                                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--mid-main-secondary)] text-white">{formatTopicLabel(problem.topic)}</span>
                                         )}
                                         {isCompleted && (
                                             <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>

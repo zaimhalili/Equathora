@@ -45,11 +45,11 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                                 Submission Details
                             </h2>
                             <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 text-center ${submission.status === 'accepted' ? 'bg-[var(--french-gray)] text-[var(--secondary-color)]' :
-                                submission.status === 'wrong' ? 'bg-[var(--accent-color)]/10 text-[var(--dark-accent-color)]' :
+                                submission.status === 'wrong' ? 'bg-[var(--accent-color)] text-[var(--dark-accent-color)]' :
                                     'bg-[var(--main-color)] text-[var(--secondary-color)]'
                                 }`}>
                                 {submission.status === 'accepted' && <FaCheckCircle />}
-                                {submission.status === 'wrong' && <FaTimesCircle />}
+                                {submission.status === 'wrong' && <FaTimes />}
                                 {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong Answer' : 'Pending'}
                             </span>
                         </div>

@@ -45,7 +45,8 @@ const STORAGE_KEYS = {
     USER_STATS: `equathora_user_stats_${DEVICE_ID}`,
     STREAK_DATA: `equathora_streak_${DEVICE_ID}`,
     SUBMISSIONS: `equathora_submissions_${DEVICE_ID}`,
-    IN_PROGRESS: `equathora_in_progress_${DEVICE_ID}`
+    IN_PROGRESS: `equathora_in_progress_${DEVICE_ID}`,
+    SOLUTION_VIEWED: `equathora_solution_viewed_${DEVICE_ID}`
 };
 
 const ACHIEVEMENTS_KEY = `equathoraProgress_${DEVICE_ID}`;
@@ -155,6 +156,24 @@ export const updateUserProgress = (updates) => {
 export const getCompletedProblems = () => {
     const data = localStorage.getItem(STORAGE_KEYS.COMPLETED_PROBLEMS);
     return data ? JSON.parse(data) : [];
+};
+
+export const getSolutionViewedProblems = () => {
+    const data = localStorage.getItem(STORAGE_KEYS.SOLUTION_VIEWED);
+    return data ? JSON.parse(data) : [];
+};
+
+export const hasViewedSolution = (problemId) => {
+    if (!problemId) return false;
+    const viewed = getSolutionViewedProblems();
+    return viewed.includes(problemId);
+};
+
+export const markSolutionViewed = (problemId) => {
+    if (!problemId) return;
+    const viewed = new Set(getSolutionViewedProblems());
+    viewed.add(problemId);
+    localStorage.setItem(STORAGE_KEYS.SOLUTION_VIEWED, JSON.stringify([...viewed]));
 };
 
 // Mark problem as completed
