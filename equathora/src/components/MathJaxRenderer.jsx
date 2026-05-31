@@ -1,114 +1,44 @@
 import React, { useEffect, useRef } from 'react';
 
-/**
- * MathJaxRenderer - Renders text with LaTeX equations using MathJax
- * Automatically wraps mathematical expressions in $ delimiters
- */
-const MathJaxRenderer = ({ content, className = '', as = 'div', preferInlineMath = true }) => {
+const MathJaxRenderer = ({ content, className = '', as = 'div' }) => {
     const containerRef = useRef(null);
     const Component = as;
-
-    const normalizeLatexEscapes = (text) => {
-        if (!text) return text;
-
-        let normalized = String(text);
-
-        // Repair accidental control-char command prefixes and over-escaped LaTeX commands.
-        normalized = normalized
-            .replace(/\t(?=(?:imes|frac|dfrac|tfrac|sqrt|cdot|ext|pi|ightarrow)\b)/g, '\\')
-            .replace(/\\\\(?=(?:frac|dfrac|tfrac|sqrt|times|cdot|pi|Rightarrow|left|right|text|pm|mapsto|therefore)\b)/g, '\\')
-            // Normalize over-escaped math delimiters so we can consistently force inline rendering.
-            .replace(/\\\\\[/g, '\\[')
-            .replace(/\\\\\]/g, '\\]')
-            .replace(/\\\\\(/g, '\\(')
-            .replace(/\\\\\)/g, '\\)');
-
-        return normalized;
-    };
-
-    /**
-     * Comprehensive auto-wrap for mathematical expressions
-     * Handles: exponents, parenthetical expressions, fractions, variables, etc.
-     */
-    const autoWrapMath = (text) => {
-        if (!text) return text;
-
-        // Normalize whitespace and invisible characters
-        let clean = normalizeLatexEscapes(text)
-            .replace(/\u00A0/g, ' ')
-            .replace(/[\t\r\n]+/g, ' ')
-            .replace(/\s+/g, ' ')
-            .trim();
-
-        // Convert display delimiters to inline when rendering prose to avoid forced line breaks.
-        if (preferInlineMath) {
-            clean = clean
-                .replace(/\\\[([\s\S]*?)\\\]/g, '\\($1\\)')
-                .replace(/\$\$([\s\S]*?)\$\$/g, '\\($1\\)');
-        }
-
-        // If user already included delimiters or MathJax markers, leave as-is
-        if (/\$[^$]+\$|\\\(|\\\[/.test(clean)) return clean;
-
-        // Quick check for math-like content. If not present, skip.
-        const hasMathPatterns = /[a-zA-Z]\^|\d[a-zA-Z]|[a-zA-Z]\d|[+\-*/=].*[a-zA-Z]|[a-zA-Z].*[+\-*/=]|\([^)]*[a-zA-Z][^)]*\)/i.test(clean);
-        if (!hasMathPatterns) return clean;
-
-        // Wrap parenthetical mathematical expressions first
-        clean = clean.replace(/\(([^()]+)\)/g, (match, inner) => {
-            if (/[a-zA-Z].*[+\-*/^]|[+\-*/^].*[a-zA-Z]|[a-zA-Z]\^|\d[a-zA-Z]|[a-zA-Z]\d|\./i.test(inner)) {
-                return `$(${inner})$`;
-            }
-            return match;
-        });
-
-        // Wrap exponent expressions (x^2, x^{10})
-        clean = clean.replace(/(?<!\$)\b([a-zA-Z])\^\{?(\d+)\}?/g, (m, base, exp) => `$${base}^${exp}$`);
-
-        // Wrap coefficient-variable tokens like 2x, 0.5xy
-        clean = clean.replace(/(?<!\$)\b(\d+(?:\.\d+)?)([a-zA-Z]{1,4})\b/g, (m, coef, vars) => `$${coef}${vars}$`);
-
-        // Wrap isolated variable sequences with operators (a + b, x - 3)
-        clean = clean.replace(/(?<!\$)\b([a-zA-Z](?:[a-zA-Z0-9]*))(?:\s*[+\-*/=]\s*[a-zA-Z0-9(){}^.+-]+)+/g, (m) => `$${m}$`);
-
-        // Merge adjacent $...$ tokens with operators into a single $...$ block
-        let prev = '';
-        while (prev !== clean) {
-            prev = clean;
-            clean = clean.replace(/\$([^$]+)\$\s*([+\-*/])\s*\$([^$]+)\$/g, '$$$1 $2 $3$$');
-        }
-
-        // If result still looks broken (e.g., "and ." near keywords), log for manual review in dev
-        if (typeof window !== 'undefined' && window.location && window.location.hostname.includes('localhost')) {
-            if (/\b(and|sum of|subtract the sum of|take|then)\b\s*\./i.test(clean) || /\band\s+\./i.test(clean)) {
-                console.warn('MathJaxRenderer: possible missing math content:', { original: text, processed: clean });
-            }
-        }
-
-        return clean;
-    };
 
     useEffect(() => {
         if (!containerRef.current || !content) return;
 
-        const processedContent = autoWrapMath(content);
-        containerRef.current.textContent = processedContent;
+        let cancelled = false;
 
-        const typesetMath = async () => {
-            if (window.MathJax && window.MathJax.typesetPromise) {
+        // Normalize display math to inline to avoid forced line breaks in prose
+        const processed = String(content)
+            .replace(/\\\[([\s\S]*?)\\\]/g, '\\($1\\)')
+            .replace(/\$\$([\s\S]*?)\$\$/g, '\\($1\\)');
+
+        // Clear previous MathJax output before re-render
+        if (window.MathJax?.typesetClear) {
+            window.MathJax.typesetClear([containerRef.current]);
+        }
+
+        containerRef.current.textContent = processed;
+
+        const run = async () => {
+            if (cancelled) return;
+            if (window.MathJax?.typesetPromise) {
                 try {
                     await window.MathJax.typesetPromise([containerRef.current]);
                 } catch (err) {
-                    console.error('MathJax typeset error:', err);
+                    if (!cancelled) console.error('MathJax typeset error:', err);
                 }
             }
         };
 
-        typesetMath();
+        run();
+
+        return () => { cancelled = true; };
     }, [content]);
 
-    const mergedClassName = ['mathjax-renderer', preferInlineMath ? 'mathjax-renderer-inline' : '', className].filter(Boolean).join(' ');
-    return <Component ref={containerRef} className={mergedClassName} />;
+    const cls = ['mathjax-renderer', className].filter(Boolean).join(' ');
+    return <Component ref={containerRef} className={cls} />;
 };
 
 export default MathJaxRenderer;
