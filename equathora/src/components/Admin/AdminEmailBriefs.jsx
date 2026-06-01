@@ -2,6 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FiCopy, FiDownload, FiMail, FiRefreshCw, FiSearch, FiUsers } from 'react-icons/fi';
 import { getAdminEmailBriefSubscribers } from '@/lib/adminEmailBriefsService';
 
+const DEFAULT_EMAIL_SUBJECT = 'Quick question about EQUATHORA';
+const getDefaultEmailBody = (name) => `Hi ${name || 'there'},\n\nYou joined the Equathora waitlist some time ago, and I wanted to personally reach out.\n\nEquathora is now live, and I'm currently improving it based on user feedback. Since you showed interest early on, I'd love to ask:\n\nWhat would make you use Equathora more often? Or, if you haven't used it yet, what's holding you back?\n\nYour feedback will directly influence what I build next.\n\nI also run a Discord community where we solve daily math and logic problems, discuss solutions, share updates, and collect feedback:\n\nhttps://discord.gg/k9chNwJP5\n\nEven a short reply would be greatly appreciated.\n\nThanks for your support,\n\nZaim\nFounder, Equathora`;
+
 const AdminEmailBriefs = () => {
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -211,14 +214,18 @@ const AdminEmailBriefs = () => {
                                         <td className='px-4 py-2'>{row.email}</td>
                                         <td className='px-4 py-2'>{row.createdAt ? row.createdAt.toLocaleString() : '-'}</td>
                                         <td className='px-4 py-2'>
-                                            <a
-                                                href={`mailto:?bcc=${encodeURIComponent(row.email)}`}
-                                                className='inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-semibold'
+                                            <button
+                                                type='button'
+                                                onClick={() => {
+                                                    const mailtoLink = `mailto:${encodeURIComponent(row.email)}?subject=${encodeURIComponent(DEFAULT_EMAIL_SUBJECT)}&body=${encodeURIComponent(getDefaultEmailBody(row.name))}`;
+                                                    window.open(mailtoLink, '_blank', 'noopener,noreferrer');
+                                                }}
+                                                className='inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-semibold hover:opacity-80 transition'
                                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                                             >
                                                 <FiMail />
                                                 Compose
-                                            </a>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
