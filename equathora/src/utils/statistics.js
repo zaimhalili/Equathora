@@ -50,3 +50,5 @@ const normalizeCompletedProblemId = (rawValue) => {
 
   return String(rawValue).trim();
 };
+
+export { getDifficultyColor, formatDifficultyLabel, hexToRgba, normalizeDifficultyKey, difficultyDisplayRank, normalizeCompletedProblemId };
