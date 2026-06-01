@@ -4,7 +4,6 @@ import './Statistics.css';
 import { getUserProgress, getStreakData, getWeeklyProgress, getTopicFrequency, getUserSubmissions } from '../../lib/databaseService';
 import { getAllProblems } from '../../lib/problemService';
 import { supabase } from '../../lib/supabaseClient';
-import { getCompletedProblems } from './databaseService';
 import { formatTopicLabel } from '../../lib/utils';
 import { computeAccuracyFromSources } from '../../lib/accuracyService';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -37,7 +36,10 @@ const Statistics = () => {
           getStreakData(),
           getWeeklyProgress(),
           getAllProblems(),
-          getCompletedProblems(),
+          supabase
+            .from('user_completed_problems')
+            .select('problem_id')
+            .eq('user_id', session.user.id),
           getTopicFrequency(),
           getUserSubmissions()
         ]);
