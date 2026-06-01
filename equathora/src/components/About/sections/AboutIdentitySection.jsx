@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Problem from '../../../assets/images/problemSC.png';
 import ScrollReveal from '../ScrollReveal';
 import { Link } from 'react-router-dom';
-import CurvyArrow from '../../../assets/doodles/CurvyArrow.svg';
+import CurvyArrow from '../../../assets/doodles/curvyArrow.svg';
 import TwoUnder from '../../../assets/doodles/TwoUnder.svg';
 import { FaMehRollingEyes, FaArrowRight, FaBullseye, FaTrophy } from 'react-icons/fa';
 
