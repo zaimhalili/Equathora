@@ -100,14 +100,26 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
             return;
         }
 
-        console.log("All steps:", nonEmptyFields);
+        // Convert multi-line math inputs into a unified LaTeX string for Gemini
+        const formattedUserSteps = nonEmptyFields
+            .map((f, index) => `Step ${index + 1}: ${f.latex}`)
+            .join('\n');
 
-        // Call the onSubmit handler from parent if provided
+        console.log("All steps captured:", nonEmptyFields);
+        console.log("Formatted steps for AI:", formattedUserSteps);
+
+        // Call the onSubmit handler from the parent component (Problem.jsx)
         if (onSubmit) {
             try {
-                const submission = await onSubmit(nonEmptyFields);
+                // We pass both the raw array and the formatted steps up to Problem.jsx
+                const submission = await onSubmit({
+                    stepsArray: nonEmptyFields,
+                    aiFormattedSteps: formattedUserSteps
+                });
+
                 const success = submission?.success ?? false;
                 const message = submission?.message || 'Unable to validate your answer. Please try again.';
+
                 setSubmissionFeedback({ message, success });
                 if (success) setCanShowNext(true);
             } catch (error) {
@@ -124,7 +136,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
             });
             setCanShowNext(true);
         }
-    };
+    }    
 
     const handleNextProblem = () => {
         if (!nextProblemPath) return;

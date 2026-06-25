@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Navbar from '@/components/Navbar.jsx';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
-import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
 import MathJaxRenderer from '../components/MathJaxRenderer';
 import SolutionStepsDisplay from '../components/SolutionStepsDisplay';
@@ -51,6 +48,7 @@ import {
     notifyAchievementUnlocked,
     notifyStreakMilestone,
 } from '../lib/notificationService';
+import { testGemini } from '@/lib/geminiTest.js';
 
 
 const formatDurationLabel = (seconds = 0) => {
@@ -475,6 +473,19 @@ const Problem = () => {
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, []);
 
+    // Send the problem description to the AI ( Gemini )
+    useEffect(() => {
+        if (problem && problem.description) {
+            console.log("Të dhënat u ngarkuan:", problem.description);
+
+            testGemini({
+                // problemDescription: problem.description,
+                userSteps: problem.steps,
+                acceptedAnswer: problem.solution
+            });
+        }
+    }, [problem]);
+
     const toggleHint = (index) => {
         setOpenHints(prev => ({
             ...prev,
@@ -760,8 +771,6 @@ const Problem = () => {
 
     return (
         <>
-            {/* <FeedbackBanner /> */}
-            {/* <Navbar></Navbar> */}
             <main className="flex flex-col text-[var(--secondary-color)] bg-[var(--mid-main-secondary)] ">
                 {/* Navigation Header */}
                 <header className="flex items-center justify-between gap-2 md:gap-3 font-[Sansation,sans-serif] bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0">
@@ -938,7 +947,7 @@ const Problem = () => {
                     {/* Description Side Left Side */}
                     <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] lg:h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 xl:min-h-[calc(100vh-100px)]'}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
-                            <div className={`flex gap-1 ${descriptionCollapsed ? 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full' : ''}`}>
+                            <div className={`flex gap-1 ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
 
                                 {/* Description Button */}
                                 <button type="button" onClick={() => {
