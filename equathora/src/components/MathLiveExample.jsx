@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "../components/MathLiveExample.css";
 import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb, FaCheckCircle, FaPlus } from "react-icons/fa";
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
+import { testGemini } from "@/lib/geminiTest";
+import MathJaxRenderer from "./MathJaxRenderer";
 
 const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     useBodyScrollLock(isOpen);
@@ -27,15 +29,28 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     );
 };
 
-export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false }) {
+export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution }) {
+    useEffect(() => {
+        const firstField = Object.values(fieldRefs.current)[0];
+
+        if (firstField) {
+            firstField.focus();
+        }
+    }, []);
+
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
     const [canShowNext, setCanShowNext] = useState(isSolved);
     const [hintsOpen, setHintsOpen] = useState(false);
-    const navigate = useNavigate();
+    const [showFullExplanation, setShowFullExplanation] = useState(false);
+    const [aiData, setAiData] = useState(null);
+    const [detailedExplanation, setDetailedExplanation] = useState("");
+    const [wrongStepNumber, setWrongStepNumber] = useState(null);
 
+
+    const navigate = useNavigate();
     // refs to each math-field
     const fieldRefs = useRef({});
 
@@ -58,6 +73,8 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
     }, []);
 
     const updateLatex = (id, latex) => {
+        setWrongStepNumber(null);
+
         setFields((prev) =>
             prev.map((f) => (f.id === id ? { ...f, latex } : f))
         );
@@ -100,43 +117,56 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
             return;
         }
 
-        // Convert multi-line math inputs into a unified LaTeX string for Gemini
         const formattedUserSteps = nonEmptyFields
             .map((f, index) => `Step ${index + 1}: ${f.latex}`)
             .join('\n');
 
-        console.log("All steps captured:", nonEmptyFields);
-        console.log("Formatted steps for AI:", formattedUserSteps);
+        const finalInputLine = nonEmptyFields[nonEmptyFields.length - 1]?.latex;
+        const isCorrect = finalInputLine === acceptedSolution;
 
-        // Call the onSubmit handler from the parent component (Problem.jsx)
-        if (onSubmit) {
-            try {
-                // We pass both the raw array and the formatted steps up to Problem.jsx
-                const submission = await onSubmit({
-                    stepsArray: nonEmptyFields,
-                    aiFormattedSteps: formattedUserSteps
-                });
-
-                const success = submission?.success ?? false;
-                const message = submission?.message || 'Unable to validate your answer. Please try again.';
-
-                setSubmissionFeedback({ message, success });
-                if (success) setCanShowNext(true);
-            } catch (error) {
-                console.error('Unable to submit steps', error);
-                setSubmissionFeedback({
-                    message: 'Something went wrong while submitting. Please try again.',
-                    success: false
-                });
-            }
-        } else {
+        if (isCorrect) {
             setSubmissionFeedback({
-                message: 'Steps captured locally.',
+                message: "Excellent! Your answer is completely correct.",
                 success: true
             });
             setCanShowNext(true);
+            return;
         }
-    }    
+
+        // --- FIX IS IN THIS TRY CATCH BLOCK ---
+        try {
+            setSubmissionFeedback({
+                message: "Incorrect final answer. AI Mentor is analyzing your steps...",
+                success: false
+            });
+
+            // 1. Clear any previous highlight circles
+            setWrongStepNumber(null);
+
+            // 2. Call your mock function
+            const aiResponse = await testGemini({
+                problemDescription,
+                userSteps: formattedUserSteps,
+                acceptedAnswer: acceptedSolution
+            });
+
+            if (aiResponse) {
+                console.log("Mock received in UI:", aiResponse); // Debug to inspect object properties
+
+                // 3. CRITICAL: Save the integer step number to state so the loop sees it!
+                setWrongStepNumber(aiResponse.step);
+
+                // 4. Update the text banner string property
+                setSubmissionFeedback({
+                    message: aiResponse.text,
+                    success: false
+                });
+            }
+        } catch (aiError) {
+            console.error("AI error:", aiError);
+        }
+    };
+
 
     const handleNextProblem = () => {
         if (!nextProblemPath) return;
@@ -191,49 +221,63 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                 <div className="ml-card" aria-live="polite">
                     <div className="ml-steps-scrollable">
                         <div className="ml-steps-container cursor-text">
-                            {fields.map((field, index) => (
-                                <div key={field.id} className="ml-step-wrapper">
-                                    <div className="ml-step-label">{index + 1}</div>
-                                    <math-field
-                                        ref={(el) => (fieldRefs.current[field.id] = el)}
-                                        class="ml-field"
-                                        virtualkeyboardmode="off"
-                                        smartfence="true"
-                                        placeholder=""
-                                        value={field.latex}
-                                        onInput={(evt) =>
-                                            updateLatex(field.id, evt.target.getValue("latex"))
-                                        }
-                                        onKeyDown={(e) => {
-                                            const mf = fieldRefs.current[field.id];
+                            {fields.map((field, index) => {
+                                const stepNumber = index + 1;
+                                // Check if the current row index matches the error step integer flagged by the AI
+                                const isThisStepWrong = stepNumber === wrongStepNumber;
 
-                                            if (e.key === "Enter") {
-                                                e.preventDefault();
-                                                addField();
-                                            }
+                                return (
+                                    <div key={field.id} className="ml-step-wrapper">
+                                        {/* Dynamic Step Label with conditional Red Circle design */}
+                                        <div
+                                            className={`ml-step-label ${isThisStepWrong ? 'bg-[var(--accent-color)] text-white! shadow-xl' : ''}`}
+                                        >
+                                            {stepNumber}
+                                        </div>
 
-                                            if (e.key === "ArrowUp") {
-                                                e.preventDefault();
-                                                const prevField = fields[index - 1];
-                                                if (prevField) fieldRefs.current[prevField.id]?.focus();
+                                        <math-field
+                                            ref={(el) => (fieldRefs.current[field.id] = el)}
+                                            class="ml-field"
+                                            virtualkeyboardmode="off"
+                                            smartfence="true"
+                                            placeholder=""
+                                            value={field.latex}
+                                            onInput={(evt) =>
+                                                updateLatex(field.id, evt.target.getValue("latex"))
                                             }
+                                            onKeyDown={(e) => {
+                                                const mf = fieldRefs.current[field.id];
 
-                                            if (e.key === "ArrowDown") {
-                                                e.preventDefault();
-                                                const nextField = fields[index + 1];
-                                                if (nextField) fieldRefs.current[nextField.id]?.focus();
-                                            }
-                                        }}
-                                    ></math-field>
-                                    <button
-                                        className="ml-delete-btn"
-                                        onClick={() => deleteField(field.id)}
-                                        title="Delete this step"
-                                    >
-                                        <FaTrash />
-                                    </button>
-                                </div>
-                            ))}
+                                                if (e.key === "Enter") {
+                                                    e.preventDefault();
+                                                    addField();
+                                                }
+
+                                                if (e.key === "ArrowUp") {
+                                                    e.preventDefault();
+                                                    const prevField = fields[index - 1];
+                                                    if (prevField) fieldRefs.current[prevField.id]?.focus();
+                                                }
+
+                                                if (e.key === "ArrowDown") {
+                                                    e.preventDefault();
+                                                    const nextField = fields[index + 1];
+                                                    if (nextField) fieldRefs.current[nextField.id]?.focus();
+                                                }
+                                            }}
+                                        ></math-field>
+
+                                        <button
+                                            className="ml-delete-btn"
+                                            onClick={() => deleteField(field.id)}
+                                            title="Delete this step"
+                                        >
+                                            <FaTrash />
+                                        </button>
+                                    </div>
+                                );
+                            })}
+
                         </div>
                     </div>
                 </div>
@@ -251,7 +295,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                 </div>
                             </div>
                         ) : (
-                            <div className="ml-feedback-card error">
+                            <div className="ml-feedback-card error flex flex-col gap-2">
                                 <div className="ml-feedback-header">
                                     <div className="ml-feedback-icon error"><FaTimes /></div>
                                     <span className="ml-feedback-title">Incorrect</span>
@@ -259,17 +303,28 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                         <span className="ml-2 text-[10px] font-medium text-gray-400 font-[Sansation,sans-serif]">Practice Mode</span>
                                     )}
                                 </div>
-                                <p className="ml-feedback-message">{submissionFeedback.message}</p>
+
+                                {/* Displaying raw text safely using a standard paragraph tag */}
+                                <div className="ml-feedback-message">
+                                    <strong className="block text-[10px] uppercase tracking-wider text-rose-400 font-bold mb-1">
+                                        AI Hint:
+                                    </strong>
+                                    <p className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)]">
+                                        {submissionFeedback.message}
+                                    </p>
+                                </div>
                             </div>
                         )
                     )}
+
+
                     <div className="ml-toolbar">
                         <button className="ml-btn clear flex gap-1 order-2 sm:order-1" onClick={() => setDeleteAllPopup(true)}>
                             <FaTrash />
                             <p>Clear All</p>
                         </button>
                         <div className="flex gap-2 w-full sm:w-auto sm:order-2">
-                            <button className="ml-btn addStep flex gap-1 items-center" onClick={addField}>
+                            <button className="ml-btn addStep flex gap-1 items-center" onClick={addField} title="Click (Enter)">
                                 <FaPlus />
                                 Add New Line
                             </button>
@@ -284,8 +339,6 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                         </div>
 
                     </div>
-
-
 
                     <div className="ml-output-wrapper">
                         <button

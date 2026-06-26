@@ -275,7 +275,7 @@ export default function App() {
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
                         {/* <Route path="/recommended" element={<Recommended />} /> */}
                         {/* <Route path="/getStarted" element={<GetStarted />} /> */}
-                        {/* <Route path="/premium" element={<Premium />} /> */}
+                        <Route path="/premium" element={<Premium />} />
 
 
                         {/* Protected Routes - Require Authentication */}

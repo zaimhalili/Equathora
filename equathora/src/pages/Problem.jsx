@@ -10,6 +10,7 @@ import StreakPopup from '../components/StreakPopup.jsx';
 import AchievementPopup from '../components/AchievementPopup.jsx';
 import InsightPanel from '../components/InsightPanel.jsx';
 import MentorChat from '../components/ProblemModals/MentorChat.jsx';
+import PremiumButton from '@/components/Premium/PremiumButton';
 import {
     ReportModal,
     HelpModal,
@@ -48,7 +49,6 @@ import {
     notifyAchievementUnlocked,
     notifyStreakMilestone,
 } from '../lib/notificationService';
-import { testGemini } from '@/lib/geminiTest.js';
 
 
 const formatDurationLabel = (seconds = 0) => {
@@ -473,19 +473,6 @@ const Problem = () => {
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, []);
 
-    // Send the problem description to the AI ( Gemini )
-    useEffect(() => {
-        if (problem && problem.description) {
-            console.log("Të dhënat u ngarkuan:", problem.description);
-
-            testGemini({
-                // problemDescription: problem.description,
-                userSteps: problem.steps,
-                acceptedAnswer: problem.solution
-            });
-        }
-    }, [problem]);
-
     const toggleHint = (index) => {
         setOpenHints(prev => ({
             ...prev,
@@ -802,10 +789,11 @@ const Problem = () => {
 
                     {/* Right side - Timer and Actions */}
                     <div className="flex items-center gap-2">
+                        <PremiumButton />
                         <Timer key={`${problem?.id}-${timerResetSeq}`} problemId={problem?.id} isRunning={timerRunning} />
 
                         {/* Desktop buttons - hidden on mobile */}
-                        <div className="hidden md:flex items-center gap-2">
+                        <div className="hidden lg:flex items-center gap-2">
                             <button
                                 onClick={() => {
                                     setShowDrawingPad((prev) => !prev);
@@ -816,7 +804,7 @@ const Problem = () => {
                                     setShowSubmissions(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }}
-                                className={`bg-transparent border-1 px-3 md:px-4 rounded-md cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)] hover:text-[var(--accent-color)]'}`}
+                                className={`bg-transparent border-1 px-3 lg:px-4 rounded-md cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)] hover:text-[var(--accent-color)]'}`}
                                 title={showDrawingPad ? "Hide sketch pad" : "Show sketch pad"}
                             >
                                 <FaPencilAlt className="text-sm md:text-base" />
@@ -1333,6 +1321,7 @@ const Problem = () => {
 
 
                     {/* Solving Side - Math Live*/}
+                    {/* We also pass the problem description and accepted solution to be checked by the AI */}
                     <article className={`flex justify-start items-stretch flex-col w-full min-h-[500px] lg:h-full overflow-hidden rounded-md transition-all duration-300 ${descriptionCollapsed ? 'lg:w-full' : 'lg:w-1/2'}`}>
                         <MathLiveExample
                             key={`ml-${problem?.id}-${timerResetSeq}`}
@@ -1340,6 +1329,8 @@ const Problem = () => {
                             nextProblemPath={nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
                             isSolved={isCompleted}
                             isPracticeMode={isCompleted}
+                            problemDescription={problem.description}
+                            acceptedSolution={problem.solution}
                         />
                     </article>
                 </section>

@@ -1,7 +1,8 @@
 import React, { useId, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaCrown } from 'react-icons/fa';
 
-const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
+const Dropdown = ({ label, items, alignRight = false, ariaLabel, premium = false }) => {
     const dropdownId = useId();
     const wrapperRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -51,11 +52,11 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             role="menuitem"
                             className='flex w-full p-2.5 gap-2.5 border-t border-x-0 border-b-0 border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] hover:rounded-[5px_5px_10px_10px] text-[var(--secondary-color)] text-left bg-transparent cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
                         >
-                            <img
+                            {premium ? (<FaCrown className='text-amber-500' />) : (<img
                                 src={item.image}
                                 alt={item.text}
                                 className={item.isAvatar ? 'h-[30px] w-[30px] rounded-md object-cover' : 'h-[50px] w-[50px]'}
-                            />
+                            />)}
                             <div className="flex flex-col justify-center font-[Sansation,serif]">
                                 <h4 className='text-[1.1rem] font-semibold'>{item.text}</h4>
                                 <h6 className='text-[0.8rem] font-normal'>{item.description}</h6>

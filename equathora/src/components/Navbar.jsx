@@ -33,6 +33,7 @@ import Events from '../assets/images/specialEvents.svg';
 import { getDailyProblemSlug } from '../lib/utils';
 import Books from '../assets/images/learningBooks.svg';
 import Sigma from '../assets/logo/TransparentSymbol.png';
+import PremiumButton from './Premium/PremiumButton';
 
 const getLowResAvatarUrl = (avatarUrl) => {
   if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
@@ -184,6 +185,12 @@ const Navbar = () => {
     }
   ]
 
+  const premium = [{
+    to: '/premium',
+    text: "Upgrade to premium",
+    description: "Monitor students or children's progress."
+  }]
+
   const notificationItems = [
     {
       to: '/notifications',
@@ -289,28 +296,35 @@ const Navbar = () => {
                   <p className='font-[Sansation,Arial] pl-6 text-lg font-black'>Equathora</p>
                 </Link>
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                 <Dropdown
                   label="Learn"
                   items={learnItems} />
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                 <Dropdown
                   label="Discover"
                   items={discoverItems}
                 />
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                 <Dropdown
                   label="More"
                   items={moreItems} />
+              </li>
+              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
+                <Dropdown
+                  label="Upgrade"
+                  items={premium}
+                  premium={true}
+                />
               </li>
             </ul>
 
             {/* Streak */}
             <div className='flex justify-end items-center shrink-0'>
               <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
-                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                   <Link to="/achievements/stats" className='flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors' title='Your Streak'>
                     <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                       <defs>
@@ -324,7 +338,7 @@ const Navbar = () => {
                     <span className='font-bold'>{currentStreak}</span>
                   </Link>
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                   <Dropdown
                     label={notificationBellLabel}
                     ariaLabel="Notifications menu"
@@ -332,7 +346,7 @@ const Navbar = () => {
                     alignRight={true}
                   />
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden  text-[var(--secondary-color)]'>
                   <Dropdown
                     label={<FaTrophy size={24} />}
                     ariaLabel="Achievements menu"
@@ -340,13 +354,16 @@ const Navbar = () => {
                     alignRight={true}
                   />
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden  text-[var(--secondary-color)]'>
                   <Dropdown
                     label={<img src={profileAvatarSrc} alt="Profile" width={28} height={28} style={{ borderRadius: '9999px', objectFit: 'cover', border: '2px solid var(--secondary-color)' }} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />}
                     ariaLabel="Profile menu"
                     items={profileItems}
                     alignRight={true}
                   />
+                </li>
+                <li className='pl-6'>
+                  <PremiumButton></PremiumButton>
                 </li>
                 <li className='pl-6 lg:pl-4'>
                   <button
@@ -357,7 +374,7 @@ const Navbar = () => {
                     aria-expanded={sidebarOpen}
                     aria-controls="mobile-navigation"
                   >
-                    <FaBars size={24} className='hidden max-md:block' aria-hidden="true" />
+                    <FaBars size={24} className='hidden max-lg:block' aria-hidden="true" />
                   </button>
                 </li>
               </ul>
