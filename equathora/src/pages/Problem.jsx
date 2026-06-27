@@ -10,6 +10,7 @@ import StreakPopup from '../components/StreakPopup.jsx';
 import AchievementPopup from '../components/AchievementPopup.jsx';
 import InsightPanel from '../components/InsightPanel.jsx';
 import MentorChat from '../components/ProblemModals/MentorChat.jsx';
+import ChatPanel from '@/components/ChatAI/ChatPanel';
 import PremiumButton from '@/components/Premium/PremiumButton';
 import {
     ReportModal,
@@ -18,7 +19,7 @@ import {
     SubmissionDetailModal
 } from '../components/ProblemModals';
 import {
-    FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaRegStar, FaPencilAlt, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaTimes, FaStar, FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft, FaGraduationCap
+    FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaRegStar, FaPencilAlt, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaTimes, FaStar, FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft, FaGraduationCap, FaCrown
 } from 'react-icons/fa';
 import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
@@ -185,6 +186,7 @@ const Problem = () => {
     const [showHelpModal, setShowHelpModal] = useState(false);
     const [showSubmissions, setShowSubmissions] = useState(false);
     const [showMentorChat, setShowMentorChat] = useState(false);
+    const [chatPanel, setChatPanel] = useState(false);
     const [reportReason, setReportReason] = useState('');
     const [reportDetails, setReportDetails] = useState('');
     const [selectedSubmission, setSelectedSubmission] = useState(null);
@@ -392,6 +394,7 @@ const Problem = () => {
         setShowDescription(true);
         setShowSubmissions(false);
         setShowMentorChat(false);
+        setChatPanel(false);
         setShowTop(false);
         setDescriptionCollapsed(false);
         setOpenHints({});
@@ -740,22 +743,6 @@ const Problem = () => {
         setIsFavorite(!isFavorite);
     };
 
-    const handleReport = () => {
-        if (!reportReason) {
-            alert('Please select a reason for reporting');
-            return;
-        }
-
-        void trackActivityEvent('problem_report');
-
-        // Send report to backend
-        console.log('Report submitted:', { reason: reportReason, details: reportDetails });
-        alert('Thank you for your report! We will review it shortly.');
-        setShowReportModal(false);
-        setReportReason('');
-        setReportDetails('');
-    };
-
     return (
         <>
             <main className="flex flex-col text-[var(--secondary-color)] bg-[var(--mid-main-secondary)] ">
@@ -802,6 +789,7 @@ const Problem = () => {
                                     setShowSolution(false);
                                     setShowTop(false);
                                     setShowSubmissions(false);
+                                    setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }}
                                 className={`bg-transparent border-1 px-3 lg:px-4 rounded-md cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)] hover:text-[var(--accent-color)]'}`}
@@ -873,16 +861,6 @@ const Problem = () => {
                     }}
                 />
 
-                <ReportModal
-                    isOpen={showReportModal}
-                    onClose={() => setShowReportModal(false)}
-                    reportReason={reportReason}
-                    setReportReason={setReportReason}
-                    reportDetails={reportDetails}
-                    setReportDetails={setReportDetails}
-                    onSubmit={handleReport}
-                />
-
                 <HelpModal
                     isOpen={showHelpModal}
                     onClose={() => setShowHelpModal(false)}
@@ -933,7 +911,7 @@ const Problem = () => {
                 {/* Main Content */}
                 <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 lg:max-h-[calc(100vh-80px)] lg:overflow-hidden">
                     {/* Description Side Left Side */}
-                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] lg:h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 xl:min-h-[calc(100vh-100px)]'}`}>
+                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] lg:h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 lg:min-h-[calc(100vh-100px)]'}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
                             <div className={`flex gap-1 ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
 
@@ -945,6 +923,7 @@ const Problem = () => {
                                     setShowTop(false);
                                     setShowSubmissions(false);
                                     setShowMentorChat(false);
+                                    setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Description</span>
@@ -958,6 +937,7 @@ const Problem = () => {
                                     setShowTop(false);
                                     setShowSubmissions(false);
                                     setShowMentorChat(false);
+                                    setChatPanel(false);
                                     if (!solutionViewed && !isCompleted) {
                                         setShowSolutionPopup(true);
                                     } else {
@@ -977,6 +957,7 @@ const Problem = () => {
                                     setShowSubmissions(true);
                                     setShowTop(false);
                                     setShowMentorChat(false);
+                                    setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 
                                 ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} 
@@ -996,6 +977,7 @@ const Problem = () => {
                                     setShowSubmissions(false);
                                     setShowTop(false);
                                     setShowMentorChat(true);
+                                    setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 
                                 ${showMentorChat && !showDescription ? 'bg-[var(--main-color)]' : ''} 
@@ -1007,6 +989,41 @@ const Problem = () => {
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Need Help</span>}
                                     <FaGraduationCap className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
                                 </button> */}
+
+                                {/* AI chat panel */}
+                                <button type="button" onClick={() => {
+                                    setShowDescription(false);
+                                    setShowSolution(false);
+                                    setShowSubmissions(false);
+                                    setShowTop(false);
+                                    setShowMentorChat(false);
+                                    setChatPanel(true);
+                                    if (descriptionCollapsed) setDescriptionCollapsed(false);
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 
+                                ${chatPanel && !showDescription ? 'bg-[var(--main-color)]' : ''} 
+                                ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
+                                    style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Ask Sigma" : ""}>
+                                    <span className={descriptionCollapsed ? 'lg:hidden' : ''}>
+                                        Ask Sigma
+                                    </span>
+                                    {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Ask Sigma</span>}
+                                    <FaCrown
+                                        className={`h-3 w-3 md:h-4 md:w-4 ${descriptionCollapsed ? "lg:hidden" : ""
+                                            }`}
+                                        style={{
+                                            fill: "url(#crownGradient)"
+                                        }}
+                                    />
+
+                                    <svg width="0" height="0">
+                                        <defs>
+                                            <linearGradient id="crownGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stopColor="#fbbf24" />
+                                                <stop offset="100%" stopColor="#d97706" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </button>
                             </div>
 
                             {/* Mobile Only - Toggle Collapse/Expand */}
@@ -1024,32 +1041,36 @@ const Problem = () => {
                             </button>
                         </div>
 
-                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex-col p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'max-h-[60vh] lg:max-h-full opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
+                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex flex-col p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-180px)] lg:h-[calc(100vh-110px)] opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
 
-                            <div className={`w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 overflow-y-auto flex-1 problem-description-scroll lg:max-h-[calc(100vh-180px)]`}>
+                            <div className={`w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll lg:max-h-[calc(100vh-180px)] h-full`}>
                                 {/* Problem Title & Badges */}
-                                <div>
-                                    <h1 className="font-[Sansation,sans-serif] text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold pb-2 md:pb-3">{problem.title}</h1>
-                                    <div className="flex gap-1.5 md:gap-2 flex-wrap font-[Sansation,sans-serif] items-center">
-                                        <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-500' :
-                                            problem.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
-                                                'bg-red-500/10 text-[var(--accent-color)]'
-                                            }`}>
-                                            {problem.difficulty}
-                                        </span>
-                                        {problem.premium ? (
-                                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-yellow-500/10 text-yellow-700">Premium</span>
-                                        ) : (
-                                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-[var(--secondary-color)]">Free</span>
-                                        )}
-                                        {problem.topic && (
-                                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--mid-main-secondary)] text-white">{formatTopicLabel(problem.topic)}</span>
-                                        )}
-                                        {isCompleted && (
-                                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
-                                        )}
+                                {!chatPanel ? (
+                                    <div className="flex flex-col gap-3">
+                                        <h1 className="font-[Sansation,sans-serif] text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold m-0">{problem.title}</h1>
+                                        <div className="flex gap-1.5 md:gap-2 flex-wrap font-[Sansation,sans-serif] items-center">
+                                            <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-500' :
+                                                problem.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
+                                                    'bg-red-500/10 text-[var(--accent-color)]'
+                                                }`}>
+                                                {problem.difficulty}
+                                            </span>
+                                            {problem.premium ? (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-yellow-500/10 text-yellow-700">Premium</span>
+                                            ) : (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-[var(--secondary-color)]">Free</span>
+                                            )}
+                                            {problem.topic && (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--mid-main-secondary)] text-white">{formatTopicLabel(problem.topic)}</span>
+                                            )}
+                                            {isCompleted && (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
+                                ) : (<></>)}
+
+
 
                                 {/* Inline feedback for incorrect answers only */}
                                 {submissionFeedback && !submissionFeedback.isCorrect && (
@@ -1078,13 +1099,11 @@ const Problem = () => {
                                 {showDescription &&
                                     <>
                                         {/* Problem Description */}
-                                        <div>
-                                            <MathJaxRenderer
-                                                content={problem.description}
-                                                className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Sansation,sans-serif] m-0"
-                                                as="p"
-                                            />
-                                        </div>
+                                        <MathJaxRenderer
+                                            content={problem.description}
+                                            className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Sansation,sans-serif] m-0"
+                                            as="p"
+                                        />
 
                                         {showDrawingPad && (
                                             <div className="rounded-md border border-[var(--mid-main-secondary)] bg-[var(--french-gray)]/20 p-3 md:p-4 flex flex-col gap-3">
@@ -1268,6 +1287,7 @@ const Problem = () => {
                                                 onClick={() => {
                                                     setSelectedSubmission(submission);
                                                     setShowSubmissionDetail(true);
+                                                    setChatPanel(false);
                                                 }}
                                                 className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-md border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/70' :
                                                     submission.status === 'wrong' ? 'border-[var(--accent-color)] hover:bg-[var(--french-gray)]/30' :
@@ -1315,6 +1335,9 @@ const Problem = () => {
 
                                 {/* Show Mentor Chat State Check
                                 {showMentorChat && <MentorChat />} */}
+
+                                {/* Show AI chat panel */}
+                                {chatPanel && <ChatPanel />}
                             </div>
                         </article>
                     </aside>

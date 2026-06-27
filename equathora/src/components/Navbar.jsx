@@ -185,12 +185,6 @@ const Navbar = () => {
     }
   ]
 
-  const premium = [{
-    to: '/premium',
-    text: "Upgrade to premium",
-    description: "Monitor students or children's progress."
-  }]
-
   const notificationItems = [
     {
       to: '/notifications',
@@ -311,13 +305,6 @@ const Navbar = () => {
                 <Dropdown
                   label="More"
                   items={moreItems} />
-              </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
-                <Dropdown
-                  label="Upgrade"
-                  items={premium}
-                  premium={true}
-                />
               </li>
             </ul>
 

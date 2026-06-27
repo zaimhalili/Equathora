@@ -74,7 +74,7 @@ const CookiePolicy = () => (
                 <h2>Managing Cookies</h2>
                 <p>You can control cookies through your browser settings. Note that blocking essential cookies will prevent you from using Equathora.</p>
                 <h2>Contact Us</h2>
-                <p>Questions about cookies? Contact us at support@equathora.com or <Link to="/feedback">submit feedback</Link>.</p>
+                <p>Questions about cookies? Contact us at equathora@gmail.com or <Link to="/feedback">submit feedback</Link>.</p>
             </div>
         </main>
         <Footer />

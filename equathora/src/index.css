@@ -237,3 +237,12 @@ button {
 select {
     cursor: pointer;
 }
+
+.mathjax-renderer mjx-container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.mathjax-renderer mjx-container svg {
+    max-width: 100% !important;
+    height: auto !important; }

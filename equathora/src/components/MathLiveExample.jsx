@@ -30,14 +30,6 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
 };
 
 export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution }) {
-    useEffect(() => {
-        const firstField = Object.values(fieldRefs.current)[0];
-
-        if (firstField) {
-            firstField.focus();
-        }
-    }, []);
-
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
