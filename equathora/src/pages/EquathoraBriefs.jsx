@@ -11,6 +11,7 @@ import { FaDiscord, FaMailBulk, FaBookmark } from 'react-icons/fa';
 
 
 const EquathoraBriefsPage = () => {
+    
     const [isBriefsModalOpen, setIsBriefsModalOpen] = useState(false);
     const { user } = useAuth() || {};
 
