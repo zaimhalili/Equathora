@@ -5,7 +5,7 @@ import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb, FaCheckCircl
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
 import { testGemini } from "@/lib/geminiTest";
 
-const MAX_STEP_CHARS = 100;
+const MAX_STEP_CHARS = 150;
 const MAX_STEPS = 40;
 const MAX_TOTAL_CHARS = 5000;
 
