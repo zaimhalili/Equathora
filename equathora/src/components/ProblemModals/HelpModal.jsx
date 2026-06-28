@@ -55,9 +55,9 @@ const HelpModal = ({ isOpen, onClose }) => {
                         <ul className='font-[Sansation] text-sm text-[var(--secondary-color)] leading-relaxed list-disc list-inside flex flex-col'>
                             <li>Use the <strong>MathLive editor on the right side</strong> to write your solution</li>
                             <li>Work through the problem step-by-step in separate boxes</li>
-                            <li>Click "+ Add Step" to add more steps to your mathematical solution</li>
+                            <li>Click (Enter) or the button "+ Add New Line" to add more steps to your mathematical solution</li>
                             <li>Use the math toolbar to insert equations, symbols, fractions, and expressions</li>
-                            <li>Delete unwanted steps using the × button next to each step</li>
+                            <li>Delete unwanted steps using the "Trash Can" Icon button next to each step</li>
                         </ul>
                         <div className='pt-3 p-3 bg-[var(--accent-color)]/5 border-2 border-[var(--accent-color)]/20 rounded-md flex flex-col'>
                             <p className='font-[Sansation] text-sm font-bold text-[var(--secondary-color)]'>⚠️ Important:</p>

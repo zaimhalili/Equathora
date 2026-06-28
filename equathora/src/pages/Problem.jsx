@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import '../components/MathLiveExample.css';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../components/LoadingSpinner';
 import MathLiveExample from '../components/MathLiveExample';
@@ -19,7 +20,7 @@ import {
     SubmissionDetailModal
 } from '../components/ProblemModals';
 import {
-    FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaRegStar, FaPencilAlt, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaTimes, FaStar, FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft, FaGraduationCap, FaCrown
+    FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaRegStar, FaPencilAlt, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaTimes, FaStar, FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft, FaGraduationCap, FaCrown, FaCode
 } from 'react-icons/fa';
 import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
@@ -205,6 +206,8 @@ const Problem = () => {
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [newAchievements, setNewAchievements] = useState([]);
     const [showInsightPanel, setShowInsightPanel] = useState(false);
+    const [fields, setFields] = useState([]);
+    const [latexOpen, setLatexOpen] = useState(false);
 
     // Track theme dynamically from data-theme attribute
     const [currentTheme, setCurrentTheme] = useState(() =>
@@ -1041,7 +1044,7 @@ const Problem = () => {
                             </button>
                         </div>
 
-                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex flex-col p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-180px)] lg:h-[calc(92.5vh-20px)] opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
+                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex flex-col p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-180px)] lg:h-[calc(92.5vh-20px)] overflow-y-auto opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
 
                             <div className={`w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll lg:max-h-[calc(100vh-180px)] h-full`}>
                                 {/* Problem Title & Badges */}
@@ -1230,44 +1233,65 @@ const Problem = () => {
 
                                             {/* Similar Questions Section */}
                                             {similarQuestions && similarQuestions.length > 0 && (
-                                                <div className="">
-                                                    <div className="flex flex-col">
-                                                        <div className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
-                                                            <button
-                                                                className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
-                                                                onClick={() => toggleHint('similar')}
-                                                            >
-                                                                <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">
-                                                                    <FaLink className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
-                                                                    Similar Questions
-                                                                </span>
-                                                                <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
-                                                            </button>
-                                                            <div className={`transition-all duration-300 ease-in-out ${openHints['similar'] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                                                <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--mid-main-secondary)] flex flex-col">
-                                                                    {similarQuestions.map((question, index) => (
-                                                                        <Link
-                                                                            key={index}
-                                                                            to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
-                                                                            className="flex items-center justify-between p-2 md:p-3 rounded-md group"
-                                                                        >
-                                                                            <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] group-hover:text-[var(--dark-accent-color)]">
-                                                                                {question.title}
-                                                                            </span>
-                                                                            <span className={`px-2 py-0.5 rounded-md text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
-                                                                                question.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
-                                                                                    'bg-red-500/10 text-[var(--accent-color)]'
-                                                                                }`}>
-                                                                                {question.difficulty}
-                                                                            </span>
-                                                                        </Link>
-                                                                    ))}
-                                                                </div>
+                                                <div className="flex flex-col">
+                                                    <div className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
+                                                        <button
+                                                            className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
+                                                            onClick={() => toggleHint('similar')}
+                                                        >
+                                                            <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">
+                                                                <FaLink className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                                                                Similar Questions
+                                                            </span>
+                                                            <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
+                                                        </button>
+                                                        <div className={`transition-all duration-300 ease-in-out ${openHints['similar'] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                                            <div className=" bg-[var(--main-color)] flex flex-col">
+                                                                {similarQuestions.map((question, index) => (
+                                                                    <Link
+                                                                        key={index}
+                                                                        to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
+                                                                        className="flex items-center justify-between p-2 md:p-3 rounded-md group hover:bg-[var(--white)]"
+                                                                    >
+                                                                        <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] group-hover:text-[var(--dark-accent-color)]">
+                                                                            {question.title}
+                                                                        </span>
+                                                                        <span className={`px-2 py-0.5 rounded-md text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
+                                                                            question.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
+                                                                                'bg-red-500/10 text-[var(--accent-color)]'
+                                                                            }`}>
+                                                                            {question.difficulty}
+                                                                        </span>
+                                                                    </Link>
+                                                                ))}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             )}
+                                            <div className="flex flex-col">
+                                                <div className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
+                                                    <button
+                                                        className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
+                                                        onClick={() => setLatexOpen(o => !o)}
+                                                    >
+                                                        <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">
+                                                            <FaCode className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                                                            Your solution in LaTeX
+                                                        </span>
+                                                        <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${latexOpen ? 'rotate-180' : ''}`} />
+                                                    </button>
+                                                    <div className={`transition-all duration-300 ease-in-out ${latexOpen ? 'max-h-96 opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'}`}>
+                                                        <div className="bg-[var(--main-color)] flex flex-col gap-1">
+                                                            {fields.map((f, i) => (
+                                                                <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] p-2 md:p-3 bg-[var(--white)] rounded-md">
+                                                                    <span className="font-bold pr-2">Step {i + 1}: </span>{f.latex || <span className="opacity-30 italic">empty</span>}
+                                                                </p>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </>
                                 }
@@ -1354,6 +1378,7 @@ const Problem = () => {
                             isPracticeMode={isCompleted}
                             problemDescription={problem.description}
                             acceptedSolution={problem.solution}
+                            onFieldsChange={(f) => setFields(f)}
                         />
                     </article>
                 </section>

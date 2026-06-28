@@ -4,13 +4,10 @@ import "../components/MathLiveExample.css";
 import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb, FaCheckCircle, FaPlus } from "react-icons/fa";
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
 import { testGemini } from "@/lib/geminiTest";
-import MathJaxRenderer from "./MathJaxRenderer";
 
 const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     useBodyScrollLock(isOpen);
-
     if (!isOpen) return null;
-
     return (
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
             <div className='bg-[var(--white)] w-11/12 max-w-md rounded-md px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
@@ -18,10 +15,8 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
                     <h2 className='font-[Sansation,sans-serif] text-left font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>Clear All Steps?</h2>
                     <p className='font-[Sansation,sans-serif] text-[var(--secondary-color)] text-sm md:text-base leading-relaxed opacity-80'>This will delete all your current steps. This action cannot be undone.</p>
                 </div>
-
                 <div className='flex w-full justify-between gap-3 pt-7'>
                     <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-[var(--mid-main-secondary)] rounded-md bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base theme-lock'>Cancel</button>
-
                     <button type="button" className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base' onClick={onConfirm}>Clear All</button>
                 </div>
             </div>
@@ -29,81 +24,71 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     );
 };
 
-export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution }) {
+export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange }) {
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
-    const [previewOpen, setPreviewOpen] = useState(false);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
     const [canShowNext, setCanShowNext] = useState(isSolved);
     const [hintsOpen, setHintsOpen] = useState(false);
-    const [showFullExplanation, setShowFullExplanation] = useState(false);
-    const [aiData, setAiData] = useState(null);
-    const [detailedExplanation, setDetailedExplanation] = useState("");
     const [wrongStepNumber, setWrongStepNumber] = useState(null);
 
-
     const navigate = useNavigate();
-    // refs to each math-field
     const fieldRefs = useRef({});
 
-    // Dynamically load MathLive once
     useEffect(() => {
         let cancelled = false;
         (async () => {
             try {
                 await import("mathlive");
-                if (!cancelled) {
-                    // MathLive loaded successfully
-                }
             } catch (e) {
-                console.error("Failed to load MathLive. Check your connection.", e);
+                console.error("Failed to load MathLive.", e);
             }
         })();
-        return () => {
-            cancelled = true;
-        };
+        return () => { cancelled = true; };
     }, []);
 
     const updateLatex = (id, latex) => {
         setWrongStepNumber(null);
-
-        setFields((prev) =>
-            prev.map((f) => (f.id === id ? { ...f, latex } : f))
-        );
+        setFields((prev) => {
+            const updated = prev.map((f) => (f.id === id ? { ...f, latex } : f));
+            onFieldsChange?.(updated);
+            return updated;
+        });
     };
 
     const addField = () => {
         const newField = { id: Date.now(), latex: "" };
-        setFields((prev) => [...prev, newField]);
-
-        // Focus the new math-field after it mounts
-        setTimeout(() => {
-            fieldRefs.current[newField.id]?.focus();
-        }, 0);
+        setFields((prev) => {
+            const updated = [...prev, newField];
+            onFieldsChange?.(updated);
+            return updated;
+        });
+        setTimeout(() => { fieldRefs.current[newField.id]?.focus(); }, 0);
     };
 
     const clearAll = () => {
         const newField = { id: Date.now(), latex: "" };
         setFields([newField]);
-
-        setTimeout(() => {
-            fieldRefs.current[newField.id]?.focus();
-        }, 0);
+        onFieldsChange?.([newField]);
+        setTimeout(() => { fieldRefs.current[newField.id]?.focus(); }, 0);
     };
 
     const deleteField = (id) => {
         if (fields.length === 1) {
-            // Don't delete if it's the last field, just clear it
-            setFields([{ id: Date.now(), latex: "" }]);
+            const newField = { id: Date.now(), latex: "" };
+            setFields([newField]);
+            onFieldsChange?.([newField]);
             return;
         }
-        setFields((prev) => prev.filter((f) => f.id !== id));
+        setFields((prev) => {
+            const updated = prev.filter((f) => f.id !== id);
+            onFieldsChange?.(updated);
+            return updated;
+        });
     };
 
     const handleSubmit = async () => {
-        // Filter out empty fields
         const nonEmptyFields = fields.filter(f => f.latex && f.latex.trim() !== '');
-
         if (nonEmptyFields.length === 0) {
             alert("Please enter at least one step before submitting!");
             return;
@@ -117,48 +102,26 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
         const isCorrect = finalInputLine === acceptedSolution;
 
         if (isCorrect) {
-            setSubmissionFeedback({
-                message: "Excellent! Your answer is completely correct.",
-                success: true
-            });
+            setSubmissionFeedback({ message: "Excellent! Your answer is completely correct.", success: true });
             setCanShowNext(true);
             return;
         }
 
-        // --- FIX IS IN THIS TRY CATCH BLOCK ---
         try {
-            setSubmissionFeedback({
-                message: "Incorrect final answer. AI Mentor is analyzing your steps...",
-                success: false
-            });
-
-            // 1. Clear any previous highlight circles
+            setSubmissionFeedback({ message: "AI Mentor is analyzing your steps...", success: false, loading: true });
             setWrongStepNumber(null);
 
-            // 2. Call your mock function
-            const aiResponse = await testGemini({
-                problemDescription,
-                userSteps: formattedUserSteps,
-                acceptedAnswer: acceptedSolution
-            });
+            const aiResponse = await testGemini({ problemDescription, userSteps: formattedUserSteps, acceptedAnswer: acceptedSolution });
 
             if (aiResponse) {
-                console.log("Mock received in UI:", aiResponse); // Debug to inspect object properties
-
-                // 3. CRITICAL: Save the integer step number to state so the loop sees it!
                 setWrongStepNumber(aiResponse.step);
-
-                // 4. Update the text banner string property
-                setSubmissionFeedback({
-                    message: aiResponse.text,
-                    success: false
-                });
+                setSubmissionFeedback({ message: aiResponse.text, success: false, loading: false });
             }
         } catch (aiError) {
             console.error("AI error:", aiError);
+            setSubmissionFeedback({ message: "Error analyzing steps. Please try again.", success: false, loading: false });
         }
     };
-
 
     const handleNextProblem = () => {
         if (!nextProblemPath) return;
@@ -166,9 +129,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
     };
 
     useEffect(() => {
-        if (isSolved) {
-            setCanShowNext(true);
-        }
+        if (isSolved) setCanShowNext(true);
     }, [isSolved]);
 
     const showNextProblem = Boolean(canShowNext && nextProblemPath);
@@ -178,15 +139,12 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
             <DeleteAllModal
                 isOpen={deleteAllPopup}
                 onClose={() => setDeleteAllPopup(false)}
-                onConfirm={() => {
-                    clearAll();
-                    setDeleteAllPopup(false);
-                }}
+                onConfirm={() => { clearAll(); setDeleteAllPopup(false); }}
             />
-            <div className="ml-wrapper bg-black">
+            <div className="ml-wrapper">
                 <h2 className="ml-title">Your Solution</h2>
 
-                {/* Usage Guide - Combined Instructions and Tips */}
+                {/* Usage Guide */}
                 <div className="ml-format-hints" onClick={() => setHintsOpen(!hintsOpen)}>
                     <div className="ml-format-hints-toggle">
                         <div className="ml-format-hints-title">
@@ -210,106 +168,74 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                     )}
                 </div>
 
+                {/* Correct banner — shown above steps when solved */}
+                {submissionFeedback?.success && (
+                    <div className="ml-feedback-card success" style={{ margin: '0 0 0.5rem 0', padding: '0.5rem 1rem' }}>
+                        <div className="ml-feedback-header" style={{ marginBottom: 0 }}>
+                            <div className="ml-feedback-icon success"><FaCheckCircle /></div>
+                            <span className="ml-feedback-title">Correct</span>
+                            {isPracticeMode && (
+                                <span className="ml-2 text-[10px] font-medium text-emerald-500 font-[Sansation,sans-serif]">Practice Mode</span>
+                            )}
+                        </div>
+                    </div>
+                )}
+
                 <div className="ml-card" aria-live="polite">
                     <div className="ml-steps-scrollable">
                         <div className="ml-steps-container cursor-text">
                             {fields.map((field, index) => {
                                 const stepNumber = index + 1;
-                                // Check if the current row index matches the error step integer flagged by the AI
                                 const isThisStepWrong = stepNumber === wrongStepNumber;
 
                                 return (
-                                    <div key={field.id} className="ml-step-wrapper">
-                                        {/* Dynamic Step Label with conditional Red Circle design */}
-                                        <div
-                                            className={`ml-step-label ${isThisStepWrong ? 'bg-[var(--accent-color)] text-white! shadow-xl' : ''}`}
-                                        >
-                                            {stepNumber}
+                                    <div key={field.id}>
+                                        <div className="ml-step-wrapper">
+                                            <div className={`ml-step-label ${isThisStepWrong ? 'bg-[var(--accent-color)] text-white! shadow-xl' : ''}`}>
+                                                {stepNumber}
+                                            </div>
+
+                                            <math-field
+                                                ref={(el) => (fieldRefs.current[field.id] = el)}
+                                                class="ml-field"
+                                                virtualkeyboardmode="off"
+                                                smartfence="true"
+                                                placeholder=""
+                                                value={field.latex}
+                                                onInput={(evt) => updateLatex(field.id, evt.target.getValue("latex"))}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter") { e.preventDefault(); addField(); }
+                                                    if (e.key === "ArrowUp") { e.preventDefault(); const prev = fields[index - 1]; if (prev) fieldRefs.current[prev.id]?.focus(); }
+                                                    if (e.key === "ArrowDown") { e.preventDefault(); const next = fields[index + 1]; if (next) fieldRefs.current[next.id]?.focus(); }
+                                                }}
+                                            ></math-field>
+
+                                            <button className="ml-delete-btn" onClick={() => deleteField(field.id)} title="Delete this step">
+                                                <FaTrash />
+                                            </button>
                                         </div>
 
-                                        <math-field
-                                            ref={(el) => (fieldRefs.current[field.id] = el)}
-                                            class="ml-field"
-                                            virtualkeyboardmode="off"
-                                            smartfence="true"
-                                            placeholder=""
-                                            value={field.latex}
-                                            onInput={(evt) =>
-                                                updateLatex(field.id, evt.target.getValue("latex"))
-                                            }
-                                            onKeyDown={(e) => {
-                                                const mf = fieldRefs.current[field.id];
-
-                                                if (e.key === "Enter") {
-                                                    e.preventDefault();
-                                                    addField();
-                                                }
-
-                                                if (e.key === "ArrowUp") {
-                                                    e.preventDefault();
-                                                    const prevField = fields[index - 1];
-                                                    if (prevField) fieldRefs.current[prevField.id]?.focus();
-                                                }
-
-                                                if (e.key === "ArrowDown") {
-                                                    e.preventDefault();
-                                                    const nextField = fields[index + 1];
-                                                    if (nextField) fieldRefs.current[nextField.id]?.focus();
-                                                }
-                                            }}
-                                        ></math-field>
-
-                                        <button
-                                            className="ml-delete-btn"
-                                            onClick={() => deleteField(field.id)}
-                                            title="Delete this step"
-                                        >
-                                            <FaTrash />
-                                        </button>
+                                        {/* Inline AI hint directly under the wrong step */}
+                                        {isThisStepWrong && submissionFeedback && !submissionFeedback.success && (
+                                            <div className="ml-inline-hint">
+                                                <div className="flex items-center gap-1.5 mb-1">
+                                                    <FaTimes className="text-rose-400 text-xs" />
+                                                    <strong className="text-[10px] uppercase tracking-wider text-rose-400 font-bold">AI Hint</strong>
+                                                </div>
+                                                <p className="text-sm leading-relaxed text-[var(--secondary-color)]">
+                                                    {submissionFeedback.loading ? "Analyzing your steps..." : submissionFeedback.message}
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
-
                         </div>
                     </div>
                 </div>
 
+                {/* Bottom toolbar — buttons only */}
                 <div className="ml-toolbar-sticky">
-                    {submissionFeedback && (
-                        submissionFeedback.success ? (
-                            <div className="ml-feedback-card success" style={{ padding: '0.5rem 1rem' }}>
-                                <div className="ml-feedback-header" style={{ marginBottom: 0 }}>
-                                    <div className="ml-feedback-icon success"><FaCheckCircle /></div>
-                                    <span className="ml-feedback-title">Correct</span>
-                                    {isPracticeMode && (
-                                        <span className="ml-2 text-[10px] font-medium text-emerald-500 font-[Sansation,sans-serif]">Practice Mode</span>
-                                    )}
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="ml-feedback-card error flex flex-col gap-2">
-                                <div className="ml-feedback-header">
-                                    <div className="ml-feedback-icon error"><FaTimes /></div>
-                                    <span className="ml-feedback-title">Incorrect</span>
-                                    {isPracticeMode && (
-                                        <span className="ml-2 text-[10px] font-medium text-gray-400 font-[Sansation,sans-serif]">Practice Mode</span>
-                                    )}
-                                </div>
-
-                                {/* Displaying raw text safely using a standard paragraph tag */}
-                                <div className="ml-feedback-message">
-                                    <strong className="block text-[10px] uppercase tracking-wider text-rose-400 font-bold mb-1">
-                                        AI Hint:
-                                    </strong>
-                                    <p className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)]">
-                                        {submissionFeedback.message}
-                                    </p>
-                                </div>
-                            </div>
-                        )
-                    )}
-
-
                     <div className="ml-toolbar">
                         <button className="ml-btn clear flex gap-1 order-2 sm:order-1" onClick={() => setDeleteAllPopup(true)}>
                             <FaTrash />
@@ -329,28 +255,6 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                 </button>
                             )}
                         </div>
-
-                    </div>
-
-                    <div className="ml-output-wrapper">
-                        <button
-                            className="ml-preview-toggle"
-                            onClick={() => setPreviewOpen(!previewOpen)}
-                        >
-                            <strong>LaTeX</strong>
-                            {previewOpen ? <FaChevronUp /> : <FaChevronDown />}
-                        </button>
-                        {previewOpen && (
-                            <div className="ml-output">
-                                <ul className="steps-list">
-                                    {fields.map((f, i) => (
-                                        <li key={f.id}>
-                                            Step {i + 1}: {f.latex}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>
