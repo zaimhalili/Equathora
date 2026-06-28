@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/MathLiveExample.css";
-import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb, FaCheckCircle, FaPlus } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb, FaCheckCircle, FaPlus, FaArrowRight } from "react-icons/fa";
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
 import { testGemini } from "@/lib/geminiTest";
+
+const MAX_STEP_CHARS = 100;
+const MAX_STEPS = 40;
+const MAX_TOTAL_CHARS = 5000;
 
 const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     useBodyScrollLock(isOpen);
@@ -24,13 +28,14 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     );
 };
 
-export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange }) {
+export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange, onExplainMore }) {
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
     const [canShowNext, setCanShowNext] = useState(isSolved);
     const [hintsOpen, setHintsOpen] = useState(false);
     const [wrongStepNumber, setWrongStepNumber] = useState(null);
+    const [stepLimitWarning, setStepLimitWarning] = useState(false);
 
     const navigate = useNavigate();
     const fieldRefs = useRef({});
@@ -48,6 +53,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
     }, []);
 
     const updateLatex = (id, latex) => {
+        if (latex.length > MAX_STEP_CHARS) return;
         setWrongStepNumber(null);
         setFields((prev) => {
             const updated = prev.map((f) => (f.id === id ? { ...f, latex } : f));
@@ -57,6 +63,11 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
     };
 
     const addField = () => {
+        if (fields.length >= MAX_STEPS) {
+            setStepLimitWarning(true);
+            setTimeout(() => setStepLimitWarning(false), 3000);
+            return;
+        }
         const newField = { id: Date.now(), latex: "" };
         setFields((prev) => {
             const updated = [...prev, newField];
@@ -70,6 +81,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
         const newField = { id: Date.now(), latex: "" };
         setFields([newField]);
         onFieldsChange?.([newField]);
+        setStepLimitWarning(false);
         setTimeout(() => { fieldRefs.current[newField.id]?.focus(); }, 0);
     };
 
@@ -89,8 +101,19 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
 
     const handleSubmit = async () => {
         const nonEmptyFields = fields.filter(f => f.latex && f.latex.trim() !== '');
+
         if (nonEmptyFields.length === 0) {
             alert("Please enter at least one step before submitting!");
+            return;
+        }
+
+        const totalChars = nonEmptyFields.reduce((acc, f) => acc + f.latex.length, 0);
+        if (totalChars > MAX_TOTAL_CHARS) {
+            setSubmissionFeedback({
+                message: `Your solution is too long (${totalChars} chars). Max is ${MAX_TOTAL_CHARS} characters total. Please simplify your steps.`,
+                success: false,
+                loading: false
+            });
             return;
         }
 
@@ -133,6 +156,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
     }, [isSolved]);
 
     const showNextProblem = Boolean(canShowNext && nextProblemPath);
+
 
     return (
         <>
@@ -191,7 +215,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                 return (
                                     <div key={field.id}>
                                         <div className="ml-step-wrapper">
-                                            <div className={`ml-step-label ${isThisStepWrong ? 'bg-[var(--accent-color)] text-white! shadow-xl' : ''}`}>
+                                            <div className={`ml-step-label ${isThisStepWrong ? 'bg-[var(--accent-color)] text-white! animate-bounce duration-200' : ''}`}>
                                                 {stepNumber}
                                             </div>
 
@@ -216,17 +240,23 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                         </div>
 
                                         {/* Inline AI hint directly under the wrong step */}
-                                        {isThisStepWrong && submissionFeedback && !submissionFeedback.success && (
-                                            <div className="ml-inline-hint">
-                                                <div className="flex items-center gap-1.5 mb-1">
-                                                    <FaTimes className="text-rose-400 text-xs" />
-                                                    <strong className="text-[10px] uppercase tracking-wider text-rose-400 font-bold">AI Hint</strong>
+                                        {isThisStepWrong && submissionFeedback &&
+                                            !submissionFeedback.success && (
+                                                <div className="w-full pt-2 flex justify-between px-6 md:px-8 items-center pb-4 flex-wrap">
+                                                    <div className="flex gap-2 py-1 items-center">
+                                                        <FaArrowRight className="text-[var(--accent-color)] text-xs md:text-sm h-full hidden md:block" />
+                                                        <p className="text-xs md:text-sm leading-relaxed text-[var(--secondary-color)]">
+                                                            {submissionFeedback.loading ? "Analyzing your steps..." : submissionFeedback.message}
+                                                        </p>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => onExplainMore?.(`Can you explain in more detail what went wrong at step ${wrongStepNumber}? The hint says: "${submissionFeedback.message}"`)}
+                                                        className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-md cursor-pointer text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95"
+                                                    >
+                                                        Explain more 
+                                                    </button>
                                                 </div>
-                                                <p className="text-sm leading-relaxed text-[var(--secondary-color)]">
-                                                    {submissionFeedback.loading ? "Analyzing your steps..." : submissionFeedback.message}
-                                                </p>
-                                            </div>
-                                        )}
+                                            )}
                                     </div>
                                 );
                             })}

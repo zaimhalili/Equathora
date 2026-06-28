@@ -117,7 +117,8 @@ const hydrateStoredSubmissions = (records = []) => {
     return hydrated.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 };
 
-const Problem = () => {
+const Problem = ({ premium = true }) => {
+    const chatPanelRef = useRef(null);
     const { slug } = useParams();
     const navigate = useNavigate();
 
@@ -176,6 +177,9 @@ const Problem = () => {
     const prevProblemSlug = prevProblem ? (prevProblem.slug || generateProblemSlug(prevProblem.title, prevProblem.id)) : null;
     const nextProblemSlug = nextProblem ? (nextProblem.slug || generateProblemSlug(nextProblem.title, nextProblem.id)) : null;
 
+    const [reportReason, setReportReason] = useState('');
+    const [reportDetails, setReportDetails] = useState('');
+    const [showReportModal, setShowReportModal] = useState(false);
     const [openHints, setOpenHints] = useState({});
     const [isFavorite, setIsFavorite] = useState(false);
     const [showDescription, setShowDescription] = useState(true);
@@ -183,13 +187,10 @@ const Problem = () => {
     const [showSolution, setShowSolution] = useState(false);
     const [showTop, setShowTop] = useState(false);
     const [descriptionCollapsed, setDescriptionCollapsed] = useState(false);
-    const [showReportModal, setShowReportModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
     const [showSubmissions, setShowSubmissions] = useState(false);
     const [showMentorChat, setShowMentorChat] = useState(false);
     const [chatPanel, setChatPanel] = useState(false);
-    const [reportReason, setReportReason] = useState('');
-    const [reportDetails, setReportDetails] = useState('');
     const [selectedSubmission, setSelectedSubmission] = useState(null);
     const [showSubmissionDetail, setShowSubmissionDetail] = useState(false);
     const [hintsOpened, setHintsOpened] = useState([]);
@@ -208,6 +209,8 @@ const Problem = () => {
     const [showInsightPanel, setShowInsightPanel] = useState(false);
     const [fields, setFields] = useState([]);
     const [latexOpen, setLatexOpen] = useState(false);
+    const [chatSeed, setChatSeed] = useState(null);
+
 
     // Track theme dynamically from data-theme attribute
     const [currentTheme, setCurrentTheme] = useState(() =>
@@ -1361,7 +1364,11 @@ const Problem = () => {
                                 {showMentorChat && <MentorChat />} */}
 
                                 {/* Show AI chat panel */}
-                                {chatPanel && <ChatPanel />}
+                                {chatPanel && <ChatPanel ref={chatPanelRef}
+                                    premium={premium}
+                                    problemDescription={problem.description}
+                                    acceptedSolution={problem.solution}
+                                    fields={fields} />}
                             </div>
                         </article>
                     </aside>
@@ -1379,6 +1386,7 @@ const Problem = () => {
                             problemDescription={problem.description}
                             acceptedSolution={problem.solution}
                             onFieldsChange={(f) => setFields(f)}
+                            onExplainMore={(msg) => chatPanelRef.current?.sendMessage(msg)}
                         />
                     </article>
                 </section>
