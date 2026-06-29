@@ -51,6 +51,7 @@ import {
     notifyAchievementUnlocked,
     notifyStreakMilestone,
 } from '../lib/notificationService';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
 
 const formatDurationLabel = (seconds = 0) => {
@@ -121,6 +122,7 @@ const Problem = ({ premium = true }) => {
     const chatPanelRef = useRef(null);
     const { slug } = useParams();
     const navigate = useNavigate();
+    const { user } = useUserProfile();
 
     // Extract problem ID from slug for backwards compatibility
     const numericProblemId = extractIdFromSlug(slug);
@@ -876,6 +878,9 @@ const Problem = ({ premium = true }) => {
                     isOpen={showSubmissionDetail}
                     onClose={() => setShowSubmissionDetail(false)}
                     submission={selectedSubmission}
+                    premium={premium}
+                    problem={problem}
+                    studentName={user?.user_metadata?.full_name ?? user?.email ?? 'Student'}
                 />
 
                 {showStreakPopup && (
@@ -1387,6 +1392,7 @@ const Problem = ({ premium = true }) => {
                             acceptedSolution={problem.solution}
                             onFieldsChange={(f) => setFields(f)}
                             onExplainMore={(msg) => chatPanelRef.current?.sendMessage(msg)}
+                            premium={premium}
                         />
                     </article>
                 </section>

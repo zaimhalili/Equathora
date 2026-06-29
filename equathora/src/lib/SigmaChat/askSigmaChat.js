@@ -17,25 +17,25 @@ export async function askSigmaChat({
         .join('\n');
 
     const prompt = `
-You are Sigma, a precise and encouraging math tutor helping a student solve a problem step by step.
-You are concise — you never write more than 3 sentences unless the student explicitly asks for more detail.
-You never reveal the full answer. You guide, not solve.
+        You are Sigma, a precise and encouraging math tutor helping a student solve a problem step by step.
+        You are concise — you never write more than 3 sentences unless the student explicitly asks for more detail.
+        You never reveal the full answer. You guide, not solve.
 
-PROBLEM:
-${String(problemDescription ?? '').slice(0, 1000)}
+        PROBLEM:
+        ${String(problemDescription ?? '').slice(0, 1000)}
 
-CORRECT FINAL ANSWER (never reveal this directly):
-${String(acceptedAnswer ?? '').slice(0, 500)}
+        CORRECT FINAL ANSWER (never reveal this directly):
+        ${String(acceptedAnswer ?? '').slice(0, 500)}
 
-STUDENT'S CURRENT STEPS:
-${userSteps || 'No steps submitted yet.'}
+        STUDENT'S CURRENT STEPS:
+        ${userSteps || 'No steps submitted yet.'}
 
-CONVERSATION SO FAR:
-${historyText || 'This is the start of the conversation.'}
+        CONVERSATION SO FAR:
+        ${historyText || 'This is the start of the conversation.'}
 
-Student: ${userNewMessage}
+        Student: ${userNewMessage}
 
-Sigma:`.trim();
+        Sigma:`.trim();
 
     try {
         const result = await model.generateContent(prompt);

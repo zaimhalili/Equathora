@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react';
 import { FaCrown, FaPaperPlane } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { askSigmaChat } from '@/lib/sigmaChat';
+import { askSigmaChat } from '@/lib/SigmaChat/askSigmaChat';
 
 const MAX_INPUT_CHARS = 500;
 const MAX_AI_RESPONSE_CHARS = 2000;

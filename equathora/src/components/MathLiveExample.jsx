@@ -28,7 +28,14 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     );
 };
 
-export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange, onExplainMore }) {
+const normalize = (latex) =>
+    latex
+        .replace(/\s+/g, '')           // remove all whitespace
+        .replace(/\{([^{}]*)\}/g, '$1') // strip single-char braces
+        .toLowerCase()
+        .trim();
+
+export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange, onExplainMore, premium = false }) {
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
@@ -253,7 +260,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                                         onClick={() => onExplainMore?.(`Can you explain in more detail what went wrong at step ${wrongStepNumber}? The hint says: "${submissionFeedback.message}"`)}
                                                         className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-md cursor-pointer text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95"
                                                     >
-                                                        Explain more 
+                                                        Explain more
                                                     </button>
                                                 </div>
                                             )}

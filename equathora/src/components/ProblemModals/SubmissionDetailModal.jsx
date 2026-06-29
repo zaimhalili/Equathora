@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { FaTimes, FaClock, FaCopy, FaCheck } from 'react-icons/fa';
 import useBodyScrollLock from '../../hooks/useBodyScrollLock';
+import ExportPDFButton from '../ui/ExportPDFButton';
 
-const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
+const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, studentName }) => {
     useBodyScrollLock(isOpen && !!submission);
 
     const [copyMessage, setCopyMessage] = useState('');
@@ -84,19 +85,23 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission }) => {
                     <div className='bg-[var(--french-gray)]/10 p-4 rounded-md'>
                         <div className='flex justify-between items-center pb-3'>
                             <h3 className='font-[Sansation] font-bold text-sm text-[var(--secondary-color)]'>Your Solution Steps</h3>
-                            <button
-                                onClick={handleCopySteps}
-                                className='flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[var(--accent-color)] border border-[var(--accent-color)] rounded-md hover:bg-[var(--accent-color)] hover:text-white transition-colors duration-75 cursor-pointer'
-                            >
-                                <FaCopy />
-                                Copy Steps
-                            </button>
-                        </div>
-                        {copyMessage && (
-                            <div className='text-xs text-[var(--secondary-color)] font-semibold pb-2 text-center'>
-                                {copyMessage}
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={handleCopySteps}
+                                    className='flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[var(--accent-color)] border border-[var(--accent-color)] rounded-md hover:bg-[var(--accent-color)] hover:text-white transition-colors duration-75 cursor-pointer'
+                                >
+                                    <FaCopy />
+                                    Copy Steps
+                                </button>
+                                <ExportPDFButton
+                                    premium={premium}
+                                    problem={problem}
+                                    fields={submission.steps}
+                                    isCorrect={submission.status === 'accepted'}
+                                    studentName={studentName}
+                                />
                             </div>
-                        )}
+                        </div>
                         <div className='flex flex-col gap-1.5'>
                             {submission.steps && submission.steps.map((step, index) => (
                                 <div key={index} className='bg-[var(--white)] p-2.5 rounded-md border border-[var(--mid-main-secondary)]'>
