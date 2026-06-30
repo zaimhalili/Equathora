@@ -285,8 +285,8 @@ export async function exportSolutionPDF({
     const badgeBg = isCorrect ? [220, 252, 231] : [254, 226, 226];
     const badgeBdr = isCorrect ? COLORS.green : COLORS.red;
     const badgeTxt = isCorrect
-        ? 'Solution Accepted  --  All steps verified by Equathora'
-        : 'Solution Incorrect  --  Review your steps and try again';
+        ? 'Solution Accepted  -  All steps verified by Equathora'
+        : 'Solution Incorrect  -  Review your steps and try again';
 
     setFill(badgeBg);
     setDraw(badgeBdr);
@@ -324,42 +324,6 @@ export async function exportSolutionPDF({
         y += 78;
     }
 
-    // ===============================================================
-    // TIPS SECTION
-    // ===============================================================
-    checkPage(120);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    setColor(COLORS.mid);
-    text('EXAM PREPARATION TIPS', MARGIN, y);
-    y += 14;
-
-    const tips = isCorrect ? [
-        'Review this solution one more time before your exam to reinforce the method.',
-        'Try solving the same problem type without hints to build confidence.',
-        'Challenge yourself with a harder variant in the Advanced Problem Sets.',
-        'Export similar problems and build a personal revision folder.',
-    ] : [
-        'Read each step carefully and compare it to the problem statement.',
-        'Use the Sigma AI Mentor to ask follow-up questions about your mistake.',
-        'Check the Mistake Vault to see if this error pattern appears in your history.',
-        'Revisit the Hint section before re-submitting your solution.',
-    ];
-
-    tips.forEach(tip => {
-        checkPage(28);
-        setFill(COLORS.light);
-        doc.roundedRect(MARGIN, y, CONTENT_W, 22, 3, 3, 'F');
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        setColor(COLORS.dark);
-
-        // Bullet using a simple dot character, no em dash
-        text('*', MARGIN + 8, y + 14);
-        const tipLines = doc.splitTextToSize(tip, CONTENT_W - 28);
-        doc.text(tipLines, MARGIN + 20, y + 14);
-        y += tipLines.length * 13 + 10;
-    });
 
     // ===============================================================
     // FOOTER on every page

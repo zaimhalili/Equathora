@@ -26,22 +26,21 @@ import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
 import { formatTopicLabel } from '../lib/utils';
 import {
-    isProblemCompleted,
-    isFavorite as checkFavorite,
-    toggleFavorite,
-    getSubmissions,
-    addSubmission,
-    markProblemCompleted,
-    syncStreakData,
+    getCompletedProblems as getCompletedProblemsDb,
+    toggleFavorite as toggleFavoriteDb,
+    getFavorites as getFavoritesDb,
+    markProblemComplete as markProblemCompleteDb,
+    hasViewedSolutionDb,
+    markSolutionViewedDb,
+    markProblemInProgressDb,
+    removeProblemFromInProgressDb,
+    saveSubmission,
+    getUserSubmissions,
+    updateStreakForCorrectSolve,
     recordProblemStats,
-    markProblemInProgress,
-    removeProblemFromInProgress,
     getUserStats,
-    hasViewedSolution,
-    markSolutionViewed
-} from '../lib/progressStorage';
+} from '../lib/databaseService';
 import { validateAnswer } from '../lib/answerValidation';
-import { recordSubmission, updateStreakForCorrectSolve } from '../lib/databaseService';
 import { trackActivityEvent } from '../lib/activityTrackingService';
 import { buildAchievements } from '../data/achievements';
 import {
@@ -52,7 +51,6 @@ import {
     notifyStreakMilestone,
 } from '../lib/notificationService';
 import { useUserProfile } from '@/hooks/useUserProfile';
-
 
 const formatDurationLabel = (seconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(seconds));
@@ -146,7 +144,7 @@ const Problem = ({ premium = true }) => {
 
                 // Mark problem as in-progress when viewing
                 if (problemData) {
-                    markProblemInProgress(problemData.id);
+                    markProblemInProgressDb(problemData.id);
                 }
             } catch (error) {
                 console.error('Failed to load problem:', error);
@@ -156,6 +154,26 @@ const Problem = ({ premium = true }) => {
         };
         loadProblems();
     }, [slug]);
+
+    useEffect(() => {
+        if (!problem) return;
+        getUserSubmissions(problem.id).then(data => {
+            const mapped = data.map((s, index) => ({
+                id: s.id,
+                problemId: s.problem_id,
+                steps: s.steps ?? [],
+                status: s.is_correct ? 'accepted' : 'wrong',
+                timestamp: s.submitted_at,
+                metadata: {
+                    attempts: data.length - index,
+                    hintsUsed: 0,
+                    timeSpent: s.time_spent_seconds,
+                    timeSpentLabel: formatDurationLabel(s.time_spent_seconds)
+                }
+            }));
+            setSubmissions(hydrateStoredSubmissions(mapped));
+        });
+    }, [problem]);
 
     // Sort all problems by group_id first, then by id for consistent navigation across all groups
     const sortedProblems = [...allProblems].sort((a, b) => {
@@ -212,6 +230,7 @@ const Problem = ({ premium = true }) => {
     const [fields, setFields] = useState([]);
     const [latexOpen, setLatexOpen] = useState(false);
     const [chatSeed, setChatSeed] = useState(null);
+    const [isCompleted, setIsCompleted] = useState(false);
 
 
     // Track theme dynamically from data-theme attribute
@@ -225,6 +244,10 @@ const Problem = ({ premium = true }) => {
     const currentStrokeRef = useRef([]);
     const sessionStartRef = useRef(Date.now());
     const strokesCacheRef = useRef({});
+
+    const handleFieldsChange = useCallback((f) => {
+        setTimeout(() => setFields(f), 0);
+    }, []);
 
     const resolveColor = useCallback((color) => {
         if (typeof color === 'string' && color.startsWith('var(')) {
@@ -339,14 +362,14 @@ const Problem = ({ premium = true }) => {
         setStrokes((prev) => prev.slice(0, -1));
     }, []);
 
-    const isCompleted = problem ? isProblemCompleted(problem.id) : false;
-    const [timerRunning, setTimerRunning] = useState(!isCompleted);
 
     useEffect(() => {
         if (!problem) return;
-        const existing = hydrateStoredSubmissions(getSubmissions(problem.id));
-        setSubmissions(existing);
+        getCompletedProblemsDb().then(ids => {
+            setIsCompleted(ids.includes(String(problem.id)));
+        });
     }, [problem]);
+    const [timerRunning, setTimerRunning] = useState(!isCompleted);
 
     useEffect(() => {
         setTimerRunning(!isCompleted);
@@ -409,17 +432,24 @@ const Problem = ({ premium = true }) => {
         setHintsOpened([]);
         setSelectedSubmission(null);
         setShowSubmissionDetail(false);
-        setSolutionViewed(problem ? hasViewedSolution(problem.id) : false);
         setReportReason('');
         setReportDetails('');
         setShowReportModal(false);
         setShowHelpModal(false);
-        setIsFavorite(problem ? checkFavorite(problem.id) : false);
         setShowDrawingPad(false);
         setDrawingColor('var(--secondary-color)');
         setShowMobileMenu(false);
-        // Strokes are now loaded from cache in the other useEffect
     }, [problem, slug]);
+
+    useEffect(() => {
+        if (problem) {
+            hasViewedSolutionDb(problem.id).then(setSolutionViewed);
+            getFavoritesDb().then(favs => setIsFavorite(favs.includes(String(problem.id))));
+        } else {
+            setSolutionViewed(false);
+            setIsFavorite(false);
+        }
+    }, [problem]);
 
     // Close mobile menu when clicking outside
     useEffect(() => {
@@ -502,7 +532,7 @@ const Problem = ({ premium = true }) => {
 
         // Determine if this problem was already solved BEFORE this submission.
         // This is the single source of truth for "practice mode" vs "first solve".
-        const alreadySolvedBefore = isProblemCompleted(problem.id);
+        const alreadySolvedBefore = isCompleted;
 
         const safeSteps = steps || [];
         const lastStep = safeSteps[safeSteps.length - 1];
@@ -566,26 +596,27 @@ const Problem = ({ premium = true }) => {
         // FIRST SOLVE PATH — normal progression flow
         // This code only runs when the problem has NOT been solved before.
         // ================================================================
-        const entry = addSubmission(
-            problem.id,
-            finalAnswer,
-            validation.isCorrect,
-            validation.score,
-            timeSpentSeconds,
-            safeSteps,
-            attemptNumber,
-            hintsOpened.length,
-            { feedback: validation.feedback }
-        );
-        entry.metadata = {
-            ...(entry.metadata || {}),
-            attempts: entry.metadata?.attempts || attemptNumber,
-            hintsUsed: entry.metadata?.hintsUsed || hintsOpened.length,
-            timeSpent: entry.metadata?.timeSpent || timeSpentSeconds,
-            timeSpentLabel: entry.metadata?.timeSpentLabel || formatDurationLabel(timeSpentSeconds)
-        };
+        await saveSubmission(problem.id, finalAnswer, validation.isCorrect, timeSpentSeconds, {
+            topic: problem.topic,
+            difficulty: problem.difficulty
+        }, safeSteps);
 
+        const entry = {
+            id: Date.now(),
+            problemId: problem.id,
+            steps: safeSteps,
+            status: validation.isCorrect ? 'accepted' : 'wrong',
+            timestamp: new Date().toISOString(),
+            metadata: {
+                attempts: attemptNumber,
+                hintsUsed: hintsOpened.length,
+                timeSpent: timeSpentSeconds,
+                timeSpentLabel: formatDurationLabel(timeSpentSeconds)
+            }
+        };
         setSubmissions(prev => [entry, ...prev]);
+
+
         setSubmissionFeedback({
             message: validation.feedback,
             isCorrect: validation.isCorrect,
@@ -614,20 +645,9 @@ const Problem = ({ premium = true }) => {
             setShowSolutionPopup(false);
             setSolutionViewed(true);
 
-            markProblemCompleted(problem.id, validation.score, timeSpentSeconds);
-
-            // Remove from in-progress since it's now completed
-            removeProblemFromInProgress(problem.id);
-        }
-
-        // Persist attempt to backend (best-effort; does not block UI)
-        try {
-            void recordSubmission(problem.id, finalAnswer, validation.isCorrect, timeSpentSeconds, {
-                topic: problem.topic,
-                difficulty: problem.difficulty
-            });
-        } catch {
-            // noop
+            await markProblemCompleteDb(problem.id, timeSpentSeconds, problem.difficulty, problem.topic || 'General');
+            setIsCompleted(true);
+            await removeProblemFromInProgressDb(problem.id);
         }
 
         // Streak should only update on a correct first-solve submission.
@@ -638,11 +658,11 @@ const Problem = ({ premium = true }) => {
             try {
                 const streakUpdate = await updateStreakForCorrectSolve();
                 previousStreak = streakUpdate.previous_streak || 0;
-                streakData = syncStreakData({
+                streakData = {
                     current: streakUpdate.current_streak || 0,
                     longest: streakUpdate.longest_streak || 0,
                     lastDate: streakUpdate.last_activity_date || null
-                });
+                };
 
                 // Show popup if streak was incremented (first solve of the day)
                 if (streakUpdate.incremented && streakData.current > previousStreak) {
@@ -677,7 +697,7 @@ const Problem = ({ premium = true }) => {
         if (validation.isCorrect) {
             try {
                 const seenIds = getSeenAchievements();
-                const updatedStats = getUserStats();
+                const updatedStats = await getUserStats();
                 const currentAchievements = buildAchievements(updatedStats);
                 const freshlyUnlocked = checkNewAchievements(seenIds, currentAchievements);
 
@@ -746,9 +766,9 @@ const Problem = ({ premium = true }) => {
 
     const examples = Array.isArray(problem.examples) ? problem.examples : [];
 
-    const handleFavoriteToggle = () => {
-        toggleFavorite(problem.id);
-        setIsFavorite(!isFavorite);
+    const handleFavoriteToggle = async () => {
+        const newState = await toggleFavoriteDb(problem.id);
+        setIsFavorite(newState);
     };
 
     return (
@@ -862,7 +882,7 @@ const Problem = ({ premium = true }) => {
                         setShowSolution(true);
                         setShowSolutionPopup(false);
                         if (problem?.id) {
-                            markSolutionViewed(problem.id);
+                            markSolutionViewedDb(problem.id);
                         }
                         setSolutionViewed(true);
                         setShowMentorChat(false);
@@ -1083,28 +1103,7 @@ const Problem = ({ premium = true }) => {
 
 
 
-                                {/* Inline feedback for incorrect answers only */}
-                                {submissionFeedback && !submissionFeedback.isCorrect && (
-                                    <div className="rounded-xl px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
-                                        <div className="flex items-center gap-2 pb-1.5">
-                                            <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-[var(--dark-accent-color)]">
-                                                <FaTimes className='text-white' />
-                                            </div>
-                                            <span className="text-sm font-bold font-[Sansation,sans-serif] text-[var(--accent-color)]">
-                                                Incorrect
-                                            </span>
-                                            {submissionFeedback.isPracticeMode && (
-                                                <span className="text-[10px] font-medium text-gray-400 font-[Sansation,sans-serif]">Practice Mode</span>
-                                            )}
-                                            {!submissionFeedback.isPracticeMode && submissionFeedback.attemptNumber > 1 && (
-                                                <span className="text-[10px] text-gray-400 font-[Sansation,sans-serif]">Attempt {submissionFeedback.attemptNumber}</span>
-                                            )}
-                                        </div>
-                                        <p className="text-xs md:text-[0.82rem] leading-relaxed font-[Sansation,sans-serif] text-[var(--accent-color)]/85">
-                                            {submissionFeedback.message}
-                                        </p>
-                                    </div>
-                                )}
+
 
                                 {/* Show Description State Check */}
                                 {showDescription &&
@@ -1310,60 +1309,84 @@ const Problem = ({ premium = true }) => {
                                 />}
 
                                 {/* Show Submissions State Check */}
-                                {showSubmissions && <div>
-                                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Sansation,sans-serif] pb-4">Your Submissions</h2>
-                                    <div className="flex flex-col gap-2">
-                                        {submissions.map((submission) => (
-                                            <div
-                                                key={submission.id}
-                                                onClick={() => {
-                                                    setSelectedSubmission(submission);
-                                                    setShowSubmissionDetail(true);
-                                                    setChatPanel(false);
-                                                }}
-                                                className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-md border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/70' :
-                                                    submission.status === 'wrong' ? 'border-[var(--accent-color)] hover:bg-[var(--french-gray)]/30' :
-                                                        'border-yellow-500 hover:bg-[var(--french-gray)]/30'
-                                                    }`}
-                                            >
-                                                <div className="flex flex-wrap justify-between items-center gap-2">
-                                                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                                                        {submission.status === 'accepted' && <FaCheckCircle className="text-green-600 text-xs flex-shrink-0" />}
-                                                        {submission.status === 'wrong' && <FaTimesCircle className="text-red-600 text-xs flex-shrink-0" />}
-                                                        <span className={`text-xs font-semibold truncate ${submission.status === 'accepted' ? 'text-green-600' :
-                                                            submission.status === 'wrong' ? 'text-[var(--accent-color)]' :
-                                                                'text-yellow-600'
-                                                            }`}>
-                                                            {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong' : 'Pending'}
-                                                        </span>
-                                                        <span className="text-[10px] text-[vvar(--mid-main-secondary)] hidden sm:inline">•</span>
-                                                        <span className="text-[10px] text-[vvar(--mid-main-secondary)] hidden sm:inline">{submission.steps.length} steps</span>
+                                {showSubmissions &&
+                                    <div>
+                                        {/* Inline feedback for incorrect answers only */}
+                                        {submissionFeedback && !submissionFeedback.isCorrect && (
+                                            <div className="rounded-xl px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
+                                                <div className="flex items-center gap-2 pb-1.5">
+                                                    <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-[var(--dark-accent-color)]">
+                                                        <FaTimes className='text-white' />
                                                     </div>
-                                                    <div className="flex items-center gap-3 text-[10px] text-[vvar(--mid-main-secondary)] flex-shrink-0">
-                                                        {typeof submission.metadata?.hintsUsed === 'number' && (
-                                                            <span>{submission.metadata.hintsUsed} hints</span>
-                                                        )}
-                                                        {submission.metadata?.timeSpentLabel && (
-                                                            <span>{submission.metadata.timeSpentLabel}</span>
-                                                        )}
-                                                        <div className="flex items-center gap-1">
-                                                            <FaClock className="text-[8px]" />
-                                                            <span>{new Date(submission.timestamp).toLocaleString('en-US', {
-                                                                month: 'short',
-                                                                day: 'numeric',
-                                                                hour: 'numeric',
-                                                                minute: '2-digit'
-                                                            })}</span>
+                                                    <span className="text-sm font-bold font-[Sansation,sans-serif] text-[var(--accent-color)]">
+                                                        Incorrect
+                                                    </span>
+                                                    {submissionFeedback.isPracticeMode && (
+                                                        <span className="text-[10px] font-medium text-gray-400 font-[Sansation,sans-serif]">Practice Mode</span>
+                                                    )}
+                                                    {!submissionFeedback.isPracticeMode && submissionFeedback.attemptNumber > 1 && (
+                                                        <span className="text-[10px] text-[var(--secondary-color)] font-[Sansation,sans-serif]">Attempt {submissionFeedback.attemptNumber}</span>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs md:text-[0.82rem] leading-relaxed font-[Sansation,sans-serif] text-[var(--accent-color)]/85">
+                                                    {submissionFeedback.message}
+                                                </p>
+                                            </div>
+                                        )}
+                                        <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Sansation,sans-serif] py-4">Your Submissions</h2>
+                                        <div className="flex flex-col gap-2">
+                                            {submissions.map((submission) => (
+                                                <div
+                                                    key={submission.id}
+                                                    onClick={() => {
+                                                        setSelectedSubmission(submission);
+                                                        setShowSubmissionDetail(true);
+                                                        setChatPanel(false);
+                                                    }}
+                                                    className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-md border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/70' :
+                                                        submission.status === 'wrong' ? 'border-[var(--accent-color)] hover:bg-[var(--french-gray)]/30' :
+                                                            'border-yellow-500 hover:bg-[var(--french-gray)]/30'
+                                                        }`}
+                                                >
+                                                    <div className="flex flex-wrap justify-between items-center gap-2">
+                                                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                                                            {submission.status === 'accepted' && <FaCheckCircle className="text-green-600 text-xs flex-shrink-0" />}
+                                                            {submission.status === 'wrong' && <FaTimesCircle className="text-red-600 text-xs flex-shrink-0" />}
+                                                            <span className={`text-xs font-semibold truncate ${submission.status === 'accepted' ? 'text-green-600' :
+                                                                submission.status === 'wrong' ? 'text-[var(--accent-color)]' :
+                                                                    'text-yellow-600'
+                                                                }`}>
+                                                                {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong' : 'Pending'}
+                                                            </span>
+                                                            <span className="text-[10px] text-[vvar(--mid-main-secondary)] hidden sm:inline">•</span>
+                                                            <span className="text-[10px] text-[vvar(--mid-main-secondary)] hidden sm:inline">{submission.steps.length} steps</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-3 text-[10px] text-[vvar(--mid-main-secondary)] flex-shrink-0">
+                                                            {typeof submission.metadata?.hintsUsed === 'number' && (
+                                                                <span>{submission.metadata.hintsUsed} hints</span>
+                                                            )}
+                                                            {submission.metadata?.timeSpentLabel && (
+                                                                <span>{submission.metadata.timeSpentLabel}</span>
+                                                            )}
+                                                            <div className="flex items-center gap-1">
+                                                                <FaClock className="text-[8px]" />
+                                                                <span>{new Date(submission.timestamp).toLocaleString('en-US', {
+                                                                    month: 'short',
+                                                                    day: 'numeric',
+                                                                    hour: 'numeric',
+                                                                    minute: '2-digit'
+                                                                })}</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        ))}
-                                        {submissions.length === 0 && (
-                                            <p className="text-center text-sm text-[vvar(--mid-main-secondary)] py-8">No submissions yet. Start solving to see your history!</p>
-                                        )}
+                                            ))}
+                                            {submissions.length === 0 && (
+                                                <p className="text-center text-sm text-[vvar(--mid-main-secondary)] py-8">No submissions yet. Start solving to see your history!</p>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>}
+                                }
 
                                 {/* Show Mentor Chat State Check
                                 {showMentorChat && <MentorChat />} */}
@@ -1390,7 +1413,7 @@ const Problem = ({ premium = true }) => {
                             isPracticeMode={isCompleted}
                             problemDescription={problem.description}
                             acceptedSolution={problem.solution}
-                            onFieldsChange={(f) => setFields(f)}
+                            onFieldsChange={handleFieldsChange}
                             onExplainMore={(msg) => chatPanelRef.current?.sendMessage(msg)}
                             premium={premium}
                         />

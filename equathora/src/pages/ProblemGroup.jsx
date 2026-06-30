@@ -4,7 +4,7 @@ import Footer from '../components/Footer.jsx';
 import { Link, useParams } from 'react-router-dom';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import { getProblemGroup, getProblemsByGroup } from '../lib/problemService';
-import { isProblemCompleted, getProblemScore, isFavorite, toggleFavorite } from '../lib/progressStorage';
+import { getCompletedProblems, getFavorites, toggleFavorite } from '../lib/databaseService';
 import { generateProblemSlug } from '../lib/slugify';
 import { FaStar, FaRegStar, FaCheckCircle, FaClock, FaArrowLeft } from 'react-icons/fa';
 import MathJaxRenderer from '../components/MathJaxRenderer';
@@ -15,23 +15,27 @@ const ProblemGroup = () => {
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [favoriteStates, setFavoriteStates] = useState({});
+  const [completedIds, setCompletedIds] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const groupIdNum = parseInt(groupId);
-        const [groupData, problemsData] = await Promise.all([
+        const [groupData, problemsData, favoriteIds, completedProblemIds] = await Promise.all([
           getProblemGroup(groupIdNum),
-          getProblemsByGroup(groupIdNum)
+          getProblemsByGroup(groupIdNum),
+          getFavorites(),
+          getCompletedProblems()
         ]);
         setGroup(groupData);
         setProblems(problemsData);
+        setCompletedIds(completedProblemIds);
 
-        // Initialize favorite states
+        // Initialize favorite states from the fetched list
         const favStates = {};
         problemsData.forEach(p => {
-          favStates[p.id] = isFavorite(p.id);
+          favStates[p.id] = favoriteIds.includes(String(p.id));
         });
         setFavoriteStates(favStates);
       } catch (error) {
@@ -43,13 +47,13 @@ const ProblemGroup = () => {
     fetchData();
   }, [groupId]);
 
-  const handleFavoriteToggle = (problemId, e) => {
+  const handleFavoriteToggle = async (problemId, e) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleFavorite(problemId);
+    const newState = await toggleFavorite(problemId);
     setFavoriteStates(prev => ({
       ...prev,
-      [problemId]: !prev[problemId]
+      [problemId]: newState
     }));
   };
 
@@ -102,7 +106,7 @@ const ProblemGroup = () => {
     );
   }
 
-  const completedCount = problems.filter(p => isProblemCompleted(p.id)).length;
+  const completedCount = problems.filter(p => completedIds.includes(String(p.id))).length;
   const totalCount = problems.length;
 
   return (
@@ -148,8 +152,7 @@ const ProblemGroup = () => {
             {/* Problems Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {problems.map((problem) => {
-                const completed = isProblemCompleted(problem.id);
-                const score = getProblemScore(problem.id);
+                const completed = completedIds.includes(String(problem.id));
                 const favorite = favoriteStates[problem.id];
                 const problemSlug = problem.slug || generateProblemSlug(problem.title, problem.id);
 
@@ -194,7 +197,7 @@ const ProblemGroup = () => {
                       {completed && (
                         <div className="flex items-center gap-1 text-green-600 text-sm">
                           <FaCheckCircle />
-                          <span>{score}%</span>
+                          <span>Solved</span>
                         </div>
                       )}
                     </div>

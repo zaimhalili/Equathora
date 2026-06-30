@@ -43,6 +43,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
     const [hintsOpen, setHintsOpen] = useState(false);
     const [wrongStepNumber, setWrongStepNumber] = useState(null);
     const [stepLimitWarning, setStepLimitWarning] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const navigate = useNavigate();
     const fieldRefs = useRef({});
@@ -116,42 +117,58 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
 
         const totalChars = nonEmptyFields.reduce((acc, f) => acc + f.latex.length, 0);
         if (totalChars > MAX_TOTAL_CHARS) {
-            setSubmissionFeedback({
-                message: `Your solution is too long (${totalChars} chars). Max is ${MAX_TOTAL_CHARS} characters total. Please simplify your steps.`,
-                success: false,
-                loading: false
-            });
+            const fb = { message: `Your solution is too long...`, success: false, loading: false };
+            setSubmissionFeedback(fb);
             return;
         }
 
-        const formattedUserSteps = nonEmptyFields
-            .map((f, index) => `Step ${index + 1}: ${f.latex}`)
-            .join('\n');
+        setIsSubmitting(true);
+        const fbLoading = { message: "Checking your answer...", success: false, loading: true };
+        setSubmissionFeedback(fbLoading);
 
-        const finalInputLine = nonEmptyFields[nonEmptyFields.length - 1]?.latex;
-        const isCorrect = finalInputLine === acceptedSolution;
+        const result = await onSubmit?.(nonEmptyFields);
+        setIsSubmitting(false);
 
-        if (isCorrect) {
-            setSubmissionFeedback({ message: "Excellent! Your answer is completely correct.", success: true });
+        if (!result) return;
+
+        if (result.success) {
+            const fb = { message: result.message, success: true, loading: false };
+            setSubmissionFeedback(fb);
             setCanShowNext(true);
             return;
         }
 
+        if (!premium) {
+            const fb = { message: "Incorrect. Upgrade to Premium to see exactly where you went wrong.", success: false, loading: false };
+            setSubmissionFeedback(fb);
+            return;
+        }
+
         try {
-            setSubmissionFeedback({ message: "AI Mentor is analyzing your steps...", success: false, loading: true });
+            const fbAi = { message: "AI Mentor is analyzing your steps...", success: false, loading: true };
+            setSubmissionFeedback(fbAi);
+            onFeedbackChange?.(fbAi);
             setWrongStepNumber(null);
+
+            const formattedUserSteps = nonEmptyFields
+                .map((f, index) => `Step ${index + 1}: ${f.latex}`)
+                .join('\n');
 
             const aiResponse = await testGemini({ problemDescription, userSteps: formattedUserSteps, acceptedAnswer: acceptedSolution });
 
             if (aiResponse) {
                 setWrongStepNumber(aiResponse.step);
-                setSubmissionFeedback({ message: aiResponse.text, success: false, loading: false });
+                const fb = { message: aiResponse.text, success: false, loading: false };
+                setSubmissionFeedback(fb);
+                onFeedbackChange?.(fb);
             }
         } catch (aiError) {
             console.error("AI error:", aiError);
-            setSubmissionFeedback({ message: "Error analyzing steps. Please try again.", success: false, loading: false });
+            const fb = { message: "Error analyzing steps. Please try again.", success: false, loading: false };
+            setSubmissionFeedback(fb);
+            onFeedbackChange?.(fb);
         }
-    };
+    }
 
     const handleNextProblem = () => {
         if (!nextProblemPath) return;
@@ -283,8 +300,8 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                 <FaPlus />
                                 Add New Line
                             </button>
-                            <button className="ml-btn submit flex-1" onClick={handleSubmit}>
-                                Submit Solution
+                            <button className="ml-btn submit flex-1" onClick={handleSubmit} disabled={isSubmitting}>
+                                {isSubmitting ? "Checking..." : "Submit Solution"}
                             </button>
                             {showNextProblem && (
                                 <button className="ml-btn ml-next-btn !bg-green-600 hover:!bg-green-700" onClick={handleNextProblem} title="Go to next problem">

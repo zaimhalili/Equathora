@@ -1,6 +1,5 @@
 import { supabase } from './supabaseClient';
-import { getInProgressProblems } from '../lib/progressStorage';
-import { getFavorites, getCompletedProblems } from './databaseService';
+import { getFavorites, getCompletedProblems, markProblemInProgressDb } from './databaseService';
 import { generateProblemSlug, extractIdFromSlug } from './slugify';
 
 const DEFAULT_LOCAL_BACKEND = 'http://localhost:5104';
@@ -265,7 +264,7 @@ export async function getProblems(
 
             const favoriteSet = new Set((favoriteProblemIds || []).map((id) => String(id)));
             const completedSet = new Set((completedProblemIds || []).map((id) => String(id)));
-            const inProgressSet = new Set((getInProgressProblems() || []).map((id) => String(id)));
+            const inProgressSet = new Set((markProblemInProgressDb() || []).map((id) => String(id)));
 
             const enrichedProblems = (allProblems || []).map((problem) => {
                 const normalizedProblemId = String(problem.id);
