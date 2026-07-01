@@ -267,15 +267,23 @@ const Tracks = () => {
                         <YourTrack></YourTrack>
 
                         {/* Tracks Grid */}
-                        <div className="flex flex-wrap w-full gap-3 py-8">
-                            {startedTopics.length > 0 && <h4 className='font-[Sansation] text-[var(--secondary-color)] text-2xl font-bold'>Started Tracks</h4>}
-                            {startedTopics.map(renderTrackCard)}
-                            {startedTopics.length > 0 && otherTopics.length > 0 ? (
-                                <div className="w-full h-4" />
-                            ) : null}
-                            {otherTopics.length > 0 && <h4 className='font-[Sansation] text-[var(--secondary-color)] text-2xl font-bold'>Not Started</h4>}
-                            {otherTopics.map(renderTrackCard)}
+                        <div className="flex flex-col py-8">
+                            {startedTopics.length > 0 && <h4 className='font-[Sansation] text-[var(--secondary-color)] text-2xl font-bold pb-3'>Started Tracks</h4>}
+                            <div className="flex flex-wrap gap-3 w-full">
+                                {startedTopics.map(renderTrackCard)}
+                            </div>
                         </div>
+                        
+                        {startedTopics.length > 0 && otherTopics.length > 0 ? (
+                            <div className="w-full h-4" />
+                        ) : null}
+                        <div className="flex flex-col">
+                            {otherTopics.length > 0 && <h4 className='font-[Sansation] text-[var(--secondary-color)] text-2xl font-bold pb-3'>Not Started</h4>}
+                            <div className="flex flex-wrap gap-3 w-full">
+                                {otherTopics.map(renderTrackCard)}
+                            </div>
+                        </div>
+
                     </div>
 
 
