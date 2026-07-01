@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, f
 import { FaCrown, FaPaperPlane } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { askSigmaChat } from '@/lib/SigmaChat/askSigmaChat';
+import { getFriendlySigmaErrorMessage } from '@/lib/SigmaChat/aiSafety';
 import { loadSigmaChatState, saveSigmaChatState } from '@/lib/SigmaChat/sigmaChatStorage';
 
 const MAX_INPUT_CHARS = 500;
@@ -44,6 +45,7 @@ const ChatPanel = forwardRef(({
 
     const [typedMessage, setTypedMessage] = useState('');
     const [isAiThinking, setIsAiThinking] = useState(false);
+    const [isLoadingHistory, setIsLoadingHistory] = useState(Boolean(storageKey));
     const [rateLimited, setRateLimited] = useState(false);
     const [inputError, setInputError] = useState('');
     const [chatMessages, setChatMessages] = useState(DEFAULT_MESSAGES);
@@ -62,6 +64,7 @@ const ChatPanel = forwardRef(({
         setInputError('');
         setRateLimited(false);
         setIsAiThinking(false);
+        setIsLoadingHistory(Boolean(storageKey));
 
         let isActive = true;
         isHydratingRef.current = true;
@@ -84,6 +87,7 @@ const ChatPanel = forwardRef(({
             } finally {
                 if (isActive) {
                     isHydratingRef.current = false;
+                    setIsLoadingHistory(false);
                 }
 
                 resolveHydration?.();
@@ -148,8 +152,9 @@ const ChatPanel = forwardRef(({
             );
         } catch (error) {
             console.error('Sigma chat error:', error);
+            const friendlyErrorText = sanitizeUnicode(getFriendlySigmaErrorMessage(error));
             setChatMessages((prev) =>
-                [...prev, { id: Date.now(), sender: 'ai', text: 'Sorry, I ran into an error. Please try again.' }].slice(-MAX_HISTORY_MESSAGES)
+                [...prev, { id: Date.now(), sender: 'ai', text: friendlyErrorText }].slice(-MAX_HISTORY_MESSAGES)
             );
         } finally {
             setIsAiThinking(false);
@@ -158,7 +163,7 @@ const ChatPanel = forwardRef(({
 
     // Called by parent via ref — bypasses rate limit since it's triggered by the app not the user spamming
     const sendMessage = (text) => {
-        if (!text || isAiThinking) return;
+        if (!text || isAiThinking || isLoadingHistory) return;
         const cleanText = sanitizeInput(text);
         if (!cleanText) return;
 
@@ -191,11 +196,11 @@ const ChatPanel = forwardRef(({
         lastSentAt.current = now;
 
         await runAiCall(userText, chatMessagesRef.current, fields);
-    }, [typedMessage, isAiThinking, chatMessages, fields, problemDescription, acceptedSolution]);
+    }, [typedMessage, isAiThinking, isLoadingHistory, chatMessages, fields, problemDescription, acceptedSolution]);
 
     const visibleMessages = chatMessages.slice(-MAX_DISPLAY_MESSAGES);
     const hiddenCount = chatMessages.length - visibleMessages.length;
-    const isSendDisabled = isAiThinking || rateLimited || !typedMessage.trim();
+    const isSendDisabled = isLoadingHistory || isAiThinking || rateLimited || !typedMessage.trim();
 
     if (!premium) {
         return (
@@ -239,6 +244,13 @@ const ChatPanel = forwardRef(({
 
             {/* Messages */}
             <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-4 flex flex-col gap-4 bg-[var(--main-color)]">
+                {isLoadingHistory && (
+                    <div className="flex items-center gap-2 self-start rounded-2xl border border-[var(--french-gray)] bg-[var(--white)] px-3.5 py-2.5 text-xs text-[var(--secondary-color)]">
+                        <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[var(--dark-accent-color)]" />
+                        Loading your chat history...
+                    </div>
+                )}
+
                 {hiddenCount > 0 && (
                     <p className="text-center text-[10px] text-[var(--mid-main-secondary)] shrink-0">
                         {hiddenCount} earlier message{hiddenCount !== 1 ? 's' : ''} hidden to keep things fast.
@@ -282,8 +294,8 @@ const ChatPanel = forwardRef(({
                             value={typedMessage}
                             onChange={handleInputChange}
                             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) handleSendMessage(e); }}
-                            disabled={isAiThinking || rateLimited}
-                            placeholder={isAiThinking ? 'Sigma is thinking…' : rateLimited ? 'Please wait…' : 'Ask a follow-up question…'}
+                            disabled={isLoadingHistory || isAiThinking || rateLimited}
+                            placeholder={isLoadingHistory ? 'Loading chat history…' : isAiThinking ? 'Sigma is thinking…' : rateLimited ? 'Please wait…' : 'Ask a follow-up question…'}
                             maxLength={MAX_INPUT_CHARS}
                             aria-label="Chat message input"
                             className="w-full rounded-md px-3 py-2 text-sm md:text-base border bg-[var(--main-color)] border-[var(--french-gray)] text-[var(--secondary-color)] focus:!outline-none disabled:opacity-50 !h-full"

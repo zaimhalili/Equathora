@@ -58,7 +58,7 @@ const loadStoredFields = (storageKey) => {
     }
 };
 
-export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange, onExplainMore, onFeedbackChange = () => { }, premium = false, storageKey = '' }) {
+export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange, onExplainMore, onFeedbackChange = () => { }, premium, storageKey = '' }) {
     const [fields, setFields] = useState(() => loadStoredFields(storageKey));
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
@@ -337,7 +337,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                 <FaPlus />
                                 Add New Line
                             </button>
-                            <button className="ml-btn submit flex-1" onClick={handleSubmit} disabled={isSubmitting}>
+                            <button className={`ml-btn submit flex-1 ${isSubmitting ? 'active:scale-100 hover:bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] !cursor-not-allowed active:!translate-y-0' : ''}`} onClick={handleSubmit} disabled={isSubmitting}>
                                 {isSubmitting ? "Checking..." : "Submit Solution"}
                             </button>
                             {showNextProblem && (

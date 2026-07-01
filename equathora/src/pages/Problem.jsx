@@ -116,7 +116,7 @@ const hydrateStoredSubmissions = (records = []) => {
     return hydrated.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 };
 
-const Problem = ({ premium = true }) => {
+const Problem = ({ premium = false }) => {
     const chatPanelRef = useRef(null);
     const { slug } = useParams();
     const navigate = useNavigate();
