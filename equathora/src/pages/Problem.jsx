@@ -230,6 +230,7 @@ const Problem = ({ premium = true }) => {
     const [fields, setFields] = useState([]);
     const [latexOpen, setLatexOpen] = useState(false);
     const [chatSeed, setChatSeed] = useState(null);
+    const [pendingSigmaPrompt, setPendingSigmaPrompt] = useState('');
     const [isCompleted, setIsCompleted] = useState(false);
 
 
@@ -248,6 +249,34 @@ const Problem = ({ premium = true }) => {
     const handleFieldsChange = useCallback((f) => {
         setTimeout(() => setFields(f), 0);
     }, []);
+
+    const userStorageScope = user?.id || user?.email || 'anonymous';
+    const problemStorageScope = problem?.id ? `${problem.id}:${userStorageScope}` : '';
+    const mathDraftStorageKey = problemStorageScope ? `equathora:math-draft:${problemStorageScope}` : '';
+    const sigmaChatStorageKey = problemStorageScope ? `equathora:sigma-chat:${problemStorageScope}` : '';
+
+    const openSigmaChat = useCallback((message) => {
+        if (!message) return;
+        setShowDescription(false);
+        setShowSolution(false);
+        setShowSubmissions(false);
+        setShowTop(false);
+        setShowMentorChat(false);
+        setChatPanel(true);
+        setPendingSigmaPrompt(message);
+        if (descriptionCollapsed) setDescriptionCollapsed(false);
+    }, [descriptionCollapsed]);
+
+    useEffect(() => {
+        if (!chatPanel || !pendingSigmaPrompt) return;
+
+        const timer = window.setTimeout(() => {
+            chatPanelRef.current?.sendMessage(pendingSigmaPrompt);
+            setPendingSigmaPrompt('');
+        }, 0);
+
+        return () => window.clearTimeout(timer);
+    }, [chatPanel, pendingSigmaPrompt]);
 
     const resolveColor = useCallback((color) => {
         if (typeof color === 'string' && color.startsWith('var(')) {
@@ -439,6 +468,7 @@ const Problem = ({ premium = true }) => {
         setShowDrawingPad(false);
         setDrawingColor('var(--secondary-color)');
         setShowMobileMenu(false);
+        setPendingSigmaPrompt('');
     }, [problem, slug]);
 
     useEffect(() => {
@@ -1406,7 +1436,8 @@ const Problem = ({ premium = true }) => {
                                     premium={premium}
                                     problemDescription={problem.description}
                                     acceptedSolution={problem.solution}
-                                    fields={fields} />}
+                                    fields={fields}
+                                    storageKey={sigmaChatStorageKey} />}
                             </div>
                         </article>
                     </aside>
@@ -1424,7 +1455,8 @@ const Problem = ({ premium = true }) => {
                             problemDescription={problem.description}
                             acceptedSolution={problem.solution}
                             onFieldsChange={handleFieldsChange}
-                            onExplainMore={(msg) => chatPanelRef.current?.sendMessage(msg)}
+                            onExplainMore={openSigmaChat}
+                            storageKey={mathDraftStorageKey}
                             premium={premium}
                         />
                     </article>

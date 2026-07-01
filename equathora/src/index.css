@@ -59,7 +59,7 @@
     box-sizing: border-box;
     margin: 0;
     /* This is for debugging */
-    /* outline: 2px solid skyblue; */
+    /* outline: 1px solid skyblue; */
 }
 
 body,

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, f
 import { FaCrown, FaPaperPlane } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { askSigmaChat } from '@/lib/SigmaChat/askSigmaChat';
+import { loadSigmaChatState, saveSigmaChatState } from '@/lib/SigmaChat/sigmaChatStorage';
 
 const MAX_INPUT_CHARS = 500;
 const MAX_AI_RESPONSE_CHARS = 2000;
@@ -9,6 +10,13 @@ const MAX_HISTORY_MESSAGES = 100;
 const MAX_DISPLAY_MESSAGES = 50;
 const RATE_LIMIT_MS = 2000;
 const MAX_STEPS_CHARS = 2000;
+const DEFAULT_MESSAGES = [
+    {
+        id: 1,
+        sender: 'ai',
+        text: "Hi! Submit your steps on the LaTeX workspace, and I will scan them line-by-line to point out exactly where your algebraic formulas go wrong.",
+    },
+];
 
 // Only sanitize dangerous unicode — does NOT slice, so AI long responses survive
 const sanitizeUnicode = (str) =>
@@ -26,27 +34,80 @@ const ChatPanel = forwardRef(({
     problemDescription,
     acceptedSolution,
     fields = [],
+    storageKey = '',
 }, ref) => {
     const scrollContainerRef = useRef(null);
     const lastSentAt = useRef(0);
+    const isHydratingRef = useRef(false);
+    const hydrationPromiseRef = useRef(Promise.resolve());
+    const chatMessagesRef = useRef(DEFAULT_MESSAGES);
 
     const [typedMessage, setTypedMessage] = useState('');
     const [isAiThinking, setIsAiThinking] = useState(false);
     const [rateLimited, setRateLimited] = useState(false);
     const [inputError, setInputError] = useState('');
-    const [chatMessages, setChatMessages] = useState([
-        {
-            id: 1,
-            sender: 'ai',
-            text: "Hi! Submit your steps on the LaTeX workspace, and I will scan them line-by-line to point out exactly where your algebraic formulas go wrong.",
-        },
-    ]);
+    const [chatMessages, setChatMessages] = useState(DEFAULT_MESSAGES);
+
+    useEffect(() => {
+        chatMessagesRef.current = chatMessages;
+    }, [chatMessages]);
 
     useEffect(() => {
         if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
         }
     }, [chatMessages, isAiThinking]);
+
+    useEffect(() => {
+        setInputError('');
+        setRateLimited(false);
+        setIsAiThinking(false);
+
+        let isActive = true;
+        isHydratingRef.current = true;
+        let resolveHydration = null;
+        hydrationPromiseRef.current = new Promise((resolve) => {
+            resolveHydration = resolve;
+        });
+
+        const hydrateChatState = async () => {
+            try {
+                const loaded = await loadSigmaChatState(storageKey);
+
+                if (!isActive) {
+                    return;
+                }
+
+                const nextMessages = loaded.messages.length > 0 ? loaded.messages : DEFAULT_MESSAGES;
+                setChatMessages(nextMessages);
+                setTypedMessage(loaded.draft);
+            } finally {
+                if (isActive) {
+                    isHydratingRef.current = false;
+                }
+
+                resolveHydration?.();
+            }
+        };
+
+        hydrateChatState();
+
+        return () => {
+            isActive = false;
+        };
+    }, [storageKey]);
+
+    useEffect(() => {
+        if (isHydratingRef.current || !storageKey) {
+            return;
+        }
+
+        const timer = window.setTimeout(() => {
+            saveSigmaChatState(storageKey, { messages: chatMessages, draft: typedMessage });
+        }, 250);
+
+        return () => window.clearTimeout(timer);
+    }, [storageKey, chatMessages, typedMessage]);
 
     const handleInputChange = useCallback((e) => {
         const raw = e.target.value;
@@ -100,7 +161,10 @@ const ChatPanel = forwardRef(({
         if (!text || isAiThinking) return;
         const cleanText = sanitizeInput(text);
         if (!cleanText) return;
-        runAiCall(cleanText, chatMessages, fields);
+
+        void hydrationPromiseRef.current.then(() => {
+            runAiCall(cleanText, chatMessagesRef.current, fields);
+        });
     };
 
     useImperativeHandle(ref, () => ({ sendMessage }), [chatMessages, fields, problemDescription, acceptedSolution, isAiThinking]);
@@ -126,7 +190,7 @@ const ChatPanel = forwardRef(({
         setInputError('');
         lastSentAt.current = now;
 
-        await runAiCall(userText, chatMessages, fields);
+        await runAiCall(userText, chatMessagesRef.current, fields);
     }, [typedMessage, isAiThinking, chatMessages, fields, problemDescription, acceptedSolution]);
 
     const visibleMessages = chatMessages.slice(-MAX_DISPLAY_MESSAGES);
@@ -152,10 +216,10 @@ const ChatPanel = forwardRef(({
     }
 
     return (
-        <div className="w-full flex-1 flex flex-col font-[Sansation,sans-serif] bg-[var(--white)] text-[var(--secondary-color)] rounded-md overflow-hidden" style={{ minHeight: 0 }}>
+        <div className="w-full flex-1 flex flex-col font-[Sansation,sans-serif] bg-[var(--white)] text-[var(--secondary-color)] rounded-md overflow-hidden min-h-0">
 
             {/* Header */}
-            <div className="px-4 py-3 flex items-center justify-between border-b border-[var(--french-gray)] bg-[var(--white)] shrink-0 rounded-t-md">
+            {/* <div className="px-4 py-3 flex items-center justify-between border-b border-[var(--french-gray)] bg-[var(--white)] shrink-0 rounded-t-md">
                 <h3 className="font-bold text-sm tracking-wide uppercase m-0 text-[var(--secondary-color)] flex items-center gap-1">
                     <FaCrown className="h-3 w-3 md:h-4 md:w-4" style={{ fill: 'url(#crownGradient)' }} />
                     <svg width="0" height="0" aria-hidden="true">
@@ -171,10 +235,10 @@ const ChatPanel = forwardRef(({
                 <span className="text-sm font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-gradient-to-b from-amber-600 to-amber-400 text-white">
                     AI MENTOR
                 </span>
-            </div>
+            </div> */}
 
             {/* Messages */}
-            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4 bg-[var(--main-color)]">
+            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-4 flex flex-col gap-4 bg-[var(--main-color)]">
                 {hiddenCount > 0 && (
                     <p className="text-center text-[10px] text-[var(--mid-main-secondary)] shrink-0">
                         {hiddenCount} earlier message{hiddenCount !== 1 ? 's' : ''} hidden to keep things fast.

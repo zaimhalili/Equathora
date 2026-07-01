@@ -35,8 +35,31 @@ const normalize = (latex) =>
         .toLowerCase()
         .trim();
 
-export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange, onExplainMore, onFeedbackChange = () => { }, premium = false }) {
-    const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
+const loadStoredFields = (storageKey) => {
+    const emptyField = { id: Date.now(), latex: '' };
+
+    if (typeof window === 'undefined' || !storageKey) {
+        return [emptyField];
+    }
+
+    try {
+        const raw = window.localStorage.getItem(storageKey);
+        if (!raw) return [emptyField];
+
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || parsed.length === 0) return [emptyField];
+
+        return parsed.map((field, index) => ({
+            id: typeof field?.id === 'number' ? field.id : Date.now() + index,
+            latex: typeof field?.latex === 'string' ? field.latex : '',
+        }));
+    } catch {
+        return [emptyField];
+    }
+};
+
+export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange, onExplainMore, onFeedbackChange = () => { }, premium = false, storageKey = '' }) {
+    const [fields, setFields] = useState(() => loadStoredFields(storageKey));
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
     const [canShowNext, setCanShowNext] = useState(isSolved);
@@ -49,7 +72,6 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
     const fieldRefs = useRef({});
 
     useEffect(() => {
-        let cancelled = false;
         (async () => {
             try {
                 await import("mathlive");
@@ -57,8 +79,21 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                 console.error("Failed to load MathLive.", e);
             }
         })();
-        return () => { cancelled = true; };
     }, []);
+
+    useEffect(() => {
+        const storedFields = loadStoredFields(storageKey);
+        setFields(storedFields);
+        onFieldsChange?.(storedFields);
+        setWrongStepNumber(null);
+        setSubmissionFeedback(null);
+        setIsSubmitting(false);
+    }, [storageKey]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || !storageKey) return;
+        window.localStorage.setItem(storageKey, JSON.stringify(fields));
+    }, [fields, storageKey]);
 
     const updateLatex = (id, latex) => {
         if (latex.length > MAX_STEP_CHARS) return;
@@ -122,29 +157,28 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
             return;
         }
 
-        setIsSubmitting(true);
-        const fbLoading = { message: "Checking your answer...", success: false, loading: true };
-        setSubmissionFeedback(fbLoading);
-
-        const result = await onSubmit?.(nonEmptyFields);
-        setIsSubmitting(false);
-
-        if (!result) return;
-
-        if (result.success) {
-            const fb = { message: result.message, success: true, loading: false };
-            setSubmissionFeedback(fb);
-            setCanShowNext(true);
-            return;
-        }
-
-        if (!premium) {
-            const fb = { message: "Incorrect. Upgrade to Premium to see exactly where you went wrong.", success: false, loading: false };
-            setSubmissionFeedback(fb);
-            return;
-        }
-
         try {
+            setIsSubmitting(true);
+            const fbLoading = { message: "Checking your answer...", success: false, loading: true };
+            setSubmissionFeedback(fbLoading);
+
+            const result = await onSubmit?.(nonEmptyFields);
+
+            if (!result) return;
+
+            if (result.success) {
+                const fb = { message: result.message, success: true, loading: false };
+                setSubmissionFeedback(fb);
+                setCanShowNext(true);
+                return;
+            }
+
+            if (!premium) {
+                const fb = { message: "Incorrect. Upgrade to Premium to see exactly where you went wrong.", success: false, loading: false };
+                setSubmissionFeedback(fb);
+                return;
+            }
+
             const fbAi = { message: "AI Mentor is analyzing your steps...", success: false, loading: true };
             setSubmissionFeedback(fbAi);
             onFeedbackChange?.(fbAi);
@@ -167,6 +201,8 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
             const fb = { message: "Error analyzing steps. Please try again.", success: false, loading: false };
             setSubmissionFeedback(fb);
             onFeedbackChange?.(fb);
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -267,6 +303,9 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                             !submissionFeedback.success && (
                                                 <div className="w-full pt-2 flex justify-between px-6 md:px-8 items-center pb-4 flex-wrap">
                                                     <div className="flex gap-2 py-1 items-center">
+                                                        {submissionFeedback.loading && (
+                                                            <span className="inline-block h-3 w-3 rounded-full border-2 border-[var(--accent-color)] border-t-transparent animate-spin" aria-hidden="true" />
+                                                        )}
                                                         <p className="text-xs md:text-sm leading-relaxed text-[var(--secondary-color)]">
                                                             {submissionFeedback.loading ? "Analyzing your steps..." : submissionFeedback.message}
                                                         </p>

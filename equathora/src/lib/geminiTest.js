@@ -15,6 +15,30 @@ const extractTextResponse = (data) => {
     return typeof candidate === 'string' ? candidate.trim() : '';
 };
 
+const extractJsonObject = (value) => {
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+        return value;
+    }
+
+    const text = String(value ?? '').trim();
+    if (!text) {
+        throw new Error('Empty Gemini response');
+    }
+
+    try {
+        return JSON.parse(text);
+    } catch {
+        // Continue and try to recover a JSON object from mixed text.
+    }
+
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+        return JSON.parse(jsonMatch[0]);
+    }
+
+    throw new Error('Could not parse Gemini JSON response');
+};
+
 export async function testGemini({ problemDescription, userSteps, acceptedAnswer }) {
     const prompt = `
 You are a strict but encouraging math tutor reviewing a student's step-by-step solution.
@@ -49,7 +73,7 @@ Find the all the wrong steps (even if the student comes close to the correct ans
         if (error) throw error;
 
         const raw = extractTextResponse(data).replace(/```json|```/g, '').trim();
-        const parsed = JSON.parse(raw);
+        const parsed = extractJsonObject(raw || data);
         if (typeof parsed.step !== 'number' || typeof parsed.text !== 'string') throw new Error('Bad shape');
         return { step: parsed.step, text: parsed.text };
     } catch (err) {
