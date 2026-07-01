@@ -1,5 +1,30 @@
 import axios from 'axios';
 
+const DEFAULT_LOCAL_BACKEND = 'http://localhost:5104';
+
+const normalizeBase = (value) => {
+    if (!value || typeof value !== 'string') return '';
+    return value.trim().replace(/\/$/, '');
+};
+
+const buildApiBase = () => {
+    const explicit = normalizeBase(
+        import.meta.env.VITE_API_URL ||
+        import.meta.env.VITE_BACKEND_URL ||
+        import.meta.env.VITE_API_BASE_URL
+    );
+
+    if (explicit) {
+        return explicit;
+    }
+
+    const runtimeHost = typeof window !== 'undefined' ? window.location.hostname : '';
+    const isLocalRuntime = runtimeHost === 'localhost' || runtimeHost === '127.0.0.1';
+    return isLocalRuntime ? DEFAULT_LOCAL_BACKEND : '';
+};
+
+const API_BASE = buildApiBase();
+
 /**
  * Sends the user answer and problem to the backend for Math.NET validation.
  * @param {string} userAnswer - The user's answer.
@@ -8,7 +33,7 @@ import axios from 'axios';
  */
 export const validateExpression = async (userAnswer, problem) => {
     try {
-        const response = await axios.post('/api/validate-step', {
+        const response = await axios.post(`${API_BASE}/api/validate-step`, {
             userAnswer,
             problem
         });
@@ -32,7 +57,7 @@ export const validateExpression = async (userAnswer, problem) => {
  */
 export const validateSteps = async (userSteps, correctSteps) => {
     try {
-        const response = await axios.post('/api/problem/validate-step', {
+        const response = await axios.post(`${API_BASE}/api/problem/validate-step`, {
             steps: userSteps,
             correctSteps
         });

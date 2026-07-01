@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/MathLiveExample.css";
-import { FaChevronDown, FaChevronUp, FaTrash, FaTimes, FaLightbulb, FaCheckCircle, FaPlus, FaArrowRight } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaTrash, FaLightbulb, FaCheckCircle, FaPlus } from "react-icons/fa";
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
 import { testGemini } from "@/lib/geminiTest";
 
@@ -35,7 +35,7 @@ const normalize = (latex) =>
         .toLowerCase()
         .trim();
 
-export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange, onExplainMore, premium = false }) {
+export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange, onExplainMore, onFeedbackChange = () => { }, premium = false }) {
     const [fields, setFields] = useState([{ id: Date.now(), latex: "" }]);
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
@@ -267,7 +267,6 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                             !submissionFeedback.success && (
                                                 <div className="w-full pt-2 flex justify-between px-6 md:px-8 items-center pb-4 flex-wrap">
                                                     <div className="flex gap-2 py-1 items-center">
-                                                        <FaArrowRight className="text-[var(--accent-color)] text-xs md:text-sm h-full hidden md:block" />
                                                         <p className="text-xs md:text-sm leading-relaxed text-[var(--secondary-color)]">
                                                             {submissionFeedback.loading ? "Analyzing your steps..." : submissionFeedback.message}
                                                         </p>

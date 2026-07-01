@@ -1,15 +1,21 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "./supabaseClient";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const SIGMA_FUNCTION_NAME = 'ask-gemini';
 
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+const extractTextResponse = (data) => {
+    if (typeof data === 'string') {
+        return data.trim();
+    }
+
+    if (!data || typeof data !== 'object') {
+        return '';
+    }
+
+    const candidate = data.text ?? data.message ?? data.response ?? data.answer ?? data.output;
+    return typeof candidate === 'string' ? candidate.trim() : '';
+};
 
 export async function testGemini({ problemDescription, userSteps, acceptedAnswer }) {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
     const prompt = `
 You are a strict but encouraging math tutor reviewing a student's step-by-step solution.
 
@@ -22,7 +28,7 @@ ${acceptedAnswer}
 STUDENT'S STEPS:
 ${userSteps}
 
-Find the FIRST wrong step and respond ONLY with valid JSON, no markdown:
+Find the all the wrong steps (even if the student comes close to the correct answer later) and respond ONLY with valid JSON, no markdown:
 {
   "step": <integer>,
   "text": "<one sentence describing exactly what went wrong, do not reveal the answer>"
@@ -30,8 +36,19 @@ Find the FIRST wrong step and respond ONLY with valid JSON, no markdown:
 `.trim();
 
     try {
-        const result = await model.generateContent(prompt);
-        const raw = result.response.text().trim().replace(/```json|```/g, '').trim();
+        const { data, error } = await supabase.functions.invoke(SIGMA_FUNCTION_NAME, {
+            body: {
+                problemDescription: String(problemDescription ?? '').slice(0, 1000),
+                userSteps: String(userSteps ?? '').slice(0, 4000),
+                acceptedAnswer: String(acceptedAnswer ?? '').slice(0, 500),
+                prompt,
+                mode: 'step-analysis',
+            },
+        });
+
+        if (error) throw error;
+
+        const raw = extractTextResponse(data).replace(/```json|```/g, '').trim();
         const parsed = JSON.parse(raw);
         if (typeof parsed.step !== 'number' || typeof parsed.text !== 'string') throw new Error('Bad shape');
         return { step: parsed.step, text: parsed.text };
