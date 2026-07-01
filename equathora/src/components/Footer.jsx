@@ -48,6 +48,7 @@ const Footer = () => {
                             rel="noopener noreferrer"
                             aria-label="Connect with us on LinkedIn"
                             className='socialMedia'
+                            title='Connect with us on LinkedIn'
                         >
                             <FaLinkedin />
                         </a>
@@ -57,6 +58,7 @@ const Footer = () => {
                             rel="noopener noreferrer"
                             aria-label="Follow us on Instagram"
                             className='socialMedia'
+                            title='Follow us on Instagram'
                         >
                             <FaInstagram />
                         </a>
@@ -67,6 +69,7 @@ const Footer = () => {
                             rel="noopener noreferrer"
                             aria-label="Follow us on YouTube"
                             className='socialMedia'
+                            title='Subscribe to our YouTube'
                         >
                             <FaYoutube />
                         </a>
@@ -86,20 +89,20 @@ const Footer = () => {
                             <li><Link to="/learn" className='footer-links'>Problems</Link></li>
                             <li><Link to="/leaderboards/global" className='footer-links'>Leaderboards</Link></li>
                             <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
-                            <li><Link to="/notifications" className='footer-links'>Notifications</Link></li>
-                            <li><Link to="/profile/myprofile" className='footer-links'>My Profile</Link></li>
+                            <li><Link to="/premium" className='footer-links'>Premium</Link></li>
                             <li><Link to="/equathora-briefs" className='footer-links'>Equathora Briefs</Link></li>
+                            <li><Link to="/profile/myprofile" className='footer-links'>My Profile</Link></li>
                         </ul>
                     </div>
                     <div className="links-column">
                         <h3 className="footer-column-title">Company</h3>
                         <ul className="links">
                             <li><Link to="/about" className='footer-links'>About Us</Link></li>
-                            <li><Link to="/cookie-policy" className='footer-links'>Cookie Policy</Link></li>
                             <li><Link to="/helpCenter" className='footer-links'>FAQs</Link></li>
                             <li><Link to="/feedback" className='footer-links'>Report</Link></li>
-                            <li><Link to="/privacy-policy" className='footer-links'>Privacy Policy</Link></li>
                             <li><Link to="/terms-of-service" className='footer-links'>Terms of Service</Link></li>
+                            <li><Link to="/cookie-policy" className='footer-links'>Cookie Policy</Link></li>
+                            <li><Link to="/privacy-policy" className='footer-links'>Privacy Policy</Link></li>
                         </ul>
                     </div>
                 </div>

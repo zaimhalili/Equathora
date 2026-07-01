@@ -26,18 +26,18 @@ const AboutIdentitySection = () => {
                 <div className='flex gap-10 flex-col lg:flex-row'>
                     {/* Block 1 */}
                     <div className="flex flex-col bg-[var(--main-color)] rounded-2xl flex-1 pl-6 sm:pl-10 pt-8">
-                        <h3 className='text-2xl lg:text-3xl xl:text-4xl font-bold pr-6 sm:pr-10 pb-3'>Math should be <span className='text-[var(--accent-color)]'>engaging</span></h3>
+                        <h3 className='text-2xl lg:text-3xl xl:text-4xl font-bold pr-6 sm:pr-10 pb-3'>Math needs to be <span className='text-[var(--accent-color)]'>engaging</span> and fun</h3>
                         <p className='text-base xl:text-lg pr-6 sm:pr-10'>Changing your view of math from 'boring' to 'beautiful'</p>
                         <div className="flex justify-between items-center pt-3">
                             <FaMehRollingEyes className='text-5xl text-[var(--secondary-color)] -rotate-15' />
                             <div className='flex items-center justify-center p-4 rounded-tl-2xl bg-[var(--white)] relative'>
-                                <div className="absolute -left-10 bottom-0 bg-white h-10 w-10 z-10">
+                                <div className="absolute -left-10 bottom-0 bg-[var(--white)] h-10 w-10 z-10">
                                     <div className="h-full bg-[var(--main-color)] rounded-br-2xl"></div>
                                 </div>
                                 <Link to="/learn" className='p-5 bg-[var(--main-color)] rounded-full !text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:!text-white transition-all duration-150 hover:scale-110 overflow-visible shadow-xl'>
                                     <FaArrowRight className=' text-2xl text-center -rotate-45' />
                                 </Link>
-                                <div className="absolute right-0 -top-10 bg-white h-10 w-10 z-10">
+                                <div className="absolute right-0 -top-10 bg-[var(--white)] h-10 w-10 z-10">
                                     <div className="h-full bg-[var(--main-color)] rounded-br-2xl"></div>
                                 </div>
                             </div>
@@ -48,13 +48,13 @@ const AboutIdentitySection = () => {
                         <div className="flex justify-between items-center pb-3">
                             <FaTrophy className='text-5xl text-[var(--secondary-color)] rotate-15' />
                             <div className='flex items-center justify-center p-4 rounded-bl-2xl bg-[var(--white)] relative '>
-                                <div className="absolute -left-10 top-0 bg-white h-10 w-10 z-10">
+                                <div className="absolute -left-10 top-0 bg-[var(--white)] h-10 w-10 z-10">
                                     <div className="h-full bg-[var(--main-color)] rounded-tr-2xl"></div>
                                 </div>
                                 <Link to="/learn" className='p-5 bg-[var(--main-color)] rounded-full !text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:!text-white transition-all duration-150 hover:scale-110 overflow-visible shadow-xl'>
                                     <FaArrowRight className=' text-2xl text-center -rotate-45' />
                                 </Link>
-                                <div className="absolute right-0 -bottom-10 bg-white h-10 w-10 z-10">
+                                <div className="absolute right-0 -bottom-10 bg-[var(--white)] h-10 w-10 z-10">
                                     <div className="h-full bg-[var(--main-color)] rounded-tr-2xl"></div>
                                 </div>
                             </div>
@@ -70,13 +70,13 @@ const AboutIdentitySection = () => {
                         <div className="flex justify-between items-center pt-3">
                             <FaBullseye className='text-5xl text-[var(--secondary-color)]  skew-5' />
                             <div className='flex items-center justify-center p-4 rounded-tl-2xl bg-[var(--white)] relative'>
-                                <div className="absolute -left-10 bottom-0 bg-white h-10 w-10 z-10">
+                                <div className="absolute -left-10 bottom-0 bg-[var(--white)] h-10 w-10 z-10">
                                     <div className="h-full bg-[var(--main-color)] rounded-br-2xl"></div>
                                 </div>
                                 <Link to="/learn" className='p-5 bg-[var(--main-color)] rounded-full !text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:!text-white transition-all duration-150 hover:scale-110 overflow-visible shadow-xl'>
                                     <FaArrowRight className=' text-2xl text-center -rotate-45' />
                                 </Link>
-                                <div className="absolute right-0 -top-10 bg-white h-10 w-10 z-10">
+                                <div className="absolute right-0 -top-10 bg-[var(--white)] h-10 w-10 z-10">
                                     <div className="h-full bg-[var(--main-color)] rounded-br-2xl"></div>
                                 </div>
                             </div>
