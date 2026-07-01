@@ -627,6 +627,15 @@ const Problem = ({ premium = true }) => {
             isPracticeMode: false
         });
 
+        // Submitting from the chat panel should collapse the other views 
+        setChatPanel(false);
+        setShowMentorChat(false);
+        setShowSolution(false);
+        setShowSolutionPopup(false);
+        setShowInsightPanel(false);
+        setShowSubmissionDetail(false);
+        setSelectedSubmission(null);
+
         // Show the InsightPanel ribbon for correct answers
         if (validation.isCorrect) {
             setShowInsightPanel(true);
@@ -635,6 +644,7 @@ const Problem = ({ premium = true }) => {
         setShowSubmissions(true);
         setShowDescription(false);
         setShowTop(false);
+        setShowDrawingPad(false);
         if (descriptionCollapsed) {
             setDescriptionCollapsed(false);
         }

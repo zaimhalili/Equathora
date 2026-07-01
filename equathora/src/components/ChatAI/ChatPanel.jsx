@@ -168,13 +168,13 @@ const ChatPanel = forwardRef(({
                     </svg>
                     Sigma
                 </h3>
-                <span className="text-sm font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-gradient-to-b from-amber-600 to-amber-400 text-[var(--white)]">
+                <span className="text-sm font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-gradient-to-b from-amber-600 to-amber-400 text-white">
                     AI MENTOR
                 </span>
             </div>
 
             {/* Messages */}
-            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4 bg-[var(--white)]">
+            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4 bg-[var(--main-color)]">
                 {hiddenCount > 0 && (
                     <p className="text-center text-[10px] text-[var(--mid-main-secondary)] shrink-0">
                         {hiddenCount} earlier message{hiddenCount !== 1 ? 's' : ''} hidden to keep things fast.
@@ -186,7 +186,7 @@ const ChatPanel = forwardRef(({
                         <div
                             className={`border rounded-2xl px-4 py-2.5 text-xs md:text-sm leading-relaxed ${msg.sender === 'ai'
                                 ? 'border-[var(--french-gray)] rounded-tl-none bg-[var(--white)] text-[var(--secondary-color)]'
-                                : 'border-transparent rounded-tr-none bg-[var(--dark-accent-color)] text-[var(--white)]'
+                                : 'border-transparent rounded-tr-none bg-[var(--dark-accent-color)] text-white'
                                 }`}
                             style={{ wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }}
                         >
@@ -235,7 +235,7 @@ const ChatPanel = forwardRef(({
                         type="submit"
                         disabled={isSendDisabled}
                         aria-label="Send message"
-                        className="font-bold text-xs md:text-base px-3.5 py-2 rounded-md transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)] bg-[var(--white)] hover:text-[var(--white)] border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
+                        className="font-bold text-xs md:text-base px-3.5 py-2 rounded-md transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)] bg-[var(--white)] hover:text-white border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
                     >
                         <FaPaperPlane />
                     </button>

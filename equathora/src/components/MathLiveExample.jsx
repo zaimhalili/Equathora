@@ -181,7 +181,6 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
 
     const showNextProblem = Boolean(canShowNext && nextProblemPath);
 
-
     return (
         <>
             <DeleteAllModal

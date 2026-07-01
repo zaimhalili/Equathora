@@ -69,7 +69,7 @@ const Premium = ({ premium = false }) => {
               </div>
 
               {/* Card 2 */}
-              <div className='rounded-md flex-col flex bg-gradient-to-l from-amber-500 to-amber-300 px-8 py-10 gap-10 shadow-amber-500 shadow-xl border-2 border-white lg:w-3/5'>
+              <div className='rounded-md flex-col flex bg-gradient-to-t from-amber-600 to-amber-400 px-8 py-10 gap-10 shadow-xl border-2 lg:w-3/5'>
                 <div className="flex flex-col gap-5">
                   <h3 className="text-2xl font-bold text-black">Monthly
                     <span className='text-black/50 text-lg pl-3 font-normal'>billed monthly</span>
@@ -92,7 +92,7 @@ const Premium = ({ premium = false }) => {
                   </div>
 
                   <button type="button" className='bg-[var(--black)] text-[var(--white)] py-2 rounded-md text-xl hover:contrast-80 active:scale-95 transition-all duration-200'>Subscribe</button>
-                  <ul className='list-disc'>
+                  <ul className=''>
                     {proFeatures.map((feature, idx) => (
                       <li key={idx}>
                         <strong>{feature.bold}</strong>{feature.text}
