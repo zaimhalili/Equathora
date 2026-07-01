@@ -588,7 +588,7 @@ ENHANCED FILTERING SYSTEM
 .results-refreshing {
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--dark-accent-color);
+    color: var(--secondary-color);
     opacity: 1;
 }
 

@@ -125,7 +125,7 @@ export async function exportSolutionPDF({
     // ===============================================================
     // HEADER BAND
     // ===============================================================
-    setFill(COLORS.dark);
+    setFill(COLORS.light);
     doc.rect(0, 0, PAGE_W, 72, 'F');
 
     // Logo
@@ -152,7 +152,7 @@ export async function exportSolutionPDF({
     // Header right: date
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
-    doc.setTextColor(...COLORS.border);
+    doc.setTextColor(...COLORS.dark);
     text(formatDate(new Date()), PAGE_W - MARGIN, 30, { align: 'right' });
     text('equathora.com', PAGE_W - MARGIN, 44, { align: 'right' });
 
@@ -190,7 +190,7 @@ export async function exportSolutionPDF({
             setColor(COLORS.mid);
             text(topics.slice(0, 4).join('  /  '), tx, y + 9.5);
         }
-        y += 24;
+        y += 15;
     }
 
     // Divider
@@ -212,7 +212,7 @@ export async function exportSolutionPDF({
     doc.setFontSize(10);
     setColor(COLORS.dark);
     // Strip any HTML tags that might come from MathJax rendered content
-    const cleanDesc = problemDescription.replace(/<[^>]*>/g, '').trim();
+    const cleanDesc = problemDescription.replace(/<[^>]$\{}*>/g, '').trim();
     y = wrap(cleanDesc, MARGIN, y, CONTENT_W, 14);
     y += 20;
 

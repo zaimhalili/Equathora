@@ -622,7 +622,7 @@ const Learn = () => {
             <span>
               Showing <strong>{problems?.data?.length}</strong> of <strong>{totalCount}</strong> exercises
             </span>
-            {isRefreshing && <span className="results-refreshing">Updating problems…</span>}
+            {isRefreshing && <span className="results-refreshing animate-pulse duration-200">Updating problems…</span>}
           </div>
           <motion.article
             id='problems-container'

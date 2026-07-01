@@ -1,5 +1,6 @@
 import { supabase } from './supabaseClient';
-import { getFavorites, getCompletedProblems, markProblemInProgressDb } from './databaseService';
+// Add to import from databaseService:
+import { getFavorites, getCompletedProblems, markProblemInProgressDb, getInProgressProblemsDb } from './databaseService';
 import { generateProblemSlug, extractIdFromSlug } from './slugify';
 
 const DEFAULT_LOCAL_BACKEND = 'http://localhost:5104';
@@ -114,6 +115,15 @@ export async function getProblems(
 
     const statusFilters = normalizeStatusValues(status);
     const includesFavorite = statusFilters.includes('favorite');
+
+    // Normalize incoming filter arrays to avoid mismatches from casing/whitespace
+    const normalizeArray = (arr) => {
+        if (!Array.isArray(arr)) return null;
+        const cleaned = arr
+            .map((v) => (v === null || v === undefined) ? '' : String(v).trim())
+            .filter((v) => v !== '');
+        return cleaned.length > 0 ? cleaned : null;
+    };
 
     const applyLocalSort = (items, sortValue) => {
         if (!sortValue || sortValue === 'default') return items;
@@ -238,16 +248,20 @@ export async function getProblems(
                 problemsQuery = problemsQuery.eq('slug', String(slug).trim());
             }
 
-            if (Array.isArray(difficulties) && difficulties.length > 0) {
-                problemsQuery = problemsQuery.in('difficulty', difficulties);
+            const safeDifficulties = normalizeArray(difficulties);
+            const safeTopics = normalizeArray(topics);
+            const safeGrades = normalizeArray(grades);
+
+            if (safeDifficulties) {
+                problemsQuery = problemsQuery.in('difficulty', safeDifficulties);
             }
 
-            if (Array.isArray(topics) && topics.length > 0) {
-                problemsQuery = problemsQuery.in('topic', topics);
+            if (safeTopics) {
+                problemsQuery = problemsQuery.in('topic', safeTopics);
             }
 
-            if (Array.isArray(grades) && grades.length > 0) {
-                problemsQuery = problemsQuery.in('grade', grades);
+            if (safeGrades) {
+                problemsQuery = problemsQuery.in('grade', safeGrades);
             }
 
             if (searchTerm && String(searchTerm).trim()) {
@@ -264,7 +278,8 @@ export async function getProblems(
 
             const favoriteSet = new Set((favoriteProblemIds || []).map((id) => String(id)));
             const completedSet = new Set((completedProblemIds || []).map((id) => String(id)));
-            const inProgressSet = new Set((markProblemInProgressDb() || []).map((id) => String(id)));
+            const inProgressIds = await getInProgressProblemsDb();
+            const inProgressSet = new Set(inProgressIds);
 
             const enrichedProblems = (allProblems || []).map((problem) => {
                 const normalizedProblemId = String(problem.id);
@@ -330,16 +345,20 @@ export async function getProblems(
                 .eq('is_active', true)
                 .in('id', favoriteProblemIds);
 
-            if (Array.isArray(difficulties) && difficulties.length > 0) {
-                problemsQuery = problemsQuery.in('difficulty', difficulties);
+            const safeDifficulties = normalizeArray(difficulties);
+            const safeTopics = normalizeArray(topics);
+            const safeGrades = normalizeArray(grades);
+
+            if (safeDifficulties) {
+                problemsQuery = problemsQuery.in('difficulty', safeDifficulties);
             }
 
-            if (Array.isArray(topics) && topics.length > 0) {
-                problemsQuery = problemsQuery.in('topic', topics);
+            if (safeTopics) {
+                problemsQuery = problemsQuery.in('topic', safeTopics);
             }
 
-            if (Array.isArray(grades) && grades.length > 0) {
-                problemsQuery = problemsQuery.in('grade', grades);
+            if (safeGrades) {
+                problemsQuery = problemsQuery.in('grade', safeGrades);
             }
 
             if (searchTerm && String(searchTerm).trim()) {
@@ -865,18 +884,25 @@ export async function updateProblemGroup(groupId, updates) {
  */
 export async function getProblemsLegacyFormat() {
     try {
-        const [groups, problems] = await Promise.all([
+        const [favoriteProblemIds, completedProblemIds, inProgressIds, groups, problems] = await Promise.all([
+            getFavorites(),
+            getCompletedProblems(),
+            getInProgressProblemsDb(),
             getProblemGroups(),
             getAllProblems()
         ]);
 
+        const favoriteSet = new Set((favoriteProblemIds || []).map((id) => String(id)));
+        const completedSet = new Set((completedProblemIds || []).map((id) => String(id)));
+        const inProgressSet = new Set((inProgressIds || []).map(id => String(id)));
+
         return {
-            problemGroups: groups.map(g => ({
+            problemGroups: (groups || []).map(g => ({
                 id: g.id,
                 name: g.name,
                 description: g.description
             })),
-            problems: problems.map(p => ({
+            problems: (problems || []).map(p => ({
                 id: p.id,
                 groupId: p.group_id,
                 title: p.title,
@@ -887,7 +913,10 @@ export async function getProblemsLegacyFormat() {
                 hints: p.hints,
                 solution: p.solution,
                 premium: p.is_premium,
-                topic: p.topic
+                topic: p.topic,
+                completed: completedSet.has(String(p.id)),
+                inProgress: !completedSet.has(String(p.id)) && inProgressSet.has(String(p.id)),
+                favourite: favoriteSet.has(String(p.id))
             }))
         };
     } catch (error) {

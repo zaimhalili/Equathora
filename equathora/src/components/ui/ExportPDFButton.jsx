@@ -4,16 +4,6 @@ import { Link } from 'react-router-dom';
 import { exportSolutionPDF } from '@/lib/exportSolutionPDF';
 import logo from '@/assets/logo/EquathoraLogoFull.png';
 
-/**
- * Drop this inside Problem.jsx.
- *
- * Props:
- *   premium       {boolean}  - hide/show based on user plan
- *   problem       {object}   - the full problem object from Supabase
- *   fields        {array}    - current latex step fields from MathLiveEditor
- *   isCorrect     {boolean}  - whether the last submission was accepted
- *   studentName   {string}   - user display name or email
- */
 export default function ExportPDFButton({ premium, problem, fields, isCorrect, studentName }) {
     const [loading, setLoading] = useState(false);
 

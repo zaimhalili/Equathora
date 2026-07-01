@@ -947,3 +947,13 @@ export async function recordProblemStats(
 export async function getUserStats() {
     return await getAchievementProgress();
 }
+
+export async function getInProgressProblemsDb() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return [];
+    const { data } = await supabase
+        .from('user_in_progress_problems')
+        .select('problem_id')
+        .eq('user_id', session.user.id);
+    return (data || []).map(r => String(r.problem_id));
+}

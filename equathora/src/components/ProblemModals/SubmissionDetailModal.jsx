@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import { FaTimes, FaClock, FaCopy, FaCheck } from 'react-icons/fa';
+import React from 'react';
+import { FaTimes, FaClock, FaCheck } from 'react-icons/fa';
 import useBodyScrollLock from '../../hooks/useBodyScrollLock';
 import ExportPDFButton from '../ui/ExportPDFButton';
 
 const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, studentName }) => {
     useBodyScrollLock(isOpen && !!submission);
-
-    const [copyMessage, setCopyMessage] = useState('');
 
     const formatMinutesSeconds = (totalSeconds = 0) => {
         const seconds = Math.max(0, Math.round(totalSeconds));
@@ -20,22 +18,6 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
         return `${minutes}m ${String(remainingSeconds).padStart(2, '0')}s`;
-    };
-
-    const handleCopySteps = () => {
-        if (!submission || !submission.steps) return;
-
-        const latexSteps = submission.steps
-            .map((step, index) => `Step ${index + 1}: ${step.latex}`)
-            .join('\n');
-
-        navigator.clipboard.writeText(latexSteps).then(() => {
-            setCopyMessage('Copied to clipboard!');
-            setTimeout(() => setCopyMessage(''), 2000);
-        }).catch(() => {
-            setCopyMessage('Failed to copy');
-            setTimeout(() => setCopyMessage(''), 2000);
-        });
     };
 
     const formatTimestamp = (value) => {
@@ -63,7 +45,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                                 Submission Details
                             </h2>
                             <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 text-center ${submission.status === 'accepted' ? 'bg-[var(--french-gray)] text-[var(--secondary-color)]' :
-                                submission.status === 'wrong' ? 'bg-[var(--accent-color)]/10 text-[var(--dark-accent-color)]' :
+                                submission.status === 'wrong' ? 'bg-[var(--main-color)] text-[var(--dark-accent-color)]' :
                                     'bg-[var(--main-color)] text-[var(--secondary-color)]'
                                 }`}>
                                 {submission.status === 'accepted' && <FaCheck />}
@@ -82,17 +64,10 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                 </div>
 
                 <div className='flex flex-col gap-4 pb-5 '>
-                    <div className='bg-[var(--french-gray)]/10 p-4 rounded-md'>
+                    <div className='bg-[var(--french-gray)]/10 rounded-md'>
                         <div className='flex justify-between items-center pb-3'>
                             <h3 className='font-[Sansation] font-bold text-sm text-[var(--secondary-color)]'>Your Solution Steps</h3>
                             <div className="flex items-center gap-2">
-                                <button
-                                    onClick={handleCopySteps}
-                                    className='flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[var(--accent-color)] border border-[var(--accent-color)] rounded-md hover:bg-[var(--accent-color)] hover:text-white transition-colors duration-75 cursor-pointer'
-                                >
-                                    <FaCopy />
-                                    Copy Steps
-                                </button>
                                 <ExportPDFButton
                                     premium={premium}
                                     problem={problem}
@@ -106,7 +81,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                             {submission.steps && submission.steps.map((step, index) => (
                                 <div key={index} className='bg-[var(--white)] p-2.5 rounded-md border border-[var(--mid-main-secondary)]'>
                                     <div className='flex items-center gap-2 pb-1'>
-                                        <span className='bg-[var(--secondary-color)] text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold'>
+                                        <span className='bg-[var(--secondary-color)] text-[var(--white)] rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold'>
                                             {index + 1}
                                         </span>
                                     </div>
