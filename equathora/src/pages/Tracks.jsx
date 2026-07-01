@@ -245,13 +245,13 @@ const Tracks = () => {
                     {/* Header */}
                     <div className="flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6">
                         <motion.div
-                            className="flex flex-col justify-center w-full lg:flex-row lg:justify-between gap-3 text-center"
+                            className="flex flex-col-reverse justify-center w-full md:flex-row md:justify-between gap-3 text-center"
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                         >
                             {/* Header */}
-                            <div className="flex flex-col lg:w-2/3 order-2 lg:order-1 justify-center">
+                            <div className="flex flex-col md:w-2/3 justify-center">
                                 <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-extrabold">
                                     Your Math Journey
                                 </h1>
@@ -260,27 +260,20 @@ const Tracks = () => {
                                 </p>
                             </div>
                             {/* Journey Image */}
-                            <div className='lg:w-1/3 flex justify-center order-1 lg:order-2 '>
-                                <img src={Journey} alt="Journey" className='w-30 lg:w-stretch rounded-full'/>
+                            <div className='md:w-1/3 flex justify-center'>
+                                <img src={Journey} alt="Journey" className='w-full sm:max-w-50 md:max-w-full md:w-stretch rounded-full' />
                             </div>
-
-                            
-
-                            {/* User Stats */}
-                            {/* 
-                                        <p className="text-xs font-medium">Time Spent</p>
-                                        <p className="text-sm font-bold text-[var(--secondary-color)]">
-                                            {loading ? '...' : `${Math.round(userStats?.totalTimeSpent || 0)} min`}
-                                        </p> */}
                         </motion.div>
                         <YourTrack></YourTrack>
 
                         {/* Tracks Grid */}
                         <div className="flex flex-wrap w-full gap-3 py-8">
+                            {startedTopics.length > 0 && <h4 className='font-[Sansation] text-[var(--secondary-color)] text-2xl font-bold'>Started Tracks</h4>}
                             {startedTopics.map(renderTrackCard)}
                             {startedTopics.length > 0 && otherTopics.length > 0 ? (
                                 <div className="w-full h-4" />
                             ) : null}
+                            {otherTopics.length > 0 && <h4 className='font-[Sansation] text-[var(--secondary-color)] text-2xl font-bold'>Not Started</h4>}
                             {otherTopics.map(renderTrackCard)}
                         </div>
                     </div>
