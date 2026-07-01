@@ -51,6 +51,7 @@ import {
     notifyStreakMilestone,
 } from '../lib/notificationService';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import OverflowChecker from './OverflowChecker.jsx';
 
 const formatDurationLabel = (seconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(seconds));

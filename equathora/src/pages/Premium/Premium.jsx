@@ -69,7 +69,7 @@ const Premium = ({ premium = false }) => {
               </div>
 
               {/* Card 2 */}
-              <div className='rounded-md flex-col flex bg-gradient-to-t from-amber-600 to-amber-400 px-8 py-10 gap-10 shadow-xl border-2 lg:w-3/5'>
+              <div className='rounded-md flex-col flex bg-gradient-to-t from-amber-600 to-amber-400 px-8 py-10 gap-10 shadow-xl lg:w-3/5'>
                 <div className="flex flex-col gap-5">
                   <h3 className="text-2xl font-bold text-black">Monthly
                     <span className='text-black/50 text-lg pl-3 font-normal'>billed monthly</span>

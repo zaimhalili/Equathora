@@ -187,7 +187,7 @@ const NavigationBar = () => {
 
     return (
         <>
-            <OverflowChecker></OverflowChecker>
+            {/* <OverflowChecker></OverflowChecker> */}
             <motion.header
                 className='w-full bg-[var(--main-color)] h-[60px] sm:h-[70px] md:h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] fixed top-0 z-[1000] overflow-visible box-border'
                 initial={{ y: -100, opacity: 0 }}
