@@ -423,7 +423,7 @@ const GetStarted = () => {
         const success = await saveQuestionnaire();
 
         if (success) {
-            navigate('/recommended');
+            navigate('/discover');
         }
     };
 

@@ -46,7 +46,6 @@ const BlogList = lazy(() => import("./pages/BlogList"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const SubmitProblem = lazy(() => import("./pages/SubmitProblem/SubmitProblem"));
-const Recommended = lazy(() => import("./pages/Recommended"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -117,7 +116,6 @@ function PageTitleUpdater() {
             '/blog': 'Blog - Equathora',
             '/blogs': 'All Posts - Equathora',
             '/adminDashboard': 'Admin Dashboard - Equathora',
-            '/recommended': 'Recommended Path - Equathora',
             '/getStarted': 'Choose Your Path - Equathora',
             '/submitProblem': 'Submit a problem - Equathora',
         };
@@ -273,7 +271,6 @@ export default function App() {
                         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="/terms-of-service" element={<TermsOfService />} />
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
-                        <Route path="/recommended" element={<Recommended />} />
                         <Route path="/getStarted" element={<GetStarted />} />
                         <Route path="/premium" element={<Premium />} />
 

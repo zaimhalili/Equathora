@@ -40,7 +40,7 @@ const Premium = ({ premium = false }) => {
             {/* Premium Card Section */}
             <article className="flex gap-5 pt-10 items-center lg:flex-row flex-col-reverse">
               {/* Card 1 */}
-              <div className='rounded-md flex-col flex bg-[var(--main-color)] px-8 py-10 gap-8 h-fit lg:w-2/5'>
+              <div className='rounded-md flex-col flex bg-[var(--main-color)] px-8 py-10 gap-8 h-fit lg:w-2/5 hover:scale-101 transition-all'>
                 <div className="flex flex-col gap-4">
                   <h3 className="text-2xl font-bold text-[var(--secondary-color)]">Free
                   </h3>
@@ -69,7 +69,7 @@ const Premium = ({ premium = false }) => {
               </div>
 
               {/* Card 2 */}
-              <div className='rounded-md flex-col flex bg-gradient-to-t from-amber-600 to-amber-400 px-8 py-10 gap-10 shadow-xl lg:w-3/5'>
+              <div className='rounded-md flex-col flex bg-gradient-to-t from-amber-600 to-amber-400 px-8 py-10 gap-10 shadow-xl lg:w-3/5 hover:scale-101 transition-all'>
                 <div className="flex flex-col gap-5">
                   <h3 className="text-2xl font-bold text-black">Monthly
                     <span className='text-black/50 text-lg pl-3 font-normal'>billed monthly</span>

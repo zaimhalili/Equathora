@@ -662,3 +662,16 @@ const Discover = () => {
 };
 
 export default Discover;
+
+
+// Add icons and some graphics
+// I need to add the daily calendar
+// Below add some of the suggested problems
+// On the sides: goals, topics, maybe time of day to solve those problems
+// Filter the problems based on needs/skill and also time it takes to solve them based on their level of difficulty
+// Make the thing that drives their progress more visible in this page: "You have achieved a 15 day streak. You're on fire!"
+// For guidance level suggest Premium if they want full guidance etc
+
+// Leave the other data for future updates
+
+// Add a button to retake these choice and go back to GetStarted.jsx / Add this in the settings too
