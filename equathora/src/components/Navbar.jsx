@@ -117,9 +117,9 @@ const Navbar = () => {
       image: Daily
     },
     {
-      to: '/tracks',
-      text: "Your Track",
-      description: "Track topics and problems solved.",
+      to: '/journey',
+      text: "Your Journey",
+      description: "Unlock topics as you progress. ",
       image: Journey
     },
     {

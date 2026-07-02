@@ -779,7 +779,7 @@ export async function getAchievementProgress() {
 }
 
 // ============================================================================
-// PROBLEM STATS — replaces the old localStorage recordProblemStats
+// PROBLEM STATS - This function is called after a problem submission to update all relevant stats in the database
 // ============================================================================
 
 const formatHoursMinutes = (totalMinutes) => {

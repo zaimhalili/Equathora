@@ -35,7 +35,6 @@ const ProblemGroup = lazy(() => import("./pages/ProblemGroup"));
 const Problem = lazy(() => import("./pages/Problem"));
 const More = lazy(() => import("./pages/More"));
 const Learn = lazy(() => import("./pages/Learn"));
-const Discover = lazy(() => import("./pages/Discover"));
 const ApplyMentor = lazy(() => import("./pages/ApplyMentor"));
 const HelpCenter = lazy(() => import("./pages/HelpCenter"));
 const SystemUpdates = lazy(() => import("./pages/SystemUpdates"));
@@ -63,7 +62,7 @@ const Resend = lazy(() => import("./pages/Resend"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Premium = lazy(() => import("./pages/Premium/Premium"));
-const Tracks = lazy(() => import("./pages/Tracks"));
+const Journey = lazy(() => import("./pages/Journey"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const EquathoraBriefs = lazy(() => import("./pages/EquathoraBriefs"));
@@ -99,8 +98,7 @@ function PageTitleUpdater() {
             '/feedback': 'Share Feedback - Equathora',
             '/applymentor': 'Become a Mentor - Equathora',
             '/leaderboards': 'Top Solvers - Equathora',
-            '/discover': 'Explore More - Equathora',
-            '/tracks': 'Tracks - Equathora',
+            '/journey': 'Your Journey - Equathora',
             '/notifications': 'Updates - Equathora',
             '/settings': 'Your Settings - Equathora',
             '/premium': 'Go Premium - Equathora',
@@ -281,8 +279,7 @@ export default function App() {
                         <Route path="/learn" element={<Learn />} />
                         <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
                         <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
-                        <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} />
-                        <Route path="/tracks" element={<ProtectedRoute><Tracks /></ProtectedRoute>} />
+                        <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />
                         <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
                         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
                         <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>}></Route>

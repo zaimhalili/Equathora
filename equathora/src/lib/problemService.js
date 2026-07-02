@@ -2,6 +2,7 @@ import { supabase } from './supabaseClient';
 // Add to import from databaseService:
 import { getFavorites, getCompletedProblems, markProblemInProgressDb, getInProgressProblemsDb } from './databaseService';
 import { generateProblemSlug, extractIdFromSlug } from './slugify';
+import { Cell } from 'recharts';
 
 const DEFAULT_LOCAL_BACKEND = 'http://localhost:5104';
 
@@ -714,6 +715,53 @@ export async function getProblemsByDifficulty(difficulty) {
     }
 }
 
+export async function getProblemTopics() {
+    try {
+        const { data, error } = await supabase
+            .from('problems')
+            .select('topic')
+            .order('topic')
+
+        if (error) throw error;
+        return [...new Set(data.map(row => row.topic))];
+    }
+    catch (error) {
+        console.error('Error fetching problem topics: ', error);
+        return [];
+    }
+}
+
+export async function getProblemSubjects() {
+    try {
+        const { data, error } = await supabase
+            .from('problems')
+            .select('subject');
+
+        if (error) throw error;
+        return [...new Set(data.map(row => row.subject))];
+    } catch (error) {
+        console.error('Error fetching problem subjects: ', error);
+        return [];
+    }
+}
+
+export async function getTopicsBySubject(subject) {
+    try {
+        const { data, error } = await supabase
+            .from('problems')
+            .select('*')
+            .eq('subject', subject)
+            .eq('is_active', true);
+        
+
+        if (error) throw error;
+        return [...new Set(data.map(row => row.topic))];
+    } catch (error) {
+        console.error('Error fetching the problem topics by subject ', error);
+        return [];
+    }
+}
+
 /**
  * Get problems by topic
  */
@@ -923,4 +971,13 @@ export async function getProblemsLegacyFormat() {
         console.error('Error fetching legacy format:', error);
         return { problemGroups: [], problems: [] };
     }
+}
+
+export async function getProblemsAll() {
+    const { data, error } = await supabase
+        .from('problems')
+        .select('*');
+
+    if (error) throw error;
+    return data;
 }
