@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
-import { FaCheckCircle, FaDumbbell } from 'react-icons/fa';
+import { FaCheckCircle, FaDumbbell, FaCheck, FaLock } from 'react-icons/fa';
 import { getUserProgress, getStreakData, getCompletedProblems, getUserSubmissions } from '../lib/databaseService';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
@@ -11,9 +11,13 @@ import { formatTopicLabel } from '@/lib/utils';
 import LoadingSpinner from '../components/LoadingSpinner';
 import JourneyImg from '../assets/images/Journey-pana.svg';
 import { getProblemsAll } from '@/lib/problemService';
+import TopicCard from '@/components/Journey/TopicCard';
 
 const Journey = () => {
     const [journey, setJourney] = useState({});
+    const [completedSet, setCompletedSet] = useState(new Set());
+    const [attemptedSet, setAttemptedSet] = useState(new Set());
+    const [loading, setLoading] = useState(true);
 
     const SUBJECT_ORDER = [
         "Algebra",
@@ -68,15 +72,45 @@ const Journey = () => {
 
     useEffect(() => {
         async function load() {
-            const problems = await getProblemsAll();
+            try {
+                const [
+                    problems,
+                    completedProblems,
+                    submissions
+                ] = await Promise.all([
+                    getProblemsAll(),
+                    getCompletedProblems(),
+                    getUserSubmissions()
+                ]);
 
-            const grouped = buildJourney(problems);
+                const grouped = buildJourney(problems);
 
-            setJourney(grouped);
+                setJourney(grouped);
+
+                setCompletedSet(
+                    new Set(completedProblems.map(id => String(id)))
+                );
+
+                setAttemptedSet(
+                    new Set(
+                        submissions.map(sub => String(sub.problem_id))
+                    )
+                );
+            }
+            catch (err) {
+                console.error(err);
+            }
+            finally {
+                setLoading(false);
+            }
         }
 
         load();
     }, []);
+
+    if (loading) {
+        return <LoadingSpinner />;
+    }
 
     return (
         <>
@@ -84,7 +118,7 @@ const Journey = () => {
             <div className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
                 <div className='flex items-center justify-center w-full'>
                     {/* Header */}
-                    <div className="flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6">
+                    <div className="flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:pt-6">
                         <motion.div
                             className="flex flex-col-reverse justify-center w-full md:flex-row md:justify-between gap-3 text-center"
                             initial={{ opacity: 0, y: -20 }}
@@ -105,110 +139,29 @@ const Journey = () => {
                                 <img src={JourneyImg} alt="Journey" className='w-full sm:max-w-50 md:max-w-full md:w-stretch rounded-full' />
                             </div>
                         </motion.div>
-                        <section className="w-full flex flex-col items-center">
 
+                        <section className='flex flex-col w-full pt-4'>
                             {Object.keys(journey)
                                 .sort(
                                     (a, b) =>
                                         SUBJECT_ORDER.indexOf(a) - SUBJECT_ORDER.indexOf(b)
                                 )
                                 .map(subject => (
-                                    <div key={subject} className="w-full max-w-6xl mb-12">
+                                    <div key={subject} className="pb-8 flex flex-col gap-4">
 
-                                        {/* SUBJECT HEADER */}
-                                        <div className="mb-4">
-                                            <h2 className="text-3xl font-bold px-4 py-3 rounded-xl bg-[var(--white)]/40">
-                                                {subject}
-                                            </h2>
-                                        </div>
-
-                                        {/* TOPICS GRID */}
-                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 px-2">
-
-                                            {Object.keys(journey[subject]).map(topic => {
-                                                const problems = journey[subject][topic];
-
-                                                // optional progress placeholder (replace later with real logic)
-                                                const total = problems.length;
-                                                const solved = 0; // plug user progress here later
-                                                const progress = total ? (solved / total) * 100 : 0;
-
-                                                return (
-                                                    <Link
-                                                        key={topic}
-                                                        to={`/topic/${topic}`}
-                                                        className="group p-4 rounded-xl bg-[var(--white)]/20 hover:bg-[var(--white)]/30 transition flex flex-col gap-3 shadow-sm"
-                                                    >
-
-                                                        {/* TOPIC TITLE */}
-                                                        <div className="font-semibold text-md group-hover:translate-x-1 transition">
-                                                            {formatTopicLabel(topic)}
-                                                        </div>
-
-                                                        {/* META INFO */}
-                                                        <div className="text-sm opacity-70">
-                                                            {total} problems
-                                                        </div>
-
-                                                        {/* PROGRESS BAR */}
-                                                        <div className="w-full h-2 bg-white/20 rounded-full overflow-hidden">
-                                                            <div
-                                                                className="h-full bg-green-400 transition-all"
-                                                                style={{ width: `${progress}%` }}
-                                                            />
-                                                        </div>
-
-                                                    </Link>
-                                                );
-                                            })}
-
-                                        </div>
-
-                                    </div>
-                                ))
-                            }
-
-                        </section>
-                        <section className='flex flex-col items-center w-full'>
-                            {Object.keys(journey)
-                                .sort(
-                                    (a, b) =>
-                                        SUBJECT_ORDER.indexOf(a) - SUBJECT_ORDER.indexOf(b)
-                                )
-                                .map(subject => (
-                                    <div key={subject} className="pb-8 flex flex-col">
-
-                                        <h2 className="text-2xl font-bold bg-[var(--white)]/50 rounded-md flex items-center justify-center">
+                                        <h2 className="text-3xl font-bold rounded-md flex items-center justify-center">
                                             {subject}
                                         </h2>
 
                                         {Object.keys(journey[subject]).map(topic => (
-                                            <div key={topic} className="flex flex-col">
-
-                                                <h3 className="text-lg font-semibold bg-[var(--white)]/30 rounded-md w-fit px-3 py-2">
-                                                    {formatTopicLabel(topic)}
-                                                </h3>
-
-                                                <div className="ml-4 mt-2 space-y-1">
-
-                                                    {journey[subject][topic].map(problem => (
-                                                        <Link
-                                                            key={problem.id}
-                                                            to={`/problem/${problem.id}`}
-                                                            className="block p-2 rounded hover:bg-gray-100"
-                                                        >
-                                                            <div className="flex justify-between">
-                                                                <span>{problem.title}</span>
-                                                                <span className="text-sm opacity-60">
-                                                                    {problem.difficulty}
-                                                                </span>
-                                                            </div>
-                                                        </Link>
-                                                    ))}
-
-                                                </div>
-
-                                            </div>
+                                            // Topic Card
+                                            <TopicCard
+                                                key={topic}
+                                                topic={topic}
+                                                problems={journey[subject][topic]}
+                                                completedSet={completedSet}
+                                                attemptedSet={attemptedSet}
+                                            />
                                         ))}
 
                                     </div>
@@ -232,7 +185,6 @@ const Journey = () => {
 export default Journey;
 
 
-// Add icons and some graphics
 // I need to add the daily calendar
 // Below add some of the suggested problems
 // On the sides: goals, topics, maybe time of day to solve those problems

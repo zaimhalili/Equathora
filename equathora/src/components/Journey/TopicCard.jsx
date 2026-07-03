@@ -1,0 +1,257 @@
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AnimatePresence, motion } from "framer-motion";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {
+    FaCheck,
+    FaLock,
+    FaPlay,
+    FaClock,
+    FaArrowRight
+} from 'react-icons/fa';
+import { formatTopicLabel } from '@/lib/utils';
+
+const TopicCard = ({
+    topic,
+    problems,
+    completedSet = new Set(),
+    attemptedSet = new Set()
+}) => {
+    const [open, setOpen] = useState(false);
+
+    const firstUnlocked = useMemo(() => {
+        let foundCurrent = false;
+        
+
+        return problems.map(problem => {
+
+            const solved = completedSet.has(String(problem.id));
+            const attempted = attemptedSet.has(String(problem.id));
+
+            let state = "locked";
+
+            if (solved) {
+                state = "solved";
+            }
+            else if (!foundCurrent) {
+                state = attempted ? "progress" : "current";
+                foundCurrent = true;
+            }
+
+            return {
+                ...problem,
+                state
+            };
+        });
+
+    }, [problems, completedSet, attemptedSet]);
+
+    const [selected, setSelected] = useState(firstUnlocked[0]);
+
+    const progress =
+        firstUnlocked.filter(p => p.state === "solved").length /
+        firstUnlocked.length * 100;
+
+    return (
+        <div className="w-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
+
+            {/* Header */}
+            <button
+                onClick={() => setOpen(!open)}
+                className="flex items-center justify-between w-full text-left"
+            >
+                <div className="flex-1">
+                    <div className="flex items-center justify-between pb-3">
+                        <h3 className="text-xl font-bold">
+                            {formatTopicLabel(topic)}
+                        </h3>
+
+                        <div className="flex items-center gap-4">
+                            <span className="text-xl font-semibold">
+                                {Math.round(progress)}%
+                            </span>
+
+                            {open ? (
+                                <FaChevronUp className="text-lg" />
+                            ) : (
+                                <FaChevronDown className="text-lg" />
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="h-4 rounded-md bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white overflow-hidden">
+                        <div
+                            className="h-full rounded-md bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))]"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
+                </div>
+            </button>
+
+            <AnimatePresence initial={false}>
+                {open && (
+                    <motion.div
+                        key="body"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{
+                            opacity: 1,
+                            height: "auto"
+                        }}
+                        exit={{
+                            opacity: 0,
+                            height: 0
+                        }}
+                        transition={{
+                            duration: 0.3
+                        }}
+                    >
+                        {/* Content */}
+                        <div className="flex flex-col lg:flex-row gap-6 pt-5">
+
+                            {/* LEFT */}
+                            <div className="flex flex-col gap-5 md:gap-3 justify-between w-full lg:w-1/2">
+
+                                {/* Circle Container */}
+                                <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                                    {firstUnlocked.map(problem => {
+
+                                        let style = "bg-[var(--white)] text-[var(--mid-main-secondary)]";
+                                        let Icon = FaLock;
+
+                                        if (problem.state === "solved") {
+                                            style = "bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] text-white";
+                                            Icon = FaCheck;
+                                        }
+
+                                        if (problem.state === "progress") {
+                                            style = "bg-orange-500 text-white";
+                                            Icon = FaClock;
+                                        }
+
+                                        if (problem.state === "current") {
+                                            style = "bg-amber-500 text-white";
+                                            Icon = FaPlay;
+                                        }
+
+                                        return (
+                                            <button
+                                                key={problem.id}
+                                                onClick={() => setSelected(problem)}
+                                                className={`h-11 w-11 rounded-full flex items-center justify-center transition-all ${style}
+                                                ${selected?.id === problem.id
+                                                        ? "scale-110 ring-4 ring-white/80"
+                                                        : "hover:scale-110"
+                                                    }`}
+                                            >
+                                                <Icon size={16} />
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* Legend */}
+                                <div className="flex justify-between w-full flex-wrap gap-3">
+
+                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                        <div className="rounded-full flex h-7 w-7 bg-amber-500 text-white justify-center items-center">
+                                            <FaPlay size={12} />
+                                        </div>
+                                        Next
+                                    </div>
+
+                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                        <div className="rounded-full flex h-7 w-7 bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] text-white justify-center items-center">
+                                            <FaCheck size={12} />
+                                        </div>
+                                        Completed <span className="font-normal">23</span>
+                                    </div>
+
+                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                        <div className="rounded-full flex h-7 w-7 bg-orange-500 text-white justify-center items-center">
+                                            <FaClock size={12} />
+                                        </div>
+                                        In Progress{" "}
+                                        <span className="font-normal">
+                                            {firstUnlocked.filter(p => p.state === "progress").length}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                        <div className="rounded-full flex h-7 w-7 bg-[var(--white)] text-[var(--mid-main-secondary)] justify-center items-center">
+                                            <FaLock size={12} />
+                                        </div>
+                                        Not Started{" "}
+                                        <span className="font-normal">
+                                            {
+                                                firstUnlocked.filter(
+                                                    p => p.state === "locked"
+                                                ).length
+                                            }
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            {/* RIGHT */}
+                            <div className="w-full lg:w-1/2 rounded-md bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-[var(--secondary-color)]">
+
+                                <h4 className="text-xl font-bold pb-3">
+                                    {selected?.title}
+                                </h4>
+
+                                <div className="text-sm">
+
+                                    <div className="flex justify-between">
+                                        <span className="opacity-80">
+                                            Difficulty
+                                        </span>
+
+                                        <span>
+                                            {selected?.difficulty}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex justify-between">
+                                        <span className="opacity-80">
+                                            Estimated Time
+                                        </span>
+
+                                        <span>
+                                            {selected?.estimated_time ?? "5–10 min"}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex justify-between">
+                                        <span className="opacity-80">
+                                            XP Reward
+                                        </span>
+
+                                        <span>
+                                            {selected?.xp ?? "25 XP"}
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                                <Link
+                                    to={`/problem/${selected?.id}`}
+                                    className="mt-5 rounded-xl py-3 flex items-center justify-center gap-2 font-semibold !text-white bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all active:scale-95"
+                                >
+                                    Start Problem
+                                    <FaArrowRight />
+                                </Link>
+
+                            </div>
+
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+        </div>
+    );
+};
+
+export default TopicCard;
