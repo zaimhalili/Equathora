@@ -19,7 +19,17 @@
         --black: #000000;
 
         /* Exceptions */
-        --rare-blue:#1e40af;
+        --rare-blue: #1e40af;
+
+        /* Difficulty colors */
+        --beginner: #2563eb;
+        --easy: #16a34a;
+        --standard: #0f766e;
+        --intermediate: #be123c;
+        --medium: #d97706;
+        --challenging: #f97316;
+        --hard: #a3142c;
+        --advanced: #6366f1;
     }
 
     :root[data-theme='dark'] {
@@ -245,4 +255,5 @@ select {
 
 .mathjax-renderer mjx-container svg {
     max-width: 100% !important;
-    height: auto !important; }
+    height: auto !important;
+}

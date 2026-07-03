@@ -7,7 +7,13 @@ import {
     FaLock,
     FaPlay,
     FaClock,
-    FaArrowRight
+    FaArrowRight,
+    FaGem,
+    FaBolt,
+    FaMedal,
+    FaCrown,
+    FaFire,
+    FaBullseye
 } from 'react-icons/fa';
 import { formatTopicLabel } from '@/lib/utils';
 
@@ -21,7 +27,7 @@ const TopicCard = ({
 
     const firstUnlocked = useMemo(() => {
         let foundCurrent = false;
-        
+
 
         return problems.map(problem => {
 
@@ -52,9 +58,10 @@ const TopicCard = ({
         firstUnlocked.filter(p => p.state === "solved").length /
         firstUnlocked.length * 100;
 
+
+
     return (
         <div className="w-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
-
             {/* Header */}
             <button
                 onClick={() => setOpen(!open)}
@@ -105,12 +112,13 @@ const TopicCard = ({
                         transition={{
                             duration: 0.3
                         }}
+                        className='flex flex-col gap-5'
                     >
-                        {/* Content */}
-                        <div className="flex flex-col lg:flex-row gap-6 pt-5">
+                        {/* Top Main Content */}
+                        <section className="flex flex-col lg:flex-row gap-6 pt-5">
 
                             {/* LEFT */}
-                            <div className="flex flex-col gap-5 md:gap-3 justify-between w-full lg:w-1/2">
+                            <article className="flex flex-col gap-5 md:gap-3 justify-between w-full lg:w-1/2">
 
                                 {/* Circle Container */}
                                 <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
@@ -192,10 +200,10 @@ const TopicCard = ({
                                     </div>
 
                                 </div>
-                            </div>
+                            </article>
 
                             {/* RIGHT */}
-                            <div className="w-full lg:w-1/2 rounded-md bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-[var(--secondary-color)]">
+                            <article className="w-full lg:w-1/2 rounded-md bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-[var(--secondary-color)]">
 
                                 <h4 className="text-xl font-bold pb-3">
                                     {selected?.title}
@@ -208,7 +216,10 @@ const TopicCard = ({
                                             Difficulty
                                         </span>
 
-                                        <span>
+                                        <span className="px-2 rounded text-white text-sm font-semibold"
+                                            style={{
+                                                backgroundColor: `var(--${selected?.difficulty.toLowerCase()})`
+                                            }}>
                                             {selected?.difficulty}
                                         </span>
                                     </div>
@@ -243,9 +254,28 @@ const TopicCard = ({
                                     <FaArrowRight />
                                 </Link>
 
-                            </div>
+                            </article>
 
-                        </div>
+                        </section>
+                        {/* Achievements  */}
+                        {/* <section className='w-full gap-3 p-5 rounded-md bg-white/5 border border-white/50 flex flex-col'>
+                            <p className='text-xl font-bold text-[var(--secondary-color)]'>Trophy Cabinet</p>
+                            <article className='flex gap-3'>
+                                <div className="flex flex-col w-fit bg-white/5 border border-white/50 p-3 items-center gap-3 rounded-md">
+                                    <FaGem className='w-full text-5xl text-[var(--secondary-color)]' />
+                                    <p className='text-[var(--secondary-color)]'>Locked</p>
+                                </div>
+                                <div className="flex flex-col w-fit bg-white/5 border border-white/50 p-3 items-center gap-3 rounded-md">
+                                    <FaCrown className='w-full text-5xl text-[var(--secondary-color)]' />
+                                    <p className='text-[var(--secondary-color)]'>Locked</p>
+                                </div>
+                                <div className="flex flex-col w-fit bg-white/5 border border-white/50 p-3 items-center gap-3 rounded-md">
+                                    <FaBolt className='w-full text-5xl text-[var(--secondary-color)]' />
+                                    <p className='text-[var(--secondary-color)]'>Locked</p>
+                                </div>
+                            </article>
+
+                        </section> */}
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -255,3 +285,32 @@ const TopicCard = ({
 };
 
 export default TopicCard;
+
+
+
+// 2)
+// Continue where you left off
+// ► Modular Arithmetic #6
+// ~10 min
+//     + 40 XP
+
+//     [Continue]
+
+// 3) -------- 50% Done
+// Achievements for each topic: Number Theory
+// 🏆 Finish all Beginner problems
+// 🏆 Solve 10 in a row
+// 🏆 Finish topic under 2 hours
+
+// ✓ 2 / 3 achievements
+
+// 4)
+// Today's Goal
+
+// ■■■■□□□□
+
+// 12 / 20 min
+
+// 1) --------- 80% Done
+// Open the first section that isnt finished
+// Automatically collapse completed topics (optional)
