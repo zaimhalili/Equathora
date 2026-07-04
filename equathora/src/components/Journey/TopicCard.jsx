@@ -138,7 +138,7 @@ const TopicCard = ({
                                         }
 
                                         if (problem.state === "current") {
-                                            style = "bg-amber-500 text-white";
+                                            style = "bg-amber-500 text-white pl-1";
                                             Icon = FaPlay;
                                         }
 
@@ -162,7 +162,7 @@ const TopicCard = ({
                                 <div className="flex justify-between w-full flex-wrap gap-3">
 
                                     <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
-                                        <div className="rounded-full flex h-7 w-7 bg-amber-500 text-white justify-center items-center">
+                                        <div className="rounded-full flex h-7 w-7 bg-amber-500 text-white justify-center items-center pl-1">
                                             <FaPlay size={12} />
                                         </div>
                                         Next
@@ -259,7 +259,7 @@ const TopicCard = ({
                         </section>
                         {/* Achievements  */}
                         {/* <section className='w-full gap-3 p-5 rounded-md bg-white/5 border border-white/50 flex flex-col'>
-                            <p className='text-xl font-bold text-[var(--secondary-color)]'>Trophy Cabinet</p>
+                            <p className='text-xl font-bold text-[var(--secondary-color)]'>Achievements</p>
                             <article className='flex gap-3'>
                                 <div className="flex flex-col w-fit bg-white/5 border border-white/50 p-3 items-center gap-3 rounded-md">
                                     <FaGem className='w-full text-5xl text-[var(--secondary-color)]' />
@@ -288,13 +288,7 @@ export default TopicCard;
 
 
 
-// 2)
-// Continue where you left off
-// ► Modular Arithmetic #6
-// ~10 min
-//     + 40 XP
 
-//     [Continue]
 
 // 3) -------- 50% Done
 // Achievements for each topic: Number Theory
@@ -304,12 +298,7 @@ export default TopicCard;
 
 // ✓ 2 / 3 achievements
 
-// 4)
-// Today's Goal
 
-// ■■■■□□□□
-
-// 12 / 20 min
 
 // 1) --------- 80% Done
 // Open the first section that isnt finished

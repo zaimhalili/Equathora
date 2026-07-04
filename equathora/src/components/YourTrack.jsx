@@ -6,7 +6,6 @@ import { getAllProblems } from '../lib/problemService';
 import { supabase } from '../lib/supabaseClient';
 import { computeAccuracyFromSubmissions } from '../lib/accuracyService';
 import { FaArrowRight } from 'react-icons/fa';
-import DailyTrack from './Journey/DailyTrack';
 
 const fallbackStats = {
     problemsSolved: 0,

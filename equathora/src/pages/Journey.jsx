@@ -11,6 +11,7 @@ import { formatTopicLabel } from '@/lib/utils';
 import LoadingSpinner from '../components/LoadingSpinner';
 import JourneyImg from '../assets/images/Journey-pana.svg';
 import { getProblemsAll } from '@/lib/problemService';
+import DailyTrack from '@/components/Journey/DailyTrack';
 import TopicCard from '@/components/Journey/TopicCard';
 
 const Journey = () => {
@@ -139,7 +140,9 @@ const Journey = () => {
                                 <img src={JourneyImg} alt="Journey" className='w-full sm:max-w-50 md:max-w-full md:w-stretch rounded-full' />
                             </div>
                         </motion.div>
+                        <DailyTrack />
 
+                        {/* Dropdowns */}
                         <section className='flex flex-col w-full pt-4'>
                             {Object.keys(journey)
                                 .sort(
