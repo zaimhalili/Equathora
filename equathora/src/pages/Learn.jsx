@@ -179,6 +179,7 @@ const Learn = () => {
   const difficultyFilter = searchParams.get('difficulty') || '';
   const statusFilter = searchParams.get('status') || '';
   const topicFilter = searchParams.get('topic') || '';
+  const premiumFilter = searchParams.get("premium") || "";
   const sortBy = searchParams.get('sort') || 'default';
 
   const formatGradeLabel = useCallback((gradeValue) => {
@@ -244,6 +245,11 @@ const Learn = () => {
       .map(([topic, count]) => ({ value: topic, label: formatTopicLabel(topic), count }))
       .sort((a, b) => a.label.localeCompare(b.label));
   }, [facets]);
+
+  const premiumOptions = [
+    { value: "free", label: "Free" },
+    { value: "premium", label: "Premium" }
+  ];
 
   // Count active filters
   const activeFilterCount = useMemo(() => {

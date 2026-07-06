@@ -139,9 +139,9 @@ const Sidebar = ({ isOpen, onClose }) => {
             </svg>
         },
         {
-            to: '/tracks',
-            text: 'Tracks',
-            description: 'Topic learning paths',
+            to: '/journey',
+            text: 'Journey',
+            description: 'Your math journey',
             icon: <FaRoute className="sidebar-gradient-icon" size={24} aria-hidden="true" />
         },
         {

@@ -70,13 +70,6 @@ const NavigationBar = () => {
     ]
 
     const discoverItems = [
-        // Hidden for MVP - will be added after launch
-        // {
-        //   to: '/tracks',
-        //   text: "Tracks",
-        //   description: "Personalized problem suggestions.",
-        //   image: Choice
-        // },
         {
             to: '/leaderboards/global',
             text: "Leaderboards",

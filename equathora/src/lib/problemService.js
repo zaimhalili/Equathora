@@ -609,7 +609,6 @@ export async function getAllProblems() {
             .from('problems')
             .select('*')
             .eq('is_active', true)
-            .order('group_id', { ascending: true })
             .order('display_order', { ascending: true });
 
         if (error) throw error;

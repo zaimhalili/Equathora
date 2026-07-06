@@ -6,7 +6,6 @@ import { FaCheckCircle, FaDumbbell, FaCheck, FaLock } from 'react-icons/fa';
 import { getUserProgress, getStreakData, getCompletedProblems, getUserSubmissions } from '../lib/databaseService';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
-import YourTrack from '@/components/YourTrack';
 import { formatTopicLabel } from '@/lib/utils';
 import LoadingSpinner from '../components/LoadingSpinner';
 import JourneyImg from '../assets/images/Journey-pana.svg';
@@ -140,10 +139,11 @@ const Journey = () => {
                                 <img src={JourneyImg} alt="Journey" className='w-full sm:max-w-50 md:max-w-full md:w-stretch rounded-full' />
                             </div>
                         </motion.div>
+
                         <DailyTrack />
 
                         {/* Dropdowns */}
-                        <section className='flex flex-col w-full pt-4'>
+                        <section className='flex flex-col w-full pt-10'>
                             {Object.keys(journey)
                                 .sort(
                                     (a, b) =>
@@ -171,7 +171,6 @@ const Journey = () => {
                                 ))
                             }
                         </section>
-                        <YourTrack></YourTrack>
 
 
                     </div>

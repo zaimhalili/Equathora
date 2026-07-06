@@ -107,7 +107,7 @@ const YourTrack = () => {
                 {/* Progress Bar */}
                 <div className="flex items-center justify-between w-full gap-3 p-0">
                     <Link
-                        to="/tracks"
+                        to="/journey"
                         className="flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group"
                     >
                         <div
@@ -123,7 +123,7 @@ const YourTrack = () => {
                         </div>
                     </Link>
                     <Link
-                        to="/tracks"
+                        to="/journey"
                         className="w-10 h-10 flex items-center justify-center transition-transform duration-150 ease-in hover:translate-x-2 hover:scale-110"
                     >
                         <FaArrowRight className='h-full w-full text-white' />
