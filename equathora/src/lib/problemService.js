@@ -71,12 +71,12 @@ export async function getProblemGroups() {
 /**
  * Get a single problem group by ID
  */
-export async function getProblemGroup(groupId) {
+export async function getProblemGroup(id) {
     try {
         const { data, error } = await supabase
             .from('problem_groups')
             .select('*')
-            .eq('id', groupId)
+            .eq('id', id)
             .eq('is_active', true)
             .single();
 
@@ -618,27 +618,6 @@ export async function getAllProblems() {
         return [];
     }
 }
-
-/**
- * Get problems by group ID
- */
-export async function getProblemsByGroup(groupId) {
-    try {
-        const { data, error } = await supabase
-            .from('problems')
-            .select('*')
-            .eq('group_id', groupId)
-            .eq('is_active', true)
-            .order('display_order', { ascending: true });
-
-        if (error) throw error;
-        return data || [];
-    } catch (error) {
-        console.error('Error fetching problems by group:', error);
-        return [];
-    }
-}
-
 /**
  * Get a single problem by ID
  */
@@ -703,7 +682,6 @@ export async function getProblemsByDifficulty(difficulty) {
             .select('*')
             .eq('difficulty', difficulty)
             .eq('is_active', true)
-            .order('group_id', { ascending: true })
             .order('display_order', { ascending: true });
 
         if (error) throw error;
@@ -791,7 +769,6 @@ export async function searchProblems(searchTerm) {
             .select('*')
             .or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
             .eq('is_active', true)
-            .order('group_id', { ascending: true })
             .order('display_order', { ascending: true });
 
         if (error) throw error;
@@ -799,25 +776,6 @@ export async function searchProblems(searchTerm) {
     } catch (error) {
         console.error('Error searching problems:', error);
         return [];
-    }
-}
-
-/**
- * Get problem count by group
- */
-export async function getProblemCountByGroup(groupId) {
-    try {
-        const { count, error } = await supabase
-            .from('problems')
-            .select('*', { count: 'exact', head: true })
-            .eq('group_id', groupId)
-            .eq('is_active', true);
-
-        if (error) throw error;
-        return count || 0;
-    } catch (error) {
-        console.error('Error counting problems:', error);
-        return 0;
     }
 }
 
@@ -904,12 +862,12 @@ export async function addProblemGroup(groupData) {
 /**
  * Update a problem group (requires authentication)
  */
-export async function updateProblemGroup(groupId, updates) {
+export async function updateProblemGroup(id, updates) {
     try {
         const { data, error } = await supabase
             .from('problem_groups')
             .update(updates)
-            .eq('id', groupId)
+            .eq('id', id)
             .select()
             .single();
 
@@ -951,7 +909,6 @@ export async function getProblemsLegacyFormat() {
             })),
             problems: (problems || []).map(p => ({
                 id: p.id,
-                groupId: p.group_id,
                 title: p.title,
                 difficulty: p.difficulty,
                 description: p.description,

@@ -3,7 +3,6 @@ create or replace function public.get_problems_with_facets(
   p_page integer default null,
   p_page_size integer default null,
   p_problem_id bigint default null,
-  p_group_id bigint default null,
   p_slug text default null,
   p_difficulties text[] default null,
   p_topics text[] default null,
@@ -38,7 +37,6 @@ with base as (
   from problems p
   where p.is_active = true
     and (p_problem_id is null or p.id = p_problem_id)
-    and (p_group_id is null or p.group_id = p_group_id)
     and (p_slug is null or p.slug = p_slug)
 
     and (

@@ -39,7 +39,7 @@ attemptsTableUnavailable = readAttemptsTableFlag();
 const fetchAdminProblemDetailFromSupabase = async (problemId) => {
     const { data: problem, error } = await supabase
         .from('problems')
-        .select('id, group_id, title, description, answer, accepted_answers, hints, solution, is_premium, topic, display_order, slug, created_at, updated_at, difficulty')
+        .select('id, title, description, answer, accepted_answers, hints, solution, is_premium, topic, display_order, slug, created_at, updated_at, difficulty')
         .eq('id', problemId)
         .single();
 
@@ -77,7 +77,6 @@ const fetchAdminProblemDetailFromSupabase = async (problemId) => {
 
     return {
         id: problem?.id,
-        group_id: problem?.group_id,
         title: problem?.title,
         description: problem?.description,
         answer: problem?.answer,
@@ -100,7 +99,7 @@ const fetchAdminProblemDetailFromSupabase = async (problemId) => {
 const fetchAllAdminProblemDetailsFromSupabase = async () => {
     const { data: problems, error } = await supabase
         .from('problems')
-        .select('id, group_id, title, description, answer, accepted_answers, hints, solution, is_premium, topic, display_order, slug, created_at, updated_at, difficulty')
+        .select('id, title, description, answer, accepted_answers, hints, solution, is_premium, topic, display_order, slug, created_at, updated_at, difficulty')
         .eq('is_active', true)
         .order('id', { ascending: true });
 
@@ -153,7 +152,6 @@ const fetchAllAdminProblemDetailsFromSupabase = async () => {
 
         return {
             id: problem?.id,
-            group_id: problem?.group_id,
             title: problem?.title,
             description: problem?.description,
             answer: problem?.answer,
