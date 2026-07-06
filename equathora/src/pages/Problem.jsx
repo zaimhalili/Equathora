@@ -154,11 +154,11 @@ const Problem = () => {
         loadProblems();
     }, [slug]);
 
-    // Sort all problems by group_id first, then by id for consistent navigation across all groups
+    // Sort all problems by display order first, then by id for stable navigation.
     const sortedProblems = [...allProblems].sort((a, b) => {
-        const aGroup = a.group_id ?? a.groupId ?? 0;
-        const bGroup = b.group_id ?? b.groupId ?? 0;
-        if (aGroup !== bGroup) return aGroup - bGroup;
+        const aOrder = a.display_order ?? a.displayOrder ?? 0;
+        const bOrder = b.display_order ?? b.displayOrder ?? 0;
+        if (aOrder !== bOrder) return aOrder - bOrder;
         return a.id - b.id;
     });
 
@@ -717,18 +717,15 @@ const Problem = () => {
         );
     }
 
-    // Get the current problem's group ID (handle both naming conventions)
-    const currentGroupId = problem.group_id ?? problem.groupId;
-
-    // Generate similar questions from the same group
+    // Generate similar questions from the same topic when available.
     const similarQuestions = allProblems
-        .filter(p => (p.group_id ?? p.groupId) === currentGroupId && p.id !== problem.id)
+        .filter(p => problem.topic && p.topic === problem.topic && p.id !== problem.id)
         .slice(0, 3)
         .map(p => ({
             id: p.id,
-            groupId: p.group_id ?? p.groupId,
             title: p.title,
-            difficulty: p.difficulty
+            difficulty: p.difficulty,
+            topic: p.topic
         }));
 
     // Get hints and accepted answers from database format

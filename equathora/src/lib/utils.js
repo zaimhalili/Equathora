@@ -77,18 +77,6 @@ export async function getDailyProblemId() {
 }
 
 /**
- * Maps problem IDs to their corresponding group IDs
- * @param {number} problemId - The problem ID
- * @returns {Promise<number>} The group ID
- */
-export async function getGroupIdForProblem(problemId) {
-    const allProblems = await getAllProblems();
-    const problem = allProblems.find(p => p.id === problemId);
-    // Handle both Supabase (group_id) and local (groupId) field naming
-    return problem ? (problem.group_id ?? problem.groupId ?? 1) : 1;
-}
-
-/**
  * Gets the daily problem slug for URL navigation
  * @returns {Promise<string>} Problem slug
  */

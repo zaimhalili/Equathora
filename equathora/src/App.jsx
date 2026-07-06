@@ -31,7 +31,6 @@ const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
-const ProblemGroup = lazy(() => import("./pages/ProblemGroup"));
 const Problem = lazy(() => import("./pages/Problem"));
 const More = lazy(() => import("./pages/More"));
 const Learn = lazy(() => import("./pages/Learn"));
@@ -309,7 +308,6 @@ export default function App() {
                         </Route>
 
                         {/* Protected Dynamic Routes */}
-                        <Route path="/problem-groups/:groupId" element={<ProtectedRoute><ProblemGroup /></ProtectedRoute>} />
                         <Route path="/problems/:slug" element={<ProtectedRoute><Problem /></ProtectedRoute>} />
                         <Route path="/profile/:profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
