@@ -117,8 +117,8 @@ const Journey = () => {
             <Navbar />
             <div className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
                 <div className='flex items-center justify-center w-full'>
-                    {/* Header */}
                     <div className="flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:pt-6">
+                        {/* Header */}
                         <motion.div
                             className="flex flex-col-reverse justify-center w-full md:flex-row md:justify-between gap-3 text-center"
                             initial={{ opacity: 0, y: -20 }}
@@ -140,6 +140,7 @@ const Journey = () => {
                             </div>
                         </motion.div>
 
+                        {/* Daily Mission */}
                         <DailyTrack />
 
                         {/* Dropdowns */}

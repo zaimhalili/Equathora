@@ -61,7 +61,7 @@ const TopicCard = ({
 
 
     return (
-        <div className="w-full rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
+        <div className="w-full rounded-2xl bg-white/10 backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
             {/* Header */}
             <button
                 onClick={() => setOpen(!open)}
@@ -285,9 +285,6 @@ const TopicCard = ({
 };
 
 export default TopicCard;
-
-
-
 
 
 // 3) -------- 50% Done

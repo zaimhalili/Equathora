@@ -16,7 +16,8 @@ import {
     FaRocket,
     FaTrophy,
     FaGraduationCap,
-    FaBrain
+    FaBrain,
+    FaChalkboardTeacher
 } from 'react-icons/fa';
 import {
     MdTimeline,
@@ -25,11 +26,8 @@ import {
 } from 'react-icons/md';
 import { IoMdCalculator } from 'react-icons/io';
 import { BiMath } from 'react-icons/bi';
-
 import { supabase } from '@/lib/supabaseClient';
-
 import WelcomeTeacher from '../assets/images/welcomeTeacher.svg';
-import Mascot from '../assets/images/mascot.png';
 
 const GetStarted = () => {
     const navigate = useNavigate();
@@ -38,7 +36,7 @@ const GetStarted = () => {
     const [selectedOptions, setSelectedOptions] = useState({});
     const [saving, setSaving] = useState(false);
 
-    const totalSteps = 10;
+    const totalSteps = 8;
     const percentage = ((currentStep + 1) / totalSteps) * 100;
 
     const encouragementMessages = {
@@ -57,40 +55,62 @@ const GetStarted = () => {
             type: 'welcome',
             title: 'Welcome to Equathora',
             subtitle: "Let's personalize your learning experience",
-            description:
-                'Answer a few questions to help us create the perfect study plan for you'
+            description: null
         },
         {
             type: 'selection',
-            title: "What's your primary goal?",
-            subtitle: 'Select the option that best describes your objective',
+            title: 'Who are you?',
+            subtitle: "We'll tailor Equathora to your role.",
             options: [
                 {
-                    id: 'exams',
-                    label: 'Prepare for exams',
-                    icon: <FaGraduationCap />
+                    id: 'student',
+                    label: 'Student',
+                    icon: <FaGraduationCap />,
+                    description: 'Solve problems, improve your skills and track your progress.'
+                },
+                {
+                    id: 'teacher',
+                    label: 'Teacher',
+                    icon: <FaChalkboardTeacher />,
+                    description: 'Create classes, assign work and monitor your students.'
+                }
+            ]
+        },
+        {
+            type: 'selection',
+            title: "What's your main goal?",
+            subtitle: 'Choose the reason you joined Equathora',
+            options: [
+                {
+                    id: 'school',
+                    label: 'School & University',
+                    icon: <FaGraduationCap />,
+                    description: 'Improve grades and prepare for classes'
+                },
+                {
+                    id: 'competitions',
+                    label: 'Math Competitions',
+                    icon: <FaTrophy />,
+                    description: 'Train for olympiads and contests'
                 },
                 {
                     id: 'problem-solving',
-                    label: 'Improve problem-solving',
-                    icon: <FaBrain />
+                    label: 'Problem Solving',
+                    icon: <FaBrain />,
+                    description: 'Become a stronger mathematical thinker'
                 },
                 {
-                    id: 'confidence',
-                    label: 'Build confidence',
-                    icon: <FaTrophy />
-                },
-                {
-                    id: 'exploration',
-                    label: 'Explore new topics',
-                    icon: <FaLightbulb />
+                    id: 'fun',
+                    label: 'Learn for Fun',
+                    icon: <FaLightbulb />,
+                    description: 'Explore mathematics at your own pace'
                 }
             ]
         },
         {
             type: 'multi-selection',
-            title: 'Select topics to focus on',
-            subtitle: 'Choose one or more areas you want to study',
+            title: 'Which topics interest you?',
+            subtitle: 'Choose all that you enjoy or want to improve',
             options: [
                 {
                     id: 'algebra',
@@ -103,218 +123,126 @@ const GetStarted = () => {
                     icon: <FaSquareRootAlt />
                 },
                 {
+                    id: 'number_theory',
+                    label: 'Number Theory',
+                    icon: <FaBook />
+                },
+                {
+                    id: 'combinatorics',
+                    label: 'Combinatorics',
+                    icon: <FaBrain />
+                },
+                {
                     id: 'calculus',
                     label: 'Calculus',
                     icon: <FaChartLine />
                 },
                 {
-                    id: 'trigonometry',
-                    label: 'Trigonometry',
-                    icon: <IoMdCalculator />
-                },
-                {
-                    id: 'statistics',
-                    label: 'Statistics',
+                    id: 'probability',
+                    label: 'Probability',
                     icon: <FaChartBar />
-                },
-                {
-                    id: 'number-theory',
-                    label: 'Number Theory',
-                    icon: <FaBook />
                 }
             ]
         },
         {
             type: 'selection',
-            title: "What's your current level?",
-            subtitle: 'This helps us match you with appropriate content',
+            title: 'How would you rate your current level?',
+            subtitle: 'This is only a starting point - we will adapt as you solve problems',
             options: [
                 {
                     id: 'beginner',
                     label: 'Beginner',
                     icon: <FaBook />,
-                    description: 'Learning fundamentals'
+                    description: 'Just getting started'
                 },
                 {
                     id: 'intermediate',
                     label: 'Intermediate',
                     icon: <FaBrain />,
-                    description: 'Comfortable with basics'
+                    description: 'Comfortable with the basics'
                 },
                 {
                     id: 'advanced',
                     label: 'Advanced',
                     icon: <FaChartLine />,
-                    description: 'Ready for complex problems'
+                    description: 'Enjoy solving difficult problems'
                 },
                 {
-                    id: 'expert',
-                    label: 'Expert',
+                    id: 'competitive',
+                    label: 'Competitive',
                     icon: <FaRocket />,
-                    description: 'Seeking challenges'
-                }
-            ]
-        },        {
-            type: 'selection',
-            title: 'Choose your learning approach',
-            subtitle: 'Select the method that works best for you',
-            options: [
-                {
-                    id: 'daily',
-                    label: 'Daily practice',
-                    icon: <FaFire />,
-                    description: 'Consistent short sessions'
-                },
-                {
-                    id: 'challenges',
-                    label: 'Timed challenges',
-                    icon: <MdSpeed />,
-                    description: 'Test under pressure'
-                },
-                {
-                    id: 'collaborative',
-                    label: 'Group learning',
-                    icon: <FaUsers />,
-                    description: 'Study with peers'
-                },
-                {
-                    id: 'self-paced',
-                    label: 'Self-paced',
-                    icon: <MdSelfImprovement />,
-                    description: 'Learn at your own pace'
+                    description: 'Looking for olympiad-level challenges'
                 }
             ]
         },
         {
             type: 'selection',
-            title: 'Daily time commitment',
-            subtitle: 'How much time can you dedicate each day?',
+            title: 'How much time can you study each week?',
+            subtitle: "We'll build recommendations that fit your schedule",
             options: [
                 {
-                    id: '5-10',
-                    label: '5–10 minutes',
+                    id: 'under-1',
+                    label: 'Less than 1 hour',
                     icon: <FaCoffee />,
-                    description: 'Quick review'
+                    description: 'A few short sessions'
                 },
                 {
-                    id: '15-30',
-                    label: '15–30 minutes',
+                    id: '1-3',
+                    label: '1–3 hours',
                     icon: <FaClock />,
-                    description: 'Standard session'
+                    description: 'Steady weekly progress'
                 },
                 {
-                    id: '30-60',
-                    label: '30–60 minutes',
+                    id: '3-6',
+                    label: '3–6 hours',
                     icon: <MdTimeline />,
-                    description: 'In-depth practice'
+                    description: 'Consistent practice'
                 },
                 {
-                    id: '60+',
-                    label: '60+ minutes',
+                    id: '6+',
+                    label: '6+ hours',
                     icon: <FaRocket />,
-                    description: 'Extended study'
+                    description: 'Serious commitment'
                 }
             ]
         },
         {
             type: 'selection',
-            title: 'What drives your progress?',
-            subtitle: 'Choose your primary motivation',
+            title: 'What level of challenge do you enjoy?',
+            subtitle: 'Choose the experience you prefer',
             options: [
                 {
-                    id: 'achievements',
-                    label: 'Achievements',
-                    icon: <FaTrophy />,
-                    description: 'Unlock badges and rewards'
+                    id: 'easy',
+                    label: 'Build Confidence',
+                    icon: <FaBook />,
+                    description: 'Mostly easier problems'
                 },
                 {
-                    id: 'streaks',
-                    label: 'Streaks',
-                    icon: <FaFire />,
-                    description: 'Maintain consistency'
-                },
-                {
-                    id: 'leaderboards',
-                    label: 'Leaderboards',
-                    icon: <FaChartLine />,
-                    description: 'Compete with others'
-                },
-                {
-                    id: 'mastery',
-                    label: 'Mastery',
-                    icon: <FaGraduationCap />,
-                    description: 'Deep understanding'
-                }
-            ]
-        },
-        {
-            type: 'selection',
-            title: 'Preferred study time',
-            subtitle: 'When are you most productive?',
-            options: [
-                {
-                    id: 'morning',
-                    label: 'Morning',
-                    icon: <FaSun />,
-                    description: '6 AM – 12 PM'
-                },
-                {
-                    id: 'afternoon',
-                    label: 'Afternoon',
-                    icon: <FaSun />,
-                    description: '12 PM – 6 PM'
-                },
-                {
-                    id: 'evening',
-                    label: 'Evening',
-                    icon: <FaMoon />,
-                    description: '6 PM – 10 PM'
-                },
-                {
-                    id: 'night',
-                    label: 'Night',
-                    icon: <FaMoon />,
-                    description: '10 PM – 2 AM'
-                }
-            ]
-        },
-        {
-            type: 'selection',
-            title: 'Problem-solving preference',
-            subtitle: 'How much guidance do you want?',
-            options: [
-                {
-                    id: 'hints-please',
-                    label: 'Full guidance',
-                    icon: <FaLightbulb />,
-                    description: 'Step-by-step hints'
-                },
-                {
-                    id: 'some-help',
-                    label: 'Moderate help',
+                    id: 'balanced',
+                    label: 'Balanced',
                     icon: <FaBrain />,
-                    description: 'Hints only when needed'
+                    description: 'A mix of easy and difficult'
                 },
                 {
-                    id: 'minimal',
-                    label: 'Minimal hints',
-                    icon: <FaTrophy />,
-                    description: 'Mostly solve on your own'
+                    id: 'challenging',
+                    label: 'Challenge Me',
+                    icon: <FaChartLine />,
+                    description: 'Mostly difficult problems'
                 },
                 {
-                    id: 'hardcore',
-                    label: 'No hints',
+                    id: 'extreme',
+                    label: 'Push Me to My Limits',
                     icon: <FaFire />,
-                    description: 'Pure challenge'
+                    description: 'Give me the hardest problems'
                 }
             ]
         },
         {
             type: 'final',
-            title: 'Setup Complete',
-            subtitle: 'Your personalized learning path is ready',
+            title: "You're all set!",
+            subtitle: 'Your personalized learning journey is ready',
             description:
-                "We've configured your experience based on your preferences. Let's begin your journey.",
+                "We'll use your answers as a starting point and continuously adapt recommendations based on your progress.",
             icon: (
                 <FaRocket className="text-5xl text-[var(--accent-color)]" />
             )
@@ -344,19 +272,6 @@ const GetStarted = () => {
         });
     };
 
-    const buildOnboardingSettings = () => ({
-        completed: true,
-        completedAt: new Date().toISOString(),
-
-        goal: selectedOptions[1] || null,
-        topics: selectedOptions[2] || [],
-        level: selectedOptions[3] || null,
-        learningStyle: selectedOptions[4] || null,
-        dailyTime: selectedOptions[5] || null,
-        motivation: selectedOptions[6] || null,
-        preferredStudyTime: selectedOptions[7] || null,
-        problemSolvingPreference: selectedOptions[8] || null
-    });
     const saveQuestionnaire = async () => {
         setSaving(true);
 
@@ -369,43 +284,54 @@ const GetStarted = () => {
             if (userError) throw userError;
             if (!user) throw new Error('User not authenticated.');
 
-            const { data: existingSettings, error: settingsError } = await supabase
-                .from('user_settings')
-                .select('id, settings')
-                .eq('user_id', user.id)
-                .single();
+            // Update role
+            const { error: roleError } = await supabase
+                .from('profiles')
+                .update({
+                    role: selectedOptions[1]
+                })
+                .eq('id', user.id);
 
-            if (settingsError && settingsError.code !== 'PGRST116') {
-                throw settingsError;
+            if (roleError) throw roleError;
+
+            const { error: profileError } = await supabase
+                .from('student_profile')
+                .upsert({
+                    id: user.id,
+
+                    onboarding_completed: true,
+                    onboarding_completed_at: new Date().toISOString(),
+
+                    goal: selectedOptions[2],
+                    level: selectedOptions[4],
+                    weekly_commitment: selectedOptions[5],
+                    preferred_challenge: selectedOptions[6]
+                });
+
+            if (profileError) throw profileError;
+
+            // Save topics
+            const { error: deleteTopicsError } = await supabase
+                .from('student_topics')
+                .delete()
+                .eq('student_id', user.id);
+
+            if (deleteTopicsError) throw deleteTopicsError;
+
+            const topics = (selectedOptions[3] || []).map(topic => ({
+                student_id: user.id,
+                topic
+            }));
+
+            if (topics.length > 0) {
+                const { error: topicsError } = await supabase
+                    .from('student_topics')
+                    .insert(topics);
+
+                if (topicsError) throw topicsError;
             }
-
-            const updatedSettings = {
-                ...(existingSettings?.settings || {}),
-                onboarding: buildOnboardingSettings()
-            };
-
-            if (existingSettings) {
-                const { error } = await supabase
-                    .from('user_settings')
-                    .update({
-                        settings: updatedSettings,
-                        updated_at: new Date().toISOString()
-                    })
-                    .eq('user_id', user.id);
-
-                if (error) throw error;
-            } else {
-                const { error } = await supabase
-                    .from('user_settings')
-                    .insert({
-                        user_id: user.id,
-                        settings: updatedSettings
-                    });
-
-                if (error) throw error;
-            }
-
             return true;
+
         } catch (err) {
             console.error('Error saving onboarding:', err);
             return false;
@@ -423,7 +349,7 @@ const GetStarted = () => {
         const success = await saveQuestionnaire();
 
         if (success) {
-            navigate('/discover');
+            navigate('/journey');
         }
     };
 
@@ -450,7 +376,7 @@ const GetStarted = () => {
     const currentStepData = steps[currentStep];
 
     return (
-        <main className='flex flex-col w-full bg-[var(--main-color)] min-h-screen items-center justify-center px-4 sm:px-6 py-6 font-[Sansation]'>
+        <main className='flex flex-col w-full bg-[var(--main-color)] min-h-screen items-center justify-center px-4 sm:px-6 py-6 font-[Sansation,sans-serif]'>
             {/* Progress Bar Section */}
             <div className='w-full max-w-xl flex flex-col gap-3 pb-6'>
                 <div className='flex items-center gap-3'>
@@ -475,27 +401,28 @@ const GetStarted = () => {
                         {currentStep + 1} / {totalSteps}
                     </span>
                 </div>
+                <div className="text-center text-[var(--secondary-color)] opacity-70 text-sm">Don't worry - you can change these answers whenever you like.</div>
             </div>
             {/* Content Section */}
             <article className='flex flex-col items-center justify-around flex-1 w-full max-w-xl text-center'>
                 <div className='w-full'>
-                    <div className='flex flex-col gap-2 pb-2 pt-20 min-h-[140px]'>
+                    <div className='flex flex-col pb-10 pt-10 min-h-[140px] relative'>
                         {currentStepData.icon && (
-                            <div className='pb-2'>
+                            <div className='pb-2 absolute top-0 left-0'>
                                 {currentStepData.icon}
                             </div>
                         )}
 
-                        <h1 className='text-2xl sm:text-3xl font-bold text-[var(--secondary-color)]'>
+                        <h1 className='text-2xl sm:text-3xl font-bold text-[var(--secondary-color)] pb-1'>
                             {currentStepData.title}
                         </h1>
 
-                        <p className='text-sm sm:text-base text-[var(--secondary-color)] opacity-60'>
+                        <p className='text-sm sm:text-base text-[var(--secondary-color)]'>
                             {currentStepData.subtitle}
                         </p>
 
                         {currentStepData.description && (
-                            <p className='text-xs sm:text-sm text-[var(--secondary-color)] opacity-50 pt-1'>
+                            <p className='text-xs sm:text-sm text-[var(--secondary-color)] opacity-80 pt-3'>
                                 {currentStepData.description}
                             </p>
                         )}
@@ -591,7 +518,6 @@ const GetStarted = () => {
                     {currentStepData.type === 'welcome' && (
                         <img
                             src={WelcomeTeacher}
-                            alt='Teacher'
                         />
                     )}
 
@@ -600,7 +526,7 @@ const GetStarted = () => {
                         disabled={!canContinue() || saving}
                         className={`w-60 px-8 py-3 rounded-full font-semibold text-sm ${
                             canContinue() && !saving
-                                ? 'bg-[var(--secondary-color)] text-[var(--white)] hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:scale-95 cursor-pointer transition-all'
+                                ? 'bg-[var(--secondary-color)] text-[var(--white)] hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-pointer transition-all'
                                 : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                         }`}
                     >
