@@ -72,7 +72,7 @@ const GetStarted = () => {
                     id: 'teacher',
                     label: 'Teacher',
                     icon: <FaChalkboardTeacher />,
-                    description: 'Create classes, assign work and monitor your students.'
+                    description: 'Learn, explore mathematics, and get ready for upcoming teacher tools.'
                 }
             ]
         },
@@ -294,41 +294,42 @@ const GetStarted = () => {
 
             if (roleError) throw roleError;
 
-            const { error: profileError } = await supabase
-                .from('student_profile')
-                .upsert({
-                    id: user.id,
+            if (selectedOptions[1] === 'student') {
+                const { error: profileError } = await supabase
+                    .from('student_profile')
+                    .upsert({
+                        id: user.id,
 
-                    onboarding_completed: true,
-                    onboarding_completed_at: new Date().toISOString(),
+                        onboarding_completed: true,
+                        onboarding_completed_at: new Date().toISOString(),
 
-                    goal: selectedOptions[2],
-                    level: selectedOptions[4],
-                    weekly_commitment: selectedOptions[5],
-                    preferred_challenge: selectedOptions[6]
-                });
+                        goal: selectedOptions[2],
+                        level: selectedOptions[4],
+                        weekly_commitment: selectedOptions[5],
+                        preferred_challenge: selectedOptions[6]
+                    });
 
-            if (profileError) throw profileError;
+                if (profileError) throw profileError;
 
-            // Save topics
-            const { error: deleteTopicsError } = await supabase
-                .from('student_topics')
-                .delete()
-                .eq('student_id', user.id);
-
-            if (deleteTopicsError) throw deleteTopicsError;
-
-            const topics = (selectedOptions[3] || []).map(topic => ({
-                student_id: user.id,
-                topic
-            }));
-
-            if (topics.length > 0) {
-                const { error: topicsError } = await supabase
+                const { error: deleteTopicsError } = await supabase
                     .from('student_topics')
-                    .insert(topics);
+                    .delete()
+                    .eq('student_id', user.id);
 
-                if (topicsError) throw topicsError;
+                if (deleteTopicsError) throw deleteTopicsError;
+
+                const topics = (selectedOptions[3] || []).map(topic => ({
+                    student_id: user.id,
+                    topic
+                }));
+
+                if (topics.length > 0) {
+                    const { error: topicsError } = await supabase
+                        .from('student_topics')
+                        .insert(topics);
+
+                    if (topicsError) throw topicsError;
+                }
             }
             return true;
 
@@ -444,18 +445,18 @@ const GetStarted = () => {
                                                     : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                             }`}
                                         >
-                                            <div className='text-lg flex-shrink-0'>
+                                            <div className='md:text-xl flex-shrink-0 pr-1 text-lg md:pr-2'>
                                                 {option.icon}
                                             </div>
 
                                             <div className='flex-1'>
-                                                <div className='font-semibold text-xs'>
+                                                <div className='font-semibold text-sm md:text-md'>
                                                     {option.label}
                                                 </div>
 
                                                 {option.description && (
                                                     <div
-                                                        className={`text-[11px] pt-0.5 leading-tight ${
+                                                        className={`text-xs md:text-sm pt-0.5 leading-tight ${
                                                             selectedOptions[currentStep] === option.id
                                                                 ? 'opacity-90'
                                                                 : 'opacity-50'

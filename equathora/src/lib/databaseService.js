@@ -1,5 +1,6 @@
 import { supabase } from './supabaseClient';
 import { calculateProblemXP } from './leaderboardService';
+import { FaArrowAltCircleDown } from 'react-icons/fa';
 
 /**
  * Database service for user progress using Supabase
@@ -957,3 +958,56 @@ export async function getInProgressProblemsDb() {
         .eq('user_id', session.user.id);
     return (data || []).map(r => String(r.problem_id));
 }
+
+// Get started onboarding supabase calls
+
+// Student Profile Methods
+export async function getStudentProfile() {
+    try {
+        const {
+            data: { user }
+        } = await supabase.auth.getUser();
+
+        const { data, error } = await supabase
+            .from('student_profile')
+            .select(`
+                onboarding_completed,
+                goal,
+                level,
+                weekly_commitment,
+                preferred_challenge,
+                adaptive_learning_enabled
+            `)
+            .eq('id', user.id)
+            .single();
+
+        if (error) throw error;
+
+        return data;
+    } catch (error) {
+        console.error("Error getting student profile:", error);
+        return null;
+    }
+}
+
+// Student Topics Methods
+export async function getStudentTopics() {
+    try {
+        const {
+            data: { user }
+        } = await supabase.auth.getUser();
+
+        const { data, error } = await supabase
+            .from('student_topics')
+            .select('topic')
+            .eq('student_id', user.id);
+
+        if (error) throw error;
+
+        return data;
+    } catch (error) {
+        console.error("Error getting student topics:", error);
+        return [];
+    }
+}
+

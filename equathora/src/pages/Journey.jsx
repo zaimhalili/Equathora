@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 import { FaCheckCircle, FaDumbbell, FaCheck, FaLock } from 'react-icons/fa';
-import { getUserProgress, getStreakData, getCompletedProblems, getUserSubmissions } from '../lib/databaseService';
+import { getUserProgress, getStreakData, getCompletedProblems, getUserSubmissions, getStudentProfile, getStudentTopics } from '../lib/databaseService';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';
 import { formatTopicLabel } from '@/lib/utils';
@@ -186,7 +186,6 @@ const Journey = () => {
 };
 
 export default Journey;
-
 
 // I need to add the daily calendar
 // Below add some of the suggested problems

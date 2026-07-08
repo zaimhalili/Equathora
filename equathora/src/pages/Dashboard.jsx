@@ -17,6 +17,7 @@ import Mentor from '../assets/images/mentoring.svg';
 import { getDailyProblemSlug } from '../lib/utils';
 import { supabase } from '../lib/supabaseClient';
 import LoadingSpinner from '@/components/LoadingSpinner.jsx';
+import JourneyImg from '../assets/images/journey.svg';
 
 const Dashboard = () => {
     const [username, setUsername] = useState("Friend");
@@ -113,7 +114,7 @@ const Dashboard = () => {
                                                 to={`/problems/${dailyProblemSlug}`}
                                                 className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
-                                                <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                                                <img src={QuestionMark} alt="Daily challenge" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation,sans-serif] text-lg font-normal w-full text-center flex items-center justify-center">
                                                     Daily challenge
                                                 </h6>
@@ -126,12 +127,12 @@ const Dashboard = () => {
                                             className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
                                         >
                                             <Link
-                                                to="/learn"
+                                                to="/journey"
                                                 className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
-                                                <img src={Books} alt="books" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                                                <img src={JourneyImg} alt="Journey" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
-                                                    Browse problems
+                                                    Your Journey
                                                 </h6>
                                             </Link>
                                         </motion.div>
@@ -145,7 +146,7 @@ const Dashboard = () => {
                                                 to="/applyMentor"
                                                 className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
-                                                <img src={Mentoring} alt="mentoring" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                                                <img src={Mentoring} alt="Mentoring" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
                                                     Try mentoring
                                                 </h6>
@@ -161,7 +162,7 @@ const Dashboard = () => {
                                                 to="/leaderboards/global"
                                                 className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
-                                                <img src={Leaderboards} alt="leaderboards" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                                                <img src={Leaderboards} alt="Leaderboards" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center ">
                                                     Join the race
                                                 </h6>
