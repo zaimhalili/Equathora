@@ -234,7 +234,6 @@ const Settings = () => {
         username: '',
         bio: '',
         location: '',
-        website: '',
         seniority: 'absBeginner',
     });
     const [profileSaving, setProfileSaving] = useState(false);
@@ -316,7 +315,7 @@ const Settings = () => {
                 // Fetch profile from profiles table
                 const { data: profile } = await supabase
                     .from('profiles')
-                    .select('full_name, username, bio, location, website, seniority')
+                    .select('full_name, username, bio, location, seniority')
                     .eq('id', session.user.id)
                     .maybeSingle();
 
@@ -326,7 +325,6 @@ const Settings = () => {
                         username: profile.username || '',
                         bio: profile.bio || '',
                         location: profile.location || '',
-                        website: profile.website || '',
                         seniority: profile.seniority || 'absBeginner',
                     });
                 } else {
@@ -405,12 +403,6 @@ const Settings = () => {
             return;
         }
 
-        if (profileData.website && !/^https?:\/\/.+/i.test(profileData.website)) {
-            setProfileMessage({ text: 'Website must start with http:// or https://', type: 'error' });
-            setProfileSaving(false);
-            return;
-        }
-
         if (profileData.bio && profileData.bio.length > 300) {
             setProfileMessage({ text: 'Bio must be 300 characters or less.', type: 'error' });
             setProfileSaving(false);
@@ -446,7 +438,6 @@ const Settings = () => {
                     username: profileData.username.trim(),
                     bio: profileData.bio.trim(),
                     location: profileData.location.trim(),
-                    website: profileData.website.trim(),
                     seniority: profileData.seniority,
                     updated_at: new Date().toISOString(),
                 }, { onConflict: 'id' });
@@ -898,15 +889,6 @@ const Settings = () => {
                                             onChange={e => setProfileData(prev => ({ ...prev, location: e.target.value }))}
                                             placeholder="City, Country"
                                             maxLength={50}
-                                        />
-                                    </div>
-                                    <div className="flex-1">
-                                        <InputField
-                                            label="Website"
-                                            type="url"
-                                            value={profileData.website}
-                                            onChange={e => setProfileData(prev => ({ ...prev, website: e.target.value }))}
-                                            placeholder="https://yoursite.com"
                                         />
                                     </div>
                                 </div>

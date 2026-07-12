@@ -978,9 +978,9 @@ const Problem = ({ premium = true }) => {
                 )}
 
                 {/* Main Content */}
-                <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed pt-3 md:py-5 px-3 md:px-6 lg:px-8 lg:max-h-[calc(100vh-7.5vh)] lg:overflow-hidden">
+                <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed pt-3 md:py-5 px-3 md:px-6 lg:px-8 h-fit lg:overflow-hidden">
                     {/* Description Side Left Side */}
-                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 md:max-h-[calc(92.5vh-20px)] '}`}>
+                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
                             <div className={`flex gap-1 ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
 

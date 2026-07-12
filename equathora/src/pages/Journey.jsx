@@ -1,20 +1,16 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Link } from 'react-router-dom';
-import { FaCheckCircle, FaDumbbell, FaCheck, FaLock } from 'react-icons/fa';
-import { getUserProgress, getStreakData, getCompletedProblems, getUserSubmissions, getStudentProfile, getStudentTopics } from '../lib/databaseService';
+import { getCompletedProblems, getUserSubmissions, getStudentProfile, getStudentTopics, getUserProgress, getStreakData } from '../lib/databaseService';
 import { motion } from 'framer-motion';
-import { supabase } from '../lib/supabaseClient';
-import { formatTopicLabel } from '@/lib/utils';
 import LoadingSpinner from '../components/LoadingSpinner';
 import JourneyImg from '../assets/images/Journey-pana.svg';
 import { getProblemsAll } from '@/lib/problemService';
+import { annotateProblemStates } from '@/lib/problemProgress';
 import DailyTrack from '@/components/Journey/DailyTrack';
 import TopicCard from '@/components/Journey/TopicCard';
 
 const Journey = () => {
-    const [journey, setJourney] = useState({});
     const [completedSet, setCompletedSet] = useState(new Set());
     const [attemptedSet, setAttemptedSet] = useState(new Set());
     const [loading, setLoading] = useState(true);
@@ -24,6 +20,10 @@ const Journey = () => {
     const [studentTopics, setStudentTopics] = useState([]);
     const [recommendedProblems, setRecommendedProblems] = useState([]);
     const [allProblems, setAllProblems] = useState([]);
+
+    // Daily Mission (streak + today's progress), feeds DailyTrack
+    const [streakData, setStreakData] = useState(null);
+    const [todayProgress, setTodayProgress] = useState(null);
 
 
     const SUBJECT_ORDER = [
@@ -147,22 +147,28 @@ const Journey = () => {
                     completedProblems,
                     submissions,
                     profile,
-                    topics
+                    topics,
+                    streak,
+                    progress
                 ] = await Promise.all([
                     getProblemsAll(),
                     getCompletedProblems(),
                     getUserSubmissions(),
                     getStudentProfile(),
-                    getStudentTopics()
+                    getStudentTopics(),
+                    getStreakData(),
+                    getUserProgress()
                 ]);
 
-                const grouped = buildJourney(problems);
-
-                setStudentProfile(profile?.[0] || null);
+                // getStudentProfile() returns a single profile object, not an array —
+                // indexing it with [0] always produced undefined, so studentProfile
+                // was permanently null and the recommendation effect always bailed.
+                setStudentProfile(profile || null);
                 setStudentTopics(topics);
 
                 setAllProblems(problems);
-                setJourney(grouped);
+                setStreakData(streak || null);
+                setTodayProgress(progress || null);
 
                 setCompletedSet(
                     new Set(completedProblems.map(id => String(id)))
@@ -175,7 +181,7 @@ const Journey = () => {
                 );
             }
             catch (err) {
-                console.error(err);
+                console.error("[Journey] load() failed:", err);
             }
             finally {
                 setLoading(false);
@@ -251,6 +257,9 @@ const Journey = () => {
             case "6+":
                 limit = 20;
                 break;
+
+            default:
+                break;
         }
 
         setRecommendedProblems(filtered.slice(0, limit));
@@ -264,6 +273,24 @@ const Journey = () => {
     const personalizedJourney = useMemo(() => {
         return buildJourney(recommendedProblems);
     }, [recommendedProblems]);
+
+    // The "next problem" shown in DailyTrack must be the exact same problem
+    // TopicCard marks as "current" below — walk subjects/topics in the same
+    // order the page renders them and take the first "current" problem found.
+    const nextProblem = useMemo(() => {
+        for (const subject of SUBJECT_ORDER) {
+            const topics = personalizedJourney[subject];
+            if (!topics) continue;
+
+            for (const topicProblems of Object.values(topics)) {
+                const annotated = annotateProblemStates(topicProblems, completedSet, attemptedSet);
+                const current = annotated.find(p => p.state === "current");
+                if (current) return current;
+            }
+        }
+
+        return null;
+    }, [personalizedJourney, completedSet, attemptedSet]);
 
     if (loading) {
         return <LoadingSpinner />;
@@ -298,16 +325,27 @@ const Journey = () => {
                         </motion.div>
 
                         {/* Daily Mission */}
-                        <DailyTrack />
+                        <DailyTrack
+                            streak={streakData}
+                            todayProgress={todayProgress}
+                            nextProblem={nextProblem}
+                        />
 
                         {/* Dropdowns */}
                         <section className='flex flex-col w-full pt-10'>
+                            {Object.keys(personalizedJourney).length === 0 && (
+                                <p className="text-center text-lg text-[var(--secondary-color)] py-8">
+                                    No recommended problems yet — check back soon, or update your goals in settings.
+                                </p>
+                            )}
                             {Object.keys(personalizedJourney)
-                                .sort(
-                                    (a, b) =>
-                                        SUBJECT_ORDER.indexOf(a) -
-                                        SUBJECT_ORDER.indexOf(b)
-                                )
+                                .sort((a, b) => {
+                                    const aIndex = SUBJECT_ORDER.indexOf(a);
+                                    const bIndex = SUBJECT_ORDER.indexOf(b);
+                                    // unknown subjects (not in SUBJECT_ORDER) sort to the end, not the front
+                                    return (aIndex === -1 ? SUBJECT_ORDER.length : aIndex) -
+                                        (bIndex === -1 ? SUBJECT_ORDER.length : bIndex);
+                                })
                                 .map(subject => (
                                     <div key={subject} className="pb-8 flex flex-col gap-4">
 
@@ -337,7 +375,7 @@ const Journey = () => {
 
                 </div>
 
-            </div >
+            </div>
             <Footer />
         </>
     );

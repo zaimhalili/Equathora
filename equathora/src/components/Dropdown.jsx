@@ -80,7 +80,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel, premium = false
                                     <img
                                         src={item.image}
                                         alt={item.text}
-                                        className={item.isAvatar ? 'h-[50px] w-[50px] rounded-full object-cover' : 'h-[50px] w-[50px]'}
+                                        className={item.isAvatar ? 'h-[50px] w-[50px] rounded-full object-cover bg-white' : 'h-[50px] w-[50px]'}
                                     />
                                 )}
                                 <div className="flex flex-col justify-center font-[Sansation,serif]">

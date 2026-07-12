@@ -342,7 +342,7 @@ const Navbar = () => {
                 </li>
                 <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden  text-[var(--secondary-color)]'>
                   <Dropdown
-                    label={<img src={profileAvatarSrc} alt="Profile" width={28} height={28} style={{ borderRadius: '9999px', objectFit: 'cover', border: '2px solid var(--secondary-color)' }} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />}
+                    label={<img src={profileAvatarSrc} alt="Profile" width={28} height={28} style={{ borderRadius: '9999px', objectFit: 'cover', border: '2px solid var(--secondary-color)', background: '#edf2f4' }} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />}
                     ariaLabel="Profile menu"
                     items={profileItems}
                     alignRight={true}

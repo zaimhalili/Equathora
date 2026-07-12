@@ -7,15 +7,11 @@ import {
     FaLock,
     FaPlay,
     FaClock,
-    FaArrowRight,
-    FaGem,
-    FaBolt,
-    FaMedal,
-    FaCrown,
-    FaFire,
-    FaBullseye
+    FaArrowRight
 } from 'react-icons/fa';
 import { formatTopicLabel } from '@/lib/utils';
+import { generateProblemSlug } from '@/lib/slugify';
+import { annotateProblemStates, getEstimatedTime, getEstimatedXp } from '@/lib/problemProgress';
 
 const TopicCard = ({
     topic,
@@ -25,43 +21,55 @@ const TopicCard = ({
 }) => {
     const [open, setOpen] = useState(false);
 
-    const firstUnlocked = useMemo(() => {
-        let foundCurrent = false;
+    const statedProblems = useMemo(
+        () => annotateProblemStates(problems, completedSet, attemptedSet),
+        [problems, completedSet, attemptedSet]
+    );
 
+    const solvedCount = useMemo(
+        () => statedProblems.filter(p => p.state === "solved").length,
+        [statedProblems]
+    );
 
-        return problems.map(problem => {
+    const progressCount = useMemo(
+        () => statedProblems.filter(p => p.state === "progress").length,
+        [statedProblems]
+    );
 
-            const solved = completedSet.has(String(problem.id));
-            const attempted = attemptedSet.has(String(problem.id));
+    const lockedCount = useMemo(
+        () => statedProblems.filter(p => p.state === "locked").length,
+        [statedProblems]
+    );
 
-            let state = "locked";
+    // Store just the id so we don't hold a stale problem object if `problems`
+    // is ever replaced with a new array reference (e.g. fresh data comes in).
+    const [selectedId, setSelectedId] = useState(statedProblems[0]?.id);
 
-            if (solved) {
-                state = "solved";
-            }
-            else if (!foundCurrent) {
-                state = attempted ? "progress" : "current";
-                foundCurrent = true;
-            }
+    const selected = useMemo(() => {
+        const found = statedProblems.find(p => p.id === selectedId);
+        if (found) return found;
 
-            return {
-                ...problem,
-                state
-            };
-        });
+        // Fall back to whatever the student should focus on next: the current
+        // problem, then an in-progress one, then just the first in the list.
+        return (
+            statedProblems.find(p => p.state === "current") ??
+            statedProblems.find(p => p.state === "progress") ??
+            statedProblems[0]
+        );
+    }, [statedProblems, selectedId]);
 
-    }, [problems, completedSet, attemptedSet]);
+    const progress = statedProblems.length > 0
+        ? (solvedCount / statedProblems.length) * 100
+        : 0;
 
-    const [selected, setSelected] = useState(firstUnlocked[0]);
-
-    const progress =
-        firstUnlocked.filter(p => p.state === "solved").length /
-        firstUnlocked.length * 100;
-
-
+    // Route is /problems/:slug, not an id — use the backend-provided slug if
+    // present, otherwise derive the same slug format the backend uses.
+    const selectedSlug = selected
+        ? (selected.slug || generateProblemSlug(selected.title, selected.id))
+        : null;
 
     return (
-        <div className="w-full rounded-2xl bg-white/10 backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
+        <div className="w-full rounded-2xl bg-[var(--main-color)] backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
             {/* Header */}
             <button
                 onClick={() => setOpen(!open)}
@@ -122,7 +130,7 @@ const TopicCard = ({
 
                                 {/* Circle Container */}
                                 <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                                    {firstUnlocked.map(problem => {
+                                    {statedProblems.map(problem => {
 
                                         let style = "bg-[var(--white)] text-[var(--mid-main-secondary)]";
                                         let Icon = FaLock;
@@ -145,7 +153,7 @@ const TopicCard = ({
                                         return (
                                             <button
                                                 key={problem.id}
-                                                onClick={() => setSelected(problem)}
+                                                onClick={() => setSelectedId(problem.id)}
                                                 className={`h-11 w-11 rounded-full flex items-center justify-center transition-all ${style}
                                                 ${selected?.id === problem.id
                                                         ? "scale-110 ring-4 ring-white/80"
@@ -172,7 +180,7 @@ const TopicCard = ({
                                         <div className="rounded-full flex h-7 w-7 bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] text-white justify-center items-center">
                                             <FaCheck size={12} />
                                         </div>
-                                        Completed <span className="font-normal">23</span>
+                                        Completed <span className="font-normal">{solvedCount}</span>
                                     </div>
 
                                     <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
@@ -181,7 +189,7 @@ const TopicCard = ({
                                         </div>
                                         In Progress{" "}
                                         <span className="font-normal">
-                                            {firstUnlocked.filter(p => p.state === "progress").length}
+                                            {progressCount}
                                         </span>
                                     </div>
 
@@ -191,11 +199,7 @@ const TopicCard = ({
                                         </div>
                                         Not Started{" "}
                                         <span className="font-normal">
-                                            {
-                                                firstUnlocked.filter(
-                                                    p => p.state === "locked"
-                                                ).length
-                                            }
+                                            {lockedCount}
                                         </span>
                                     </div>
 
@@ -218,7 +222,7 @@ const TopicCard = ({
 
                                         <span className="px-2 rounded text-white text-sm font-semibold"
                                             style={{
-                                                backgroundColor: `var(--${selected?.difficulty.toLowerCase()})`
+                                                backgroundColor: `var(--${selected?.difficulty?.toLowerCase()})`
                                             }}>
                                             {selected?.difficulty}
                                         </span>
@@ -230,7 +234,7 @@ const TopicCard = ({
                                         </span>
 
                                         <span>
-                                            {selected?.estimated_time ?? "5–10 min"}
+                                            {selected?.estimated_time ?? getEstimatedTime(selected?.difficulty)}
                                         </span>
                                     </div>
 
@@ -240,14 +244,14 @@ const TopicCard = ({
                                         </span>
 
                                         <span>
-                                            {selected?.xp ?? "25 XP"}
+                                            {selected?.xp ?? getEstimatedXp(selected?.difficulty)} XP
                                         </span>
                                     </div>
 
                                 </div>
 
                                 <Link
-                                    to={`/problem/${selected?.id}`}
+                                    to={selectedSlug ? `/problems/${selectedSlug}` : "#"}
                                     className="mt-5 rounded-xl py-3 flex items-center justify-center gap-2 font-semibold !text-white bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all active:scale-95"
                                 >
                                     Start Problem
