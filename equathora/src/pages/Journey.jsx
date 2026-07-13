@@ -9,6 +9,8 @@ import { getProblemsAll } from '@/lib/problemService';
 import { annotateProblemStates } from '@/lib/problemProgress';
 import DailyTrack from '@/components/Journey/DailyTrack';
 import TopicCard from '@/components/Journey/TopicCard';
+import { Link } from 'react-router-dom';
+import RedButton from '@/components/ui/RedButton';
 
 const Journey = () => {
     const [completedSet, setCompletedSet] = useState(new Set());
@@ -368,13 +370,12 @@ const Journey = () => {
                                     </div>
                                 ))}
                         </section>
+                        <div className="flex py-5">
+                            <RedButton to={'/getStarted'} text={'Finished your path? Retake your skill test to choose something else to learn'}/>
 
-
+                        </div>
                     </div>
-
-
                 </div>
-
             </div>
             <Footer />
         </>
