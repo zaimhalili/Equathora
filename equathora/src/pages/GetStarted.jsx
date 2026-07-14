@@ -27,10 +27,12 @@ import {
 import { IoMdCalculator } from 'react-icons/io';
 import { BiMath } from 'react-icons/bi';
 import { supabase } from '@/lib/supabaseClient';
+import { useAuth } from '@/hooks/useAuth';
 import WelcomeTeacher from '../assets/images/welcomeTeacher.svg';
 
 const GetStarted = () => {
     const navigate = useNavigate();
+    const { refreshOnboardingStatus } = useAuth();
 
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedOptions, setSelectedOptions] = useState({});
@@ -284,7 +286,6 @@ const GetStarted = () => {
             if (userError) throw userError;
             if (!user) throw new Error('User not authenticated.');
 
-            // Update role
             const { error: roleError } = await supabase
                 .from('profiles')
                 .update({
@@ -295,19 +296,26 @@ const GetStarted = () => {
             if (roleError) throw roleError;
 
             if (selectedOptions[1] === 'student') {
-                const { error: profileError } = await supabase
+                // onConflict is explicit so a retake always updates this row
+                // instead of risking a duplicate insert.
+                const { data: savedProfile, error: profileError } = await supabase
                     .from('student_profile')
-                    .upsert({
-                        id: user.id,
+                    .upsert(
+                        {
+                            id: user.id,
 
-                        onboarding_completed: true,
-                        onboarding_completed_at: new Date().toISOString(),
+                            onboarding_completed: true,
+                            onboarding_completed_at: new Date().toISOString(),
 
-                        goal: selectedOptions[2],
-                        level: selectedOptions[4],
-                        weekly_commitment: selectedOptions[5],
-                        preferred_challenge: selectedOptions[6]
-                    });
+                            goal: selectedOptions[2],
+                            level: selectedOptions[4],
+                            weekly_commitment: selectedOptions[5],
+                            preferred_challenge: selectedOptions[6]
+                        },
+                        { onConflict: 'id' }
+                    )
+                    .select()
+                    .single();
 
                 if (profileError) throw profileError;
 
@@ -350,6 +358,9 @@ const GetStarted = () => {
         const success = await saveQuestionnaire();
 
         if (success) {
+            // Update shared auth context before navigating so ProtectedRoute
+            // doesn't bounce us back here with a stale cached value.
+            await refreshOnboardingStatus();
             navigate('/journey');
         }
     };
@@ -431,90 +442,87 @@ const GetStarted = () => {
 
                     {(currentStepData.type === 'selection' ||
                         currentStepData.type === 'multi-selection') && (
-                        <div className='w-full pt-6 pb-6 min-h-[260px] sm:min-h-[300px] flex flex-col justify-start'>
-                            {currentStepData.type === 'selection' && (
-                                <div className='flex flex-col gap-2 w-full'>
-                                    {currentStepData.options.map((option) => (
-                                        <button
-                                            key={option.id}
-                                            type='button'
-                                            onClick={() => handleSelection(option.id)}
-                                            className={`group flex items-center gap-2.5 p-2.5 rounded-md border-2 duration-200 cursor-pointer text-left ${
-                                                selectedOptions[currentStep] === option.id
-                                                    ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
-                                                    : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
-                                            }`}
-                                        >
-                                            <div className='md:text-xl flex-shrink-0 pr-1 text-lg md:pr-2'>
-                                                {option.icon}
-                                            </div>
-
-                                            <div className='flex-1'>
-                                                <div className='font-semibold text-sm md:text-md'>
-                                                    {option.label}
-                                                </div>
-
-                                                {option.description && (
-                                                    <div
-                                                        className={`text-xs md:text-sm pt-0.5 leading-tight ${
-                                                            selectedOptions[currentStep] === option.id
-                                                                ? 'opacity-90'
-                                                                : 'opacity-50'
-                                                        }`}
-                                                    >
-                                                        {option.description}
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            <div className='text-base w-4 flex justify-center'>
-                                                {selectedOptions[currentStep] === option.id
-                                                    ? '✓'
-                                                    : ''}
-                                            </div>
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-
-                            {currentStepData.type === 'multi-selection' && (
-                                <div className='grid grid-cols-2 gap-2 w-full'>
-                                    {currentStepData.options.map((option) => {
-                                        const isSelected = (
-                                            selectedOptions[currentStep] || []
-                                        ).includes(option.id);
-
-                                        return (
+                            <div className='w-full pt-6 pb-6 min-h-[260px] sm:min-h-[300px] flex flex-col justify-start'>
+                                {currentStepData.type === 'selection' && (
+                                    <div className='flex flex-col gap-2 w-full'>
+                                        {currentStepData.options.map((option) => (
                                             <button
                                                 key={option.id}
                                                 type='button'
-                                                onClick={() =>
-                                                    handleSelection(option.id)
-                                                }
-                                                className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md border-2 transition-colors duration-200 cursor-pointer ${
-                                                    isSelected
+                                                onClick={() => handleSelection(option.id)}
+                                                className={`group flex items-center gap-2.5 p-2.5 rounded-md border-2 duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
                                                         ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
                                                         : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
-                                                }`}
+                                                    }`}
                                             >
-                                                <div className='text-lg'>
+                                                <div className='md:text-xl flex-shrink-0 pr-1 text-lg md:pr-2'>
                                                     {option.icon}
                                                 </div>
 
-                                                <div className='flex-1 text-left text-xs font-semibold leading-tight'>
-                                                    {option.label}
+                                                <div className='flex-1'>
+                                                    <div className='font-semibold text-sm md:text-md'>
+                                                        {option.label}
+                                                    </div>
+
+                                                    {option.description && (
+                                                        <div
+                                                            className={`text-xs md:text-sm pt-0.5 leading-tight ${selectedOptions[currentStep] === option.id
+                                                                    ? 'opacity-90'
+                                                                    : 'opacity-50'
+                                                                }`}
+                                                        >
+                                                            {option.description}
+                                                        </div>
+                                                    )}
                                                 </div>
 
-                                                <div className='w-4 flex justify-center'>
-                                                    {isSelected ? '✓' : ''}
+                                                <div className='text-base w-4 flex justify-center'>
+                                                    {selectedOptions[currentStep] === option.id
+                                                        ? '✓'
+                                                        : ''}
                                                 </div>
                                             </button>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                        </div>
-                    )}
+                                        ))}
+                                    </div>
+                                )}
+
+                                {currentStepData.type === 'multi-selection' && (
+                                    <div className='grid grid-cols-2 gap-2 w-full'>
+                                        {currentStepData.options.map((option) => {
+                                            const isSelected = (
+                                                selectedOptions[currentStep] || []
+                                            ).includes(option.id);
+
+                                            return (
+                                                <button
+                                                    key={option.id}
+                                                    type='button'
+                                                    onClick={() =>
+                                                        handleSelection(option.id)
+                                                    }
+                                                    className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md border-2 transition-colors duration-200 cursor-pointer ${isSelected
+                                                            ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
+                                                            : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                                        }`}
+                                                >
+                                                    <div className='text-lg'>
+                                                        {option.icon}
+                                                    </div>
+
+                                                    <div className='flex-1 text-left text-xs font-semibold leading-tight'>
+                                                        {option.label}
+                                                    </div>
+
+                                                    <div className='w-4 flex justify-center'>
+                                                        {isSelected ? '✓' : ''}
+                                                    </div>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                     {currentStepData.type === 'welcome' && (
                         <img
@@ -525,11 +533,10 @@ const GetStarted = () => {
                     <button
                         onClick={handleContinue}
                         disabled={!canContinue() || saving}
-                        className={`w-60 px-8 py-3 rounded-full font-semibold text-sm ${
-                            canContinue() && !saving
+                        className={`w-60 px-8 py-3 rounded-full font-semibold text-sm ${canContinue() && !saving
                                 ? 'bg-[var(--secondary-color)] text-[var(--white)] hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-pointer transition-all'
                                 : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
-                        }`}
+                            }`}
                     >
                         {saving
                             ? 'Saving...'

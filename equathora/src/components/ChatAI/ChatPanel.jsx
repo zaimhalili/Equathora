@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react';
 import { FaCrown, FaPaperPlane } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { convertLatexToMarkup } from 'mathlive';
 import { askSigmaChat } from '@/lib/SigmaChat/askSigmaChat';
 import { getFriendlySigmaErrorMessage } from '@/lib/SigmaChat/aiSafety';
 import { loadSigmaChatState, saveSigmaChatState } from '@/lib/SigmaChat/sigmaChatStorage';
@@ -29,6 +30,98 @@ const sanitizeUnicode = (str) =>
 
 // For user input — sanitize AND hard cap
 const sanitizeInput = (str) => sanitizeUnicode(str).slice(0, MAX_INPUT_CHARS);
+
+// ---------------------------------------------------------------------------
+// Math rendering
+//
+// Splits plain text from $...$ / $$...$$ math spans and renders the math
+// spans through MathLive's static renderer. Only MathLive's own generated
+// markup goes through dangerouslySetInnerHTML — plain-text segments stay as
+// normal React children, which React escapes automatically, so raw AI/user
+// text is never injected as HTML.
+// ---------------------------------------------------------------------------
+
+const LATEX_SPLIT_REGEX = /(\$\$[\s\S]+?\$\$|\$[^$\n]+?\$)/g;
+
+// Catches messages that wrap whole sentences in \text{...} instead of just
+// the expression — narration dressed up as math. When that happens we render
+// the sentence as plain text instead of feeding it to MathLive, so paragraph
+// breaks and normal wrapping survive (MathLive's own markup doesn't respect
+// the container's white-space: pre-wrap).
+function isProseHeavyMath(latex) {
+    const textSpans = latex.match(/\\text\{[^{}]*\}/g) || [];
+    const textCharCount = textSpans.reduce((sum, span) => sum + span.length, 0);
+    const looksLikeSentence = /[.!?]\s*(\\text\{)?[A-Z]/.test(latex) || /\\text\{[^{}]{25,}\}/.test(latex);
+    return looksLikeSentence && textCharCount > latex.length * 0.4;
+}
+
+function stripToPlainProse(latex) {
+    return latex.replace(/\\text\{([^{}]*)\}/g, '$1');
+}
+
+// Bare LaTeX commands the model forgot to delimit at all. Only matches when
+// braces are actually present — a brace-less fraction like \frac1336 is
+// genuinely ambiguous (could mean {1}{36} or {13}{36}) and can't be safely
+// auto-corrected client-side; that has to be fixed at generation time.
+const BARE_LATEX_TOKEN_REGEX = /\\(?:frac|dfrac|tfrac)\s*\{[^{}]*\}\s*\{[^{}]*\}|\\sqrt\s*\{[^{}]*\}|\\(?:cdot|times|leq|geq|neq|pm|approx|infty|sum|int|alpha|beta|gamma|delta|theta|pi|sin|cos|tan|log|ln|therefore)\b/g;
+
+function renderLatexSafe(latex, displayMode) {
+    try {
+        return convertLatexToMarkup(latex, { mathstyle: displayMode ? 'displaystyle' : 'textstyle' });
+    } catch {
+        return null;
+    }
+}
+
+function renderMathSegment(part, key) {
+    const isDisplay = part.startsWith('$$') && part.endsWith('$$') && part.length > 3;
+    const isInline = !isDisplay && part.startsWith('$') && part.endsWith('$') && part.length > 1;
+
+    if (!isDisplay && !isInline) {
+        return <span key={key}>{part}</span>;
+    }
+
+    const latex = isDisplay ? part.slice(2, -2) : part.slice(1, -1);
+
+    if (isProseHeavyMath(latex)) {
+        return <span key={key}>{stripToPlainProse(latex)}</span>;
+    }
+
+    const markup = renderLatexSafe(latex, isDisplay);
+    return markup
+        ? <span key={key} className="inline-block" dangerouslySetInnerHTML={{ __html: markup }} />
+        : <span key={key}>{part}</span>;
+}
+
+function MathText({ text }) {
+    return (
+        <>
+            {text.split(LATEX_SPLIT_REGEX).map((part, i) => {
+                if (!part) return null;
+
+                const isDollarWrapped = /^\${1,2}[\s\S]+\${1,2}$/.test(part);
+                if (isDollarWrapped) {
+                    return <React.Fragment key={i}>{renderMathSegment(part, i)}</React.Fragment>;
+                }
+
+                // Plain-text segment: catch bare commands (with braces) the
+                // model forgot to wrap in $ ... $.
+                const autoWrapped = part.replace(BARE_LATEX_TOKEN_REGEX, (m) => `$${m}$`);
+                if (autoWrapped === part) {
+                    return <span key={i}>{part}</span>;
+                }
+
+                return (
+                    <React.Fragment key={i}>
+                        {autoWrapped.split(LATEX_SPLIT_REGEX).map((sub, j) =>
+                            sub ? <React.Fragment key={`${i}-${j}`}>{renderMathSegment(sub, `${i}-${j}`)}</React.Fragment> : null
+                        )}
+                    </React.Fragment>
+                );
+            })}
+        </>
+    );
+}
 
 const ChatPanel = forwardRef(({
     premium = true,
@@ -244,36 +337,38 @@ const ChatPanel = forwardRef(({
 
             {/* Messages */}
             <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-4 flex flex-col gap-4 bg-[var(--main-color)]">
-                {isLoadingHistory && (
+                {isLoadingHistory ? (
                     <div className="flex items-center gap-2 self-start rounded-2xl border border-[var(--french-gray)] bg-[var(--white)] px-3.5 py-2.5 text-xs text-[var(--secondary-color)]">
                         <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[var(--dark-accent-color)]" />
                         Loading your chat history...
                     </div>
-                )}
+                ) : (
+                    <>
+                        {hiddenCount > 0 && (
+                            <p className="text-center text-[10px] text-[var(--mid-main-secondary)] shrink-0">
+                                {hiddenCount} earlier message{hiddenCount !== 1 ? 's' : ''} hidden to keep things fast.
+                            </p>
+                        )}
 
-                {hiddenCount > 0 && (
-                    <p className="text-center text-[10px] text-[var(--mid-main-secondary)] shrink-0">
-                        {hiddenCount} earlier message{hiddenCount !== 1 ? 's' : ''} hidden to keep things fast.
-                    </p>
+                        {visibleMessages.map((msg) => (
+                            <div key={msg.id} className={`flex flex-col gap-1 max-w-[85%] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
+                                <div
+                                    className={`border rounded-2xl px-4 py-2.5 text-xs md:text-sm leading-relaxed ${msg.sender === 'ai'
+                                        ? 'border-[var(--french-gray)] rounded-tl-none bg-[var(--white)] text-[var(--secondary-color)]'
+                                        : 'border-transparent rounded-tr-none bg-[var(--dark-accent-color)] text-white'
+                                        }`}
+                                    style={{ wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }}
+                                >
+                                    <MathText text={msg.text} />
+                                </div>
+                            </div>
+                        ))}
+                    </>
                 )}
-
-                {visibleMessages.map((msg) => (
-                    <div key={msg.id} className={`flex flex-col gap-1 max-w-[85%] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
-                        <div
-                            className={`border rounded-2xl px-4 py-2.5 text-xs md:text-sm leading-relaxed ${msg.sender === 'ai'
-                                ? 'border-[var(--french-gray)] rounded-tl-none bg-[var(--white)] text-[var(--secondary-color)]'
-                                : 'border-transparent rounded-tr-none bg-[var(--dark-accent-color)] text-white'
-                                }`}
-                            style={{ wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }}
-                        >
-                            {msg.text}
-                        </div>
-                    </div>
-                ))}
 
                 {isAiThinking && (
                     <div className="flex flex-col gap-1 max-w-[85%] self-start opacity-75 shrink-0">
-                        <div className="border border-[var(--french-gray)] rounded-2xl rounded-tl-none px-3.5 py-2.5 text-xs bg-[var(--main-color)] text-[var(--secondary-color)] italic">
+                        <div className="border border-[var(--secondary-color)] rounded-2xl rounded-tl-none px-3.5 py-2.5 text-xs bg-[var(--main-color)] text-[var(--secondary-color)] italic">
                             Sigma is thinking…
                         </div>
                     </div>

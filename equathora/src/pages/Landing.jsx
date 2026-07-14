@@ -34,15 +34,15 @@ const Landing = () => {
                 <HeroSection />
                 {/* <TrustedBySection /> */}
                 <ExercisesSection />
-                <hr class="border-[var(--mid-main-secondary)]" />
+                <hr className="border-[var(--mid-main-secondary)]" />
                 <WhyChooseSection />
-                <hr class="border-[var(--mid-main-secondary)]" />
+                <hr className="border-[var(--mid-main-secondary)]" />
                 <HowItWorksSection />
-                <hr class="border-[var(--mid-main-secondary)]" />
+                <hr className="border-[var(--mid-main-secondary)]" />
                 <TestimonialsSection />
-                <hr class="border-[var(--mid-main-secondary)]" />
+                <hr className="border-[var(--mid-main-secondary)]" />
                 <LatestArticlesSection />
-                <hr class="border-[var(--mid-main-secondary)]" />
+                <hr className="border-[var(--mid-main-secondary)]" />
                 <CTASection />
                 {/* <EquathoraBriefsSection /> */}
                 <Footer />

@@ -6,6 +6,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import OverflowChecker from "./pages/OverflowChecker";
 import ProtectedRoute from "./components/ProtectedRoute";
+import OnboardingRoute from "./components/OnboardingRoute";
 import AdminRoute from "./components/AdminRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { supabase } from "./lib/supabaseClient";
@@ -16,7 +17,7 @@ import {
     setThemePreference,
     syncThemeWithSystemPreference
 } from "./lib/theme";
-import { useAuth } from "./hooks/useAuth";
+import { useAuth, getOnboardingStatus, AuthProvider } from "./hooks/useAuth";
 import { trackActivityEvent, trackDailyActivity } from "./lib/activityTrackingService";
 import {
     initPostHog,
@@ -68,14 +69,14 @@ const EquathoraBriefs = lazy(() => import("./pages/EquathoraBriefs"));
 const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard"));
 
 function HomeRoute() {
-    const { loading, isAuth } = useAuth();
+    const { loading, isAuth, onboardingCompleted } = useAuth();
 
     if (loading) {
         return <LoadingSpinner />;
     }
 
     if (isAuth) {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to={onboardingCompleted ? "/dashboard" : "/getStarted"} replace />;
     }
 
     return <Landing />;
@@ -192,7 +193,6 @@ export default function App() {
         });
     }, [location.pathname]);
 
-    // Handle OAuth callback and redirect to dashboard
     useEffect(() => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_IN' && session) {
@@ -212,7 +212,6 @@ export default function App() {
 
                 identifyPostHogUser(session.user);
 
-
                 void capturePostHogEvent('user_signed_in', {
                     email: session.user?.email || null
                 });
@@ -220,10 +219,12 @@ export default function App() {
                     route: window.location.pathname
                 });
 
-                // Check if we're not already on dashboard or a protected route
                 const currentPath = window.location.pathname;
                 if (currentPath === '/' || currentPath === '/login' || currentPath === '/signup') {
-                    navigate('/dashboard', { replace: true });
+                    void (async () => {
+                        const { onboardingCompleted } = await getOnboardingStatus(session.user.id);
+                        navigate(onboardingCompleted ? '/dashboard' : '/getStarted', { replace: true });
+                    })();
                 }
             }
 
@@ -243,7 +244,7 @@ export default function App() {
 
 
     return (
-        <>
+        <AuthProvider>
             <PageTitleUpdater />
             {/* <OverflowChecker /> */}
             <Suspense fallback={<LoadingSpinner />}>
@@ -268,7 +269,7 @@ export default function App() {
                         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="/terms-of-service" element={<TermsOfService />} />
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
-                        <Route path="/getStarted" element={<GetStarted />} />
+                        <Route path="/getStarted" element={<OnboardingRoute><GetStarted /></OnboardingRoute>} />
                         <Route path="/premium" element={<Premium />} />
 
 
@@ -314,7 +315,7 @@ export default function App() {
             {/* Analytics */}
             {shouldEnableVercelAnalytics ? <Analytics /> : null}
             {canUseSpeedInsights ? <LazySpeedInsights /> : null}
-        </>
+        </AuthProvider>
     );
 }
 

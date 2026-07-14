@@ -280,7 +280,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
 
                                             <math-field
                                                 ref={(el) => (fieldRefs.current[field.id] = el)}
-                                                class="ml-field"
+                                                className="ml-field"
                                                 virtualkeyboardmode="off"
                                                 smartfence="true"
                                                 placeholder=""
