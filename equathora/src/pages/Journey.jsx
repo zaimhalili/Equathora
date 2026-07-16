@@ -294,9 +294,10 @@ const Journey = () => {
         return null;
     }, [personalizedJourney, completedSet, attemptedSet]);
 
-    if (loading) {
-        return <LoadingSpinner />;
-    }
+    // Add a loading screen for the problem topics below not a full-screen one
+    // if (loading) {
+    //     return <LoadingSpinner />;
+    // }
 
     return (
         <>

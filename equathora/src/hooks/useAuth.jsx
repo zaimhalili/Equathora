@@ -49,10 +49,12 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         let isDisposed = false;
 
-        async function syncAuthAndOnboarding(session) {
+        async function syncAuthAndOnboarding(session, initial = false) {
             if (isDisposed) return;
 
-            setLoading(true);
+            if (initial) {
+                setLoading(true);
+            }
             setIsAuth(!!session);
             setUser(session?.user ?? null);
 
@@ -73,7 +75,7 @@ export function AuthProvider({ children }) {
         }
 
         supabase.auth.getSession().then(({ data: { session } }) => {
-            void syncAuthAndOnboarding(session);
+            void syncAuthAndOnboarding(session, true);
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {

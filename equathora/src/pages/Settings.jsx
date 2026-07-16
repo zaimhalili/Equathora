@@ -382,10 +382,6 @@ const Settings = () => {
 
         loadData();
     }, [navigate]);
-
-    if (isLoading) {
-        return <LoadingSpinner />;
-    }
     // PROFILE HANDLERS
     const handleSaveProfile = async () => {
         setProfileSaving(true);
@@ -796,7 +792,7 @@ const Settings = () => {
                 {/* Header */}
                 <div className="flex flex-col items-center w-full gap-2 px-4 pt-8 pb-4">
                     <h1 className="text-4xl font-bold">Settings</h1>
-                    <p className="text-md text-[var(--secondary-color)]">Manage your account, security, and preferences</p>
+                    <p className="text-md text-[var(--secondary-color)] text-center md:text-left">Manage your account, security, and preferences</p>
                 </div>
 
                 {/* Content wrapper */}

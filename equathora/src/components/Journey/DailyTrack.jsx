@@ -9,6 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 import { generateProblemSlug } from '@/lib/slugify';
 import { getEstimatedTime } from '@/lib/problemProgress';
+import { calculateProblemXP } from '@/lib/leaderboardService';
 
 const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes }) => {
     // Field names below are a best-effort guess at what getStreakData() /
@@ -30,6 +31,13 @@ const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes })
     const nextProblemSlug = nextProblem
         ? (nextProblem.slug || generateProblemSlug(nextProblem.title, nextProblem.id))
         : null;
+
+    // Preview XP for the card: same calculateProblemXP used on problem completion.
+    // Time/hints aren't known yet, so this shows base + first-attempt bonus,
+    // the guaranteed floor a student gets for solving it correctly first try.
+    const nextProblemXp = nextProblem
+        ? calculateProblemXP(nextProblem.difficulty, 0, true, 0, false).totalXP
+        : 0;
 
     return (
         <section className="w-full rounded-2xl bg-[var(--main-color)] border border-white/10 p-5 shadow-xl">
@@ -104,7 +112,7 @@ const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes })
 
                             <div className="flex items-center gap-2 text-[var(--rare-blue)]">
                                 <FaBolt />
-                                + {nextProblem.xp ?? 25} XP
+                                + {nextProblemXp} XP
                             </div>
 
                         </div>

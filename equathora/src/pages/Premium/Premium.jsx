@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Premium = ({ premium = false }) => {
   const freeFeatures = [
-    { bold: "Daily Math Challenges", text: " (standard problems)" },
+    { bold: "Personalized studying plan", text: " (standard problems)" },
     { bold: "Step-by-step LaTeX workspace", text: "" },
     { bold: "Basic completion stats", text: "" },
     { bold: "~250 curated foundational problems", text: "" },
@@ -14,7 +14,7 @@ const Premium = ({ premium = false }) => {
   ];
   const proFeatures = [
     { bold: "Sigma AI Step Debugger", text: " - pinpoints the exact line where your algebra breaks and explains why" },
-    { bold: "Mistake Vault", text: " - tracks your errors over time and surfaces your most common slip-ups" },
+    // { bold: "Mistake Vault", text: " - tracks your errors over time and surfaces your most common slip-ups" },
     { bold: "Advanced Problem Sets", text: " - Bayes' Theorem, Combinatorics, Olympiad-style riddles, Number Theory" },
     { bold: "LaTeX PDF Export", text: " - download your solved steps as a clean, print-ready PDF" },
     { bold: "Interactive AI Chat (Sigma Mentor)", text: " - ask follow-up questions after a hint, like a live tutor" }
@@ -111,7 +111,7 @@ const Premium = ({ premium = false }) => {
                 <p className='text-xl md:text-2xl text-center md:text-left'>
                   Equathora is an <strong>excellent tool</strong> for the “serious” math student, specifically those preparing for Math Olympiads or early undergraduate STEM courses. It removes the friction of finding quality problems and provides <strong>a superior input method</strong> compared to standard multiple-choice platforms.
                 </p>
-                <a href="https://www.osradar.com/equathora-math-site-review/" target='_blank' title='Equathora Review' className='!underline !text-[var(--rare-blue)] active:scale-95 hover:brightness-75 text-center md:text-left text-md w-fit'>
+                <a href="https://www.osradar.com/equathora-math-site-review/" target='_blank' title='Equathora Review' className='!underline !text-blue-800 active:scale-95 hover:brightness-75 text-center md:text-left text-md w-fit'>
                   Osradar - Tech Blogs
                 </a>
               </div>

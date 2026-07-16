@@ -141,6 +141,14 @@ const LoadingSpinner = () => {
         };
     }, []);
 
+    // useEffect(() => {
+    //     console.log("LoadingSpinner mounted");
+
+    //     return () => {
+    //         console.log("LoadingSpinner unmounted");
+    //     };
+    // }, []);
+
     return (
         <div className="min-h-screen bg-[var(--main-color)] flex items-center justify-center px-6">
             <div className="w-full max-w-xl">
