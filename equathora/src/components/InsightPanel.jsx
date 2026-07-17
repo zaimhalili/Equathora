@@ -1,7 +1,26 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './InsightPanel.css';
-import { FaCheck } from 'react-icons/fa';
+import { FaCheck, FaUserFriends } from 'react-icons/fa';
+import { shareStudyPartnerInvitation } from '../lib/studyPartnerShare';
+
+const copyWithDocument = (value) => {
+    if (typeof document === 'undefined') return false;
+
+    const textarea = document.createElement('textarea');
+    textarea.value = value;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+        return document.execCommand('copy');
+    } finally {
+        document.body.removeChild(textarea);
+    }
+};
 
 /**
  * InsightPanel -- Navbar-attached feedback ribbon
@@ -20,9 +39,13 @@ const InsightPanel = ({
     autoDismissSeconds = 12,
     title = 'Correct',
     primaryLabel = 'Next problem',
+    shareUrl = null,
+    shareTitle = 'Try this math problem on Equathora',
+    shareText = 'I just solved this problem. Want to try it too?',
 }) => {
     const [visible, setVisible] = useState(true);
     const [closing, setClosing] = useState(false);
+    const [shareState, setShareState] = useState('idle');
 
     const handleDismiss = useCallback(() => {
         setClosing(true);
@@ -38,6 +61,29 @@ const InsightPanel = ({
         const timer = setTimeout(handleDismiss, autoDismissSeconds * 1000);
         return () => clearTimeout(timer);
     }, [autoDismissSeconds, handleDismiss]);
+
+    const handleShare = async () => {
+        if (!shareUrl || shareState === 'sharing') return;
+
+        setShareState('sharing');
+        const result = await shareStudyPartnerInvitation({
+            url: shareUrl,
+            title: shareTitle,
+            text: shareText,
+            copyFallback: copyWithDocument,
+        });
+
+        setShareState(result);
+    };
+
+    const shareLabel = {
+        idle: 'Invite a study partner',
+        sharing: 'Opening share options…',
+        shared: 'Shared',
+        copied: 'Link copied',
+        cancelled: 'Invite a study partner',
+        unavailable: 'Could not copy link',
+    }[shareState];
 
     if (!visible) return null;
 
@@ -67,6 +113,24 @@ const InsightPanel = ({
                                         }}
                                     >
                                         View full solution
+                                    </button>
+                                )}
+
+                                {shareUrl && (
+                                    <button
+                                        type="button"
+                                        className="insight-btn-share"
+                                        onClick={handleShare}
+                                        disabled={shareState === 'sharing'}
+                                        aria-label="Invite a study partner to solve this problem"
+                                    >
+                                        <FaUserFriends aria-hidden="true" />
+                                        <span>{shareLabel}</span>
+                                        <span className="sr-only" aria-live="polite">
+                                            {shareState === 'copied' ? 'Study partner link copied to clipboard.' : ''}
+                                            {shareState === 'shared' ? 'Study partner invitation shared.' : ''}
+                                            {shareState === 'unavailable' ? 'The study partner link could not be copied.' : ''}
+                                        </span>
                                     </button>
                                 )}
 
