@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Screenshot from "../../assets/images/screenshotNew.png";
+import ProblemWorkspace from "../../assets/images/problemSC.png";
 
 const ExercisesSection = () => {
     const exercises = [
@@ -95,10 +95,40 @@ const ExercisesSection = () => {
 
     return (
         <div className="flex justify-center">
-            <section className="max-w-[1500px] mx-auto w-full bg-[var(--[var(--white)])] relative overflow-hidden flex justify-center flex-col px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10">
+            <section className="max-w-[1500px] mx-auto w-full bg-[var(--white)] relative overflow-hidden flex justify-center flex-col px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-16">
                 {/* Decorative elements */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
+
+                <article id="practice-preview" className="relative z-10 flex flex-col gap-8 scroll-mt-24">
+                    <div className="flex max-w-3xl flex-col gap-3">
+                        <p className="text-sm font-bold text-[var(--accent-color)]">Inside a practice session</p>
+                        <h2 className="font-[Lexend] text-3xl font-extrabold leading-tight tracking-[-0.03em] text-[var(--secondary-color)] sm:text-4xl lg:text-5xl">
+                            See the problem and your working side by side.
+                        </h2>
+                        <p className="max-w-[62ch] text-base leading-relaxed text-[var(--secondary-color)]/75 sm:text-lg">
+                            Keep the prompt and hints in view while you write each step in the browser, then submit your solution for immediate feedback.
+                        </p>
+                    </div>
+
+                    <figure className="overflow-hidden rounded-xl border border-[var(--mid-main-secondary)]/30 bg-[var(--main-color)] p-2 shadow-[0_24px_60px_rgba(32,34,49,0.16)] sm:p-3">
+                        <div className="flex items-center gap-2 px-2 pb-2 sm:px-3 sm:pb-3">
+                            <span className="h-2.5 w-2.5 rounded-full bg-[var(--accent-color)]" aria-hidden="true" />
+                            <span className="h-2.5 w-2.5 rounded-full bg-[var(--mid-main-secondary)]/60" aria-hidden="true" />
+                            <span className="h-2.5 w-2.5 rounded-full bg-[var(--french-gray)]" aria-hidden="true" />
+                            <span className="ml-2 text-xs font-medium text-[var(--secondary-color)]/60 sm:text-sm">Equathora practice workspace</span>
+                        </div>
+                        <img
+                            src={ProblemWorkspace}
+                            alt="Equathora practice workspace with a problem and hints on the left and a step-by-step solution editor on the right"
+                            className="w-full rounded-lg"
+                            loading="eager"
+                        />
+                        <figcaption className="sr-only">
+                            A real Equathora problem-solving workspace showing the prompt, hints, math editor, and submit action.
+                        </figcaption>
+                    </figure>
+                </article>
 
                 <article className='w-full  relative z-10 flex gap-10 flex-col'>
                     <div className="w-full flex flex-col lg:flex-row gap-6">
@@ -172,9 +202,6 @@ const ExercisesSection = () => {
                                 </motion.div>
                             ))}
                         </div>
-                    </div>
-                    <div className='w-full'>
-                        <img src={Screenshot} alt="List of the problems" className='rounded-md w-full shadow-[0px_10px_35px_5px_rgba(141,153,174,0.4)] dark:shadow-black/20' />
                     </div>
                 </article>
 
