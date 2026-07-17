@@ -7,6 +7,7 @@ import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import { validatePassword } from "../utils/passwordUtil";
+import SupportContact from '../components/SupportContact.jsx';
 
 const ResetPassword = () => {
     const [newPassword, setNewPassword] = useState('');
@@ -156,6 +157,7 @@ const ResetPassword = () => {
                             </p>
                         </div>
                     </form>
+                    <SupportContact />
                 </section>
                 <aside id="background-container"><BackgroundPolygons /></aside>
             </main>

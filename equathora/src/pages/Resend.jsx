@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import { supabase } from '../lib/supabaseClient';
+import SupportContact from '../components/SupportContact.jsx';
 
 const Resend = () => {
   const [email, setEmail] = useState('');
@@ -88,6 +89,7 @@ const Resend = () => {
               </Link>
             </p>
           </div>
+          <SupportContact />
         </article>
 
       </section>

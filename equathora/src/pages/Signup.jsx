@@ -11,6 +11,7 @@ import { supabase } from '../lib/supabaseClient';
 import { validatePassword } from "../utils/passwordUtil";
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import SupportContact from '../components/SupportContact.jsx';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -229,6 +230,7 @@ const Signup = () => {
             </p>
           </div>
         </form>
+        <SupportContact />
       </section>
 
       <aside id="background-container"><BackgroundPolygons /></aside>

@@ -10,6 +10,7 @@ import {
     FaYoutube
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import SupportContact from './SupportContact.jsx';
 
 const Footer = () => {
     return (
@@ -105,6 +106,8 @@ const Footer = () => {
                 </div>
 
                 <div className="footer-bottom flex flex-col">
+                    <SupportContact variant="footer" />
+
                     <p className="footer-copyright">
                         © 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong>
                         {' · '}

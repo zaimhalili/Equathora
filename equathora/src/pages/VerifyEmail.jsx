@@ -6,6 +6,7 @@ import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
+import SupportContact from '../components/SupportContact.jsx';
 
 const VerifyEmail = () => {
     const [email, setEmail] = useState('');
@@ -147,6 +148,7 @@ const VerifyEmail = () => {
                             </p>
                         </div>
                     </form>
+                    <SupportContact />
                 </section >
                 <aside id="background-container"><BackgroundPolygons /></aside>
             </main >
