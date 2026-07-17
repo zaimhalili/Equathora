@@ -31,20 +31,22 @@ const Landing = () => {
             {/* <FeedbackBanner /> */}
             <div className="min-h-screen bg-[var(--white)] text-[var(--secondary-color)]">
                 <NavigationBar />
-                <HeroSection />
-                {/* <TrustedBySection /> */}
-                <ExercisesSection />
-                <hr class="border-[var(--mid-main-secondary)]" />
-                <WhyChooseSection />
-                <hr class="border-[var(--mid-main-secondary)]" />
-                <HowItWorksSection />
-                <hr class="border-[var(--mid-main-secondary)]" />
-                <TestimonialsSection />
-                <hr class="border-[var(--mid-main-secondary)]" />
-                <LatestArticlesSection />
-                <hr class="border-[var(--mid-main-secondary)]" />
-                <CTASection />
-                {/* <EquathoraBriefsSection /> */}
+                <main>
+                    <HeroSection />
+                    {/* <TrustedBySection /> */}
+                    <ExercisesSection />
+                    <hr className="border-[var(--mid-main-secondary)]" />
+                    <WhyChooseSection />
+                    <hr className="border-[var(--mid-main-secondary)]" />
+                    <HowItWorksSection />
+                    <hr className="border-[var(--mid-main-secondary)]" />
+                    <TestimonialsSection />
+                    <hr className="border-[var(--mid-main-secondary)]" />
+                    <LatestArticlesSection />
+                    <hr className="border-[var(--mid-main-secondary)]" />
+                    <CTASection />
+                    {/* <EquathoraBriefsSection /> */}
+                </main>
                 <Footer />
                 <div className="flex flex-col lg:flex-row items-center text-[var(--french-gray)] bg-[var(--secondary-color)] underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center font-[Sansation] theme-lock">
                     <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="#freepik-link">

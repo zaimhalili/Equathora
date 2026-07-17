@@ -24,7 +24,7 @@ export default defineConfig({
       }
     },
     chunkSizeWarningLimit: 1500,
-    sourcemap: false,
+    sourcemap: true,
   },
   server: {}
 });

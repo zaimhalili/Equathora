@@ -224,7 +224,7 @@ const NavigationBar = () => {
                             <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
                                 <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
                                     <Link to="/about"
-                                        className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center text-gray-700 transition-all hover:border-[var(--accent-color)] hover:!text-[var(--accent-color)]">Learn More</Link>
+                                        className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center text-gray-700 transition-all hover:border-[var(--accent-color)] hover:!text-[var(--accent-color)]">About Equathora</Link>
                                 </li>
                                 <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
                                     <Link
