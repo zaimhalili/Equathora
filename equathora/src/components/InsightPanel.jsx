@@ -18,6 +18,8 @@ const InsightPanel = ({
     onViewSolution = null,
     onDismiss = null,
     autoDismissSeconds = 12,
+    title = 'Correct',
+    primaryLabel = 'Next problem',
 }) => {
     const [visible, setVisible] = useState(true);
     const [closing, setClosing] = useState(false);
@@ -51,7 +53,7 @@ const InsightPanel = ({
                                 <div className="insight-check-icon">
                                     <FaCheck className='h-3 w-3 !text-white'></FaCheck>
                                 </div>
-                                <span className="insight-title">Correct</span>
+                                <span className="insight-title">{title}</span>
                             </div>
 
                             <div className="insight-actions">
@@ -74,14 +76,14 @@ const InsightPanel = ({
                                         className="insight-btn-primary"
                                         style={{ textDecoration: 'none' }}
                                     >
-                                        Next problem
+                                        {primaryLabel}
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5">
                                             <polyline points="9 18 15 12 9 6" />
                                         </svg>
                                     </Link>
                                 ) : (
                                     <button type="button" className="insight-btn-primary" disabled style={{ opacity: 0.5, cursor: 'default' }}>
-                                        Next problem
+                                        {primaryLabel}
                                     </button>
                                 )}
 
