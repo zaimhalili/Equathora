@@ -57,6 +57,7 @@ import {
     WEEKLY_CHALLENGE_ROUTE,
 } from '../data/weeklyChallenge';
 import { markWeeklyChallengeCompleted } from '../lib/weeklyChallengeProgress';
+import { buildStudyPartnerShareUrl } from '../lib/studyPartnerShare';
 
 
 const formatDurationLabel = (seconds = 0) => {
@@ -129,6 +130,9 @@ const Problem = () => {
     const [searchParams] = useSearchParams();
     const weeklyChallenge = getWeeklyChallengeFromProblemParams(slug, searchParams);
     const isWeeklyChallenge = Boolean(weeklyChallenge);
+    const studyPartnerShareUrl = typeof window !== 'undefined'
+        ? buildStudyPartnerShareUrl(window.location.href)
+        : null;
 
     // Extract problem ID from slug for backwards compatibility
     const numericProblemId = extractIdFromSlug(slug);
@@ -942,6 +946,9 @@ const Problem = () => {
                             : nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
                         title={isWeeklyChallenge ? 'Weekly challenge complete' : 'Correct'}
                         primaryLabel={isWeeklyChallenge ? 'Challenge summary' : 'Next problem'}
+                        shareUrl={studyPartnerShareUrl}
+                        shareTitle={`Try ${problem.title} on Equathora`}
+                        shareText="I just solved this math problem. Want to try it too?"
                         onViewSolution={() => {
                             setShowSolution(true);
                             setShowDescription(false);
