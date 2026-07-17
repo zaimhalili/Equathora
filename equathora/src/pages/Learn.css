@@ -68,6 +68,139 @@
     color: var(--secondary-color);
 }
 
+.signed-out-practice-path {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 0.42fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    padding: clamp(2rem, 5vw, 4rem);
+    background: var(--white);
+    border: 1px solid rgba(43, 45, 66, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 16px 44px rgba(43, 45, 66, 0.11);
+}
+
+.signed-out-practice-copy {
+    max-width: 650px;
+}
+
+.signed-out-practice-label {
+    margin: 0 0 0.75rem;
+    color: var(--dark-accent-color);
+    font-family: 'Sansation', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.signed-out-practice-path h2 {
+    margin: 0;
+    max-width: 16ch;
+    color: var(--secondary-color);
+    font-family: 'Lexend', 'Sansation', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.35rem);
+    font-weight: 700;
+    line-height: 1.08;
+    text-wrap: balance;
+}
+
+.signed-out-practice-intro {
+    margin: 1.25rem 0 0;
+    max-width: 60ch;
+    color: rgba(43, 45, 66, 0.76);
+    font-family: 'Sansation', sans-serif;
+    font-size: clamp(1rem, 1.8vw, 1.12rem);
+    line-height: 1.58;
+    text-wrap: pretty;
+}
+
+.signed-out-practice-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 1.75rem;
+}
+
+.signed-out-practice-primary {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    padding: 0.75rem 1.15rem;
+    border-radius: 12px;
+    background: var(--accent-color);
+    color: white;
+    font-family: 'Sansation', sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(215, 4, 39, 0.2);
+    transition: transform 0.18s ease-out, background-color 0.18s ease-out, box-shadow 0.18s ease-out;
+}
+
+.signed-out-practice-primary:hover {
+    background: var(--dark-accent-color);
+    box-shadow: 0 10px 24px rgba(215, 4, 39, 0.24);
+    transform: translateY(-1px);
+}
+
+.signed-out-practice-primary:active {
+    transform: translateY(0);
+}
+
+.signed-out-practice-primary:focus-visible,
+.signed-out-practice-secondary:focus-visible {
+    outline: 3px solid rgba(215, 4, 39, 0.28);
+    outline-offset: 3px;
+}
+
+.signed-out-practice-secondary {
+    color: var(--secondary-color);
+    font-family: 'Sansation', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: rgba(43, 45, 66, 0.32);
+    text-underline-offset: 4px;
+}
+
+.signed-out-practice-secondary:hover {
+    color: var(--dark-accent-color);
+    text-decoration-color: currentColor;
+}
+
+.signed-out-practice-facts {
+    margin: 0;
+    display: grid;
+    gap: 1.25rem;
+    padding: 1.5rem 0 1.5rem 2rem;
+    border-left: 1px solid rgba(43, 45, 66, 0.16);
+}
+
+.signed-out-practice-facts div {
+    display: grid;
+    gap: 0.3rem;
+}
+
+.signed-out-practice-facts dt {
+    color: rgba(43, 45, 66, 0.58);
+    font-family: 'Sansation', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.signed-out-practice-facts dd {
+    margin: 0;
+    color: var(--secondary-color);
+    font-family: 'Lexend', 'Sansation', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
 #search-filtering {
     width: 100%;
     margin-bottom: 1.5rem;
@@ -291,6 +424,33 @@
         text-align: center;
     }
 
+    .signed-out-practice-path {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1.75rem 1.25rem;
+        border-radius: 14px;
+    }
+
+    .signed-out-practice-path h2 {
+        font-size: clamp(2rem, 10vw, 2.6rem);
+    }
+
+    .signed-out-practice-primary {
+        width: 100%;
+    }
+
+    .signed-out-practice-facts {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        padding: 1.25rem 0 0;
+        border-top: 1px solid rgba(43, 45, 66, 0.16);
+        border-left: 0;
+    }
+
+    .signed-out-practice-facts dd {
+        font-size: 0.88rem;
+    }
+
     #search-filtering {
         padding: 1rem 0.875rem;
         border-radius: 6px;
@@ -357,6 +517,18 @@
 
     #welcome-learn {
         gap: 1.5rem;
+    }
+
+    .signed-out-practice-path {
+        grid-template-columns: 1fr;
+        gap: 2.25rem;
+    }
+
+    .signed-out-practice-facts {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 1.5rem 0 0;
+        border-top: 1px solid rgba(43, 45, 66, 0.16);
+        border-left: 0;
     }
 
     #search-filtering {
