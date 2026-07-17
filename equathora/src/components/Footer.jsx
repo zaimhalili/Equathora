@@ -19,7 +19,7 @@ const Footer = () => {
                 <div id="center">
                     <h1>
                         Your contribution helps us keep this learning platform available for
-                        <span className="text-[var(--accent-color)] relative inline-block">
+                        <span className="footer-highlight relative inline-block">
                             students worldwide
                             <motion.svg
                                 className="absolute -bottom-2 left-0 w-full"
@@ -72,7 +72,7 @@ const Footer = () => {
                         </a>
                     </div>
                     <div className="w-full flex justify-center"><Link to="/dashboard" className='cursor-pointer w-14'>
-                        <img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '60px', width: '60px', margin: '1rem auto', borderRadius: '10px' }} />
+                        <img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '56px', width: '56px', margin: '1rem auto', borderRadius: '10px' }} />
                     </Link>
                     </div>
 
@@ -105,7 +105,14 @@ const Footer = () => {
                 </div>
 
                 <div className="footer-bottom flex flex-col">
-                    <p className="footer-copyright">© 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong></p>
+                    <p className="footer-copyright">
+                        © 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong>
+                        {' · '}
+                        <a href="https://tin.computer" className="inline-flex items-center gap-1 text-inherit no-underline">
+                            <span aria-hidden="true" className="inline-block h-[1em] w-[1em] bg-[#66DC9D]" />
+                            Growth by Tin
+                        </a>
+                    </p>
 
                     <p className="footer-copyright">
                         Building products around learning, logic, and productivity.

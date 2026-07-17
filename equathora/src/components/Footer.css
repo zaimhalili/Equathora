@@ -84,6 +84,10 @@
     z-index: 1;
 }
 
+.footer-highlight {
+    color: #ff5c78;
+}
+
 #center h2 {
     font-family: 'Sansation', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: var(--really-light-accent);
