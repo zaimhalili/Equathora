@@ -1,17 +1,19 @@
 import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
-import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
+import { createPortal } from 'react-dom';
 import Navbar from '../components/Navbar.jsx';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
 import './Learn.css';
 import Idea from '../assets/images/Mathematics-bro.svg';
-import { FaSearch, FaTimes, FaChevronDown, FaFilter } from 'react-icons/fa';
+import { FaArrowRight, FaSearch, FaTimes, FaChevronDown, FaFilter } from 'react-icons/fa';
 import ProblemCard from '../components/ProblemCard.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { getProblems } from '../lib/problemService';
 import { StatusOptions, SortOptions } from '../enum/DropdownEnums';
 import { formatTopicLabel } from '../lib/utils';
+import { useAuth } from '../hooks/useAuth';
+import { WEEKLY_CHALLENGE, getWeeklyChallengeProblemPath } from '../data/weeklyChallenge';
 
 const FilterDropdown = ({ label, value, options, onChange, placeholder = "All", multiSelect = false }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -148,6 +150,7 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All", 
 };
 
 const Learn = () => {
+  const { loading: authLoading, isAuth } = useAuth();
   const difficultyOrder = {
     beginner: 1,
     easy: 2,
@@ -270,6 +273,17 @@ const Learn = () => {
   }, [gradeFilter, difficultyFilter, topicFilter, statusFilter, debouncedSearchQuery, sortBy]);
 
   useEffect(() => {
+    if (authLoading) return;
+
+    if (!isAuth) {
+      setLoading(false);
+      setIsRefreshing(false);
+      setLoadingMore(false);
+      setProblems({ count: 0, data: [] });
+      setTotalCount(0);
+      return;
+    }
+
     const fetchPagedProblems = async () => {
       try {
         if (currentPage === 1) {
@@ -346,7 +360,7 @@ const Learn = () => {
     };
 
     fetchPagedProblems();
-  }, [currentPage, gradeFilter, difficultyFilter, topicFilter, statusFilter, debouncedSearchQuery, sortBy]);
+  }, [authLoading, isAuth, currentPage, gradeFilter, difficultyFilter, topicFilter, statusFilter, debouncedSearchQuery, sortBy]);
 
   const hasMore = problems?.data?.length < totalCount;
   const remainingCount = Math.max(0, totalCount - (problems?.data?.length || 0));
@@ -432,10 +446,11 @@ const Learn = () => {
 
   const sortOptions = SortOptions;
 
-  if (loading) {
+  if (loading || authLoading) {
     return <LoadingSpinner message="Loading exercises..." />;
   }
 
+  const weeklyChallengePath = getWeeklyChallengeProblemPath();
 
   return (
     <>
@@ -473,10 +488,61 @@ const Learn = () => {
                   />
                 </motion.svg>
               </span></h1>
-              <h4>Unlock more exercises as you progress. They're great practise and fun to do!</h4>
+              <h4>
+                {isAuth
+                  ? "Unlock more exercises as you progress. They're great practise and fun to do!"
+                  : 'Practice one focused problem with guided steps, helpful hints, and immediate feedback.'}
+              </h4>
             </div>
           </motion.article>
 
+          {!isAuth ? (
+            <motion.section
+              className="signed-out-practice-path"
+              aria-labelledby="signed-out-practice-title"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <div className="signed-out-practice-copy">
+                <p className="signed-out-practice-label">A focused place to begin</p>
+                <h2 id="signed-out-practice-title">Start with one Algebra problem</h2>
+                <p className="signed-out-practice-intro">
+                  The full practice catalog is available after you sign in. Preview this week's
+                  guided challenge, then continue straight to the problem from your account.
+                </p>
+                <div className="signed-out-practice-actions">
+                  <Link to="/challenge/weekly" className="signed-out-practice-primary">
+                    Preview this week's challenge
+                    <FaArrowRight aria-hidden="true" />
+                  </Link>
+                  <Link
+                    to="/login"
+                    state={{ from: weeklyChallengePath }}
+                    className="signed-out-practice-secondary"
+                  >
+                    Already have an account? Sign in
+                  </Link>
+                </div>
+              </div>
+
+              <dl className="signed-out-practice-facts" aria-label="Weekly challenge details">
+                <div>
+                  <dt>Topic</dt>
+                  <dd>{WEEKLY_CHALLENGE.subject}</dd>
+                </div>
+                <div>
+                  <dt>Level</dt>
+                  <dd>{WEEKLY_CHALLENGE.difficulty}</dd>
+                </div>
+                <div>
+                  <dt>Session</dt>
+                  <dd>About {WEEKLY_CHALLENGE.estimatedMinutes} minutes</dd>
+                </div>
+              </dl>
+            </motion.section>
+          ) : (
+            <>
           <motion.article
             id='search-filtering'
             initial={{ opacity: 0, y: 20 }}
@@ -659,6 +725,8 @@ const Learn = () => {
                 {loadingMore ? 'Loading…' : `Show more (${Math.min(pageSize, remainingCount)} more)`}
               </button>
             </div>
+          )}
+            </>
           )}
         </section>
 
