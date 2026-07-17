@@ -11,7 +11,6 @@ import {
 } from '../data/weeklyChallenge';
 import {
     getWeeklyChallengeCompletion,
-    markWeeklyChallengeCompleted,
 } from '../lib/weeklyChallengeProgress';
 import './WeeklyChallenge.css';
 
@@ -27,10 +26,6 @@ const WeeklyChallenge = () => {
     );
 
     useEffect(() => {
-        if (searchParams.get('completed') === '1') {
-            setCompletion(markWeeklyChallengeCompleted(challenge));
-            return;
-        }
         setCompletion(getWeeklyChallengeCompletion(challenge.weekKey));
     }, [challenge, searchParams]);
 
