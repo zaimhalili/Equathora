@@ -184,7 +184,7 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                     <div className="ml-step-label">{index + 1}</div>
                                     <math-field
                                         ref={(el) => (fieldRefs.current[field.id] = el)}
-                                        class="ml-field"
+                                        className="ml-field"
                                         virtualkeyboardmode="off"
                                         smartfence="true"
                                         placeholder=""

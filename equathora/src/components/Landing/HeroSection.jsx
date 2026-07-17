@@ -177,7 +177,7 @@ const HeroSection = () => {
                             transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
                             style={{ transformPerspective: 1000 }}
                         >
-                            Build real problem-solving skills through carefully crafted challenges. No distractions, just thoughtful practice.
+                            Work through guided problems, get instant feedback, and track your own progress topic by topic.
                         </motion.p>
 
                         {/* CTA Buttons */}

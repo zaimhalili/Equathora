@@ -62,7 +62,7 @@ const LatestArticlesSection = () => {
                                             className="w-full h-full object-cover transition-transform duration-500 "
                                         />
                                         <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
-                                            <span className="px-2.5 sm:px-3 py-1 bg-[var(--accent-color)] text-[var(--white)] text-[10px] sm:text-xs font-semibold rounded-full">
+                                            <span className="px-2.5 sm:px-3 py-1 bg-[var(--accent-color)] text-white text-[10px] sm:text-xs font-semibold rounded-full">
                                                 {post.category}
                                             </span>
                                         </div>
