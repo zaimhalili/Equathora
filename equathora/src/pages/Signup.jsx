@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import './Signup.css';
 import '../components/Auth.css';
 import { supabase } from '../lib/supabaseClient';
+import { buildVerificationPath } from '../lib/emailVerification';
 import { validatePassword } from "../utils/passwordUtil";
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
@@ -85,11 +86,13 @@ const Signup = () => {
       // Check if email confirmation is required
       if (data?.user && !data.session) {
         // Email confirmation required
-        navigate(`/verify?email=${encodeURIComponent(email)}`);
+        navigate(buildVerificationPath(email), {
+          state: { confirmationJustSent: true }
+        });
       } else if (data?.session) {
         navigate('/dashboard');
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred');
       setLoading(false);
     }
