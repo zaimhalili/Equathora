@@ -1,33 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
 import YoungStudent from '../../assets/images/hBooks.png';
 import MouseFollower from './MouseFollower';
-
-// Animated counter component
-const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
-    const [count, setCount] = useState(0);
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true });
-
-    useEffect(() => {
-        if (!isInView) return;
-
-        let startTime;
-        const animate = (timestamp) => {
-            if (!startTime) startTime = timestamp;
-            const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
-            setCount(Math.floor(progress * end));
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            }
-        };
-        requestAnimationFrame(animate);
-    }, [isInView, end, duration]);
-
-    return <span ref={ref}>{prefix}{count}{suffix}</span>;
-};
 
 // Particle system - DVD-style bouncing particles
 const Particles = () => {
@@ -86,12 +62,6 @@ const Particles = () => {
 };
 
 const HeroSection = () => {
-    const stats = [
-        { value: 250, label: 'Practice Problems', suffix: '+' },
-        { value: 30, label: 'Achievements', suffix: '+' },
-        { value: 50, label: 'Math Topics', suffix: '+' },
-    ];
-
     return (
         <section
             className="font-[Sansation] w-full bg-[var(--main-color)] relative overflow-hidden flex items-center justify-center"
@@ -126,7 +96,7 @@ const HeroSection = () => {
             <Particles />
 
             <div className="relative z-10 w-full flex justify-center">
-                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1500px] pt-40 pb-[28px] sm:pt-24 md:pt-30 lg:pt-20 xl:pt-40 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-11 lg:gap-16 xl:gap-16 w-full">
+                <div className="px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32 max-w-[1500px] pt-36 pb-16 sm:pt-28 lg:pt-24 xl:pt-32 flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16 w-full min-h-[calc(100vh-4rem)]">
 
                     {/* Left Content - Centered */}
                     <motion.div
@@ -138,15 +108,15 @@ const HeroSection = () => {
 
                         {/* Main Heading */}
                         <motion.h1
-                            className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)]"
+                            className="font-[Lexend] text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-7xl font-black leading-[1.02] tracking-[-0.045em] text-[var(--secondary-color)] max-w-[11ch]"
                             initial={{ opacity: 0, rotateX: 45, scale: 0.8 }}
                             animate={{ opacity: 1, rotateX: 0, scale: 1 }}
                             transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
                             style={{ transformPerspective: 1000 }}
                         >
-                            Master{' '}
+                            Practice math{' '}
                             <span className="text-[var(--accent-color)] relative inline-block">
-                                mathematics
+                                until it clicks.
                                 <motion.svg
                                     className="absolute -bottom-2 left-0 w-full"
                                     viewBox="0 0 200 8"
@@ -166,12 +136,11 @@ const HeroSection = () => {
                                     />
                                 </motion.svg>
                             </span>
-                            <br />with focused practice.
                         </motion.h1>
 
                         {/* Description */}
                         <motion.p
-                            className="text-xs sm:text-sm md:text-base text-[var(--secondary-color)]/70 leading-relaxed max-w-lg"
+                            className="text-base sm:text-lg md:text-xl text-[var(--secondary-color)]/75 leading-relaxed max-w-xl"
                             initial={{ opacity: 0, rotateX: 30, scale: 0.9 }}
                             animate={{ opacity: 1, rotateX: 0, scale: 1 }}
                             transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
@@ -190,9 +159,9 @@ const HeroSection = () => {
                         >
                             <Link
                                 to="/signup"
-                                className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1"
+                                className="group flex min-h-12 items-center gap-3 rounded-xl !bg-[var(--accent-color)] px-7 py-3 text-base text-center !text-white font-bold shadow-lg shadow-[var(--raisin-black)]/20 transition-[background-color,transform,box-shadow] duration-200 hover:!bg-[var(--dark-accent-color)] hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--accent-color)]/30 focus-visible:ring-offset-2 active:translate-y-0"
                             >
-                                Start practicing
+                                Start a practice session
                                 <motion.span
                                     animate={{ x: [0, 4, 0] }}
                                     transition={{ duration: 1.5, repeat: Infinity }}
@@ -210,31 +179,6 @@ const HeroSection = () => {
                             </Link>
                         </motion.div>
 
-                        {/* Stats Row */}
-                        <motion.div
-                            className="flex gap-4 sm:gap-6 md:gap-8 pt-4 sm:pt-6 justify-center lg:justify-start flex-wrap"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.45, duration: 0.5 }}
-                        >
-                            {stats.map((stat, index) => (
-                                <motion.div
-                                    key={stat.label}
-                                    className="flex flex-col items-center lg:items-start gap-2"
-                                    initial={{ opacity: 0, rotateX: 20 }}
-                                    animate={{ opacity: 1, rotateX: 0 }}
-                                    transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
-                                    style={{ transformPerspective: 1000 }}
-                                >
-                                    <span className="text-xl sm:text-2xl font-bold text-[var(--secondary-color)]">
-                                        <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-                                    </span>
-                                    <span className="text-[10px] sm:text-xs text-[var(--secondary-color)]/60 border-t-2 border-[var(--accent-color)] pt-2">
-                                        {stat.label}
-                                    </span>
-                                </motion.div>
-                            ))}
-                        </motion.div>
                     </motion.div>
 
                     {/* Right Side - Student PNG with floating circle and MouseFollower */}
@@ -293,32 +237,6 @@ const HeroSection = () => {
                                     />
                                 </div>
 
-                                {/* Floating badges - OUTSIDE overflow:hidden but INSIDE MouseFollower */}
-                                {/* Floating badge – top right */}
-                                <motion.div
-                                    className="absolute top-[10%] right-[-3%] z-30"
-                                    animate={{ y: [0, -6, 0] }}
-                                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                                >
-                                    <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary-color)] rounded-md shadow-2xl">
-                                        <div>
-                                            <p className="font-bold text-xl text-[var(--main-color)]">50+</p>
-                                            <p className="text-[10px] text-[var(--mid-main-secondary)]">Active learners</p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-
-                                {/* Floating badge – left */}
-                                <motion.div
-                                    className="absolute top-[38%] left-[-5%] z-30"
-                                    animate={{ y: [0, 8, 0] }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                                >
-                                    <div className="px-4 py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] rounded-md shadow-2xl text-white">
-                                        <p className="text-2xl font-bold">98%</p>
-                                        <p className="text-[10px] opacity-90 ">Success Rate</p>
-                                    </div>
-                                </motion.div>
                             </motion.div>
                         </MouseFollower>
 
