@@ -64,9 +64,9 @@ const WhyChooseSection = () => {
                             transition={{ duration: 0.5, ease: "easeOut" }}
                         >
                             <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight">
-                                Real learning, real{' '}
+                                Practice by topic. See your{' '}
                                 <span className="text-[var(--secondary-color)] relative inline-block">
-                                    progress
+                                    progress.
                                     <motion.svg
                                         className="absolute -bottom-1 left-0 w-full rotate-1"
                                         viewBox="0 0 200 8"
@@ -88,7 +88,7 @@ const WhyChooseSection = () => {
                                 </span>
                             </h2>
                             <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
-                                Build problem-solving skills that last. Practice with purpose, track your growth, and master mathematics through thoughtful challenges.
+                                Use structured problem sets, step-by-step solutions, and saved progress to keep each session focused.
                             </p>
                         </motion.div>
 
