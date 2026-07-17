@@ -25,6 +25,7 @@ import {
     capturePostHogEvent,
     capturePostHogPageView
 } from "./lib/posthogClient";
+import { captureRecruitmentAttribution } from "./lib/recruitmentAttribution";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -135,6 +136,10 @@ export default function App() {
     const navigate = useNavigate();
     const location = useLocation();
     const shouldEnableVercelAnalytics = import.meta.env.PROD || import.meta.env.VITE_ENABLE_VERCEL_ANALYTICS === "true";
+
+    useEffect(() => {
+        captureRecruitmentAttribution(location.search);
+    }, [location.search]);
 
     const canUseSpeedInsights = useMemo(() => {
         const isEnabled = import.meta.env.VITE_ENABLE_SPEED_INSIGHTS === "true";
