@@ -48,10 +48,10 @@ const HowItWorksSection = () => {
                         transition={{ duration: 0.5, ease: "easeOut" }}
                     >
                         <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-4">
-                            How it works
+                            Choose a topic, solve with support, and keep your progress.
                         </h2>
                         <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
-                            Four simple steps to transform your math skills
+                            Four steps take you from the problem library to a saved result.
                         </p>
                     </motion.div>
 

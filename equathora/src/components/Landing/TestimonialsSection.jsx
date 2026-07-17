@@ -73,8 +73,8 @@ const TestimonialsSection = () => {
 
                     {/* Left Side - Header & Navigation Arrows */}
                     <div className='flex flex-col w-full lg:w-1/2 pr-0 lg:pr-36'>
-                        <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl text-[var(--secondary-color)] pb-4 font-extrabold text-center md:text-left'>From our <br /><span className='font-black'>community.</span></h2>
-                        <p className='text-[var(--secondary-color)] font-light text-sm sm:text-xl md:text-2xl max-w-3xl text-center md:text-left'>What students say before and after Equathora are two different stories.</p>
+                        <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl text-[var(--secondary-color)] pb-4 font-extrabold text-center md:text-left'>What early users say about <span className='font-black'>practicing with Equathora.</span></h2>
+                        <p className='text-[var(--secondary-color)] font-light text-sm sm:text-xl md:text-2xl max-w-3xl text-center md:text-left'>Hear how early users describe topic-by-topic practice and the browser workspace.</p>
 
                         {/* Arrow Buttons */}
                         <div className='pt-3 sm:pt-5 md:pt-6 flex gap-3'>
