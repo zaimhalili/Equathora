@@ -51,7 +51,12 @@ import {
     notifyAchievementUnlocked,
     notifyStreakMilestone,
 } from '../lib/notificationService';
-import { WEEKLY_CHALLENGE } from '../data/weeklyChallenge';
+import {
+    getWeeklyChallengeFromProblemParams,
+    getWeeklyChallengeSummaryPath,
+    WEEKLY_CHALLENGE_ROUTE,
+} from '../data/weeklyChallenge';
+import { markWeeklyChallengeCompleted } from '../lib/weeklyChallengeProgress';
 
 
 const formatDurationLabel = (seconds = 0) => {
@@ -122,8 +127,8 @@ const Problem = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const isWeeklyChallenge = searchParams.get('challenge') === 'weekly'
-        && slug === WEEKLY_CHALLENGE.problemSlug;
+    const weeklyChallenge = getWeeklyChallengeFromProblemParams(slug, searchParams);
+    const isWeeklyChallenge = Boolean(weeklyChallenge);
 
     // Extract problem ID from slug for backwards compatibility
     const numericProblemId = extractIdFromSlug(slug);
@@ -532,6 +537,10 @@ const Problem = () => {
             }
         );
 
+        if (validation.isCorrect && weeklyChallenge) {
+            markWeeklyChallengeCompleted(weeklyChallenge);
+        }
+
         // ================================================================
         // PRACTICE MODE PATH — problem was already solved before
         // Show feedback only, never touch progression/stats/achievements.
@@ -548,6 +557,12 @@ const Problem = () => {
                 difficulty: problem.difficulty,
                 isPracticeMode: true
             });
+            if (validation.isCorrect && weeklyChallenge) {
+                setShowInsightPanel(true);
+                setShowSolution(true);
+                setShowSolutionPopup(false);
+                setSolutionViewed(true);
+            }
             return {
                 success: validation.isCorrect,
                 message: validation.isCorrect
@@ -768,7 +783,7 @@ const Problem = () => {
                 <header className="flex items-center justify-between gap-2 md:gap-3 font-[Sansation,sans-serif] bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0">
                     {/* Left side - Back button and Navigation */}
                     <div className="flex items-center gap-2">
-                        <Link to={isWeeklyChallenge ? WEEKLY_CHALLENGE.route : '/learn'} className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-md hover:bg-[var(--french-gray)] hover:text-[var(--main-color)] h-9 md:h-10">
+                        <Link to={isWeeklyChallenge ? WEEKLY_CHALLENGE_ROUTE : '/learn'} className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-md hover:bg-[var(--french-gray)] hover:text-[var(--main-color)] h-9 md:h-10">
                             <FaArrowLeft />
                             <span className="hidden md:inline">{isWeeklyChallenge ? 'Weekly Challenge' : 'Back to Exercises'}</span>
                             <span className="md:hidden">Back</span>
@@ -923,7 +938,7 @@ const Problem = () => {
                         topic={submissionFeedback.topic}
                         difficulty={submissionFeedback.difficulty}
                         nextProblemPath={isWeeklyChallenge
-                            ? `${WEEKLY_CHALLENGE.route}?completed=1`
+                            ? getWeeklyChallengeSummaryPath(weeklyChallenge, true)
                             : nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
                         title={isWeeklyChallenge ? 'Weekly challenge complete' : 'Correct'}
                         primaryLabel={isWeeklyChallenge ? 'Challenge summary' : 'Next problem'}

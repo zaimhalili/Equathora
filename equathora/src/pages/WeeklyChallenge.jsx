@@ -1,25 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { FaArrowRight, FaCheck, FaClock, FaLightbulb } from 'react-icons/fa';
 import MathJaxRenderer from '../components/MathJaxRenderer';
 import Symbol from '../assets/logo/TransparentSymbol.png';
 import { useAuth } from '../hooks/useAuth';
-import { isProblemCompleted } from '../lib/progressStorage';
-import { WEEKLY_CHALLENGE, getWeeklyChallengeProblemPath } from '../data/weeklyChallenge';
+import {
+    getWeeklyChallenge,
+    getWeeklyChallengeByKey,
+    getWeeklyChallengeProblemPath,
+} from '../data/weeklyChallenge';
+import {
+    getWeeklyChallengeCompletion,
+    markWeeklyChallengeCompleted,
+} from '../lib/weeklyChallengeProgress';
 import './WeeklyChallenge.css';
 
 const WeeklyChallenge = () => {
     const { isAuth } = useAuth();
     const [searchParams] = useSearchParams();
-    const [isComplete, setIsComplete] = useState(
-        () => searchParams.get('completed') === '1' || isProblemCompleted(WEEKLY_CHALLENGE.problemId)
+    const challenge = useMemo(() => {
+        const requestedWeek = searchParams.get('week');
+        return (requestedWeek && getWeeklyChallengeByKey(requestedWeek)) || getWeeklyChallenge();
+    }, [searchParams]);
+    const [completion, setCompletion] = useState(
+        () => getWeeklyChallengeCompletion(challenge.weekKey)
     );
 
     useEffect(() => {
-        if (searchParams.get('completed') === '1') setIsComplete(true);
-    }, [searchParams]);
+        if (searchParams.get('completed') === '1') {
+            setCompletion(markWeeklyChallengeCompleted(challenge));
+            return;
+        }
+        setCompletion(getWeeklyChallengeCompletion(challenge.weekKey));
+    }, [challenge, searchParams]);
 
-    const challengePath = getWeeklyChallengeProblemPath();
+    const isComplete = Boolean(completion);
+    const challengePath = getWeeklyChallengeProblemPath(challenge);
     const authDestination = { from: challengePath };
 
     return (
@@ -36,7 +52,9 @@ const WeeklyChallenge = () => {
 
             <section className="weekly-challenge-hero" aria-labelledby="weekly-challenge-title">
                 <div className="weekly-challenge-copy">
-                    <p className="weekly-challenge-eyebrow">This week · {WEEKLY_CHALLENGE.subject}</p>
+                    <p className="weekly-challenge-eyebrow">
+                        {challenge.weekLabel} · {challenge.subject} · {challenge.dateRangeLabel}
+                    </p>
                     {isComplete ? (
                         <div className="weekly-challenge-complete-mark" aria-hidden="true"><FaCheck /></div>
                     ) : null}
@@ -45,7 +63,7 @@ const WeeklyChallenge = () => {
                     </h1>
                     <p className="weekly-challenge-intro">
                         {isComplete
-                            ? 'You finished this week’s algebra challenge. Revisit the solution or try it again whenever you want.'
+                            ? `You finished ${challenge.weekLabel}. Revisit the solution or try it again whenever you want.`
                             : 'Work through a beginner algebra problem with hints when you need them and immediate feedback when you submit.'}
                     </p>
 
@@ -71,15 +89,15 @@ const WeeklyChallenge = () => {
 
                 <div className="weekly-challenge-problem-card" aria-label="Weekly challenge preview">
                     <div className="weekly-challenge-card-topline">
-                        <span>{WEEKLY_CHALLENGE.topic}</span>
-                        <span>{WEEKLY_CHALLENGE.difficulty}</span>
+                        <span>{challenge.topic}</span>
+                        <span>{challenge.difficulty}</span>
                     </div>
                     <div className="weekly-challenge-math">
-                        <p>{WEEKLY_CHALLENGE.previewLead}</p>
-                        <MathJaxRenderer content={WEEKLY_CHALLENGE.previewExpression} />
+                        <p>{challenge.previewLead}</p>
+                        <MathJaxRenderer content={challenge.previewExpression} />
                     </div>
                     <div className="weekly-challenge-card-details">
-                        <div><FaClock aria-hidden="true" /><span>About {WEEKLY_CHALLENGE.estimatedMinutes} minutes</span></div>
+                        <div><FaClock aria-hidden="true" /><span>About {challenge.estimatedMinutes} minutes</span></div>
                         <div><FaLightbulb aria-hidden="true" /><span>Two hints available</span></div>
                     </div>
                 </div>
