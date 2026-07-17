@@ -42,6 +42,8 @@ test('week keys recreate the same challenge and reject invalid weeks', () => {
     const challenge = getWeeklyChallengeByKey('2026-W29');
 
     assert.equal(challenge.weekKey, '2026-W29');
+    assert.equal(getWeeklyChallengeByKey('2020-W53')?.weekKey, '2020-W53');
+    assert.equal(getWeeklyChallengeByKey('2021-W53'), null);
     assert.equal(getWeeklyChallengeByKey('2026-W54'), null);
     assert.equal(getWeeklyChallengeByKey('not-a-week'), null);
 });
