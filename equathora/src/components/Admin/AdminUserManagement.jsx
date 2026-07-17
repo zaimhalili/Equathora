@@ -14,9 +14,10 @@ import {
     YAxis
 } from 'recharts';
 import {
+    ADMIN_PROGRESS_RESET_CONFIRMATION,
     adminUserEnums,
     getAdminUsers,
-    resetAdminUserSessions,
+    resetAdminUserProgressCounters,
     updateAdminMentorVerification,
     updateAdminUserRole,
     updateAdminUserStatus
@@ -231,8 +232,8 @@ const AdminUserManagement = () => {
         const active = filteredUsers.filter((item) => item.status === 'Active').length;
         const suspended = filteredUsers.filter((item) => item.status === 'Suspended').length;
         const pendingMentor = filteredUsers.filter((item) => item.mentorVerification === 'Pending').length;
-        const totalSessions = filteredUsers.reduce((sum, item) => sum + item.sessions, 0);
-        return { total, active, suspended, pendingMentor, totalSessions };
+        const totalAttempts = filteredUsers.reduce((sum, item) => sum + item.totalAttempts, 0);
+        return { total, active, suspended, pendingMentor, totalAttempts };
     }, [filteredUsers]);
 
     const rangeLabel = range === 'month'
@@ -262,6 +263,21 @@ const AdminUserManagement = () => {
         }
     };
 
+    const handleProgressCounterReset = async () => {
+        if (!selectedUser) return;
+
+        const confirmation = window.prompt(
+            `This clears attempt, correct-answer, and wrong-submission counters for ${selectedUser.email}. `
+            + `It does not sign the learner out. Type ${ADMIN_PROGRESS_RESET_CONFIRMATION} to continue.`
+        );
+
+        if (confirmation === null) return;
+
+        await handleAction(
+            () => resetAdminUserProgressCounters(selectedUser.id, confirmation)
+        );
+    };
+
     return (
         <section className='flex flex-col gap-6 px-3 py-2 md:px-5' style={{ color: palette.secondary }}>
             <header
@@ -275,7 +291,7 @@ const AdminUserManagement = () => {
                     <div>
                         <h1 className='text-2xl font-black md:text-3xl'>User Management</h1>
                         <p className='pt-1 text-sm md:text-base'>
-                            Live user data from Supabase with admin actions for role/status/verification and session reset.
+                            Live user data from Supabase with admin actions for roles, status, verification, and account maintenance.
                         </p>
                     </div>
 
@@ -373,7 +389,7 @@ const AdminUserManagement = () => {
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Total Attempts</p>
-                    <p className='pt-1 text-2xl font-black'>{overview.totalSessions}</p>
+                    <p className='pt-1 text-2xl font-black'>{overview.totalAttempts}</p>
                 </article>
             </div>
 
@@ -606,7 +622,7 @@ const AdminUserManagement = () => {
                                 <p className='font-semibold'>{selectedUser.name}</p>
                                 <p className='text-xs' style={{ color: palette.mid }}>{selectedUser.email}</p>
                                 <p className='pt-2 text-xs'>Joined: {selectedUser.joinedAt}</p>
-                                <p className='text-xs'>Total Attempts: {selectedUser.sessions}</p>
+                                <p className='text-xs'>Total Attempts: {selectedUser.totalAttempts}</p>
                                 <p className='text-xs'>Reports: {selectedUser.reports}</p>
                             </div>
 
@@ -654,18 +670,6 @@ const AdminUserManagement = () => {
                                     type='button'
                                     disabled={actionLoading}
                                     onClick={() => handleAction(
-                                        () => resetAdminUserSessions(selectedUser.id),
-                                        `Reset all active sessions for ${selectedUser.email}? This will force re-login.`
-                                    )}
-                                    className='rounded-md border px-2 py-2 text-xs font-semibold disabled:opacity-60'
-                                    style={{ borderColor: palette.accentDark, backgroundColor: palette.accentDark, color: palette.main }}
-                                >
-                                    Reset Sessions
-                                </button>
-                                <button
-                                    type='button'
-                                    disabled={actionLoading}
-                                    onClick={() => handleAction(
                                         () => updateAdminUserStatus({ ...selectedUser, status: statusDraft }),
                                         `Change status for ${selectedUser.email} to ${statusDraft}?`
                                     )}
@@ -685,6 +689,25 @@ const AdminUserManagement = () => {
                                     style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                                 >
                                     Save Verification
+                                </button>
+                            </div>
+
+                            <div
+                                className='rounded-lg border p-3'
+                                style={{ borderColor: 'rgba(215, 4, 39, 0.35)', backgroundColor: 'rgba(215, 4, 39, 0.05)' }}
+                            >
+                                <p className='text-xs font-bold'>Destructive maintenance</p>
+                                <p className='pt-1 text-xs' style={{ color: palette.secondary }}>
+                                    Clears attempt, correct-answer, and wrong-submission counters. It does not sign the learner out or clear completed problems, streaks, or topic records.
+                                </p>
+                                <button
+                                    type='button'
+                                    disabled={actionLoading}
+                                    onClick={handleProgressCounterReset}
+                                    className='mt-3 w-full rounded-md border px-2 py-2 text-xs font-semibold disabled:opacity-60'
+                                    style={{ borderColor: palette.accent, backgroundColor: palette.main, color: palette.accent }}
+                                >
+                                    Reset progress counters
                                 </button>
                             </div>
 

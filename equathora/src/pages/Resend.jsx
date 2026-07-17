@@ -1,16 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Resend.css';
 import BackgroundPolygons from '../components/BackgroundPolygons';
-import { Link } from 'react-router-dom';
-import Logo from '../assets/logo/EquathoraLogoFull.svg';
+import { Link, useSearchParams } from 'react-router-dom';
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import { supabase } from '../lib/supabaseClient';
+import {
+  getResendButtonLabel,
+  getResendCooldownSeconds,
+  getResendErrorMessage,
+  RESEND_COOLDOWN_SECONDS,
+} from '../lib/emailVerification';
 
 const Resend = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const emailParam = searchParams.get('email');
+    if (emailParam) {
+      setEmail(emailParam);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (cooldownSeconds <= 0) {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      setCooldownSeconds((seconds) => Math.max(seconds - 1, 0));
+    }, 1000);
+
+    return () => window.clearTimeout(timer);
+  }, [cooldownSeconds]);
 
   async function handleResend(e) {
     e.preventDefault();
@@ -21,19 +47,24 @@ const Resend = () => {
     try {
       const { error: resendError } = await supabase.auth.resend({
         type: 'signup',
-        email: email,
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}`,
+        },
       });
 
       if (resendError) {
-        setError(resendError.message || 'Failed to resend confirmation email');
+        setError(getResendErrorMessage(resendError));
+        setCooldownSeconds(getResendCooldownSeconds(resendError));
         setLoading(false);
         return;
       }
 
-      setMessage('Confirmation email sent! Check your inbox and spam folder.');
+      setMessage('Confirmation link sent. Check your inbox and spam folder.');
+      setCooldownSeconds(RESEND_COOLDOWN_SECONDS);
       setLoading(false);
-    } catch (err) {
-      setError('An unexpected error occurred');
+    } catch {
+      setError('We could not send another confirmation link. Please try again in a moment.');
       setLoading(false);
     }
   }
@@ -48,8 +79,8 @@ const Resend = () => {
           </p>
         </article>
         <article id='resend-text-container'>
-          <h3>Resend confirmation instructions</h3>
-          <h6><br />Not received a confirmation email? Use the form below and we'll send you another.</h6>
+          <h3>Resend your confirmation link</h3>
+          <h6><br />Enter the signup email and we'll send a fresh link. You won't need to copy a code.</h6>
         </article>
 
         <article style={{ width: '100%', height: 'calc(100vh - 90px)', display: 'flex', flexDirection: 'column', marginTop: '30px' }}>
@@ -68,8 +99,8 @@ const Resend = () => {
               required
             />
 
-            <button type="submit" className="resend-btn" disabled={loading}>
-              {loading ? 'Sending...' : 'Resend Email'}
+            <button type="submit" className="resend-btn" disabled={loading || cooldownSeconds > 0}>
+              {getResendButtonLabel({ loading, cooldownSeconds })}
             </button>
           </form>
 
@@ -97,4 +128,4 @@ const Resend = () => {
   );
 };
 
-export default Resend;  // Changed export name to match component name
+export default Resend;

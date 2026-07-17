@@ -1,4 +1,10 @@
 import { supabase } from './supabaseClient';
+import {
+    ADMIN_PROGRESS_RESET_CONFIRMATION,
+    resetProgressCountersWithClient
+} from './adminProgressReset';
+
+export { ADMIN_PROGRESS_RESET_CONFIRMATION };
 
 const toTitleCase = (value) => {
     const raw = String(value || '').trim();
@@ -173,7 +179,7 @@ export async function getAdminUsers() {
             lastSeen: formatDate(lastSeenSource),
             lastSeenKey: toDateKey(lastSeenSource),
             reports: Number(stats.wrong_submissions || 0),
-            sessions: Number(stats.total_attempts || 0),
+            totalAttempts: Number(stats.total_attempts || 0),
             rawProfile: profile
         };
     });
@@ -248,19 +254,11 @@ export async function updateAdminMentorVerification(userId, verificationLabel) {
     }
 }
 
-export async function resetAdminUserSessions(userId) {
-    const { error } = await supabase
-        .from('user_progress')
-        .update({
-            total_attempts: 0,
-            wrong_submissions: 0,
-            correct_answers: 0
-        })
-        .eq('user_id', userId);
-
-    if (error) {
-        throw new Error(error.message || 'Failed to reset sessions.');
-    }
+export async function resetAdminUserProgressCounters(
+    userId,
+    confirmation
+) {
+    return resetProgressCountersWithClient(supabase, userId, confirmation);
 }
 
 export const adminUserEnums = {

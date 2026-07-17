@@ -1,5 +1,10 @@
 import { supabase } from './supabaseClient';
 import { capturePostHogEvent, identifyPostHogUser } from './posthogClient';
+import {
+    bindRecruitmentAttributionToUser,
+    clearRecruitmentAttribution,
+    getRecruitmentEventProperties
+} from './recruitmentAttribution';
 
 const keyForUser = (userId) => `equathora_last_activity_ping_${userId}`;
 const keyForSignup = (userId) => `equathora_signup_event_ping_${userId}`;
@@ -48,12 +53,18 @@ export async function trackActivityEvent(eventType, eventTimestamp = new Date(),
         if (!userId) return false;
 
         const normalizedEventType = eventType.trim().toLowerCase();
+        const recruitmentProperties = getRecruitmentEventProperties(normalizedEventType, userId);
         identifyPostHogUser(session.user);
         const trackedInPostHog = capturePostHogEvent(normalizedEventType, {
             source: 'equathora_web',
             user_id: userId,
-            ...metadata
+            ...metadata,
+            ...recruitmentProperties
         });
+
+        if (normalizedEventType === 'problem_solved' && trackedInPostHog) {
+            clearRecruitmentAttribution(userId);
+        }
 
         const { error } = await insertActivityEvent(userId, normalizedEventType, eventTimestamp);
 
@@ -87,9 +98,12 @@ async function ensureSignupEvent(userId, userCreatedAt) {
     }
 
     if (existingSignup?.id) {
+        clearRecruitmentAttribution();
         localStorage.setItem(key, '1');
         return;
     }
+
+    const recruitmentProperties = bindRecruitmentAttributionToUser(userId);
 
     const { error } = await insertActivityEvent(userId, 'signup', userCreatedAt);
 
@@ -102,7 +116,8 @@ async function ensureSignupEvent(userId, userCreatedAt) {
     capturePostHogEvent('signup', {
         source: 'equathora_web',
         user_id: userId,
-        created_at: isoTimestampFrom(userCreatedAt)
+        created_at: isoTimestampFrom(userCreatedAt),
+        ...recruitmentProperties
     });
 
     localStorage.setItem(key, '1');
