@@ -80,6 +80,7 @@ const TestimonialsSection = () => {
                         <div className='pt-3 sm:pt-5 md:pt-6 flex gap-3'>
                             <button type="button"
                                 onClick={next}
+                                aria-label="Show next testimonial"
                                 className='rounded-full border border-[var(--mid-main-secondary)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
                             transition-opacity duration-150 text-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)] hover:text-[var(--main-color)] hover:border-[var(--main-color)] active:scale-95'>
                                 <FaArrowLeft className='md:w-6 md:h-6' />
@@ -87,6 +88,7 @@ const TestimonialsSection = () => {
                             <button
                                 type="button"
                                 onClick={prev}
+                                aria-label="Show previous testimonial"
                                 className='rounded-full border border-[var(--mid-main-secondary)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
                             transition-opacity duration-150 text-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)] hover:text-[var(--main-color)] hover:border-[var(--main-color)] active:scale-95'>
                                 <FaArrowRight className='md:w-6 md:h-6' />
@@ -114,6 +116,7 @@ const TestimonialsSection = () => {
                                     <div className='flex gap-3 items-center'>
                                         <img
                                             src={testimonials[index].image}
+                                            alt={testimonials[index].name}
                                             className='rounded-full w-16 h-16'
                                         />
                                         <div>
@@ -129,6 +132,7 @@ const TestimonialsSection = () => {
                                     <a href={testimonials[index].link} className='flex gap-3 items-center ' target="_blank" rel="noopener noreferrer">
                                         <img
                                             src={testimonials[index].image}
+                                            alt={testimonials[index].name}
                                             className='rounded-full w-16 h-16'
                                         />
                                         <div>

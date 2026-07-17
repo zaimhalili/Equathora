@@ -81,7 +81,7 @@ const Footer = () => {
 
                 <div className="links-wrapper">
                     <div className="links-column">
-                        <h3 className="footer-column-title">Platform</h3>
+                        <h2 className="footer-column-title">Platform</h2>
                         <ul className="links">
                             <li><Link to="/learn" className='footer-links'>Problems</Link></li>
                             <li><Link to="/leaderboards/global" className='footer-links'>Leaderboards</Link></li>
@@ -92,7 +92,7 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div className="links-column">
-                        <h3 className="footer-column-title">Company</h3>
+                        <h2 className="footer-column-title">Company</h2>
                         <ul className="links">
                             <li><Link to="/about" className='footer-links'>About Us</Link></li>
                             <li><Link to="/cookie-policy" className='footer-links'>Cookie Policy</Link></li>
