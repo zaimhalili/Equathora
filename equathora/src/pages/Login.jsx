@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './Login.css';
 import '../components/Auth.css';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
@@ -17,6 +17,12 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const destination = typeof location.state?.from === 'string'
+    && location.state.from.startsWith('/')
+    && !location.state.from.startsWith('//')
+    ? location.state.from
+    : '/dashboard';
 
   // Peek at password
   const [type, setType] = useState('password');
@@ -32,10 +38,10 @@ const Login = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/dashboard');
+        navigate(destination, { replace: true });
       }
     });
-  }, [navigate]);
+  }, [destination, navigate]);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -55,7 +61,7 @@ const Login = () => {
       }
 
       // Navigate immediately for better UX
-      navigate('/dashboard');
+      navigate(destination, { replace: true });
     } catch (err) {
       setError('An unexpected error occurred');
       setLoading(false);
@@ -68,7 +74,7 @@ const Login = () => {
     const { error: googleError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}`,
+        redirectTo: `${window.location.origin}${destination}`,
         queryParams: {
           prompt: 'select_account'
         }
@@ -152,7 +158,7 @@ const Login = () => {
             <div id='auth-other-options'>
               <p className='auth-other-options-text text-black dark:text-white'>
                 Don't have an account yet?{' '}
-                <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                <Link to="/signup" state={{ from: destination }} className="other-option-link" style={{ textDecoration: 'underline' }}>
                   Sign up for free.
                 </Link>
               </p>
