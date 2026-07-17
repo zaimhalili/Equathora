@@ -24,10 +24,10 @@ const LatestArticlesSection = () => {
                     >
                         <div className="flex flex-col text-center md:text-left">
                             <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-4">
-                                Latest articles
+                                How Equathora approaches math practice.
                             </h2>
                             <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
-                                Updates, insights, and thoughts on math learning
+                                Product updates and practical notes on learning through problem-solving.
                             </p>
                         </div>
                         <Link
