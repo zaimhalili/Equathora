@@ -4,7 +4,7 @@ import Footer from '../components/Footer.jsx';
 import { motion } from 'framer-motion';
 import EquathoraBriefsModal from '@/components/EquathoraBriefs/EquathoraBriefsModal.jsx';
 import { subscribeToEquathoraBriefs } from '@/lib/equathoraBriefsService.js';
-import { useAuth } from '@/hooks/useAuth.js';
+import { useAuth } from '@/hooks/useAuth.jsx';
 import CommunityBro from '../assets/images/communityBro.svg';
 import Mail from '../assets/images/Mail-amico.svg';
 import { FaDiscord, FaMailBulk, FaBookmark } from 'react-icons/fa';
