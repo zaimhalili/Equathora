@@ -69,6 +69,7 @@ const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const EquathoraBriefs = lazy(() => import("./pages/EquathoraBriefs"));
 const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard"));
+const WeeklyChallenge = lazy(() => import("./pages/WeeklyChallenge"));
 
 function HomeRoute() {
     const { loading, isAuth } = useAuth();
@@ -120,6 +121,7 @@ function PageTitleUpdater() {
             '/recommended': 'Recommended Path - Equathora',
             '/getStarted': 'Choose Your Path - Equathora',
             '/submitProblem': 'Submit a problem - Equathora',
+            '/challenge/weekly': 'Weekly Algebra Challenge - Equathora',
         };
 
         const matchedRoute = Object.keys(pageTitles).find(route =>
@@ -277,6 +279,7 @@ export default function App() {
                         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="/terms-of-service" element={<TermsOfService />} />
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
+                        <Route path="/challenge/weekly" element={<WeeklyChallenge />} />
                         {/* <Route path="/recommended" element={<Recommended />} /> */}
                         {/* <Route path="/getStarted" element={<GetStarted />} /> */}
                         {/* <Route path="/premium" element={<Premium />} /> */}

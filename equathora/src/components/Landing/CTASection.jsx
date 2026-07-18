@@ -1,192 +1,145 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { FaArrowRight } from 'react-icons/fa';
-import { FaCheck } from 'react-icons/fa';
+import { FaArrowRight, FaCheck, FaChevronDown } from 'react-icons/fa';
+
+const proofItems = [
+    {
+        number: '01',
+        title: 'Start with a focused challenge',
+        description: 'Preview the weekly Algebra challenge before you create an account, then sign in to work and save your result.',
+    },
+    {
+        number: '02',
+        title: 'Work each step in the browser',
+        description: 'Open hints, add lines of math, and keep the problem beside your working as you solve.',
+    },
+    {
+        number: '03',
+        title: 'Get a clear result and keep progress',
+        description: 'Submit your final step for correct or incorrect feedback. Signed-in attempts and completed problems feed your progress.',
+    },
+];
+
+const faqs = [
+    {
+        question: 'What does Equathora cost?',
+        answer: 'Equathora is free to start. There is no paid checkout on the site today, and signup does not ask for payment details.',
+    },
+    {
+        question: 'Can I see a problem before signing up?',
+        answer: 'Yes. The weekly Algebra challenge previews the current problem before you sign in. Sign in to open the solving workspace and save your attempts.',
+    },
+    {
+        question: 'How does the solving workspace give feedback?',
+        answer: 'Write your work across one or more math lines, then submit the final step. Equathora checks the answer and shows a correct or incorrect result.',
+    },
+    {
+        question: 'What gets saved when I practice?',
+        answer: 'Signed-in practice records your attempts and completed problems so Equathora can show your progress over time.',
+    },
+    {
+        question: 'Do I need to install anything?',
+        answer: 'No. The problem library and step-by-step math editor run in your browser.',
+    },
+];
 
 const CTASection = () => {
-    const containerRef = useRef(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    const springConfig = { damping: 30, stiffness: 100 };
-    const x = useSpring(mouseX, springConfig);
-    const y = useSpring(mouseY, springConfig);
-
-    const floatX = useTransform(x, [-400, 400], [20, -20]);
-    const floatY = useTransform(y, [-400, 400], [20, -20]);
-
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            const rect = containerRef.current?.getBoundingClientRect();
-            if (rect) {
-                mouseX.set(e.clientX - rect.left - rect.width / 2);
-                mouseY.set(e.clientY - rect.top - rect.height / 2);
-            }
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, [mouseX, mouseY]);
-
     return (
         <section
-            ref={containerRef}
-            className="w-full bg-[var(--white)] relative overflow-hidden flex justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10"
+            id="access-and-answers"
+            aria-labelledby="access-and-answers-title"
+            className="w-full bg-[var(--white)] px-6 py-16 sm:px-12 sm:py-20 lg:px-24 lg:py-24 xl:px-32"
         >
+            <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-16">
+                <div className="grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+                    <div className="theme-lock overflow-hidden rounded-2xl bg-[var(--secondary-color)] p-7 text-white shadow-[0_24px_70px_rgba(32,34,49,0.18)] sm:p-10 lg:sticky lg:top-24">
+                        <p className="mb-4 text-sm font-bold text-white/65">Current access</p>
+                        <h2
+                            id="access-and-answers-title"
+                            className="max-w-[12ch] font-[Lexend] text-4xl font-extrabold leading-[1.05] tracking-[-0.04em] text-white sm:text-5xl"
+                        >
+                            Free to start.
+                        </h2>
+                        <p className="mt-5 max-w-[46ch] text-base leading-relaxed text-white/75 sm:text-lg">
+                            Create an account with a username, email, and password. Equathora does not ask for payment details at signup, and no paid checkout is live today.
+                        </p>
 
-            <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-10 md:gap-12">
-
-                {/* Left side - Content */}
-                <div className="flex-1 flex flex-col gap-6 sm:gap-7 text-center lg:text-left items-center lg:items-start w-full">
-
-                    <motion.h2
-                        className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
-                    >
-                        Ready to build{' '}
-                        <span className="text-[var(--secondary-color)] relative inline-block">
-                            confidence
-                            <motion.svg
-                                className="absolute -bottom-1 left-0 w-full"
-                                viewBox="0 0 200 8"
-                                initial={{ pathLength: 0 }}
-                                animate={{ pathLength: 1 }}
-                                transition={{ delay: 0.8, duration: 0.8 }}
-                            >
-                                <motion.path
-                                    d="M0 4 Q50 0 100 4 Q150 8 200 4"
-                                    fill="none"
-                                    stroke="var(--secondary-color)"
-                                    strokeWidth="5"
-                                    strokeLinecap="round"
-                                    initial={{ pathLength: 0 }}
-                                    animate={{ pathLength: 1 }}
-                                    transition={{ delay: 0.8, duration: 0.8 }}
-                                />
-                            </motion.svg>
-                        </span>?
-                    </motion.h2>
-
-                    <motion.p
-                        className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light"
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-                    >
-                        Pick a track, solve at your own pace, and watch your math intuition grow. No ads. No fluff. Just thoughtful practice.
-                    </motion.p>
-
-                    <motion.div
-                        className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start pt-3 sm:pt-4"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
-                    >
                         <Link
                             to="/signup"
-                            className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-white font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1"
+                            className="mt-8 inline-flex min-h-11 items-center gap-3 rounded-full bg-[var(--accent-color)] px-6 py-3 text-base font-bold text-white shadow-[0_12px_30px_rgba(215,4,39,0.28)] transition-colors duration-150 hover:bg-[var(--dark-accent-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white active:bg-[var(--dark-accent-color)]"
                         >
-                            Start Your Journey
-                            <motion.span
-                                animate={{ x: [0, 4, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity }}
-                            >
-                                <FaArrowRight className="text-xs sm:text-sm" />
-                            </motion.span>
+                            Create a free account
+                            <FaArrowRight aria-hidden="true" className="text-sm" />
                         </Link>
-                    </motion.div>
 
-                    <motion.p
-                        className="text-[var(--secondary-color)] text-sm font-light"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.4 }}
-                    >
-                        ✓ Free to start &nbsp;&nbsp; ✓ No credit card required
-                    </motion.p>
-                </div>
+                        <div className="mt-6 flex items-center gap-3 border-t border-white/15 pt-6 text-sm text-white/70">
+                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-white" aria-hidden="true">
+                                <FaCheck className="text-xs" />
+                            </span>
+                            No credit card or checkout at signup
+                        </div>
+                    </div>
 
-                {/* Right side - Decorative card */}
-                <motion.div
-                    className="flex-1 relative flex justify-center items-center max-lg:hidden theme-lock"
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3, type: 'spring' }}
-                >
-                    <motion.div
-                        className="relative"
-                        style={{ x: floatX, y: floatY }}
-                    >
-                        {/* Main card */}
-                        <div className="w-80 h-96 rounded-md bg-gradient-to-br from-[var(--secondary-color)] to-[#1a1a2e] p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
-                            {/* Glow effect */}
-                            <div className="absolute top-0 right-0 w-40 h-40 bg-[var(--accent-color)]/20 rounded-full blur-[60px]" />
-
-                            {/* Card dots */}
-                            <div className="flex gap-2">
-                                <div className="w-3 h-3 rounded-full bg-[var(--accent-color)]"></div>
-                                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                                <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                            </div>
-
-                            {/* Placeholder lines */}
-                            <div className="flex flex-col gap-3">
-                                <div className="h-3 w-3/4 bg-[var(--white)]/10 rounded-full"></div>
-                                <div className="h-3 w-1/2 bg-[var(--white)]/10 rounded-full"></div>
-                                <div className="h-3 w-2/3 bg-[var(--white)]/10 rounded-full"></div>
-                            </div>
-
-                            {/* Chart bars */}
-                            <div className="flex-1 flex items-end gap-3 pt-8">
-                                {[40, 65, 45, 80, 55, 90, 70].map((height, i) => (
-                                    <motion.div
-                                        key={i}
-                                        className="flex-1 rounded-t-lg bg-gradient-to-t from-[var(--accent-color)] to-[var(--accent-color)]/60"
-                                        style={{ height: `${height}%` }}
-                                        initial={{ height: 0 }}
-                                        whileInView={{ height: `${height}%` }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
-                                    />
-                                ))}
-                            </div>
+                    <div className="flex flex-col gap-8">
+                        <div className="max-w-2xl">
+                            <p className="text-sm font-bold text-[var(--accent-color)]">Product proof</p>
+                            <h3 className="mt-3 font-[Lexend] text-3xl font-extrabold leading-tight tracking-[-0.03em] text-[var(--secondary-color)] sm:text-4xl">
+                                See what happens before you commit.
+                            </h3>
+                            <p className="mt-4 max-w-[60ch] text-base leading-relaxed text-[var(--secondary-color)]/70 sm:text-lg">
+                                The core practice flow is visible in the product: browse, work through a problem, submit, and keep your progress.
+                            </p>
                         </div>
 
-                        {/* Floating badge */}
-                        <motion.div
-                            className="absolute -bottom-6 -left-6 px-5 py-4 rounded-md bg-[var(--white)] shadow-2xl border border-gray-100"
-                            animate={{ y: [0, -8, 0] }}
-                            transition={{ duration: 3, repeat: Infinity }}
-                        >
-                            <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-green-900 text-xl font-extrabold">
-                                    <FaCheck className="w-3 h-3 sm:w-4 sm:h-4 text-[var(--white)]" />
-                                </div>
-                                <div>
-                                    <p className="text-xs text-gray-500">Problems solved</p>
-                                    <p className="font-bold text-[var(--secondary-color)]">124+</p>
-                                </div>
-                            </div>
-                        </motion.div>
+                        <ol className="flex flex-col border-y border-[var(--mid-main-secondary)]/30">
+                            {proofItems.map((item) => (
+                                <li
+                                    key={item.number}
+                                    className="grid gap-3 border-b border-[var(--mid-main-secondary)]/30 py-6 last:border-b-0 sm:grid-cols-[48px_1fr] sm:gap-5"
+                                >
+                                    <span className="font-[Lexend] text-sm font-bold tabular-nums text-[var(--accent-color)]">
+                                        {item.number}
+                                    </span>
+                                    <div>
+                                        <h4 className="text-xl font-bold text-[var(--secondary-color)]">{item.title}</h4>
+                                        <p className="mt-2 max-w-[58ch] text-base leading-relaxed text-[var(--secondary-color)]/70">
+                                            {item.description}
+                                        </p>
+                                    </div>
+                                </li>
+                            ))}
+                        </ol>
+                    </div>
+                </div>
 
-                        {/* Math symbol */}
-                        <motion.div
-                            className="absolute -top-4 -right-4 w-16 h-16 rounded-md bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-[var(--white)] text-2xl font-bold shadow-lg"
-                            animate={{ rotate: [0, 5, -5, 0] }}
-                            transition={{ duration: 4, repeat: Infinity }}
-                        >
-                            ∑
-                        </motion.div>
-                    </motion.div>
-                </motion.div>
+                <div className="grid gap-8 border-t border-[var(--mid-main-secondary)]/30 pt-12 lg:grid-cols-[0.55fr_1fr] lg:gap-16">
+                    <div>
+                        <p className="text-sm font-bold text-[var(--accent-color)]">Questions, answered</p>
+                        <h3 className="mt-3 max-w-[12ch] font-[Lexend] text-3xl font-extrabold leading-tight tracking-[-0.03em] text-[var(--secondary-color)] sm:text-4xl">
+                            Know the flow before you start.
+                        </h3>
+                    </div>
+
+                    <div className="flex flex-col border-t border-[var(--mid-main-secondary)]/30">
+                        {faqs.map((faq) => (
+                            <details
+                                key={faq.question}
+                                className="group border-b border-[var(--mid-main-secondary)]/30"
+                            >
+                                <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-5 text-left text-lg font-bold text-[var(--secondary-color)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent-color)]">
+                                    {faq.question}
+                                    <FaChevronDown
+                                        aria-hidden="true"
+                                        className="shrink-0 text-sm text-[var(--accent-color)] transition-transform duration-150 group-open:rotate-180"
+                                    />
+                                </summary>
+                                <p className="max-w-[64ch] pb-6 pr-10 text-base leading-relaxed text-[var(--secondary-color)]/70">
+                                    {faq.answer}
+                                </p>
+                            </details>
+                        ))}
+                    </div>
+                </div>
             </div>
         </section>
     );

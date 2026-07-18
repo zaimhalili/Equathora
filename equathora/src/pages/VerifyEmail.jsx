@@ -21,6 +21,11 @@ const VerifyEmail = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [searchParams] = useSearchParams();
+    const destination = typeof location.state?.from === 'string'
+        && location.state.from.startsWith('/')
+        && !location.state.from.startsWith('//')
+        ? location.state.from
+        : '/dashboard';
 
     // Pre-fill email if passed as query parameter
     useEffect(() => {
@@ -49,18 +54,18 @@ const VerifyEmail = () => {
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session) {
-                navigate('/dashboard', { replace: true });
+                navigate(destination, { replace: true });
             }
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             if (session) {
-                navigate('/dashboard', { replace: true });
+                navigate(destination, { replace: true });
             }
         });
 
         return () => subscription.unsubscribe();
-    }, [navigate]);
+    }, [destination, navigate]);
 
     async function handleResend(e) {
         e.preventDefault();
@@ -73,7 +78,7 @@ const VerifyEmail = () => {
                 type: 'signup',
                 email,
                 options: {
-                    emailRedirectTo: `${window.location.origin}`,
+                    emailRedirectTo: `${window.location.origin}${destination}`,
                 },
             });
 
@@ -140,7 +145,7 @@ const VerifyEmail = () => {
 
                         <div className='verification-note' role='status'>
                             <strong>No code to copy.</strong>
-                            <span>Use the button in the email, then Equathora will take you straight to your dashboard.</span>
+                            <span>Use the button in the email, then Equathora will take you straight back to your practice.</span>
                         </div>
 
                         <h5 className='typeOfInput'>CONFIRMATION EMAIL</h5>
@@ -161,14 +166,14 @@ const VerifyEmail = () => {
                         <div id='auth-other-options'>
                             <p className='auth-other-options-text'>
                                 Already verified?{' '}
-                                <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                                <Link to="/login" state={{ from: destination }} className="other-option-link" style={{ textDecoration: 'underline' }}>
                                     Log In
                                 </Link>
                             </p>
 
                             <p className='auth-other-options-text'>
                                 Used the wrong email?{' '}
-                                <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                                <Link to="/signup" state={{ from: destination }} className="other-option-link" style={{ textDecoration: 'underline' }}>
                                     Start again.
                                 </Link>
                             </p>

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import GoogleAuth from '../components/GoogleAuth.jsx';
@@ -21,6 +21,12 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const destination = typeof location.state?.from === 'string'
+    && location.state.from.startsWith('/')
+    && !location.state.from.startsWith('//')
+    ? location.state.from
+    : '/dashboard';
 
   // Password feedback state
   const { valid: isPasswordStrong, errors: passwordErrors } = validatePassword(password);
@@ -45,10 +51,10 @@ const Signup = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/dashboard');
+        navigate(destination, { replace: true });
       }
     });
-  }, [navigate]);
+  }, [destination, navigate]);
 
   async function handleSignup(e) {
     e.preventDefault();
@@ -73,7 +79,7 @@ const Signup = () => {
         password,
         options: {
           data: { username },
-          emailRedirectTo: `${window.location.origin}`
+          emailRedirectTo: `${window.location.origin}${destination}`
         }
       });
 
@@ -87,10 +93,10 @@ const Signup = () => {
       if (data?.user && !data.session) {
         // Email confirmation required
         navigate(buildVerificationPath(email), {
-          state: { confirmationJustSent: true }
+          state: { confirmationJustSent: true, from: destination }
         });
       } else if (data?.session) {
-        navigate('/dashboard');
+        navigate(destination, { replace: true });
       }
     } catch {
       setError('An unexpected error occurred');
@@ -104,7 +110,7 @@ const Signup = () => {
     const { error: googleError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}`,
+        redirectTo: `${window.location.origin}${destination}`,
         queryParams: {
           prompt: 'select_account'
         }
@@ -219,7 +225,7 @@ const Signup = () => {
           <div id='auth-other-options'>
             <p className='auth-other-options-text text-black dark:text-white'>
               Already have an account?{' '}
-              <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
+              <Link to="/login" state={{ from: destination }} className="other-option-link" style={{ textDecoration: 'underline' }}>
                 Log In
               </Link>
             </p>

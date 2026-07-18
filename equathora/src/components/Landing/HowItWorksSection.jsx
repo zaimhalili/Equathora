@@ -51,7 +51,7 @@ const HowItWorksSection = () => {
                             Choose a topic, solve with support, and keep your progress.
                         </h2>
                         <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
-                            Four simple steps to transform your math skills
+                            Four steps take you from the problem library to a saved result.
                         </p>
                     </motion.div>
 

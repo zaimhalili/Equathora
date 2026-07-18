@@ -17,10 +17,13 @@ import Mentor from '../assets/images/mentoring.svg';
 import { getDailyProblemSlug } from '../lib/utils';
 import { supabase } from '../lib/supabaseClient';
 import LoadingSpinner from '@/components/LoadingSpinner.jsx';
+import FirstProblemPrompt from '../components/Dashboard/FirstProblemPrompt.jsx';
+import { isZeroAttemptLearner } from '../lib/firstRunState.js';
 
 const Dashboard = () => {
     const [username, setUsername] = useState("Friend");
     const [dailyProblemSlug, setDailyProblemSlug] = useState('');
+    const [showFirstProblemPrompt, setShowFirstProblemPrompt] = useState(false);
 
     useEffect(() => {
         const loadDailyProblem = async () => {
@@ -32,6 +35,53 @@ const Dashboard = () => {
             }
         };
         loadDailyProblem();
+    }, []);
+
+    useEffect(() => {
+        let isCurrent = true;
+
+        const checkForFirstRun = async () => {
+            try {
+                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                if (sessionError) throw sessionError;
+                if (!session?.user) return;
+
+                const [progressResult, submissionsResult, completedResult] = await Promise.all([
+                    supabase
+                        .from('user_progress')
+                        .select('total_attempts')
+                        .eq('user_id', session.user.id)
+                        .maybeSingle(),
+                    supabase
+                        .from('user_submissions')
+                        .select('problem_id')
+                        .eq('user_id', session.user.id)
+                        .limit(1),
+                    supabase
+                        .from('user_completed_problems')
+                        .select('problem_id')
+                        .eq('user_id', session.user.id)
+                        .limit(1)
+                ]);
+
+                const firstError = progressResult.error || submissionsResult.error || completedResult.error;
+                if (firstError) throw firstError;
+
+                if (isCurrent) {
+                    setShowFirstProblemPrompt(isZeroAttemptLearner({
+                        progress: progressResult.data,
+                        submissions: submissionsResult.data,
+                        completedProblems: completedResult.data
+                    }));
+                }
+            } catch (error) {
+                // Keep the established dashboard when activity cannot be verified safely.
+                console.error('Failed to check first-run progress:', error);
+            }
+        };
+
+        checkForFirstRun();
+        return () => { isCurrent = false; };
     }, []);
 
     // Fetch username from database
@@ -91,13 +141,16 @@ const Dashboard = () => {
                                     Tackle fun math and logic challenges with guided support to master your topics. <span className="font-semibold">Equathora is open, student-centered, and built to grow with you.</span>
                                 </motion.h4>
 
-                                {/* Where To Start Section/ 4 Main Blocks */}
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: 0.3 }}
-                                    className="flex flex-col text-center sm:text-left pt-8 pb-8"
-                                >
+                                {showFirstProblemPrompt ? (
+                                    <FirstProblemPrompt />
+                                ) : (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.5, delay: 0.3 }}
+                                        className="flex flex-col text-center sm:text-left pt-8 pb-8"
+                                    >
+                                    {/* Where To Start Section/ 4 Main Blocks */}
                                     <h3 className="text-[var(--secondary-color)] font-[Sansation] text-2xl font-bold pb-2">
                                         Where To Start...
                                     </h3>
@@ -168,7 +221,8 @@ const Dashboard = () => {
                                             </Link>
                                         </motion.div>
                                     </div>
-                                </motion.div>
+                                    </motion.div>
+                                )}
                             </motion.article>
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}

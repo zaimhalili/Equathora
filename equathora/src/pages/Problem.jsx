@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Navbar from '@/components/Navbar.jsx';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
 import LilArrow from '../assets/images/lilArrow.svg';
@@ -51,6 +51,13 @@ import {
     notifyAchievementUnlocked,
     notifyStreakMilestone,
 } from '../lib/notificationService';
+import {
+    getWeeklyChallengeFromProblemParams,
+    getWeeklyChallengeSummaryPath,
+    WEEKLY_CHALLENGE_ROUTE,
+} from '../data/weeklyChallenge';
+import { markWeeklyChallengeCompleted } from '../lib/weeklyChallengeProgress';
+import { buildStudyPartnerShareUrl } from '../lib/studyPartnerShare';
 
 
 const formatDurationLabel = (seconds = 0) => {
@@ -120,6 +127,12 @@ const hydrateStoredSubmissions = (records = []) => {
 const Problem = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const weeklyChallenge = getWeeklyChallengeFromProblemParams(slug, searchParams);
+    const isWeeklyChallenge = Boolean(weeklyChallenge);
+    const studyPartnerShareUrl = typeof window !== 'undefined'
+        ? buildStudyPartnerShareUrl(window.location.href)
+        : null;
 
     // Extract problem ID from slug for backwards compatibility
     const numericProblemId = extractIdFromSlug(slug);
@@ -528,6 +541,10 @@ const Problem = () => {
             }
         );
 
+        if (validation.isCorrect && weeklyChallenge) {
+            markWeeklyChallengeCompleted(weeklyChallenge);
+        }
+
         // ================================================================
         // PRACTICE MODE PATH — problem was already solved before
         // Show feedback only, never touch progression/stats/achievements.
@@ -544,6 +561,12 @@ const Problem = () => {
                 difficulty: problem.difficulty,
                 isPracticeMode: true
             });
+            if (validation.isCorrect && weeklyChallenge) {
+                setShowInsightPanel(true);
+                setShowSolution(true);
+                setShowSolutionPopup(false);
+                setSolutionViewed(true);
+            }
             return {
                 success: validation.isCorrect,
                 message: validation.isCorrect
@@ -764,12 +787,12 @@ const Problem = () => {
                 <header className="flex items-center justify-between gap-2 md:gap-3 font-[Sansation,sans-serif] bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0">
                     {/* Left side - Back button and Navigation */}
                     <div className="flex items-center gap-2">
-                        <Link to="/learn" className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-md hover:bg-[var(--french-gray)] hover:text-[var(--main-color)] h-9 md:h-10">
+                        <Link to={isWeeklyChallenge ? WEEKLY_CHALLENGE_ROUTE : '/learn'} className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-md hover:bg-[var(--french-gray)] hover:text-[var(--main-color)] h-9 md:h-10">
                             <FaArrowLeft />
-                            <span className="hidden md:inline">Back to Exercises</span>
+                            <span className="hidden md:inline">{isWeeklyChallenge ? 'Weekly Challenge' : 'Back to Exercises'}</span>
                             <span className="md:hidden">Back</span>
                         </Link>
-                        <div className="flex items-center gap-1.5">
+                        {!isWeeklyChallenge && <div className="flex items-center gap-1.5">
                             <button
                                 onClick={() => prevProblemSlug && navigate(`/problems/${prevProblemSlug}`)}
                                 className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-md transition-all duration-200 bg-transparent border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
@@ -785,7 +808,7 @@ const Problem = () => {
                                 <span className="hidden sm:inline text-xs md:text-sm font-medium">Next</span>
                                 <FaChevronRight className="text-sm" />
                             </button>
-                        </div>
+                        </div>}
                     </div>
 
                     {/* Right side - Timer and Actions */}
@@ -918,7 +941,14 @@ const Problem = () => {
                         insight={submissionFeedback.message}
                         topic={submissionFeedback.topic}
                         difficulty={submissionFeedback.difficulty}
-                        nextProblemPath={nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
+                        nextProblemPath={isWeeklyChallenge
+                            ? getWeeklyChallengeSummaryPath(weeklyChallenge, true)
+                            : nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
+                        title={isWeeklyChallenge ? 'Weekly challenge complete' : 'Correct'}
+                        primaryLabel={isWeeklyChallenge ? 'Challenge summary' : 'Next problem'}
+                        shareUrl={studyPartnerShareUrl}
+                        shareTitle={`Try ${problem.title} on Equathora`}
+                        shareText="I just solved this math problem. Want to try it too?"
                         onViewSolution={() => {
                             setShowSolution(true);
                             setShowDescription(false);
