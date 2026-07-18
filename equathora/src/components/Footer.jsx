@@ -9,7 +9,8 @@ import {
     FaReddit,
     FaYoutube
 } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
+import SupportContact from './SupportContact.jsx';
 
 const Footer = () => {
     return (
@@ -21,14 +22,14 @@ const Footer = () => {
                         Your contribution helps us keep this learning platform available for
                         <span className="footer-highlight relative inline-block">
                             students worldwide
-                            <motion.svg
+                            <Motion.svg
                                 className="absolute -bottom-2 left-0 w-full"
                                 viewBox="0 0 200 8"
                                 initial={{ pathLength: 0 }}
                                 animate={{ pathLength: 1 }}
                                 transition={{ delay: 0.8, duration: 0.8 }}
                             >
-                                <motion.path
+                                <Motion.path
                                     d="M0 4 Q50 0 100 4 Q150 8 200 4"
                                     fill="none"
                                     stroke="var(--accent-color)"
@@ -38,7 +39,7 @@ const Footer = () => {
                                     animate={{ pathLength: 1 }}
                                     transition={{ delay: 0.8, duration: 0.8 }}
                                 />
-                            </motion.svg>
+                            </Motion.svg>
                         </span>
                     </h1>
                     <div id="socialMedia-container">
@@ -105,11 +106,18 @@ const Footer = () => {
                 </div>
 
                 <div className="footer-bottom flex flex-col">
+                    <SupportContact variant="footer" />
+
                     <p className="footer-copyright">
                         © 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong>
                         {' · '}
-                        <a href="https://tin.computer" className="inline-flex items-center gap-1 text-inherit no-underline">
-                            <span aria-hidden="true" className="inline-block h-[1em] w-[1em] bg-[#66DC9D]" />
+                        <a
+                            className="tin-credit"
+                            href="https://tin.computer"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <span className="tin-credit-mark" aria-hidden="true" />
                             Growth by Tin
                         </a>
                     </p>

@@ -36,7 +36,7 @@ const TermsOfService = () => (
                 <h2>7. Changes</h2>
                 <p>We may update these terms at any time. Continued use means you accept the new terms.</p>
                 <h2>8. Contact</h2>
-                <p>For questions, contact us at equathora@gmail.com.</p>
+                <p>For questions, contact us at <a href="mailto:equathora@mail.tin.computer">equathora@mail.tin.computer</a>.</p>
             </div>
         </main>
         <Footer />

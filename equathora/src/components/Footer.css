@@ -175,6 +175,27 @@
     margin: 0;
 }
 
+.tin-credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.tin-credit:hover,
+.tin-credit:focus-visible {
+    color: var(--main-color);
+}
+
+.tin-credit-mark {
+    width: 0.75em;
+    height: 0.75em;
+    flex: none;
+    background: #66dc9d;
+}
+
 .footer-credit a {
     color: rgba(255, 255, 255, 0.85);
     text-decoration: underline;
