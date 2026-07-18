@@ -93,7 +93,7 @@ const Signup = () => {
       if (data?.user && !data.session) {
         // Email confirmation required
         navigate(buildVerificationPath(email), {
-          state: { confirmationJustSent: true }
+          state: { confirmationJustSent: true, from: destination }
         });
       } else if (data?.session) {
         navigate(destination, { replace: true });
