@@ -22,3 +22,6 @@ Disallow: /assets/
 
 # Link to your index mapping profile layout
 Sitemap: https://equathora.com
+
+User-agent: *
+Allow: /

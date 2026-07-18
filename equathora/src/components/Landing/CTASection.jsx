@@ -5,8 +5,8 @@ import { FaArrowRight, FaCheck, FaChevronDown } from 'react-icons/fa';
 const proofItems = [
     {
         number: '01',
-        title: 'Browse before signing up',
-        description: 'Filter the public problem library by topic and difficulty before you create an account.',
+        title: 'Start with a focused challenge',
+        description: 'Preview the weekly Algebra challenge before you create an account, then sign in to work and save your result.',
     },
     {
         number: '02',
@@ -26,8 +26,8 @@ const faqs = [
         answer: 'Equathora is free to start. There is no paid checkout on the site today, and signup does not ask for payment details.',
     },
     {
-        question: 'Can I look through the problems first?',
-        answer: 'Yes. The problem library is public to browse. Opening a solving workspace asks you to sign in so your attempts can be saved.',
+        question: 'Can I see a problem before signing up?',
+        answer: 'Yes. The weekly Algebra challenge previews the current problem before you sign in. Sign in to open the solving workspace and save your attempts.',
     },
     {
         question: 'How does the solving workspace give feedback?',
