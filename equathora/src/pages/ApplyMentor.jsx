@@ -10,7 +10,7 @@ import teachers from '../assets/images/teachers.svg';
 import mentoring from '../assets/images/mentoring.svg';
 import achievements from '../assets/images/achievements.svg';
 import { subscribeToEquathoraBriefs } from '@/lib/equathoraBriefsService.js';
-import { useAuth } from '@/hooks/useAuth.js';
+import { useAuth } from '@/hooks/useAuth.jsx';
 import { Link } from 'react-router-dom';
 import { FaCheckCircle, FaUsers, FaChalkboardTeacher, FaHeart, FaArrowRight, FaStar, FaGraduationCap } from 'react-icons/fa';
 

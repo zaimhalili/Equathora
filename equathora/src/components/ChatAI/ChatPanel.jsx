@@ -2,8 +2,15 @@ import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, f
 import { FaCrown, FaPaperPlane } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { convertLatexToMarkup } from 'mathlive';
+import 'mathlive/static.css';
 import { askSigmaChat } from '@/lib/SigmaChat/askSigmaChat';
 import { getFriendlySigmaErrorMessage } from '@/lib/SigmaChat/aiSafety';
+import {
+    hasBalancedLatexBraces,
+    isProseHeavyLatex,
+    parseChatLatex,
+    stripLatexTextCommands,
+} from '@/lib/SigmaChat/chatLatex';
 import { loadSigmaChatState, saveSigmaChatState } from '@/lib/SigmaChat/sigmaChatStorage';
 
 const MAX_INPUT_CHARS = 500;
@@ -21,11 +28,23 @@ const DEFAULT_MESSAGES = [
 ];
 
 // Only sanitize dangerous unicode — does NOT slice, so AI long responses survive
+const stripUnsafeControlCharacters = (str) =>
+    Array.from(str, (character) => {
+        const codePoint = character.codePointAt(0);
+        const isUnsafeControl = codePoint <= 9
+            || codePoint === 11
+            || codePoint === 12
+            || (codePoint >= 14 && codePoint <= 31)
+            || (codePoint >= 127 && codePoint <= 159);
+
+        return isUnsafeControl ? '' : character;
+    }).join('');
+
 const sanitizeUnicode = (str) =>
-    str
-        .replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
+    stripUnsafeControlCharacters(str
+        .replace(/\r\n?/g, '\n')
         .replace(/[\u200B-\u200D\uFEFF]/g, '')
-        .replace(/[\u202A-\u202E]/g, '')
+        .replace(/[\u202A-\u202E]/g, ''))
         .trim();
 
 // For user input — sanitize AND hard cap
@@ -34,91 +53,60 @@ const sanitizeInput = (str) => sanitizeUnicode(str).slice(0, MAX_INPUT_CHARS);
 // ---------------------------------------------------------------------------
 // Math rendering
 //
-// Splits plain text from $...$ / $$...$$ math spans and renders the math
-// spans through MathLive's static renderer. Only MathLive's own generated
+// Splits plain text from common LaTeX delimiters and renders math spans through
+// MathLive's static renderer. Only MathLive's own generated
 // markup goes through dangerouslySetInnerHTML — plain-text segments stay as
 // normal React children, which React escapes automatically, so raw AI/user
 // text is never injected as HTML.
 // ---------------------------------------------------------------------------
 
-const LATEX_SPLIT_REGEX = /(\$\$[\s\S]+?\$\$|\$[^$\n]+?\$)/g;
-
-// Catches messages that wrap whole sentences in \text{...} instead of just
-// the expression — narration dressed up as math. When that happens we render
-// the sentence as plain text instead of feeding it to MathLive, so paragraph
-// breaks and normal wrapping survive (MathLive's own markup doesn't respect
-// the container's white-space: pre-wrap).
-function isProseHeavyMath(latex) {
-    const textSpans = latex.match(/\\text\{[^{}]*\}/g) || [];
-    const textCharCount = textSpans.reduce((sum, span) => sum + span.length, 0);
-    const looksLikeSentence = /[.!?]\s*(\\text\{)?[A-Z]/.test(latex) || /\\text\{[^{}]{25,}\}/.test(latex);
-    return looksLikeSentence && textCharCount > latex.length * 0.4;
-}
-
-function stripToPlainProse(latex) {
-    return latex.replace(/\\text\{([^{}]*)\}/g, '$1');
-}
-
-// Bare LaTeX commands the model forgot to delimit at all. Only matches when
-// braces are actually present — a brace-less fraction like \frac1336 is
-// genuinely ambiguous (could mean {1}{36} or {13}{36}) and can't be safely
-// auto-corrected client-side; that has to be fixed at generation time.
-const BARE_LATEX_TOKEN_REGEX = /\\(?:frac|dfrac|tfrac)\s*\{[^{}]*\}\s*\{[^{}]*\}|\\sqrt\s*\{[^{}]*\}|\\(?:cdot|times|leq|geq|neq|pm|approx|infty|sum|int|alpha|beta|gamma|delta|theta|pi|sin|cos|tan|log|ln|therefore)\b/g;
-
 function renderLatexSafe(latex, displayMode) {
+    if (!hasBalancedLatexBraces(latex)) return null;
+
     try {
-        return convertLatexToMarkup(latex, { mathstyle: displayMode ? 'displaystyle' : 'textstyle' });
+        const markup = convertLatexToMarkup(latex, {
+            mathstyle: displayMode ? 'displaystyle' : 'textstyle',
+        });
+
+        return markup && !markup.includes('ML__error') ? markup : null;
     } catch {
         return null;
     }
 }
 
-function renderMathSegment(part, key) {
-    const isDisplay = part.startsWith('$$') && part.endsWith('$$') && part.length > 3;
-    const isInline = !isDisplay && part.startsWith('$') && part.endsWith('$') && part.length > 1;
-
-    if (!isDisplay && !isInline) {
-        return <span key={key}>{part}</span>;
+function renderMathSegment(segment, key) {
+    if (isProseHeavyLatex(segment.value)) {
+        return <span key={key}>{stripLatexTextCommands(segment.value)}</span>;
     }
 
-    const latex = isDisplay ? part.slice(2, -2) : part.slice(1, -1);
-
-    if (isProseHeavyMath(latex)) {
-        return <span key={key}>{stripToPlainProse(latex)}</span>;
+    const markup = renderLatexSafe(segment.value, segment.display);
+    if (!markup) {
+        return <span key={key}>{segment.source}</span>;
     }
 
-    const markup = renderLatexSafe(latex, isDisplay);
-    return markup
-        ? <span key={key} className="inline-block" dangerouslySetInnerHTML={{ __html: markup }} />
-        : <span key={key}>{part}</span>;
+    const className = segment.display
+        ? 'block max-w-full overflow-x-auto py-2 text-center'
+        : 'inline-block max-w-full align-middle';
+
+    return (
+        <span
+            key={key}
+            className={className}
+            role="math"
+            aria-label={segment.value}
+            dangerouslySetInnerHTML={{ __html: markup }}
+        />
+    );
 }
 
 function MathText({ text }) {
     return (
         <>
-            {text.split(LATEX_SPLIT_REGEX).map((part, i) => {
-                if (!part) return null;
-
-                const isDollarWrapped = /^\${1,2}[\s\S]+\${1,2}$/.test(part);
-                if (isDollarWrapped) {
-                    return <React.Fragment key={i}>{renderMathSegment(part, i)}</React.Fragment>;
-                }
-
-                // Plain-text segment: catch bare commands (with braces) the
-                // model forgot to wrap in $ ... $.
-                const autoWrapped = part.replace(BARE_LATEX_TOKEN_REGEX, (m) => `$${m}$`);
-                if (autoWrapped === part) {
-                    return <span key={i}>{part}</span>;
-                }
-
-                return (
-                    <React.Fragment key={i}>
-                        {autoWrapped.split(LATEX_SPLIT_REGEX).map((sub, j) =>
-                            sub ? <React.Fragment key={`${i}-${j}`}>{renderMathSegment(sub, `${i}-${j}`)}</React.Fragment> : null
-                        )}
-                    </React.Fragment>
-                );
-            })}
+            {parseChatLatex(text).map((segment, index) =>
+                segment.type === 'math'
+                    ? renderMathSegment(segment, index)
+                    : <span key={index}>{segment.value}</span>
+            )}
         </>
     );
 }
