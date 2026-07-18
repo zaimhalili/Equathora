@@ -1,0 +1,59 @@
+.support-contact {
+    margin: 0;
+    font-family: 'Sansation', sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.support-contact a {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.support-contact a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+.support-contact--footer,
+.support-contact--dark {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.support-contact--footer a,
+.support-contact--dark a {
+    color: rgba(255, 255, 255, 0.86);
+    text-decoration-color: rgba(255, 255, 255, 0.38);
+}
+
+.support-contact--footer a:hover,
+.support-contact--footer a:focus-visible,
+.support-contact--dark a:hover,
+.support-contact--dark a:focus-visible {
+    color: var(--main-color);
+    text-decoration-color: currentColor;
+}
+
+.support-contact--auth {
+    margin-top: 1rem;
+    color: var(--mid-main-secondary);
+    font-size: 0.8rem;
+}
+
+.support-contact--auth a {
+    color: var(--secondary-color);
+    text-decoration-color: color-mix(in srgb, var(--secondary-color) 38%, transparent);
+}
+
+.support-contact--auth a:hover,
+.support-contact--auth a:focus-visible {
+    color: var(--accent-color);
+    text-decoration-color: currentColor;
+}
+
+:root[data-theme='dark'] .support-contact--auth a {
+    color: var(--main-color);
+}

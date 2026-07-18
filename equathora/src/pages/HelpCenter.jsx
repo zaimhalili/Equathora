@@ -249,7 +249,7 @@ const HelpCenter = () => {
                                         Can't find your answer? Our support team responds within 3 hours (usually) !
                                     </p>
                                     <a
-                                        href="mailto:equathora@gmail.com"
+                                        href="mailto:equathora@mail.tin.computer"
                                         className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--main-color)] !text-[var(--accent-color)] rounded-md font-bold text-base no-underline w-fit hover:bg-gray-200 transition-colors"
                                     >
                                         <span>Contact Support</span>

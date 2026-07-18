@@ -2,24 +2,28 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
+import { fileURLToPath } from 'node:url';
+
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(projectRoot, './src'),
     },
   },
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Split heavy rarely-changing libraries into their own chunks
-          'mathlive': ['mathlive'],
-          'react-icons': ['react-icons'],
-          'framer-motion': ['framer-motion'],
-          'supabase': ['@supabase/supabase-js'],
+        // Vite 8's Rolldown build accepts the function form of manualChunks.
+        manualChunks(id) {
+          if (id.includes('/node_modules/mathlive/')) return 'mathlive';
+          if (id.includes('/node_modules/react-icons/')) return 'react-icons';
+          if (id.includes('/node_modules/framer-motion/')) return 'framer-motion';
+          if (id.includes('/node_modules/@supabase/')) return 'supabase';
+          return undefined;
         }
       }
     },

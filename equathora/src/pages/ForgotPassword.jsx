@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import { supabase } from '../lib/supabaseClient';
 import Sigma from '../assets/logo/TransparentSymbol.png';
+import SupportContact from '../components/SupportContact.jsx';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -31,7 +32,7 @@ const ForgotPassword = () => {
 
       setMessage('Password reset link sent! Check your email inbox and spam folder. Click the link to reset your password.');
       setLoading(false);
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred');
       setLoading(false);
     }
@@ -87,6 +88,7 @@ const ForgotPassword = () => {
               </Link>
             </p>
           </div>
+          <SupportContact />
         </article>
 
       </section>
@@ -96,4 +98,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword; 
+export default ForgotPassword;

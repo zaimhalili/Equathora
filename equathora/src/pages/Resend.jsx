@@ -10,6 +10,7 @@ import {
   getResendErrorMessage,
   RESEND_COOLDOWN_SECONDS,
 } from '../lib/emailVerification';
+import SupportContact from '../components/SupportContact.jsx';
 
 const Resend = () => {
   const [email, setEmail] = useState('');
@@ -119,6 +120,7 @@ const Resend = () => {
               </Link>
             </p>
           </div>
+          <SupportContact />
         </article>
 
       </section>

@@ -11,6 +11,7 @@ import {
     getResendErrorMessage,
     RESEND_COOLDOWN_SECONDS,
 } from '../lib/emailVerification';
+import SupportContact from '../components/SupportContact.jsx';
 
 const VerifyEmail = () => {
     const [email, setEmail] = useState('');
@@ -174,6 +175,7 @@ const VerifyEmail = () => {
                             </p>
                         </div>
                     </form>
+                    <SupportContact />
                 </section >
                 <aside id="background-container"><BackgroundPolygons /></aside>
             </main >
