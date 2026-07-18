@@ -3,8 +3,9 @@ import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-do
 import './VerifyEmail.css';
 import '../components/Auth.css';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
-import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import { supabase } from '../lib/supabaseClient';
+import { SITE_URL } from '../lib/config';
+import Sigma from '../assets/logo/TransparentSymbol.png';
 import {
     getResendButtonLabel,
     getResendCooldownSeconds,
@@ -13,7 +14,6 @@ import {
 } from '../lib/emailVerification';
 
 const VerifyEmail = () => {
-    const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
@@ -22,17 +22,25 @@ const VerifyEmail = () => {
     const location = useLocation();
     const [searchParams] = useSearchParams();
 
-    // Pre-fill email if passed as query parameter
-    useEffect(() => {
-        const emailParam = searchParams.get('email');
-        if (emailParam) {
-            setEmail(emailParam);
-        }
+    // The email is only ever set from what the signup flow passed in —
+    // never freely typed here, so this page can't be used to fire
+    // confirmation emails at an arbitrary address.
+    const email = searchParams.get('email') || location.state?.email || '';
 
-        if (emailParam && location.state?.confirmationJustSent) {
+    // No email context means this page was opened directly (lost state,
+    // different device, refreshed tab). Send to the self-service resend
+    // page rather than making them sign up again.
+    useEffect(() => {
+        if (!email) {
+            navigate('/resend', { replace: true });
+        }
+    }, [email, navigate]);
+
+    useEffect(() => {
+        if (email && location.state?.confirmationJustSent) {
             setCooldownSeconds(RESEND_COOLDOWN_SECONDS);
         }
-    }, [location.state, searchParams]);
+    }, [email, location.state]);
 
     useEffect(() => {
         if (cooldownSeconds <= 0) {
@@ -64,6 +72,8 @@ const VerifyEmail = () => {
 
     async function handleResend(e) {
         e.preventDefault();
+        if (!email) return;
+
         setError('');
         setMessage('');
         setLoading(true);
@@ -73,7 +83,7 @@ const VerifyEmail = () => {
                 type: 'signup',
                 email,
                 options: {
-                    emailRedirectTo: `${window.location.origin}`,
+                    emailRedirectTo: `${SITE_URL}/auth/callback`,
                 },
             });
 
@@ -94,13 +104,20 @@ const VerifyEmail = () => {
         }
     }
 
+    if (!email) {
+        return null;
+    }
+
     return (
         <>
             <main id='body-verify'>
                 <section id='verify-container'>
-                    <div id='verify-logo-name'>
-                        <img src={Logo} alt="Logo" id='verify-logoIMG' className='w-70' />
-                    </div >
+                    <div id='signup-logo-name'>
+                        <p className='font-[Sansation,Arial] pl-6 text-3xl font-black relative select-none'>
+                            <img src={Sigma} alt="Logo" className='w-11 h-11 absolute -left-5 -top-[11px] pointer-events-none' />
+                            Equathora
+                        </p>
+                    </div>
 
                     <div id='verify-text-container'>
                         <h3>Check your email</h3>
@@ -147,11 +164,9 @@ const VerifyEmail = () => {
                         <input
                             type="email"
                             className='inputAuth'
-                            placeholder='Enter your email address'
-                            maxLength="254"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
+                            readOnly
+                            disabled
                         />
 
                         <button type="submit" id="verify-btn" disabled={loading || cooldownSeconds > 0}>

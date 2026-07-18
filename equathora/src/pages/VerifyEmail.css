@@ -12,7 +12,7 @@
 #verify-container {
     width: 45%;
     height: 100%;
-    background-color: transparent;
+    background-color: var(--main-color);
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -76,7 +76,7 @@
     padding: 16px;
     border: 1px solid rgba(43, 45, 66, 0.18);
     border-radius: 12px;
-    background: rgba(237, 242, 244, 0.72);
+    background: var(--french-gray);
     color: var(--secondary-color);
     font-family: 'Sansation', sans-serif;
     line-height: 1.5;
@@ -105,7 +105,6 @@
     text-align: center;
     border-radius: 6px;
     margin: 30px 0 30px 0;
-    border: 1px solid var(--secondary-color);
     transition: 0.1s ease-out;
     box-shadow: 0 5px 5px 0 rgba(43, 45, 66, 0.5);
     cursor: pointer;
@@ -133,7 +132,7 @@
 }
 
 .auth-other-options-text {
-    color: black;
+    color: var(--secondary-color);
     text-align: center;
 }
 

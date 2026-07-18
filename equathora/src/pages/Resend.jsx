@@ -4,6 +4,7 @@ import BackgroundPolygons from '../components/BackgroundPolygons';
 import { Link, useSearchParams } from 'react-router-dom';
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import { supabase } from '../lib/supabaseClient';
+import { SITE_URL } from '../lib/config';
 import {
   getResendButtonLabel,
   getResendCooldownSeconds,
@@ -44,12 +45,14 @@ const Resend = () => {
     setMessage('');
     setLoading(true);
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     try {
       const { error: resendError } = await supabase.auth.resend({
         type: 'signup',
-        email,
+        email: normalizedEmail,
         options: {
-          emailRedirectTo: `${window.location.origin}`,
+          emailRedirectTo: `${SITE_URL}/auth/callback`,
         },
       });
 

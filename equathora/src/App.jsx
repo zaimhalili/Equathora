@@ -10,6 +10,7 @@ import AdminRoute from "./components/AdminRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { supabase } from "./lib/supabaseClient";
 import { getUserSettings } from "./lib/notificationService";
+import AuthCallback from "./pages/AuthCallback";
 import {
     normalizeThemePreference,
     getStoredThemePreference,
@@ -264,6 +265,7 @@ export default function App() {
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/verify" element={<VerifyEmail />} />
                         <Route path="/resend" element={<Resend />} />
+                        <Route path="/auth/callback" element={<AuthCallback />} />
                         <Route path="/forgotpassword" element={<ForgotPassword />} />
                         <Route path="/reset-password" element={<ResetPassword />} />
                         <Route path="/about" element={<About />} />
