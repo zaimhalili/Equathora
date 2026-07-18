@@ -263,7 +263,7 @@ const ApplyMentor = () => {
                                     </div>
                                     <div className='flex items-center gap-1.5'>
                                         <FaCheckCircle className='text-green-400' />
-                                        <span>Always free</span>
+                                        <span>Join for free</span>
                                     </div>
                                     <div className='flex items-center gap-1.5'>
                                         <FaCheckCircle className='text-green-400' />
