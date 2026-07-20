@@ -200,7 +200,7 @@ const AdminAnalytics = () => {
     return (
         <section className='flex flex-col gap-6 px-3 py-2 text-[var(--secondary-color)] md:px-5'>
             <div
-                className='rounded-xl border p-5'
+                className='rounded-md border p-5'
                 style={{
                     borderColor: palette.mid,
                     background: `linear-gradient(135deg, ${palette.main}, ${palette.french})`
@@ -290,23 +290,23 @@ const AdminAnalytics = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5'>
-                <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Avg DAU</p>
                     <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.avgDau)}</p>
                 </article>
-                <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Signups</p>
                     <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.totalSignups)}</p>
                 </article>
-                <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Solved</p>
                     <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.totalSolved)}</p>
                 </article>
-                <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Issue Signals</p>
                     <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.totalReports)}</p>
                 </article>
-                <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Issues / 1k Solves</p>
                     <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.reportsPerThousand)}</p>
                 </article>
@@ -318,7 +318,7 @@ const AdminAnalytics = () => {
                     return (
                         <article
                             key={card.title}
-                            className='rounded-xl border p-4'
+                            className='rounded-md border p-4'
                             style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                         >
                             <div className='flex items-start justify-between gap-2'>
@@ -333,7 +333,7 @@ const AdminAnalytics = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-5'>
-                <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Active Users Trend</h3>
                         <span
@@ -367,7 +367,7 @@ const AdminAnalytics = () => {
                     </div>
                 </article>
 
-                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Issue Type Distribution</h3>
                         <span
@@ -410,7 +410,7 @@ const AdminAnalytics = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-6'>
-                <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Signups, Solves & Issue Signals</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
@@ -432,7 +432,7 @@ const AdminAnalytics = () => {
                     </div>
                 </article>
 
-                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Retention Curve</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
@@ -458,7 +458,7 @@ const AdminAnalytics = () => {
                     </div>
                 </article>
 
-                <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3'>
                         <h3 className='text-sm font-semibold md:text-base'>System Health</h3>
                     </header>
@@ -475,7 +475,7 @@ const AdminAnalytics = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-2'>
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Moderation Alerts</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
@@ -496,7 +496,7 @@ const AdminAnalytics = () => {
                     </div>
                 </article>
 
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Top Topics Snapshot</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>

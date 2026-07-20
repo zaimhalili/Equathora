@@ -95,7 +95,7 @@ const TopicCard = ({
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="h-4 rounded-md bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white overflow-hidden">
+                    <div className="h-4 rounded-md bg-[var(--secondary-color)]/30 overflow-hidden">
                         <div
                             className="h-full rounded-md bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))]"
                             style={{ width: `${progress}%` }}

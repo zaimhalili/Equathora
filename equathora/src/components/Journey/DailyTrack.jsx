@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { generateProblemSlug } from '@/lib/slugify';
 import { getEstimatedTime } from '@/lib/problemProgress';
 import { calculateProblemXP } from '@/lib/leaderboardService';
+import { motion } from 'framer-motion';
 
 const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes }) => {
     // Field names below are a best-effort guess at what getStreakData() /
@@ -40,9 +41,11 @@ const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes })
         : 0;
 
     return (
-        <section className="w-full rounded-2xl bg-[var(--main-color)] border border-white/10 p-5 shadow-xl">
+        <motion.section className="w-full rounded-2xl bg-[var(--main-color)] border border-white/10 p-5 shadow-xl"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}>
             <div className="flex items-center justify-between">
-                {/*  */}
                 <div className="flex items-center gap-3">
                     <div className="h-12 w-12 rounded-xl bg-[var(--accent-color)] flex items-center justify-center text-white">
                         <FaBullseye size={20} />
@@ -82,9 +85,9 @@ const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes })
                         {todayMinutes} / {goalMinutes} min
                     </span>
                 </div>
-                <div className="h-3 rounded-full bg-[var(--secondary-color)]/30 overflow-hidden">
+                <div className="h-4 rounded-md bg-[var(--secondary-color)]/30 overflow-hidden">
                     <div
-                        className="h-full rounded-full bg-[linear-gradient(90deg,var(--accent-color),var(--dark-accent-color))]"
+                        className="h-full rounded-md bg-[linear-gradient(90deg,var(--accent-color),var(--dark-accent-color))]"
                         style={{ width: `${goalPercent}%` }}
                     />
                 </div>
@@ -141,7 +144,7 @@ const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes })
 
             </div>
 
-        </section>
+        </motion.section>
     );
 };
 

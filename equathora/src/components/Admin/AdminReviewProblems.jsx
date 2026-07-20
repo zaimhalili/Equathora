@@ -248,7 +248,7 @@ const AdminReviewProblems = () => {
     return (
         <section className='flex flex-col gap-6 px-3 py-2 text-[var(--secondary-color)] md:px-5'>
             <header
-                className='rounded-xl border p-5'
+                className='rounded-md border p-5'
                 style={{
                     borderColor: 'var(--mid-main-secondary)',
                     background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))'
@@ -294,25 +294,25 @@ const AdminReviewProblems = () => {
             </header>
 
             <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Total In Buffer</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.total}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Pending Review</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.pending}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Approved</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.approved}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Already Published</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.published}</p>
                 </article>
             </div>
 
-            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='grid grid-cols-1 gap-3 md:grid-cols-5'>
                     <label className='inline-flex items-center gap-2 rounded-md border px-3 py-2 md:col-span-2' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                         <FiSearch />
@@ -386,7 +386,7 @@ const AdminReviewProblems = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.25fr)_minmax(340px,1fr)]'>
-                <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <div className='flex flex-wrap items-center justify-between gap-2 pb-3'>
                         <h2 className='text-lg font-black'>Review List</h2>
                         <div className='flex flex-wrap items-center gap-2'>
@@ -498,7 +498,7 @@ const AdminReviewProblems = () => {
                     </div>
                 </div>
 
-                <aside className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <aside className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     {!activeProblem ? (
                         <p className='text-sm'>Pick a problem from the list to inspect details.</p>
                     ) : (

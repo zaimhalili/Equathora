@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import LoadingSpinner from '../components/LoadingSpinner';
 import { supabase } from '../lib/supabaseClient';
-import { resetAllUserProgress } from '../lib/progressStorage';
 import {
     getUserSettings,
     saveUserSettings,
@@ -28,13 +26,51 @@ import {
 } from '../lib/equathoraBriefsService';
 
 // ============================================================================
+// LABEL MAPS (mirrors the option ids used on /getStarted)
+// ============================================================================
+
+const GOAL_LABELS = {
+    school: 'School & University',
+    competitions: 'Math Competitions',
+    'problem-solving': 'Problem Solving',
+    fun: 'Learn for Fun',
+};
+
+const LEVEL_LABELS = {
+    beginner: 'Beginner',
+    intermediate: 'Intermediate',
+    advanced: 'Advanced',
+    competitive: 'Competitive',
+};
+
+const WEEKLY_LABELS = {
+    'under-1': '< 1 hr / week',
+    '1-3': '1–3 hrs / week',
+    '3-6': '3–6 hrs / week',
+    '6+': '6+ hrs / week',
+};
+
+const CHALLENGE_LABELS = {
+    easy: 'Build Confidence',
+    balanced: 'Balanced',
+    challenging: 'Challenge Me',
+    extreme: 'Push My Limits',
+};
+
+const PLAN_LABELS = {
+    free: 'Free',
+    scholar: 'Scholar',
+    olympiad: 'Olympiad',
+};
+
+// ============================================================================
 // REUSABLE UI PIECES
 // ============================================================================
 
 const SectionCard = ({ children, id }) => (
     <section
         id={id}
-        className="bg-[var(--white)] rounded-md w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
+        className="bg-[var(--white)] rounded-md w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] scroll-mt-24"
     >
         {children}
     </section>
@@ -60,32 +96,6 @@ const InputField = ({ label, description, ...props }) => (
     </div>
 );
 
-const TextArea = ({ label, description, ...props }) => (
-    <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-semibold text-[var(--secondary-color)]">{label}</label>
-        {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
-        <textarea
-            {...props}
-            className="text-sm border rounded-md px-4 py-3 w-full border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif] resize-none h-28"
-        />
-    </div>
-);
-
-const SelectField = ({ label, description, options, ...props }) => (
-    <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-semibold text-[var(--secondary-color)]">{label}</label>
-        {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
-        <select
-            {...props}
-            className="text-sm cursor-pointer px-4 py-3 border rounded-md border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
-        >
-            {options.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-            ))}
-        </select>
-    </div>
-);
-
 const ToggleSwitch = ({ label, description, checked, onChange, disabled = false }) => (
     <div className="flex items-center justify-between gap-4 py-2">
         <div className="flex flex-col gap-0.5 flex-1 min-w-0">
@@ -98,13 +108,20 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
             aria-checked={checked}
             disabled={disabled}
             onClick={() => onChange(!checked)}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer overflow-hidden rounded-full  transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)] border-[var(--dark-accent-color)]' : 'bg-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)]'}`}
+            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer overflow-hidden rounded-full transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)]' : 'bg-[var(--mid-main-secondary)]'}`}
         >
             <span
-                className={`pointer-events-none inline-block h-5 w-5 shadow-black/70 transform rounded-full bg-white shadow-md ring-0 transition-transform duration-200 translate-y-[1.5px] ${checked ? 'translate-x-[21.5px]' : 'translate-x-[2px]'}`}
+                className={`pointer-events-none inline-block h-5 w-5 shadow-black/70 transform rounded-full bg-white ring-0 transition-transform duration-200 translate-y-[1.8px] ${checked ? 'translate-x-[21.5px]' : 'translate-x-[2px]'}`}
             />
         </button>
     </div>
+);
+
+const Spinner = ({ className = 'w-4 h-4' }) => (
+    <svg className={`${className} animate-spin text-current`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+    </svg>
 );
 
 const PrimaryButton = ({ children, onClick, disabled, loading, className = '', title = '' }) => (
@@ -115,12 +132,18 @@ const PrimaryButton = ({ children, onClick, disabled, loading, className = '', t
         disabled={disabled || loading}
         className={`cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-bold text-sm rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
     >
-        {loading && (
-            <svg className="w-4 h-4 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-            </svg>
-        )}
+        {loading && <Spinner />}
+        {children}
+    </button>
+);
+
+const OutlineButton = ({ children, onClick, disabled, className = '' }) => (
+    <button
+        type="button"
+        onClick={onClick}
+        disabled={disabled}
+        className={`cursor-pointer py-2.5 px-5 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold text-sm rounded-md hover:bg-[var(--main-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+    >
         {children}
     </button>
 );
@@ -131,35 +154,142 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
         onClick={onClick}
         disabled={disabled || loading}
         title={title}
-        className="cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-bold text-lg rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="cursor-pointer py-2.5 px-5 bg-[var(--dark-accent-color)] text-white font-bold text-sm rounded-md hover:bg-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
     >
-        {loading && (
-            <svg className="w-4 h-4 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-            </svg>
-        )}
+        {loading && <Spinner />}
         {children}
     </button>
 );
 
-const StatusBanner = ({ message, type = 'success' }) => {
-    if (!message) return null;
-    const colors = {
-        success: 'bg-green-50 text-green-800 border-green-200',
-        error: 'bg-red-50 text-red-800 border-red-200',
-        info: 'bg-blue-50 text-blue-800 border-blue-200',
-        warning: 'bg-yellow-50 text-yellow-800 border-yellow-200',
+const Chip = ({ children }) => (
+    <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[var(--main-color)] text-[var(--secondary-color)] border border-[var(--mid-main-secondary)]">
+        {children}
+    </span>
+);
+
+// ============================================================================
+// TOAST — a single, global piece of feedback. New messages replace the old
+// one instead of stacking, so only ever one banner is visible at a time.
+// ============================================================================
+
+const Toast = ({ toast }) => {
+    const palette = {
+        success: 'bg-green-600',
+        error: 'bg-red-600',
+        info: 'bg-blue-600',
+        warning: 'bg-amber-600',
     };
     return (
-        <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            className={`text-sm px-4 py-3 rounded-md border ${colors[type]} font-[Sansation,sans-serif]`}
-        >
-            {message}
-        </motion.div>
+        <div className="fixed bottom-6 right-6 left-6 sm:left-auto z-[9999] flex flex-col items-end pointer-events-none">
+            <AnimatePresence mode="wait">
+                {toast && (
+                    <motion.div
+                        key={toast.id}
+                        initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 12, scale: 0.96 }}
+                        transition={{ duration: 0.18 }}
+                        className={`pointer-events-auto w-full sm:w-auto sm:max-w-sm text-white text-sm font-semibold px-4 py-3 rounded-md shadow-xl font-[Sansation,sans-serif] ${palette[toast.type] || palette.success}`}
+                    >
+                        {toast.message}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
+
+// ============================================================================
+// CONFIRM MODAL — replaces window.confirm()/alert() everywhere in this page.
+// ============================================================================
+
+const ConfirmModal = ({
+    isOpen,
+    onClose,
+    onConfirm,
+    title,
+    description,
+    confirmWord,
+    confirmLabel = 'Confirm',
+    loading = false,
+    variant = 'danger',
+}) => {
+    const [typed, setTyped] = useState('');
+
+    useEffect(() => {
+        if (isOpen) setTyped('');
+    }, [isOpen]);
+
+    if (!isOpen) return null;
+
+    const canConfirm = !confirmWord || typed.trim() === confirmWord;
+    const confirmColor = variant === 'danger'
+        ? 'bg-red-600 hover:bg-red-700'
+        : 'bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)]';
+
+    return (
+        <AnimatePresence>
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => !loading && onClose()}
+                    className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                />
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                    className="relative bg-[var(--white)] rounded-md shadow-2xl max-w-md w-full p-6 flex flex-col gap-4 font-[Sansation,sans-serif]"
+                >
+                    <div className="flex items-start justify-between gap-4">
+                        <h2 className="text-xl font-bold text-[var(--secondary-color)]">{title}</h2>
+                        <button
+                            onClick={() => !loading && onClose()}
+                            className="text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] p-1 rounded-md cursor-pointer transition-colors shrink-0"
+                            aria-label="Close"
+                        >
+                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <p className="text-sm text-[var(--mid-main-secondary)]">{description}</p>
+
+                    {confirmWord && (
+                        <div className="flex flex-col gap-1.5">
+                            <label className="text-xs font-semibold text-[var(--secondary-color)]">
+                                Type <span className="font-mono">{confirmWord}</span> to confirm
+                            </label>
+                            <input
+                                value={typed}
+                                onChange={e => setTyped(e.target.value)}
+                                placeholder={confirmWord}
+                                autoFocus
+                                className="px-4 py-2.5 border rounded-md border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                            />
+                        </div>
+                    )}
+
+                    <div className="flex gap-3 pt-2">
+                        <OutlineButton onClick={onClose} disabled={loading} className="flex-1">
+                            Cancel
+                        </OutlineButton>
+                        <button
+                            type="button"
+                            onClick={onConfirm}
+                            disabled={!canConfirm || loading}
+                            className={`flex-1 px-5 py-2.5 text-white font-bold text-sm rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer ${confirmColor}`}
+                        >
+                            {loading && <Spinner />}
+                            {confirmLabel}
+                        </button>
+                    </div>
+                </motion.div>
+            </div>
+        </AnimatePresence>
     );
 };
 
@@ -179,21 +309,16 @@ const IconLock = () => (
     </svg>
 );
 
+const IconGraduation = () => (
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M12 3L2 8l10 5 10-5-10-5z" strokeLinejoin="round" />
+        <path d="M6 10.5V15c0 1.4 2.7 3 6 3s6-1.6 6-3v-4.5" strokeLinejoin="round" strokeLinecap="round" />
+    </svg>
+);
+
 const IconBell = () => (
     <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
         <path fill="currentColor" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z" />
-    </svg>
-);
-
-const IconShield = () => (
-    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
-        <path fill="currentColor" d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0zm0 66.8V444.8C394 378 431.1 230.1 432 141.4L256 66.8l0 0z" />
-    </svg>
-);
-
-const IconLaptop = () => (
-    <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
-        <path fill="currentColor" d="M128 32C92.7 32 64 60.7 64 96V352h64V96H512V352h64V96c0-35.3-28.7-64-64-64H128zM19.2 384C8.6 384 0 392.6 0 403.2C0 445.6 34.4 480 76.8 480H563.2c42.4 0 76.8-34.4 76.8-76.8c0-10.6-8.6-19.2-19.2-19.2H19.2z" />
     </svg>
 );
 
@@ -203,20 +328,65 @@ const IconTheme = () => (
     </svg>
 );
 
+const IconShield = () => (
+    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
+        <path fill="currentColor" d="M256 0c4.6 0 9.2 1 13.4 2.9L457.7 82.8c22 9.3 38.4 31 38.3 57.2c-.5 99.2-41.3 280.7-213.6 363.2c-16.7 8-36.1 8-52.8 0C57.3 420.7 16.5 239.2 16 140c-.1-26.2 16.3-47.9 38.3-57.2L242.7 2.9C246.8 1 251.4 0 256 0zm0 66.8V444.8C394 378 431.1 230.1 432 141.4L256 66.8l0 0z" />
+    </svg>
+);
+
+const IconCrown = () => (
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current" fill="currentColor">
+        <path d="M3 8l4 3 5-6 5 6 4-3-2 10H5L3 8zm2 12h14v2H5v-2z" />
+    </svg>
+);
+
+const IconLaptop = () => (
+    <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
+        <path fill="currentColor" d="M128 32C92.7 32 64 60.7 64 96V352h64V96H512V352h64V96c0-35.3-28.7-64-64-64H128zM19.2 384C8.6 384 0 392.6 0 403.2C0 445.6 34.4 480 76.8 480H563.2c42.4 0 76.8-34.4 76.8-76.8c0-10.6-8.6-19.2-19.2-19.2H19.2z" />
+    </svg>
+);
+
 const IconWarning = () => (
     <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-current">
         <path fill="currentColor" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
     </svg>
 );
 
+const IconSun = () => (
+    <svg viewBox="0 0 24 24" className="w-4 h-4 text-current" fill="currentColor">
+        <path d="M12 4.5a1 1 0 011-1V2a1 1 0 10-2 0v1.5a1 1 0 001 1zm0 15a1 1 0 011 1V22a1 1 0 10-2 0v-1.5a1 1 0 011-1zM4.5 11H3a1 1 0 000 2h1.5a1 1 0 000-2zm16.5 0h-1.5a1 1 0 000 2H21a1 1 0 000-2zM6.34 4.93a1 1 0 00-1.41 1.41l1.06 1.06a1 1 0 001.41-1.41L6.34 4.93zm11.32 11.32a1 1 0 00-1.41 1.41l1.06 1.06a1 1 0 001.41-1.41l-1.06-1.06zM17.66 4.93l-1.06 1.06a1 1 0 101.41 1.41l1.06-1.06a1 1 0 10-1.41-1.41zM6.34 16.25l-1.06 1.06a1 1 0 101.41 1.41l1.06-1.06a1 1 0 10-1.41-1.41zM12 7a5 5 0 100 10 5 5 0 000-10z" />
+    </svg>
+);
+
+const IconMoon = () => (
+    <svg viewBox="0 0 24 24" className="w-4 h-4 text-current" fill="currentColor">
+        <path d="M20.7 15.3a8.5 8.5 0 01-11-11 1 1 0 00-1.3-1.3A10.5 10.5 0 1022 16.6a1 1 0 00-1.3-1.3z" />
+    </svg>
+);
+
+const IconSystem = () => (
+    <svg viewBox="0 0 24 24" className="w-4 h-4 text-current" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <rect x="3" y="4" width="18" height="12" rx="1.5" />
+        <path d="M8 20h8M12 16v4" strokeLinecap="round" />
+    </svg>
+);
+
 const sidebarSections = [
     { id: 'profile', label: 'Profile', icon: <IconUser /> },
     { id: 'account', label: 'Account & Security', icon: <IconLock /> },
+    { id: 'learning', label: 'Learning', icon: <IconGraduation /> },
     { id: 'notifications', label: 'Notifications', icon: <IconBell /> },
     { id: 'appearance', label: 'Appearance', icon: <IconTheme /> },
     { id: 'privacy', label: 'Privacy', icon: <IconShield /> },
+    { id: 'subscription', label: 'Subscription', icon: <IconCrown /> },
     { id: 'sessions', label: 'Sessions', icon: <IconLaptop /> },
-    { id: 'danger', label: 'Danger Zone', icon: <IconWarning /> },
+    // { id: 'danger', label: 'Danger Zone', icon: <IconWarning /> },
+];
+
+const THEME_OPTIONS = [
+    { value: 'light', label: 'Light', icon: <IconSun /> },
+    { value: 'dark', label: 'Dark', icon: <IconMoon /> },
+    { value: 'system', label: 'System', icon: <IconSystem /> },
 ];
 
 // ============================================================================
@@ -228,27 +398,47 @@ const Settings = () => {
     const [activeSection, setActiveSection] = useState('profile');
     const [isLoading, setIsLoading] = useState(true);
 
-    // Profile state
-    const [profileData, setProfileData] = useState({
+    // Global toast (single message at a time — replaces the old per-section
+    // banners that could all show the same text simultaneously)
+    const [toast, setToast] = useState(null);
+    const toastTimerRef = useRef(null);
+    const showToast = (message, type = 'success') => {
+        if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+        setToast({ id: Date.now(), message, type });
+        toastTimerRef.current = setTimeout(() => setToast(null), 3500);
+    };
+    useEffect(() => () => {
+        if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    }, []);
+
+    // Read-only profile summary — editing lives on the public profile page,
+    // so this page doesn't duplicate that form.
+    const [profileSummary, setProfileSummary] = useState({
         full_name: '',
         username: '',
         bio: '',
-        location: '',
-        seniority: 'absBeginner',
+        role: 'student',
+        deletionRequested: false,
+        deletionRequestedAt: null,
     });
-    const [profileSaving, setProfileSaving] = useState(false);
-    const [profileMessage, setProfileMessage] = useState({ text: '', type: 'success' });
+
+    // Learning / onboarding summary
+    const [learningProfile, setLearningProfile] = useState(null);
+    const [showRetakeModal, setShowRetakeModal] = useState(false);
+    const [retaking, setRetaking] = useState(false);
+
+    // Subscription (defaults to free until the columns exist / billing ships)
+    const [subscription, setSubscription] = useState({ tier: 'free', renewsAt: null });
 
     // Account state
     const [currentEmail, setCurrentEmail] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const [emailSaving, setEmailSaving] = useState(false);
-    const [emailMessage, setEmailMessage] = useState({ text: '', type: 'success' });
 
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordSaving, setPasswordSaving] = useState(false);
-    const [passwordMessage, setPasswordMessage] = useState({ text: '', type: 'success' });
+    const [showPassword, setShowPassword] = useState(false);
 
     const [authProvider, setAuthProvider] = useState('email');
 
@@ -266,32 +456,23 @@ const Settings = () => {
         privacy_show_streak: true,
         privacy_show_leaderboard: true,
         privacy_show_achievements: true,
-        two_factor_enabled: false,
-        session_timeout_minutes: 60,
         theme: 'system',
         cookie_consent: 'none',
         cookie_consent_date: '',
     });
     const [settingsSaving, setSettingsSaving] = useState(false);
-    const [settingsMessage, setSettingsMessage] = useState({ text: '', type: 'success' });
-
-    // Cookie preference state
     const [cookieConsent, setCookieConsent] = useState('none');
 
     // Session state
     const [currentSession, setCurrentSession] = useState(null);
     const [sessionLoading, setSessionLoading] = useState(false);
-    const [sessionMessage, setSessionMessage] = useState({ text: '', type: 'success' });
 
     // Danger zone
     const [isResetting, setIsResetting] = useState(false);
-    const [resetMessage, setResetMessage] = useState({ text: '', type: 'success' });
+    const [showResetModal, setShowResetModal] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
-    const [deleteMessage, setDeleteMessage] = useState({ text: '', type: 'success' });
-    const [deleteConfirmText, setDeleteConfirmText] = useState('');
-
-    // Password visibility
-    const [showPassword, setShowPassword] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isCancelingDeletion, setIsCancelingDeletion] = useState(false);
 
     // ========================================================================
     // LOAD USER DATA ON MOUNT
@@ -308,31 +489,55 @@ const Settings = () => {
 
                 setCurrentEmail(session.user.email || '');
 
-                // Detect auth provider
                 const provider = session.user.app_metadata?.provider || 'email';
                 setAuthProvider(provider);
 
-                // Fetch profile from profiles table
+                // Profile — read-only summary, matches the real `profiles` schema
                 const { data: profile } = await supabase
                     .from('profiles')
-                    .select('full_name, username, bio, location, seniority')
+                    .select('full_name, username, bio, role, deletion_requested, deletion_requested_at')
                     .eq('id', session.user.id)
                     .maybeSingle();
 
                 if (profile) {
-                    setProfileData({
+                    setProfileSummary({
                         full_name: profile.full_name || session.user.user_metadata?.full_name || '',
                         username: profile.username || '',
                         bio: profile.bio || '',
-                        location: profile.location || '',
-                        seniority: profile.seniority || 'absBeginner',
+                        role: profile.role || 'student',
+                        deletionRequested: !!profile.deletion_requested,
+                        deletionRequestedAt: profile.deletion_requested_at || null,
                     });
-                } else {
-                    setProfileData(prev => ({
-                        ...prev,
-                        full_name: session.user.user_metadata?.full_name || '',
-                        username: session.user.user_metadata?.username || '',
-                    }));
+                }
+
+                // Learning / onboarding summary (student_profile), best-effort
+                try {
+                    const { data: sp } = await supabase
+                        .from('student_profile')
+                        .select('goal, level, weekly_commitment, preferred_challenge')
+                        .eq('id', session.user.id)
+                        .maybeSingle();
+                    if (sp) setLearningProfile(sp);
+                } catch (e) {
+                    // No student_profile row yet (e.g. teacher account) — fine.
+                }
+
+                // Subscription, best-effort — falls back to Free until the
+                // billing columns exist on `profiles`.
+                try {
+                    const { data: sub } = await supabase
+                        .from('profiles')
+                        .select('subscription_tier, subscription_renews_at')
+                        .eq('id', session.user.id)
+                        .maybeSingle();
+                    if (sub) {
+                        setSubscription({
+                            tier: sub.subscription_tier || 'free',
+                            renewsAt: sub.subscription_renews_at || null,
+                        });
+                    }
+                } catch (e) {
+                    // subscription_tier / subscription_renews_at don't exist yet.
                 }
 
                 // Fetch user settings
@@ -370,162 +575,95 @@ const Settings = () => {
                 setCookieConsent(cookieConsentValue);
                 setThemePreference(resolvedPreference, { persist: true });
 
-                // Fetch session info
                 const sess = await getCurrentSession();
                 setCurrentSession(sess);
             } catch (error) {
                 console.error('Error loading settings:', error);
+                showToast('Could not load some of your settings. Try refreshing.', 'error');
             } finally {
                 setIsLoading(false);
             }
         };
 
         loadData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate]);
-    // PROFILE HANDLERS
-    const handleSaveProfile = async () => {
-        setProfileSaving(true);
-        setProfileMessage({ text: '', type: 'success' });
 
-        if (!profileData.full_name.trim() || profileData.full_name.trim().length < 2) {
-            setProfileMessage({ text: 'Name must be at least 2 characters.', type: 'error' });
-            setProfileSaving(false);
-            return;
-        }
-
-        if (profileData.username && !/^[a-zA-Z0-9_]{3,20}$/.test(profileData.username)) {
-            setProfileMessage({ text: 'Username must be 3–20 characters, letters, numbers, and underscores only.', type: 'error' });
-            setProfileSaving(false);
-            return;
-        }
-
-        if (profileData.bio && profileData.bio.length > 300) {
-            setProfileMessage({ text: 'Bio must be 300 characters or less.', type: 'error' });
-            setProfileSaving(false);
-            return;
-        }
-
-        try {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) throw new Error('Not authenticated');
-
-            // Check username uniqueness
-            if (profileData.username) {
-                const { data: existing } = await supabase
-                    .from('profiles')
-                    .select('id')
-                    .eq('username', profileData.username)
-                    .neq('id', session.user.id)
-                    .maybeSingle();
-
-                if (existing) {
-                    setProfileMessage({ text: 'This username is already taken.', type: 'error' });
-                    setProfileSaving(false);
-                    return;
-                }
-            }
-
-            // Update profiles table
-            const { error } = await supabase
-                .from('profiles')
-                .upsert({
-                    id: session.user.id,
-                    full_name: profileData.full_name.trim(),
-                    username: profileData.username.trim(),
-                    bio: profileData.bio.trim(),
-                    location: profileData.location.trim(),
-                    seniority: profileData.seniority,
-                    updated_at: new Date().toISOString(),
-                }, { onConflict: 'id' });
-
-            if (error) throw error;
-
-            // Also update auth metadata for consistency
-            await supabase.auth.updateUser({
-                data: {
-                    full_name: profileData.full_name.trim(),
-                    username: profileData.username.trim(),
-                },
-            });
-
-            setProfileMessage({ text: 'Profile saved successfully.', type: 'success' });
-            setTimeout(() => setProfileMessage({ text: '', type: 'success' }), 4000);
-        } catch (error) {
-            setProfileMessage({ text: error.message || 'Failed to save profile.', type: 'error' });
-        } finally {
-            setProfileSaving(false);
-        }
-    };
-
-    // EMAIL HANDLER
+    // ========================================================================
+    // ACCOUNT HANDLERS
+    // ========================================================================
     const handleChangeEmail = async () => {
-        setEmailSaving(true);
-        setEmailMessage({ text: '', type: 'success' });
-
         if (!newEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
-            setEmailMessage({ text: 'Please enter a valid email address.', type: 'error' });
-            setEmailSaving(false);
+            showToast('Please enter a valid email address.', 'error');
             return;
         }
-
         if (newEmail.toLowerCase() === currentEmail.toLowerCase()) {
-            setEmailMessage({ text: 'New email is the same as your current email.', type: 'error' });
-            setEmailSaving(false);
+            showToast('That email matches your current one.', 'error');
             return;
         }
 
+        setEmailSaving(true);
         try {
             const result = await changeEmail(newEmail);
-            if (result.success) {
-                setEmailMessage({ text: result.message, type: 'success' });
-                setNewEmail('');
-            } else {
-                setEmailMessage({ text: result.message, type: 'error' });
-            }
+            showToast(result.message, result.success ? 'success' : 'error');
+            if (result.success) setNewEmail('');
         } catch (error) {
-            setEmailMessage({ text: error.message, type: 'error' });
+            showToast(error.message || 'Could not update your email.', 'error');
         } finally {
             setEmailSaving(false);
         }
     };
 
-    // PASSWORD HANDLER
     const handleChangePassword = async () => {
-        setPasswordSaving(true);
-        setPasswordMessage({ text: '', type: 'success' });
-
         if (newPassword.length < 8) {
-            setPasswordMessage({ text: 'Password must be at least 8 characters.', type: 'error' });
-            setPasswordSaving(false);
+            showToast('Password must be at least 8 characters.', 'error');
             return;
         }
-
         if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(newPassword)) {
-            setPasswordMessage({ text: 'Password must include uppercase, lowercase, and a number.', type: 'error' });
-            setPasswordSaving(false);
+            showToast('Password must include uppercase, lowercase, and a number.', 'error');
             return;
         }
-
         if (newPassword !== confirmPassword) {
-            setPasswordMessage({ text: 'Passwords do not match.', type: 'error' });
-            setPasswordSaving(false);
+            showToast('Passwords do not match.', 'error');
             return;
         }
 
+        setPasswordSaving(true);
         try {
             const result = await changePassword(newPassword);
             if (result.success) {
-                setPasswordMessage({ text: 'Password changed successfully.', type: 'success' });
+                showToast('Password changed successfully.', 'success');
                 setNewPassword('');
                 setConfirmPassword('');
-                setTimeout(() => setPasswordMessage({ text: '', type: 'success' }), 4000);
             } else {
-                setPasswordMessage({ text: result.message, type: 'error' });
+                showToast(result.message, 'error');
             }
         } catch (error) {
-            setPasswordMessage({ text: error.message, type: 'error' });
+            showToast(error.message || 'Could not change your password.', 'error');
         } finally {
             setPasswordSaving(false);
+        }
+    };
+
+    // ========================================================================
+    // LEARNING / ONBOARDING
+    // ========================================================================
+    const handleRetakeOnboarding = async () => {
+        setRetaking(true);
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                await supabase
+                    .from('student_profile')
+                    .update({ onboarding_completed: false })
+                    .eq('id', session.user.id);
+            }
+            navigate('/getStarted');
+        } catch (error) {
+            showToast(error.message || 'Could not start the quiz. Try again.', 'error');
+        } finally {
+            setRetaking(false);
+            setShowRetakeModal(false);
         }
     };
 
@@ -542,20 +680,17 @@ const Settings = () => {
 
         setSettings(nextSettings);
         setSettingsSaving(true);
-        setSettingsMessage({ text: '', type: 'success' });
 
         try {
             const success = await saveUserSettings(nextSettings);
-            if (!success) {
-                throw new Error('Failed to save preference.');
-            }
-            setSettingsMessage({ text: 'Preferences updated.', type: 'success' });
+            if (!success) throw new Error('Failed to save preference.');
+            showToast('Preferences updated.', 'success');
         } catch (error) {
             setSettings(prev => ({ ...prev, [key]: previousValue }));
             if (key === 'theme') {
                 setThemePreference(previousValue, { persist: true });
             }
-            setSettingsMessage({ text: error?.message || 'Could not save preference.', type: 'error' });
+            showToast(error?.message || 'Could not save preference.', 'error');
         } finally {
             setSettingsSaving(false);
         }
@@ -565,63 +700,68 @@ const Settings = () => {
         const previousValue = settings.email_notifications;
         const nextSettings = { ...settings, email_notifications: enabled };
 
+        // Optimistic UI update
         setSettings(prev => ({ ...prev, email_notifications: enabled }));
         setSettingsSaving(true);
-        setSettingsMessage({ text: '', type: 'success' });
 
         try {
             const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                throw new Error('Please sign in again and retry.');
-            }
+            if (!session) throw new Error('Please sign in again and retry.');
 
-            const accountEmail = String(session.user?.email || '').trim().toLowerCase();
-            if (!accountEmail) {
-                throw new Error('Your account email could not be found.');
-            }
+            const accountEmail = String(session.user.email || '').trim().toLowerCase();
 
             if (enabled) {
-                const fallbackName = accountEmail.includes('@')
-                    ? accountEmail.split('@')[0]
-                    : 'Equathora User';
+                const fallbackName = accountEmail.split('@')[0];
+
                 const accountName = String(
-                    profileData.full_name
-                    || session.user?.user_metadata?.full_name
-                    || session.user?.user_metadata?.name
-                    || fallbackName
+                    profileSummary?.full_name ||
+                    session.user.user_metadata?.full_name ||
+                    session.user.user_metadata?.name ||
+                    fallbackName
                 ).trim();
 
+                // Pass both 'name' and 'full_name' for compatibility
                 await subscribeToEquathoraBriefs({
+                    name: accountName,
                     full_name: accountName,
                     email: accountEmail,
+                    user_id: session.user.id,
                 });
             } else {
-                await unsubscribeFromEquathoraBriefs(accountEmail);
+                await unsubscribeFromEquathoraBriefs();
             }
 
             const settingsSaved = await saveUserSettings(nextSettings);
+
             if (!settingsSaved) {
-                setSettingsMessage({
-                    text: enabled
-                        ? 'Added to Equathora Briefs, but could not persist this preference yet.'
-                        : 'Removed from Equathora Briefs, but could not persist this preference yet.',
-                    type: 'warning',
-                });
+                // Rollback optimistic update
+                setSettings(prev => ({ ...prev, email_notifications: previousValue }));
+                showToast(
+                    enabled
+                        ? 'Subscribed, but your preference could not be saved.'
+                        : 'Unsubscribed, but your preference could not be saved.',
+                    'warning'
+                );
                 return;
             }
 
-            setSettingsMessage({
-                text: enabled
-                    ? 'Email notifications enabled. You were added to Equathora Briefs.'
-                    : 'Email notifications disabled. You were removed from Equathora Briefs.',
-                type: 'success',
-            });
+            showToast(
+                enabled
+                    ? 'Subscribed to Equathora Briefs.'
+                    : 'Unsubscribed from Equathora Briefs.',
+                'success'
+            );
         } catch (error) {
-            setSettings(prev => ({ ...prev, email_notifications: previousValue }));
-            setSettingsMessage({
-                text: error?.message || 'Could not update email notification preference right now.',
-                type: 'error',
-            });
+            // Rollback state on error
+            setSettings(prev => ({
+                ...prev,
+                email_notifications: previousValue,
+            }));
+
+            showToast(
+                error.message || 'Could not update email notification preference.',
+                'error'
+            );
         } finally {
             setSettingsSaving(false);
         }
@@ -639,60 +779,23 @@ const Settings = () => {
         };
 
         setCookieConsent(nextCookieConsent);
-        setSettings(prev => ({
-            ...prev,
-            cookie_consent: nextCookieConsent,
-            cookie_consent_date: nextCookieConsentDate,
-        }));
+        setSettings(prev => ({ ...prev, cookie_consent: nextCookieConsent, cookie_consent_date: nextCookieConsentDate }));
         setSettingsSaving(true);
-        setSettingsMessage({ text: '', type: 'success' });
 
         try {
             const settingsSaved = await saveUserSettings(nextSettings);
             if (!settingsSaved) {
-                setSettingsMessage({
-                    text: 'Preference registered but could not save to database.',
-                    type: 'warning',
-                });
+                showToast('Preference registered but could not save to your account.', 'warning');
                 return;
             }
-
-            setSettingsMessage({
-                text: enabled
-                    ? 'All cookies enabled. Analytics and personalization are now active.'
-                    : 'Optional cookies disabled. Only essential cookies will be used.',
-                type: 'success',
-            });
+            showToast(
+                enabled ? 'All cookies enabled.' : 'Optional cookies disabled — essential only.',
+                'success'
+            );
         } catch (error) {
             setCookieConsent(previousValue);
-            setSettings(prev => ({
-                ...prev,
-                cookie_consent: previousValue,
-                cookie_consent_date: previousDate,
-            }));
-            setSettingsMessage({
-                text: error?.message || 'Could not update cookie preference right now.',
-                type: 'error',
-            });
-        } finally {
-            setSettingsSaving(false);
-        }
-    };
-
-    const handleSaveSettings = async () => {
-        setSettingsSaving(true);
-        setSettingsMessage({ text: '', type: 'success' });
-
-        try {
-            const success = await saveUserSettings(settings);
-            if (success) {
-                setSettingsMessage({ text: 'Preferences saved.', type: 'success' });
-                setTimeout(() => setSettingsMessage({ text: '', type: 'success' }), 4000);
-            } else {
-                setSettingsMessage({ text: 'Failed to save preferences.', type: 'error' });
-            }
-        } catch (error) {
-            setSettingsMessage({ text: error.message, type: 'error' });
+            setSettings(prev => ({ ...prev, cookie_consent: previousValue, cookie_consent_date: previousDate }));
+            showToast(error?.message || 'Could not update cookie preference.', 'error');
         } finally {
             setSettingsSaving(false);
         }
@@ -703,14 +806,11 @@ const Settings = () => {
     // ========================================================================
     const handleSignOutOthers = async () => {
         setSessionLoading(true);
-        setSessionMessage({ text: '', type: 'success' });
-
         try {
             const result = await signOutAllOtherSessions();
-            setSessionMessage({ text: result.message, type: result.success ? 'success' : 'error' });
-            setTimeout(() => setSessionMessage({ text: '', type: 'success' }), 4000);
+            showToast(result.message, result.success ? 'success' : 'error');
         } catch (error) {
-            setSessionMessage({ text: error.message, type: 'error' });
+            showToast(error.message || 'Could not sign out other sessions.', 'error');
         } finally {
             setSessionLoading(false);
         }
@@ -719,54 +819,44 @@ const Settings = () => {
     // ========================================================================
     // DANGER ZONE HANDLERS
     // ========================================================================
-    const handleResetProgress = async () => {
-        if (!window.confirm('Are you sure you want to reset all your progress? This action cannot be undone.')) return;
-        if (!window.confirm('This will delete all your solved problems, streaks, XP, and achievements. Are you absolutely sure?')) return;
-
-        setIsResetting(true);
-        setResetMessage({ text: 'Resetting progress...', type: 'info' });
-
-        try {
-            const result = await resetAllUserProgress();
-            if (result.success) {
-                setResetMessage({ text: 'Progress reset successfully. Redirecting...', type: 'success' });
-                setTimeout(() => {
-                    navigate('/dashboard');
-                    window.location.reload();
-                }, 1500);
-            } else {
-                setResetMessage({ text: `Reset failed: ${result.message}`, type: 'error' });
-            }
-        } catch (error) {
-            setResetMessage({ text: `Error: ${error.message}`, type: 'error' });
-        } finally {
-            setIsResetting(false);
-        }
-    };
 
     const handleDeleteAccount = async () => {
-        if (deleteConfirmText !== 'DELETE') {
-            setDeleteMessage({ text: 'Type DELETE to confirm account deletion.', type: 'error' });
-            return;
-        }
-
-        if (!window.confirm('This will permanently delete your account and all associated data. This CANNOT be undone. Continue?')) return;
-
         setIsDeleting(true);
-        setDeleteMessage({ text: 'Processing request...', type: 'info' });
-
         try {
             const result = await requestAccountDeletion();
             if (result.success) {
-                setDeleteMessage({ text: result.message, type: 'success' });
-                setTimeout(() => navigate('/'), 3000);
+                showToast(result.message || 'Deletion requested.', 'success');
+                setShowDeleteModal(false);
+                setTimeout(() => navigate('/'), 2000);
             } else {
-                setDeleteMessage({ text: result.message, type: 'error' });
+                showToast(result.message || 'Could not request account deletion.', 'error');
             }
         } catch (error) {
-            setDeleteMessage({ text: error.message, type: 'error' });
+            showToast(error.message || 'Could not request account deletion.', 'error');
         } finally {
             setIsDeleting(false);
+        }
+    };
+
+    const handleCancelDeletion = async () => {
+        setIsCancelingDeletion(true);
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) throw new Error('Please sign in again and retry.');
+
+            const { error } = await supabase
+                .from('profiles')
+                .update({ deletion_requested: false, deletion_requested_at: null })
+                .eq('id', session.user.id);
+
+            if (error) throw error;
+
+            setProfileSummary(prev => ({ ...prev, deletionRequested: false, deletionRequestedAt: null }));
+            showToast('Account deletion canceled.', 'success');
+        } catch (error) {
+            showToast(error.message || 'Could not cancel account deletion.', 'error');
+        } finally {
+            setIsCancelingDeletion(false);
         }
     };
 
@@ -780,13 +870,18 @@ const Settings = () => {
     };
 
     const resolvedTheme = resolveThemePreference(settings.theme);
-    const isDarkModeEnabled = resolvedTheme === 'dark';
+
+    const learningChips = [];
+    if (learningProfile?.goal) learningChips.push(GOAL_LABELS[learningProfile.goal] || learningProfile.goal);
+    if (learningProfile?.level) learningChips.push(LEVEL_LABELS[learningProfile.level] || learningProfile.level);
+    if (learningProfile?.weekly_commitment) learningChips.push(WEEKLY_LABELS[learningProfile.weekly_commitment] || learningProfile.weekly_commitment);
+    if (learningProfile?.preferred_challenge) learningChips.push(CHALLENGE_LABELS[learningProfile.preferred_challenge] || learningProfile.preferred_challenge);
 
     // ========================================================================
     // RENDER
     // ========================================================================
     return (
-        <div>
+        <>
             <Navbar />
             <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-[var(--secondary-color)] font-[Sansation,sans-serif]">
                 {/* Header */}
@@ -834,91 +929,31 @@ const Settings = () => {
                     </div>
 
                     {/* Main sections */}
-                    <div className="flex flex-col gap-6 flex-1 min-w-0 bg-[var(--white)]  rounded-md">
+                    <div className="flex flex-col gap-6 flex-1 min-w-0 rounded-md">
 
                         {/* ============================================================ */}
-                        {/* PROFILE SECTION */}
+                        {/* PROFILE (read-only summary — editing happens on the public   */}
+                        {/* profile page, so this doesn't duplicate that form)            */}
                         {/* ============================================================ */}
                         <SectionCard id="profile">
-                            <SectionTitle sub="Your public identity on Equathora">Profile Information</SectionTitle>
+                            <SectionTitle sub="Your public identity on Equathora">Profile</SectionTitle>
 
-                            <div className="flex flex-col gap-4">
-                                <div className="flex flex-col gap-4 sm:flex-row">
-                                    <div className="flex-1">
-                                        <InputField
-                                            label="Full Name"
-                                            type="text"
-                                            value={profileData.full_name}
-                                            onChange={e => setProfileData(prev => ({ ...prev, full_name: e.target.value }))}
-                                            placeholder="Enter your name"
-                                            maxLength={50}
-                                            required
-                                        />
+                            <div className="flex items-center justify-between gap-4 flex-wrap bg-[var(--main-color)] rounded-md px-4 py-4">
+                                <div className="flex flex-col gap-1 min-w-0">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                        <span className="text-lg font-bold truncate">{profileSummary.full_name || 'Unnamed'}</span>
+                                        <Chip>{profileSummary.role === 'admin' ? 'Admin' : 'Student'}</Chip>
                                     </div>
-                                    <div className="flex-1">
-                                        <InputField
-                                            label="Username"
-                                            type="text"
-                                            value={profileData.username}
-                                            onChange={e => setProfileData(prev => ({ ...prev, username: e.target.value.replace(/[^a-zA-Z0-9_]/g, '') }))}
-                                            placeholder="your_username"
-                                            maxLength={20}
-                                        />
-                                    </div>
+                                    <span className="text-sm text-[var(--mid-main-secondary)]">@{profileSummary.username || 'no-username'}</span>
+                                    {profileSummary.bio && (
+                                        <p className="text-xs text-[var(--mid-main-secondary)] line-clamp-2 pt-1">{profileSummary.bio}</p>
+                                    )}
                                 </div>
-
-                                <TextArea
-                                    label="Bio"
-                                    description={`${profileData.bio.length}/300 characters`}
-                                    value={profileData.bio}
-                                    onChange={e => setProfileData(prev => ({ ...prev, bio: e.target.value.slice(0, 300) }))}
-                                    placeholder="Tell the world about yourself..."
-                                    maxLength={300}
-                                />
-
-                                <div className="flex flex-col gap-4 sm:flex-row">
-                                    <div className="flex-1">
-                                        <InputField
-                                            label="Location"
-                                            type="text"
-                                            value={profileData.location}
-                                            onChange={e => setProfileData(prev => ({ ...prev, location: e.target.value }))}
-                                            placeholder="City, Country"
-                                            maxLength={50}
-                                        />
-                                    </div>
+                                <div className="flex items-center gap-3 shrink-0">
+                                    <PrimaryButton onClick={() => navigate('/profile/myprofile')}>
+                                        Edit Profile
+                                    </PrimaryButton>
                                 </div>
-
-                                <SelectField
-                                    label="Math Level"
-                                    description="Helps us personalize your experience"
-                                    value={profileData.seniority}
-                                    onChange={e => setProfileData(prev => ({ ...prev, seniority: e.target.value }))}
-                                    options={[
-                                        { value: 'absBeginner', label: 'Absolute Beginner' },
-                                        { value: 'beginner', label: 'Beginner' },
-                                        { value: 'Intermediate', label: 'Intermediate' },
-                                        { value: 'highschool', label: 'High School Student' },
-                                        { value: 'undergraduate', label: 'Undergraduate Student' },
-                                        { value: 'advanced', label: 'Advanced' },
-                                        { value: 'graduate', label: 'Graduate Student' },
-                                        { value: 'professional', label: 'Professional' },
-                                        { value: 'phd', label: 'PhD' },
-                                    ]}
-                                />
-                            </div>
-
-                            <AnimatePresence>
-                                <StatusBanner message={profileMessage.text} type={profileMessage.type} />
-                            </AnimatePresence>
-
-                            <div className="flex items-center gap-3">
-                                <PrimaryButton onClick={handleSaveProfile} loading={profileSaving}>
-                                    Save Profile
-                                </PrimaryButton>
-                                <Link to="/profile/myprofile" className="text-sm text-[var(--accent-color)] hover:underline font-semibold">
-                                    View public profile →
-                                </Link>
                             </div>
                         </SectionCard>
 
@@ -928,7 +963,6 @@ const Settings = () => {
                         <SectionCard id="account">
                             <SectionTitle sub="Manage your email, password, and security settings">Account & Security</SectionTitle>
 
-                            {/* Current email */}
                             <div className="flex flex-col gap-1 bg-[var(--main-color)] rounded-md px-4 py-3">
                                 <span className="text-xs font-semibold text-[var(--mid-main-secondary)]">Current email</span>
                                 <span className="text-sm font-bold">{currentEmail}</span>
@@ -939,7 +973,6 @@ const Settings = () => {
                                 )}
                             </div>
 
-                            {/* Change email */}
                             {authProvider === 'email' && (
                                 <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
                                     <h3 className="text-base font-bold">Change Email</h3>
@@ -950,16 +983,12 @@ const Settings = () => {
                                         onChange={e => setNewEmail(e.target.value)}
                                         placeholder="newemail@example.com"
                                     />
-                                    <AnimatePresence>
-                                        <StatusBanner message={emailMessage.text} type={emailMessage.type} />
-                                    </AnimatePresence>
                                     <PrimaryButton onClick={handleChangeEmail} loading={emailSaving} className="self-start">
                                         Update Email
                                     </PrimaryButton>
                                 </div>
                             )}
 
-                            {/* Change password */}
                             {authProvider === 'email' && (
                                 <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
                                     <h3 className="text-base font-bold">Change Password</h3>
@@ -991,9 +1020,6 @@ const Settings = () => {
                                         />
                                         Show passwords
                                     </label>
-                                    <AnimatePresence>
-                                        <StatusBanner message={passwordMessage.text} type={passwordMessage.type} />
-                                    </AnimatePresence>
                                     <PrimaryButton onClick={handleChangePassword} loading={passwordSaving} className="self-start">
                                         Change Password
                                     </PrimaryButton>
@@ -1008,6 +1034,27 @@ const Settings = () => {
                                     </p>
                                 </div>
                             )}
+                        </SectionCard>
+
+                        {/* ============================================================ */}
+                        {/* LEARNING / ONBOARDING */}
+                        {/* ============================================================ */}
+                        <SectionCard id="learning">
+                            <SectionTitle sub="Retake the onboarding quiz any time your goals or level change">Learning Preferences</SectionTitle>
+
+                            {learningChips.length > 0 ? (
+                                <div className="flex flex-wrap gap-2">
+                                    {learningChips.map(chip => <Chip key={chip}>{chip}</Chip>)}
+                                </div>
+                            ) : (
+                                <p className="text-sm text-[var(--mid-main-secondary)]">You haven't completed the onboarding quiz yet.</p>
+                            )}
+
+                            <div>
+                                <PrimaryButton onClick={() => setShowRetakeModal(true)}>
+                                    Retake Onboarding Quiz
+                                </PrimaryButton>
+                            </div>
                         </SectionCard>
 
                         {/* ============================================================ */}
@@ -1081,11 +1128,6 @@ const Settings = () => {
                                     </div>
                                 </div>
                             </div>
-
-                            <AnimatePresence>
-                                <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
-                            </AnimatePresence>
-
                         </SectionCard>
 
                         {/* ============================================================ */}
@@ -1095,34 +1137,30 @@ const Settings = () => {
                             <SectionTitle sub="Control how Equathora looks on this device">Appearance</SectionTitle>
 
                             <div className="flex flex-col gap-3">
-                                <ToggleSwitch
-                                    label="Dark Mode"
-                                    description="Turn on a high-contrast dark interface for low-light usage"
-                                    checked={isDarkModeEnabled}
-                                    onChange={enabled => handleSettingChange('theme', enabled ? 'dark' : 'light')}
-                                />
+                                <div className="flex gap-2 flex-wrap">
+                                    {THEME_OPTIONS.map(opt => (
+                                        <button
+                                            key={opt.value}
+                                            type="button"
+                                            onClick={() => handleSettingChange('theme', opt.value)}
+                                            aria-pressed={settings.theme === opt.value}
+                                            className={`flex items-center gap-2 px-4 py-2.5 rounded-md border-2 text-sm font-semibold transition-all cursor-pointer ${settings.theme === opt.value
+                                                ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
+                                                : 'border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                                }`}
+                                        >
+                                            {opt.icon}
+                                            {opt.label}
+                                        </button>
+                                    ))}
+                                </div>
 
                                 {settings.theme === 'system' && (
                                     <p className="text-xs text-[var(--mid-main-secondary)]">
                                         Currently following your device preference: <span className="font-semibold text-[var(--secondary-color)]">{resolvedTheme === 'dark' ? 'Dark' : 'Light'}</span>.
                                     </p>
                                 )}
-
-                                <div>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleSettingChange('theme', 'system')}
-                                        className="cursor-pointer text-sm font-semibold px-4 py-2 border border-[var(--mid-main-secondary)] rounded-md bg-[var(--surface-card)] text-[var(--secondary-color)] hover:bg-[var(--surface-muted)] transition-colors"
-                                    >
-                                        Use Device Default Theme
-                                    </button>
-                                </div>
                             </div>
-
-                            <AnimatePresence>
-                                <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
-                            </AnimatePresence>
-
                         </SectionCard>
 
                         {/* ============================================================ */}
@@ -1173,8 +1211,8 @@ const Settings = () => {
                                     label="Allow Analytics & Personalization Cookies"
                                     description={
                                         cookieConsent === 'accepted'
-                                            ? 'All cookies are enabled — analytics and personalization data is collected'
-                                            : 'Only essential cookies are active — no analytics or personalization data is collected'
+                                            ? 'All cookies are enabled - analytics and personalization data is collected'
+                                            : 'Only essential cookies are active - no analytics or personalization data is collected'
                                     }
                                     checked={cookieConsent === 'accepted'}
                                     onChange={handleCookieConsentToggle}
@@ -1196,11 +1234,42 @@ const Settings = () => {
                                     )}
                                 </div>
                             </div>
+                        </SectionCard>
 
-                            <AnimatePresence>
-                                <StatusBanner message={settingsMessage.text} type={settingsMessage.type} />
-                            </AnimatePresence>
+                        {/* ============================================================ */}
+                        {/* SUBSCRIPTION */}
+                        {/* ============================================================ */}
+                        <SectionCard id="subscription">
+                            <SectionTitle sub="Manage your Equathora plan">Subscription</SectionTitle>
 
+                            <div className="flex items-center justify-between gap-4 flex-wrap bg-[var(--main-color)] rounded-md px-4 py-4">
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-xs font-semibold text-[var(--mid-main-secondary)] uppercase tracking-wide">Current plan</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-lg font-bold">{PLAN_LABELS[subscription.tier] || 'Free'}</span>
+                                        {subscription.tier !== 'free' && <IconCrown />}
+                                    </div>
+                                    {subscription.tier !== 'free' && subscription.renewsAt && (
+                                        <span className="text-xs text-[var(--mid-main-secondary)]">
+                                            Renews on {new Date(subscription.renewsAt).toLocaleDateString()}
+                                        </span>
+                                    )}
+                                </div>
+
+                                {subscription.tier === 'free' ? (
+                                    <PrimaryButton onClick={() => navigate('/premium')}>
+                                        Upgrade Plan
+                                    </PrimaryButton>
+                                ) : (
+                                    <OutlineButton onClick={() => navigate('/premium')}>
+                                        Manage Billing
+                                    </OutlineButton>
+                                )}
+                            </div>
+
+                            <p className="text-xs text-[var(--mid-main-secondary)]">
+                                Premium unlocks AI step-by-step checking, detailed explanations, and solution verification.
+                            </p>
                         </SectionCard>
 
                         {/* ============================================================ */}
@@ -1235,12 +1304,8 @@ const Settings = () => {
                                 <p className="text-sm text-[var(--mid-main-secondary)]">Unable to load session information.</p>
                             )}
 
-                            <AnimatePresence>
-                                <StatusBanner message={sessionMessage.text} type={sessionMessage.type} />
-                            </AnimatePresence>
-
                             <div className="flex items-center gap-3">
-                                <PrimaryButton onClick={handleSignOutOthers} loading={sessionLoading} className='text-white'>
+                                <PrimaryButton onClick={handleSignOutOthers} loading={sessionLoading}>
                                     Sign Out Other Sessions
                                 </PrimaryButton>
                             </div>
@@ -1275,55 +1340,68 @@ const Settings = () => {
                         {/* ============================================================ */}
                         {/* DANGER ZONE */}
                         {/* ============================================================ */}
-                        <SectionCard id="danger">
-                            <SectionTitle sub="Irreversible actions — proceed with extreme caution">Danger Zone</SectionTitle>
+                        {1 === 0 && <SectionCard id="danger">
+                            <SectionTitle sub="Irreversible actions - proceed with extreme caution">Danger Zone</SectionTitle>
 
-                            {/* Reset Progress */}
-                            <div className="flex flex-col gap-3 p-5 border-2 border-orange-200 rounded-md bg-orange-50">
-                                <h3 className="text-base font-bold text-orange-800">Reset All Progress</h3>
-                                <p className="text-sm text-orange-700">
-                                    This will permanently delete all your solved problems, streaks, XP, and achievements.
-                                    Your account and profile will remain intact.
-                                </p>
-                                <AnimatePresence>
-                                    <StatusBanner message={resetMessage.text} type={resetMessage.type} />
-                                </AnimatePresence>
-                                <DangerButton onClick={handleResetProgress} loading={isResetting}>
-                                    {isResetting ? 'Resetting...' : 'Reset All Progress'}
-                                </DangerButton>
-                            </div>
-
-                            {/* Delete Account */}
-                            <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-md bg-red-50">
-                                <h3 className="text-base font-bold text-red-800">Delete Account</h3>
-                                <p className="text-sm text-red-700">
-                                    This will permanently remove your account and all associated data.
-                                    You will be signed out immediately and your data will be deleted within 30 days.
-                                </p>
-                                <InputField
-                                    label='Type "DELETE" to confirm'
-                                    type="text"
-                                    value={deleteConfirmText}
-                                    onChange={e => setDeleteConfirmText(e.target.value)}
-                                    placeholder="DELETE"
-                                />
-                                <AnimatePresence>
-                                    <StatusBanner message={deleteMessage.text} type={deleteMessage.type} />
-                                </AnimatePresence>
-                                <DangerButton
-                                    onClick={handleDeleteAccount}
-                                    loading={isDeleting}
-                                    disabled={deleteConfirmText !== 'DELETE'}
-                                >
-                                    {isDeleting ? 'Processing...' : 'Permanently Delete Account'}
-                                </DangerButton>
-                            </div>
-                        </SectionCard>
+                            {/* Delete Account / Cancel scheduled deletion */}
+                            {profileSummary.deletionRequested ? (
+                                <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-md bg-red-50">
+                                    <h3 className="text-base font-bold text-red-800">Account Deletion Scheduled</h3>
+                                    <p className="text-sm text-[var(--dark-accent-color)]">
+                                        You requested to delete your account
+                                        {profileSummary.deletionRequestedAt
+                                            ? ` on ${new Date(profileSummary.deletionRequestedAt).toLocaleDateString()}`
+                                            : ''}. Your data will be permanently removed. You can cancel this any time before then.
+                                    </p>
+                                    <DangerButton onClick={handleCancelDeletion} loading={isCancelingDeletion}>
+                                        Cancel Deletion
+                                    </DangerButton>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-md bg-red-50">
+                                    <h3 className="text-base font-bold text-red-800">Delete Account</h3>
+                                    <p className="text-sm text-red-700">
+                                        This will permanently remove your account and all associated data.
+                                        You will be signed out immediately and your data will be deleted within 30 days.
+                                    </p>
+                                    <DangerButton onClick={() => setShowDeleteModal(true)}>
+                                        Delete Account
+                                    </DangerButton>
+                                </div>
+                            )}
+                        </SectionCard>}
+                        
+                        
                     </div>
                 </div>
             </main>
             <Footer />
-        </div>
+
+            <Toast toast={toast} />
+
+            <ConfirmModal
+                isOpen={showRetakeModal}
+                onClose={() => setShowRetakeModal(false)}
+                onConfirm={handleRetakeOnboarding}
+                loading={retaking}
+                variant="warning"
+                title="Retake onboarding quiz?"
+                description="Your current goal, level, weekly commitment, and topic preferences will be replaced once you finish the new quiz. This won't affect your solved problems or XP."
+                confirmLabel="Retake Quiz"
+            />
+
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={handleDeleteAccount}
+                loading={isDeleting}
+                variant="danger"
+                title="Delete your account?"
+                description="This permanently removes your account and all associated data within 30 days. You'll be signed out immediately. You can cancel any time before deletion completes."
+                confirmWord="DELETE"
+                confirmLabel="Delete Account"
+            />
+        </>
     );
 };
 

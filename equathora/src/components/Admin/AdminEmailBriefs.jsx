@@ -92,7 +92,7 @@ const AdminEmailBriefs = () => {
 
     return (
         <section className='flex flex-col gap-6 px-3 py-2 text-[var(--secondary-color)] md:px-5'>
-            <header className='rounded-xl border p-5' style={{ borderColor: 'var(--mid-main-secondary)', background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))' }}>
+            <header className='rounded-md border p-5' style={{ borderColor: 'var(--mid-main-secondary)', background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))' }}>
                 <div className='flex flex-wrap items-start justify-between gap-3'>
                     <div>
                         <h1 className='text-2xl font-black md:text-3xl'>Email Briefs Waitlist</h1>
@@ -125,21 +125,21 @@ const AdminEmailBriefs = () => {
             </header>
 
             <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Filtered Subscribers</p>
                     <p className='pt-2 text-3xl font-black'>{filteredRows.length.toLocaleString()}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Unique Emails</p>
                     <p className='pt-2 text-3xl font-black'>{uniqueEmails.length.toLocaleString()}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Ready For BCC</p>
                     <p className='pt-2 text-3xl font-black'>{uniqueEmails.length ? 'Yes' : 'No'}</p>
                 </article>
             </div>
 
-            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex flex-wrap items-center justify-between gap-3'>
                     <label className='inline-flex min-w-[260px] flex-1 items-center gap-2 rounded-md border px-3 py-2' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                         <FiSearch />
@@ -181,7 +181,7 @@ const AdminEmailBriefs = () => {
                 </div>
             </div>
 
-            <div className='rounded-xl border' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-md border' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex items-center gap-2 border-b px-4 py-3' style={{ borderColor: 'var(--french-gray)' }}>
                     <FiUsers />
                     <h2 className='font-bold'>Subscriber List</h2>

@@ -10,7 +10,7 @@ import Mail from '../assets/images/Mail-amico.svg';
 import { FaDiscord, FaMailBulk, FaBookmark } from 'react-icons/fa';
 
 
-const EquathoraBriefsPage = () => {
+const EquathoraBriefs = () => {
     
     const [isBriefsModalOpen, setIsBriefsModalOpen] = useState(false);
     const { user } = useAuth() || {};
@@ -131,4 +131,4 @@ const EquathoraBriefsPage = () => {
     );
 };
 
-export default EquathoraBriefsPage;
+export default EquathoraBriefs;

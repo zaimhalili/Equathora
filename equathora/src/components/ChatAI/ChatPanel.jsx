@@ -10,6 +10,7 @@ import {
     isProseHeavyLatex,
     parseChatLatex,
     stripLatexTextCommands,
+    truncateAiResponseSafely,
 } from '@/lib/SigmaChat/chatLatex';
 import { loadSigmaChatState, saveSigmaChatState } from '@/lib/SigmaChat/sigmaChatStorage';
 
@@ -123,6 +124,10 @@ const ChatPanel = forwardRef(({
     const isHydratingRef = useRef(false);
     const hydrationPromiseRef = useRef(Promise.resolve());
     const chatMessagesRef = useRef(DEFAULT_MESSAGES);
+    // Tracks the steps text Sigma last actually analyzed, so askSigmaChat can
+    // tell a plain follow-up question (steps unchanged) from a re-analysis
+    // (steps edited) and trim the outgoing context accordingly.
+    const lastAnalyzedStepsRef = useRef(null);
 
     const [typedMessage, setTypedMessage] = useState('');
     const [isAiThinking, setIsAiThinking] = useState(false);
@@ -146,6 +151,8 @@ const ChatPanel = forwardRef(({
         setRateLimited(false);
         setIsAiThinking(false);
         setIsLoadingHistory(Boolean(storageKey));
+        // New problem/session — the previously analyzed steps no longer apply.
+        lastAnalyzedStepsRef.current = null;
 
         let isActive = true;
         isHydratingRef.current = true;
@@ -217,16 +224,23 @@ const ChatPanel = forwardRef(({
             .slice(0, MAX_STEPS_CHARS);
 
         try {
-            const aiResponseText = await askSigmaChat({
+            const { text: aiResponseText, analyzedSteps } = await askSigmaChat({
                 problemDescription: String(problemDescription ?? '').slice(0, 1000),
                 userSteps: activeStepsCompiled,
                 acceptedAnswer: String(acceptedSolution ?? '').slice(0, 500),
                 chatHistory: updatedHistory.slice(-20),
                 userNewMessage: userText,
+                lastAnalyzedSteps: lastAnalyzedStepsRef.current,
             });
 
-            const safeAiText = sanitizeUnicode(String(aiResponseText ?? '')).slice(0, MAX_AI_RESPONSE_CHARS)
-                || 'I had trouble generating a response. Please try again.';
+            // Remember what Sigma actually analyzed this turn, so the next
+            // follow-up question can be trimmed if the steps haven't changed.
+            lastAnalyzedStepsRef.current = analyzedSteps;
+
+            const safeAiText = truncateAiResponseSafely(
+                sanitizeUnicode(String(aiResponseText ?? '')),
+                MAX_AI_RESPONSE_CHARS
+            ) || 'I had trouble generating a response. Please try again.';
 
             setChatMessages((prev) =>
                 [...prev, { id: Date.now(), sender: 'ai', text: safeAiText }].slice(-MAX_HISTORY_MESSAGES)

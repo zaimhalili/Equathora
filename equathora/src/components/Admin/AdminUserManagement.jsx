@@ -265,7 +265,7 @@ const AdminUserManagement = () => {
     return (
         <section className='flex flex-col gap-6 px-3 py-2 md:px-5' style={{ color: palette.secondary }}>
             <header
-                className='rounded-xl border p-5'
+                className='rounded-md border p-5'
                 style={{
                     borderColor: palette.mid,
                     background: `linear-gradient(135deg, ${palette.main}, ${palette.french})`
@@ -355,29 +355,29 @@ const AdminUserManagement = () => {
             </header>
 
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5'>
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Filtered Users</p>
                     <p className='pt-1 text-2xl font-black'>{overview.total}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Active Users</p>
                     <p className='pt-1 text-2xl font-black'>{overview.active}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Suspended Users</p>
                     <p className='pt-1 text-2xl font-black'>{overview.suspended}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Pending Mentor Verif.</p>
                     <p className='pt-1 text-2xl font-black'>{overview.pendingMentor}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Total Attempts</p>
                     <p className='pt-1 text-2xl font-black'>{overview.totalSessions}</p>
                 </article>
             </div>
 
-            <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+            <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                 <h2 className='pb-3 text-lg font-bold'>Search and Filters</h2>
 
                 <div className='grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4'>
@@ -432,7 +432,7 @@ const AdminUserManagement = () => {
             </article>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-5'>
-                <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>User Activity and Account Events</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
@@ -454,7 +454,7 @@ const AdminUserManagement = () => {
                     </div>
                 </article>
 
-                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Role Distribution</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
@@ -494,7 +494,7 @@ const AdminUserManagement = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-3'>
-                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Daily Active Users Trend</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
@@ -514,7 +514,7 @@ const AdminUserManagement = () => {
                     </div>
                 </article>
 
-                <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <h3 className='pb-3 text-sm font-semibold md:text-base'>Action Queue Snapshot</h3>
                     <div className='space-y-2'>
                         <div className='rounded-lg border p-3' style={{ borderColor: palette.french }}>
@@ -534,7 +534,7 @@ const AdminUserManagement = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-3'>
-                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between gap-2'>
                         <h2 className='text-lg font-bold'>Users Table</h2>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
@@ -597,7 +597,7 @@ const AdminUserManagement = () => {
                     )}
                 </article>
 
-                <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-md border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <h3 className='pb-3 text-sm font-semibold md:text-base'>Selected Profile</h3>
 
                     {selectedUser ? (

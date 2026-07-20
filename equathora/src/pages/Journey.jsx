@@ -162,7 +162,7 @@ const Journey = () => {
                     getUserProgress()
                 ]);
 
-                // getStudentProfile() returns a single profile object, not an array —
+                // getStudentProfile() returns a single profile object, not an array -
                 // indexing it with [0] always produced undefined, so studentProfile
                 // was permanently null and the recommendation effect always bailed.
                 setStudentProfile(profile || null);
@@ -277,7 +277,7 @@ const Journey = () => {
     }, [recommendedProblems]);
 
     // The "next problem" shown in DailyTrack must be the exact same problem
-    // TopicCard marks as "current" below — walk subjects/topics in the same
+    // TopicCard marks as "current" below - walk subjects/topics in the same
     // order the page renders them and take the first "current" problem found.
     const nextProblem = useMemo(() => {
         for (const subject of SUBJECT_ORDER) {
@@ -338,7 +338,7 @@ const Journey = () => {
                         <section className='flex flex-col w-full pt-10'>
                             {Object.keys(personalizedJourney).length === 0 && (
                                 <p className="text-center text-lg text-[var(--secondary-color)] py-8">
-                                    No recommended problems yet — check back soon, or update your goals in settings.
+                                    No recommended problems yet - check back soon, or update your goals in settings.
                                 </p>
                             )}
                             {Object.keys(personalizedJourney)
@@ -350,7 +350,10 @@ const Journey = () => {
                                         (bIndex === -1 ? SUBJECT_ORDER.length : bIndex);
                                 })
                                 .map(subject => (
-                                    <div key={subject} className="pb-8 flex flex-col gap-4">
+                                    <motion.div key={subject} className="pb-8 flex flex-col gap-4"
+                                        initial={{ opacity: 0, y: -20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6 }}>
 
                                         <h2 className="text-3xl font-bold rounded-md flex items-center justify-center">
                                             {subject}
@@ -368,11 +371,11 @@ const Journey = () => {
                                             )
                                         )}
 
-                                    </div>
+                                    </motion.div>
                                 ))}
                         </section>
                         <div className="flex py-5">
-                            <RedButton to={'/getStarted'} text={'Finished your path? Retake your skill test to choose something else to learn'}/>
+                            <RedButton to={'/getStarted'} text={'Finished your path? Retake your skill test to choose something else to learn'} />
 
                         </div>
                     </div>

@@ -907,7 +907,6 @@ const Problem = ({ premium = true }) => {
                         />
                     </div>
                 </header>
-
                 {/* Modals */}
                 <ViewSolutionModal
                     isOpen={showSolutionPopup}
@@ -978,7 +977,7 @@ const Problem = ({ premium = true }) => {
                 )}
 
                 {/* Main Content */}
-                <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 h-fit lg:overflow-hidden">
+                <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 lg:overflow-y-hidden max-h-dvh">
                     {/* Description Side Left Side */}
                     <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
@@ -1351,7 +1350,7 @@ const Problem = ({ premium = true }) => {
                                     <div>
                                         {/* Inline feedback for incorrect answers only */}
                                         {submissionFeedback && !submissionFeedback.isCorrect && (
-                                            <div className="rounded-xl px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
+                                            <div className="rounded-md px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
                                                 <div className="flex items-center gap-2 pb-1.5">
                                                     <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-[var(--dark-accent-color)]">
                                                         <FaTimes className='text-white' />
