@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './PageNotFound.css';
+import SupportContact from '../components/SupportContact.jsx';
 
 const PageNotFound = () => {
     return (
@@ -19,6 +20,9 @@ const PageNotFound = () => {
                     <Link to='/' className='btn-secondary'>
                         Back to Home
                     </Link>
+                </div>
+                <div className='not-found-support'>
+                    <SupportContact variant="dark" />
                 </div>
             </div>
         </div>

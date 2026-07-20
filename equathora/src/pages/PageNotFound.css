@@ -94,6 +94,10 @@
     flex-wrap: wrap;
 }
 
+.not-found-support {
+    margin-top: 2rem;
+}
+
 .btn-primary,
 .btn-secondary {
     font-family: 'Sansation', sans-serif;

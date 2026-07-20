@@ -39,7 +39,7 @@ const PrivacyPolicy = () => (
                     <li>Contact us for any privacy-related requests</li>
                 </ul>
                 <h2>Contact</h2>
-                <p>If you have questions about this policy, contact us at <strong>equathora@gmail.com.</strong></p>
+                <p>If you have questions about this policy, contact us at <a href="mailto:equathora@mail.tin.computer">equathora@mail.tin.computer</a>.</p>
             </div>
         </main>
         <Footer />

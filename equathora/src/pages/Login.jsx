@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import Sigma from '../assets/logo/TransparentSymbol.png';
+import SupportContact from '../components/SupportContact.jsx';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -56,7 +57,7 @@ const Login = () => {
 
       // Navigate immediately for better UX
       navigate('/dashboard');
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred');
       setLoading(false);
     }
@@ -165,6 +166,7 @@ const Login = () => {
               </p>
             </div>
           </form>
+          <SupportContact />
         </section>
         <aside id="background-container" className='pointer-events-none'><BackgroundPolygons /></aside>
       </main>
