@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { convertLatexToMarkup } from 'mathlive';
 import {
     hasBalancedLatexBraces,
+    normalizeChatLatexEscapes,
     parseChatLatex,
 } from './chatLatex.js';
 
@@ -45,6 +47,56 @@ test('recovers conservative bare LaTeX commands', () => {
         segments.filter((segment) => segment.type === 'math').map((segment) => segment.value),
         ['\\frac{2}{3}', '\\sqrt{9}'],
     );
+});
+
+test('repairs JSON-escaped LaTeX in the reported Sigma response', () => {
+    const input = String.raw`You're looking to combine $1 + \\frac{13}{36}$.
+
+To add a whole number and a fraction, it helps to use the same denominator.
+
+How can you write the number $1$ as a fraction with denominator $36$?`;
+    const math = parseChatLatex(input)
+        .filter((segment) => segment.type === 'math')
+        .map(({ value, display }) => ({ value, display }));
+
+    assert.deepEqual(math, [
+        { value: '1 + \\frac{13}{36}', display: false },
+        { value: '1', display: false },
+        { value: '36', display: false },
+    ]);
+
+    for (const { value } of math) {
+        assert.doesNotMatch(convertLatexToMarkup(value), /ML__error/);
+    }
+});
+
+test('repairs JSON-escaped inline and display delimiters', () => {
+    const input = String.raw`Use \\(x + 1\\), then show:
+\\[x = \\frac{3}{4}\\]`;
+
+    assert.deepEqual(
+        parseChatLatex(input)
+            .filter((segment) => segment.type === 'math')
+            .map(({ value, display }) => ({ value, display })),
+        [
+            { value: 'x + 1', display: false },
+            { value: 'x = \\frac{3}{4}', display: true },
+        ],
+    );
+});
+
+test('preserves legitimate LaTeX row breaks while repairing commands', () => {
+    const input = String.raw`\[\begin{aligned}x &= 1 \\ y &= \\frac{1}{2}\end{aligned}\]`;
+    const normalized = normalizeChatLatexEscapes(input);
+
+    assert.match(normalized, /x &= 1 \\\\ y/);
+    assert.match(normalized, /y &= \\frac\{1\}\{2\}/);
+});
+
+test('does not consume a row break immediately followed by a command', () => {
+    const input = String.raw`\[\begin{aligned}x &= 1 \\\frac{1}{2}\end{aligned}\]`;
+
+    assert.equal(normalizeChatLatexEscapes(input), input);
 });
 
 test('does not turn dollar-wrapped prose or escaped currency into math', () => {

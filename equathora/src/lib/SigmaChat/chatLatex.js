@@ -1,5 +1,11 @@
 const BARE_LATEX_TOKEN_REGEX = /\\(?:dfrac|tfrac|frac)\s*\{[^{}\n]*\}\s*\{[^{}\n]*\}|\\sqrt\s*\{[^{}\n]*\}|\\(?:cdot|times|leq|geq|neq|pm|approx|infty|sum|int|alpha|beta|gamma|delta|theta|pi|sin|cos|tan|log|ln|therefore)\b/g;
 
+// Gemini responses occasionally cross the JSON boundary with LaTeX escapes
+// still doubled (for example `\\\\frac` or `\\\\(` in the received string).
+// Collapse only recognized LaTeX commands and delimiters. A blanket `\\\\` ->
+// `\\` replacement would corrupt legitimate row breaks inside aligned math.
+const DOUBLE_ESCAPED_LATEX_REGEX = /(?<!\\)\\\\(?=(?:(?:begin|end|left|right|text|mathrm|mathbf|operatorname|overline|underline|vec|dfrac|tfrac|frac|sqrt|cdot|times|leq|geq|neq|pm|approx|infty|sum|int|alpha|beta|gamma|delta|theta|pi|sin|cos|tan|log|ln|therefore)\b|[()[\]]))/g;
+
 const DELIMITERS = [
     { open: '$$', close: '$$', display: true, dollar: true },
     { open: '\\[', close: '\\]', display: true, dollar: false },
@@ -52,6 +58,10 @@ function appendSegment(segments, segment) {
     segments.push(segment);
 }
 
+export function normalizeChatLatexEscapes(input) {
+    return String(input ?? '').replace(DOUBLE_ESCAPED_LATEX_REGEX, '\\');
+}
+
 function splitBareLatex(segment) {
     const parts = [];
     let cursor = 0;
@@ -87,7 +97,7 @@ function splitBareLatex(segment) {
  * `\\frac{1}{2}` are recovered conservatively.
  */
 export function parseChatLatex(input) {
-    const text = String(input ?? '');
+    const text = normalizeChatLatexEscapes(input);
     const segments = [];
     let plainStart = 0;
     let cursor = 0;
