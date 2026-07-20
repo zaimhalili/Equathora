@@ -60,7 +60,7 @@ export const blogPosts = [
             },
             {
                 type: "paragraph",
-                text: "Future updates will introduce partial-credit solutions, mentor and teacher monitoring, and light gamification through <strong>achievements</strong> and <strong>timers.</strong> Most content will remain free, while advanced guidance and feedback will be unlocked through a token-based system."
+                text: "Future updates may introduce partial-credit solutions, mentor and teacher monitoring, and light gamification through <strong>achievements</strong> and <strong>timers.</strong> Equathora is free to start today. Access and pricing for future features have not been set."
             },
             {
                 type: "divider"

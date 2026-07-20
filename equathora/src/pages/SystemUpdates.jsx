@@ -476,7 +476,7 @@ const SystemUpdates = () => {
                                 </div> */}
                                 <div className="flex items-center justify-center gap-2 text-sm">
                                     <span>Are you subscribed to our newsletter? </span>
-                                    <Link to="/equathora-briefs" className='!text-yellow-500 !underline hover:!text-yellow-400' title='Subscribe to Equathora Briefs now for free!'>Click to Join</Link>
+                                    <Link to="/equathora-briefs" className='!text-yellow-500 !underline hover:!text-yellow-400' title='Subscribe to Equathora Briefs'>Click to Join</Link>
                                     <FaCheckCircle className="text-green-400" />
                                 </div>
                             </div>

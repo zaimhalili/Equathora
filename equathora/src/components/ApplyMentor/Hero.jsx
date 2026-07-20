@@ -74,7 +74,7 @@ const Hero = ({ onOpenBriefsModal }) => {
                                     </div>
                                     <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-[var(--white)]'>
                                         <FaCheckCircle className='text-green-400 flex-shrink-0' />
-                                        <span>Always free</span>
+                                        <span>Free to start</span>
                                     </div>
                                 </div>
                             </motion.div>                        {/* Social Proof - Commented for future use */}

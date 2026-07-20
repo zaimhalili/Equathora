@@ -105,7 +105,14 @@ const Footer = () => {
                 </div>
 
                 <div className="footer-bottom flex flex-col">
-                    <p className="footer-copyright">© 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong></p>
+                    <p className="footer-copyright">
+                        © 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong>
+                        <span className="footer-credit-divider" aria-hidden="true">·</span>
+                        <a className="tin-credit" href="https://tin.computer" target="_blank" rel="noopener noreferrer">
+                            <span className="tin-credit-mark" aria-hidden="true" />
+                            Growth by Tin
+                        </a>
+                    </p>
 
                     <p className="footer-copyright">
                         Building products around learning, logic, and productivity.

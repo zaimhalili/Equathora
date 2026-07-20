@@ -83,7 +83,7 @@ const ForgotPassword = () => {
             <p className='auth-other-options-text'>
               Don't have an account yet?{' '}
               <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
-                Sign up for free.
+                Create one. Free to start.
               </Link>
             </p>
           </div>
@@ -96,4 +96,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword; 
+export default ForgotPassword;

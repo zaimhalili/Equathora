@@ -153,7 +153,7 @@ const Login = () => {
               <p className='auth-other-options-text text-black dark:text-white'>
                 Don't have an account yet?{' '}
                 <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
-                  Sign up for free.
+                  Create one. Free to start.
                 </Link>
               </p>
 

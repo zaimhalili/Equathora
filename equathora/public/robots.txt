@@ -1,8 +1,6 @@
 # Global rule for all standard search engine bots
 User-agent: *
 Allow: /$
-Allow: /premium
-Allow: /pricing
 Allow: /about
 
 # Block app workspace dashboards and tracking routes

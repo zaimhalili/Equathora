@@ -27,7 +27,7 @@ const AboutCtaSection = () => {
                             <div className="flex flex-wrap gap-4 pb-6 justify-center lg:justify-normal">
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 bg-[var(--accent-color)] rounded-full animate-pulse"></div>
-                                    <span className="text-sm text-[var(--white)]/80">Free Forever</span>
+                                    <span className="text-sm text-[var(--white)]/80">Free to start</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 bg-[var(--accent-color)] rounded-full animate-pulse"></div>
@@ -43,7 +43,7 @@ const AboutCtaSection = () => {
                                     to="/learn"
                                     className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-[var(--white)] font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1 sm:w-fit w-full justify-center lg:justify-center"
                                 >
-                                    Get Started Free
+                                    Start free
                                     <motion.span
                                         animate={{ x: [0, 4, 0] }}
                                         transition={{ duration: 1.5, repeat: Infinity }}

@@ -14,13 +14,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Split heavy rarely-changing libraries into their own chunks
-          'mathlive': ['mathlive'],
-          'react-icons': ['react-icons'],
-          'framer-motion': ['framer-motion'],
-          'supabase': ['@supabase/supabase-js'],
-        }
+        manualChunks(id) {
+          // Split heavy rarely-changing libraries into their own chunks.
+          if (id.includes('/node_modules/mathlive/')) return 'mathlive';
+          if (id.includes('/node_modules/react-icons/')) return 'react-icons';
+          if (id.includes('/node_modules/framer-motion/')) return 'framer-motion';
+          if (id.includes('/node_modules/@supabase/')) return 'supabase';
+        },
       }
     },
     chunkSizeWarningLimit: 1500,

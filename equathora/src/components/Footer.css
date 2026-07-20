@@ -171,6 +171,38 @@
     margin: 0;
 }
 
+.footer-copyright {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+.footer-credit-divider {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.tin-credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: inherit;
+    text-decoration: none;
+}
+
+.tin-credit:hover {
+    color: var(--main-color);
+    text-decoration: underline;
+}
+
+.tin-credit-mark {
+    width: 0.8em;
+    height: 0.8em;
+    flex: 0 0 auto;
+    background: #66dc9d;
+}
+
 .footer-credit a {
     color: rgba(255, 255, 255, 0.85);
     text-decoration: underline;

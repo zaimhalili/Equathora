@@ -84,7 +84,7 @@ const ApplyMentor = () => {
                                 },
                                 {
                                     icon: <FaChalkboardTeacher className='text-xl text-white' />,
-                                    title: 'Free Tools',
+                                    title: 'Practice Tools',
                                     description: 'Access platform features to track progress and engage students.',
                                     gradient: 'from-indigo-500 to-blue-500'
                                 }
@@ -263,7 +263,7 @@ const ApplyMentor = () => {
                                     </div>
                                     <div className='flex items-center gap-1.5'>
                                         <FaCheckCircle className='text-green-400' />
-                                        <span>Always free</span>
+                                        <span>Free to start</span>
                                     </div>
                                     <div className='flex items-center gap-1.5'>
                                         <FaCheckCircle className='text-green-400' />
