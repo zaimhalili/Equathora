@@ -893,7 +893,7 @@ const Settings = () => {
                 {/* Content wrapper */}
                 <div className="w-full flex flex-col lg:flex-row gap-6 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-[1500px] self-center flex-1">
                     {/* Sidebar (desktop) */}
-                    <nav className="hidden lg:flex flex-col gap-1 w-56 shrink-0 sticky top-24 self-start bg-[var(--white)] rounded-md">
+                    <nav className="hidden lg:flex flex-col w-56 shrink-0 sticky top-24 self-start bg-[var(--white)] rounded-md">
                         {sidebarSections.map(section => (
                             <button
                                 key={section.id}
@@ -1117,14 +1117,15 @@ const Settings = () => {
                                         />
                                     </div>
 
-                                    <div className="border-t border-[var(--mid-main-secondary)] pt-3">
-                                        <ToggleSwitch
+                                    <div className="border-t border-[var(--mid-main-secondary)] pt-3 text-sm font-bold">
+                                        To unsubscribe from <i>Equathora Briefs / Email Notifications</i> contact us at <strong><u>equathora@gmail.com</u></strong>
+                                        {/* <ToggleSwitch
                                             label="Email Notifications"
                                             description="Receive important updates via email (weekly digest)"
                                             checked={settings.email_notifications}
                                             onChange={handleEmailNotificationsToggle}
                                             disabled={!settings.notifications_enabled || settingsSaving}
-                                        />
+                                        /> */}
                                     </div>
                                 </div>
                             </div>
@@ -1364,9 +1365,9 @@ const Settings = () => {
                                         This will permanently remove your account and all associated data.
                                         You will be signed out immediately and your data will be deleted within 30 days.
                                     </p>
-                                    <DangerButton onClick={() => setShowDeleteModal(true)}>
+                                    {/* <DangerButton onClick={() => setShowDeleteModal(true)}>
                                         Delete Account
-                                    </DangerButton>
+                                    </DangerButton> */}
                                 </div>
                             )}
                         </SectionCard>}
