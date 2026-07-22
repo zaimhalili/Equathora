@@ -840,9 +840,9 @@ const Problem = ({ premium = true }) => {
                         </div>
                     </div>
 
-                    {/* Right side - Timer and Actions */}
+                    {/* Right side - Premium Button, Timer and Actions */}
                     <div className="flex items-center gap-2">
-                        <PremiumButton />
+                        <PremiumButton premium={premium}/>
                         <Timer key={`${problem?.id}-${timerResetSeq}`} problemId={problem?.id} isRunning={timerRunning} />
 
                         {/* Desktop buttons - hidden on mobile */}
@@ -981,7 +981,7 @@ const Problem = ({ premium = true }) => {
                     {/* Description Side Left Side */}
                     <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
-                            <div className={`flex gap-1 ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
+                            <div className={`flex gap-1 flex-wrap ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
 
                                 {/* Description Button */}
                                 <button type="button" onClick={() => {
@@ -1067,7 +1067,7 @@ const Problem = ({ premium = true }) => {
                                     setShowMentorChat(false);
                                     setChatPanel(true);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 min-w-fit
                                 ${chatPanel && !showDescription ? 'bg-[var(--main-color)]' : ''} 
                                 ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
                                     style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Ask Sigma" : ""}>

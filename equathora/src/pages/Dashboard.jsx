@@ -80,10 +80,10 @@ const Dashboard = ({ premium = true }) => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.5, delay: 0.1 }}
-                                    className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-extrabold flex gap-1"
+                                    className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-extrabold"
                                 >
-                                    {premium && (<FaCrown className='text-amber-600' />)}
-                                    Welcome Back,{' '} <span className="text-[var(--secondary-color)]">{username}</span>!
+                                    {premium && (<FaCrown className='text-amber-500 inline pb-2 pr-1' />)}
+                                    Welcome Back, {username}!
                                 </motion.h1>
                                 <motion.h4
                                     initial={{ opacity: 0, y: 20 }}

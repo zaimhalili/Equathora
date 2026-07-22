@@ -115,7 +115,7 @@ function PageTitleUpdater() {
             '/blogs': 'All Posts - Equathora',
             '/adminDashboard': 'Admin Dashboard - Equathora',
             '/getStarted': 'Choose Your Path - Equathora',
-            '/submitProblem': 'Submit a problem - Equathora',
+            '/submit-problem': 'Submit a problem - Equathora',
         };
 
         const matchedRoute = Object.keys(pageTitles).find(route =>
@@ -283,12 +283,13 @@ export default function App() {
                         <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
                         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
                         <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>}></Route>
-                        <Route path="/submit-problem" element={<AdminRoute><SubmitProblem /></AdminRoute>}></Route>
+                        {/* <Route path="/submit-problem" element={<AdminRoute><SubmitProblem /></AdminRoute>}></Route> */}
 
 
 
                         {/* Protected Nested Routes */}
                         <Route path="/leaderboards" element={<ProtectedRoute><LeaderboardsLayout /></ProtectedRoute>}>
+                            <Route index element={<Navigate to="global" replace />} />
                             <Route path="global" element={<GlobalLeaderboard />} />
                             <Route path="friends" element={<FriendsLeaderboard />} />
                             <Route path="top-solvers" element={<TopSolversLeaderboard />} />

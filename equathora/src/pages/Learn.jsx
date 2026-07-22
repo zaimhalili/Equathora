@@ -512,6 +512,7 @@ const Learn = () => {
                     className="clear-search-btn"
                     onClick={() => updateFilters({ q: '' })}
                     aria-label="Clear search"
+                    title='Clear search'
                   >
                     <FaTimes />
                   </button>

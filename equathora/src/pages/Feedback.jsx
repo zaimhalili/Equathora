@@ -260,8 +260,8 @@ const Feedback = () => {
 
                                 {/* Email */}
                                 <div>
-                                    <label htmlFor="email" className="block text-sm font-semibold text-[var(--secondary-color)] pb-2 font-[Sansation]">
-                                        Email (optional)
+                                    <label htmlFor="email" className="block text-sm font-semibold text-[var(--secondary-color)] pb-2 font-[Sansation]" required>
+                                        Email <span className="text-[var(--accent-color)]">*</span>
                                     </label>
                                     <input
                                         type="email"
@@ -274,7 +274,7 @@ const Feedback = () => {
                                         className="w-full px-4 py-3 border-2 text-[var(--secondary-color)] !border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation]"
                                     />
                                     <p className="text-xs text-gray-500 pt-2">
-                                        Provide your email if you'd like us to follow up with you.
+                                        Provide your email so we can follow up with you.
                                     </p>
                                 </div>
 
@@ -294,17 +294,17 @@ const Feedback = () => {
 
                     {/* Information Boxes */}
                     <div className="pt-6 flex flex-col gap-5">
-                        <div className="bg-blue-50 border-l-4 border-blue-500 rounded-md p-4">
-                            <h3 className="font-bold text-blue-900 pb-2 font-[Sansation]">Privacy Notice</h3>
-                            <p className="text-sm text-blue-800 font-[Sansation]">
+                        <div className="bg-[var(--main-color)] border-l-4 border-blue-500 rounded-md p-4">
+                            <h3 className="font-bold text-[var(--secondary-color)] pb-2 font-[Sansation]">Privacy Notice</h3>
+                            <p className="text-sm text-[var(--secondary-color)] font-[Sansation]">
                                 Your feedback is important to us. We collect this information solely to improve Equathora.
                                 Your email address (if provided) will only be used to follow up on your feedback and will never be shared with third parties.
                             </p>
                         </div>
 
-                        <div className="bg-green-50 border-l-4 border-green-500 rounded-md p-4">
-                            <h3 className="font-bold text-green-900 pb-2 font-[Sansation]">📧 Instant Delivery</h3>
-                            <p className="text-sm text-green-800 font-[Sansation]">
+                        <div className="bg-[var(--main-color)] border-l-4 border-green-500 rounded-md p-4">
+                            <h3 className="font-bold text-[var(--secondary-color)] pb-2 font-[Sansation]">📧 Instant Delivery</h3>
+                            <p className="text-sm text-[var(--secondary-color)] font-[Sansation]">
                                 Your feedback will be sent directly to our team via email. We read every submission and typically respond within 24-48 hours.
                                 Thank you for helping us improve Equathora!
                             </p>
