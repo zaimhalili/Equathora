@@ -251,19 +251,6 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                     )}
                 </div>
 
-                {/* Correct banner — shown above steps when solved */}
-                {submissionFeedback?.success && (
-                    <div className="ml-feedback-card success" style={{ margin: '0 0 0.5rem 0', padding: '0.5rem 1rem' }}>
-                        <div className="ml-feedback-header" style={{ marginBottom: 0 }}>
-                            <div className="ml-feedback-icon success"><FaCheckCircle /></div>
-                            <span className="ml-feedback-title">Correct</span>
-                            {isPracticeMode && (
-                                <span className="ml-2 text-[10px] font-medium text-emerald-500 font-[Sansation,sans-serif]">Practice Mode</span>
-                            )}
-                        </div>
-                    </div>
-                )}
-
                 <div className="ml-card" aria-live="polite">
                     <div className="ml-steps-scrollable">
                         <div className="ml-steps-container cursor-text">

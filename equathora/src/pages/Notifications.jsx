@@ -22,7 +22,7 @@ import {
 const typeConfig = {
     achievement: {
         icon: (
-            <svg className="w-5 h-5" viewBox="0 0 576 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-7 h-7" viewBox="0 0 576 512" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs><linearGradient id="notif-grad-achievement" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
                 <path fill="url(#notif-grad-achievement)" d="M400 0H176c-26.5 0-48.1 21.8-47.1 48.2c.2 5.3 .4 10.6 .7 15.8H24C10.7 64 0 74.7 0 88c0 92.6 33.5 157 78.5 200.7c44.3 43.1 98.3 64.8 138.1 75.8c23.4 6.5 39.4 26 39.4 45.6c0 20.9-17 37.9-37.9 37.9H192c-17.7 0-32 14.3-32 32s14.3 32 32 32H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H357.9C337 448 320 431 320 410.1c0-19.6 15.9-39.2 39.4-45.6c39.9-11 93.9-32.7 138.2-75.8C542.5 245 576 180.6 576 88c0-13.3-10.7-24-24-24H446.4c.3-5.2 .5-10.4 .7-15.8C448.1 21.8 426.5 0 400 0z" />
             </svg>
@@ -34,7 +34,7 @@ const typeConfig = {
     },
     streak: {
         icon: (
-            <svg className="w-5 h-5" viewBox="0 0 448 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-7 h-7" viewBox="0 0 448 512" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs><linearGradient id="notif-grad-streak" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
                 <path fill="url(#notif-grad-streak)" d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 53.8 77.7 84c11-14.4 23.5-30.1 37-42.9c7.9-7.4 20.1-7.4 28 .1c34.6 33 63.9 76.6 84.5 118c20.3 40.8 33.8 82.5 33.8 111.9C448 404.2 348.2 512 224 512C98.4 512 0 404.1 0 276.5c0-38.4 17.8-85.3 45.4-131.7C73.3 97.7 112.7 48.6 159.3 5.4zM225.7 416c25.3 0 47.7-7 68.8-21c42.1-29.4 53.4-88.2 28.1-134.4c-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5c-16.5-21-46-58.5-62.8-79.8c-6.3-8-18.3-8.1-24.7-.1c-33.8 42.5-50.8 69.3-50.8 99.4C112 375.4 162.6 416 225.7 416z" />
             </svg>
@@ -46,7 +46,7 @@ const typeConfig = {
     },
     system: {
         icon: (
-            <svg className="w-5 h-5" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-7 h-7" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs><linearGradient id="notif-grad-system" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
                 <path fill="url(#notif-grad-system)" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
             </svg>
@@ -58,7 +58,7 @@ const typeConfig = {
     },
     friend: {
         icon: (
-            <svg className="w-5 h-5" viewBox="0 0 640 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-7 h-7" viewBox="0 0 640 512" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs><linearGradient id="notif-grad-friend" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
                 <path fill="url(#notif-grad-friend)" d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM609.3 512H471.4c5.4-9.4 8.6-20.3 8.6-32v-8c0-60.7-27.1-115.2-69.8-151.8c2.4-.1 4.7-.2 7.1-.2h61.4C567.8 320 640 392.2 640 481.3c0 17-13.8 30.7-30.7 30.7zM432 256c-31 0-59-12.6-79.3-32.9C372.4 196.5 384 163.6 384 128c0-26.8-6.6-52.1-18.3-74.3C384.3 40.1 407.2 32 432 32c61.9 0 112 50.1 112 112s-50.1 112-112 112z" />
             </svg>
@@ -70,7 +70,7 @@ const typeConfig = {
     },
     problem: {
         icon: (
-            <svg className="w-5 h-5" viewBox="0 0 448 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-7 h-7" viewBox="0 0 448 512" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs><linearGradient id="notif-grad-problem" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
                 <path fill="url(#notif-grad-problem)" d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
             </svg>
@@ -82,7 +82,7 @@ const typeConfig = {
     },
     leaderboard: {
         icon: (
-            <svg className="w-5 h-5" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-7 h-7" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs><linearGradient id="notif-grad-leaderboard" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stopColor="var(--dark-accent-color)" /><stop offset="100%" stopColor="var(--accent-color)" /></linearGradient></defs>
                 <path fill="url(#notif-grad-leaderboard)" d="M32 32c17.7 0 32 14.3 32 32V400c0 8.8 7.2 16 16 16H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H80c-44.2 0-80-35.8-80-80V64C0 46.3 14.3 32 32 32zM160 224c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm128-64V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32s32 14.3 32 32zm64 32c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32zM480 96V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V96c0-17.7 14.3-32 32-32s32 14.3 32 32z" />
             </svg>
@@ -321,7 +321,7 @@ const Notifications = () => {
                                         handleSelectAll();
                                     }}
                                     className={`
-                                    w-5 h-5 flex items-center justify-center
+                                    w-7 h-7 flex items-center justify-center
                                     border rounded-md cursor-pointer
                                     transition-all duration-200
                                     hover:ring-offset-1
@@ -416,9 +416,9 @@ const Notifications = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, x: -20, height: 0 }}
                                             transition={{ duration: 0.2 }}
-                                            className={`flex items-center gap-3 rounded-md p-4 transition-all cursor-pointer h-full border-l-4 ${!notification.read
+                                            className={`flex items-center gap-3 rounded-md p-4 text-[var(--secondary-color)] transition-all cursor-pointer h-full border-l-4 ${!notification.read
                                                 ? `bg-[var(--white)] shadow-md ${config.borderColor}`
-                                                : 'bg-[var(--mid-main-secondary)]/100 border-gray-200 shadow-sm text-white '
+                                                : 'bg-[var(--white)]/40 border-gray-200 shadow-sm text-[var(--secondary-color)] '
                                                 } hover:shadow-md`}
                                             onClick={() => handleNotificationClick(notification)}
                                         >
@@ -451,7 +451,7 @@ const Notifications = () => {
 
                                             <div className="flex flex-col gap-1 flex-1 min-w-0">
 
-                                                <div className={`flex gap-3 text-lg leading-snug ${!notification.read ? 'font-semibold' : ''}`}>
+                                                <div className={`flex gap-3 text-xl leading-snug ${!notification.read ? 'font-semibold' : ''}`}>
                                                     {notification.title}
                                                     <div className="flex items-center gap-2 flex-wrap">
                                                         <span className={`
@@ -462,18 +462,18 @@ const Notifications = () => {
                                                             {config.label}
                                                         </span>
                                                         {!notification.read && (
-                                                            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-color)] animate-pulse shrink-0" />
+                                                            <span className="w-3 h-3 rounded-full bg-[var(--accent-color)] animate-pulse shrink-0" />
                                                         )}
                                                     </div>
                                                 </div>
-                                                <p className="text-xs text-[var(--raisin-black)] leading-relaxed">
+                                                <p className="text-md text-[var(--raisin-black)] leading-relaxed">
                                                     {notification.message}
                                                 </p>
-                                                <span className="text-[10px] text-[var(--secondary-color)]">
+                                                <span className="text-xs text-[var(--secondary-color)]">
                                                     {formatTimeAgo(notification.created_at)}
                                                 </span>
                                             </div>
-                                            <div className={`flex items-center justify-center w-10 h-10 rounded-md shrink-0 ${config.bgColor}`}>
+                                            <div className={`flex items-center justify-center w-15 h-15 rounded-md shrink-0 ${config.bgColor}`}>
                                                 {config.icon}
                                             </div>
                                         </motion.div>
@@ -486,7 +486,7 @@ const Notifications = () => {
                     {/* Link to settings */}
                     <div className="flex justify-center absolute bottom-0 self-center-safe">
                         <Link
-                            to="/settings"
+                            to="/settings/#notifications"
                             className="text-sm text-[var(--accent-color)] !underline font-semibold"
                         >
                             Manage notification preferences

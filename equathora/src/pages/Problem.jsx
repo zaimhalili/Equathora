@@ -979,7 +979,7 @@ const Problem = ({ premium = true }) => {
                 {/* Main Content */}
                 <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 lg:overflow-y-hidden max-h-dvh">
                     {/* Description Side Left Side */}
-                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
+                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
                             <div className={`flex gap-1 ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
 
@@ -1109,9 +1109,9 @@ const Problem = ({ premium = true }) => {
                             </button>
                         </div>
 
-                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex flex-col font-[Sansation,sans-serif] text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-100px)] lg:h-[calc(100vh-72px-80px)] overflow-y-auto opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
+                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex flex-col font-[Sansation,sans-serif] text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-100px)] lg:h-[calc(100vh-72px-74px)] overflow-y-auto opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
 
-                            <div className={`w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll lg:max-h-[calc(100vh-180px)] h-full`}>
+                            <div className={`w-full px-4 pt-4 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll h-full`}>
                                 {/* Problem Title & Badges */}
                                 {!chatPanel ? (
                                     <div className="flex flex-col gap-3">

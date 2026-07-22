@@ -95,7 +95,7 @@ const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes })
             </div>
 
             {/* Continue */}
-            <div className="rounded-xl border border-white/10 bg-white/5 p-5 flex flex-col md:flex-row md:justify-between gap-5 md:items-end">
+            <div className="rounded-xl border border-[var(--french-gray)] bg-white/5 p-5 flex flex-col md:flex-row md:justify-between gap-5 md:items-end">
                 <div>
                     <div className="text-xs uppercase tracking-wider opacity-70 pb-2">
                         Continue Learning

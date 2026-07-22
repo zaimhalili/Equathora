@@ -318,27 +318,8 @@ const ChatPanel = forwardRef(({
     return (
         <div className="w-full flex-1 flex flex-col font-[Sansation,sans-serif] bg-[var(--white)] text-[var(--secondary-color)] rounded-md overflow-hidden min-h-0">
 
-            {/* Header */}
-            {/* <div className="px-4 py-3 flex items-center justify-between border-b border-[var(--french-gray)] bg-[var(--white)] shrink-0 rounded-t-md">
-                <h3 className="font-bold text-sm tracking-wide uppercase m-0 text-[var(--secondary-color)] flex items-center gap-1">
-                    <FaCrown className="h-3 w-3 md:h-4 md:w-4" style={{ fill: 'url(#crownGradient)' }} />
-                    <svg width="0" height="0" aria-hidden="true">
-                        <defs>
-                            <linearGradient id="crownGradient" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stopColor="#fbbf24" />
-                                <stop offset="100%" stopColor="#d97706" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    Sigma
-                </h3>
-                <span className="text-sm font-bold px-2 py-0.5 rounded-full uppercase tracking-wider bg-gradient-to-b from-amber-600 to-amber-400 text-white">
-                    AI MENTOR
-                </span>
-            </div> */}
-
             {/* Messages */}
-            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-4 flex flex-col gap-4 bg-[var(--main-color)]">
+            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4 flex flex-col gap-4 bg-[var(--main-color)]">
                 {isLoadingHistory ? (
                     <div className="flex items-center gap-2 self-start rounded-2xl border border-[var(--french-gray)] bg-[var(--white)] px-3.5 py-2.5 text-xs text-[var(--secondary-color)]">
                         <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[var(--dark-accent-color)]" />
@@ -378,10 +359,10 @@ const ChatPanel = forwardRef(({
             </div>
 
             {/* Input Zone */}
-            <form onSubmit={handleSendMessage} className="shrink-0 px-3 pt-2 pb-3 flex flex-col gap-1 border-t border-[var(--french-gray)] bg-[var(--white)] rounded-b-md">
+            <form onSubmit={handleSendMessage} className="shrink-0 py-4 flex flex-col gap-1 border-t border-[var(--french-gray)] bg-[var(--main-color)] rounded-b-md">
                 {(inputError || rateLimited) && (
                     <p className="text-[10px] text-red-500 px-1 m-0">
-                        {rateLimited ? 'Slow down — please wait a moment before sending again.' : inputError}
+                        {rateLimited ? 'Slow down - please wait a moment before sending again.' : inputError}
                     </p>
                 )}
                 <div className="flex items-center gap-2">
@@ -395,7 +376,7 @@ const ChatPanel = forwardRef(({
                             placeholder={isLoadingHistory ? 'Loading chat history…' : isAiThinking ? 'Sigma is thinking…' : rateLimited ? 'Please wait…' : 'Ask a follow-up question…'}
                             maxLength={MAX_INPUT_CHARS}
                             aria-label="Chat message input"
-                            className="w-full rounded-md px-3 py-2 text-sm md:text-base border bg-[var(--main-color)] border-[var(--french-gray)] text-[var(--secondary-color)] focus:!outline-none disabled:opacity-50 !h-full"
+                            className="w-full rounded-md px-4 py-2 text-sm md:text-base border bg-[var(--main-color)] border-[var(--french-gray)] text-[var(--secondary-color)] focus:!outline-none disabled:opacity-50 !h-full"
                         />
                         {typedMessage.length > MAX_INPUT_CHARS * 0.8 && (
                             <span className="absolute right-2 bottom-0 text-[10px] pointer-events-none font-bold"
@@ -408,7 +389,7 @@ const ChatPanel = forwardRef(({
                         type="submit"
                         disabled={isSendDisabled}
                         aria-label="Send message"
-                        className="font-bold text-xs md:text-base px-3.5 py-2 rounded-md transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)] bg-[var(--white)] hover:text-white border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
+                        className="font-bold text-xs py-2 px-4 rounded-md transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)]  hover:text-[var(--white)] border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
                     >
                         <FaPaperPlane />
                     </button>

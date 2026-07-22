@@ -15,7 +15,7 @@ const fallbackStats = {
     totalProblems: 30
 };
 
-const YourTrack = () => {
+const YourTrack = ({premium = true}) => {
     const [stats, setStats] = useState({
         problemsSolved: 0,
         accuracy: 0,
@@ -111,7 +111,7 @@ const YourTrack = () => {
                         className="flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group"
                     >
                         <div
-                            className="h-full rounded-md bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] transition-all duration-500 relative"
+                            className={`h-full rounded-tr-md rounded-br-md bg-gradient-to-r transition-all duration-500 relative ${premium ? 'from-amber-600 to-amber-400' : 'from-[var(--accent-color)] to-[var(--dark-accent-color)]'}`}
                             role="progressbar"
                             aria-label={progressLabel}
                             aria-valuenow={Math.round(percentage)}
@@ -119,7 +119,6 @@ const YourTrack = () => {
                             aria-valuemax={100}
                             style={{ width: `${percentage}%` }}
                         >
-                            <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
                         </div>
                     </Link>
                     <Link

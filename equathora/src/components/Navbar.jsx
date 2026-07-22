@@ -51,7 +51,7 @@ const getLowResAvatarUrl = (avatarUrl) => {
   }
 };
 
-const Navbar = () => {
+const Navbar = ({premium = true}) => {
   const { profile } = useUserProfile();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -349,7 +349,7 @@ const Navbar = () => {
                   />
                 </li>
                 <li className='pl-6'>
-                  <PremiumButton></PremiumButton>
+                  <PremiumButton premium={premium}></PremiumButton>
                 </li>
                 <li className='pl-6 lg:pl-4'>
                   <button

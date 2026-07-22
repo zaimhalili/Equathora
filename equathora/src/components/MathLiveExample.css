@@ -171,7 +171,7 @@ math-field:hover {
     padding: 0.75rem 1rem;
     border-radius: 10px;
     border: 1px solid transparent;
-    margin-bottom: 10px;
+    margin: 0 10px;
     animation: slideDown 0.3s ease-out;
 }
 
@@ -244,10 +244,10 @@ math-field:hover {
 .ml-btn {
     appearance: none;
     background: var(--white);
-    padding: 0.65rem 1.2rem;
+    padding: 0.5rem 1rem;
     border-radius: 6px;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
     transition: all 0.150s ease;
     white-space: nowrap;
@@ -270,7 +270,7 @@ math-field:hover {
     background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
     font-family: 'Sansation', sans-serif;
     font-weight: 700;
-    color: white;
+    color: white; 
     min-width: 140px;
 }
 
