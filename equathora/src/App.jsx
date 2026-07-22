@@ -1,6 +1,5 @@
 import React, { lazy, Suspense, useEffect, useMemo } from "react";
 import { Analytics } from "@vercel/analytics/react";
-
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -134,7 +133,10 @@ export default function App() {
     const shouldEnableVercelAnalytics = import.meta.env.PROD || import.meta.env.VITE_ENABLE_VERCEL_ANALYTICS === "true";
 
     const canUseSpeedInsights = useMemo(() => {
-        const isEnabled = import.meta.env.VITE_ENABLE_SPEED_INSIGHTS === "true";
+        const isEnabled =
+            import.meta.env.PROD ||
+            import.meta.env.VITE_ENABLE_SPEED_INSIGHTS === "true";
+
         if (!isEnabled || typeof window === "undefined") {
             return false;
         }
