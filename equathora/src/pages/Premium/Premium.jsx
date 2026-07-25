@@ -1,11 +1,16 @@
-import React, { useMemo, useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { FaAngleDown, FaQuoteLeft } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaAngleDown, FaQuoteLeft, FaCrown } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
+import { useSubscription } from '@/hooks/SubscriptionContext';
 
-const Premium = ({ premium = false }) => {
+const Premium = () => {
+  const { premium, loading: subLoading } = useSubscription();
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const navigate = useNavigate();
+
   const freeFeatures = [
     { bold: "Personalized studying plan", text: " (standard problems)" },
     { bold: "Step-by-step LaTeX workspace", text: "" },
@@ -13,13 +18,14 @@ const Premium = ({ premium = false }) => {
     { bold: "~250 curated foundational problems", text: "" },
     { bold: "\"Correct / Incorrect\" answer feedback", text: "" }
   ];
+
   const proFeatures = [
     { bold: "Sigma AI Step Debugger", text: " - pinpoints the exact line where your algebra breaks and explains why" },
-    // { bold: "Mistake Vault", text: " - tracks your errors over time and surfaces your most common slip-ups" },
     { bold: "Advanced Problem Sets", text: " - Bayes' Theorem, Combinatorics, Olympiad-style riddles, Number Theory" },
     { bold: "LaTeX PDF Export", text: " - download your solved steps as a clean, print-ready PDF" },
     { bold: "Interactive AI Chat (Sigma Mentor)", text: " - ask follow-up questions after a hint, like a live tutor" }
   ];
+
   const faq = [
     { q: "Can I cancel my subscription anytime?", a: "Yes. Cancel from your account settings at any time. You keep Pro access until the end of your billing period." },
     { q: "Is my payment information secure?", a: "All payments are processed by Stripe - Equathora never sees or stores your card details." },
@@ -27,15 +33,65 @@ const Premium = ({ premium = false }) => {
     { q: "How does the Sigma AI Mentor work?", a: "Submit your math steps on the workspace and Sigma scans them line by line, pinpointing exactly where your algebra breaks and explaining why." },
     { q: "What is the Mistake Vault?", a: "The Mistake Vault logs every error you make over time and surfaces your most repeated slip-ups, so you can focus your practice where it actually matters." },
     { q: "Can I export my work as a PDF?", a: "Yes - Pro members can download their completed step-by-step solutions as a clean, print-ready PDF directly from the workspace." },
-  ]
+  ];
+
+  const handleManageSubscription = async () => {
+    try {
+      setCheckoutLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        navigate('/login');
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('billing-portal-session', {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+
+      if (error) throw error;
+      if (data?.url) window.location.href = data.url;
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setCheckoutLoading(false);
+    }
+  };
 
   const handleUpgrade = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    const { data } = await supabase.functions.invoke('create-checkout-session', {
-      headers: { Authorization: `Bearer ${session.access_token}` },
-    });
-    if (data?.url) window.location.href = data.url;
+    if (premium) {
+      await handleManageSubscription();
+      return;
+    }
+
+    try {
+      setCheckoutLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        navigate('/login');
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+
+      if (error) throw error;
+      if (data?.url) window.location.href = data.url;
+    } catch (err) {
+      // Intentionally kept clean without console logging
+    } finally {
+      setCheckoutLoading(false);
+    }
   };
+
+  const renderButtonText = () => {
+    if (subLoading || checkoutLoading) return 'Loading...';
+    if (premium) return 'Manage Subscription';
+    return 'Subscribe';
+  };
+
   return (
     <div>
       <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen font-[Sansation,sans-serif]">
@@ -44,13 +100,13 @@ const Premium = ({ premium = false }) => {
           <div className='flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:py-6'>
             <h1 className='text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--black)] pb-2'>Premium</h1>
             <h2 className='text-sm sm:text-xl md:text-2xl font-light text-center'>Find the ideal plan that fits your budget and goals. Make informed choices with ease.</h2>
+
             {/* Premium Card Section */}
             <article className="flex gap-5 pt-10 items-center lg:flex-row flex-col-reverse">
               {/* Card 1 */}
               <div className='rounded-md flex-col flex bg-[var(--main-color)] px-8 py-10 gap-8 h-fit lg:w-2/5 transition-all'>
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-2xl font-bold text-[var(--secondary-color)]">Free
-                  </h3>
+                  <h3 className="text-2xl font-bold text-[var(--secondary-color)]">Free</h3>
                   <p className="text-md text-[var(--secondary-color)]/80 font-light">
                     Master your foundational math skills completely for free with <strong>unlimited access</strong> to our standard challenge sets and <strong>interactive step-by-step canva.</strong>
                   </p>
@@ -78,13 +134,20 @@ const Premium = ({ premium = false }) => {
               {/* Card 2 */}
               <div className='rounded-md flex-col flex bg-gradient-to-t from-amber-600 to-amber-400 px-8 py-10 gap-10 shadow-xl lg:w-3/5 transition-all'>
                 <div className="flex flex-col gap-5">
-                  <h3 className="text-2xl font-bold text-black">Monthly
-                    <span className='text-black/50 text-lg pl-3 font-normal'>billed monthly</span>
-                  </h3>
+                  <div className="flex justify-between items-center sm:flex-row flex-col-reverse gap-1">
+                    <h3 className="text-2xl font-bold text-black">Monthly
+                      <span className='text-black/50 text-lg pl-3 font-normal'>billed monthly</span>
+                    </h3>
+                    {premium && (
+                      <h3 className='bg-black/10 px-3 rounded-md text-black font-medium items-center flex gap-1'>
+                        <FaCrown className='inline-block' />Active
+                      </h3>
+                    )}
+                  </div>
+
                   <p className="text-md text-black/80 font-light">
                     An <strong>affordable</strong>, high-return investment in your math education that pays off with every problem you solve.
-                    <br />Unlock full access to your <strong>24/7 AI</strong> mentor and start turning your <strong>common math mistakes</strong> into <strong> maximum exam points
-                    </strong> today.
+                    <br />Unlock full access to your <strong>24/7 AI</strong> mentor and start turning your <strong>common math mistakes</strong> into <strong> maximum exam points</strong> today.
                   </p>
                 </div>
                 <div className="flex flex-col gap-5">
@@ -98,8 +161,15 @@ const Premium = ({ premium = false }) => {
                     <p className='text-md text-black/80 font-light xl:block hidden'>Prices are marked in Euros</p>
                   </div>
 
-                  <button onClick={handleUpgrade} type="button" className='bg-[var(--black)] text-[var(--white)] py-2 rounded-md text-xl hover:contrast-80 active:scale-95 transition-all duration-200'>Subscribe</button>
-                  <ul className=''>
+                  <button
+                    onClick={handleUpgrade}
+                    disabled={subLoading || checkoutLoading}
+                    type="button"
+                    className="bg-[var(--black)] text-[var(--white)] py-2 rounded-md text-xl transition-all duration-200 hover:contrast-80 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {renderButtonText()}
+                  </button>
+                  <ul>
                     {proFeatures.map((feature, idx) => (
                       <li key={idx}>
                         <strong>{feature.bold}</strong>{feature.text}
@@ -118,11 +188,10 @@ const Premium = ({ premium = false }) => {
                 <p className='text-xl md:text-2xl text-center md:text-left'>
                   Equathora is an <strong>excellent tool</strong> for the “serious” math student, specifically those preparing for Math Olympiads or early undergraduate STEM courses. It removes the friction of finding quality problems and provides <strong>a superior input method</strong> compared to standard multiple-choice platforms.
                 </p>
-                <a href="https://www.osradar.com/equathora-math-site-review/" target='_blank' title='Equathora Review' className='!underline !text-blue-800 active:scale-95 hover:brightness-75 text-center md:text-left text-md w-fit'>
+                <a href="https://www.osradar.com/equathora-math-site-review/" target='_blank' rel="noreferrer" title='Equathora Review' className='!underline !text-blue-800 active:scale-95 hover:brightness-75 text-center md:text-left text-md w-fit'>
                   Osradar - Tech Blogs
                 </a>
               </div>
-
             </article>
 
             {/* FAQ */}
@@ -135,7 +204,7 @@ const Premium = ({ premium = false }) => {
                     <button onClick={() => setOpen(o => !o)} className='w-full flex justify-between items-center py-4 text-left gap-4 cursor-pointer'>
                       <span className='font-semibold text-lg md:text-lg'>{item.q}</span>
                       <span className={`text-lg transition-transform duration-200 shrink-0 text-[var(--secondary-color)] ${open ? 'rotate-180' : ''}`}>
-                        <FaAngleDown></FaAngleDown>
+                        <FaAngleDown />
                       </span>
                     </button>
                     <div className={`overflow-hidden transition-all duration-300 ${open ? 'max-h-40 pb-4' : 'max-h-0'}`}>

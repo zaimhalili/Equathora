@@ -13,7 +13,9 @@ import {
     truncateAiResponseSafely,
 } from '@/lib/SigmaChat/chatLatex';
 import { loadSigmaChatState, saveSigmaChatState } from '@/lib/SigmaChat/sigmaChatStorage';
+import { useSubscriptionStatus } from '@/hooks/useSubscriptionStatus';
 
+const FREE_TRIAL_LIMIT = 3;
 const MAX_INPUT_CHARS = 500;
 const MAX_AI_RESPONSE_CHARS = 2000;
 const MAX_HISTORY_MESSAGES = 100;
@@ -53,12 +55,6 @@ const sanitizeInput = (str) => sanitizeUnicode(str).slice(0, MAX_INPUT_CHARS);
 
 // ---------------------------------------------------------------------------
 // Math rendering
-//
-// Splits plain text from common LaTeX delimiters and renders math spans through
-// MathLive's static renderer. Only MathLive's own generated
-// markup goes through dangerouslySetInnerHTML — plain-text segments stay as
-// normal React children, which React escapes automatically, so raw AI/user
-// text is never injected as HTML.
 // ---------------------------------------------------------------------------
 
 function renderLatexSafe(latex, displayMode) {
@@ -113,20 +109,19 @@ function MathText({ text }) {
 }
 
 const ChatPanel = forwardRef(({
-    premium = true,
     problemDescription,
     acceptedSolution,
     fields = [],
     storageKey = '',
 }, ref) => {
+    const { tier, trialMessagesUsed, loading: statusLoading } = useSubscriptionStatus();
+    const trialExhausted = tier === 'free' && trialMessagesUsed >= FREE_TRIAL_LIMIT;
+
     const scrollContainerRef = useRef(null);
     const lastSentAt = useRef(0);
     const isHydratingRef = useRef(false);
     const hydrationPromiseRef = useRef(Promise.resolve());
     const chatMessagesRef = useRef(DEFAULT_MESSAGES);
-    // Tracks the steps text Sigma last actually analyzed, so askSigmaChat can
-    // tell a plain follow-up question (steps unchanged) from a re-analysis
-    // (steps edited) and trim the outgoing context accordingly.
     const lastAnalyzedStepsRef = useRef(null);
 
     const [typedMessage, setTypedMessage] = useState('');
@@ -151,7 +146,6 @@ const ChatPanel = forwardRef(({
         setRateLimited(false);
         setIsAiThinking(false);
         setIsLoadingHistory(Boolean(storageKey));
-        // New problem/session — the previously analyzed steps no longer apply.
         lastAnalyzedStepsRef.current = null;
 
         let isActive = true;
@@ -210,7 +204,6 @@ const ChatPanel = forwardRef(({
         setTypedMessage(raw.slice(0, MAX_INPUT_CHARS));
     }, []);
 
-    // Shared core — used by both manual send and imperative sendMessage from parent
     const runAiCall = async (userText, currentMessages, currentFields) => {
         const userMsg = { id: Date.now(), sender: 'user', text: userText };
         const updatedHistory = [...currentMessages, userMsg].slice(-MAX_HISTORY_MESSAGES);
@@ -233,8 +226,6 @@ const ChatPanel = forwardRef(({
                 lastAnalyzedSteps: lastAnalyzedStepsRef.current,
             });
 
-            // Remember what Sigma actually analyzed this turn, so the next
-            // follow-up question can be trimmed if the steps haven't changed.
             lastAnalyzedStepsRef.current = analyzedSteps;
 
             const safeAiText = truncateAiResponseSafely(
@@ -256,9 +247,8 @@ const ChatPanel = forwardRef(({
         }
     };
 
-    // Called by parent via ref — bypasses rate limit since it's triggered by the app not the user spamming
     const sendMessage = (text) => {
-        if (!text || isAiThinking || isLoadingHistory) return;
+        if (!text || isAiThinking || isLoadingHistory || trialExhausted) return;
         const cleanText = sanitizeInput(text);
         if (!cleanText) return;
 
@@ -267,10 +257,12 @@ const ChatPanel = forwardRef(({
         });
     };
 
-    useImperativeHandle(ref, () => ({ sendMessage }), [chatMessages, fields, problemDescription, acceptedSolution, isAiThinking]);
+    useImperativeHandle(ref, () => ({ sendMessage }), [chatMessages, fields, problemDescription, acceptedSolution, isAiThinking, trialExhausted]);
 
     const handleSendMessage = useCallback(async (e) => {
         e.preventDefault();
+        if (trialExhausted) return;
+
         const now = Date.now();
 
         if (now - lastSentAt.current < RATE_LIMIT_MS) {
@@ -291,20 +283,28 @@ const ChatPanel = forwardRef(({
         lastSentAt.current = now;
 
         await runAiCall(userText, chatMessagesRef.current, fields);
-    }, [typedMessage, isAiThinking, isLoadingHistory, chatMessages, fields, problemDescription, acceptedSolution]);
+    }, [typedMessage, isAiThinking, isLoadingHistory, chatMessages, fields, problemDescription, acceptedSolution, trialExhausted]);
 
     const visibleMessages = chatMessages.slice(-MAX_DISPLAY_MESSAGES);
     const hiddenCount = chatMessages.length - visibleMessages.length;
-    const isSendDisabled = isLoadingHistory || isAiThinking || rateLimited || !typedMessage.trim();
+    const isSendDisabled = isLoadingHistory || isAiThinking || rateLimited || !typedMessage.trim() || trialExhausted;
 
-    if (!premium) {
+    if (statusLoading) {
+        return (
+            <div className="w-full h-full flex items-center justify-center bg-[var(--main-color)] rounded-md text-xs text-[var(--mid-main-secondary)]">
+                Loading AI Mentor...
+            </div>
+        );
+    }
+
+    if (trialExhausted) {
         return (
             <div className="w-full h-full flex flex-col items-center justify-center bg-[var(--main-color)] rounded-md p-6">
                 <div className="text-center flex flex-col items-center gap-1">
                     <FaCrown className="text-amber-500 text-3xl animate-bounce" />
                     <h4 className="font-bold text-lg text-[var(--secondary-color)]">Unlock Sigma AI Mentor</h4>
                     <p className="text-sm text-[var(--mid-main-secondary)] max-w-xs pb-2">
-                        Get instant step-by-step corrections and debug your line calculations in real-time.
+                        You've used your {FREE_TRIAL_LIMIT} free messages. Upgrade to Premium for unlimited step-by-step corrections.
                     </p>
                     <Link to={'/premium'} className='bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 rounded-md cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95' title='Get Premium'>
                         <FaCrown />
@@ -360,6 +360,12 @@ const ChatPanel = forwardRef(({
 
             {/* Input Zone */}
             <form onSubmit={handleSendMessage} className="shrink-0 py-4 flex flex-col gap-1 border-t border-[var(--french-gray)] bg-[var(--main-color)] rounded-b-md">
+                {tier === 'free' && (
+                    <p className="text-[10px] text-center text-[var(--mid-main-secondary)] pb-1 m-0">
+                        {Math.max(0, FREE_TRIAL_LIMIT - trialMessagesUsed)} of {FREE_TRIAL_LIMIT} free messages left
+                    </p>
+                )}
+
                 {(inputError || rateLimited) && (
                     <p className="text-[10px] text-red-500 px-1 m-0">
                         {rateLimited ? 'Slow down - please wait a moment before sending again.' : inputError}
@@ -372,7 +378,7 @@ const ChatPanel = forwardRef(({
                             value={typedMessage}
                             onChange={handleInputChange}
                             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) handleSendMessage(e); }}
-                            disabled={isLoadingHistory || isAiThinking || rateLimited}
+                            disabled={isLoadingHistory || isAiThinking || rateLimited || trialExhausted}
                             placeholder={isLoadingHistory ? 'Loading chat history…' : isAiThinking ? 'Sigma is thinking…' : rateLimited ? 'Please wait…' : 'Ask a follow-up question…'}
                             maxLength={MAX_INPUT_CHARS}
                             aria-label="Chat message input"
@@ -389,7 +395,7 @@ const ChatPanel = forwardRef(({
                         type="submit"
                         disabled={isSendDisabled}
                         aria-label="Send message"
-                        className="font-bold text-xs py-2 px-4 rounded-md transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)]  hover:text-[var(--white)] border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
+                        className="font-bold text-xs py-2 px-4 rounded-md transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)] hover:text-[var(--white)] border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
                     >
                         <FaPaperPlane />
                     </button>

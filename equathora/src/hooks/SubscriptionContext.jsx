@@ -11,10 +11,10 @@ const SubscriptionContext = createContext({
 export function SubscriptionProvider({ children }) {
     const { tier, loading, trialMessagesUsed, monthlyTokensUsed, error } = useSubscriptionStatus();
 
-    const isPremium = tier === 'premium';
+    const premium = tier === 'premium';
 
     return (
-        <SubscriptionContext.Provider value={{ isPremium, tier, loading, trialMessagesUsed, monthlyTokensUsed, error }}>
+        <SubscriptionContext.Provider value={{ premium, tier, loading, trialMessagesUsed, monthlyTokensUsed, error }}>
             {children}
         </SubscriptionContext.Provider>
     );

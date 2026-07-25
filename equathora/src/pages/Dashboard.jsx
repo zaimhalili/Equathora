@@ -21,11 +21,22 @@ import JourneyImg from '../assets/images/journey.svg';
 import { FaCrown } from 'react-icons/fa';
 // Pass premium state
 import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
+// Upgraded to premium popup
+import UpgradedPopup from '@/components/Premium/UpgradedPopup.jsx';
 
 const Dashboard = () => {
     const { premium, loading: subLoading } = useSubscription();
     const [username, setUsername] = useState("Friend");
     const [dailyProblemSlug, setDailyProblemSlug] = useState('');
+    const [showUpgradedPopup, setShowUpgradedPopup] = useState(false);
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('upgraded') === true) {
+            setShowUpgradedPopup(true);
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }, [])
 
     useEffect(() => {
         const loadDailyProblem = async () => {
@@ -182,7 +193,7 @@ const Dashboard = () => {
                                 transition={{ duration: 0.5, delay: 0.8 }}
                                 className="w-full"
                             >
-                                <YourTrack premium={premium}/>
+                                <YourTrack premium={premium} loading={subLoading}/>
                             </motion.div>
                             {/* Community Posts - That Leads to Forum, Blog and News Page */}
                             <motion.article
@@ -269,6 +280,9 @@ const Dashboard = () => {
                         </a>
                     </div>
                 </footer>
+                {showUpgradedPopup && (
+                    <UpgradedPopup onClose={() => setShowUpgradedPopup(false)} />
+                )}
             </main>
         </>
     );

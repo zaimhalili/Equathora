@@ -1430,7 +1430,6 @@ const Problem = ({ premium = true }) => {
 
                                 {/* Show AI chat panel */}
                                 {chatPanel && <ChatPanel ref={chatPanelRef}
-                                    premium={premium}
                                     problemDescription={problem.description}
                                     acceptedSolution={problem.solution}
                                     fields={fields}
