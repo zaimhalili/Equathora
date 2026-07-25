@@ -19,8 +19,11 @@ import { supabase } from '../lib/supabaseClient';
 import LoadingSpinner from '@/components/LoadingSpinner.jsx';
 import JourneyImg from '../assets/images/journey.svg';
 import { FaCrown } from 'react-icons/fa';
+// Pass premium state
+import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
 
-const Dashboard = ({ premium = true }) => {
+const Dashboard = () => {
+    const { premium, loading: subLoading } = useSubscription();
     const [username, setUsername] = useState("Friend");
     const [dailyProblemSlug, setDailyProblemSlug] = useState('');
 
@@ -179,7 +182,7 @@ const Dashboard = ({ premium = true }) => {
                                 transition={{ duration: 0.5, delay: 0.8 }}
                                 className="w-full"
                             >
-                                <YourTrack />
+                                <YourTrack premium={premium}/>
                             </motion.div>
                             {/* Community Posts - That Leads to Forum, Blog and News Page */}
                             <motion.article

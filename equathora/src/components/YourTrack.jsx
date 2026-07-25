@@ -15,7 +15,7 @@ const fallbackStats = {
     totalProblems: 30
 };
 
-const YourTrack = ({ premium = true }) => {
+const YourTrack = ({ premium }) => {
     const [stats, setStats] = useState({
         problemsSolved: 0,
         accuracy: 0,

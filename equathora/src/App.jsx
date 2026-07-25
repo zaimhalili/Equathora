@@ -12,11 +12,11 @@ import { supabase } from "./lib/supabaseClient";
 import { getUserSettings } from "./lib/notificationService";
 import {
     normalizeThemePreference,
-    getStoredThemePreference,
     setThemePreference,
     syncThemeWithSystemPreference
 } from "./lib/theme";
 import { useAuth, getOnboardingStatus, AuthProvider } from "./hooks/useAuth";
+import { SubscriptionProvider } from "./hooks/SubscriptionContext";
 import { trackActivityEvent, trackDailyActivity } from "./lib/activityTrackingService";
 import {
     initPostHog,
@@ -43,7 +43,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogList = lazy(() => import("./pages/BlogList"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
-const SubmitProblem = lazy(() => import("./pages/SubmitProblem/SubmitProblem"));
+// const SubmitProblem = lazy(() => import("./pages/SubmitProblem/SubmitProblem"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -155,7 +155,6 @@ export default function App() {
         initPostHog();
     }, []);
 
-
     useEffect(() => {
         const cleanupSystemThemeSync = syncThemeWithSystemPreference();
         return cleanupSystemThemeSync;
@@ -171,12 +170,8 @@ export default function App() {
 
                 const userSettings = await getUserSettings();
                 if (isDisposed) return;
-                const storedPreference = getStoredThemePreference();
                 const normalizedTheme = normalizeThemePreference(userSettings?.theme);
-                const nextTheme = (normalizedTheme === 'system' && storedPreference !== 'system')
-                    ? storedPreference
-                    : normalizedTheme;
-                setThemePreference(nextTheme, { persist: true });
+                setThemePreference(normalizedTheme, { persist: true });
             } catch (error) {
                 console.error("Error syncing theme preference:", error);
             }
@@ -201,12 +196,8 @@ export default function App() {
                 void (async () => {
                     try {
                         const userSettings = await getUserSettings();
-                        const storedPreference = getStoredThemePreference();
                         const normalizedTheme = normalizeThemePreference(userSettings?.theme);
-                        const nextTheme = (normalizedTheme === 'system' && storedPreference !== 'system')
-                            ? storedPreference
-                            : normalizedTheme;
-                        setThemePreference(nextTheme, { persist: true });
+                        setThemePreference(normalizedTheme, { persist: true });
                     } catch (error) {
                         console.error('Error syncing signed-in theme preference:', error);
                     }
@@ -243,78 +234,73 @@ export default function App() {
         void trackDailyActivity();
     }, [location.pathname]);
 
-
-
     return (
         <AuthProvider>
-            <PageTitleUpdater />
-            {/* <OverflowChecker /> */}
-            <Suspense fallback={<LoadingSpinner />}>
-                <div id="main-content" tabIndex={-1} className="outline-none">
-                    <Routes>
-                        {/* Public Routes */}
-                        <Route path="/" element={<HomeRoute />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<Signup />} />
-                        <Route path="/verify" element={<VerifyEmail />} />
-                        <Route path="/resend" element={<Resend />} />
-                        <Route path="/forgotpassword" element={<ForgotPassword />} />
-                        <Route path="/reset-password" element={<ResetPassword />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/helpCenter" element={<HelpCenter />} />
-                        <Route path="/systemupdates" element={<SystemUpdates />} />
-                        <Route path="/pageNotFound" element={<PageNotFound />} />
-                        <Route path="/equathora-briefs" element={<EquathoraBriefs />} />
-                        <Route path="/blog" element={<Blog />} />
-                        <Route path="/blogs" element={<BlogList />} />
-                        <Route path="/blog/:slug" element={<BlogPost />} />
-                        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                        <Route path="/terms-of-service" element={<TermsOfService />} />
-                        <Route path="/cookie-policy" element={<CookiePolicy />} />
-                        <Route path="/getStarted" element={<OnboardingRoute><GetStarted /></OnboardingRoute>} />
-                        <Route path="/premium" element={<Premium />} />
+            <SubscriptionProvider>
+                <PageTitleUpdater />
+                {/* <OverflowChecker /> */}
+                <Suspense fallback={<LoadingSpinner />}>
+                    <div id="main-content" tabIndex={-1} className="outline-none">
+                        <Routes>
+                            {/* Public Routes */}
+                            <Route path="/" element={<HomeRoute />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/signup" element={<Signup />} />
+                            <Route path="/verify" element={<VerifyEmail />} />
+                            <Route path="/resend" element={<Resend />} />
+                            <Route path="/forgotpassword" element={<ForgotPassword />} />
+                            <Route path="/reset-password" element={<ResetPassword />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/helpCenter" element={<HelpCenter />} />
+                            <Route path="/systemupdates" element={<SystemUpdates />} />
+                            <Route path="/pageNotFound" element={<PageNotFound />} />
+                            <Route path="/equathora-briefs" element={<EquathoraBriefs />} />
+                            <Route path="/blog" element={<Blog />} />
+                            <Route path="/blogs" element={<BlogList />} />
+                            <Route path="/blog/:slug" element={<BlogPost />} />
+                            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                            <Route path="/terms-of-service" element={<TermsOfService />} />
+                            <Route path="/cookie-policy" element={<CookiePolicy />} />
+                            <Route path="/getStarted" element={<OnboardingRoute><GetStarted /></OnboardingRoute>} />
+                            <Route path="/premium" element={<Premium />} />
 
+                            {/* Protected Routes - Require Authentication */}
+                            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                            <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
+                            <Route path="/learn" element={<Learn />} />
+                            <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
+                            <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
+                            <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />
+                            <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+                            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+                            <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                            {/* <Route path="/submit-problem" element={<AdminRoute><SubmitProblem /></AdminRoute>} /> */}
 
-                        {/* Protected Routes - Require Authentication */}
-                        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                        <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
-                        <Route path="/learn" element={<Learn />} />
-                        <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
-                        <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
-                        <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />
-                        <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-                        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-                        <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>}></Route>
-                        {/* <Route path="/submit-problem" element={<AdminRoute><SubmitProblem /></AdminRoute>}></Route> */}
+                            {/* Protected Nested Routes */}
+                            <Route path="/leaderboards" element={<ProtectedRoute><LeaderboardsLayout /></ProtectedRoute>}>
+                                <Route index element={<Navigate to="global" replace />} />
+                                <Route path="global" element={<GlobalLeaderboard />} />
+                                <Route path="friends" element={<FriendsLeaderboard />} />
+                                <Route path="top-solvers" element={<TopSolversLeaderboard />} />
+                            </Route>
 
+                            <Route path="/achievements" element={<ProtectedRoute><AchievementsLayout /></ProtectedRoute>}>
+                                <Route index element={<RecentAchievements />} />
+                                <Route path="recent" element={<RecentAchievements />} />
+                                <Route path="stats" element={<Statistics />} />
+                                <Route path="events" element={<SpecialEvents />} />
+                            </Route>
 
+                            {/* Protected Dynamic Routes */}
+                            <Route path="/problems/:slug" element={<ProtectedRoute><Problem /></ProtectedRoute>} />
+                            <Route path="/profile/:profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
-                        {/* Protected Nested Routes */}
-                        <Route path="/leaderboards" element={<ProtectedRoute><LeaderboardsLayout /></ProtectedRoute>}>
-                            <Route index element={<Navigate to="global" replace />} />
-                            <Route path="global" element={<GlobalLeaderboard />} />
-                            <Route path="friends" element={<FriendsLeaderboard />} />
-                            <Route path="top-solvers" element={<TopSolversLeaderboard />} />
-                        </Route>
-
-
-                        <Route path="/achievements" element={<ProtectedRoute><AchievementsLayout /></ProtectedRoute>}>
-                            <Route index element={<RecentAchievements />} />
-                            <Route path="recent" element={<RecentAchievements />} />
-                            <Route path="stats" element={<Statistics />} />
-                            <Route path="events" element={<SpecialEvents />} />
-                        </Route>
-
-                        {/* Protected Dynamic Routes */}
-                        <Route path="/problems/:slug" element={<ProtectedRoute><Problem /></ProtectedRoute>} />
-                        <Route path="/profile/:profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-
-                        {/* 404 Route */}
-                        <Route path="*" element={<Navigate to="/pageNotFound" replace />} />
-                    </Routes>
-                </div>
-            </Suspense>
-
+                            {/* 404 Route */}
+                            <Route path="*" element={<Navigate to="/pageNotFound" replace />} />
+                        </Routes>
+                    </div>
+                </Suspense>
+            </SubscriptionProvider>
             {/* Analytics */}
             {shouldEnableVercelAnalytics ? <Analytics /> : null}
             {canUseSpeedInsights ? <LazySpeedInsights /> : null}

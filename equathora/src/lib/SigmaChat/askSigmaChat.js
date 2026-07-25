@@ -4,7 +4,7 @@ import { buildSafePromptJson, getFriendlySigmaErrorMessage, sanitizePromptText }
 const SIGMA_FUNCTION_NAME = 'ask-gemini';
 const SIGMA_MAX_RETRIES = 2;
 const SIGMA_RETRY_DELAY_MS = 750;
-const FOLLOWUP_HISTORY_LIMIT = 6; // was 20 — only matters when steps haven't changed
+const FOLLOWUP_HISTORY_LIMIT = 6;
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -21,13 +21,11 @@ export async function askSigmaChat({
     acceptedAnswer,
     chatHistory = [],
     userNewMessage,
-    lastAnalyzedSteps = null, // NEW — the steps text Sigma last actually analyzed, kept in React state
+    lastAnalyzedSteps = null,
 }) {
     const isFreshSession = chatHistory.length === 0;
-    const stepsChanged = userSteps !== lastAnalyzedSteps; // student edited their work since last turn
+    const stepsChanged = userSteps !== lastAnalyzedSteps;
 
-    // Full context goes out whenever it's a new session OR the student changed their steps.
-    // Only a plain follow-up question on unchanged steps gets trimmed.
     const needsFullContext = isFreshSession || stepsChanged;
 
     const historyPayload = chatHistory
@@ -41,8 +39,6 @@ export async function askSigmaChat({
     const promptPayload = {
         problemDescription: sanitizePromptText(problemDescription, 1000),
         acceptedAnswer: sanitizePromptText(acceptedAnswer, 500),
-        // Only resend the full steps when they changed or this is turn 1.
-        // On a plain follow-up, point back at what's already in chatHistory instead of repeating it.
         userSteps: needsFullContext
             ? sanitizePromptText(userSteps || 'No steps submitted yet.', 4000)
             : '(unchanged since last turn — see prior analysis in conversation history)',
@@ -95,15 +91,24 @@ export async function askSigmaChat({
     const payload = { ...promptPayload, prompt };
 
     try {
+        // Fetch current user session token
+        const { data: { session } } = await supabase.auth.getSession();
+        const headers = session?.access_token
+            ? { Authorization: `Bearer ${session.access_token}` }
+            : {};
+
         let lastError = null;
 
         for (let attempt = 0; attempt <= SIGMA_MAX_RETRIES; attempt += 1) {
-            const { data, error } = await supabase.functions.invoke(SIGMA_FUNCTION_NAME, { body: payload });
+            const { data, error } = await supabase.functions.invoke(SIGMA_FUNCTION_NAME, {
+                body: payload,
+                headers,
+            });
 
             if (!error) {
                 const text = extractTextResponse(data);
                 if (!text) throw new Error('Empty response from Supabase function');
-                // Caller should store userSteps as the new lastAnalyzedSteps after this returns
+
                 return { text, analyzedSteps: userSteps };
             }
 

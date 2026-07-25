@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { FaAngleDown, FaQuoteLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { supabase } from '@/lib/supabaseClient';
 
 const Premium = ({ premium = false }) => {
   const freeFeatures = [
@@ -28,7 +29,13 @@ const Premium = ({ premium = false }) => {
     { q: "Can I export my work as a PDF?", a: "Yes - Pro members can download their completed step-by-step solutions as a clean, print-ready PDF directly from the workspace." },
   ]
 
-
+  const handleUpgrade = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const { data } = await supabase.functions.invoke('create-checkout-session', {
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    });
+    if (data?.url) window.location.href = data.url;
+  };
   return (
     <div>
       <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen font-[Sansation,sans-serif]">
@@ -91,7 +98,7 @@ const Premium = ({ premium = false }) => {
                     <p className='text-md text-black/80 font-light xl:block hidden'>Prices are marked in Euros</p>
                   </div>
 
-                  <button type="button" className='bg-[var(--black)] text-[var(--white)] py-2 rounded-md text-xl hover:contrast-80 active:scale-95 transition-all duration-200'>Subscribe</button>
+                  <button onClick={handleUpgrade} type="button" className='bg-[var(--black)] text-[var(--white)] py-2 rounded-md text-xl hover:contrast-80 active:scale-95 transition-all duration-200'>Subscribe</button>
                   <ul className=''>
                     {proFeatures.map((feature, idx) => (
                       <li key={idx}>

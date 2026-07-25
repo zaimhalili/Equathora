@@ -469,125 +469,125 @@ const Settings = () => {
 
     // Danger zone
     const [isResetting, setIsResetting] = useState(false);
-    const [showResetModal, setShowResetModal] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [isCancelingDeletion, setIsCancelingDeletion] = useState(false);
+    // const [showResetModal, setShowResetModal] = useState(false);
+    // const [isDeleting, setIsDeleting] = useState(false);
+    // const [showDeleteModal, setShowDeleteModal] = useState(false);
+    // const [isCancelingDeletion, setIsCancelingDeletion] = useState(false);
 
-    // ========================================================================
-    // LOAD USER DATA ON MOUNT
-    // ========================================================================
-    useEffect(() => {
-        const loadData = async () => {
-            try {
-                setIsLoading(true);
-                const { data: { session } } = await supabase.auth.getSession();
-                if (!session) {
-                    navigate('/login');
-                    return;
-                }
+    // // ========================================================================
+    // // LOAD USER DATA ON MOUNT
+    // // ========================================================================
+    // useEffect(() => {
+    //     const loadData = async () => {
+    //         try {
+    //             setIsLoading(true);
+    //             const { data: { session } } = await supabase.auth.getSession();
+    //             if (!session) {
+    //                 navigate('/login');
+    //                 return;
+    //             }
 
-                setCurrentEmail(session.user.email || '');
+    //             setCurrentEmail(session.user.email || '');
 
-                const provider = session.user.app_metadata?.provider || 'email';
-                setAuthProvider(provider);
+    //             const provider = session.user.app_metadata?.provider || 'email';
+    //             setAuthProvider(provider);
 
-                // Profile — read-only summary, matches the real `profiles` schema
-                const { data: profile } = await supabase
-                    .from('profiles')
-                    .select('full_name, username, bio, role, deletion_requested, deletion_requested_at')
-                    .eq('id', session.user.id)
-                    .maybeSingle();
+    //             // Profile — read-only summary, matches the real `profiles` schema
+    //             const { data: profile } = await supabase
+    //                 .from('profiles')
+    //                 .select('full_name, username, bio, role, deletion_requested, deletion_requested_at')
+    //                 .eq('id', session.user.id)
+    //                 .maybeSingle();
 
-                if (profile) {
-                    setProfileSummary({
-                        full_name: profile.full_name || session.user.user_metadata?.full_name || '',
-                        username: profile.username || '',
-                        bio: profile.bio || '',
-                        role: profile.role || 'student',
-                        deletionRequested: !!profile.deletion_requested,
-                        deletionRequestedAt: profile.deletion_requested_at || null,
-                    });
-                }
+    //             if (profile) {
+    //                 setProfileSummary({
+    //                     full_name: profile.full_name || session.user.user_metadata?.full_name || '',
+    //                     username: profile.username || '',
+    //                     bio: profile.bio || '',
+    //                     role: profile.role || 'student',
+    //                     deletionRequested: !!profile.deletion_requested,
+    //                     deletionRequestedAt: profile.deletion_requested_at || null,
+    //                 });
+    //             }
 
-                // Learning / onboarding summary (student_profile), best-effort
-                try {
-                    const { data: sp } = await supabase
-                        .from('student_profile')
-                        .select('goal, level, weekly_commitment, preferred_challenge')
-                        .eq('id', session.user.id)
-                        .maybeSingle();
-                    if (sp) setLearningProfile(sp);
-                } catch (e) {
-                    // No student_profile row yet (e.g. teacher account) — fine.
-                }
+    //             // Learning / onboarding summary (student_profile), best-effort
+    //             try {
+    //                 const { data: sp } = await supabase
+    //                     .from('student_profile')
+    //                     .select('goal, level, weekly_commitment, preferred_challenge')
+    //                     .eq('id', session.user.id)
+    //                     .maybeSingle();
+    //                 if (sp) setLearningProfile(sp);
+    //             } catch (e) {
+    //                 // No student_profile row yet (e.g. teacher account) — fine.
+    //             }
 
-                // Subscription, best-effort — falls back to Free until the
-                // billing columns exist on `profiles`.
-                try {
-                    const { data: sub } = await supabase
-                        .from('profiles')
-                        .select('subscription_tier, subscription_renews_at')
-                        .eq('id', session.user.id)
-                        .maybeSingle();
-                    if (sub) {
-                        setSubscription({
-                            tier: sub.subscription_tier || 'free',
-                            renewsAt: sub.subscription_renews_at || null,
-                        });
-                    }
-                } catch (e) {
-                    // subscription_tier / subscription_renews_at don't exist yet.
-                }
+    //             // Subscription, best-effort — falls back to Free until the
+    //             // billing columns exist on `profiles`.
+    //             try {
+    //                 const { data: sub } = await supabase
+    //                     .from('profiles')
+    //                     .select('subscription_tier, subscription_renews_at')
+    //                     .eq('id', session.user.id)
+    //                     .maybeSingle();
+    //                 if (sub) {
+    //                     setSubscription({
+    //                         tier: sub.subscription_tier || 'free',
+    //                         renewsAt: sub.subscription_renews_at || null,
+    //                     });
+    //                 }
+    //             } catch (e) {
+    //                 // subscription_tier / subscription_renews_at don't exist yet.
+    //             }
 
-                // Fetch user settings
-                const userSettings = await getUserSettings();
-                const storedPreference = getStoredThemePreference();
-                const normalizedTheme = normalizeThemePreference(userSettings?.theme);
-                const resolvedPreference = (normalizedTheme === 'system' && storedPreference !== 'system')
-                    ? storedPreference
-                    : normalizedTheme;
-                const accountEmail = String(session.user.email || '').trim().toLowerCase();
-                const isBriefsSubscribed = await isSubscribedToEquathoraBriefs(accountEmail);
-                const legacyCookieConsent = localStorage.getItem('equathora_cookie_consent');
-                const legacyCookieConsentDate = localStorage.getItem('equathora_cookie_consent_date') || '';
-                const cookieConsentValue = userSettings?.cookie_consent || legacyCookieConsent || 'none';
-                const cookieConsentDate = cookieConsentValue === 'none'
-                    ? ''
-                    : (userSettings?.cookie_consent_date || legacyCookieConsentDate || new Date().toISOString());
+    //             // Fetch user settings
+    //             const userSettings = await getUserSettings();
+    //             const storedPreference = getStoredThemePreference();
+    //             const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+    //             const resolvedPreference = (normalizedTheme === 'system' && storedPreference !== 'system')
+    //                 ? storedPreference
+    //                 : normalizedTheme;
+    //             const accountEmail = String(session.user.email || '').trim().toLowerCase();
+    //             const isBriefsSubscribed = await isSubscribedToEquathoraBriefs(accountEmail);
+    //             const legacyCookieConsent = localStorage.getItem('equathora_cookie_consent');
+    //             const legacyCookieConsentDate = localStorage.getItem('equathora_cookie_consent_date') || '';
+    //             const cookieConsentValue = userSettings?.cookie_consent || legacyCookieConsent || 'none';
+    //             const cookieConsentDate = cookieConsentValue === 'none'
+    //                 ? ''
+    //                 : (userSettings?.cookie_consent_date || legacyCookieConsentDate || new Date().toISOString());
 
-                if (!userSettings?.cookie_consent && (legacyCookieConsent === 'accepted' || legacyCookieConsent === 'declined')) {
-                    await saveUserSettings({
-                        ...userSettings,
-                        cookie_consent: cookieConsentValue,
-                        cookie_consent_date: cookieConsentDate || new Date().toISOString(),
-                    });
-                }
+    //             if (!userSettings?.cookie_consent && (legacyCookieConsent === 'accepted' || legacyCookieConsent === 'declined')) {
+    //                 await saveUserSettings({
+    //                     ...userSettings,
+    //                     cookie_consent: cookieConsentValue,
+    //                     cookie_consent_date: cookieConsentDate || new Date().toISOString(),
+    //                 });
+    //             }
 
-                setSettings(prev => ({
-                    ...prev,
-                    ...userSettings,
-                    cookie_consent: cookieConsentValue,
-                    cookie_consent_date: cookieConsentDate,
-                    theme: resolvedPreference,
-                    email_notifications: isBriefsSubscribed,
-                }));
-                setCookieConsent(cookieConsentValue);
-                setThemePreference(resolvedPreference, { persist: true });
+    //             setSettings(prev => ({
+    //                 ...prev,
+    //                 ...userSettings,
+    //                 cookie_consent: cookieConsentValue,
+    //                 cookie_consent_date: cookieConsentDate,
+    //                 theme: resolvedPreference,
+    //                 email_notifications: isBriefsSubscribed,
+    //             }));
+    //             setCookieConsent(cookieConsentValue);
+    //             setThemePreference(resolvedPreference, { persist: true });
 
-                const sess = await getCurrentSession();
-                setCurrentSession(sess);
-            } catch (error) {
-                console.error('Error loading settings:', error);
-                showToast('Could not load some of your settings. Try refreshing.', 'error');
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    //             const sess = await getCurrentSession();
+    //             setCurrentSession(sess);
+    //         } catch (error) {
+    //             console.error('Error loading settings:', error);
+    //             showToast('Could not load some of your settings. Try refreshing.', 'error');
+    //         } finally {
+    //             setIsLoading(false);
+    //         }
+    //     };
 
-        loadData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigate]);
+    //     loadData();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [navigate]);
 
     // ========================================================================
     // ACCOUNT HANDLERS
