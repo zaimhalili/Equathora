@@ -24,6 +24,7 @@ import {
     unsubscribeFromEquathoraBriefs,
     isSubscribedToEquathoraBriefs,
 } from '../lib/equathoraBriefsService';
+import { useSubscription } from '@/hooks/SubscriptionContext';
 
 // ============================================================================
 // LABEL MAPS (mirrors the option ids used on /getStarted)
@@ -394,6 +395,7 @@ const THEME_OPTIONS = [
 // ============================================================================
 
 const Settings = () => {
+    const { premium, loading: subLoading } = useSubscription();
     const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState('profile');
     const [isLoading, setIsLoading] = useState(true);
@@ -520,24 +522,6 @@ const Settings = () => {
                     if (sp) setLearningProfile(sp);
                 } catch (e) {
                     // No student_profile row yet (e.g. teacher account) — fine.
-                }
-
-                // Subscription, best-effort — falls back to Free until the
-                // billing columns exist on `profiles`.
-                try {
-                    const { data: sub } = await supabase
-                        .from('profiles')
-                        .select('subscription_tier, subscription_renews_at')
-                        .eq('id', session.user.id)
-                        .maybeSingle();
-                    if (sub) {
-                        setSubscription({
-                            tier: sub.subscription_tier || 'free',
-                            renewsAt: sub.subscription_renews_at || null,
-                        });
-                    }
-                } catch (e) {
-                    // subscription_tier / subscription_renews_at don't exist yet.
                 }
 
                 // Fetch user settings
@@ -1247,8 +1231,7 @@ const Settings = () => {
                                 <div className="flex flex-col gap-1">
                                     <span className="text-xs font-semibold text-[var(--mid-main-secondary)] uppercase tracking-wide">Current plan</span>
                                     <div className="flex items-center gap-2">
-                                        <span className="text-lg font-bold">{PLAN_LABELS[subscription.tier] || 'Free'}</span>
-                                        {subscription.tier !== 'free' && <IconCrown />}
+                                        <span className="text-lg font-bold">{premium ? 'Premium' : 'Free'}</span>
                                     </div>
                                     {subscription.tier !== 'free' && subscription.renewsAt && (
                                         <span className="text-xs text-[var(--mid-main-secondary)]">
@@ -1257,20 +1240,15 @@ const Settings = () => {
                                     )}
                                 </div>
 
-                                {subscription.tier === 'free' ? (
-                                    <PrimaryButton onClick={() => navigate('/premium')}>
-                                        Upgrade Plan
-                                    </PrimaryButton>
-                                ) : (
-                                    <OutlineButton onClick={() => navigate('/premium')}>
-                                        Manage Billing
-                                    </OutlineButton>
-                                )}
+                                <PrimaryButton onClick={() => navigate('/premium')}>
+                                    {premium === true ? 'Manage subscription' : 'Upgrade plan'}
+                                </PrimaryButton>
                             </div>
 
                             <p className="text-xs text-[var(--mid-main-secondary)]">
                                 Premium unlocks AI step-by-step checking, detailed explanations, and solution verification.
                             </p>
+                            <p className='text-xs text-[var(--mid-main-secondary)]'>For any issues contact us at: <a href="mailto:equathora@gmail.com" className='font-bold hover:underline'>equathora@gmail.com</a></p>
                         </SectionCard>
 
                         {/* ============================================================ */}

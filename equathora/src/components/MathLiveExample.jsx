@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/MathLiveExample.css";
-import { FaChevronDown, FaChevronUp, FaTrash, FaLightbulb, FaCheckCircle, FaPlus } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaTrash, FaLightbulb, FaCheckCircle, FaPlus, FaGraduationCap } from "react-icons/fa";
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
 import { testGemini } from "@/lib/geminiTest";
+import { useSubscription } from "@/hooks/SubscriptionContext"; // consolidated — see note above
 
 const MAX_STEP_CHARS = 150;
 const MAX_STEPS = 40;
 const MAX_TOTAL_CHARS = 5000;
+const FREE_TRIAL_LIMIT = 3;
 
 const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     useBodyScrollLock(isOpen);
@@ -28,27 +30,14 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     );
 };
 
-const normalize = (latex) =>
-    latex
-        .replace(/\s+/g, '')           // remove all whitespace
-        .replace(/\{([^{}]*)\}/g, '$1') // strip single-char braces
-        .toLowerCase()
-        .trim();
-
 const loadStoredFields = (storageKey) => {
     const emptyField = { id: Date.now(), latex: '' };
-
-    if (typeof window === 'undefined' || !storageKey) {
-        return [emptyField];
-    }
-
+    if (typeof window === 'undefined' || !storageKey) return [emptyField];
     try {
         const raw = window.localStorage.getItem(storageKey);
         if (!raw) return [emptyField];
-
         const parsed = JSON.parse(raw);
         if (!Array.isArray(parsed) || parsed.length === 0) return [emptyField];
-
         return parsed.map((field, index) => ({
             id: typeof field?.id === 'number' ? field.id : Date.now() + index,
             latex: typeof field?.latex === 'string' ? field.latex : '',
@@ -58,7 +47,22 @@ const loadStoredFields = (storageKey) => {
     }
 };
 
-export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = false, isPracticeMode = false, problemDescription, acceptedSolution, onFieldsChange, onExplainMore, onFeedbackChange = () => { }, premium, storageKey = '' }) {
+export default function MathLiveEditor({
+    onSubmit,
+    nextProblemPath,
+    isSolved = false,
+    isPracticeMode = false,
+    problemDescription,
+    acceptedSolution,
+    onFieldsChange,
+    onExplainMore,
+    onFeedbackChange = () => { },
+    isAiBusy = false,       // NEW — reported up from ChatPanel via Problem.jsx, disables Explain More while Sigma is busy
+    storageKey = '',
+}) {
+    const { tier, trialMessagesUsed } = useSubscription();
+    const trialExhausted = tier === 'free' && trialMessagesUsed >= FREE_TRIAL_LIMIT;
+
     const [fields, setFields] = useState(() => loadStoredFields(storageKey));
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
@@ -152,30 +156,28 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
 
         const totalChars = nonEmptyFields.reduce((acc, f) => acc + f.latex.length, 0);
         if (totalChars > MAX_TOTAL_CHARS) {
-            const fb = { message: `Your solution is too long...`, success: false, loading: false };
-            setSubmissionFeedback(fb);
+            setSubmissionFeedback({ message: `Your solution is too long...`, success: false, loading: false });
             return;
         }
 
         try {
             setIsSubmitting(true);
-            const fbLoading = { message: "Checking your answer...", success: false, loading: true };
-            setSubmissionFeedback(fbLoading);
+            setSubmissionFeedback({ message: "Checking your answer...", success: false, loading: true });
 
             const result = await onSubmit?.(nonEmptyFields);
-
             if (!result) return;
 
             if (result.success) {
-                const fb = { message: result.message, success: true, loading: false };
-                setSubmissionFeedback(fb);
+                setSubmissionFeedback({ message: result.message, success: true, loading: false });
                 setCanShowNext(true);
                 return;
             }
 
-            if (!premium) {
-                const fb = { message: "Incorrect. Upgrade to Premium to see exactly where you went wrong.", success: false, loading: false };
-                setSubmissionFeedback(fb);
+            if (trialExhausted) {
+                setSubmissionFeedback({
+                    message: "You've used your free trial. Upgrade to Premium to see exactly where you went wrong.",
+                    success: false, loading: false,
+                });
                 return;
             }
 
@@ -204,11 +206,22 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
         } finally {
             setIsSubmitting(false);
         }
-    }
+    };
 
     const handleNextProblem = () => {
         if (!nextProblemPath) return;
         navigate(nextProblemPath);
+    };
+
+    const handleExplainMoreClick = () => {
+        if (isAiBusy) {
+            setSubmissionFeedback(prev => ({
+                ...prev,
+                message: (prev?.message || '') + " (Sigma is still finishing the last response — try again in a moment.)",
+            }));
+            return;
+        }
+        onExplainMore?.(`Can you explain in more detail what went wrong at step ${wrongStepNumber}? The hint says: "${submissionFeedback.message}"`);
     };
 
     useEffect(() => {
@@ -225,9 +238,16 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                 onConfirm={() => { clearAll(); setDeleteAllPopup(false); }}
             />
             <div className="ml-wrapper">
-                <h2 className="ml-title">Your Solution</h2>
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <h2 className="ml-title w-full">Your Solution</h2>
+                    {isPracticeMode && (
+                        <span className="w-full text-center flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] md:text-xs font-semibold bg-blue-500/10 text-blue-600">
+                            <FaGraduationCap />
+                            Practice Mode - already solved, no points this time
+                        </span>
+                    )}
+                </div>
 
-                {/* Usage Guide */}
                 <div className="ml-format-hints" onClick={() => setHintsOpen(!hintsOpen)}>
                     <div className="ml-format-hints-toggle">
                         <div className="ml-format-hints-title">
@@ -285,26 +305,25 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                                             </button>
                                         </div>
 
-                                        {/* Inline AI hint directly under the wrong step */}
-                                        {isThisStepWrong && submissionFeedback &&
-                                            !submissionFeedback.success && (
-                                                <div className="w-full pt-2 flex justify-between px-6 md:px-8 items-center pb-4 flex-wrap">
-                                                    <div className="flex gap-2 py-1 items-center">
-                                                        {submissionFeedback.loading && (
-                                                            <span className="inline-block h-3 w-3 rounded-full border-2 border-[var(--accent-color)] border-t-transparent animate-spin" aria-hidden="true" />
-                                                        )}
-                                                        <p className="text-xs md:text-sm leading-relaxed text-[var(--secondary-color)]">
-                                                            {submissionFeedback.loading ? "Analyzing your steps..." : submissionFeedback.message}
-                                                        </p>
-                                                    </div>
-                                                    <button
-                                                        onClick={() => onExplainMore?.(`Can you explain in more detail what went wrong at step ${wrongStepNumber}? The hint says: "${submissionFeedback.message}"`)}
-                                                        className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-md cursor-pointer text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95"
-                                                    >
-                                                        Explain more
-                                                    </button>
+                                        {isThisStepWrong && submissionFeedback && !submissionFeedback.success && (
+                                            <div className="w-full pt-2 flex justify-between px-6 md:px-8 items-center pb-4 flex-wrap">
+                                                <div className="flex gap-2 py-1 items-center">
+                                                    {submissionFeedback.loading && (
+                                                        <span className="inline-block h-3 w-3 rounded-full border-2 border-[var(--accent-color)] border-t-transparent animate-spin" aria-hidden="true" />
+                                                    )}
+                                                    <p className="text-xs md:text-sm leading-relaxed text-[var(--secondary-color)]">
+                                                        {submissionFeedback.loading ? "Analyzing your steps..." : submissionFeedback.message}
+                                                    </p>
                                                 </div>
-                                            )}
+                                                <button
+                                                    onClick={handleExplainMoreClick}
+                                                    disabled={isAiBusy}
+                                                    className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-md cursor-pointer text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                >
+                                                    {isAiBusy ? "Sigma is thinking…" : "Explain more"}
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -312,7 +331,6 @@ export default function MathLiveEditor({ onSubmit, nextProblemPath, isSolved = f
                     </div>
                 </div>
 
-                {/* Bottom toolbar — buttons only */}
                 <div className="ml-toolbar-sticky">
                     <div className="ml-toolbar">
                         <button className="ml-btn clear flex gap-1 order-2 sm:order-1" onClick={() => setDeleteAllPopup(true)}>

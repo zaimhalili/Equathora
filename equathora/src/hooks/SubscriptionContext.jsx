@@ -2,23 +2,29 @@ import React, { createContext, useContext } from 'react';
 import { useSubscriptionStatus } from './useSubscription';
 
 const SubscriptionContext = createContext({
-    isPremium: false,
     tier: 'free',
-    loading: true,
+    premium: false,
     trialMessagesUsed: 0,
+    monthlyTokensUsed: 0,
+    cancelAtPeriodEnd: false,
+    cancelAt: null,
+    loading: true,
+    refetchSubscription: () => { },
 });
 
 export function SubscriptionProvider({ children }) {
-    const { tier, loading, trialMessagesUsed, monthlyTokensUsed, error } = useSubscriptionStatus();
-
-    const premium = tier === 'premium';
+    const status = useSubscriptionStatus();
 
     return (
-        <SubscriptionContext.Provider value={{ premium, tier, loading, trialMessagesUsed, monthlyTokensUsed, error }}>
+        <SubscriptionContext.Provider value={{
+            ...status,
+            refetchSubscription: status.refetch
+        }}>
             {children}
         </SubscriptionContext.Provider>
     );
 }
 
-// Custom hook to read subscription state anywhere in 1 line
-export const useSubscription = () => useContext(SubscriptionContext);
+export function useSubscription() {
+    return useContext(SubscriptionContext);
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import useBodyScrollLock from '../hooks/useBodyScrollLock';
+import useBodyScrollLock from '@/hooks/useBodyScrollLock';
 
 const UpgradedPopup = ({ onClose }) => {
     const [show, setShow] = useState(true);

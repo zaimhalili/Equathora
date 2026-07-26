@@ -1,7 +1,3 @@
-// Client-side answer validation for static MVP
-// This validates student answers against the problem's accepted answers
-
-import { validateExpression } from '../utils/mathNetService';
 import { evaluate, parse, simplify } from 'mathjs';
 
 const ABS_TOLERANCE = 1e-6;
@@ -314,20 +310,6 @@ export const validateAnswer = async (userAnswer, problem) => {
                 score: 1
             };
         }
-    }
-
-    // Try Math.NET backend validation as a last resort
-    try {
-        const mathNetValidation = await validateExpression(userAnswer, problem);
-        if (mathNetValidation.isCorrect) {
-            return {
-                isCorrect: true,
-                feedback: getCorrectFeedback(problem),
-                score: mathNetValidation.score || 1
-            };
-        }
-    } catch {
-        // Backend unavailable — fall through to incorrect
     }
 
     return {

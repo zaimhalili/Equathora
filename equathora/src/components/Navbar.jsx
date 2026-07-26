@@ -34,6 +34,7 @@ import { getDailyProblemSlug } from '../lib/utils';
 import Books from '../assets/images/learningBooks.svg';
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import PremiumButton from './Premium/PremiumButton';
+import { useSubscriptionStatus } from '@/hooks/useSubscription';
 
 const getLowResAvatarUrl = (avatarUrl) => {
   if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
@@ -51,9 +52,9 @@ const getLowResAvatarUrl = (avatarUrl) => {
   }
 };
 
-const Navbar = ({premium = true}) => {
+const Navbar = () => {
   const { profile } = useUserProfile();
-
+  const { premium, loading: onloading } = useSubscriptionStatus();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dailyProblemSlug, setDailyProblemSlug] = useState('');
   const [currentStreak, setCurrentStreak] = useState(0);

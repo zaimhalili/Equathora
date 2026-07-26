@@ -52,6 +52,7 @@ import {
 } from '../lib/notificationService';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import OverflowChecker from './OverflowChecker.jsx';
+import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
 
 const formatDurationLabel = (seconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(seconds));
@@ -117,7 +118,8 @@ const hydrateStoredSubmissions = (records = []) => {
     return hydrated.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 };
 
-const Problem = ({ premium = true }) => {
+const Problem = () => {
+    const { premium, loading: subLoading } = useSubscription();
     const chatPanelRef = useRef(null);
     const { slug } = useParams();
     const navigate = useNavigate();
@@ -233,6 +235,7 @@ const Problem = ({ premium = true }) => {
     const [chatSeed, setChatSeed] = useState(null);
     const [pendingSigmaPrompt, setPendingSigmaPrompt] = useState('');
     const [isCompleted, setIsCompleted] = useState(false);
+    const [sigmaBusy, setSigmaBusy] = useState(false);
 
 
     // Track theme dynamically from data-theme attribute
@@ -267,17 +270,6 @@ const Problem = ({ premium = true }) => {
         setPendingSigmaPrompt(message);
         if (descriptionCollapsed) setDescriptionCollapsed(false);
     }, [descriptionCollapsed]);
-
-    useEffect(() => {
-        if (!chatPanel || !pendingSigmaPrompt) return;
-
-        const timer = window.setTimeout(() => {
-            chatPanelRef.current?.sendMessage(pendingSigmaPrompt);
-            setPendingSigmaPrompt('');
-        }, 0);
-
-        return () => window.clearTimeout(timer);
-    }, [chatPanel, pendingSigmaPrompt]);
 
     const resolveColor = useCallback((color) => {
         if (typeof color === 'string' && color.startsWith('var(')) {
@@ -617,7 +609,7 @@ const Problem = ({ premium = true }) => {
             return {
                 success: validation.isCorrect,
                 message: validation.isCorrect
-                    ? 'Correct! (Practice mode)'
+                    ? 'Correct!' // practice mode
                     : validation.feedback,
                 isPracticeMode: true
             };
@@ -842,7 +834,7 @@ const Problem = ({ premium = true }) => {
 
                     {/* Right side - Premium Button, Timer and Actions */}
                     <div className="flex items-center gap-2">
-                        <PremiumButton premium={premium}/>
+                        <PremiumButton premium={premium} />
                         <Timer key={`${problem?.id}-${timerResetSeq}`} problemId={problem?.id} isRunning={timerRunning} />
 
                         {/* Desktop buttons - hidden on mobile */}
@@ -1433,7 +1425,11 @@ const Problem = ({ premium = true }) => {
                                     problemDescription={problem.description}
                                     acceptedSolution={problem.solution}
                                     fields={fields}
-                                    storageKey={sigmaChatStorageKey} />}
+                                    storageKey={sigmaChatStorageKey}
+                                    pendingMessage={pendingSigmaPrompt}
+                                    onPendingMessageSent={() => setPendingSigmaPrompt('')}
+                                    onBusyChange={setSigmaBusy}
+                                />}
                             </div>
                         </article>
                     </aside>
@@ -1452,8 +1448,8 @@ const Problem = ({ premium = true }) => {
                             acceptedSolution={problem.solution}
                             onFieldsChange={handleFieldsChange}
                             onExplainMore={openSigmaChat}
+                            isAiBusy={sigmaBusy}
                             storageKey={mathDraftStorageKey}
-                            premium={premium}
                         />
                     </article>
                 </section>

@@ -424,52 +424,19 @@ export async function saveSubmission(problemId, submittedAnswer, isCorrect, time
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
 
-        const basePayload = {
-            user_id: session.user.id,
-            problem_id: problemId,
-            submitted_answer: submittedAnswer,
-            is_correct: isCorrect,
-            time_spent_seconds: timeSpentSeconds,
-            submitted_at: new Date().toISOString(),
-            steps: steps
-        };
+        const { error } = await supabase
+            .from('user_submissions')
+            .insert({
+                user_id: session.user.id,
+                problem_id: problemId,
+                submitted_answer: submittedAnswer,
+                is_correct: isCorrect,
+                time_spent_seconds: timeSpentSeconds,
+                submitted_at: new Date().toISOString(),
+                steps: steps,
+            });
 
-        const normalizedTopic = typeof metadata.topic === 'string' ? metadata.topic.trim() : '';
-        const normalizedDifficulty = typeof metadata.difficulty === 'string' ? metadata.difficulty.trim() : '';
-
-        const hasAnalyticsMetadata = Boolean(normalizedTopic || normalizedDifficulty);
-        const payloadCandidates = hasAnalyticsMetadata
-            ? [
-                {
-                    ...basePayload,
-                    ...(normalizedTopic ? { topic: normalizedTopic, problem_topic: normalizedTopic } : {}),
-                    ...(normalizedDifficulty ? { difficulty: normalizedDifficulty, problem_difficulty: normalizedDifficulty } : {})
-                },
-                {
-                    ...basePayload,
-                    ...(normalizedTopic ? { topic: normalizedTopic } : {}),
-                    ...(normalizedDifficulty ? { difficulty: normalizedDifficulty } : {})
-                },
-                {
-                    ...basePayload,
-                    ...(normalizedTopic ? { problem_topic: normalizedTopic } : {}),
-                    ...(normalizedDifficulty ? { problem_difficulty: normalizedDifficulty } : {})
-                },
-                basePayload
-            ]
-            : [basePayload];
-
-        let lastError = null;
-        for (const candidate of payloadCandidates) {
-            const { error } = await supabase
-                .from('user_submissions')
-                .insert(candidate);
-
-            if (!error) return;
-            lastError = error;
-        }
-
-        if (lastError) throw lastError;
+        if (error) throw error;
     } catch (error) {
         console.error('Error saving submission:', error);
     }

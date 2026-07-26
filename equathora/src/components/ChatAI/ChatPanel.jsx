@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react';
-import { FaCrown, FaPaperPlane } from 'react-icons/fa';
+import { FaCrown, FaPaperPlane, FaLock } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { convertLatexToMarkup } from 'mathlive';
 import 'mathlive/static.css';
@@ -13,7 +13,7 @@ import {
     truncateAiResponseSafely,
 } from '@/lib/SigmaChat/chatLatex';
 import { loadSigmaChatState, saveSigmaChatState } from '@/lib/SigmaChat/sigmaChatStorage';
-import { useSubscriptionStatus } from '@/hooks/useSubscriptionStatus';
+import { useSubscription } from '@/hooks/SubscriptionContext';
 
 const FREE_TRIAL_LIMIT = 3;
 const MAX_INPUT_CHARS = 500;
@@ -22,6 +22,7 @@ const MAX_HISTORY_MESSAGES = 100;
 const MAX_DISPLAY_MESSAGES = 50;
 const RATE_LIMIT_MS = 2000;
 const MAX_STEPS_CHARS = 2000;
+
 const DEFAULT_MESSAGES = [
     {
         id: 1,
@@ -30,7 +31,6 @@ const DEFAULT_MESSAGES = [
     },
 ];
 
-// Only sanitize dangerous unicode — does NOT slice, so AI long responses survive
 const stripUnsafeControlCharacters = (str) =>
     Array.from(str, (character) => {
         const codePoint = character.codePointAt(0);
@@ -39,32 +39,24 @@ const stripUnsafeControlCharacters = (str) =>
             || codePoint === 12
             || (codePoint >= 14 && codePoint <= 31)
             || (codePoint >= 127 && codePoint <= 159);
-
         return isUnsafeControl ? '' : character;
     }).join('');
 
 const sanitizeUnicode = (str) =>
-    stripUnsafeControlCharacters(str
+    stripUnsafeControlCharacters(String(str ?? '')
         .replace(/\r\n?/g, '\n')
         .replace(/[\u200B-\u200D\uFEFF]/g, '')
         .replace(/[\u202A-\u202E]/g, ''))
         .trim();
 
-// For user input — sanitize AND hard cap
 const sanitizeInput = (str) => sanitizeUnicode(str).slice(0, MAX_INPUT_CHARS);
-
-// ---------------------------------------------------------------------------
-// Math rendering
-// ---------------------------------------------------------------------------
 
 function renderLatexSafe(latex, displayMode) {
     if (!hasBalancedLatexBraces(latex)) return null;
-
     try {
         const markup = convertLatexToMarkup(latex, {
             mathstyle: displayMode ? 'displaystyle' : 'textstyle',
         });
-
         return markup && !markup.includes('ML__error') ? markup : null;
     } catch {
         return null;
@@ -75,16 +67,13 @@ function renderMathSegment(segment, key) {
     if (isProseHeavyLatex(segment.value)) {
         return <span key={key}>{stripLatexTextCommands(segment.value)}</span>;
     }
-
     const markup = renderLatexSafe(segment.value, segment.display);
     if (!markup) {
         return <span key={key}>{segment.source}</span>;
     }
-
     const className = segment.display
         ? 'block max-w-full overflow-x-auto py-2 text-center'
         : 'inline-block max-w-full align-middle';
-
     return (
         <span
             key={key}
@@ -113,16 +102,23 @@ const ChatPanel = forwardRef(({
     acceptedSolution,
     fields = [],
     storageKey = '',
+    pendingMessage = null,
+    onPendingMessageSent,
+    onBusyChange,
 }, ref) => {
-    const { tier, trialMessagesUsed, loading: statusLoading } = useSubscriptionStatus();
-    const trialExhausted = tier === 'free' && trialMessagesUsed >= FREE_TRIAL_LIMIT;
+    const { tier, trialMessagesUsed = 0, loading: statusLoading, refetchSubscription } = useSubscription();
+
+    const safeTrialUsed = Number(trialMessagesUsed) || 0;
+    const remainingMessages = Math.max(0, FREE_TRIAL_LIMIT - safeTrialUsed);
+    const trialExhausted = tier === 'free' && remainingMessages <= 0;
 
     const scrollContainerRef = useRef(null);
     const lastSentAt = useRef(0);
-    const isHydratingRef = useRef(false);
+    const [isHydrated, setIsHydrated] = useState(false);
     const hydrationPromiseRef = useRef(Promise.resolve());
     const chatMessagesRef = useRef(DEFAULT_MESSAGES);
     const lastAnalyzedStepsRef = useRef(null);
+    const lastProcessedPendingRef = useRef(null);
 
     const [typedMessage, setTypedMessage] = useState('');
     const [isAiThinking, setIsAiThinking] = useState(false);
@@ -136,20 +132,26 @@ const ChatPanel = forwardRef(({
     }, [chatMessages]);
 
     useEffect(() => {
+        onBusyChange?.(isAiThinking);
+    }, [isAiThinking, onBusyChange]);
+
+    useEffect(() => {
         if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
         }
     }, [chatMessages, isAiThinking]);
 
+    // Hydration lifecycle
     useEffect(() => {
         setInputError('');
         setRateLimited(false);
         setIsAiThinking(false);
         setIsLoadingHistory(Boolean(storageKey));
+        setIsHydrated(false);
         lastAnalyzedStepsRef.current = null;
+        lastProcessedPendingRef.current = null;
 
         let isActive = true;
-        isHydratingRef.current = true;
         let resolveHydration = null;
         hydrationPromiseRef.current = new Promise((resolve) => {
             resolveHydration = resolve;
@@ -157,43 +159,37 @@ const ChatPanel = forwardRef(({
 
         const hydrateChatState = async () => {
             try {
-                const loaded = await loadSigmaChatState(storageKey);
-
-                if (!isActive) {
-                    return;
+                if (storageKey) {
+                    const loaded = await loadSigmaChatState(storageKey);
+                    if (!isActive) return;
+                    const nextMessages = loaded.messages?.length > 0 ? loaded.messages : DEFAULT_MESSAGES;
+                    setChatMessages(nextMessages);
+                    setTypedMessage(loaded.draft || '');
+                } else {
+                    setChatMessages(DEFAULT_MESSAGES);
+                    setTypedMessage('');
                 }
-
-                const nextMessages = loaded.messages.length > 0 ? loaded.messages : DEFAULT_MESSAGES;
-                setChatMessages(nextMessages);
-                setTypedMessage(loaded.draft);
             } finally {
                 if (isActive) {
-                    isHydratingRef.current = false;
                     setIsLoadingHistory(false);
+                    setIsHydrated(true);
                 }
-
                 resolveHydration?.();
             }
         };
 
         hydrateChatState();
-
-        return () => {
-            isActive = false;
-        };
+        return () => { isActive = false; };
     }, [storageKey]);
 
+    // Auto-save draft & messages after hydration
     useEffect(() => {
-        if (isHydratingRef.current || !storageKey) {
-            return;
-        }
-
+        if (!isHydrated || !storageKey) return;
         const timer = window.setTimeout(() => {
             saveSigmaChatState(storageKey, { messages: chatMessages, draft: typedMessage });
         }, 250);
-
         return () => window.clearTimeout(timer);
-    }, [storageKey, chatMessages, typedMessage]);
+    }, [storageKey, chatMessages, typedMessage, isHydrated]);
 
     const handleInputChange = useCallback((e) => {
         const raw = e.target.value;
@@ -204,7 +200,7 @@ const ChatPanel = forwardRef(({
         setTypedMessage(raw.slice(0, MAX_INPUT_CHARS));
     }, []);
 
-    const runAiCall = async (userText, currentMessages, currentFields) => {
+    const runAiCall = useCallback(async (userText, currentMessages, currentFields) => {
         const userMsg = { id: Date.now(), sender: 'user', text: userText };
         const updatedHistory = [...currentMessages, userMsg].slice(-MAX_HISTORY_MESSAGES);
         setChatMessages(updatedHistory);
@@ -236,6 +232,10 @@ const ChatPanel = forwardRef(({
             setChatMessages((prev) =>
                 [...prev, { id: Date.now(), sender: 'ai', text: safeAiText }].slice(-MAX_HISTORY_MESSAGES)
             );
+
+            if (refetchSubscription) {
+                await refetchSubscription();
+            }
         } catch (error) {
             console.error('Sigma chat error:', error);
             const friendlyErrorText = sanitizeUnicode(getFriendlySigmaErrorMessage(error));
@@ -245,26 +245,39 @@ const ChatPanel = forwardRef(({
         } finally {
             setIsAiThinking(false);
         }
-    };
+    }, [problemDescription, acceptedSolution, refetchSubscription]);
 
-    const sendMessage = (text) => {
+    // Handle incoming pending messages safely without duplicate triggers
+    useEffect(() => {
+        if (!pendingMessage) return;
+        if (isLoadingHistory || isAiThinking || trialExhausted) return;
+        if (lastProcessedPendingRef.current === pendingMessage) return;
+
+        const cleanText = sanitizeInput(pendingMessage);
+        lastProcessedPendingRef.current = pendingMessage;
+        onPendingMessageSent?.();
+
+        if (cleanText) {
+            runAiCall(cleanText, chatMessagesRef.current, fields);
+        }
+    }, [pendingMessage, isLoadingHistory, isAiThinking, trialExhausted, fields, onPendingMessageSent, runAiCall]);
+
+    const sendMessage = useCallback((text) => {
         if (!text || isAiThinking || isLoadingHistory || trialExhausted) return;
         const cleanText = sanitizeInput(text);
         if (!cleanText) return;
-
         void hydrationPromiseRef.current.then(() => {
             runAiCall(cleanText, chatMessagesRef.current, fields);
         });
-    };
+    }, [isAiThinking, isLoadingHistory, trialExhausted, fields, runAiCall]);
 
-    useImperativeHandle(ref, () => ({ sendMessage }), [chatMessages, fields, problemDescription, acceptedSolution, isAiThinking, trialExhausted]);
+    useImperativeHandle(ref, () => ({ sendMessage }), [sendMessage]);
 
     const handleSendMessage = useCallback(async (e) => {
-        e.preventDefault();
+        e?.preventDefault();
         if (trialExhausted) return;
 
         const now = Date.now();
-
         if (now - lastSentAt.current < RATE_LIMIT_MS) {
             setRateLimited(true);
             setTimeout(() => setRateLimited(false), RATE_LIMIT_MS);
@@ -274,7 +287,7 @@ const ChatPanel = forwardRef(({
 
         const userText = sanitizeInput(typedMessage);
         if (!userText) {
-            setInputError('Message cannot be empty or contain only whitespace.');
+            setInputError('Message cannot be empty.');
             return;
         }
 
@@ -283,7 +296,7 @@ const ChatPanel = forwardRef(({
         lastSentAt.current = now;
 
         await runAiCall(userText, chatMessagesRef.current, fields);
-    }, [typedMessage, isAiThinking, isLoadingHistory, chatMessages, fields, problemDescription, acceptedSolution, trialExhausted]);
+    }, [typedMessage, isAiThinking, fields, trialExhausted, runAiCall]);
 
     const visibleMessages = chatMessages.slice(-MAX_DISPLAY_MESSAGES);
     const hiddenCount = chatMessages.length - visibleMessages.length;
@@ -297,29 +310,34 @@ const ChatPanel = forwardRef(({
         );
     }
 
-    if (trialExhausted) {
-        return (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-[var(--main-color)] rounded-md p-6">
-                <div className="text-center flex flex-col items-center gap-1">
-                    <FaCrown className="text-amber-500 text-3xl animate-bounce" />
-                    <h4 className="font-bold text-lg text-[var(--secondary-color)]">Unlock Sigma AI Mentor</h4>
-                    <p className="text-sm text-[var(--mid-main-secondary)] max-w-xs pb-2">
-                        You've used your {FREE_TRIAL_LIMIT} free messages. Upgrade to Premium for unlimited step-by-step corrections.
-                    </p>
-                    <Link to={'/premium'} className='bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 rounded-md cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95' title='Get Premium'>
-                        <FaCrown />
-                        <span>Upgrade</span>
-                    </Link>
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <div className="w-full flex-1 flex flex-col font-[Sansation,sans-serif] bg-[var(--white)] text-[var(--secondary-color)] rounded-md overflow-hidden min-h-0">
+        <div className="relative w-full flex-1 flex flex-col font-[Sansation,sans-serif] bg-[var(--white)] text-[var(--secondary-color)] rounded-md overflow-hidden min-h-0">
+            {/* Backdrop Lock Overlay */}
+            {trialExhausted && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-black/60 backdrop-blur-sm transition-all duration-300">
+                    <div className="bg-[var(--main-color)] border border-amber-500/30 rounded-xl p-6 shadow-2xl max-w-sm w-full text-center flex flex-col items-center gap-3 animate-fadeIn">
+                        <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 text-xl shadow-inner">
+                            <FaLock />
+                        </div>
+                        <h4 className="font-bold text-lg text-[var(--secondary-color)]">
+                            Free Trial Completed
+                        </h4>
+                        <p className="text-xs text-[var(--mid-main-secondary)] leading-relaxed">
+                            You've used all <strong className="text-[var(--secondary-color)]">{FREE_TRIAL_LIMIT} free trial messages</strong>. Upgrade to Premium for unlimited step-by-step mathematical explanations.
+                        </p>
+                        <Link
+                            to="/premium"
+                            className="w-full mt-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold py-2.5 px-4 rounded-lg shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 text-sm"
+                        >
+                            <FaCrown className="text-amber-200" />
+                            <span>Upgrade to Pro</span>
+                        </Link>
+                    </div>
+                </div>
+            )}
 
-            {/* Messages */}
-            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4 flex flex-col gap-4 bg-[var(--main-color)]">
+            {/* Chat Container */}
+            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4 flex flex-col gap-4 bg-[var(--main-color)] p-4">
                 {isLoadingHistory ? (
                     <div className="flex items-center gap-2 self-start rounded-2xl border border-[var(--french-gray)] bg-[var(--white)] px-3.5 py-2.5 text-xs text-[var(--secondary-color)]">
                         <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[var(--dark-accent-color)]" />
@@ -329,16 +347,15 @@ const ChatPanel = forwardRef(({
                     <>
                         {hiddenCount > 0 && (
                             <p className="text-center text-[10px] text-[var(--mid-main-secondary)] shrink-0">
-                                {hiddenCount} earlier message{hiddenCount !== 1 ? 's' : ''} hidden to keep things fast.
+                                {hiddenCount} earlier message{hiddenCount !== 1 ? 's' : ''} hidden.
                             </p>
                         )}
-
                         {visibleMessages.map((msg) => (
                             <div key={msg.id} className={`flex flex-col gap-1 max-w-[85%] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
                                 <div
                                     className={`border rounded-2xl px-4 py-2.5 text-xs md:text-sm leading-relaxed ${msg.sender === 'ai'
-                                        ? 'border-[var(--french-gray)] rounded-tl-none bg-[var(--white)] text-[var(--secondary-color)]'
-                                        : 'border-transparent rounded-tr-none bg-[var(--dark-accent-color)] text-white'
+                                            ? 'border-[var(--french-gray)] rounded-tl-none bg-[var(--white)] text-[var(--secondary-color)]'
+                                            : 'border-transparent rounded-tr-none bg-[var(--dark-accent-color)] text-white'
                                         }`}
                                     style={{ wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }}
                                 >
@@ -358,19 +375,29 @@ const ChatPanel = forwardRef(({
                 )}
             </div>
 
-            {/* Input Zone */}
-            <form onSubmit={handleSendMessage} className="shrink-0 py-4 flex flex-col gap-1 border-t border-[var(--french-gray)] bg-[var(--main-color)] rounded-b-md">
+            {/* Input Form Area */}
+            <form onSubmit={handleSendMessage} className="shrink-0 p-3 flex flex-col gap-1.5 border-t border-[var(--french-gray)] bg-[var(--main-color)] rounded-b-md">
                 {tier === 'free' && (
-                    <p className="text-[10px] text-center text-[var(--mid-main-secondary)] pb-1 m-0">
-                        {Math.max(0, FREE_TRIAL_LIMIT - trialMessagesUsed)} of {FREE_TRIAL_LIMIT} free messages left
-                    </p>
+                    <div className="flex items-center justify-between px-1 text-[10px] text-[var(--mid-main-secondary)]">
+                        <span>
+                            {remainingMessages} of {FREE_TRIAL_LIMIT} free messages remaining
+                        </span>
+                        <Link
+                            to="/premium"
+                            className="inline-flex items-center gap-1 font-bold text-amber-600 hover:text-amber-500 transition-colors"
+                        >
+                            <FaCrown />
+                            Upgrade
+                        </Link>
+                    </div>
                 )}
 
                 {(inputError || rateLimited) && (
                     <p className="text-[10px] text-red-500 px-1 m-0">
-                        {rateLimited ? 'Slow down - please wait a moment before sending again.' : inputError}
+                        {rateLimited ? 'Slow down - please wait a moment.' : inputError}
                     </p>
                 )}
+
                 <div className="flex items-center gap-2">
                     <div className="relative flex-1">
                         <input
@@ -379,14 +406,26 @@ const ChatPanel = forwardRef(({
                             onChange={handleInputChange}
                             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) handleSendMessage(e); }}
                             disabled={isLoadingHistory || isAiThinking || rateLimited || trialExhausted}
-                            placeholder={isLoadingHistory ? 'Loading chat history…' : isAiThinking ? 'Sigma is thinking…' : rateLimited ? 'Please wait…' : 'Ask a follow-up question…'}
+                            placeholder={
+                                trialExhausted
+                                    ? 'Trial exhausted. Upgrade to keep chatting.'
+                                    : isLoadingHistory
+                                        ? 'Loading chat history…'
+                                        : isAiThinking
+                                            ? 'Sigma is thinking…'
+                                            : rateLimited
+                                                ? 'Please wait…'
+                                                : 'Ask a follow-up question…'
+                            }
                             maxLength={MAX_INPUT_CHARS}
                             aria-label="Chat message input"
                             className="w-full rounded-md px-4 py-2 text-sm md:text-base border bg-[var(--main-color)] border-[var(--french-gray)] text-[var(--secondary-color)] focus:!outline-none disabled:opacity-50 !h-full"
                         />
                         {typedMessage.length > MAX_INPUT_CHARS * 0.8 && (
-                            <span className="absolute right-2 bottom-0 text-[10px] pointer-events-none font-bold"
-                                style={{ color: typedMessage.length >= MAX_INPUT_CHARS ? '#d70427' : 'var(--mid-main-secondary)' }}>
+                            <span
+                                className="absolute right-2 bottom-0 text-[10px] pointer-events-none font-bold"
+                                style={{ color: typedMessage.length >= MAX_INPUT_CHARS ? '#d70427' : 'var(--mid-main-secondary)' }}
+                            >
                                 {typedMessage.length}/{MAX_INPUT_CHARS}
                             </span>
                         )}
