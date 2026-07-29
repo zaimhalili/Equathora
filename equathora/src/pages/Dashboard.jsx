@@ -148,7 +148,7 @@ const Dashboard = () => {
                                             >
                                                 <img src={JourneyImg} alt="Journey" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
-                                                    Your Journey
+                                                    Your journey
                                                 </h6>
                                             </Link>
                                         </motion.div>
@@ -159,12 +159,12 @@ const Dashboard = () => {
                                             className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
                                         >
                                             <Link
-                                                to="/applyMentor"
+                                                to="/learn"
                                                 className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
-                                                <img src={Mentoring} alt="Mentoring" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
+                                                <img src={Books} alt="Books" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
-                                                    Try mentoring
+                                                    Browse problems
                                                 </h6>
                                             </Link>
                                         </motion.div>

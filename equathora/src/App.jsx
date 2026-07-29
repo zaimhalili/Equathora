@@ -65,7 +65,7 @@ const Journey = lazy(() => import("./pages/Journey"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const EquathoraBriefs = lazy(() => import("./pages/EquathoraBriefs"));
-const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard"));
+// const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard"));
 
 function HomeRoute() {
     const { loading, isAuth, onboardingCompleted } = useAuth();
@@ -112,7 +112,7 @@ function PageTitleUpdater() {
             '/pageNotFound': '404 - Page Not Found - Equathora',
             '/blog': 'Blog - Equathora',
             '/blogs': 'All Posts - Equathora',
-            '/adminDashboard': 'Admin Dashboard - Equathora',
+            // '/adminDashboard': 'Admin Dashboard - Equathora',
             '/getStarted': 'Choose Your Path - Equathora',
             '/submit-problem': 'Submit a problem - Equathora',
         };
@@ -273,7 +273,7 @@ export default function App() {
                             <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />
                             <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
                             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-                            <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                            {/* <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} /> */}
                             {/* <Route path="/submit-problem" element={<AdminRoute><SubmitProblem /></AdminRoute>} /> */}
 
                             {/* Protected Nested Routes */}

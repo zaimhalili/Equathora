@@ -91,343 +91,377 @@ export async function getProblemGroup(id) {
 // ============================================================================
 // PROBLEMS
 // ============================================================================ 
-export async function getProblems(
-    page = null,
-    pageSize = null,
-    problemId = null,
-    slug = null,
-    difficulties = null,
-    topics = null,
-    grades = null,
-    searchTerm = null,
-    sort = null,
-    progress = null,
-    status = null
-) {
-    const buildCsv = (value) => Array.isArray(value) && value.length > 0 ? value.join(',') : null;
-    const normalizeStatusValues = (values) => {
-        if (!Array.isArray(values)) return [];
-        return values.map((item) => {
-            if (item === 'not-started') return 'notstarted';
-            if (item === 'favourite') return 'favorite';
-            return item;
-        });
+// ---- shared helpers (module scope) ----
+
+const buildCsv = (value) => Array.isArray(value) && value.length > 0 ? value.join(',') : null;
+
+const normalizeStatusValues = (values) => {
+    if (!Array.isArray(values)) return [];
+    return values.map((item) => {
+        if (item === 'not-started') return 'notstarted';
+        if (item === 'favourite') return 'favorite';
+        return item;
+    });
+};
+
+// Normalize incoming filter arrays to avoid mismatches from casing/whitespace
+const normalizeArray = (arr) => {
+    if (!Array.isArray(arr)) return null;
+    const cleaned = arr
+        .map((v) => (v === null || v === undefined) ? '' : String(v).trim())
+        .filter((v) => v !== '');
+    return cleaned.length > 0 ? cleaned : null;
+};
+
+// is_premium is a real boolean column, so normalize separately (don't stringify)
+const normalizeBooleanArray = (arr) => {
+    if (!Array.isArray(arr)) return null;
+    const cleaned = arr
+        .map((v) => {
+            if (typeof v === 'boolean') return v;
+            if (v === 'true' || v === 'premium') return true;
+            if (v === 'false' || v === 'free') return false;
+            return null;
+        })
+        .filter((v) => v !== null);
+    return cleaned.length > 0 ? cleaned : null;
+};
+
+const applyLocalSort = (items, sortValue) => {
+    if (!sortValue || sortValue === 'default') return items;
+
+    const difficultyRank = {
+        beginner: 1,
+        easy: 2,
+        standard: 3,
+        intermediate: 4,
+        medium: 5,
+        challenging: 6,
+        hard: 7,
+        advanced: 8,
+        expert: 9,
     };
 
-    const statusFilters = normalizeStatusValues(status);
-    const includesFavorite = statusFilters.includes('favorite');
+    return [...items].sort((a, b) => {
+        if (sortValue === 'title-asc') return (a.title || '').localeCompare(b.title || '');
+        if (sortValue === 'title-desc') return (b.title || '').localeCompare(a.title || '');
 
-    // Normalize incoming filter arrays to avoid mismatches from casing/whitespace
-    const normalizeArray = (arr) => {
-        if (!Array.isArray(arr)) return null;
-        const cleaned = arr
-            .map((v) => (v === null || v === undefined) ? '' : String(v).trim())
-            .filter((v) => v !== '');
-        return cleaned.length > 0 ? cleaned : null;
-    };
-
-    const applyLocalSort = (items, sortValue) => {
-        if (!sortValue || sortValue === 'default') return items;
-
-        const difficultyRank = {
-            beginner: 1,
-            easy: 2,
-            standard: 3,
-            intermediate: 4,
-            medium: 5,
-            challenging: 6,
-            hard: 7,
-            advanced: 8,
-            expert: 9,
-        };
-
-        return [...items].sort((a, b) => {
-            if (sortValue === 'title-asc') return (a.title || '').localeCompare(b.title || '');
-            if (sortValue === 'title-desc') return (b.title || '').localeCompare(a.title || '');
-
-            if (sortValue === 'difficulty-asc') {
-                return (difficultyRank[(a.difficulty || '').toLowerCase()] || 99) - (difficultyRank[(b.difficulty || '').toLowerCase()] || 99);
-            }
-
-            if (sortValue === 'difficulty-desc') {
-                return (difficultyRank[(b.difficulty || '').toLowerCase()] || 99) - (difficultyRank[(a.difficulty || '').toLowerCase()] || 99);
-            }
-
-            if (sortValue === 'newest') {
-                return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
-            }
-
-            if (sortValue === 'oldest') {
-                return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
-            }
-
-            return 0;
-        });
-    };
-
-    const buildFacets = (items) => {
-        const facets = {
-            difficulty: {},
-            topic: {},
-            grade: {},
-            progress: {
-                completed: 0,
-                inProgress: 0,
-                notStarted: 0,
-            },
-        };
-
-        for (const item of items) {
-            if (item.difficulty) {
-                facets.difficulty[item.difficulty] = (facets.difficulty[item.difficulty] || 0) + 1;
-            }
-
-            if (item.topic) {
-                facets.topic[item.topic] = (facets.topic[item.topic] || 0) + 1;
-            }
-
-            const gradeValue = item.grade ?? item.grade_group;
-            if (gradeValue !== undefined && gradeValue !== null && String(gradeValue).trim() !== '') {
-                const gradeKey = String(gradeValue);
-                facets.grade[gradeKey] = (facets.grade[gradeKey] || 0) + 1;
-            }
-
-            if (item.completed) {
-                facets.progress.completed += 1;
-            } else if (item.inProgress) {
-                facets.progress.inProgress += 1;
-            } else {
-                facets.progress.notStarted += 1;
-            }
+        if (sortValue === 'difficulty-asc') {
+            return (difficultyRank[(a.difficulty || '').toLowerCase()] || 99) - (difficultyRank[(b.difficulty || '').toLowerCase()] || 99);
         }
 
-        return facets;
+        if (sortValue === 'difficulty-desc') {
+            return (difficultyRank[(b.difficulty || '').toLowerCase()] || 99) - (difficultyRank[(a.difficulty || '').toLowerCase()] || 99);
+        }
+
+        if (sortValue === 'newest') {
+            return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+        }
+
+        if (sortValue === 'oldest') {
+            return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
+        }
+
+        return 0;
+    });
+};
+
+const buildFacets = (items) => {
+    const facets = {
+        difficulty: {},
+        topic: {},
+        grade: {},
+        progress: {
+            completed: 0,
+            inProgress: 0,
+            notStarted: 0,
+        },
     };
 
-    const matchesStatusFilter = (problem, statusValue) => {
-        if (statusValue === 'completed') return problem.completed;
-        if (statusValue === 'in-progress') return problem.inProgress;
-        if (statusValue === 'notstarted') return !problem.completed && !problem.inProgress;
-        if (statusValue === 'favorite') return problem.favourite;
-        return false;
-    };
+    for (const item of items) {
+        if (item.difficulty) {
+            facets.difficulty[item.difficulty] = (facets.difficulty[item.difficulty] || 0) + 1;
+        }
 
-    // Keep Learn in sync with Profile/Dashboard: derive completion state from
-    // user_completed_problems + local in-progress state for authenticated users.
+        if (item.topic) {
+            facets.topic[item.topic] = (facets.topic[item.topic] || 0) + 1;
+        }
+
+        const gradeValue = item.grade ?? item.grade_group;
+        if (gradeValue !== undefined && gradeValue !== null && String(gradeValue).trim() !== '') {
+            const gradeKey = String(gradeValue);
+            facets.grade[gradeKey] = (facets.grade[gradeKey] || 0) + 1;
+        }
+
+        if (item.completed) {
+            facets.progress.completed += 1;
+        } else if (item.inProgress) {
+            facets.progress.inProgress += 1;
+        } else {
+            facets.progress.notStarted += 1;
+        }
+    }
+
+    return facets;
+};
+
+const matchesStatusFilter = (problem, statusValue) => {
+    if (statusValue === 'completed') return problem.completed;
+    if (statusValue === 'in-progress') return problem.inProgress;
+    if (statusValue === 'notstarted') return !problem.completed && !problem.inProgress;
+    if (statusValue === 'favorite') return problem.favourite;
+    return false;
+};
+
+// ---- authenticated-user path ----
+// Returns a result object on success, or null to signal "fall through to next source"
+// (mirrors the original: no userId, or any thrown error, both fall through).
+async function fetchAuthenticatedUserProblems({
+    page, pageSize, problemId, slug,
+    difficulties, topics, grades, searchTerm, sort,
+    isPremium, statusFilters, includesFavorite
+}) {
     try {
         const { data: { session } } = await supabase.auth.getSession();
         const userId = session?.user?.id;
 
-        if (userId) {
-            const [favoriteProblemIds, completedProblemIds] = await Promise.all([
-                getFavorites(),
-                getCompletedProblems()
-            ]);
+        if (!userId) return null;
 
-            if (includesFavorite && (!favoriteProblemIds || favoriteProblemIds.length === 0)) {
-                const safePage = page ?? 1;
-                const safePageSize = pageSize ?? 50;
-                return {
-                    data: [],
-                    count: 0,
-                    page: safePage,
-                    pageSize: safePageSize,
-                    facets: buildFacets([]),
-                };
-            }
+        const [favoriteProblemIds, completedProblemIds] = await Promise.all([
+            getFavorites(),
+            getCompletedProblems()
+        ]);
 
-            let problemsQuery = supabase
-                .from('problems')
-                .select('*')
-                .eq('is_active', true);
-
-            if (problemId !== null && problemId !== undefined) {
-                problemsQuery = problemsQuery.eq('id', problemId);
-            }
-
-            if (slug && String(slug).trim()) {
-                problemsQuery = problemsQuery.eq('slug', String(slug).trim());
-            }
-
-            const safeDifficulties = normalizeArray(difficulties);
-            const safeTopics = normalizeArray(topics);
-            const safeGrades = normalizeArray(grades);
-
-            if (safeDifficulties) {
-                problemsQuery = problemsQuery.in('difficulty', safeDifficulties);
-            }
-
-            if (safeTopics) {
-                problemsQuery = problemsQuery.in('topic', safeTopics);
-            }
-
-            if (safeGrades) {
-                problemsQuery = problemsQuery.in('grade', safeGrades);
-            }
-
-            if (searchTerm && String(searchTerm).trim()) {
-                const escapedSearch = String(searchTerm).trim();
-                problemsQuery = problemsQuery.or(`title.ilike.%${escapedSearch}%,description.ilike.%${escapedSearch}%,topic.ilike.%${escapedSearch}%`);
-            }
-
-            if (includesFavorite) {
-                problemsQuery = problemsQuery.in('id', favoriteProblemIds);
-            }
-
-            const { data: allProblems, error: allProblemsError } = await problemsQuery;
-            if (allProblemsError) throw allProblemsError;
-
-            const favoriteSet = new Set((favoriteProblemIds || []).map((id) => String(id)));
-            const completedSet = new Set((completedProblemIds || []).map((id) => String(id)));
-            const inProgressIds = await getInProgressProblemsDb();
-            const inProgressSet = new Set(inProgressIds);
-
-            const enrichedProblems = (allProblems || []).map((problem) => {
-                const normalizedProblemId = String(problem.id);
-                const isCompleted = completedSet.has(normalizedProblemId);
-                const isInProgress = !isCompleted && inProgressSet.has(normalizedProblemId);
-
-                return {
-                    ...problem,
-                    completed: isCompleted,
-                    inProgress: isInProgress,
-                    favourite: favoriteSet.has(normalizedProblemId)
-                };
-            });
-
-            const statusFilteredProblems = statusFilters.length > 0
-                ? enrichedProblems.filter((problem) =>
-                    statusFilters.some((statusValue) => matchesStatusFilter(problem, statusValue))
-                )
-                : enrichedProblems;
-
-            const sortedProblems = applyLocalSort(statusFilteredProblems, sort);
+        if (includesFavorite && (!favoriteProblemIds || favoriteProblemIds.length === 0)) {
             const safePage = page ?? 1;
             const safePageSize = pageSize ?? 50;
-            const startIndex = Math.max(0, (safePage - 1) * safePageSize);
-            const pagedProblems = sortedProblems.slice(startIndex, startIndex + safePageSize);
-
             return {
-                data: pagedProblems,
-                count: sortedProblems.length,
+                data: [],
+                count: 0,
                 page: safePage,
                 pageSize: safePageSize,
-                facets: buildFacets(sortedProblems),
+                facets: buildFacets([]),
             };
         }
+
+        let problemsQuery = supabase
+            .from('problems')
+            .select('*')
+            .eq('is_active', true);
+
+        if (problemId !== null && problemId !== undefined) {
+            problemsQuery = problemsQuery.eq('id', problemId);
+        }
+
+        if (slug && String(slug).trim()) {
+            problemsQuery = problemsQuery.eq('slug', String(slug).trim());
+        }
+
+        const safeDifficulties = normalizeArray(difficulties);
+        const safeTopics = normalizeArray(topics);
+        const safeGrades = normalizeArray(grades);
+        const safeIsPremium = normalizeBooleanArray(isPremium);
+
+        if (safeDifficulties) {
+            problemsQuery = problemsQuery.in('difficulty', safeDifficulties);
+        }
+
+        if (safeTopics) {
+            problemsQuery = problemsQuery.in('topic', safeTopics);
+        }
+
+        if (safeGrades) {
+            problemsQuery = problemsQuery.in('grade', safeGrades);
+        }
+
+        if (safeIsPremium) {
+            problemsQuery = problemsQuery.in('is_premium', safeIsPremium);
+        }
+
+        if (searchTerm && String(searchTerm).trim()) {
+            const escapedSearch = String(searchTerm).trim();
+            problemsQuery = problemsQuery.or(`title.ilike.%${escapedSearch}%,description.ilike.%${escapedSearch}%,topic.ilike.%${escapedSearch}%`);
+        }
+
+        if (includesFavorite) {
+            problemsQuery = problemsQuery.in('id', favoriteProblemIds);
+        }
+
+        const { data: allProblems, error: allProblemsError } = await problemsQuery;
+        if (allProblemsError) throw allProblemsError;
+
+        const favoriteSet = new Set((favoriteProblemIds || []).map((id) => String(id)));
+        const completedSet = new Set((completedProblemIds || []).map((id) => String(id)));
+        const inProgressIds = await getInProgressProblemsDb();
+        const inProgressSet = new Set(inProgressIds);
+
+        const enrichedProblems = (allProblems || []).map((problem) => {
+            const normalizedProblemId = String(problem.id);
+            const isCompleted = completedSet.has(normalizedProblemId);
+            const isInProgress = !isCompleted && inProgressSet.has(normalizedProblemId);
+
+            return {
+                ...problem,
+                completed: isCompleted,
+                inProgress: isInProgress,
+                favourite: favoriteSet.has(normalizedProblemId)
+            };
+        });
+
+        const statusFilteredProblems = statusFilters.length > 0
+            ? enrichedProblems.filter((problem) =>
+                statusFilters.some((statusValue) => matchesStatusFilter(problem, statusValue))
+            )
+            : enrichedProblems;
+
+        const sortedProblems = applyLocalSort(statusFilteredProblems, sort);
+        const safePage = page ?? 1;
+        const safePageSize = pageSize ?? 50;
+        const startIndex = Math.max(0, (safePage - 1) * safePageSize);
+        const pagedProblems = sortedProblems.slice(startIndex, startIndex + safePageSize);
+
+        return {
+            data: pagedProblems,
+            count: sortedProblems.length,
+            page: safePage,
+            pageSize: safePageSize,
+            facets: buildFacets(sortedProblems),
+        };
     } catch (userProgressError) {
         console.warn('User-aware problem fetch failed, falling back to backend source:', userProgressError);
+        return null;
     }
+}
 
-    if (includesFavorite) {
-        try {
-            const favoriteProblemIds = await getFavorites();
-            if (!favoriteProblemIds.length) {
-                return {
-                    data: [],
-                    count: 0,
-                    page: page ?? 1,
-                    pageSize: pageSize ?? 50,
-                    facets: {
-                        difficulty: {},
-                        topic: {},
-                        grade: {},
-                        progress: {},
-                    },
-                };
-            }
-
-            const { data: { session } } = await supabase.auth.getSession();
-            const userId = session?.user?.id;
-
-            let problemsQuery = supabase
-                .from('problems')
-                .select('*')
-                .eq('is_active', true)
-                .in('id', favoriteProblemIds);
-
-            const safeDifficulties = normalizeArray(difficulties);
-            const safeTopics = normalizeArray(topics);
-            const safeGrades = normalizeArray(grades);
-
-            if (safeDifficulties) {
-                problemsQuery = problemsQuery.in('difficulty', safeDifficulties);
-            }
-
-            if (safeTopics) {
-                problemsQuery = problemsQuery.in('topic', safeTopics);
-            }
-
-            if (safeGrades) {
-                problemsQuery = problemsQuery.in('grade', safeGrades);
-            }
-
-            if (searchTerm && String(searchTerm).trim()) {
-                const escapedSearch = String(searchTerm).trim();
-                problemsQuery = problemsQuery.or(`title.ilike.%${escapedSearch}%,description.ilike.%${escapedSearch}%,topic.ilike.%${escapedSearch}%`);
-            }
-
-            const { data: allFavoriteProblems, error: favoriteProblemsError } = await problemsQuery;
-
-            if (favoriteProblemsError) throw favoriteProblemsError;
-
-            let progressMap = new Map();
-            if (userId && allFavoriteProblems?.length) {
-                const { data: attemptsRows, error: attemptsError } = await supabase
-                    .from('attempts')
-                    .select('problem_id, is_correct')
-                    .eq('user_id', userId)
-                    .in('problem_id', allFavoriteProblems.map((problem) => problem.id));
-
-                if (attemptsError) throw attemptsError;
-
-                progressMap = (attemptsRows || []).reduce((map, row) => {
-                    const current = map.get(row.problem_id) || { attempted: false, solved: false };
-                    current.attempted = true;
-                    current.solved = current.solved || Boolean(row.is_correct);
-                    map.set(row.problem_id, current);
-                    return map;
-                }, new Map());
-            }
-
-            const enrichedFavorites = (allFavoriteProblems || []).map((problem) => {
-                const progressData = progressMap.get(problem.id) || { attempted: false, solved: false };
-                return {
-                    ...problem,
-                    completed: progressData.solved,
-                    inProgress: progressData.attempted && !progressData.solved,
-                    favourite: true,
-                };
-            });
-
-            const narrowedStatuses = statusFilters.filter((item) => item !== 'favorite');
-            const statusFilteredFavorites = narrowedStatuses.length > 0
-                ? enrichedFavorites.filter((problem) => narrowedStatuses.some((statusValue) => {
-                    if (statusValue === 'completed') return problem.completed;
-                    if (statusValue === 'in-progress') return problem.inProgress;
-                    if (statusValue === 'notstarted') return !problem.completed && !problem.inProgress;
-                    return false;
-                }))
-                : enrichedFavorites;
-
-            const sortedFavorites = applyLocalSort(statusFilteredFavorites, sort);
-            const safePage = page ?? 1;
-            const safePageSize = pageSize ?? 50;
-            const startIndex = Math.max(0, (safePage - 1) * safePageSize);
-            const pagedFavorites = sortedFavorites.slice(startIndex, startIndex + safePageSize);
-
+// ---- favorites path ----
+// Only called when includesFavorite is true. Returns a result object, or null
+// to signal "fall through to backend/RPC" (mirrors the original catch behavior).
+async function fetchFavoriteProblems({
+    page, pageSize, difficulties, topics, grades, searchTerm, sort,
+    isPremium, statusFilters
+}) {
+    try {
+        const favoriteProblemIds = await getFavorites();
+        if (!favoriteProblemIds.length) {
             return {
-                data: pagedFavorites,
-                count: sortedFavorites.length,
-                page: safePage,
-                pageSize: safePageSize,
-                facets: buildFacets(sortedFavorites),
+                data: [],
+                count: 0,
+                page: page ?? 1,
+                pageSize: pageSize ?? 50,
+                facets: {
+                    difficulty: {},
+                    topic: {},
+                    grade: {},
+                    progress: {},
+                },
             };
-        } catch (favoriteError) {
-            console.warn('Favorite status filtering failed, falling back to regular source:', favoriteError);
         }
-    }
 
+        const { data: { session } } = await supabase.auth.getSession();
+        const userId = session?.user?.id;
+
+        let problemsQuery = supabase
+            .from('problems')
+            .select('*')
+            .eq('is_active', true)
+            .in('id', favoriteProblemIds);
+
+        const safeDifficulties = normalizeArray(difficulties);
+        const safeTopics = normalizeArray(topics);
+        const safeGrades = normalizeArray(grades);
+        const safeIsPremium = normalizeBooleanArray(isPremium);
+
+        if (safeDifficulties) {
+            problemsQuery = problemsQuery.in('difficulty', safeDifficulties);
+        }
+
+        if (safeTopics) {
+            problemsQuery = problemsQuery.in('topic', safeTopics);
+        }
+
+        if (safeGrades) {
+            problemsQuery = problemsQuery.in('grade', safeGrades);
+        }
+
+        if (safeIsPremium) {
+            problemsQuery = problemsQuery.in('is_premium', safeIsPremium);
+        }
+
+        if (searchTerm && String(searchTerm).trim()) {
+            const escapedSearch = String(searchTerm).trim();
+            problemsQuery = problemsQuery.or(`title.ilike.%${escapedSearch}%,description.ilike.%${escapedSearch}%,topic.ilike.%${escapedSearch}%`);
+        }
+
+        const { data: allFavoriteProblems, error: favoriteProblemsError } = await problemsQuery;
+
+        if (favoriteProblemsError) throw favoriteProblemsError;
+
+        let progressMap = new Map();
+        if (userId && allFavoriteProblems?.length) {
+            const { data: attemptsRows, error: attemptsError } = await supabase
+                .from('attempts')
+                .select('problem_id, is_correct')
+                .eq('user_id', userId)
+                .in('problem_id', allFavoriteProblems.map((problem) => problem.id));
+
+            if (attemptsError) throw attemptsError;
+
+            progressMap = (attemptsRows || []).reduce((map, row) => {
+                const current = map.get(row.problem_id) || { attempted: false, solved: false };
+                current.attempted = true;
+                current.solved = current.solved || Boolean(row.is_correct);
+                map.set(row.problem_id, current);
+                return map;
+            }, new Map());
+        }
+
+        const enrichedFavorites = (allFavoriteProblems || []).map((problem) => {
+            const progressData = progressMap.get(problem.id) || { attempted: false, solved: false };
+            return {
+                ...problem,
+                completed: progressData.solved,
+                inProgress: progressData.attempted && !progressData.solved,
+                favourite: true,
+            };
+        });
+
+        const narrowedStatuses = statusFilters.filter((item) => item !== 'favorite');
+        const statusFilteredFavorites = narrowedStatuses.length > 0
+            ? enrichedFavorites.filter((problem) => narrowedStatuses.some((statusValue) => {
+                if (statusValue === 'completed') return problem.completed;
+                if (statusValue === 'in-progress') return problem.inProgress;
+                if (statusValue === 'notstarted') return !problem.completed && !problem.inProgress;
+                return false;
+            }))
+            : enrichedFavorites;
+
+        const sortedFavorites = applyLocalSort(statusFilteredFavorites, sort);
+        const safePage = page ?? 1;
+        const safePageSize = pageSize ?? 50;
+        const startIndex = Math.max(0, (safePage - 1) * safePageSize);
+        const pagedFavorites = sortedFavorites.slice(startIndex, startIndex + safePageSize);
+
+        return {
+            data: pagedFavorites,
+            count: sortedFavorites.length,
+            page: safePage,
+            pageSize: safePageSize,
+            facets: buildFacets(sortedFavorites),
+        };
+    } catch (favoriteError) {
+        console.warn('Favorite status filtering failed, falling back to regular source:', favoriteError);
+        return null;
+    }
+}
+
+// ---- backend API + Supabase RPC fallback path ----
+// Always returns a result object (never null) — matches the original's
+// guaranteed-return behavior, including its own error fallback at the end.
+async function fetchFromBackendOrSupabaseRpc({
+    page, pageSize, problemId, slug,
+    difficulties, topics, grades, searchTerm, sort,
+    progress, isPremium, statusFilters
+}) {
     try {
         const params = new URLSearchParams();
 
@@ -442,12 +476,16 @@ export async function getProblems(
         const gradeCsv = buildCsv(grades);
         const statusCsv = buildCsv(statusFilters);
         const progressCsv = buildCsv(progress);
+        const premiumCsv = Array.isArray(isPremium) && isPremium.length > 0
+            ? isPremium.map(String).join(',')
+            : null;
 
         if (difficultyCsv) params.set('difficulty', difficultyCsv);
         if (topicCsv) params.set('topic', topicCsv);
         if (gradeCsv) params.set('grade', gradeCsv);
         if (statusCsv) params.set('status', statusCsv);
         if (progressCsv) params.set('progress', progressCsv);
+        if (premiumCsv) params.set('premium', premiumCsv);
 
         if (problemId) params.set('problemId', String(problemId));
         if (slug) params.set('slug', slug);
@@ -599,6 +637,47 @@ export async function getProblems(
     }
 }
 
+// ---- entry point (unchanged signature) ----
+
+export async function getProblems(
+    page = null,
+    pageSize = null,
+    problemId = null,
+    slug = null,
+    difficulties = null,
+    topics = null,
+    grades = null,
+    searchTerm = null,
+    sort = null,
+    progress = null,
+    isPremium = null,
+    status = null
+) {
+    const statusFilters = normalizeStatusValues(status);
+    const includesFavorite = statusFilters.includes('favorite');
+
+    const authResult = await fetchAuthenticatedUserProblems({
+        page, pageSize, problemId, slug,
+        difficulties, topics, grades, searchTerm, sort,
+        isPremium, statusFilters, includesFavorite
+    });
+    if (authResult) return authResult;
+
+    if (includesFavorite) {
+        const favResult = await fetchFavoriteProblems({
+            page, pageSize, difficulties, topics, grades, searchTerm, sort,
+            isPremium, statusFilters
+        });
+        if (favResult) return favResult;
+    }
+
+    return fetchFromBackendOrSupabaseRpc({
+        page, pageSize, problemId, slug,
+        difficulties, topics, grades, searchTerm, sort,
+        progress, isPremium, statusFilters
+    });
+}
+
 
 /**
  * Get all active problems
@@ -643,33 +722,11 @@ export async function getProblem(problemId) {
  * Falls back to ID extraction if direct slug lookup fails
  */
 export async function getProblemBySlug(slug) {
-    try {
-        // First try direct slug lookup
-        const { data, error } = await supabase
-            .from('problems')
-            .select('*')
-            .eq('slug', slug)
-            .eq('is_active', true)
-            .single();
-
-        if (!error && data) return data;
-
-        // Fallback: extract ID from slug and lookup by ID
-        const extractedId = extractIdFromSlug(slug);
-        if (extractedId) {
-            return await getProblem(extractedId);
-        }
-
-        return null;
-    } catch (error) {
-        // Try fallback extraction
-        const extractedId = extractIdFromSlug(slug);
-        if (extractedId) {
-            return await getProblem(extractedId);
-        }
-        console.error('Error fetching problem by slug:', error);
-        return null;
-    }
+    const { data, error } = await supabase.functions.invoke('get-problem-detail', {
+        body: { slug }
+    });
+    if (error) throw error;
+    return data;
 }
 
 /**
@@ -729,7 +786,7 @@ export async function getTopicsBySubject(subject) {
             .select('*')
             .eq('subject', subject)
             .eq('is_active', true);
-        
+
 
         if (error) throw error;
         return [...new Set(data.map(row => row.topic))];
@@ -912,10 +969,6 @@ export async function getProblemsLegacyFormat() {
                 title: p.title,
                 difficulty: p.difficulty,
                 description: p.description,
-                answer: p.answer,
-                acceptedAnswers: p.accepted_answers,
-                hints: p.hints,
-                solution: p.solution,
                 premium: p.is_premium,
                 topic: p.topic,
                 completed: completedSet.has(String(p.id)),

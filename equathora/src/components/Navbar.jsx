@@ -238,14 +238,14 @@ const Navbar = () => {
       description: "Manage your account and preferences",
       image: Settings
     },
-    ...(profile?.role === 'admin'
-      ? [{
-        to: '/adminDashboard',
-        text: "Admin Dashboard",
-        description: "Open admin tools and analytics",
-        image: Teacher
-      }]
-      : []),
+    // ...(profile?.role === 'admin'
+    //   ? [{
+    //     to: '/adminDashboard',
+    //     text: "Admin Dashboard",
+    //     description: "Open admin tools and analytics",
+    //     image: Teacher
+    //   }]
+    //   : []),
     {
       text: "Sign Out",
       description: "Securely log out of your account",

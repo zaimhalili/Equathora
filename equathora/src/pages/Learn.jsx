@@ -160,7 +160,7 @@ const Learn = () => {
     expert: 9,
   };
 
-  const pageSize = 50; // Default page size
+  const pageSize = 50;
   const [searchParams, setSearchParams] = useSearchParams();
   const [problems, setProblems] = useState({ count: 0, data: [] });
   const [facets, setFacets] = useState({ difficulties: [], topics: [], grade: [], progress: [] });
@@ -192,7 +192,7 @@ const Learn = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
-    }, 900); // 900ms debounce
+    }, 900);
     return () => {
       clearTimeout(handler);
     };
@@ -238,7 +238,6 @@ const Learn = () => {
     });
   }, [searchParams, updateFilters]);
 
-  // Extract unique topics from problems
   const availableTopics = useMemo(() => {
     if (!facets.topic || typeof facets.topic !== 'object') return [];
     return Object.entries(facets.topic)
@@ -251,16 +250,16 @@ const Learn = () => {
     { value: "premium", label: "Premium" }
   ];
 
-  // Count active filters
   const activeFilterCount = useMemo(() => {
     let count = 0;
     if (gradeFilter) count += gradeFilter.split(',').length;
     if (difficultyFilter) count += difficultyFilter.split(',').length;
     if (statusFilter) count += statusFilter.split(',').length;
     if (topicFilter) count += topicFilter.split(',').length;
+    if (premiumFilter) count += premiumFilter.split(',').length;
     if (sortBy !== 'default') count++;
     return count;
-  }, [gradeFilter, difficultyFilter, statusFilter, topicFilter, sortBy]);
+  }, [gradeFilter, difficultyFilter, statusFilter, topicFilter, premiumFilter, sortBy]);
 
   const removeFilterValue = (key, currentValues, valueToRemove) => {
     const newValues = currentValues.split(',').filter(v => v !== valueToRemove).join(',');
@@ -273,7 +272,7 @@ const Learn = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [gradeFilter, difficultyFilter, topicFilter, statusFilter, debouncedSearchQuery, sortBy]);
+  }, [gradeFilter, difficultyFilter, topicFilter, statusFilter, premiumFilter, debouncedSearchQuery, sortBy]);
 
   useEffect(() => {
     const fetchPagedProblems = async () => {
@@ -288,8 +287,6 @@ const Learn = () => {
           setLoadingMore(true);
         }
 
-        const problemId = null;
-        const slug = null;
         const difficulties = difficultyFilter ? difficultyFilter.split(',') : null;
         const topics = topicFilter ? topicFilter.split(',') : null;
         const searchTerm = debouncedSearchQuery || null;
@@ -297,17 +294,29 @@ const Learn = () => {
         const status = statusFilter ? statusFilter.split(',') : null;
         const grades = gradeFilter ? gradeFilter.split(',') : null;
 
+        // Correctly parse 'premium' and 'free' values into exact booleans
+        const mappedPremium = premiumFilter
+          ? premiumFilter
+              .split(',')
+              .map((val) => val.trim())
+              .filter((val) => val === 'premium' || val === 'free')
+              .map((val) => val === 'premium')
+          : null;
+
+        const isPremium = mappedPremium && mappedPremium.length > 0 ? mappedPremium : null;
+
         const response = await getProblems(
           currentPage,
           pageSize,
-          problemId,
-          slug,
+          null, // problemId
+          null, // slug
           difficulties,
           topics,
           grades,
           searchTerm,
           sort,
-          null,
+          null,       // progress (legacy, unused by Learn page)
+          isPremium,
           status
         );
 
@@ -320,8 +329,6 @@ const Learn = () => {
           difficulty: response?.facets?.difficulty || {}
         });
 
-        // Keep a stable source of difficulty options so multi-select does not collapse
-        // to only the currently selected value(s) after filtering.
         if (!difficultyFilter) {
           setDifficultyFacetBase(response?.facets?.difficulty || {});
         }
@@ -352,7 +359,7 @@ const Learn = () => {
     };
 
     fetchPagedProblems();
-  }, [currentPage, gradeFilter, difficultyFilter, topicFilter, statusFilter, debouncedSearchQuery, sortBy]);
+  }, [currentPage, gradeFilter, difficultyFilter, topicFilter, statusFilter, premiumFilter, debouncedSearchQuery, sortBy]);
 
   const hasMore = problems?.data?.length < totalCount;
   const remainingCount = Math.max(0, totalCount - (problems?.data?.length || 0));
@@ -442,7 +449,6 @@ const Learn = () => {
     return <LoadingSpinner message="Loading exercises..." />;
   }
 
-
   return (
     <>
       <main id='body-learn'>
@@ -518,15 +524,6 @@ const Learn = () => {
                   </button>
                 )}
               </div>
-              {/* {activeFilterCount > 0 && (
-                <button
-                  type="button"
-                  className="clear-all-btn"
-                  onClick={clearAllFilters}
-                >
-                  <FaTimes /> Clear all ({activeFilterCount})
-                </button>
-              )} */}
             </div>
 
             {/* Filter Dropdowns Grid */}
@@ -574,6 +571,14 @@ const Learn = () => {
                 placeholder="All Topics"
                 multiSelect={true}
               />
+              <FilterDropdown
+                label="Access"
+                value={premiumFilter}
+                options={premiumOptions}
+                onChange={(val) => updateFilters({ premium: val })}
+                placeholder="All Types"
+                multiSelect={true}
+              />
             </div>
 
             {/* Active Filters Pills */}
@@ -611,6 +616,15 @@ const Learn = () => {
                     <span key={`topic-${topic}`} className="active-filter-pill topic">
                       {formatTopicLabel(topic)}
                       <button onClick={() => removeFilterValue('topic', topicFilter, topic)}><FaTimes /></button>
+                    </span>
+                  ))}
+                  {/* Premium/Free Active Filter Pills */}
+                  {premiumFilter && premiumFilter.split(',').map(type => (
+                    <span key={`premium-${type}`} className="active-filter-pill">
+                      {type === 'premium' ? 'Premium' : 'Free'}
+                      <button onClick={() => removeFilterValue('premium', premiumFilter, type)}>
+                        <FaTimes />
+                      </button>
                     </span>
                   ))}
                   {sortBy !== 'default' && (
@@ -678,7 +692,6 @@ const Learn = () => {
           </div>
         </footer>
       </main>
-
     </>
   );
 };

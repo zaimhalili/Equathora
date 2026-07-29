@@ -53,6 +53,9 @@ import {
 import { useUserProfile } from '@/hooks/useUserProfile';
 import OverflowChecker from './OverflowChecker.jsx';
 import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
+import { supabase } from '@/lib/supabaseClient';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 const formatDurationLabel = (seconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(seconds));
@@ -217,6 +220,7 @@ const Problem = () => {
     const [selectedSubmission, setSelectedSubmission] = useState(null);
     const [showSubmissionDetail, setShowSubmissionDetail] = useState(false);
     const [hintsOpened, setHintsOpened] = useState([]);
+    const [loadedHints, setLoadedHints] = useState({})
     const [submissions, setSubmissions] = useState([]);
     const [solutionViewed, setSolutionViewed] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
@@ -236,6 +240,7 @@ const Problem = () => {
     const [pendingSigmaPrompt, setPendingSigmaPrompt] = useState('');
     const [isCompleted, setIsCompleted] = useState(false);
     const [sigmaBusy, setSigmaBusy] = useState(false);
+    const [solutionText, setSolutionText] = useState(null);
 
 
     // Track theme dynamically from data-theme attribute
@@ -537,13 +542,56 @@ const Problem = () => {
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, []);
 
-    const toggleHint = (index) => {
-        setOpenHints(prev => ({
-            ...prev,
-            [index]: !prev[index]
-        }));
-        // Track hint usage
-        if (!openHints[index] && !hintsOpened.includes(index)) {
+    useEffect(() => {
+        // 1. If problem is missing, don't run
+        if (!problem?.id) return;
+
+        // 2. IF IT'S A PREMIUM PROBLEM AND YOU ARE ON FREE TIER -> STOP HERE.
+        // This prevents free users from triggering the 403 network error entirely.
+        if (problem.is_premium && !premium) return;
+
+        // 3. User must have completed it or clicked view solution
+        if (!isCompleted && !solutionViewed) return;
+
+        let isMounted = true;
+
+        supabase.functions.invoke('fetch-problem-solution', {
+            body: { p_problem_id: problem.id }
+        })
+            .then(({ data, error }) => {
+                if (error) {
+                    console.info('Solution request blocked:', error.message);
+                    return;
+                }
+                if (isMounted && data?.solution) {
+                    setSolutionText(data.solution);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [problem?.id, problem?.is_premium, premium, isCompleted, solutionViewed]);
+
+    const toggleHint = async (index) => {
+        if (openHints[index]) {
+            setOpenHints(prev => ({ ...prev, [index]: false }));
+            return;
+        }
+
+        if (!loadedHints[index]) {
+            const { data: hintText, error } = await supabase.rpc('fetch_problem_hint', {
+                p_problem_id: problem.id,
+                p_hint_index: index
+            });
+            if (!error && hintText) {
+                setLoadedHints(prev => ({ ...prev, [index]: hintText }));
+            }
+        }
+
+        setOpenHints(prev => ({ ...prev, [index]: true }));
+
+        if (!hintsOpened.includes(index)) {
             setHintsOpened(prev => [...prev, index]);
         }
     };
@@ -569,7 +617,24 @@ const Problem = () => {
         }
 
         // Always validate the answer — even in practice mode
-        const validation = await validateAnswer(finalAnswer, problem);
+        const { data: validationData, error: validationError } = await supabase.functions.invoke('validate-problem-answer', {
+            body: { p_problem_id: problem.id, p_user_answer: finalAnswer }
+        });
+
+        if (validationError) {
+            const isRateLimited = validationError.context?.status === 429;
+            const feedback = isRateLimited
+                ? 'Too many attempts — please wait a moment before trying again.'
+                : 'Could not validate your answer right now. Please try again.';
+
+            setSubmissionFeedback({ message: feedback, isCorrect: false });
+            return { success: false, message: feedback };
+        }
+
+        const validation = {
+            isCorrect: validationData?.isCorrect ?? false,
+            feedback: validationData?.feedback ?? ''
+        };
 
         // Get actual time from localStorage (what the Timer component tracks)
         const storageKey = `eq:problemTime:${problem.id}`;
@@ -638,7 +703,6 @@ const Problem = () => {
             }
         };
         setSubmissions(prev => [entry, ...prev]);
-
 
         setSubmissionFeedback({
             message: validation.feedback,
@@ -779,6 +843,30 @@ const Problem = () => {
         );
     }
 
+
+
+    if (problem.locked) {
+        return (
+            <>
+                <Navbar />
+
+                <div className="h-200 flex items-center justify-center">
+                    <div className="text-center flex flex-col items-center gap-3 px-3">
+                        <FaCrown className="text-3xl text-amber-500" />
+                        <h2 className="text-2xl font-bold">Premium Problem</h2>
+                        <p className="text-[var(--mid-main-secondary)]">Upgrade to premium to view this problem.</p>
+                        <Link to="/learn" className="text-[var(--accent-color)] hover:underline bg-gradient-to-b from-amber-600 to-amber-500 px-3 py-2 rounded-md hover:to-amber-600 transition-all active:scale-95">
+                            Go back
+                        </Link>
+                    </div>
+                </div>
+
+                <Footer/>
+            </>
+
+        );
+    }
+
     // Generate similar questions from the same topic when available.
     const similarQuestions = allProblems
         .filter(p => problem.topic && p.topic === problem.topic && p.id !== problem.id)
@@ -791,7 +879,7 @@ const Problem = () => {
         }));
 
     // Get hints and accepted answers from database format
-    const hints = problem.hints || [];
+    const hintCount = problem.hint_count || 0;
     const acceptedAnswers = problem.accepted_answers || problem.acceptedAnswers || [problem.answer];
 
     const examples = Array.isArray(problem.examples) ? problem.examples : [];
@@ -1236,11 +1324,10 @@ const Problem = () => {
 
                                         {/* Hints Section - Collapsible like LeetCode */}
                                         <div>
-                                            {problem.hints && problem.hints.length > 0 && (
+                                            {hintCount > 0 && (
                                                 <div className="border-t border-[var(--mid-main-secondary)]">
-
                                                     <div className="flex flex-col">
-                                                        {problem.hints.map((hint, index) => (
+                                                        {Array.from({ length: hintCount }).map((_, index) => (
                                                             <div key={index} className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
                                                                 <button
                                                                     className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
@@ -1255,7 +1342,7 @@ const Problem = () => {
                                                                 <div className={`transition-all duration-300 ease-in-out ${openHints[index] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                                                                     <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--mid-main-secondary)]">
                                                                         <MathJaxRenderer
-                                                                            content={hint}
+                                                                            content={loadedHints[index] ?? 'Loading hint...'}
                                                                             className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed font-[Sansation] m-0"
                                                                             as="p"
                                                                         />
@@ -1334,7 +1421,7 @@ const Problem = () => {
 
                                 {/* Show Solution State Check */}
                                 {showSolution && <SolutionStepsDisplay
-                                    solution={problem.solution}
+                                    solution={solutionText}
                                 />}
 
                                 {/* Show Submissions State Check */}
@@ -1423,7 +1510,7 @@ const Problem = () => {
                                 {/* Show AI chat panel */}
                                 {chatPanel && <ChatPanel ref={chatPanelRef}
                                     problemDescription={problem.description}
-                                    acceptedSolution={problem.solution}
+                                    acceptedSolution={solutionText}
                                     fields={fields}
                                     storageKey={sigmaChatStorageKey}
                                     pendingMessage={pendingSigmaPrompt}
@@ -1445,7 +1532,7 @@ const Problem = () => {
                             isSolved={isCompleted}
                             isPracticeMode={isCompleted}
                             problemDescription={problem.description}
-                            acceptedSolution={problem.solution}
+                            acceptedSolution={solutionText}
                             onFieldsChange={handleFieldsChange}
                             onExplainMore={openSigmaChat}
                             isAiBusy={sigmaBusy}
