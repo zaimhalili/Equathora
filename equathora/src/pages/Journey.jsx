@@ -18,10 +18,12 @@ import { annotateProblemStates } from '@/lib/problemProgress';
 import DailyTrack from '@/components/Journey/DailyTrack';
 import TopicCard from '@/components/Journey/TopicCard';
 import { useResetDiagnostic } from '@/hooks/useResetDiagnostic';
+import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
 import { FaSpinner } from 'react-icons/fa';
 
 const Journey = () => {
     const { resetDiagnosticTest, loading: isResetting } = useResetDiagnostic();
+    const { premium, loading: subLoading } = useSubscription();
 
     const [completedSet, setCompletedSet] = useState(new Set());
     const [attemptedSet, setAttemptedSet] = useState(new Set());
@@ -73,6 +75,15 @@ const Journey = () => {
         "6+": 6
     };
     const DEFAULT_DAILY_TARGET = 3;
+
+    // A problem only counts as something we can hand to a user right now
+    // if it's either free, or the user actually has premium. Centralized
+    // here (and mirrored in nextRecommendedProblem.js) so Journey's Daily
+    // Mission queue and the site-wide Navbar/Sidebar "Daily Problem" link
+    // never disagree about what's actually accessible.
+    function isProblemAccessible(problem, hasPremium) {
+        return !problem?.is_premium || hasPremium;
+    }
 
     function getSelectedSubjects(studentTopics) {
         const selectedSubjects = new Set([
@@ -175,6 +186,9 @@ const Journey = () => {
     // Full set of problems for the student's selected subjects — NOT sliced.
     // This is what feeds the Learning Paths / TopicCards, so every topic
     // shows its complete list of problems instead of a thin global slice.
+    // Premium problems ARE included here on purpose: Learning Paths is a
+    // browsing surface, so free users should still see (locked) premium
+    // problems and know they exist — TopicCard handles the locked styling.
     const journeyProblems = useMemo(() => {
         if (!studentTopics.length || allProblems.length === 0) return [];
 
@@ -208,11 +222,14 @@ const Journey = () => {
         return DAILY_TARGET_BY_COMMITMENT[studentProfile?.weekly_commitment] ?? DEFAULT_DAILY_TARGET;
     }, [studentProfile]);
 
-    // Full candidate pool for today's mission: uncompleted problems that
-    // match the student's level, sorted by their stated challenge preference.
-    // recommendedQueue is just the top N of this list (N = dailyTargetCount);
-    // totalRecommendedCount is the full candidate pool size, so DailyTrack
-    // can show "+N more waiting" accurately.
+    // Full candidate pool for today's mission: uncompleted, ACCESSIBLE
+    // problems that match the student's level, sorted by their stated
+    // challenge preference. recommendedQueue is just the top N of this
+    // list (N = dailyTargetCount); totalRecommendedCount is the full
+    // candidate pool size, so DailyTrack can show "+N more waiting"
+    // accurately. Premium-only problems are excluded here unless the
+    // student actually has premium — the Daily Mission is meant to be a
+    // free, frictionless habit loop, not a paywall funnel.
     const recommendedCandidates = useMemo(() => {
         if (!personalizedJourney || Object.keys(personalizedJourney).length === 0) {
             return [];
@@ -236,8 +253,9 @@ const Journey = () => {
                     const isUncompleted = prob.state === "current" || prob.state === "unlocked";
                     const isRecommendedLevel =
                         !allowedDifficulties.length || allowedDifficulties.includes(prob.difficulty);
+                    const isAccessible = isProblemAccessible(prob, premium);
 
-                    if (isUncompleted && isRecommendedLevel && !seen.has(prob.id)) {
+                    if (isUncompleted && isRecommendedLevel && isAccessible && !seen.has(prob.id)) {
                         seen.add(prob.id);
                         candidates.push(prob);
                     }
@@ -262,7 +280,7 @@ const Journey = () => {
         }
 
         return candidates;
-    }, [personalizedJourney, completedSet, attemptedSet, allowedDifficulties, studentProfile]);
+    }, [personalizedJourney, completedSet, attemptedSet, allowedDifficulties, studentProfile, premium]);
 
     const recommendedQueue = useMemo(
         () => recommendedCandidates.slice(0, dailyTargetCount),
@@ -340,13 +358,14 @@ const Journey = () => {
                             recommendedQueue={recommendedQueue}
                             weeklyCommitment={studentProfile?.weekly_commitment}
                             totalRecommendedCount={recommendedCandidates.length}
+                            isPremiumUser={premium}
                         />
 
                         {/* Learning Paths / Dropdowns */}
                         <section id="learning-paths" className="flex flex-col w-full pt-6">
                             {loading ? (
                                 <div className="py-12 flex justify-center items-center animate-spin">
-                                    <FaSpinner className='text-2xl'/>
+                                    <FaSpinner className='text-2xl' />
                                 </div>
                             ) : Object.keys(personalizedJourney).length === 0 ? (
                                 <p className="text-center text-lg text-[var(--secondary-color)] py-8">
@@ -381,6 +400,7 @@ const Journey = () => {
                                                         completedSet={completedSet}
                                                         attemptedSet={attemptedSet}
                                                         recommendedIds={recommendedIds}
+                                                        isPremiumUser={premium}
                                                     />
                                                 )
                                             )}

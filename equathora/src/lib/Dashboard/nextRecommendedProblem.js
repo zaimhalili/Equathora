@@ -1,4 +1,3 @@
-// src/lib/nextRecommendedProblem.js
 import {
     getCompletedProblems,
     getUserSubmissions,
@@ -60,11 +59,17 @@ function getSelectedSubjects(studentTopics) {
  * isn't a safe recommendation yet (no profile, no problems loaded, or
  * everything eligible is already completed).
  *
+ * @param {boolean} isPremiumUser - Whether the current user has an active
+ * premium subscription. When false (or omitted), premium-only problems
+ * are excluded from consideration entirely, so the site-wide "Daily
+ * Problem" link (Navbar, Sidebar) never sends a free user into a
+ * paywalled problem.
+ *
  * IMPORTANT: callers must treat null as "not ready" and must NOT build
  * a /problems/:slug link from it — fall back to /journey instead, so
  * nobody ever lands on a dead or not-found problem page.
  */
-export async function getNextRecommendedProblem() {
+export async function getNextRecommendedProblem(isPremiumUser = false) {
     try {
         const [problems, completedProblems, submissions, profile, topics] = await Promise.all([
             getProblemsAll(),
@@ -83,6 +88,12 @@ export async function getNextRecommendedProblem() {
         const allowedDifficulties = LEVEL_TO_DIFFICULTIES[(profile.level ?? "").toLowerCase()] ?? [];
 
         let candidates = problems.filter(p => selectedSubjects.has(p.subject));
+
+        // Never recommend a premium-locked problem as the free-facing
+        // "Daily Problem" unless the user actually has premium.
+        if (!isPremiumUser) {
+            candidates = candidates.filter(p => !p.is_premium);
+        }
 
         if (allowedDifficulties.length) {
             candidates = candidates.filter(p => allowedDifficulties.includes(p.difficulty));

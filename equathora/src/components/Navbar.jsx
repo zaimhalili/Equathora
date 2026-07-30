@@ -59,9 +59,11 @@ const Navbar = () => {
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
 
   useEffect(() => {
+    if (onloading) return;
+
     const loadNextProblem = async () => {
       try {
-        const problem = await getNextRecommendedProblem();
+        const problem = await getNextRecommendedProblem(premium);
         setNextProblem(problem || null);
       } catch (error) {
         console.error('Failed to load next recommended problem:', error);
@@ -69,7 +71,7 @@ const Navbar = () => {
       }
     };
     loadNextProblem();
-  }, []);
+  }, [premium, onloading]);
 
   useEffect(() => {
     const refreshNavbarSignals = async () => {
@@ -234,14 +236,6 @@ const Navbar = () => {
       description: "Manage your account and preferences",
       image: Settings
     },
-    // ...(profile?.role === 'admin'
-    //   ? [{
-    //     to: '/adminDashboard',
-    //     text: "Admin Dashboard",
-    //     description: "Open admin tools and analytics",
-    //     image: Teacher
-    //   }]
-    //   : []),
     {
       text: "Sign Out",
       description: "Securely log out of your account",
@@ -253,13 +247,6 @@ const Navbar = () => {
         window.location.href = '/';
       }
     }
-    // Hidden for MVP
-    // {
-    //   to: '/premium',
-    //   text: "Upgrade to Premium",
-    //   description: "Access unlimited mentor guidance and exam-mode practice.",
-    //   image: Premium
-    // }
   ];
 
   const notificationBellLabel = (

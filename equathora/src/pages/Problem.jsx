@@ -925,7 +925,7 @@ const Problem = () => {
 
                     {/* Right side - Premium Button, Timer and Actions */}
                     <div className="flex items-center gap-2">
-                        <PremiumButton premium={premium} />
+                        <PremiumButton premium={problem?.is_premium} />
                         <Timer key={`${problem?.id}-${timerResetSeq}`} problemId={problem?.id} isRunning={timerRunning} />
 
                         {/* Desktop buttons - hidden on mobile */}
@@ -1206,10 +1206,14 @@ const Problem = () => {
                                                 }`}>
                                                 {problem.difficulty}
                                             </span>
-                                            {problem.premium ? (
-                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-yellow-500/10 text-yellow-700">Premium</span>
+                                            {problem?.is_premium ? (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-gradient-to-b text-white from-amber-600 to-amber-400">
+                                                    Premium
+                                                </span>
                                             ) : (
-                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-[var(--secondary-color)]">Free</span>
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-[var(--secondary-color)]">
+                                                    Free
+                                                </span>
                                             )}
                                             {problem.topic && (
                                                 <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--mid-main-secondary)] text-white">{formatTopicLabel(problem.topic)}</span>

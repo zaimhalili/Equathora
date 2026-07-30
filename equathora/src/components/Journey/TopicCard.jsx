@@ -2,7 +2,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from "framer-motion";
-import { FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaStar, FaCrown } from "react-icons/fa";
 import {
     FaCheck,
     FaLock,
@@ -19,9 +19,12 @@ const TopicCard = ({
     problems,
     completedSet = new Set(),
     attemptedSet = new Set(),
-    recommendedIds = new Set()
+    recommendedIds = new Set(),
+    isPremiumUser = false
 }) => {
     const [open, setOpen] = useState(false);
+
+    const isAccessible = (problem) => !problem?.is_premium || isPremiumUser;
 
     const statedProblems = useMemo(
         () => annotateProblemStates(problems || [], completedSet, attemptedSet),
@@ -58,16 +61,21 @@ const TopicCard = ({
         const found = statedProblems.find(p => p.id === selectedId);
         if (found) return found;
 
-        // Fall back to whatever the student should focus on next: a
-        // recommended-level problem that's current/unlocked, then any
-        // current one, then in-progress, then just the first in the list.
+        // Fall back to whatever the student should focus on next: prefer a
+        // recommended-level, ACCESSIBLE problem that's current/unlocked,
+        // then any accessible current/in-progress problem, then finally
+        // fall back to anything at all (including locked premium) so the
+        // panel is never empty — the CTA below is what actually gates it.
         return (
-            statedProblems.find(p => recommendedIds.has(p.id) && p.state === "current") ??
+            statedProblems.find(p => recommendedIds.has(p.id) && p.state === "current" && isAccessible(p)) ??
+            statedProblems.find(p => p.state === "current" && isAccessible(p)) ??
+            statedProblems.find(p => p.state === "progress" && isAccessible(p)) ??
             statedProblems.find(p => p.state === "current") ??
             statedProblems.find(p => p.state === "progress") ??
             statedProblems[0]
         );
-    }, [statedProblems, selectedId, recommendedIds]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [statedProblems, selectedId, recommendedIds, isPremiumUser]);
 
     const progress = statedProblems.length > 0
         ? (solvedCount / statedProblems.length) * 100
@@ -76,6 +84,8 @@ const TopicCard = ({
     const selectedSlug = selected
         ? (selected.slug || generateProblemSlug(selected.title, selected.id))
         : null;
+
+    const selectedLocked = selected ? !isAccessible(selected) : false;
 
     return (
         <div className="w-full rounded-2xl bg-[var(--main-color)] backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
@@ -109,7 +119,7 @@ const TopicCard = ({
                         </span>
 
                         {recommendedCount > 0 && (
-                            <span className="flex items-center gap-1.5 text-xs font-semibold text-amber-500">
+                            <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
                                 <FaStar size={11} />
                                 {recommendedCount} matched to your level
                             </span>
@@ -173,22 +183,33 @@ const TopicCard = ({
                                         }
 
                                         const isRecommended = recommendedIds.has(problem.id);
+                                        const isLockedByPremium = !isAccessible(problem);
 
                                         return (
                                             <button
                                                 key={problem.id}
                                                 onClick={() => setSelectedId(problem.id)}
-                                                title={isRecommended ? "Matched to your level" : undefined}
+                                                title={
+                                                    isLockedByPremium
+                                                        ? "Premium problem - upgrade to unlock"
+                                                        : isRecommended
+                                                            ? "Matched to your level"
+                                                            : undefined
+                                                }
                                                 className={`relative h-11 w-11 rounded-full flex items-center justify-center transition-all ${style}
                                                 ${selected?.id === problem.id
                                                         ? "scale-110 ring-4 ring-white/80"
                                                         : isRecommended
-                                                            ? "ring-2 ring-amber-400/90 hover:scale-110"
+                                                            ? "outline-4 outline-emerald-600 hover:scale-110"
                                                             : "hover:scale-110"
                                                     }`}
                                             >
                                                 <Icon size={16} />
-                                                {isRecommended && problem.state !== "solved" && (
+                                                {isLockedByPremium ? (
+                                                    <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-amber-500 flex items-center justify-center">
+                                                        <FaCrown size={7} className="text-white" />
+                                                    </span>
+                                                ) : isRecommended && problem.state !== "solved" && (
                                                     <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-amber-400 flex items-center justify-center">
                                                         <FaStar size={7} className="text-white" />
                                                     </span>
@@ -245,7 +266,13 @@ const TopicCard = ({
                                     <h4 className="text-xl font-bold">
                                         {selected?.title}
                                     </h4>
-                                    {selected && recommendedIds.has(selected.id) && (
+                                    {selected && selectedLocked && (
+                                        <span className="flex items-center gap-1 text-xs font-semibold text-amber-500 whitespace-nowrap">
+                                            <FaCrown size={10} />
+                                            Premium
+                                        </span>
+                                    )}
+                                    {selected && !selectedLocked && recommendedIds.has(selected.id) && (
                                         <span className="flex items-center gap-1 text-xs font-semibold text-amber-500 whitespace-nowrap">
                                             <FaStar size={10} />
                                             Matched to you
@@ -290,13 +317,23 @@ const TopicCard = ({
 
                                 </div>
 
-                                <Link
-                                    to={selectedSlug ? `/problems/${selectedSlug}` : "#"}
-                                    className="mt-5 rounded-xl py-3 flex items-center justify-center gap-2 font-semibold !text-white bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all active:scale-95"
-                                >
-                                    Start Problem
-                                    <FaArrowRight />
-                                </Link>
+                                {selectedLocked ? (
+                                    <Link
+                                        to="/premium"
+                                        className="mt-5 rounded-xl py-3 flex items-center justify-center gap-2 font-semibold !text-white bg-gradient-to-b from-amber-600 to-amber-400 hover:to-amber-500 transition-all active:scale-95"
+                                    >
+                                        <FaCrown size={14} />
+                                        Upgrade to Unlock
+                                    </Link>
+                                ) : (
+                                    <Link
+                                        to={selectedSlug ? `/problems/${selectedSlug}` : "#"}
+                                        className="mt-5 rounded-xl py-3 flex items-center justify-center gap-2 font-semibold !text-white bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all active:scale-95"
+                                    >
+                                        Start Problem
+                                        <FaArrowRight />
+                                    </Link>
+                                )}
 
                             </article>
 

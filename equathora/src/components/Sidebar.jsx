@@ -8,6 +8,7 @@ import { clearUserData } from '../lib/userStorage';
 import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
 import { getStreakData } from '../lib/databaseService';
 import { useUserProfile } from '../hooks/useUserProfile';
+import { useSubscriptionStatus } from '@/hooks/useSubscription';
 import { FaRoute, FaTeamspeak } from 'react-icons/fa';
 
 const getLowResAvatarUrl = (avatarUrl) => {
@@ -28,6 +29,7 @@ const getLowResAvatarUrl = (avatarUrl) => {
 
 const Sidebar = ({ isOpen, onClose }) => {
     const { profile } = useUserProfile();
+    const { premium, loading: subStatusLoading } = useSubscriptionStatus();
 
     const [moreExpanded, setMoreExpanded] = useState(false);
     const [nextProblem, setNextProblem] = useState(null);
@@ -36,9 +38,15 @@ const Sidebar = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Same guard as Navbar: don't pick a daily problem until we know
+        // whether this user has premium, so a free user never briefly
+        // (or permanently, if subscription status never gets checked
+        // again) gets pointed at a locked problem.
+        if (subStatusLoading) return;
+
         const loadNextProblem = async () => {
             try {
-                const problem = await getNextRecommendedProblem();
+                const problem = await getNextRecommendedProblem(premium);
                 setNextProblem(problem || null);
             } catch (error) {
                 console.error('Failed to load next recommended problem:', error);
@@ -46,7 +54,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             }
         };
         loadNextProblem();
-    }, []);
+    }, [premium, subStatusLoading]);
 
     useEffect(() => {
         if (!isOpen) return;

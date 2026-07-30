@@ -1,4 +1,3 @@
-// DailyTrack.jsx
 import React from 'react';
 import {
     FaBullseye,
@@ -6,9 +5,10 @@ import {
     FaClock,
     FaBolt,
     FaArrowRight,
-    FaCheckCircle
+    FaCheckCircle,
+    FaCrown
 } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import { generateProblemSlug } from '@/lib/slugify';
 import { getEstimatedTime } from '@/lib/problemProgress';
 import { calculateProblemXP } from '@/lib/leaderboardService';
@@ -28,7 +28,8 @@ const DailyTrack = ({
     todayProgress,
     recommendedQueue = [],
     weeklyCommitment,
-    totalRecommendedCount = 0
+    totalRecommendedCount = 0,
+    isPremiumUser = false
 }) => {
     const streakDays = streak?.current_streak ?? streak?.streak ?? 0;
     const todayMinutes = todayProgress?.minutes_today ?? todayProgress?.today_minutes ?? 0;
@@ -139,18 +140,27 @@ const DailyTrack = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {queue.map(problem => {
+                        {queue.map((problem, idx) => {
                             const slug = getProblemSlug(problem);
                             const xp = getProblemXp(problem);
+                            const isPremiumPick = Boolean(problem.is_premium) && isPremiumUser;
 
                             return (
                                 <div
-                                    key={problem.id}
+                                    key={problem.id || idx}
                                     className="rounded-xl border border-[var(--french-gray)] bg-white/5 p-5 flex flex-col justify-between gap-4"
                                 >
                                     <div>
-                                        <div className="text-xs uppercase tracking-wider opacity-70 pb-2">
-                                            {problem.state === "progress" ? "In Progress" : "Up Next"}
+                                        <div className="flex items-center justify-between gap-2 pb-2">
+                                            <div className="text-xs uppercase tracking-wider opacity-70">
+                                                {problem.state === "progress" ? "In Progress" : "Up Next"}
+                                            </div>
+                                            {isPremiumPick && (
+                                                <span className="flex items-center gap-1 text-xs font-semibold text-amber-500">
+                                                    <FaCrown size={11} />
+                                                    Premium
+                                                </span>
+                                            )}
                                         </div>
 
                                         <h3 className="text-lg font-bold leading-snug">
@@ -171,14 +181,14 @@ const DailyTrack = ({
                                     </div>
 
                                     {slug ? (
-                                        <Link
+                                        <ReactRouterLink
                                             to={`/problems/${slug}`}
                                             className="px-4 py-2 rounded-xl bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] !text-white font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))]"
                                         >
                                             <FaPlay size={12} />
                                             Start
                                             <FaArrowRight size={12} />
-                                        </Link>
+                                        </ReactRouterLink>
                                     ) : (
                                         <span className="px-4 py-2 rounded-xl bg-white/10 text-center text-sm text-[var(--secondary-color)]">
                                             Unavailable right now
@@ -198,6 +208,7 @@ const DailyTrack = ({
                     <p className="text-sm text-[var(--secondary-color)] max-w-md">
                         You've cleared today's picks. Browse the full learning paths below to keep going or get ahead.
                     </p>
+
                     <a
                         href="#learning-paths"
                         className="px-6 py-3 rounded-xl bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] !text-white font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))]"
