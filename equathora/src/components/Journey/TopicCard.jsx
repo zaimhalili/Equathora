@@ -1,7 +1,8 @@
+// TopicCard.jsx
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from "framer-motion";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
 import {
     FaCheck,
     FaLock,
@@ -17,13 +18,13 @@ const TopicCard = ({
     topic,
     problems,
     completedSet = new Set(),
-    attemptedSet = new Set()
+    attemptedSet = new Set(),
+    recommendedIds = new Set()
 }) => {
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     const statedProblems = useMemo(
-        () => annotateProblemStates(problems, completedSet, attemptedSet),
+        () => annotateProblemStates(problems || [], completedSet, attemptedSet),
         [problems, completedSet, attemptedSet]
     );
 
@@ -42,6 +43,13 @@ const TopicCard = ({
         [statedProblems]
     );
 
+    // How many of this topic's problems match the student's current level.
+    // Shown as a hint, not used to hide anything — the full list stays visible.
+    const recommendedCount = useMemo(
+        () => statedProblems.filter(p => recommendedIds.has(p.id)).length,
+        [statedProblems, recommendedIds]
+    );
+
     // Store just the id so we don't hold a stale problem object if `problems`
     // is ever replaced with a new array reference (e.g. fresh data comes in).
     const [selectedId, setSelectedId] = useState(statedProblems[0]?.id);
@@ -50,14 +58,16 @@ const TopicCard = ({
         const found = statedProblems.find(p => p.id === selectedId);
         if (found) return found;
 
-        // Fall back to whatever the student should focus on next: the current
-        // problem, then an in-progress one, then just the first in the list.
+        // Fall back to whatever the student should focus on next: a
+        // recommended-level problem that's current/unlocked, then any
+        // current one, then in-progress, then just the first in the list.
         return (
+            statedProblems.find(p => recommendedIds.has(p.id) && p.state === "current") ??
             statedProblems.find(p => p.state === "current") ??
             statedProblems.find(p => p.state === "progress") ??
             statedProblems[0]
         );
-    }, [statedProblems, selectedId]);
+    }, [statedProblems, selectedId, recommendedIds]);
 
     const progress = statedProblems.length > 0
         ? (solvedCount / statedProblems.length) * 100
@@ -67,241 +77,236 @@ const TopicCard = ({
         ? (selected.slug || generateProblemSlug(selected.title, selected.id))
         : null;
 
+    return (
+        <div className="w-full rounded-2xl bg-[var(--main-color)] backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
+            {/* Header */}
+            <button
+                onClick={() => setOpen(!open)}
+                className="flex items-center justify-between w-full text-left"
+            >
+                <div className="flex-1">
+                    <div className="flex items-center justify-between pb-1">
+                        <h3 className="text-xl font-bold">
+                            {formatTopicLabel(topic)}
+                        </h3>
 
+                        <div className="flex items-center gap-4">
+                            <span className="text-xl font-semibold">
+                                {Math.round(progress)}%
+                            </span>
 
-        return (
-            <div className="w-full rounded-2xl bg-[var(--main-color)] backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
-                {/* Header */}
-                <button
-                    onClick={() => setOpen(!open)}
-                    className="flex items-center justify-between w-full text-left"
-                >
-                    <div className="flex-1">
-                        <div className="flex items-center justify-between pb-3">
-                            <h3 className="text-xl font-bold">
-                                {formatTopicLabel(topic)}
-                            </h3>
-
-                            <div className="flex items-center gap-4">
-                                <span className="text-xl font-semibold">
-                                    {Math.round(progress)}%
-                                </span>
-
-                                {open ? (
-                                    <FaChevronUp className="text-lg" />
-                                ) : (
-                                    <FaChevronDown className="text-lg" />
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Progress Bar */}
-                        <div className="h-4 rounded-md bg-[var(--secondary-color)]/30 overflow-hidden">
-                            <div
-                                className="h-full rounded-md bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))]"
-                                style={{ width: `${progress}%` }}
-                            />
+                            {open ? (
+                                <FaChevronUp className="text-lg" />
+                            ) : (
+                                <FaChevronDown className="text-lg" />
+                            )}
                         </div>
                     </div>
-                </button>
 
-                <AnimatePresence initial={false}>
-                    {open && (
-                        <motion.div
-                            key="body"
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{
-                                opacity: 1,
-                                height: "auto"
-                            }}
-                            exit={{
-                                opacity: 0,
-                                height: 0
-                            }}
-                            transition={{
-                                duration: 0.3
-                            }}
-                            className='flex flex-col gap-5'
-                        >
-                            {/* Top Main Content */}
-                            <section className="flex flex-col lg:flex-row gap-6 pt-5">
+                    <div className="flex items-center justify-between pb-3 flex-wrap gap-2">
+                        <span className="text-xs text-[var(--secondary-color)] opacity-70">
+                            {statedProblems.length} problem{statedProblems.length === 1 ? "" : "s"}
+                        </span>
 
-                                {/* LEFT */}
-                                <article className="flex flex-col gap-5 md:gap-3 justify-between w-full lg:w-1/2">
+                        {recommendedCount > 0 && (
+                            <span className="flex items-center gap-1.5 text-xs font-semibold text-amber-500">
+                                <FaStar size={11} />
+                                {recommendedCount} matched to your level
+                            </span>
+                        )}
+                    </div>
 
-                                    {/* Circle Container */}
-                                    <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                                        {statedProblems.map(problem => {
+                    {/* Progress Bar */}
+                    <div className="h-4 rounded-md bg-[var(--secondary-color)]/30 overflow-hidden">
+                        <div
+                            className="h-full rounded-md bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))]"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
+                </div>
+            </button>
 
-                                            let style = "bg-[var(--white)] text-[var(--mid-main-secondary)]";
-                                            let Icon = FaLock;
+            <AnimatePresence initial={false}>
+                {open && (
+                    <motion.div
+                        key="body"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{
+                            opacity: 1,
+                            height: "auto"
+                        }}
+                        exit={{
+                            opacity: 0,
+                            height: 0
+                        }}
+                        transition={{
+                            duration: 0.3
+                        }}
+                        className='flex flex-col gap-5'
+                    >
+                        {/* Top Main Content */}
+                        <section className="flex flex-col lg:flex-row gap-6 pt-5">
 
-                                            if (problem.state === "solved") {
-                                                style = "bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] text-white";
-                                                Icon = FaCheck;
-                                            }
+                            {/* LEFT */}
+                            <article className="flex flex-col gap-5 md:gap-3 justify-between w-full lg:w-1/2">
 
-                                            if (problem.state === "progress") {
-                                                style = "bg-orange-500 text-white";
-                                                Icon = FaClock;
-                                            }
+                                {/* Circle Container */}
+                                <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                                    {statedProblems.map(problem => {
 
-                                            if (problem.state === "current") {
-                                                style = "bg-amber-500 text-white pl-1";
-                                                Icon = FaPlay;
-                                            }
+                                        let style = "bg-[var(--white)] text-[var(--mid-main-secondary)]";
+                                        let Icon = FaLock;
 
-                                            return (
-                                                <button
-                                                    key={problem.id}
-                                                    onClick={() => setSelectedId(problem.id)}
-                                                    className={`h-11 w-11 rounded-full flex items-center justify-center transition-all ${style}
+                                        if (problem.state === "solved") {
+                                            style = "bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] text-white";
+                                            Icon = FaCheck;
+                                        }
+
+                                        if (problem.state === "progress") {
+                                            style = "bg-orange-500 text-white";
+                                            Icon = FaClock;
+                                        }
+
+                                        if (problem.state === "current") {
+                                            style = "bg-amber-500 text-white pl-1";
+                                            Icon = FaPlay;
+                                        }
+
+                                        const isRecommended = recommendedIds.has(problem.id);
+
+                                        return (
+                                            <button
+                                                key={problem.id}
+                                                onClick={() => setSelectedId(problem.id)}
+                                                title={isRecommended ? "Matched to your level" : undefined}
+                                                className={`relative h-11 w-11 rounded-full flex items-center justify-center transition-all ${style}
                                                 ${selected?.id === problem.id
-                                                            ? "scale-110 ring-4 ring-white/80"
+                                                        ? "scale-110 ring-4 ring-white/80"
+                                                        : isRecommended
+                                                            ? "ring-2 ring-amber-400/90 hover:scale-110"
                                                             : "hover:scale-110"
-                                                        }`}
-                                                >
-                                                    <Icon size={16} />
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-
-                                    {/* Legend */}
-                                    <div className="flex justify-between w-full flex-wrap gap-3">
-
-                                        <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
-                                            <div className="rounded-full flex h-7 w-7 bg-amber-500 text-white justify-center items-center pl-1">
-                                                <FaPlay size={12} />
-                                            </div>
-                                            Next
-                                        </div>
-
-                                        <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
-                                            <div className="rounded-full flex h-7 w-7 bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] text-white justify-center items-center">
-                                                <FaCheck size={12} />
-                                            </div>
-                                            Completed <span className="font-normal">{solvedCount}</span>
-                                        </div>
-
-                                        <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
-                                            <div className="rounded-full flex h-7 w-7 bg-orange-500 text-white justify-center items-center">
-                                                <FaClock size={12} />
-                                            </div>
-                                            In Progress{" "}
-                                            <span className="font-normal">
-                                                {progressCount}
-                                            </span>
-                                        </div>
-
-                                        <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
-                                            <div className="rounded-full flex h-7 w-7 bg-[var(--white)] text-[var(--mid-main-secondary)] justify-center items-center">
-                                                <FaLock size={12} />
-                                            </div>
-                                            Not Started{" "}
-                                            <span className="font-normal">
-                                                {lockedCount}
-                                            </span>
-                                        </div>
-
-                                    </div>
-                                </article>
-
-                                {/* RIGHT */}
-                                <article className="w-full lg:w-1/2 rounded-md bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-[var(--secondary-color)]">
-
-                                    <h4 className="text-xl font-bold pb-3">
-                                        {selected?.title}
-                                    </h4>
-
-                                    <div className="text-sm">
-
-                                        <div className="flex justify-between">
-                                            <span className="opacity-80">
-                                                Difficulty
-                                            </span>
-
-                                            <span className="px-2 rounded text-white text-sm font-semibold"
-                                                style={{
-                                                    backgroundColor: `var(--${selected?.difficulty?.toLowerCase()})`
-                                                }}>
-                                                {selected?.difficulty}
-                                            </span>
-                                        </div>
-
-                                        <div className="flex justify-between">
-                                            <span className="opacity-80">
-                                                Estimated Time
-                                            </span>
-
-                                            <span>
-                                                {selected?.estimated_time ?? getEstimatedTime(selected?.difficulty)}
-                                            </span>
-                                        </div>
-
-                                        <div className="flex justify-between">
-                                            <span className="opacity-80">
-                                                XP Reward
-                                            </span>
-
-                                            <span>
-                                                {selected?.xp ?? getEstimatedXp(selected?.difficulty)} XP
-                                            </span>
-                                        </div>
-
-                                    </div>
-
-                                    <Link
-                                        to={selectedSlug ? `/problems/${selectedSlug}` : "#"}
-                                        className="mt-5 rounded-xl py-3 flex items-center justify-center gap-2 font-semibold !text-white bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all active:scale-95"
-                                    >
-                                        Start Problem
-                                        <FaArrowRight />
-                                    </Link>
-
-                                </article>
-
-                            </section>
-                            {/* Achievements  */}
-                            {/* <section className='w-full gap-3 p-5 rounded-md bg-white/5 border border-white/50 flex flex-col'>
-                            <p className='text-xl font-bold text-[var(--secondary-color)]'>Achievements</p>
-                            <article className='flex gap-3'>
-                                <div className="flex flex-col w-fit bg-white/5 border border-white/50 p-3 items-center gap-3 rounded-md">
-                                    <FaGem className='w-full text-5xl text-[var(--secondary-color)]' />
-                                    <p className='text-[var(--secondary-color)]'>Locked</p>
+                                                    }`}
+                                            >
+                                                <Icon size={16} />
+                                                {isRecommended && problem.state !== "solved" && (
+                                                    <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-amber-400 flex items-center justify-center">
+                                                        <FaStar size={7} className="text-white" />
+                                                    </span>
+                                                )}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
-                                <div className="flex flex-col w-fit bg-white/5 border border-white/50 p-3 items-center gap-3 rounded-md">
-                                    <FaCrown className='w-full text-5xl text-[var(--secondary-color)]' />
-                                    <p className='text-[var(--secondary-color)]'>Locked</p>
-                                </div>
-                                <div className="flex flex-col w-fit bg-white/5 border border-white/50 p-3 items-center gap-3 rounded-md">
-                                    <FaBolt className='w-full text-5xl text-[var(--secondary-color)]' />
-                                    <p className='text-[var(--secondary-color)]'>Locked</p>
+
+                                {/* Legend */}
+                                <div className="flex justify-between w-full flex-wrap gap-3">
+
+                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                        <div className="rounded-full flex h-7 w-7 bg-amber-500 text-white justify-center items-center pl-1">
+                                            <FaPlay size={12} />
+                                        </div>
+                                        Next
+                                    </div>
+
+                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                        <div className="rounded-full flex h-7 w-7 bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] text-white justify-center items-center">
+                                            <FaCheck size={12} />
+                                        </div>
+                                        Completed <span className="font-normal">{solvedCount}</span>
+                                    </div>
+
+                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                        <div className="rounded-full flex h-7 w-7 bg-orange-500 text-white justify-center items-center">
+                                            <FaClock size={12} />
+                                        </div>
+                                        In Progress{" "}
+                                        <span className="font-normal">
+                                            {progressCount}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                        <div className="rounded-full flex h-7 w-7 bg-[var(--white)] text-[var(--mid-main-secondary)] justify-center items-center">
+                                            <FaLock size={12} />
+                                        </div>
+                                        Not Started{" "}
+                                        <span className="font-normal">
+                                            {lockedCount}
+                                        </span>
+                                    </div>
+
                                 </div>
                             </article>
 
-                        </section> */}
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                            {/* RIGHT */}
+                            <article className="w-full lg:w-1/2 rounded-md bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-[var(--secondary-color)]">
 
-            </div>
-        );
+                                <div className="flex items-center justify-between gap-2 pb-3">
+                                    <h4 className="text-xl font-bold">
+                                        {selected?.title}
+                                    </h4>
+                                    {selected && recommendedIds.has(selected.id) && (
+                                        <span className="flex items-center gap-1 text-xs font-semibold text-amber-500 whitespace-nowrap">
+                                            <FaStar size={10} />
+                                            Matched to you
+                                        </span>
+                                    )}
+                                </div>
+
+                                <div className="text-sm">
+
+                                    <div className="flex justify-between">
+                                        <span className="opacity-80">
+                                            Difficulty
+                                        </span>
+
+                                        <span className="px-2 rounded text-white text-sm font-semibold"
+                                            style={{
+                                                backgroundColor: `var(--${selected?.difficulty?.toLowerCase()})`
+                                            }}>
+                                            {selected?.difficulty}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex justify-between">
+                                        <span className="opacity-80">
+                                            Estimated Time
+                                        </span>
+
+                                        <span>
+                                            {selected?.estimated_time ?? getEstimatedTime(selected?.difficulty)}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex justify-between">
+                                        <span className="opacity-80">
+                                            XP Reward
+                                        </span>
+
+                                        <span>
+                                            {selected?.xp ?? getEstimatedXp(selected?.difficulty)} XP
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                                <Link
+                                    to={selectedSlug ? `/problems/${selectedSlug}` : "#"}
+                                    className="mt-5 rounded-xl py-3 flex items-center justify-center gap-2 font-semibold !text-white bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all active:scale-95"
+                                >
+                                    Start Problem
+                                    <FaArrowRight />
+                                </Link>
+
+                            </article>
+
+                        </section>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+        </div>
+    );
 };
 
 export default TopicCard;
-
-
-// 3) -------- 50% Done
-// Achievements for each topic: Number Theory
-// 🏆 Finish all Beginner problems
-// 🏆 Solve 10 in a row
-// 🏆 Finish topic under 2 hours
-
-// ✓ 2 / 3 achievements
-
-
-
-// 1) --------- 80% Done
-// Open the first section that isnt finished
-// Automatically collapse completed topics (optional)

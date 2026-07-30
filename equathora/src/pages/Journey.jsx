@@ -1,3 +1,4 @@
+// Journey.jsx
 import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -17,6 +18,7 @@ import { annotateProblemStates } from '@/lib/problemProgress';
 import DailyTrack from '@/components/Journey/DailyTrack';
 import TopicCard from '@/components/Journey/TopicCard';
 import { useResetDiagnostic } from '@/hooks/useResetDiagnostic';
+import { FaSpinner } from 'react-icons/fa';
 
 const Journey = () => {
     const { resetDiagnosticTest, loading: isResetting } = useResetDiagnostic();
@@ -27,7 +29,6 @@ const Journey = () => {
 
     const [studentProfile, setStudentProfile] = useState(null);
     const [studentTopics, setStudentTopics] = useState([]);
-    const [recommendedProblems, setRecommendedProblems] = useState([]);
     const [allProblems, setAllProblems] = useState([]);
 
     const [streakData, setStreakData] = useState(null);
@@ -52,6 +53,9 @@ const Journey = () => {
         Advanced: 7
     };
 
+    // Which difficulties count as "recommended" for a given level. This no
+    // longer FILTERS out other problems — it only tags them, so topics still
+    // show their full problem list instead of a thin slice.
     const LEVEL_TO_DIFFICULTIES = {
         beginner: ["Beginner", "Easy", "Standard"],
         intermediate: ["Easy", "Standard", "Intermediate", "Medium"],
@@ -59,19 +63,9 @@ const Journey = () => {
         competitive: ["Medium", "Challenging", "Hard", "Advanced"]
     };
 
-    // How many problems the pool of recommended problems (shown in the
-    // Learning Paths section below) is capped at, per weekly commitment.
-    const POOL_LIMIT_BY_COMMITMENT = {
-        "under-1": 8,
-        "1-3": 15,
-        "3-6": 25,
-        "6+": 35
-    };
-
-    // How many problems get pulled into today's Daily Mission queue.
-    // Kept separate from the pool limit above: someone doing 6+ hrs/week
-    // gets a bigger pool to browse, but the "today" queue stays a
-    // realistic, achievable number of cards.
+    // How many problems get pulled into TODAY's Daily Mission queue.
+    // This is the only place weekly_commitment now limits anything —
+    // Learning Paths / TopicCards always show the full set per topic.
     const DAILY_TARGET_BY_COMMITMENT = {
         "under-1": 2,
         "1-3": 3,
@@ -178,67 +172,54 @@ const Journey = () => {
         load();
     }, []);
 
-    useEffect(() => {
-        if (!studentProfile || !studentTopics.length || allProblems.length === 0) {
-            return;
-        }
+    // Full set of problems for the student's selected subjects — NOT sliced.
+    // This is what feeds the Learning Paths / TopicCards, so every topic
+    // shows its complete list of problems instead of a thin global slice.
+    const journeyProblems = useMemo(() => {
+        if (!studentTopics.length || allProblems.length === 0) return [];
 
         const selectedSubjects = getSelectedSubjects(studentTopics);
+        return allProblems.filter(problem => selectedSubjects.has(problem.subject));
+    }, [studentTopics, allProblems]);
 
-        let filtered = allProblems.filter(problem =>
-            selectedSubjects.has(problem.subject)
-        );
+    const allowedDifficulties = useMemo(() => {
+        return LEVEL_TO_DIFFICULTIES[(studentProfile?.level ?? "").toLowerCase()] ?? [];
+    }, [studentProfile]);
 
-        const allowedDifficulties =
-            LEVEL_TO_DIFFICULTIES[(studentProfile.level ?? "").toLowerCase()] ?? [];
+    // Ids of problems that match the student's current level. Used only to
+    // highlight/prioritize — never to hide problems from a topic.
+    const recommendedIds = useMemo(() => {
+        const ids = new Set();
+        if (!allowedDifficulties.length) return ids;
 
-        filtered = filtered.filter(problem =>
-            allowedDifficulties.includes(problem.difficulty)
-        );
-
-        switch (studentProfile.preferred_challenge) {
-            case "easy":
-                filtered.sort(
-                    (a, b) =>
-                        (DIFFICULTY_ORDER[a.difficulty] ?? 999) -
-                        (DIFFICULTY_ORDER[b.difficulty] ?? 999)
-                );
-                break;
-
-            case "challenging":
-            case "extreme":
-                filtered.sort(
-                    (a, b) =>
-                        (DIFFICULTY_ORDER[b.difficulty] ?? 999) -
-                        (DIFFICULTY_ORDER[a.difficulty] ?? 999)
-                );
-                break;
-
-            default:
-                break;
+        for (const problem of journeyProblems) {
+            if (allowedDifficulties.includes(problem.difficulty)) {
+                ids.add(problem.id);
+            }
         }
-
-        const limit = POOL_LIMIT_BY_COMMITMENT[studentProfile.weekly_commitment] ?? 20;
-
-        setRecommendedProblems(filtered.slice(0, limit));
-    }, [studentProfile, studentTopics, allProblems]);
+        return ids;
+    }, [journeyProblems, allowedDifficulties]);
 
     const personalizedJourney = useMemo(() => {
-        return buildJourney(recommendedProblems);
-    }, [recommendedProblems]);
+        return buildJourney(journeyProblems);
+    }, [journeyProblems]);
 
     const dailyTargetCount = useMemo(() => {
         return DAILY_TARGET_BY_COMMITMENT[studentProfile?.weekly_commitment] ?? DEFAULT_DAILY_TARGET;
     }, [studentProfile]);
 
-    // Recommended queue for today's daily mission: pulls uncompleted
-    // ("current" / "unlocked") problems across subjects/topics in order,
-    // sized to the student's commitment level instead of a fixed 3.
-    const recommendedQueue = useMemo(() => {
-        const queue = [];
+    // Full candidate pool for today's mission: uncompleted problems that
+    // match the student's level, sorted by their stated challenge preference.
+    // recommendedQueue is just the top N of this list (N = dailyTargetCount);
+    // totalRecommendedCount is the full candidate pool size, so DailyTrack
+    // can show "+N more waiting" accurately.
+    const recommendedCandidates = useMemo(() => {
         if (!personalizedJourney || Object.keys(personalizedJourney).length === 0) {
-            return queue;
+            return [];
         }
+
+        const candidates = [];
+        const seen = new Set();
 
         for (const subject of SUBJECT_ORDER) {
             const topics = personalizedJourney[subject];
@@ -250,20 +231,43 @@ const Journey = () => {
                     completedSet,
                     attemptedSet
                 );
-                const uncompleted = annotated.filter(
-                    p => p.state === "current" || p.state === "unlocked"
-                );
 
-                for (const prob of uncompleted) {
-                    if (!queue.some(p => p.id === prob.id)) {
-                        queue.push(prob);
+                for (const prob of annotated) {
+                    const isUncompleted = prob.state === "current" || prob.state === "unlocked";
+                    const isRecommendedLevel =
+                        !allowedDifficulties.length || allowedDifficulties.includes(prob.difficulty);
+
+                    if (isUncompleted && isRecommendedLevel && !seen.has(prob.id)) {
+                        seen.add(prob.id);
+                        candidates.push(prob);
                     }
-                    if (queue.length >= dailyTargetCount) return queue;
                 }
             }
         }
-        return queue;
-    }, [personalizedJourney, completedSet, attemptedSet, dailyTargetCount]);
+
+        switch (studentProfile?.preferred_challenge) {
+            case "easy":
+                candidates.sort(
+                    (a, b) => (DIFFICULTY_ORDER[a.difficulty] ?? 999) - (DIFFICULTY_ORDER[b.difficulty] ?? 999)
+                );
+                break;
+            case "challenging":
+            case "extreme":
+                candidates.sort(
+                    (a, b) => (DIFFICULTY_ORDER[b.difficulty] ?? 999) - (DIFFICULTY_ORDER[a.difficulty] ?? 999)
+                );
+                break;
+            default:
+                break;
+        }
+
+        return candidates;
+    }, [personalizedJourney, completedSet, attemptedSet, allowedDifficulties, studentProfile]);
+
+    const recommendedQueue = useMemo(
+        () => recommendedCandidates.slice(0, dailyTargetCount),
+        [recommendedCandidates, dailyTargetCount]
+    );
 
     const currentStreak = streakData?.current_streak ?? streakData?.streak_count ?? 0;
 
@@ -335,14 +339,14 @@ const Journey = () => {
                             todayProgress={todayProgress}
                             recommendedQueue={recommendedQueue}
                             weeklyCommitment={studentProfile?.weekly_commitment}
-                            totalRecommendedCount={recommendedProblems.length}
+                            totalRecommendedCount={recommendedCandidates.length}
                         />
 
                         {/* Learning Paths / Dropdowns */}
                         <section id="learning-paths" className="flex flex-col w-full pt-6">
                             {loading ? (
-                                <div className="py-12 flex justify-center items-center">
-                                    <LoadingSpinner />
+                                <div className="py-12 flex justify-center items-center animate-spin">
+                                    <FaSpinner className='text-2xl'/>
                                 </div>
                             ) : Object.keys(personalizedJourney).length === 0 ? (
                                 <p className="text-center text-lg text-[var(--secondary-color)] py-8">
@@ -376,6 +380,7 @@ const Journey = () => {
                                                         problems={problems}
                                                         completedSet={completedSet}
                                                         attemptedSet={attemptedSet}
+                                                        recommendedIds={recommendedIds}
                                                     />
                                                 )
                                             )}
@@ -406,8 +411,8 @@ const Journey = () => {
                         </div>
 
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
             <Footer />
         </>
     );

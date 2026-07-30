@@ -855,13 +855,16 @@ const Problem = () => {
                         <FaCrown className="text-3xl text-amber-500" />
                         <h2 className="text-2xl font-bold">Premium Problem</h2>
                         <p className="text-[var(--mid-main-secondary)]">Upgrade to premium to view this problem.</p>
-                        <Link to="/learn" className="text-[var(--accent-color)] hover:underline bg-gradient-to-b from-amber-600 to-amber-500 px-3 py-2 rounded-md hover:to-amber-600 transition-all active:scale-95">
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="text-white font-medium bg-gradient-to-b from-amber-600 to-amber-500 px-4 py-2 rounded-md hover:to-amber-600 transition-all active:scale-95 cursor-pointer"
+                        >
                             Go back
-                        </Link>
+                        </button>
                     </div>
                 </div>
 
-                <Footer/>
+                <Footer />
             </>
 
         );
