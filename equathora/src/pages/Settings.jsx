@@ -25,6 +25,7 @@ import {
     isSubscribedToEquathoraBriefs,
 } from '../lib/equathoraBriefsService';
 import { useSubscription } from '@/hooks/SubscriptionContext';
+import { useResetDiagnostic } from '@/hooks/useResetDiagnostic';
 
 // ============================================================================
 // LABEL MAPS (mirrors the option ids used on /getStarted)
@@ -215,6 +216,7 @@ const ConfirmModal = ({
     loading = false,
     variant = 'danger',
 }) => {
+
     const [typed, setTyped] = useState('');
 
     useEffect(() => {
@@ -395,6 +397,7 @@ const THEME_OPTIONS = [
 // ============================================================================
 
 const Settings = () => {
+    const { resetDiagnosticTest, loading: diagnosticResetting } = useResetDiagnostic()
     const { premium, loading: subLoading } = useSubscription();
     const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState('profile');
@@ -1035,9 +1038,20 @@ const Settings = () => {
                             )}
 
                             <div>
-                                <PrimaryButton onClick={() => setShowRetakeModal(true)}>
-                                    Retake Onboarding Quiz
-                                </PrimaryButton>
+                                <button
+                                    type="button"
+                                    disabled={isResetting}
+                                    onClick={async () => {
+                                        try {
+                                            await resetDiagnosticTest();
+                                        } catch (e) {
+                                            // Handled in hook
+                                        }
+                                    }}
+                                    className="py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full text-center max-w-fit px-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {isResetting ? 'Resetting...' : 'Retake Skill Assessment'}
+                                </button>
                             </div>
                         </SectionCard>
 

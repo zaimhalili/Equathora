@@ -1,10 +1,12 @@
+// DailyTrack.jsx
 import React from 'react';
 import {
     FaBullseye,
     FaPlay,
     FaClock,
     FaBolt,
-    FaArrowRight
+    FaArrowRight,
+    FaCheckCircle
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { generateProblemSlug } from '@/lib/slugify';
@@ -12,39 +14,66 @@ import { getEstimatedTime } from '@/lib/problemProgress';
 import { calculateProblemXP } from '@/lib/leaderboardService';
 import { motion } from 'framer-motion';
 
-const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes }) => {
-    // Field names below are a best-effort guess at what getStreakData() /
-    // getUserProgress() return (current_streak / minutes_today / daily_goal_minutes).
-    // If your DB functions use different field names, adjust these three lines.
+// Daily minutes goal per weekly commitment tier. Mirrors the pool-size
+// tiers in Journey.jsx but for the "minutes today" progress bar.
+const GOAL_MINUTES_BY_COMMITMENT = {
+    "under-1": 15,
+    "1-3": 30,
+    "3-6": 45,
+    "6+": 60
+};
+
+const DailyTrack = ({
+    streak,
+    todayProgress,
+    recommendedQueue = [],
+    weeklyCommitment,
+    totalRecommendedCount = 0
+}) => {
     const streakDays = streak?.current_streak ?? streak?.streak ?? 0;
     const todayMinutes = todayProgress?.minutes_today ?? todayProgress?.today_minutes ?? 0;
-    // Prefer a real goal from the backend; otherwise use the goal derived
-    // from the student's weekly_commitment (passed in from Journey); only
-    // fall back to a flat 20 if neither is available.
+
     const goalMinutes = todayProgress?.daily_goal_minutes
         ?? todayProgress?.goal_minutes
-        ?? fallbackGoalMinutes
+        ?? GOAL_MINUTES_BY_COMMITMENT[weeklyCommitment]
         ?? 20;
+
     const goalPercent = goalMinutes > 0
         ? Math.min(100, Math.round((todayMinutes / goalMinutes) * 100))
         : 0;
 
-    const nextProblemSlug = nextProblem
-        ? (nextProblem.slug || generateProblemSlug(nextProblem.title, nextProblem.id))
-        : null;
+    const queue = Array.isArray(recommendedQueue) ? recommendedQueue : [];
+    const remainingInPool = Math.max(totalRecommendedCount - queue.length, 0);
 
-    // Preview XP for the card: same calculateProblemXP used on problem completion.
-    // Time/hints aren't known yet, so this shows base + first-attempt bonus,
-    // the guaranteed floor a student gets for solving it correctly first try.
-    const nextProblemXp = nextProblem
-        ? calculateProblemXP(nextProblem.difficulty, 0, true, 0, false).totalXP
-        : 0;
+    // Defensive XP calc: never let a missing difficulty crash the render loop.
+    const getProblemXp = (problem) => {
+        if (!problem?.difficulty) return 0;
+        try {
+            const result = calculateProblemXP(problem.difficulty, 0, true, 0, false);
+            return Number.isFinite(result?.totalXP) ? result.totalXP : 0;
+        } catch (err) {
+            console.error("[DailyTrack] calculateProblemXP failed:", err);
+            return 0;
+        }
+    };
+
+    const getProblemSlug = (problem) => {
+        if (!problem?.id) return null;
+        try {
+            return problem.slug || generateProblemSlug(problem.title ?? "problem", problem.id);
+        } catch (err) {
+            console.error("[DailyTrack] generateProblemSlug failed:", err);
+            return null;
+        }
+    };
 
     return (
-        <motion.section className="w-full rounded-2xl bg-[var(--main-color)] border border-white/10 p-5 shadow-xl"
+        <motion.section
+            className="w-full rounded-2xl bg-[var(--main-color)] border border-white/10 p-5 shadow-xl"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}>
+            transition={{ duration: 0.6 }}
+        >
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="h-12 w-12 rounded-xl bg-[var(--accent-color)] flex items-center justify-center text-white">
@@ -73,8 +102,7 @@ const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes })
                 </div>
             </div>
 
-            {/* Progress */}
-
+            {/* Minutes Progress */}
             <div className="py-6">
                 <div className="flex justify-between pb-2">
                     <span className="font-semibold">
@@ -91,59 +119,94 @@ const DailyTrack = ({ streak, todayProgress, nextProblem, fallbackGoalMinutes })
                         style={{ width: `${goalPercent}%` }}
                     />
                 </div>
-
             </div>
 
-            {/* Continue */}
-            <div className="rounded-xl border border-[var(--french-gray)] bg-white/5 p-5 flex flex-col md:flex-row md:justify-between gap-5 md:items-end">
-                <div>
-                    <div className="text-xs uppercase tracking-wider opacity-70 pb-2">
-                        Continue Learning
+            {/* Recommended problem queue */}
+            {queue.length > 0 ? (
+                <>
+                    <div className="flex items-center justify-between flex-wrap gap-2 pb-4">
+                        <p className="text-sm text-[var(--secondary-color)]">
+                            Picked for you today, based on your level and pace.
+                        </p>
+                        {remainingInPool > 0 && (
+                            <a
+                                href="#learning-paths"
+                                className="text-sm font-semibold text-[var(--accent-color)] hover:underline"
+                            >
+                                +{remainingInPool} more waiting in your tracks
+                            </a>
+                        )}
                     </div>
 
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {queue.map(problem => {
+                            const slug = getProblemSlug(problem);
+                            const xp = getProblemXp(problem);
+
+                            return (
+                                <div
+                                    key={problem.id}
+                                    className="rounded-xl border border-[var(--french-gray)] bg-white/5 p-5 flex flex-col justify-between gap-4"
+                                >
+                                    <div>
+                                        <div className="text-xs uppercase tracking-wider opacity-70 pb-2">
+                                            {problem.state === "progress" ? "In Progress" : "Up Next"}
+                                        </div>
+
+                                        <h3 className="text-lg font-bold leading-snug">
+                                            {problem.title ?? "Untitled problem"}
+                                        </h3>
+
+                                        <div className="pt-3 flex flex-wrap gap-4 text-sm text-[var(--secondary-color)]">
+                                            <div className="flex items-center gap-2">
+                                                <FaClock />
+                                                {problem.estimated_time ?? getEstimatedTime(problem.difficulty)}
+                                            </div>
+
+                                            <div className="flex items-center gap-2 text-[var(--rare-blue)]">
+                                                <FaBolt />
+                                                + {xp} XP
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {slug ? (
+                                        <Link
+                                            to={`/problems/${slug}`}
+                                            className="px-4 py-2 rounded-xl bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] !text-white font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))]"
+                                        >
+                                            <FaPlay size={12} />
+                                            Start
+                                            <FaArrowRight size={12} />
+                                        </Link>
+                                    ) : (
+                                        <span className="px-4 py-2 rounded-xl bg-white/10 text-center text-sm text-[var(--secondary-color)]">
+                                            Unavailable right now
+                                        </span>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </>
+            ) : (
+                <div className="rounded-xl border border-[var(--french-gray)] bg-white/5 p-6 flex flex-col items-center text-center gap-3">
+                    <FaCheckCircle className="text-3xl text-[var(--accent-color)]" />
                     <h3 className="text-xl font-bold">
-                        {nextProblem?.title ?? "You're all caught up!"}
+                        You're all caught up!
                     </h3>
-
-                    {nextProblem && (
-                        <div className="pt-3 flex flex-wrap gap-5 text-[var(--secondary-color)]">
-
-                            <div className="flex items-center gap-2">
-                                <FaClock />
-                                {nextProblem.estimated_time ?? getEstimatedTime(nextProblem.difficulty)}
-                            </div>
-
-                            <div className="flex items-center gap-2 text-[var(--rare-blue)]">
-                                <FaBolt />
-                                + {nextProblemXp} XP
-                            </div>
-
-                        </div>
-                    )}
-
+                    <p className="text-sm text-[var(--secondary-color)] max-w-md">
+                        You've cleared today's picks. Browse the full learning paths below to keep going or get ahead.
+                    </p>
+                    <a
+                        href="#learning-paths"
+                        className="px-6 py-3 rounded-xl bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] !text-white font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))]"
+                    >
+                        Review All Tracks
+                        <FaArrowRight size={12} />
+                    </a>
                 </div>
-
-                {nextProblem ? (
-                    <Link
-                        to={`/problems/${nextProblemSlug}`}
-                        className="px-8 py-3 rounded-xl bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] !text-white font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))]"
-                    >
-                        <FaPlay />
-                        Continue
-                        <FaArrowRight />
-                    </Link>
-                ) : (
-                    <Link
-                        to="/journey"
-                        className="px-8 py-3 rounded-xl bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] !text-white font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))]"
-                    >
-                        Browse Problems
-                        <FaArrowRight />
-                    </Link>
-                )}
-
-            </div>
-
+            )}
         </motion.section>
     );
 };

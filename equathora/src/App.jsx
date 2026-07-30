@@ -5,7 +5,6 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import OverflowChecker from "./pages/OverflowChecker";
 import ProtectedRoute from "./components/ProtectedRoute";
-import OnboardingRoute from "./components/OnboardingRoute";
 import AdminRoute from "./components/AdminRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { supabase } from "./lib/supabaseClient";
@@ -43,7 +42,6 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogList = lazy(() => import("./pages/BlogList"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
-// const SubmitProblem = lazy(() => import("./pages/SubmitProblem/SubmitProblem"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -65,7 +63,6 @@ const Journey = lazy(() => import("./pages/Journey"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const EquathoraBriefs = lazy(() => import("./pages/EquathoraBriefs"));
-// const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard"));
 
 function HomeRoute() {
     const { loading, isAuth, onboardingCompleted } = useAuth();
@@ -112,13 +109,12 @@ function PageTitleUpdater() {
             '/pageNotFound': '404 - Page Not Found - Equathora',
             '/blog': 'Blog - Equathora',
             '/blogs': 'All Posts - Equathora',
-            // '/adminDashboard': 'Admin Dashboard - Equathora',
             '/getStarted': 'Choose Your Path - Equathora',
             '/submit-problem': 'Submit a problem - Equathora',
         };
 
         const matchedRoute = Object.keys(pageTitles).find(route =>
-            location.pathname === route || location.pathname.startsWith(route + '/')
+            location.pathname === route || (route !== '/' && location.pathname.startsWith(route + '/'))
         );
 
         document.title = pageTitles[matchedRoute] || 'Equathora - Master Math Through Practice';
@@ -238,7 +234,6 @@ export default function App() {
         <AuthProvider>
             <SubscriptionProvider>
                 <PageTitleUpdater />
-                {/* <OverflowChecker /> */}
                 <Suspense fallback={<LoadingSpinner />}>
                     <div id="main-content" tabIndex={-1} className="outline-none">
                         <Routes>
@@ -261,10 +256,12 @@ export default function App() {
                             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                             <Route path="/terms-of-service" element={<TermsOfService />} />
                             <Route path="/cookie-policy" element={<CookiePolicy />} />
-                            <Route path="/getStarted" element={<OnboardingRoute><GetStarted /></OnboardingRoute>} />
+
+                            {/* Protected Onboarding Flow (Allows access when logged in) */}
+                            <Route path="/getStarted" element={<ProtectedRoute><GetStarted /></ProtectedRoute>} />
                             <Route path="/premium" element={<Premium />} />
 
-                            {/* Protected Routes - Require Authentication */}
+                            {/* Protected Routes */}
                             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                             <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
                             <Route path="/learn" element={<Learn />} />
@@ -273,8 +270,6 @@ export default function App() {
                             <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />
                             <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
                             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-                            {/* <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} /> */}
-                            {/* <Route path="/submit-problem" element={<AdminRoute><SubmitProblem /></AdminRoute>} /> */}
 
                             {/* Protected Nested Routes */}
                             <Route path="/leaderboards" element={<ProtectedRoute><LeaderboardsLayout /></ProtectedRoute>}>
@@ -291,7 +286,7 @@ export default function App() {
                                 <Route path="events" element={<SpecialEvents />} />
                             </Route>
 
-                            {/* Protected Dynamic Routes */}
+                            {/* Dynamic Routes */}
                             <Route path="/problems/:slug" element={<ProtectedRoute><Problem /></ProtectedRoute>} />
                             <Route path="/profile/:profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
@@ -301,6 +296,7 @@ export default function App() {
                     </div>
                 </Suspense>
             </SubscriptionProvider>
+
             {/* Analytics */}
             {shouldEnableVercelAnalytics ? <Analytics /> : null}
             {canUseSpeedInsights ? <LazySpeedInsights /> : null}
