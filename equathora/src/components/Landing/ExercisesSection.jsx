@@ -114,7 +114,7 @@ const ExercisesSection = () => {
                                 <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2">
                                     Over {' '}
                                     <span className="text-[var(--secondary-color)] relative inline-block">
-                                        250 math exercises.
+                                        300 math exercises.
                                         <motion.svg
                                             className="absolute -bottom-2 left-0 w-full"
                                             viewBox="0 0 200 8"
@@ -174,7 +174,7 @@ const ExercisesSection = () => {
                         </div>
                     </div>
                     <div className='w-full'>
-                        <img src={Screenshot} alt="List of the problems" className='rounded-md w-full shadow-[0px_10px_35px_5px_rgba(141,153,174,0.4)] dark:shadow-black/20' />
+                        <img src={Screenshot} alt="List of the problems" className='rounded-md w-full shadow-[0px_10px_35px_5px_rgba(141,153,174,0.4)] dark:shadow-black/20' loading='lazy' />
                     </div>
                 </article>
 

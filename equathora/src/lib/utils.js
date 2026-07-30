@@ -75,19 +75,3 @@ export async function getDailyProblemId() {
 
     return selectedProblemId;
 }
-
-/**
- * Gets the daily problem slug for URL navigation
- * @returns {Promise<string>} Problem slug
- */
-export async function getDailyProblemSlug() {
-    const problemId = await getDailyProblemId();
-    const allProblems = await getAllProblems();
-    const problem = allProblems.find(p => p.id === problemId);
-    
-    if (problem) {
-        return problem.slug || generateProblemSlug(problem.title, problem.id);
-    }
-    
-    return `problem-${problemId}`;
-}

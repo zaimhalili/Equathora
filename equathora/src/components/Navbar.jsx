@@ -16,8 +16,6 @@ import Daily from '../assets/images/questionMark.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
 import Favourite from '../assets/images/favourite.svg';
 import Premium from '../assets/images/Premium.svg';
-import Progress from '../assets/images/Progress.svg';
-import Choice from '../assets/images/choice.svg';
 import Journey from '../assets/images/journey.svg';
 import Mentoring from '../assets/images/mentoring.svg';
 import Faq from '../assets/images/faq.svg';
@@ -27,10 +25,9 @@ import Statistics from '../assets/images/statistics.svg';
 import Settings from '../assets/images/settings.svg';
 import Updates from '../assets/images/updates.svg';
 import Notifications from '../assets/images/notificationsDD.svg';
-import Teacher from '../assets/images/teacher.svg';
 import Achievements from '../assets/images/achievementsDD.svg';
 import Events from '../assets/images/specialEvents.svg';
-import { getDailyProblemSlug } from '../lib/utils';
+import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
 import Books from '../assets/images/learningBooks.svg';
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import PremiumButton from './Premium/PremiumButton';
@@ -56,21 +53,22 @@ const Navbar = () => {
   const { profile } = useUserProfile();
   const { premium, loading: onloading } = useSubscriptionStatus();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [dailyProblemSlug, setDailyProblemSlug] = useState('');
+  const [nextProblem, setNextProblem] = useState(null);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
 
   useEffect(() => {
-    const loadDailyProblem = async () => {
+    const loadNextProblem = async () => {
       try {
-        const slug = await getDailyProblemSlug();
-        setDailyProblemSlug(slug);
+        const problem = await getNextRecommendedProblem();
+        setNextProblem(problem || null);
       } catch (error) {
-        console.error('Failed to load daily problem:', error);
+        console.error('Failed to load next recommended problem:', error);
+        setNextProblem(null);
       }
     };
-    loadDailyProblem();
+    loadNextProblem();
   }, []);
 
   useEffect(() => {
@@ -110,9 +108,14 @@ const Navbar = () => {
     };
   }, []);
 
+  // Only link into a problem once we actually have a recommended slug —
+  // otherwise send them to /journey (always valid) instead of a
+  // /problems/undefined dead link / 404.
+  const dailyProblemTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
+
   const learnItems = [
     {
-      to: `/problems/${dailyProblemSlug}`,
+      to: dailyProblemTo,
       text: "Daily Problem",
       description: "Solve a fresh daily challenge.",
       image: Daily
@@ -150,13 +153,6 @@ const Navbar = () => {
       description: "Weekly product updates and math drops.",
       image: Daily
     },
-    // Hidden for MVP - will be added after launch
-    // {
-    //   to: "/",
-    //   text: "Learning Paths",
-    //   description: "Curated sequences of related problems.",
-    //   image: Progress
-    // }
   ]
 
   const moreItems = [

@@ -27,7 +27,7 @@ const AboutCtaSection = () => {
                             <div className="flex flex-wrap gap-4 pb-6 justify-center lg:justify-normal">
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 bg-[var(--accent-color)] rounded-full animate-pulse"></div>
-                                    <span className="text-sm text-[var(--white)]/80">Free Forever</span>
+                                    <span className="text-sm text-[var(--white)]/80">Free to join</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 bg-[var(--accent-color)] rounded-full animate-pulse"></div>
@@ -35,7 +35,7 @@ const AboutCtaSection = () => {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 bg-[var(--accent-color)] rounded-full animate-pulse"></div>
-                                    <span className="text-sm text-[var(--white)]/80">250+ Problems</span>
+                                    <span className="text-sm text-[var(--white)]/80">300+ Problems</span>
                                 </div>
                             </div>
                             <motion.div whileTap={{ scale: 0.95 }} className='flex justify-center lg:justify-normal'>

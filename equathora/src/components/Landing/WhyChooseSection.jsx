@@ -113,7 +113,7 @@ const WhyChooseSection = () => {
                                         <svg className="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
                                             <defs>
                                                 <linearGradient id="icon-gradient-check" x1="0%" y1="0%" x2="0%" y2="100%">
-                                                    <stop offset="0%" stopColor="var(--accent-color-dark)" />
+                                                    <stop offset="0%" stopColor="var(--dark-accent-color)" />
                                                     <stop offset="100%" stopColor="var(--accent-color)" />
                                                 </linearGradient>
                                             </defs>

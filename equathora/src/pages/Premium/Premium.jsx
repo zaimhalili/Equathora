@@ -24,7 +24,7 @@ const Premium = () => {
     { bold: "Personalized studying plan", text: " (standard problems)" },
     { bold: "Step-by-step LaTeX workspace", text: "" },
     { bold: "Basic completion stats", text: "" },
-    { bold: "~250 curated foundational problems", text: "" },
+    { bold: "~300 curated foundational problems", text: "" },
     { bold: "\"Correct / Incorrect\" answer feedback", text: "" }
   ];
 

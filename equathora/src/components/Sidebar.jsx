@@ -5,7 +5,7 @@ import GuestAvatar from '../assets/images/guestAvatar.png';
 import { FaCrown, FaTimes } from 'react-icons/fa';
 import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
-import { getDailyProblemSlug } from '../lib/utils';
+import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
 import { getStreakData } from '../lib/databaseService';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { FaRoute, FaTeamspeak } from 'react-icons/fa';
@@ -30,21 +30,22 @@ const Sidebar = ({ isOpen, onClose }) => {
     const { profile } = useUserProfile();
 
     const [moreExpanded, setMoreExpanded] = useState(false);
-    const [dailyProblemSlug, setDailyProblemSlug] = useState('');
+    const [nextProblem, setNextProblem] = useState(null);
     const [currentStreak, setCurrentStreak] = useState(0);
     const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const loadDailyProblem = async () => {
+        const loadNextProblem = async () => {
             try {
-                const slug = await getDailyProblemSlug();
-                setDailyProblemSlug(slug);
+                const problem = await getNextRecommendedProblem();
+                setNextProblem(problem || null);
             } catch (error) {
-                console.error('Failed to load daily problem:', error);
+                console.error('Failed to load next recommended problem:', error);
+                setNextProblem(null);
             }
         };
-        loadDailyProblem();
+        loadNextProblem();
     }, []);
 
     useEffect(() => {
@@ -109,9 +110,14 @@ const Sidebar = ({ isOpen, onClose }) => {
         window.location.replace('/');
     }
 
+    // Only link into a problem once we actually have a recommended slug —
+    // otherwise send them to /journey (always valid) instead of a
+    // /problems/undefined dead link / 404.
+    const dailyChallengeTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
+
     const sidebarItems = [
         {
-            to: `/problems/${dailyProblemSlug}`,
+            to: dailyChallengeTo,
             text: 'Daily Challenge',
             description: 'Solve today\'s problem',
             icon: <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
@@ -177,7 +183,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             text: 'Premium',
             description: 'Upgrade to Premium',
             icon: <FaCrown className="text-white" style={{ color: '#ffffff', width: '24px', height: '24px' }} />,
-            className: 'bg-gradient-to-b from-amber-600 to-amber-400 !text-white shadow-md',
+            className: 'bg-gradient-to-b from-amber-600 to-amber-400 !text-white shadow-md hover:to-amber-500',
             customTextStyle: { color: '#ffffff' }
         }
         // TODO: Add admin dashboard on the sidebar for mobile breakpoints

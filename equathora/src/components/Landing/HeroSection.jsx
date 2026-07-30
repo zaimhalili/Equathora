@@ -87,7 +87,7 @@ const Particles = () => {
 
 const HeroSection = () => {
     const stats = [
-        { value: 250, label: 'Practice Problems', suffix: '+' },
+        { value: 300, label: 'Practice Problems', suffix: '+' },
         { value: 30, label: 'Achievements', suffix: '+' },
         { value: 50, label: 'Math Topics', suffix: '+' },
     ];
@@ -248,7 +248,7 @@ const HeroSection = () => {
                             className="relative z-20 w-full h-full flex items-center justify-center"
                         >
                             <motion.div
-                                className="relative"
+                                className="relative [transform-style:preserve-3d]" /* <-- FIX 1: Enable 3D rendering context */
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -256,19 +256,19 @@ const HeroSection = () => {
                                 {/* Circle container with image clipped inside */}
                                 <div
                                     className="
-                                        relative
-                                        w-[320px]
-                                        sm:w-[380px]
-                                        md:w-[460px]
-                                        lg:w-[560px]
-                                        aspect-square
-                                        rounded-full
-                                        overflow-hidden
-                                        z-10
-                                        bg-gradient-to-b
-                                        from-transparent
-                                        to-[var(--french-gray)]/50
-                                        backdrop-blur-sm"
+                    relative
+                    w-[320px]
+                    sm:w-[380px]
+                    md:w-[460px]
+                    lg:w-[560px]
+                    aspect-square
+                    rounded-full
+                    overflow-hidden
+                    z-10
+                    bg-gradient-to-b
+                    from-transparent
+                    to-[var(--french-gray)]/50
+                    backdrop-blur-sm"
                                 >
                                     {/* Inner subtle circle */}
                                     <div className="absolute inset-[18%] rounded-full bg-[var(--main-color)]/80 z-0" />
@@ -278,25 +278,24 @@ const HeroSection = () => {
                                         src={YoungStudent}
                                         alt="Student with books"
                                         className="
-                                            absolute
-                                            inset-0
-                                            w-full
-                                            h-full
-                                            object-cover
-                                            object-top
-                                            drop-shadow-2xl
-                                            brightness-90
-                                            z-10
-                                            saturation-95
-                                        "
+                        absolute
+                        inset-0
+                        w-full
+                        h-full
+                        object-cover
+                        object-top
+                        drop-shadow-2xl
+                        brightness-90
+                        z-10
+                        saturation-95
+                    "
                                         loading="eager"
                                     />
                                 </div>
 
-                                {/* Floating badges - OUTSIDE overflow:hidden but INSIDE MouseFollower */}
                                 {/* Floating badge – top right */}
                                 <motion.div
-                                    className="absolute top-[10%] right-[-3%] z-30"
+                                    className="absolute top-[10%] right-[-3%] z-30 [transform:translateZ(40px)]" /* <-- FIX 2: Push out on Z-axis */
                                     animate={{ y: [0, -6, 0] }}
                                     transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                                 >
@@ -310,7 +309,7 @@ const HeroSection = () => {
 
                                 {/* Floating badge – left */}
                                 <motion.div
-                                    className="absolute top-[38%] left-[-5%] z-30"
+                                    className="absolute top-[38%] left-[-5%] z-30 [transform:translateZ(50px)]" /* <-- FIX 3: Push out on Z-axis */
                                     animate={{ y: [0, 8, 0] }}
                                     transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
                                 >

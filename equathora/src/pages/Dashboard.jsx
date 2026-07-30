@@ -14,7 +14,7 @@ import Leaderboards from '../assets/images/leaderboards.svg'
 import { Link } from 'react-router-dom';
 import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
-import { getDailyProblemSlug } from '../lib/utils';
+import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem.js';
 import { supabase } from '../lib/supabaseClient';
 import LoadingSpinner from '@/components/LoadingSpinner.jsx';
 import JourneyImg from '../assets/images/journey.svg';
@@ -27,7 +27,7 @@ import UpgradedPopup from '@/components/Premium/UpgradedPopup.jsx';
 const Dashboard = () => {
     const { premium, loading: subLoading } = useSubscription();
     const [username, setUsername] = useState("Friend");
-    const [dailyProblemSlug, setDailyProblemSlug] = useState('');
+    const [nextProblem, setNextProblem] = useState(null);
     const [showUpgradedPopup, setShowUpgradedPopup] = useState(false);
 
     useEffect(() => {
@@ -39,15 +39,16 @@ const Dashboard = () => {
     }, [])
 
     useEffect(() => {
-        const loadDailyProblem = async () => {
+        const loadNextProblem = async () => {
             try {
-                const slug = await getDailyProblemSlug();
-                setDailyProblemSlug(slug);
+                const problem = await getNextRecommendedProblem();
+                setNextProblem(problem || null);
             } catch (error) {
-                console.error('Failed to load daily problem:', error);
+                console.error('Failed to load next recommended problem:', error);
+                setNextProblem(null);
             }
         };
-        loadDailyProblem();
+        loadNextProblem();
     }, []);
 
     // Fetch username from database
@@ -69,7 +70,10 @@ const Dashboard = () => {
         fetchUsername();
     }, []);
 
-
+    // Only link into a problem once we actually have a recommended slug —
+    // otherwise send them to /journey (always valid) instead of a
+    // /problems/undefined dead link / 404.
+    const dailyChallengeTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
 
     return (
         <>
@@ -127,7 +131,7 @@ const Dashboard = () => {
                                             className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
                                         >
                                             <Link
-                                                to={`/problems/${dailyProblemSlug}`}
+                                                to={dailyChallengeTo}
                                                 className={`w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 ${premium ? '' : ''}`}
                                             >
                                                 <img src={QuestionMark} alt="Daily challenge" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
@@ -193,7 +197,7 @@ const Dashboard = () => {
                                 transition={{ duration: 0.5, delay: 0.8 }}
                                 className="w-full"
                             >
-                                <YourTrack premium={premium} loading={subLoading}/>
+                                <YourTrack premium={premium} loading={subLoading} />
                             </motion.div>
                             {/* Community Posts - That Leads to Forum, Blog and News Page */}
                             <motion.article

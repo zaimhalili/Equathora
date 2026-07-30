@@ -143,7 +143,7 @@ const AboutFeaturesSection = () => {
                             whileHover={{ y: -8 }}
                             className="group bg-gradient-to-br from-blue-500 to-cyan-400 rounded-md shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
                         >
-                            <div className="absolute top-0 right-0 text-[var(--white)]/10 text-[200px] font-black">250+</div>
+                            <div className="absolute top-0 right-0 text-[var(--white)]/10 text-[200px] font-black">300+</div>
                             <motion.div
                                 whileHover={{ scale: 1.15, rotate: -12 }}
                                 className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-md relative z-10"
@@ -151,7 +151,7 @@ const AboutFeaturesSection = () => {
                                 <FaChartLine className="text-[var(--white)] text-3xl" />
                             </motion.div>
                             <div>
-                                <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">250+ Problems</h3>
+                                <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">300+ Problems</h3>
                                 <p className="text-[var(--white)]/90 text-sm md:text-base leading-relaxed relative z-10">Curated library across many topics</p>
                             </div>
                         </motion.div>
