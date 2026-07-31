@@ -31,7 +31,7 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
 const WhyChooseSection = () => {
     const benefits = [
         'Structured problem sets',
-        'Step-by-step guidance with Sigma',
+        'Step-by-step math help with Sigma AI',
         'Progress tracking & streaks',
         'Distraction-free environment',
     ];
@@ -88,7 +88,7 @@ const WhyChooseSection = () => {
                                 </span>
                             </h2>
                             <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
-                                Build problem-solving skills that last with step-by-step support, Sigma AI feedback, and structured practice designed to turn mistakes into clarity.
+                                Practice math online with step-by-step support, Sigma AI feedback, and structured problem sets designed to turn mistakes into clarity.
                             </p>
                         </motion.div>
 

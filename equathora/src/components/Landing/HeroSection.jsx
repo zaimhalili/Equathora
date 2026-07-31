@@ -177,7 +177,7 @@ const HeroSection = () => {
                             transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
                             style={{ transformPerspective: 1000 }}
                         >
-                            Build real problem-solving skills through carefully crafted challenges, with step-by-step guidance and Sigma AI feedback that helps you see exactly where your reasoning breaks.
+                            Practice math online with carefully crafted challenges, step-by-step math help, and Sigma AI feedback that shows you exactly where your reasoning breaks.
                         </motion.p>
 
                         {/* CTA Buttons */}

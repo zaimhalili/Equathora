@@ -25,6 +25,17 @@ const Landing = () => {
                 navigate('/dashboard', { replace: true });
             }
         });
+
+        document.title = 'Equathora | Learn Math Online with Step-by-Step Practice and Sigma AI';
+        const metaDescription = document.querySelector('meta[name="description"]');
+        const metaKeywords = document.querySelector('meta[name="keywords"]');
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        const ogDescription = document.querySelector('meta[property="og:description"]');
+
+        if (metaDescription) metaDescription.setAttribute('content', 'Learn math online with structured practice, step-by-step math help, and Sigma AI feedback for algebra, logic, and problem solving.');
+        if (metaKeywords) metaKeywords.setAttribute('content', 'learn math online, math practice, step by step math help, ai math tutor, math problem solver, sigma ai, online math learning');
+        if (ogTitle) ogTitle.setAttribute('content', 'Equathora | Learn Math Online with Step-by-Step Practice and Sigma AI');
+        if (ogDescription) ogDescription.setAttribute('content', 'Practice math online with guided problem solving, step-by-step help, and Sigma AI feedback designed for real understanding.');
     }, [navigate]);
     return (
         <>

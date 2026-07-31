@@ -40,7 +40,7 @@ const AboutCtaSection = () => {
                             </div>
                             <motion.div whileTap={{ scale: 0.95 }} className='flex justify-center lg:justify-normal'>
                                 <Link
-                                    to="/learn"
+                                    to="/signup"
                                     className="group flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 text-sm sm:text-base text-center !text-[var(--white)] font-semibold transition-all ease-in hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1 sm:w-fit w-full justify-center lg:justify-center"
                                 >
                                     Get Started Free
