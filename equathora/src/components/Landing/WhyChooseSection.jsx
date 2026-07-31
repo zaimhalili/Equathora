@@ -31,7 +31,7 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
 const WhyChooseSection = () => {
     const benefits = [
         'Structured problem sets',
-        'Detailed step-by-step solutions',
+        'Step-by-step guidance with Sigma',
         'Progress tracking & streaks',
         'Distraction-free environment',
     ];
@@ -50,7 +50,7 @@ const WhyChooseSection = () => {
             </div>
 
 
-            <div className="max-w-[1500px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto relative z-10">
+            <div className="max-w-[1500px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 mx-auto relative z-10 w-full">
                 <div className="flex flex-col items-center text-center gap-8 sm:gap-10 md:gap-12">
 
                     {/* Content - Centered */}
@@ -88,7 +88,7 @@ const WhyChooseSection = () => {
                                 </span>
                             </h2>
                             <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
-                                Build problem-solving skills that last. Practice with purpose, track your growth, and master mathematics through thoughtful challenges.
+                                Build problem-solving skills that last with step-by-step support, Sigma AI feedback, and structured practice designed to turn mistakes into clarity.
                             </p>
                         </motion.div>
 
@@ -133,8 +133,8 @@ const WhyChooseSection = () => {
                             transition={{ delay: 0.3, duration: 0.5 }}
                         >
                             <Link
-                                to="/learn"
-                                className="group inline-flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 !text-white text-base sm:text-lg font-semibold transition-all hover:!bg-[var(--accent-color)] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1 "
+                                to="/signup"
+                                className="group inline-flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 !text-white text-base sm:text-lg font-semibold transition-all hover:!bg-[var(--accent-color)] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1"
                             >
                                 Explore problems
                                 <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">

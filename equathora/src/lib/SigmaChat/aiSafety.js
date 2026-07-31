@@ -40,15 +40,27 @@ export const stripModelFormatting = (value) => sanitizePromptText(String(value ?
 
 export const getFriendlySigmaErrorMessage = (error) => {
     const status = error?.status ?? error?.context?.status ?? error?.error?.status;
-    const message = String(error?.message ?? error?.error?.message ?? '').toLowerCase();
+    const rawMessage = String(
+        error?.message ??
+        error?.error?.message ??
+        (typeof error === 'string' ? error : '')
+    ).toLowerCase();
 
-    if (status === 503 || status === 429 || message.includes('unavailable') || message.includes('high demand')) {
-        return 'Sigma is busy right now. Please try again in a moment.';
+    // Catch rate limits, depleted quota, or upstream API errors
+    if (
+        status === 429 ||
+        status === 503 ||
+        rawMessage.includes('resource_exhausted') ||
+        rawMessage.includes('prepayment') ||
+        rawMessage.includes('quota') ||
+        rawMessage.includes('high demand')
+    ) {
+        return 'Sigma is temporarily unavailable due to high system load. Please try again in a few moments, or reach out to equathora@gmail.com if the issue persists.';
     }
 
     if (status === 401 || status === 403) {
-        return 'Sigma could not be reached. Please refresh and try again.';
+        return 'Sigma session expired. Please refresh the page and try again.';
     }
 
-    return 'Sigma is having trouble right now. Please try again in a moment.';
+    return 'We ran into an issue connecting to Sigma. Please try again in a moment, or contact equathora@gmail.com for help.';
 };

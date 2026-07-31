@@ -115,6 +115,7 @@ const TestimonialsSection = () => {
                                         <img
                                             src={testimonials[index].image}
                                             className='rounded-full w-16 h-16'
+                                            loading='lazy'
                                         />
                                         <div>
                                             <p className='text-lg font-bold'>

@@ -59,10 +59,11 @@ const LatestArticlesSection = () => {
                                         <img
                                             src={post.thumbnail}
                                             alt={post.title}
-                                            className="w-full h-full object-cover transition-transform duration-500 "
+                                            className="w-full h-full object-cover transition-transform duration-500"
+                                            loading='lazy'
                                         />
                                         <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
-                                            <span className="px-2.5 sm:px-3 py-1 bg-[var(--accent-color)] text-[var(--white)] text-[10px] sm:text-xs font-semibold rounded-full">
+                                            <span className="px-2.5 sm:px-3 py-1 bg-[var(--accent-color)] text-white text-[10px] sm:text-xs font-semibold rounded-full">
                                                 {post.category}
                                             </span>
                                         </div>

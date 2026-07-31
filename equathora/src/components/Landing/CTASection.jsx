@@ -78,7 +78,7 @@ const CTASection = () => {
                         viewport={{ once: true, amount: 0.3 }}
                         transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
                     >
-                        Pick a track, solve at your own pace, and watch your math intuition grow. No ads. No fluff. Just thoughtful practice.
+                        Pick a track, solve at your own pace, and let Sigma AI help you understand exactly where your reasoning goes off course. No ads. No fluff. Just thoughtful practice.
                     </motion.p>
 
                     <motion.div
