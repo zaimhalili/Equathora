@@ -1,15 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import './Sidebar.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaTimes, FaDiscord, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
-import { FaCrown, FaTimes } from 'react-icons/fa';
+import Daily from '../assets/images/questionMark.svg';
+import Leaderboards from '../assets/images/leaderboards.svg';
+import Favourite from '../assets/images/favourite.svg';
+import PremiumIcon from '../assets/images/Premium.svg';
+import Journey from '../assets/images/journey.svg';
+import Mentoring from '../assets/images/mentoring.svg';
+import Faq from '../assets/images/faq.svg';
+import AboutUs from '../assets/images/about.svg';
+import LogoutIMG from '../assets/images/logout.svg';
+import Statistics from '../assets/images/statistics.svg';
+import Settings from '../assets/images/settings.svg';
+import Updates from '../assets/images/updates.svg';
+import Notifications from '../assets/images/notificationsDD.svg';
+import Achievements from '../assets/images/achievementsDD.svg';
+import Events from '../assets/images/specialEvents.svg';
+import Books from '../assets/images/learningBooks.svg';
+import Sigma from '../assets/logo/TransparentSymbol.png';
 import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
-import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
-import { getStreakData } from '../lib/databaseService';
 import { useUserProfile } from '../hooks/useUserProfile';
+import { useUserStats } from '../context/UserStatsContext';
 import { useSubscriptionStatus } from '@/hooks/useSubscription';
-import { FaRoute, FaTeamspeak } from 'react-icons/fa';
+import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
 
 const getLowResAvatarUrl = (avatarUrl) => {
     if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
@@ -18,8 +33,8 @@ const getLowResAvatarUrl = (avatarUrl) => {
 
     try {
         const parsed = new URL(avatarUrl);
-        if (!parsed.searchParams.has('w')) parsed.searchParams.set('w', '48');
-        if (!parsed.searchParams.has('h')) parsed.searchParams.set('h', '48');
+        if (!parsed.searchParams.has('w')) parsed.searchParams.set('w', '56');
+        if (!parsed.searchParams.has('h')) parsed.searchParams.set('h', '56');
         if (!parsed.searchParams.has('q')) parsed.searchParams.set('q', '40');
         return parsed.toString();
     } catch {
@@ -28,21 +43,29 @@ const getLowResAvatarUrl = (avatarUrl) => {
 };
 
 const Sidebar = ({ isOpen, onClose }) => {
-    const { profile } = useUserProfile();
-    const { premium, loading: subStatusLoading } = useSubscriptionStatus();
-
-    const [moreExpanded, setMoreExpanded] = useState(false);
-    const [nextProblem, setNextProblem] = useState(null);
-    const [currentStreak, setCurrentStreak] = useState(0);
-    const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
     const navigate = useNavigate();
+    const { profile } = useUserProfile();
+    const { premium, loading: onloading } = useSubscriptionStatus();
+    const { stats } = useUserStats();
+
+    const [nextProblem, setNextProblem] = useState(null);
+    const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
+
+    // Accordion section states
+    const [openSections, setOpenSections] = useState({
+        learn: true,
+        discover: false,
+        achievements: false,
+        more: false,
+        account: false,
+    });
+
+    const toggleSection = (section) => {
+        setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+    };
 
     useEffect(() => {
-        // Same guard as Navbar: don't pick a daily problem until we know
-        // whether this user has premium, so a free user never briefly
-        // (or permanently, if subscription status never gets checked
-        // again) gets pointed at a locked problem.
-        if (subStatusLoading) return;
+        if (onloading) return;
 
         const loadNextProblem = async () => {
             try {
@@ -54,12 +77,10 @@ const Sidebar = ({ isOpen, onClose }) => {
             }
         };
         loadNextProblem();
-    }, [premium, subStatusLoading]);
+    }, [premium, onloading]);
 
     useEffect(() => {
-        if (!isOpen) return;
-
-        const fetchStreak = async () => {
+        const fetchAvatar = async () => {
             try {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) return;
@@ -67,366 +88,323 @@ const Sidebar = ({ isOpen, onClose }) => {
                 const metadata = session.user?.user_metadata || {};
                 const avatarUrl = metadata.avatar_url || metadata.picture || metadata.image || metadata.photo_url || '';
                 setProfileAvatarSrc(getLowResAvatarUrl(avatarUrl));
-
-                const streakData = await getStreakData();
-                setCurrentStreak(streakData?.current_streak || 0);
             } catch (error) {
-                console.error('Failed to fetch streak:', error);
+                console.error('Failed to fetch avatar for sidebar:', error);
             }
         };
-        fetchStreak();
-
-        window.addEventListener('equathora:streak-updated', fetchStreak);
-        return () => {
-            window.removeEventListener('equathora:streak-updated', fetchStreak);
-        };
+        if (isOpen) {
+            fetchAvatar();
+        }
     }, [isOpen]);
 
-    useEffect(() => {
-        if (!isOpen) return;
+    // Fallback safe streak calculation identical to Navbar
+    const currentStreak = stats?.currentStreak ?? stats?.streak ?? 0;
 
-        const scrollY = window.scrollY;
-        const originalBodyOverflow = document.body.style.overflow;
-        const originalBodyPosition = document.body.style.position;
-        const originalBodyTop = document.body.style.top;
-        const originalBodyWidth = document.body.style.width;
-        const originalBodyTouchAction = document.body.style.touchAction;
-        const originalHtmlOverflow = document.documentElement.style.overflow;
+    const dailyProblemTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
 
-        document.documentElement.style.overflow = 'hidden';
-        document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollY}px`;
-        document.body.style.width = '100%';
-        document.body.style.touchAction = 'none';
-
-        return () => {
-            document.documentElement.style.overflow = originalHtmlOverflow;
-            document.body.style.overflow = originalBodyOverflow;
-            document.body.style.position = originalBodyPosition;
-            document.body.style.top = originalBodyTop;
-            document.body.style.width = originalBodyWidth;
-            document.body.style.touchAction = originalBodyTouchAction;
-            window.scrollTo(0, scrollY);
-        };
-    }, [isOpen]);
-
-    async function LogOut() {
+    const handleSignOut = async () => {
         await clearUserData();
         await supabase.auth.signOut();
-        onClose();
-        window.location.replace('/');
-    }
+        window.location.href = '/';
+    };
 
-    // Only link into a problem once we actually have a recommended slug —
-    // otherwise send them to /journey (always valid) instead of a
-    // /problems/undefined dead link / 404.
-    const dailyChallengeTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
-
-    const sidebarItems = [
-        {
-            to: dailyChallengeTo,
-            text: 'Daily Challenge',
-            description: 'Solve today\'s problem',
-            icon: <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                <defs>
-                    <linearGradient id="icon-gradient-calendar" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                        <stop offset="100%" stopColor="var(--accent-color)" />
-                    </linearGradient>
-                </defs>
-                <path fill="url(#icon-gradient-calendar)" d="M152 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H64C28.7 64 0 92.7 0 128v16 48V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V192 144 128c0-35.3-28.7-64-64-64H344V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H152V24zM48 192H400V448c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192z" />
-            </svg>
-        },
-        {
-            to: '/learn',
-            text: 'Learn',
-            description: 'Practice problems',
-            icon: <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                <defs>
-                    <linearGradient id="icon-gradient-book" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                        <stop offset="100%" stopColor="var(--accent-color)" />
-                    </linearGradient>
-                </defs>
-                <path fill="url(#icon-gradient-book)" d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z" />
-            </svg>
-        },
-        {
-            to: '/journey',
-            text: 'Journey',
-            description: 'Your math journey',
-            icon: <FaRoute className="sidebar-gradient-icon" size={24} aria-hidden="true" />
-        },
-        {
-            to: '/leaderboards/global',
-            text: 'Leaderboards',
-            description: 'View rankings',
-            icon: <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                <defs>
-                    <linearGradient id="icon-gradient-chartbar" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                        <stop offset="100%" stopColor="var(--accent-color)" />
-                    </linearGradient>
-                </defs>
-                <path fill="url(#icon-gradient-chartbar)" d="M32 32c17.7 0 32 14.3 32 32V400c0 8.8 7.2 16 16 16H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H80c-44.2 0-80-35.8-80-80V64C0 46.3 14.3 32 32 32zM160 224c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm128-64V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32s32 14.3 32 32zm64-32c17.7 0 32 14.3 32 32V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32zM480 96V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V96c0-17.7 14.3-32 32-32s32 14.3 32 32z" />
-            </svg>
-        },
-        {
-            to: '/achievements/recent',
-            text: 'Achievements',
-            description: 'Track your progress',
-            icon: <svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                <defs>
-                    <linearGradient id="icon-gradient-trophy" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                        <stop offset="100%" stopColor="var(--accent-color)" />
-                    </linearGradient>
-                </defs>
-                <path fill="url(#icon-gradient-trophy)" d="M400 0H176c-26.5 0-48.1 21.8-47.1 48.2c.2 5.3 .4 10.6 .7 15.8H24C10.7 64 0 74.7 0 88c0 92.6 33.5 157 78.5 200.7c44.3 43.1 98.3 64.8 138.1 75.8c23.4 6.5 39.4 26 39.4 45.6c0 20.9-17 37.9-37.9 37.9H192c-17.7 0-32 14.3-32 32s14.3 32 32 32H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H358.0c-20.9 0-37.9-17-37.9-37.9c0-19.6 15.9-39.2 39.4-45.6c39.9-11 93.9-32.7 138.2-75.8C542.5 245 576 180.6 576 88c0-13.3-10.7-24-24-24H446.4c.3-5.2 .5-10.4 .7-15.8C448.1 21.8 426.5 0 400 0zM48.9 112h84.4c9.1 90.1 29.2 150.3 51.9 190.6c-24.9-11-50.8-26.5-73.2-48.3c-32-31.1-58-76-63-142.3zM464.1 254.3c-22.4 21.8-48.3 37.3-73.2 48.3c22.7-40.3 42.8-100.5 51.9-190.6h84.4c-5.1 66.3-31.1 111.2-63 142.3z" />
-            </svg>
-        },
-        {
-            to: '/premium',
-            text: 'Premium',
-            description: 'Upgrade to Premium',
-            icon: <FaCrown className="text-white" style={{ color: '#ffffff', width: '24px', height: '24px' }} />,
-            className: 'bg-gradient-to-b from-amber-600 to-amber-400 !text-white shadow-md hover:to-amber-500',
-            customTextStyle: { color: '#ffffff' }
-        }
-        // TODO: Add admin dashboard on the sidebar for mobile breakpoints
-    ];
-
-    const moreItems = [
-        {
-            to: '/settings',
-            text: 'Settings',
-            description: 'Manage preferences',
-            icon: <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                <defs>
-                    <linearGradient id="icon-gradient-settings" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                        <stop offset="100%" stopColor="var(--accent-color)" />
-                    </linearGradient>
-                </defs>
-                <path fill="url(#icon-gradient-settings)" d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z" />
-            </svg>
-        },
-        {
-            to: '/applymentor',
-            text: 'Become a Mentor',
-            description: 'Guide students',
-            icon: <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                <defs>
-                    <linearGradient id="icon-gradient-graduate" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                        <stop offset="100%" stopColor="var(--accent-color)" />
-                    </linearGradient>
-                </defs>
-                <path fill="url(#icon-gradient-graduate)" d="M219.3 .5c3.1-.6 6.3-.6 9.4 0l200 40C439.9 42.7 448 52.6 448 64s-8.1 21.3-19.3 23.5L352 102.9V160c0 70.7-57.3 128-128 128s-128-57.3-128-128V102.9L48 93.3v65.1l15.7 78.4c.9 4.7-.3 9.6-3.3 13.3s-7.6 5.9-12.4 5.9H16c-4.8 0-9.3-2.1-12.4-5.9s-4.3-8.6-3.3-13.3L16 158.4V86.6C6.5 83.3 0 74.3 0 64C0 52.6 8.1 42.7 19.3 40.5l200-40zM111.9 327.7c10.5-3.4 21.8 .4 29.4 8.5l71 75.5c6.3 6.7 17 6.7 23.3 0l71-75.5c7.6-8.1 18.9-11.9 29.4-8.5C401 348.6 448 409.4 448 481.3c0 17-13.8 30.7-30.7 30.7H30.7C13.8 512 0 498.2 0 481.3c0-71.9 47-132.7 111.9-153.6z" />
-            </svg>
-        },
-        {
-            to: '/helpCenter',
-            text: 'Help Center',
-            description: 'FAQs and support',
-            icon: <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                <defs>
-                    <linearGradient id="icon-gradient-question" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                        <stop offset="100%" stopColor="var(--accent-color)" />
-                    </linearGradient>
-                </defs>
-                <path fill="url(#icon-gradient-question)" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM169.8 165.3c7.9-22.3 29.1-37.3 52.8-37.3h58.3c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24V250.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1H222.6c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
-            </svg>
-        },
-        {
-            to: '/systemupdates',
-            text: 'System Updates',
-            description: 'Latest features',
-            icon: <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                <defs>
-                    <linearGradient id="icon-gradient-bullhorn" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                        <stop offset="100%" stopColor="var(--accent-color)" />
-                    </linearGradient>
-                </defs>
-                <path fill="url(#icon-gradient-bullhorn)" d="M480 32c0-12.9-7.8-24.6-19.8-29.6s-25.7-2.2-34.9 6.9L381.7 53c-48 48-113.1 75-181 75H192 160 64c-35.3 0-64 28.7-64 64v96c0 35.3 28.7 64 64 64l0 128c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32V352l8.7 0c67.9 0 133 27 181 75l43.6 43.6c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V300.4c18.6-8.8 32-32.5 32-60.4s-13.4-51.6-32-60.4V32zm-64 76.7V240 371.3C357.2 317.8 280.5 288 200.7 288H192V192h8.7c79.8 0 156.5-29.8 215.3-83.3z" />
-            </svg>
-        },
-        {
-            to: '/about',
-            text: 'About Equathora',
-            description: 'Our mission',
-            icon: <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                <defs>
-                    <linearGradient id="icon-gradient-info" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                        <stop offset="100%" stopColor="var(--accent-color)" />
-                    </linearGradient>
-                </defs>
-                <path fill="url(#icon-gradient-info)" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
-            </svg>
-        }
-    ];
+    if (!isOpen) return null;
 
     return (
-        <>
-            <svg className="sidebar-icon-defs" aria-hidden="true" focusable="false">
-                <defs>
-                    <linearGradient id="sidebar-icon-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                        <stop offset="100%" stopColor="var(--accent-color)" />
-                    </linearGradient>
-                </defs>
-            </svg>
-            {/* Overlay click closes sidebar */}
-            {isOpen && (
-                <div
-                    className="sidebar-overlay"
-                    onClick={onClose}
-                />
-            )}
+        <div className="fixed inset-0 z-[1100] flex justify-end">
+            {/* Overlay Backdrop */}
+            <div
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+                onClick={onClose}
+                aria-hidden="true"
+            />
 
-            <aside
-                id="sidebar"
-                style={{ right: isOpen ? '0' : '-320px' }}
+            {/* Sidebar Content Panel */}
+            <div
+                id="mobile-navigation"
+                className="relative w-full max-w-xs sm:max-w-sm bg-[var(--main-color)] h-full shadow-2xl overflow-y-auto flex flex-col z-[1110] text-[var(--secondary-color)]"
             >
-                <div className="sidebar-header">
-                    <button className="sidebar-close" onClick={onClose} aria-label="Close sidebar">
-                        <FaTimes size={20} />
+                {/* Top Header */}
+                <div className="flex items-center justify-between p-5 border-b border-gray-700/30">
+                    <Link
+                        to="/dashboard"
+                        onClick={onClose}
+                        className="flex items-center gap-3 font-bold text-2xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                        <img src={Sigma} alt="Equathora Logo" className="w-8 h-8" />
+                        <span className="font-[Sansation,Arial]">Equathora</span>
+                    </Link>
+
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="p-2 text-[var(--secondary-color)] hover:text-[var(--accent-color)] hover:bg-white/5 rounded-lg transition-colors"
+                        aria-label="Close navigation menu"
+                    >
+                        <FaTimes size={30} />
                     </button>
                 </div>
 
-                <div className="sidebar-content">
-                    <nav className="sidebar-nav">
-                        <div className="sidebar-profile">
-                            <Link to="/profile/myprofile" className="sidebar-profile-link" onClick={onClose}>
-                                <img src={profileAvatarSrc} alt="avatar" className="sidebar-avatar" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />
-                                <div className="sidebar-profile-info">
-                                    <h4>Your Profile</h4>
-                                    <p>View & edit</p>
-                                </div>
-                            </Link>
+                {/* User Stats Card */}
+                <div className="p-5 bg-[var(--dark-main-color)]/20 border-b border-gray-700/30">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3.5">
+                            <img
+                                src={profileAvatarSrc}
+                                alt="Profile Avatar"
+                                className="w-14 h-14 rounded-full object-cover border-2 border-[var(--secondary-color)] shadow-sm"
+                                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }}
+                            />
+                            <div>
+                                <p className="font-bold text-lg truncate max-w-[140px]">
+                                    {profile?.username || profile?.full_name || 'Guest User'}
+                                </p>
+                                <p className="text-sm opacity-75">
+                                    {premium ? 'Premium Member' : 'Free Plan'}
+                                </p>
+                            </div>
                         </div>
 
-                        {/* Streak Display */}
-                        <Link to="/achievements/stats" className="sidebar-streak" onClick={onClose}>
-                            <div className="sidebar-streak-icon">
-                                <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <linearGradient id="icon-gradient-fire-sidebar" x1="0%" y1="0%" x2="0%" y2="100%">
-                                            <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                                            <stop offset="100%" stopColor="var(--accent-color)" />
-                                        </linearGradient>
-                                    </defs>
-                                    <path fill="url(#icon-gradient-fire-sidebar)" d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 53.8 77.7 84c11-14.4 23.5-30.1 37-42.9c7.9-7.4 20.1-7.4 28 .1c34.6 33 63.9 76.6 84.5 118c20.3 40.8 33.8 82.5 33.8 111.9C448 404.2 348.2 512 224 512C98.4 512 0 404.1 0 276.5c0-38.4 17.8-85.3 45.4-131.7C73.3 97.7 112.7 48.6 159.3 5.4zM225.7 416c25.3 0 47.7-7 68.8-21c42.1-29.4 53.4-88.2 28.1-134.4c-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5c-16.5-21-46-58.5-62.8-79.8c-6.3-8-18.3-8.1-24.7-.1c-33.8 42.5-50.8 69.3-50.8 99.4C112 375.4 162.6 416 225.7 416z" />
-                                </svg>
-                            </div>
-                            <div className="sidebar-streak-text">
-                                <h4>{currentStreak} Day Streak</h4>
-                                <p>Keep solving daily!</p>
-                            </div>
+                        {/* Streak Counter */}
+                        <Link
+                            to="/achievements/stats"
+                            onClick={onClose}
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[var(--main-color)] border border-gray-700/30 hover:border-[var(--accent-color)] hover:bg-white/5 transition-all active:scale-[0.96]"
+                        >
+                            <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="icon-gradient-fire-sidebar" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stopColor="var(--dark-accent-color)" />
+                                        <stop offset="100%" stopColor="var(--accent-color)" />
+                                    </linearGradient>
+                                </defs>
+                                <path fill="url(#icon-gradient-fire-sidebar)" d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 53.8 77.7 84c11-14.4 23.5-30.1 37-42.9c7.9-7.4 20.1-7.4 28 .1c34.6 33 63.9 76.6 84.5 118c20.3 40.8 33.8 82.5 33.8 111.9C448 404.2 348.2 512 224 512C98.4 512 0 404.1 0 276.5c0-38.4 17.8-85.3 45.4-131.7C73.3 97.7 112.7 48.6 159.3 5.4zM225.7 416c25.3 0 47.7-7 68.8-21c42.1-29.4 53.4-88.2 28.1-134.4c-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5c-16.5-21-46-58.5-62.8-79.8c-6.3-8-18.3-8.1-24.7-.1c-33.8 42.5-50.8 69.3-50.8 99.4C112 375.4 162.6 416 225.7 416z" />
+                            </svg>
+                            <span className="font-bold text-lg">{currentStreak}</span>
                         </Link>
-
-                        {sidebarItems.map((item, index) => {
-                            return (
-                                <Link
-                                    key={index}
-                                    to={item.to}
-                                    className={`sidebar-item ${item.className || ''}`}
-                                    onClick={onClose}
-                                >
-                                    <div className="sidebar-item-icon">
-                                        {item.icon}
-                                    </div>
-                                    <div className="sidebar-item-text">
-                                        <h4 style={item.customTextStyle}>{item.text}</h4>
-                                        <p style={item.customTextStyle}>{item.description}</p>
-                                    </div>
-                                </Link>
-                            );
-                        })}
-
-                        {/* More Section - Expandable */}
-                        <div className="sidebar-more-section">
-                            <button
-                                className={`sidebar-more-toggle ${moreExpanded ? 'expanded' : ''}`}
-                                onClick={() => setMoreExpanded(!moreExpanded)}
-                            >
-                                <div className="sidebar-more-header">
-                                    <div className="sidebar-item-text">
-                                        <h4>More</h4>
-                                        <p>Additional options</p>
-                                    </div>
-                                    <svg
-                                        className="sidebar-arrow"
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 20 20"
-                                        fill="none"
-                                    >
-                                        <path
-                                            d="M5 7.5L10 12.5L15 7.5"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
-                                </div>
-                            </button>
-
-                            <div className={`sidebar-more-content ${moreExpanded ? 'expanded' : ''}`}>
-                                {moreItems.map((item, index) => {
-                                    return (
-                                        <Link
-                                            key={index}
-                                            to={item.to}
-                                            className="sidebar-item sidebar-sub-item"
-                                            onClick={onClose}
-                                        >
-                                            <div className="sidebar-item-icon">
-                                                {item.icon}
-                                            </div>
-                                            <div className="sidebar-item-text">
-                                                <h4>{item.text}</h4>
-                                                <p>{item.description}</p>
-                                            </div>
-                                        </Link>
-                                    );
-                                })}
-                            </div>
-                        </div>
-
-                        <div className="sidebar-footer">
-                            <button
-                                onClick={() => {
-                                    LogOut();
-                                }}
-                                className="sidebar-logout"
-                            >
-                                <div className="sidebar-item-icon">
-                                    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style={{ width: '24px', height: '24px' }}>
-                                        <defs>
-                                            <linearGradient id="icon-gradient-logout" x1="0%" y1="0%" x2="0%" y2="100%">
-                                                <stop offset="0%" stopColor="var(--dark-accent-color)" />
-                                                <stop offset="100%" stopColor="var(--accent-color)" />
-                                            </linearGradient>
-                                        </defs>
-                                        <path fill="url(#icon-gradient-logout)" d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
-                                    </svg>
-                                </div>
-                                <div className="sidebar-item-text">
-                                    <h4>Sign Out</h4>
-                                    <p>Securely log out</p>
-                                </div>
-                            </button>
-                        </div>
-                    </nav>
+                    </div>
                 </div>
-            </aside>
-        </>
+
+                {/* Navigation Sections */}
+                <div className="flex-1 overflow-y-auto pb-2">
+                    {/* Learn Section */}
+                    <div className="border-b border-gray-700/20">
+                        <button
+                            onClick={() => toggleSection('learn')}
+                            className="w-full flex items-center justify-between px-5 py-4 font-semibold text-lg hover:bg-white/5 transition-colors"
+                        >
+                            <span>Learn</span>
+                            {openSections.learn ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+                        </button>
+                        {openSections.learn && (
+                            <div className="pl-7 pr-5 pb-4 space-y-2">
+                                <Link
+                                    to={dailyProblemTo}
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Daily} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Daily Problem</span>
+                                </Link>
+                                <Link
+                                    to="/journey"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Journey} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Your Journey</span>
+                                </Link>
+                                <Link
+                                    to="/learn"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Books} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Browse Problems</span>
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Discover Section */}
+                    <div className="border-b border-gray-700/20">
+                        <button
+                            onClick={() => toggleSection('discover')}
+                            className="w-full flex items-center justify-between px-5 py-4 font-semibold text-lg hover:bg-white/5 transition-colors"
+                        >
+                            <span>Discover</span>
+                            {openSections.discover ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+                        </button>
+                        {openSections.discover && (
+                            <div className="pl-7 pr-5 pb-4 space-y-2">
+                                <Link
+                                    to="/leaderboards/global"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Leaderboards} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Leaderboards</span>
+                                </Link>
+                                <Link
+                                    to="/learn?status=favorite"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Favourite} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Favourite Problems</span>
+                                </Link>
+                                <Link
+                                    to="/equathora-briefs"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Daily} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Equathora Briefs</span>
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Achievements Section */}
+                    <div className="border-b border-gray-700/20">
+                        <button
+                            onClick={() => toggleSection('achievements')}
+                            className="w-full flex items-center justify-between px-5 py-4 font-semibold text-lg hover:bg-white/5 transition-colors"
+                        >
+                            <span>Achievements & Stats</span>
+                            {openSections.achievements ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+                        </button>
+                        {openSections.achievements && (
+                            <div className="pl-7 pr-5 pb-4 space-y-2">
+                                <Link
+                                    to="/achievements/recent"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Achievements} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>All Achievements</span>
+                                </Link>
+                                <Link
+                                    to="/achievements/stats"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Statistics} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Statistics</span>
+                                </Link>
+                                <Link
+                                    to="/achievements/events"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Events} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Special Events</span>
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Account Section */}
+                    <div className="border-b border-gray-700/20">
+                        <button
+                            onClick={() => toggleSection('account')}
+                            className="w-full flex items-center justify-between px-5 py-4 font-semibold text-lg hover:bg-white/5 transition-colors"
+                        >
+                            <span>Account</span>
+                            {openSections.account ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+                        </button>
+                        {openSections.account && (
+                            <div className="pl-7 pr-5 pb-4 space-y-2">
+                                <Link
+                                    to="/profile/myprofile"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={profileAvatarSrc} alt="" className="w-7 h-7 rounded-full object-cover transition-transform duration-200 group-hover:scale-110" />
+                                    <span>My Profile</span>
+                                </Link>
+                                <Link
+                                    to="/notifications"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Notifications} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Notifications</span>
+                                </Link>
+                                <Link
+                                    to="/settings"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Settings} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Settings</span>
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* More Section */}
+                    <div className="border-b border-gray-700/20">
+                        <button
+                            onClick={() => toggleSection('more')}
+                            className="w-full flex items-center justify-between px-5 py-4 font-semibold text-lg hover:bg-white/5 transition-colors"
+                        >
+                            <span>More</span>
+                            {openSections.more ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
+                        </button>
+                        {openSections.more && (
+                            <div className="pl-7 pr-5 pb-4 space-y-2">
+                                <Link
+                                    to="/applymentor"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Mentoring} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Teacher / Mentor</span>
+                                </Link>
+                                <Link
+                                    to="/helpCenter"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Faq} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Help Center</span>
+                                </Link>
+                                <Link
+                                    to="/about"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={AboutUs} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>About Equathora</span>
+                                </Link>
+                                <a
+                                    href="https://discord.gg/s6tNSbyhB7"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <FaDiscord className="w-7 h-7 text-[var(--accent-color)] transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Join Discord</span>
+                                </a>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Footer Actions */}
+                <div className="p-5 border-t border-gray-700/30">
+                    <button
+                        onClick={handleSignOut}
+                        className="group w-full flex items-center justify-center gap-3 py-3.5 px-4 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 active:scale-[0.98] transition-all duration-200 font-semibold text-lg"
+                    >
+                        <img src={LogoutIMG} alt="" className="w-6 h-6 object-contain transition-transform duration-200 group-hover:scale-110" />
+                        <span>Sign Out</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     );
 };
 

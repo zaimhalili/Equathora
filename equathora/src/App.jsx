@@ -14,8 +14,7 @@ import {
     setThemePreference,
     syncThemeWithSystemPreference
 } from "./lib/theme";
-import { useAuth, getOnboardingStatus, AuthProvider } from "./hooks/useAuth";
-import { SubscriptionProvider } from "./hooks/SubscriptionContext";
+import { useAuth, getOnboardingStatus } from "./hooks/useAuth";
 import { trackActivityEvent, trackDailyActivity } from "./lib/activityTrackingService";
 import {
     initPostHog,
@@ -231,76 +230,74 @@ export default function App() {
     }, [location.pathname]);
 
     return (
-        <AuthProvider>
-            <SubscriptionProvider>
-                <PageTitleUpdater />
-                <Suspense fallback={<LoadingSpinner />}>
-                    <div id="main-content" tabIndex={-1} className="outline-none">
-                        <Routes>
-                            {/* Public Routes */}
-                            <Route path="/" element={<HomeRoute />} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/signup" element={<Signup />} />
-                            <Route path="/verify" element={<VerifyEmail />} />
-                            <Route path="/resend" element={<Resend />} />
-                            <Route path="/forgotpassword" element={<ForgotPassword />} />
-                            <Route path="/reset-password" element={<ResetPassword />} />
-                            <Route path="/about" element={<About />} />
-                            <Route path="/helpCenter" element={<HelpCenter />} />
-                            <Route path="/systemupdates" element={<SystemUpdates />} />
-                            <Route path="/pageNotFound" element={<PageNotFound />} />
-                            <Route path="/equathora-briefs" element={<EquathoraBriefs />} />
-                            <Route path="/blog" element={<Blog />} />
-                            <Route path="/blogs" element={<BlogList />} />
-                            <Route path="/blog/:slug" element={<BlogPost />} />
-                            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                            <Route path="/terms-of-service" element={<TermsOfService />} />
-                            <Route path="/cookie-policy" element={<CookiePolicy />} />
+        <>
+            <PageTitleUpdater />
+            <Suspense fallback={<LoadingSpinner />}>
+                <div id="main-content" tabIndex={-1} className="outline-none">
+                    <Routes>
+                        {/* Public Routes */}
+                        <Route path="/" element={<HomeRoute />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/verify" element={<VerifyEmail />} />
+                        <Route path="/resend" element={<Resend />} />
+                        <Route path="/forgotpassword" element={<ForgotPassword />} />
+                        <Route path="/reset-password" element={<ResetPassword />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/helpCenter" element={<HelpCenter />} />
+                        <Route path="/systemupdates" element={<SystemUpdates />} />
+                        <Route path="/pageNotFound" element={<PageNotFound />} />
+                        <Route path="/equathora-briefs" element={<EquathoraBriefs />} />
+                        <Route path="/blog" element={<Blog />} />
+                        <Route path="/blogs" element={<BlogList />} />
+                        <Route path="/blog/:slug" element={<BlogPost />} />
+                        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                        <Route path="/terms-of-service" element={<TermsOfService />} />
+                        <Route path="/cookie-policy" element={<CookiePolicy />} />
 
-                            {/* Protected Onboarding Flow (Allows access when logged in) */}
-                            <Route path="/getStarted" element={<ProtectedRoute><GetStarted /></ProtectedRoute>} />
-                            <Route path="/premium" element={<Premium />} />
+                        {/* Protected Onboarding Flow (Allows access when logged in) */}
+                        <Route path="/getStarted" element={<ProtectedRoute><GetStarted /></ProtectedRoute>} />
+                        <Route path="/premium" element={<Premium />} />
 
-                            {/* Protected Routes */}
-                            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                            <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
-                            <Route path="/learn" element={<Learn />} />
-                            <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
-                            <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
-                            <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />
-                            <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-                            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+                        {/* Protected Routes */}
+                        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                        <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
+                        <Route path="/learn" element={<Learn />} />
+                        <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
+                        <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
+                        <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />
+                        <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+                        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
 
-                            {/* Protected Nested Routes */}
-                            <Route path="/leaderboards" element={<ProtectedRoute><LeaderboardsLayout /></ProtectedRoute>}>
-                                <Route index element={<Navigate to="global" replace />} />
-                                <Route path="global" element={<GlobalLeaderboard />} />
-                                <Route path="friends" element={<FriendsLeaderboard />} />
-                                <Route path="top-solvers" element={<TopSolversLeaderboard />} />
-                            </Route>
+                        {/* Protected Nested Routes */}
+                        <Route path="/leaderboards" element={<ProtectedRoute><LeaderboardsLayout /></ProtectedRoute>}>
+                            <Route index element={<Navigate to="global" replace />} />
+                            <Route path="global" element={<GlobalLeaderboard />} />
+                            <Route path="friends" element={<FriendsLeaderboard />} />
+                            <Route path="top-solvers" element={<TopSolversLeaderboard />} />
+                        </Route>
 
-                            <Route path="/achievements" element={<ProtectedRoute><AchievementsLayout /></ProtectedRoute>}>
-                                <Route index element={<RecentAchievements />} />
-                                <Route path="recent" element={<RecentAchievements />} />
-                                <Route path="stats" element={<Statistics />} />
-                                <Route path="events" element={<SpecialEvents />} />
-                            </Route>
+                        <Route path="/achievements" element={<ProtectedRoute><AchievementsLayout /></ProtectedRoute>}>
+                            <Route index element={<RecentAchievements />} />
+                            <Route path="recent" element={<RecentAchievements />} />
+                            <Route path="stats" element={<Statistics />} />
+                            <Route path="events" element={<SpecialEvents />} />
+                        </Route>
 
-                            {/* Dynamic Routes */}
-                            <Route path="/problems/:slug" element={<ProtectedRoute><Problem /></ProtectedRoute>} />
-                            <Route path="/profile/:profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                        {/* Dynamic Routes */}
+                        <Route path="/problems/:slug" element={<ProtectedRoute><Problem /></ProtectedRoute>} />
+                        <Route path="/profile/:profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
-                            {/* 404 Route */}
-                            <Route path="*" element={<Navigate to="/pageNotFound" replace />} />
-                        </Routes>
-                    </div>
-                </Suspense>
-            </SubscriptionProvider>
+                        {/* 404 Route */}
+                        <Route path="*" element={<Navigate to="/pageNotFound" replace />} />
+                    </Routes>
+                </div>
+            </Suspense>
 
             {/* Analytics */}
             {shouldEnableVercelAnalytics ? <Analytics /> : null}
             {canUseSpeedInsights ? <LazySpeedInsights /> : null}
-        </AuthProvider>
+        </>
     );
 }
 

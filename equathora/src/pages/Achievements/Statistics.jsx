@@ -1,11 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import './Statistics.css';
-import { getUserProgress, getStreakData, getWeeklyProgress, getTopicFrequency, getUserSubmissions } from '../../lib/databaseService';
-import { getAllProblems } from '../../lib/problemService';
-import { supabase } from '../../lib/supabaseClient';
+import { useUserStats } from '../../context/UserStatsContext';
 import { formatTopicLabel } from '../../lib/utils';
-import { computeAccuracyFromSources } from '../../lib/accuracyService';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const normalizeCompletedProblemId = (rawValue) => {
@@ -62,199 +59,48 @@ const hexToRgba = (hex, alpha) => {
 };
 
 const Statistics = () => {
-  const [progress, setProgress] = useState({
-    correctAnswers: 0,
-    wrongSubmissions: 0,
-    totalAttempts: 0,
-    accuracyRate: 0,
-    totalProblems: 0,
-    solvedProblems: 0,
-    streakDays: 0,
-    totalTimeSpent: '0h 0m',
-    averageTime: '0m 0s',
-    favoriteTopics: [],
-    weeklyProgress: [0, 0, 0, 0, 0, 0, 0],
-    difficultyBreakdown: []
-  });
+  const { stats, loading, refreshStats } = useUserStats();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return;
+    void refreshStats();
+  }, [refreshStats]);
 
-        const [userProgress, streakData, weeklyData, allProblems, completedRowsResult, topicData, allSubmissions] = await Promise.all([
-          getUserProgress(),
-          getStreakData(),
-          getWeeklyProgress(),
-          getAllProblems(),
-          supabase
-            .from('user_completed_problems')
-            .select('problem_id')
-            .eq('user_id', session.user.id),
-          getTopicFrequency(),
-          getUserSubmissions()
-        ]);
+  const solved = stats.problemsSolved || 0;
+  const totalProblems = stats.totalProblems || 0;
+  const correctAnswers = stats.accuracyBreakdown?.correct || 0;
+  const wrongSubmissions = stats.accuracyBreakdown?.wrong || 0;
+  const totalAttempts = stats.accuracyBreakdown?.total || 0;
+  const accuracyRate = stats.accuracy;
+  const streakDays = stats.currentStreak || 0;
+  const totalTimeSeconds = stats.totalTimeSeconds || 0;
+  const totalTimeSpent = `${Math.floor(totalTimeSeconds / 3600)}h ${Math.floor((totalTimeSeconds % 3600) / 60)}m`;
+  const averageTime = solved > 0 ? `${Math.floor(totalTimeSeconds / solved / 60)}m ${Math.floor((totalTimeSeconds / solved) % 60)}s` : '0m 0s';
+  const favoriteTopics = Array.isArray(stats.favoriteTopics) && stats.favoriteTopics.length > 0
+    ? stats.favoriteTopics
+    : ['No data yet'];
+  const weeklyProgress = Array.isArray(stats.weeklyProgress) ? stats.weeklyProgress : Array(7).fill(0);
+  const difficultyBreakdown = Array.isArray(stats.difficultyBreakdown)
+    ? stats.difficultyBreakdown
+    : [];
 
-        const completedRows = completedRowsResult?.data || [];
+  if (loading) {
+    return <div className="statistics-container"><div className="py-12 flex justify-center items-center"><div>Loading statistics...</div></div></div>;
+  }
 
-        const totalProblems = allProblems.length || 0;
-        // Filter completed IDs to only count valid current problems (same as YourTrack.jsx)
-        const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
-        const completedIds = Array.from(
-          new Set(
-            (completedRows || [])
-              .map((row) => normalizeCompletedProblemId(row.problem_id))
-              .filter(Boolean)
-          )
-        );
-        const validCompletedIds = completedIds.filter(id => validProblemIds.has(String(id)));
-        const solved = validCompletedIds.length;
-
-        const completedProblems = allProblems.filter(p => validCompletedIds.includes(String(p.id)));
-
-        const difficultyMap = new Map();
-
-        (allProblems || []).forEach((problem) => {
-          const key = normalizeDifficultyKey(problem?.difficulty);
-          const label = formatDifficultyLabel(problem?.difficulty);
-          const existing = difficultyMap.get(key) || { key, label, solved: 0, total: 0 };
-          existing.total += 1;
-          difficultyMap.set(key, existing);
-        });
-
-        completedProblems.forEach((problem) => {
-          const key = normalizeDifficultyKey(problem?.difficulty);
-          const label = formatDifficultyLabel(problem?.difficulty);
-          const existing = difficultyMap.get(key) || { key, label, solved: 0, total: 0 };
-          existing.solved += 1;
-          if (existing.label === 'Unspecified' && label !== 'Unspecified') {
-            existing.label = label;
-          }
-          difficultyMap.set(key, existing);
-        });
-
-        const finalDifficultyBreakdown = Array.from(difficultyMap.values())
-          .sort((a, b) => {
-            const rankDiff = (difficultyDisplayRank[a.key] ?? 99) - (difficultyDisplayRank[b.key] ?? 99);
-            if (rankDiff !== 0) return rankDiff;
-            return a.label.localeCompare(b.label);
-          })
-          .map((difficulty, index) => ({
-            ...difficulty,
-            color: getDifficultyColor(difficulty.key, index),
-          }));
-
-        // Get favorite topics from database topic frequency first
-        let topTopics = (topicData || []).sort((a, b) => b.count - a.count).slice(0, 5).map(t => t.topic);
-
-        // If database topic frequency is empty, derive from completed problems (same as Profile)
-        if (topTopics.length === 0 && completedProblems.length > 0) {
-          topTopics = [...new Set(completedProblems.map(p => p.topic).filter(Boolean))];
-        }
-
-        // Get attempts counters from database (canonical source for accuracy parity with leaderboard)
-        const wrongSubmissionsRaw = Number(userProgress?.wrong_submissions || 0);
-        const totalAttemptsRaw = Number(userProgress?.total_attempts || 0);
-        const wrongSubmissions = Number.isFinite(wrongSubmissionsRaw) ? wrongSubmissionsRaw : 0;
-        const totalAttempts = Number.isFinite(totalAttemptsRaw) ? totalAttemptsRaw : 0;
-        const accuracyStats = computeAccuracyFromSources({
-          submissions: allSubmissions || [],
-          validProblemIds,
-          solvedCount: solved,
-          totalAttempts,
-          wrongSubmissions
-        });
-        const correctAnswers = accuracyStats.correct || 0;
-        const accuracyRate = accuracyStats.accuracy;
-        let totalTimeMinutes = userProgress?.total_time_minutes || 0;
-
-        // DB-only time source: use aggregated minutes, then fallback to persisted DB submissions.
-        let totalTimeSec = totalTimeMinutes * 60;
-
-        if (totalTimeSec === 0) {
-          const submissionTimeSec = (allSubmissions || []).reduce((sum, sub) => {
-            return sum + (sub.time_spent_seconds || 0);
-          }, 0);
-          if (submissionTimeSec > 0) {
-            totalTimeSec = submissionTimeSec;
-          }
-        }
-
-        const avgTimeSec = solved > 0 ? totalTimeSec / solved : 0;
-
-        // DB-only weekly fallback: derive from DB submissions if weekly aggregate table is empty.
-        let finalWeeklyData = weeklyData;
-        const hasDbWeekly = (weeklyData || []).some(v => v > 0);
-        if (!hasDbWeekly) {
-          const now = new Date();
-          const dayOfWeek = now.getDay();
-          const mondayDiff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-          const weekStartDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + mondayDiff);
-          weekStartDate.setHours(0, 0, 0, 0);
-
-          const computedWeekly = Array(7).fill(0);
-
-          const correctSubs = (allSubmissions || []).filter(s => s.is_correct);
-          const seenByDay = new Map();
-          correctSubs.forEach(sub => {
-            const subDate = new Date(sub.submitted_at || sub.created_at);
-            if (subDate >= weekStartDate) {
-              const jsDay = subDate.getDay();
-              const dayIdx = jsDay === 0 ? 6 : jsDay - 1; // Mon=0 ... Sun=6
-              const key = `${dayIdx}-${sub.problem_id}`;
-              if (!seenByDay.has(key)) {
-                seenByDay.set(key, true);
-                computedWeekly[dayIdx] = (computedWeekly[dayIdx] || 0) + 1;
-              }
-            }
-          });
-
-          if (computedWeekly.some(v => v > 0)) {
-            finalWeeklyData = computedWeekly;
-          }
-        }
-
-        setProgress({
-          correctAnswers: correctAnswers,
-          wrongSubmissions: accuracyStats.wrong,
-          totalAttempts: accuracyStats.total,
-          accuracyRate: accuracyRate,
-          totalProblems,
-          solvedProblems: solved,
-          streakDays: streakData?.current_streak || 0,
-          totalTimeSpent: `${Math.floor(totalTimeSec / 3600)}h ${Math.floor((totalTimeSec % 3600) / 60)}m`,
-          averageTime: `${Math.floor(avgTimeSec / 60)}m ${Math.floor(avgTimeSec % 60)}s`,
-          favoriteTopics: topTopics.length > 0 ? topTopics : ['No data yet'],
-          weeklyProgress: finalWeeklyData,
-          difficultyBreakdown: finalDifficultyBreakdown
-        });
-      } catch (error) {
-        console.error('Error fetching statistics:', error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const correctAnswers = progress.correctAnswers;
-  const wrongSubmissions = progress.wrongSubmissions;
-  const totalAttempts = progress.totalAttempts;
-  const accuracyRate = progress.accuracyRate;
-
-  const stats = {
-    totalProblems: progress.totalProblems,
-    solvedProblems: progress.solvedProblems,
+  const displayStats = {
+    totalProblems,
+    solvedProblems: solved,
     correctAnswers,
     wrongSubmissions,
     totalAttempts,
-    streakDays: progress.streakDays,
-    totalTimeSpent: progress.totalTimeSpent,
-    averageTime: progress.averageTime,
-    favoriteTopics: progress.favoriteTopics,
-    weeklyProgress: progress.weeklyProgress,
-    difficultyBreakdown: Array.isArray(progress.difficultyBreakdown) ? progress.difficultyBreakdown : []
+    streakDays,
+    totalTimeSpent,
+    averageTime,
+    favoriteTopics,
+    weeklyProgress,
+    difficultyBreakdown
   };
-  const completionRate = stats.totalProblems > 0 ? Math.round((stats.solvedProblems / stats.totalProblems) * 100) : 0;
+  const completionRate = displayStats.totalProblems > 0 ? Math.round((displayStats.solvedProblems / displayStats.totalProblems) * 100) : 0;
 
   const [isAnimated, setIsAnimated] = useState(false);
   useEffect(() => {

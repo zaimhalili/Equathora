@@ -801,7 +801,7 @@ const Problem = () => {
                 }
 
                 if (typeof window !== 'undefined') {
-                    window.dispatchEvent(new CustomEvent('equathora:streak-updated', {
+                    window.dispatchEvent(new CustomEvent('equathora:stats-updated', {
                         detail: {
                             currentStreak: streakData.current,
                             longestStreak: streakData.longest

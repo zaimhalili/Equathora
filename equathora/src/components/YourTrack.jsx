@@ -1,80 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import LilArrow from '../assets/images/lilArrow.svg';
 import { Link } from 'react-router-dom';
-import { getUserProgress, getStreakData, getCompletedProblems } from '../lib/databaseService';
-import { getAllProblems } from '../lib/problemService';
-import { supabase } from '../lib/supabaseClient';
-import { computeAccuracyFromSubmissions } from '../lib/accuracyService';
+import { useUserStats } from '../context/UserStatsContext';
 import { FaArrowRight } from 'react-icons/fa';
 
-const fallbackStats = {
-    problemsSolved: 0,
-    accuracy: 0,
-    currentStreak: 0,
-    longestStreak: 0,
-    totalProblems: 30
-};
-
 const YourTrack = ({ premium, loading }) => {
-    const [stats, setStats] = useState({
-        problemsSolved: 0,
-        accuracy: 0,
-        currentStreak: 0,
-        longestStreak: 0,
-        totalProblems: 5,
-        totalAttempts: 0
-    });
-
-    useEffect(() => {
-        const fetchStats = async () => {
-            try {
-                const { data: { session } } = await supabase.auth.getSession();
-                if (!session) return;
-
-                // Fetch from database
-                const [userProgress, streakData, allProblems, completedProblemIds, submissionsResponse] = await Promise.all([
-                    getUserProgress(),
-                    getStreakData(),
-                    getAllProblems(),
-                    getCompletedProblems(),
-                    supabase
-                        .from('user_submissions')
-                        .select('problem_id, is_correct')
-                        .eq('user_id', session.user.id)
-                ]);
-
-                const totalProblems = allProblems.length || 0;
-                const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
-                const solved = (completedProblemIds || []).filter(id => validProblemIds.has(String(id))).length;
-                const submissions = submissionsResponse?.data || [];
-                const accuracyStats = computeAccuracyFromSubmissions({
-                    submissions,
-                    validProblemIds,
-                    solvedCount: solved
-                });
-
-                setStats({
-                    problemsSolved: solved,
-                    accuracy: accuracyStats.accuracy,
-                    currentStreak: streakData?.current_streak || 0,
-                    longestStreak: streakData?.longest_streak || 0,
-                    totalProblems: totalProblems,
-                    totalAttempts: accuracyStats.total
-                });
-            } catch (error) {
-                console.error('Failed to fetch stats:', error);
-            }
-        };
-
-        fetchStats();
-
-        // Refresh on focus
-        window.addEventListener('focus', fetchStats);
-        return () => window.removeEventListener('focus', fetchStats);
-    }, []);
+    const { stats } = useUserStats();
 
     const solved = stats.problemsSolved;
-    const total = stats.totalProblems;
+    const total = stats.totalProblems || 5;
     const percentage = Math.min(100, (solved / (total || 1)) * 100);
     const nextMilestone = solved >= total
         ? total

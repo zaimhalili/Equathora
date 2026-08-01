@@ -2,14 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import {
-    getCompletedProblems,
-    getUserSubmissions,
-    getStudentProfile,
-    getStudentTopics,
-    getUserProgress,
-    getStreakData
-} from '../lib/databaseService';
+import { getStudentProfile, getStudentTopics } from '../lib/databaseService';
 import { motion } from 'framer-motion';
 import LoadingSpinner from '../components/LoadingSpinner';
 import JourneyImg from '../assets/images/Journey-pana.svg';
@@ -20,6 +13,7 @@ import TopicCard from '@/components/Journey/TopicCard';
 import { useResetDiagnostic } from '@/hooks/useResetDiagnostic';
 import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
 import { FaSpinner } from 'react-icons/fa';
+import { useUserStats } from '../context/UserStatsContext';
 
 const Journey = () => {
     const { resetDiagnosticTest, loading: isResetting } = useResetDiagnostic();
@@ -33,8 +27,7 @@ const Journey = () => {
     const [studentTopics, setStudentTopics] = useState([]);
     const [allProblems, setAllProblems] = useState([]);
 
-    const [streakData, setStreakData] = useState(null);
-    const [todayProgress, setTodayProgress] = useState(null);
+    const { stats } = useUserStats();
 
     const SUBJECT_ORDER = [
         "Algebra",
@@ -144,35 +137,17 @@ const Journey = () => {
             try {
                 const [
                     problems,
-                    completedProblems,
-                    submissions,
                     profile,
-                    topics,
-                    streak,
-                    progress
+                    topics
                 ] = await Promise.all([
                     getProblemsAll(),
-                    getCompletedProblems(),
-                    getUserSubmissions(),
                     getStudentProfile(),
-                    getStudentTopics(),
-                    getStreakData(),
-                    getUserProgress()
+                    getStudentTopics()
                 ]);
 
                 setStudentProfile(profile || null);
                 setStudentTopics(topics || []);
                 setAllProblems(problems || []);
-                setStreakData(streak || null);
-                setTodayProgress(progress || null);
-
-                setCompletedSet(
-                    new Set((completedProblems || []).map(id => String(id)))
-                );
-
-                setAttemptedSet(
-                    new Set((submissions || []).map(sub => String(sub.problem_id)))
-                );
             } catch (err) {
                 console.error("[Journey] load() failed:", err);
             } finally {
@@ -230,6 +205,16 @@ const Journey = () => {
     // accurately. Premium-only problems are excluded here unless the
     // student actually has premium — the Daily Mission is meant to be a
     // free, frictionless habit loop, not a paywall funnel.
+    const completedProblemIds = stats.completedProblemIds || [];
+    const attemptedProblemIds = stats.attemptedProblemIds || [];
+    const streakData = stats.streakData || { current_streak: 0, longest_streak: 0 };
+    const todayProgress = stats.userProgress || null;
+
+    useEffect(() => {
+        setCompletedSet(new Set(completedProblemIds.map((id) => String(id))));
+        setAttemptedSet(new Set(attemptedProblemIds.map((id) => String(id))));
+    }, [completedProblemIds, attemptedProblemIds]);
+
     const recommendedCandidates = useMemo(() => {
         if (!personalizedJourney || Object.keys(personalizedJourney).length === 0) {
             return [];
@@ -287,7 +272,7 @@ const Journey = () => {
         [recommendedCandidates, dailyTargetCount]
     );
 
-    const currentStreak = streakData?.current_streak ?? streakData?.streak_count ?? 0;
+    const currentStreak = streakData?.current_streak ?? streakData?.streak_count ?? stats.currentStreak ?? 0;
 
     return (
         <>
