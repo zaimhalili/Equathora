@@ -4,11 +4,11 @@ import { SubscriptionProvider } from '../hooks/SubscriptionContext';
 import { UserStatsProvider } from '../context/UserStatsContext';
 
 export function AppProviders({ children }) {
-  return (
-    <AuthProvider>
-      <SubscriptionProvider>
-        <UserStatsProvider>{children}</UserStatsProvider>
-      </SubscriptionProvider>
-    </AuthProvider>
-  );
+    return (
+        <AuthProvider>
+            <SubscriptionProvider>
+                <UserStatsProvider>{children}</UserStatsProvider>
+            </SubscriptionProvider>
+        </AuthProvider>
+    );
 }

@@ -7,7 +7,7 @@ import CookieConsent from '../components/CookieConsent.jsx';
 import Teacher from '../assets/images/Professor-pana.svg';
 import YourTrack from '../components/YourTrack.jsx';
 import Books from '../assets/images/learningBooks.svg';
-import QuestionMark from '../assets/images/questionMark.svg';
+import QuestionMark from '../assets/images/questionMark1.svg';
 import Leaderboards from '../assets/images/leaderboards.svg'
 import { Link } from 'react-router-dom';
 import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';

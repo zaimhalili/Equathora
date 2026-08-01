@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaTimes, FaDiscord, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
-import Daily from '../assets/images/questionMark.svg';
+import Daily from '../assets/images/questionMark1.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
 import Favourite from '../assets/images/favourite.svg';
 import PremiumIcon from '../assets/images/Premium.svg';
@@ -25,6 +25,7 @@ import { useUserProfile } from '../hooks/useUserProfile';
 import { useUserStats } from '../context/UserStatsContext';
 import { useSubscriptionStatus } from '@/hooks/useSubscription';
 import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
+import Mail from '../assets/images/mail1.svg';
 
 const getLowResAvatarUrl = (avatarUrl) => {
     if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
@@ -258,7 +259,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                     onClick={onClose}
                                     className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
-                                    <img src={Daily} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <img src={Mail} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Equathora Briefs</span>
                                 </Link>
                             </div>
@@ -338,6 +339,14 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 >
                                     <img src={Settings} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Settings</span>
+                                </Link>
+                                <Link
+                                    to="/systemupdates"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Updates} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>System Updates</span>
                                 </Link>
                             </div>
                         )}

@@ -12,7 +12,7 @@ import { getUnreadCount, NOTIFICATION_EVENTS } from '../lib/notificationService'
 import { useUserProfile } from '../hooks/useUserProfile';
 import { useUserStats } from '../context/UserStatsContext';
 //Dropdown svgs
-import Daily from '../assets/images/questionMark.svg';
+import Daily from '../assets/images/questionMark1.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
 import Favourite from '../assets/images/favourite.svg';
 import Premium from '../assets/images/Premium.svg';
@@ -30,6 +30,7 @@ import Events from '../assets/images/specialEvents.svg';
 import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
 import Books from '../assets/images/learningBooks.svg';
 import Sigma from '../assets/logo/TransparentSymbol.png';
+import Mail from '../assets/images/mail1.svg';
 import PremiumButton from './Premium/PremiumButton';
 import { useSubscriptionStatus } from '@/hooks/useSubscription';
 
@@ -152,7 +153,7 @@ const Navbar = () => {
       to: '/equathora-briefs',
       text: "Equathora Briefs",
       description: "Weekly product updates and math drops.",
-      image: Daily
+      image: Mail
     },
   ]
 
