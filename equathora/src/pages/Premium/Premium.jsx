@@ -21,27 +21,26 @@ const Premium = () => {
   const navigate = useNavigate();
 
   const freeFeatures = [
-    { bold: "Personalized studying plan", text: " (standard problems)" },
-    { bold: "Step-by-step LaTeX workspace", text: "" },
-    { bold: "Basic completion stats", text: "" },
-    { bold: "~200 curated foundational problems", text: "" },
-    { bold: "\"Correct / Incorrect\" answer feedback", text: "" }
+    { bold: "Personalized Math Study Plan", text: " - standard practice tracking" },
+    { bold: "Step-by-step LaTeX Workspace", text: " - interactive scratchpad for algebraic steps" },
+    // { bold: "Basic Completion Stats", text: " - track daily practice accuracy" },
+    { bold: "200+ Free Foundational Problems", text: " - Algebra, Linear Equations, Polynomials & Radicals" }
   ];
 
   const proFeatures = [
     { bold: "Sigma AI Step Debugger", text: " - pinpoints the exact line where your algebra breaks and explains why" },
-    { bold: "Advanced Problem Sets", text: " - Bayes' Theorem, Combinatorics, Olympiad-style riddles, Number Theory" },
-    { bold: "LaTeX PDF Export", text: " - download your solved steps as a clean, print-ready PDF" },
-    { bold: "Interactive AI Chat (Sigma Mentor)", text: " - ask follow-up questions after a hint, like a live tutor" }
+    { bold: "Interactive AI Chat (Sigma Mentor)", text: " - ask follow-up questions after a hint, like a live tutor" },
+    { bold: "LaTeX PDF Export", text: " - export clean, print-ready math homework and step-by-step solutions" },
+    { bold: "Unlimited Advanced & Olympiad Problem Sets", text: " - Logarithms, Complex Numbers, Sequences & Series, Combinatorics, and Determinants" }
   ];
 
   const faq = [
-    { q: "Can I cancel my subscription anytime?", a: "Yes. Cancel from your account settings at any time. You keep Pro access until the end of your billing period." },
-    { q: "Is my payment information secure?", a: "All payments are processed by Stripe - Equathora never sees or stores your card details." },
-    { q: "What problem types are behind the Pro wall?", a: "Advanced Combinatorics, Bayes' Theorem, Number Theory, and Olympiad-style Logic Riddles are exclusively available to Pro members." },
-    { q: "How does the Sigma AI Mentor work?", a: "Submit your math steps on the workspace and Sigma scans them line by line, pinpointing exactly where your algebra breaks and explaining why." },
-    // { q: "What is the Mistake Vault?", a: "The Mistake Vault logs every error you make over time and surfaces your most repeated slip-ups, so you can focus your practice where it actually matters." },
-    { q: "Can I export my work as a PDF?", a: "Yes - Pro members can download their completed step-by-step solutions as a clean, print-ready PDF directly from the workspace." },
+    { q: "Can I cancel my subscription anytime?", a: "Yes. Cancel your Pro membership from your account settings at any time. You keep Pro access until the end of your billing period." },
+    { q: "Is my payment information secure?", a: "All payments are processed securely by Stripe — Equathora never stores or sees your credit card details." },
+    { q: "Which math topics and problem types are behind the Pro wall?", a: "Free users get access to over 200 foundational practice problems covering Algebra, Polynomials, and Linear Equations. Pro unlocks all Hard and Advanced difficulty problems, plus specialized topic modules like Logarithms, Complex Numbers, Sequences & Series, Determinants, and Probability & Combinatorics." },
+    { q: "How does the Sigma AI Step Debugger work?", a: "Submit your math work line by line into the LaTeX workspace. Sigma scans your steps, detects algebraic errors instantly, and explains how to correct them." },
+    // { q: "What is the Mistake Vault?", a: "The Mistake Vault automatically tracks and surfaces your repeated algebraic errors, helping you target weak areas before exams." },
+    { q: "Can I export my step-by-step solutions as a PDF?", a: "Yes — Pro members can export clean, formatted LaTeX PDF documents directly from the workspace for printing or homework submission." },
   ];
 
   const toggleFaq = (index) => {
@@ -165,13 +164,13 @@ const Premium = () => {
                   <div className="flex justify-between sm:flex-row flex-col-reverse w-full items-center gap-1.5">
                     <h3 className="text-2xl font-bold text-[var(--secondary-color)]">Free</h3>
                     {!premium && (
-                      <div className='flex items-center gap-1 border-[var(--secondary-color)] border rounded-md px-2'>
+                      <div className='flex items-center gap-1 border-[var(--secondary-color)] border rounded-md px-1'>
                         <FaFlagCheckered className='inline-block' />
                         <span>Active</span>
                       </div>
                     )}
                   </div>
-                  
+
                   <p className="text-md text-[var(--secondary-color)]/80 font-light">
                     Master your foundational math skills completely for free with <strong>unlimited access</strong> to our standard challenge sets and <strong>interactive step-by-step canvas.</strong>
                   </p>
@@ -213,7 +212,7 @@ const Premium = () => {
                             <span>Cancels on {formattedCancelDate}</span>
                           </>
                         ) : (
-                            <div className='border-[var(--secondary-color)] border rounded-md px-2'>
+                          <div className='rounded-md px-1 flex items-center gap-1'>
                             <FaCrown className='inline-block' />
                             <span>Active</span>
                           </div>
@@ -239,8 +238,8 @@ const Premium = () => {
                 <div className="flex flex-col gap-5">
                   <div className="flex justify-between items-end">
                     <div className="flex gap-2 items-end">
-                      <h3 className="text-2xl md:text-3xl font-medium line-through text-black/50">€19.99</h3>
-                      <h3 className="text-4xl md:text-5xl text-black font-bold">€14.99
+                      <h3 className="text-2xl md:text-3xl font-medium line-through text-black/50">€24.99</h3>
+                      <h3 className="text-4xl md:text-5xl text-black font-bold">€19.99
                         <span className='text-2xl text-black/80 font-medium'>/mo</span>
                       </h3>
                     </div>
@@ -255,9 +254,9 @@ const Premium = () => {
                   >
                     {renderButtonText()}
                   </button>
-                  <ul className="flex flex-col gap-2 pt-2">
+                  <ul className="flex flex-col gap-2 pt-2 text-black">
                     {proFeatures.map((feature, idx) => (
-                      <li key={idx} className="text-sm">
+                      <li key={idx} className="text-md">
                         <strong>{feature.bold}</strong>{feature.text}
                       </li>
                     ))}

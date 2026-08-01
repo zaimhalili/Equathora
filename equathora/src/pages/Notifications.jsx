@@ -303,7 +303,7 @@ const Notifications = () => {
                                 onClick={() => { setFilter(opt.value); setSelectedIds([]); }}
                                 className={`px-4 py-2 rounded-md text-xs font-semibold [var(--white)]space-nowrap active:scale-95 transition-all shrink-0 cursor-pointer ${filter === opt.value
                                     ? 'bg-gradient-to-t from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white'
-                                    : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-gray-200 '
+                                    : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--white)]/80 '
                                     }`}
                             >
                                 {opt.label}
@@ -484,7 +484,7 @@ const Notifications = () => {
                     )}
 
                     {/* Link to settings */}
-                    <div className="flex justify-center absolute bottom-0 self-center-safe">
+                    <div className="flex justify-center self-center-safe">
                         <Link
                             to="/settings/#notifications"
                             className="text-sm text-[var(--accent-color)] !underline font-semibold"

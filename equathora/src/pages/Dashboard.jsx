@@ -3,12 +3,10 @@ import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
-import BetaBanner from '../components/BetaBanner.jsx';
 import CookieConsent from '../components/CookieConsent.jsx';
 import Teacher from '../assets/images/Professor-pana.svg';
 import YourTrack from '../components/YourTrack.jsx';
 import Books from '../assets/images/learningBooks.svg';
-import Mentoring from '../assets/images/mentoring.svg';
 import QuestionMark from '../assets/images/questionMark.svg';
 import Leaderboards from '../assets/images/leaderboards.svg'
 import { Link } from 'react-router-dom';
@@ -16,7 +14,6 @@ import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
 import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem.js';
 import { supabase } from '../lib/supabaseClient';
-import LoadingSpinner from '@/components/LoadingSpinner.jsx';
 import JourneyImg from '../assets/images/journey.svg';
 import { FaCrown } from 'react-icons/fa';
 // Pass premium state
