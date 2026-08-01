@@ -38,6 +38,15 @@ export const buildSafePromptJson = (payload) => JSON.stringify(sanitizePromptVal
 
 export const stripModelFormatting = (value) => sanitizePromptText(String(value ?? '').replace(/```json|```/gi, ''), 8000);
 
+// IMPORTANT: this classifier should only ever see genuinely unexpected
+// failures — network errors, Supabase invoke errors, Gemini-side rate
+// limits/outages. Our own app-level messages (trial exhausted, monthly
+// quota reached, at capacity, etc.) already carry the correct final text
+// from ask-gemini.ts and are short-circuited around this function in
+// askSigmaChat.js. Keep the matching here narrow and specific to actual
+// upstream/infra failure signals — a bare "quota" or "high demand" match
+// is too broad and will collide with legitimate app messages that happen
+// to share those words.
 export const getFriendlySigmaErrorMessage = (error) => {
     const status = error?.status ?? error?.context?.status ?? error?.error?.status;
     const rawMessage = String(
@@ -46,14 +55,12 @@ export const getFriendlySigmaErrorMessage = (error) => {
         (typeof error === 'string' ? error : '')
     ).toLowerCase();
 
-    // Catch rate limits, depleted quota, or upstream API errors
     if (
         status === 429 ||
         status === 503 ||
         rawMessage.includes('resource_exhausted') ||
         rawMessage.includes('prepayment') ||
-        rawMessage.includes('quota') ||
-        rawMessage.includes('high demand')
+        rawMessage.includes('rate limit')
     ) {
         return 'Sigma is temporarily unavailable due to high system load. Please try again in a few moments, or reach out to equathora@gmail.com if the issue persists.';
     }

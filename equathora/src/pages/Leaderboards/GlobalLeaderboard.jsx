@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { getCachedGlobalLeaderboard, getCurrentUserRank } from '../../lib/leaderboardService';
 import { supabase } from '../../lib/supabaseClient';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
-import { FaBullseye, FaChartLine, FaCrown, FaFire, FaHashtag, FaMedal, FaSearch, FaSortAmountDown } from 'react-icons/fa';
+import { FaBullseye, FaChartLine, FaCrown, FaFire, FaHashtag, FaMedal, FaSearch, FaSortAmountDown, FaSpinner } from 'react-icons/fa';
 
 const GlobalLeaderboard = () => {
     const [players, setPlayers] = useState([]);
@@ -160,8 +160,8 @@ const GlobalLeaderboard = () => {
                     <h2>Global Leaderboard</h2>
                     <p className="leaderboard-subtitle">Filter by solved count, streak, accuracy, and ranking metric</p>
                 </div>
-                <div className="loading-container" style={{ textAlign: 'center', padding: '3rem', color: 'var(--secondary-color)' }}>
-                    <p>Loading leaderboard...</p>
+                <div className="w-full flex justify-center pt-40">
+                    <FaSpinner className='animate-spin text-3xl'/>
                 </div>
             </article>
         );

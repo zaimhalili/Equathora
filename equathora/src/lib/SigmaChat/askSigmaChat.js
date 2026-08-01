@@ -120,14 +120,29 @@ export async function askSigmaChat({
             });
 
             if (!error) {
-                // Intercept raw API error strings returning in successful HTTP status
+                // Intercept raw API error strings returning in successful HTTP status.
+                // This is a genuine upstream/infra issue (Gemini-side), not one of our
+                // own structured responses — let it fall through to the friendly
+                // infra-failure classifier below.
                 const dataString = typeof data === 'string' ? data : JSON.stringify(data);
                 if (dataString.includes('RESOURCE_EXHAUSTED') || dataString.includes('prepayment credits')) {
                     throw new Error(dataString);
                 }
 
                 if (data?.error) {
-                    throw new Error(data?.text || JSON.stringify(data.error));
+                    // This is a structured, already-user-friendly response from our
+                    // own ask-gemini edge function: trial exhausted, monthly quota
+                    // reached, at capacity, validation error, etc. ask-gemini.ts
+                    // already wrote the exact right copy for each case — use it
+                    // verbatim. Do NOT run it through getFriendlySigmaErrorMessage,
+                    // which classifies by keyword matching and will misfire on a
+                    // message that happens to contain a word like "quota" even
+                    // though it's already correct and specific.
+                    const appError = new Error(data.text || 'Sigma could not process that request.');
+                    appError.isSigmaAppError = true;
+                    appError.quotaReached = Boolean(data.quota_reached);
+                    appError.upgradeRequired = Boolean(data.upgrade_required);
+                    throw appError;
                 }
 
                 const text = extractTextResponse(data);
@@ -146,9 +161,17 @@ export async function askSigmaChat({
         throw lastError ?? new Error('Sigma chat request failed');
     } catch (err) {
         console.error("askSigmaChat error:", err);
-        const userMessage = getFriendlySigmaErrorMessage(err);
+
+        // Structured app errors already carry their final, correct
+        // user-facing text — pass it straight through. Only genuine
+        // unexpected failures (network errors, Supabase invoke errors,
+        // Gemini-side rate limits) get run through the generic classifier.
+        const userMessage = err?.isSigmaAppError ? err.message : getFriendlySigmaErrorMessage(err);
+
         const wrappedError = new Error(userMessage);
         wrappedError.userMessage = userMessage;
+        wrappedError.quotaReached = Boolean(err?.quotaReached);
+        wrappedError.upgradeRequired = Boolean(err?.upgradeRequired);
         wrappedError.cause = err;
         throw wrappedError;
     }

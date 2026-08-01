@@ -25,6 +25,7 @@ import {
 import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
 import { formatTopicLabel } from '../lib/utils';
+import { normalizeAnswer } from '../lib/answerValidation';
 import {
     getCompletedProblems as getCompletedProblemsDb,
     toggleFavorite as toggleFavoriteDb,
@@ -167,8 +168,10 @@ const Problem = () => {
             const mapped = data.map((s, index) => ({
                 id: s.id,
                 problemId: s.problem_id,
+                submittedAnswer: s.submitted_answer ?? '',
                 steps: s.steps ?? [],
                 status: s.is_correct ? 'accepted' : 'wrong',
+                is_correct: s.is_correct,
                 timestamp: s.submitted_at,
                 metadata: {
                     attempts: data.length - index,
@@ -177,7 +180,9 @@ const Problem = () => {
                     timeSpentLabel: formatDurationLabel(s.time_spent_seconds)
                 }
             }));
-            setSubmissions(hydrateStoredSubmissions(mapped));
+            const hydrated = hydrateStoredSubmissions(mapped);
+            setSubmissions(hydrated);
+            problemSolvedRef.current = hydrated.some(sub => sub.status === 'accepted' || sub.is_correct || sub.status === 'correct');
         });
     }, [problem]);
 
@@ -249,6 +254,7 @@ const Problem = () => {
     );
 
     const prevProblemIdRef = useRef(problem?.id);
+    const problemSolvedRef = useRef(false);
     const canvasRef = useRef(null);
     const isDrawingRef = useRef(false);
     const currentStrokeRef = useRef([]);
@@ -601,10 +607,6 @@ const Problem = () => {
             return { success: false, message: 'Problem not found.' };
         }
 
-        // Determine if this problem was already solved BEFORE this submission.
-        // This is the single source of truth for "practice mode" vs "first solve".
-        const alreadySolvedBefore = isCompleted;
-
         const safeSteps = steps || [];
         const lastStep = safeSteps[safeSteps.length - 1];
         const preparedAnswer = sanitizeLatexAnswer(lastStep?.latex || '');
@@ -616,7 +618,7 @@ const Problem = () => {
             return { success: false, message: feedback };
         }
 
-        // Always validate the answer — even in practice mode
+        // 1. Validate answer via Supabase edge function FIRST
         const { data: validationData, error: validationError } = await supabase.functions.invoke('validate-problem-answer', {
             body: { p_problem_id: problem.id, p_user_answer: finalAnswer }
         });
@@ -636,11 +638,27 @@ const Problem = () => {
             feedback: validationData?.feedback ?? ''
         };
 
-        // Get actual time from localStorage (what the Timer component tracks)
         const storageKey = `eq:problemTime:${problem.id}`;
         const storedTime = typeof window !== 'undefined' ? window.localStorage.getItem(storageKey) : null;
         const timeSpentSeconds = storedTime ? Math.max(1, parseInt(storedTime, 10)) : Math.max(1, Math.round((Date.now() - sessionStartRef.current) / 1000));
         const attemptNumber = submissions.length + 1;
+        const normalizedFinalAnswer = normalizeAnswer(finalAnswer);
+        const knownNormalizedAcceptedAnswers = acceptedAnswers
+            .flatMap(answer => {
+                if (typeof answer !== 'string') return [];
+                const normalized = normalizeAnswer(answer);
+                return normalized ? [normalized] : [];
+            })
+            .filter(Boolean);
+
+        const hasPriorAcceptedSubmission = submissions.some((s) => {
+            const previousAnswer = s.submittedAnswer || s.steps?.[s.steps.length - 1]?.latex || '';
+            return (s.status === 'accepted' || s.is_correct || s.status === 'correct') && normalizeAnswer(previousAnswer) === normalizedFinalAnswer;
+        });
+
+        const alreadySolvedBefore = problemSolvedRef.current || isCompleted || submissions.some(s => s.status === 'accepted' || s.is_correct || s.status === 'correct');
+        const isRepeatCorrectFromFeedback = submissionFeedback?.isCorrect && normalizeAnswer(submissionFeedback?.submittedAnswer || '') === normalizedFinalAnswer;
+        const matchesKnownAcceptedAnswer = alreadySolvedBefore && (hasPriorAcceptedSubmission || knownNormalizedAcceptedAnswers.includes(normalizedFinalAnswer) || isRepeatCorrectFromFeedback);
 
         void trackActivityEvent(
             validation.isCorrect ? 'problem_solved' : 'problem_attempt',
@@ -656,33 +674,45 @@ const Problem = () => {
         );
 
         // ================================================================
-        // PRACTICE MODE PATH — problem was already solved before
-        // Show feedback only, never touch progression/stats/achievements.
+        // PRACTICE MODE PATH
+        // Triggered ONLY if already solved before AND current submission is correct,
+        // OR if the same previously accepted answer is re-submitted.
         // ================================================================
-        if (alreadySolvedBefore) {
+        if ((alreadySolvedBefore && validation.isCorrect) || matchesKnownAcceptedAnswer) {
+            problemSolvedRef.current = true;
             setSubmissionFeedback({
-                message: validation.isCorrect
-                    ? 'Correct! (Practice mode — no additional points awarded)'
-                    : validation.feedback,
-                isCorrect: validation.isCorrect,
+                message: 'Correct! (Practice mode - no additional points awarded)',
+                isCorrect: true,
+                success: true,
                 attemptNumber,
                 timeSpent: timeSpentSeconds,
                 topic: problem.topic,
                 difficulty: problem.difficulty,
-                isPracticeMode: true
+                isPracticeMode: true,
+                submittedAnswer: finalAnswer,
+                timestamp: new Date().toISOString()
             });
+
+            setShowInsightPanel(true);
+            setShowSubmissions(true);
+            setShowDescription(false);
+            setShowTop(false);
+            setChatPanel(false);
+            setShowMentorChat(false);
+            setShowSolution(false);
+            setShowSolutionPopup(false);
+            setShowSubmissionDetail(false);
+            setSelectedSubmission(null);
+
             return {
-                success: validation.isCorrect,
-                message: validation.isCorrect
-                    ? 'Correct!' // practice mode
-                    : validation.feedback,
+                success: true,
+                message: 'Correct! (Practice mode)',
                 isPracticeMode: true
             };
         }
 
         // ================================================================
-        // FIRST SOLVE PATH — normal progression flow
-        // This code only runs when the problem has NOT been solved before.
+        // FIRST SOLVE OR INCORRECT SUBMISSION PATH
         // ================================================================
         await saveSubmission(problem.id, finalAnswer, validation.isCorrect, timeSpentSeconds, {
             topic: problem.topic,
@@ -692,8 +722,10 @@ const Problem = () => {
         const entry = {
             id: Date.now(),
             problemId: problem.id,
+            submittedAnswer: finalAnswer,
             steps: safeSteps,
             status: validation.isCorrect ? 'accepted' : 'wrong',
+            is_correct: validation.isCorrect,
             timestamp: new Date().toISOString(),
             metadata: {
                 attempts: attemptNumber,
@@ -702,19 +734,23 @@ const Problem = () => {
                 timeSpentLabel: formatDurationLabel(timeSpentSeconds)
             }
         };
+
+        // Prepend new submission entry locally immediately
         setSubmissions(prev => [entry, ...prev]);
 
         setSubmissionFeedback({
             message: validation.feedback,
             isCorrect: validation.isCorrect,
+            success: validation.isCorrect,
             attemptNumber,
             timeSpent: timeSpentSeconds,
             topic: problem.topic,
             difficulty: problem.difficulty,
-            isPracticeMode: false
+            isPracticeMode: false,
+            submittedAnswer: finalAnswer,
+            timestamp: new Date().toISOString()
         });
 
-        // Submitting from the chat panel should collapse the other views 
         setChatPanel(false);
         setShowMentorChat(false);
         setShowSolution(false);
@@ -723,9 +759,19 @@ const Problem = () => {
         setShowSubmissionDetail(false);
         setSelectedSubmission(null);
 
-        // Show the InsightPanel ribbon for correct answers
         if (validation.isCorrect) {
+            problemSolvedRef.current = true;
             setShowInsightPanel(true);
+            setTimerRunning(false);
+            setShowSolution(true);
+            setShowSolutionPopup(false);
+            setSolutionViewed(true);
+
+            // Instantly mark as completed locally FIRST before DB calls finish
+            setIsCompleted(true);
+
+            await markProblemCompleteDb(problem.id, timeSpentSeconds, problem.difficulty, problem.topic || 'General');
+            await removeProblemFromInProgressDb(problem.id);
         }
 
         setShowSubmissions(true);
@@ -736,18 +782,6 @@ const Problem = () => {
             setDescriptionCollapsed(false);
         }
 
-        if (validation.isCorrect) {
-            setTimerRunning(false);
-            setShowSolution(true);
-            setShowSolutionPopup(false);
-            setSolutionViewed(true);
-
-            await markProblemCompleteDb(problem.id, timeSpentSeconds, problem.difficulty, problem.topic || 'General');
-            setIsCompleted(true);
-            await removeProblemFromInProgressDb(problem.id);
-        }
-
-        // Streak should only update on a correct first-solve submission.
         let previousStreak = 0;
         let streakData = null;
 
@@ -761,7 +795,6 @@ const Problem = () => {
                     lastDate: streakUpdate.last_activity_date || null
                 };
 
-                // Show popup if streak was incremented (first solve of the day)
                 if (streakUpdate.incremented && streakData.current > previousStreak) {
                     setCurrentStreakValue(streakData.current);
                     setShowStreakPopup(true);
@@ -790,7 +823,6 @@ const Problem = () => {
             solutionViewed
         });
 
-        // Check for newly unlocked achievements after stats update
         if (validation.isCorrect) {
             try {
                 const seenIds = getSeenAchievements();
@@ -801,26 +833,15 @@ const Problem = () => {
                 if (freshlyUnlocked.length > 0) {
                     setNewAchievements(freshlyUnlocked);
                     setShowAchievementPopup(true);
-
-                    // Fire background notifications for each new achievement
-                    freshlyUnlocked.forEach(a => {
-                        void notifyAchievementUnlocked(a.title, a.description).catch(() => { });
-                    });
-                }
-
-                // Also fire streak milestone notification
-                if (streakData?.current > previousStreak && [7, 14, 30, 60, 90, 180, 365].includes(streakData.current)) {
-                    void notifyStreakMilestone(streakData.current).catch(() => { });
                 }
             } catch {
-                // achievement check is non-blocking
+                // ignore achievement calculation error
             }
         }
 
         return {
             success: validation.isCorrect,
-            message: validation.feedback,
-            isPracticeMode: false
+            message: validation.feedback
         };
     };
 
@@ -1042,8 +1063,10 @@ const Problem = () => {
                 )}
 
                 {/* Insight Panel - correct answer ribbon */}
-                {showInsightPanel && submissionFeedback?.isCorrect && (
+                {/* Insight Panel - correct answer ribbon */}
+                {showInsightPanel && (submissionFeedback?.success || submissionFeedback?.isCorrect) && (
                     <InsightPanel
+                        key={submissionFeedback?.timestamp || Date.now()} // Forces React to refresh panel on re-submissions
                         insight={submissionFeedback.message}
                         topic={submissionFeedback.topic}
                         difficulty={submissionFeedback.difficulty}
@@ -1055,7 +1078,7 @@ const Problem = () => {
                             setSolutionViewed(true);
                         }}
                         onDismiss={() => setShowInsightPanel(false)}
-                        autoDismissSeconds={600}
+                        autoDismissSeconds={12}
                     />
                 )}
 

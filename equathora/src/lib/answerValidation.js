@@ -475,6 +475,8 @@ export const getSmartFeedback = async (userAnswer, problem) => {
     return validation.feedback;
 };
 
+export { normalizeAnswer };
+
 export default {
     validateAnswer,
     validateMultiStep,

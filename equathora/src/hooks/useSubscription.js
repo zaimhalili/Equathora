@@ -1,27 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 
+const CACHE_KEY = 'eq_subscription_cache';
+
 export function useSubscriptionStatus() {
-    const [status, setStatus] = useState({
-        loading: true,
-        tier: 'free',
-        premium: false,
-        trialMessagesUsed: 0,
-        monthlyTokensUsed: 0,
-        cancelAtPeriodEnd: false,
-        cancelAt: null,
-        error: null,
+    // 1. Initialize state immediately from sessionStorage (0ms render, no flicker)
+    const [status, setStatus] = useState(() => {
+        try {
+            const cached = sessionStorage.getItem(CACHE_KEY);
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                return { ...parsed, loading: false, error: null };
+            }
+        } catch {
+            /* ignore cache read errors */
+        }
+        return {
+            loading: true,
+            tier: 'free',
+            premium: false,
+            trialMessagesUsed: 0,
+            monthlyTokensUsed: 0,
+            cancelAtPeriodEnd: false,
+            cancelAt: null,
+            error: null,
+        };
     });
 
-    useEffect(() => {
-        let isMounted = true;
-
-        const fetchStatus = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
+    const fetchStatus = useCallback(async (isMounted = true) => {
+        try {
+            // 2. Fast local session lookup instead of network getUser()
+            const { data: { session } } = await supabase.auth.getSession();
+            const user = session?.user;
 
             if (!user) {
                 if (isMounted) {
-                    setStatus({
+                    const defaultState = {
                         loading: false,
                         tier: 'free',
                         premium: false,
@@ -30,7 +44,9 @@ export function useSubscriptionStatus() {
                         cancelAtPeriodEnd: false,
                         cancelAt: null,
                         error: null,
-                    });
+                    };
+                    setStatus(defaultState);
+                    sessionStorage.setItem(CACHE_KEY, JSON.stringify(defaultState));
                 }
                 return;
             }
@@ -46,7 +62,7 @@ export function useSubscriptionStatus() {
                     console.error('Error fetching subscription status:', error);
                     setStatus((prev) => ({ ...prev, loading: false, error }));
                 } else {
-                    setStatus({
+                    const freshStatus = {
                         loading: false,
                         tier: data?.tier ?? 'free',
                         premium: (data?.tier ?? 'free') === 'premium',
@@ -55,12 +71,24 @@ export function useSubscriptionStatus() {
                         cancelAtPeriodEnd: data?.cancel_at_period_end ?? false,
                         cancelAt: data?.cancel_at ?? null,
                         error: null,
-                    });
+                    };
+
+                    // 3. Update state and keep cache synced
+                    setStatus(freshStatus);
+                    sessionStorage.setItem(CACHE_KEY, JSON.stringify(freshStatus));
                 }
             }
-        };
+        } catch (err) {
+            if (isMounted) {
+                setStatus((prev) => ({ ...prev, loading: false, error: err }));
+            }
+        }
+    }, []);
 
-        fetchStatus();
+    useEffect(() => {
+        let isMounted = true;
+
+        void fetchStatus(isMounted);
 
         const channel = supabase
             .channel('user_ai_usage_changes')
@@ -72,7 +100,7 @@ export function useSubscriptionStatus() {
                     table: 'user_ai_usage',
                 },
                 () => {
-                    fetchStatus();
+                    void fetchStatus(isMounted);
                 }
             )
             .subscribe();
@@ -81,7 +109,10 @@ export function useSubscriptionStatus() {
             isMounted = false;
             supabase.removeChannel(channel);
         };
-    }, []);
+    }, [fetchStatus]);
 
-    return status;
+    return {
+        ...status,
+        refetch: fetchStatus,
+    };
 }

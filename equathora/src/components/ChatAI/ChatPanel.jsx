@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { convertLatexToMarkup } from 'mathlive';
 import 'mathlive/static.css';
 import { askSigmaChat } from '@/lib/SigmaChat/askSigmaChat';
-import { getFriendlySigmaErrorMessage } from '@/lib/SigmaChat/aiSafety';
 import {
     hasBalancedLatexBraces,
     isProseHeavyLatex,
@@ -238,10 +237,29 @@ const ChatPanel = forwardRef(({
             }
         } catch (error) {
             console.error('Sigma chat error:', error);
-            const friendlyErrorText = sanitizeUnicode(getFriendlySigmaErrorMessage(error));
+
+            // askSigmaChat already produces the correct final user-facing
+            // message: either the exact text from our backend for expected
+            // cases (trial exhausted, monthly quota reached, at capacity),
+            // or a generic friendly fallback for genuine infra failures.
+            // Don't reclassify it a second time here — that's what caused
+            // "quota reached" messages to get overwritten with a generic
+            // "high system load" message.
+            const friendlyErrorText = sanitizeUnicode(
+                error?.message || 'We ran into an issue connecting to Sigma. Please try again in a moment.'
+            );
+
             setChatMessages((prev) =>
                 [...prev, { id: Date.now(), sender: 'ai', text: friendlyErrorText }].slice(-MAX_HISTORY_MESSAGES)
             );
+
+            // If the user just hit their trial or monthly quota, refresh
+            // subscription status right away so the remaining-count display
+            // and upgrade lock reflect it immediately, without waiting for
+            // another action to trigger a refetch.
+            if ((error?.quotaReached || error?.upgradeRequired) && refetchSubscription) {
+                refetchSubscription();
+            }
         } finally {
             setIsAiThinking(false);
         }
@@ -354,8 +372,8 @@ const ChatPanel = forwardRef(({
                             <div key={msg.id} className={`flex flex-col gap-1 max-w-[85%] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
                                 <div
                                     className={`border rounded-2xl px-4 py-2.5 text-xs md:text-sm leading-relaxed ${msg.sender === 'ai'
-                                            ? 'border-[var(--french-gray)] rounded-tl-none bg-[var(--white)] text-[var(--secondary-color)]'
-                                            : 'border-transparent rounded-tr-none bg-[var(--dark-accent-color)] text-white'
+                                        ? 'border-[var(--french-gray)] rounded-tl-none bg-[var(--white)] text-[var(--secondary-color)]'
+                                        : 'border-transparent rounded-tr-none bg-[var(--dark-accent-color)] text-white'
                                         }`}
                                     style={{ wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }}
                                 >

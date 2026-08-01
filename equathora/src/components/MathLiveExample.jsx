@@ -4,7 +4,7 @@ import "../components/MathLiveExample.css";
 import { FaChevronDown, FaChevronUp, FaTrash, FaLightbulb, FaCheckCircle, FaPlus, FaGraduationCap } from "react-icons/fa";
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
 import { testGemini } from "@/lib/geminiTest";
-import { useSubscription } from "@/hooks/SubscriptionContext"; // consolidated — see note above
+import { useSubscription } from "@/hooks/SubscriptionContext";
 
 const MAX_STEP_CHARS = 150;
 const MAX_STEPS = 40;
@@ -57,7 +57,7 @@ export default function MathLiveEditor({
     onFieldsChange,
     onExplainMore,
     onFeedbackChange = () => { },
-    isAiBusy = false,       // NEW — reported up from ChatPanel via Problem.jsx, disables Explain More while Sigma is busy
+    isAiBusy = false,
     storageKey = '',
 }) {
     const { tier, trialMessagesUsed } = useSubscription();
@@ -156,35 +156,56 @@ export default function MathLiveEditor({
 
         const totalChars = nonEmptyFields.reduce((acc, f) => acc + f.latex.length, 0);
         if (totalChars > MAX_TOTAL_CHARS) {
-            setSubmissionFeedback({ message: `Your solution is too long...`, success: false, loading: false });
+            const errFb = { message: "Your solution is too long...", success: false, isCorrect: false, loading: false };
+            setSubmissionFeedback(errFb);
+            onFeedbackChange?.(errFb);
             return;
         }
 
-        try {
-            setIsSubmitting(true);
-            setSubmissionFeedback({ message: "Checking your answer...", success: false, loading: true });
+        // 1. Reset feedback state on every submission attempt to allow repeated solves
+        setWrongStepNumber(null);
+        setIsSubmitting(true);
+        const loadingFb = { message: "Checking your answer...", success: false, isCorrect: false, loading: true };
+        setSubmissionFeedback(loadingFb);
+        onFeedbackChange?.(loadingFb);
 
+        try {
             const result = await onSubmit?.(nonEmptyFields);
             if (!result) return;
 
-            if (result.success) {
-                setSubmissionFeedback({ message: result.message, success: true, loading: false });
+            // 2. Handle correct solution submission
+            if (result.success || result.isCorrect) {
+                const successFb = {
+                    message: result.message || "Correct solution!",
+                    success: true,
+                    isCorrect: true,
+                    loading: false,
+                    topic: result.topic,
+                    difficulty: result.difficulty,
+                };
+                setSubmissionFeedback(successFb);
+                onFeedbackChange?.(successFb);
                 setCanShowNext(true);
                 return;
             }
 
+            // 3. Handle incorrect solution submission (Check free trial limit first)
             if (trialExhausted) {
-                setSubmissionFeedback({
+                const trialFb = {
                     message: "You've used your free trial. Upgrade to Premium to see exactly where you went wrong.",
-                    success: false, loading: false,
-                });
+                    success: false,
+                    isCorrect: false,
+                    loading: false,
+                };
+                setSubmissionFeedback(trialFb);
+                onFeedbackChange?.(trialFb);
                 return;
             }
 
-            const fbAi = { message: "AI Mentor is analyzing your steps...", success: false, loading: true };
+            // 4. Run AI step analyzer for incorrect submission
+            const fbAi = { message: "AI Mentor is analyzing your steps...", success: false, isCorrect: false, loading: true };
             setSubmissionFeedback(fbAi);
             onFeedbackChange?.(fbAi);
-            setWrongStepNumber(null);
 
             const formattedUserSteps = nonEmptyFields
                 .map((f, index) => `Step ${index + 1}: ${f.latex}`)
@@ -194,13 +215,13 @@ export default function MathLiveEditor({
 
             if (aiResponse) {
                 setWrongStepNumber(aiResponse.step);
-                const fb = { message: aiResponse.text, success: false, loading: false };
+                const fb = { message: aiResponse.text, success: false, isCorrect: false, loading: false };
                 setSubmissionFeedback(fb);
                 onFeedbackChange?.(fb);
             }
         } catch (aiError) {
             console.error("AI error:", aiError);
-            const fb = { message: "Error analyzing steps. Please try again.", success: false, loading: false };
+            const fb = { message: "Error analyzing steps. Please try again.", success: false, isCorrect: false, loading: false };
             setSubmissionFeedback(fb);
             onFeedbackChange?.(fb);
         } finally {

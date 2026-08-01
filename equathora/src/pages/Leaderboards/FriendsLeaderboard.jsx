@@ -3,7 +3,7 @@ import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 import { getFriendsLeaderboard, getCurrentUserRank } from '../../lib/leaderboardService';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
-import { FaBullseye, FaChartLine, FaCrown, FaHashtag, FaMedal } from 'react-icons/fa';
+import { FaBullseye, FaChartLine, FaCrown, FaHashtag, FaMedal, FaSpinner } from 'react-icons/fa';
 
 const FriendsLeaderboard = () => {
     const [players, setPlayers] = useState([]);
@@ -53,8 +53,8 @@ const FriendsLeaderboard = () => {
                     <h2>Friends Leaderboard</h2>
                     <p className="leaderboard-subtitle">Compete with your friends</p>
                 </div>
-                <div className="loading-container" style={{ textAlign: 'center', padding: '3rem', color: 'var(--secondary-color)' }}>
-                    <p>Loading friends leaderboard...</p>
+                <div className="w-full flex justify-center pt-40">
+                    <FaSpinner className='animate-spin text-3xl' />
                 </div>
             </article>
         );
