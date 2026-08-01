@@ -4,10 +4,79 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import FeedbackBanner from '../components/FeedbackBanner';
 import { Link } from 'react-router-dom';
-import { FaRocket, FaBug, FaStar, FaPalette, FaCode, FaCheckCircle } from 'react-icons/fa';
+import {
+    FaRocket, FaBug, FaStar, FaPalette, FaCode, FaCheckCircle,
+    FaMagic,
+    FaUserShield,
+    FaBrain,
+    FaShieldAlt,
+    FaChartLine,
+    FaBookOpen,
+    FaMobileAlt,
+    FaCompass,
+    FaWrench,
+    FaTrophy
+} from 'react-icons/fa';
+import { MdOutlineSecurity, MdDeveloperBoard, MdPayments } from 'react-icons/md';
 
 const SystemUpdates = () => {
     const updates = [
+        {
+            version: "2.3.0",
+            date: "July 2026",
+            type: "feature",
+            icon: <MdPayments className="text-xl" />,
+            color: "from-violet-600 to-purple-600",
+            title: "Stripe Billing & Premium Features",
+            changes: [
+                "Integrated secure Stripe payment processing for seamless Premium upgrades",
+                "Added trial limits and usage tracking for AI step-checking tools",
+                "Created upgrade popups and exclusive features for active subscribers",
+                "Added email unsubscribe options and updated account settings"
+            ]
+        },
+        {
+            version: "2.2.0",
+            date: "June 2026",
+            type: "feature",
+            icon: <FaMagic className="text-xl" />,
+            color: "from-blue-500 to-indigo-600",
+            title: "AI Practice Assistant & Landing Refresh",
+            changes: [
+                "Added MathText component for inline LaTeX rendering inside AI chat responses",
+                "Normalized AI chat formatting for reliable math display without broken symbols",
+                "Clarified free access promises and updated privacy policy for user data transparency",
+                "Redesigned Hero section messaging and practice workspace showcase"
+            ]
+        },
+        {
+            version: "2.1.0",
+            date: "May 2026",
+            type: "feature",
+            icon: <FaTrophy className="text-xl" />,
+            color: "from-amber-500 to-yellow-600",
+            title: "Weekly Challenges & Learner Paths",
+            changes: [
+                "Introduced automated weekly Algebra practice challenges rotated by calendar week",
+                "Added instant study partner invitations after solving problems correctly",
+                "Created guided onboarding steps to lead new learners to their first problem",
+                "Optimized accessibility and Lighthouse SEO audit scores across all landing pages"
+            ]
+        },
+        {
+            version: "2.0.0",
+            date: "April 15-25, 2026",
+            type: "feature",
+            icon: <FaCompass className="text-xl" />,
+            color: "from-emerald-500 to-teal-600",
+            title: "Learning Journeys & Daily Tracks",
+            changes: [
+                "Launched Learning Journey paths with structured topic cards and recommended problems",
+                "Added Daily Track missions with active XP tracking and progress bars",
+                "Introduced interactive skill test retakes and updated onboarding flows",
+                "Upgraded navigation bar with direct links to learning tracks"
+            ]
+        },
         {
             version: "1.5.8",
             date: "April 10-11, 2026",
@@ -470,10 +539,6 @@ const SystemUpdates = () => {
                                 <p className="text-gray-300 text-base pb-4">
                                     Get notified about new features and updates directly in your notifications
                                 </p>
-                                {/* <div className="flex items-center justify-center gap-2 text-sm">
-                                    <FaCheckCircle className="text-green-400" />
-                                    <span>You're already subscribed to update notifications</span>
-                                </div> */}
                                 <div className="flex items-center justify-center gap-2 text-sm">
                                     <span>Are you subscribed to our newsletter? </span>
                                     <Link to="/equathora-briefs" className='!text-yellow-500 !underline hover:!text-yellow-400' title='Subscribe to Equathora Briefs now for free!'>Click to Join</Link>

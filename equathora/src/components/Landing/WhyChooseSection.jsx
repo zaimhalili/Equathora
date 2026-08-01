@@ -133,7 +133,7 @@ const WhyChooseSection = () => {
                             transition={{ delay: 0.3, duration: 0.5 }}
                         >
                             <Link
-                                to="/signup"
+                                to="/learn"
                                 className="group inline-flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 !text-white text-base sm:text-lg font-semibold transition-all hover:!bg-[var(--accent-color)] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1"
                             >
                                 Explore problems

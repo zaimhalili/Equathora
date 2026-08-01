@@ -12,6 +12,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { getProblems } from '../lib/problemService';
 import { StatusOptions, SortOptions } from '../enum/DropdownEnums';
 import { formatTopicLabel } from '../lib/utils';
+import { useAuth } from '@/hooks/useAuth.jsx';
+import NavigationBar from '@/components/Landing/NavigationBar.jsx';
 
 const FilterDropdown = ({ label, value, options, onChange, placeholder = "All", multiSelect = false }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -148,6 +150,8 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All", 
 };
 
 const Learn = () => {
+  const { user } = useAuth();
+
   const difficultyOrder = {
     beginner: 1,
     easy: 2,
@@ -297,10 +301,10 @@ const Learn = () => {
         // Correctly parse 'premium' and 'free' values into exact booleans
         const mappedPremium = premiumFilter
           ? premiumFilter
-              .split(',')
-              .map((val) => val.trim())
-              .filter((val) => val === 'premium' || val === 'free')
-              .map((val) => val === 'premium')
+            .split(',')
+            .map((val) => val.trim())
+            .filter((val) => val === 'premium' || val === 'free')
+            .map((val) => val === 'premium')
           : null;
 
         const isPremium = mappedPremium && mappedPremium.length > 0 ? mappedPremium : null;
@@ -453,7 +457,12 @@ const Learn = () => {
     <>
       <main id='body-learn'>
         <header>
-          <Navbar />
+          {user ? <Navbar /> : (
+            <>
+              <div className="flex pt-10"></div>
+              <NavigationBar />
+            </>
+          )}
         </header>
         <section id='hero-learn'>
           <motion.article

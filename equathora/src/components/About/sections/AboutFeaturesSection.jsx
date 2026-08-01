@@ -26,7 +26,7 @@ const AboutFeaturesSection = () => {
                                     transition={{ type: 'spring', stiffness: 300, duration: 0.8 }}
                                     className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/20 backdrop-blur-sm rounded-md"
                                 >
-                                    <FaCode className="text-[var(--white)] text-3xl" />
+                                    <FaCode className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-[var(--white)]">Math Editor</h3>
@@ -48,7 +48,7 @@ const AboutFeaturesSection = () => {
                                 whileHover={{ scale: 1.1, rotate: 12 }}
                                 className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-md relative z-10"
                             >
-                                <FaBrain className="text-[var(--white)] text-3xl" />
+                                <FaBrain className="text-white text-3xl" />
                             </motion.div>
                             <div>
                                 <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-[var(--accent-color)] transition-colors">Sigma AI Debugger</h3>
@@ -68,7 +68,7 @@ const AboutFeaturesSection = () => {
                                 transition={{ duration: 0.5 }}
                                 className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-md relative z-10"
                             >
-                                <FaRocket className="text-[var(--white)] text-3xl" />
+                                <FaRocket className="text-white text-3xl" />
                             </motion.div>
                             <div>
                                 <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">Achievements</h3>
@@ -88,7 +88,7 @@ const AboutFeaturesSection = () => {
                                 transition={{ duration: 0.5 }}
                                 className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-md relative z-10 shadow-lg"
                             >
-                                <FaGraduationCap className="text-[var(--white)] text-3xl" />
+                                <FaGraduationCap className="text-white text-3xl" />
                             </motion.div>
                             <div>
                                 <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-[var(--accent-color)] transition-colors">Teacher Insights</h3>
@@ -109,7 +109,7 @@ const AboutFeaturesSection = () => {
                                     transition={{ duration: 0.6 }}
                                     className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-md relative z-10 shadow-md"
                                 >
-                                    <FaTrophy className="text-[var(--white)] text-3xl" />
+                                    <FaTrophy className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-green-600 transition-colors relative z-10">Leaderboards</h3>
@@ -128,7 +128,7 @@ const AboutFeaturesSection = () => {
                                     whileHover={{ scale: 1.15, rotate: 15 }}
                                     className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-md relative z-10"
                                 >
-                                    <FaChartLine className="text-[var(--white)] text-3xl" />
+                                    <FaChartLine className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">Progress Analytics</h3>
@@ -148,7 +148,7 @@ const AboutFeaturesSection = () => {
                                 whileHover={{ scale: 1.15, rotate: -12 }}
                                 className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-md relative z-10"
                             >
-                                <FaBrain className="text-[var(--white)] text-3xl" />
+                                <FaBrain className="text-white text-3xl" />
                             </motion.div>
                             <div>
                                 <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">Step-by-Step Feedback</h3>
@@ -168,7 +168,7 @@ const AboutFeaturesSection = () => {
                                     whileHover={{ scale: 1.2, rotate: -15 }}
                                     className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-md relative z-10 shadow-md"
                                 >
-                                    <FaFire className="text-[var(--white)] text-3xl" />
+                                    <FaFire className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-orange-600 transition-colors relative z-10">Study Streaks</h3>
@@ -188,7 +188,7 @@ const AboutFeaturesSection = () => {
                                     transition={{ duration: 0.5 }}
                                     className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-md relative z-10 shadow-md"
                                 >
-                                    <FaLightbulb className="text-[var(--white)] text-3xl" />
+                                    <FaLightbulb className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-blue-600 transition-colors relative z-10">Step-by-Step Guidance</h3>

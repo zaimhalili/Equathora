@@ -213,6 +213,100 @@ const matchesStatusFilter = (problem, statusValue) => {
     return false;
 };
 
+// ---- public-user path ----
+// Used for visitors and for any case where user-specific progress is unavailable.
+async function fetchPublicProblems({
+    page, pageSize, problemId, slug,
+    difficulties, topics, grades, searchTerm, sort,
+    isPremium, statusFilters, includesFavorite
+}) {
+    try {
+        if (includesFavorite) {
+            const safePage = page ?? 1;
+            const safePageSize = pageSize ?? 50;
+            return {
+                data: [],
+                count: 0,
+                page: safePage,
+                pageSize: safePageSize,
+                facets: buildFacets([]),
+            };
+        }
+
+        let problemsQuery = supabase
+            .from('problems')
+            .select('*')
+            .eq('is_active', true);
+
+        if (problemId !== null && problemId !== undefined) {
+            problemsQuery = problemsQuery.eq('id', problemId);
+        }
+
+        if (slug && String(slug).trim()) {
+            problemsQuery = problemsQuery.eq('slug', String(slug).trim());
+        }
+
+        const safeDifficulties = normalizeArray(difficulties);
+        const safeTopics = normalizeArray(topics);
+        const safeGrades = normalizeArray(grades);
+        const safeIsPremium = normalizeBooleanArray(isPremium);
+
+        if (safeDifficulties) {
+            problemsQuery = problemsQuery.in('difficulty', safeDifficulties);
+        }
+
+        if (safeTopics) {
+            problemsQuery = problemsQuery.in('topic', safeTopics);
+        }
+
+        if (safeGrades) {
+            problemsQuery = problemsQuery.in('grade', safeGrades);
+        }
+
+        if (safeIsPremium) {
+            problemsQuery = problemsQuery.in('is_premium', safeIsPremium);
+        }
+
+        if (searchTerm && String(searchTerm).trim()) {
+            const escapedSearch = String(searchTerm).trim();
+            problemsQuery = problemsQuery.or(`title.ilike.%${escapedSearch}%,description.ilike.%${escapedSearch}%,topic.ilike.%${escapedSearch}%`);
+        }
+
+        const { data: allProblems, error: allProblemsError } = await problemsQuery;
+        if (allProblemsError) throw allProblemsError;
+
+        const publicProblems = (allProblems || []).map((problem) => ({
+            ...problem,
+            completed: false,
+            inProgress: false,
+            favourite: false,
+        }));
+
+        const statusFilteredProblems = statusFilters.length > 0
+            ? publicProblems.filter((problem) =>
+                statusFilters.some((statusValue) => matchesStatusFilter(problem, statusValue))
+            )
+            : publicProblems;
+
+        const sortedProblems = applyLocalSort(statusFilteredProblems, sort);
+        const safePage = page ?? 1;
+        const safePageSize = pageSize ?? 50;
+        const startIndex = Math.max(0, (safePage - 1) * safePageSize);
+        const pagedProblems = sortedProblems.slice(startIndex, startIndex + safePageSize);
+
+        return {
+            data: pagedProblems,
+            count: sortedProblems.length,
+            page: safePage,
+            pageSize: safePageSize,
+            facets: buildFacets(sortedProblems),
+        };
+    } catch (publicError) {
+        console.warn('Public problem fetch failed:', publicError);
+        return null;
+    }
+}
+
 // ---- authenticated-user path ----
 // Returns a result object on success, or null to signal "fall through to next source"
 // (mirrors the original: no userId, or any thrown error, both fall through).
@@ -479,6 +573,13 @@ export async function getProblems(
         isPremium, statusFilters, includesFavorite
     });
     if (authResult) return authResult;
+
+    const publicResult = await fetchPublicProblems({
+        page, pageSize, problemId, slug,
+        difficulties, topics, grades, searchTerm, sort,
+        isPremium, statusFilters, includesFavorite
+    });
+    if (publicResult) return publicResult;
 
     if (includesFavorite) {
         const favResult = await fetchFavoriteProblems({

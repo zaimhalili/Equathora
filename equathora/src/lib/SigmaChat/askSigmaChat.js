@@ -16,7 +16,7 @@ const extractTextResponse = (data) => {
                 const innerText = extractTextResponse(parsed);
                 if (innerText) return innerText;
             } catch {
-                // Not valid JSON, process as string below
+                // Not valid JSON
             }
         }
         return data.trim();
@@ -39,10 +39,6 @@ export async function askSigmaChat({
     const stepsChanged = userSteps !== lastAnalyzedSteps;
     const needsFullContext = isFreshSession || stepsChanged;
 
-    // Client-side trimming here is a UX/payload-size convenience only —
-    // NOT a security boundary. The edge function re-validates and
-    // re-sanitizes every field independently, so a direct API caller
-    // bypassing this file gains nothing.
     const historyPayload = chatHistory
         .filter(m => m.sender && m.text)
         .slice(needsFullContext ? -20 : -FOLLOWUP_HISTORY_LIMIT)
@@ -51,11 +47,6 @@ export async function askSigmaChat({
             content: sanitizePromptText(m.text, 500),
         }));
 
-    // Only structured, untrusted student data goes over the wire. No system
-    // prompt, no instructions, nothing that shapes Sigma's behavior — that
-    // now lives entirely server-side in ask-gemini.ts and is applied by
-    // Gemini itself via systemInstruction on every call, regardless of
-    // what any client sends.
     const payload = {
         problemDescription: sanitizePromptText(problemDescription, 1000),
         acceptedAnswer: sanitizePromptText(acceptedAnswer, 500),
@@ -67,17 +58,12 @@ export async function askSigmaChat({
     };
 
     try {
-        const { data: { session } } = await supabase.auth.getSession();
-        const headers = session?.access_token
-            ? { Authorization: `Bearer ${session.access_token}` }
-            : {};
-
         let lastError = null;
 
         for (let attempt = 0; attempt <= SIGMA_MAX_RETRIES; attempt += 1) {
+            // supabase.functions.invoke automatically handles Authorization header
             const { data, error } = await supabase.functions.invoke(SIGMA_FUNCTION_NAME, {
                 body: payload,
-                headers,
             });
 
             if (!error) {
@@ -101,7 +87,8 @@ export async function askSigmaChat({
             }
 
             lastError = error;
-            const retryableStatus = error?.status === 503 || error?.status === 429 || error?.context?.status === 503 || error?.context?.status === 429;
+            const status = error?.status || error?.context?.status;
+            const retryableStatus = status === 503 || status === 429;
             if (!retryableStatus || attempt === SIGMA_MAX_RETRIES) throw error;
 
             await sleep(SIGMA_RETRY_DELAY_MS * (attempt + 1));
