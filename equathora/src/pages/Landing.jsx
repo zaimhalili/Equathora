@@ -13,7 +13,6 @@ import TestimonialsSection from '../components/Landing/TestimonialsSection.jsx';
 import LatestArticlesSection from '../components/Landing/LatestArticlesSection.jsx';
 import EquathoraBriefsSection from '../components/Landing/EquathoraBriefsSection.jsx';
 import CTASection from '../components/Landing/CTASection.jsx';
-import { color } from 'framer-motion';
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -37,6 +36,7 @@ const Landing = () => {
         if (ogTitle) ogTitle.setAttribute('content', 'Equathora | Learn Math Online with Step-by-Step Practice and Sigma AI');
         if (ogDescription) ogDescription.setAttribute('content', 'Practice math online with guided problem solving, step-by-step help, and Sigma AI feedback designed for real understanding.');
     }, [navigate]);
+
     return (
         <>
             {/* <FeedbackBanner /> */}
@@ -58,11 +58,10 @@ const Landing = () => {
                 {/* <EquathoraBriefsSection /> */}
                 <Footer />
                 <div className="flex flex-col lg:flex-row items-center text-[var(--french-gray)] bg-[var(--secondary-color)] underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center font-[Sansation] theme-lock">
-                    <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="#freepik-link">
+                    <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="freepik-link">
                         Student PNGs by Vecteezy
                     </a>
                 </div>
-
             </div>
         </>
     );
