@@ -2,12 +2,15 @@ import React from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import ShareButton from '../components/ui/ShareButton.jsx';
 import Navbar from '../components/Navbar.jsx';
+import NavigationBar from '@/components/Landing/NavigationBar.jsx';
+import { useAuth } from '@/hooks/useAuth.jsx';
 import FeebackBanner from '../components/FeedbackBanner.jsx';
 import Footer from '../components/Footer.jsx';
 import Journey from '../assets/images/journey.jpg';
 import { getBlogPostBySlug, getAllBlogPosts } from '../data/blogPosts.js';
 
 const BlogPost = () => {
+    const { user } = useAuth();
     const { slug } = useParams();
     const post = getBlogPostBySlug(slug);
 
@@ -65,8 +68,12 @@ const BlogPost = () => {
 
     return (
         <div>
-            <FeebackBanner />
-            <Navbar />
+            {user ? <Navbar /> : (
+                <>
+                    <div className="flex pt-10"></div>
+                    <NavigationBar />
+                </>
+            )}
             <main className='flex bg-white font-[Sansation] flex-col min-h-screen w-full items-center'>
                 {/* Header Section */}
                 <section className='flex flex-col w-full items-center lg:flex-row justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)110%)] shadow-2xl shadow-black/20 relative theme-lock'>

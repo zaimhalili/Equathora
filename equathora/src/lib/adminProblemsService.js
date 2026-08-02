@@ -39,7 +39,7 @@ attemptsTableUnavailable = readAttemptsTableFlag();
 const fetchAdminProblemDetailFromSupabase = async (problemId) => {
     const { data: problem, error } = await supabase
         .from('problems')
-        .select('id, title, description, answer, accepted_answers, hints, solution, is_premium, topic, display_order, slug, created_at, updated_at, difficulty')
+        .select('id, title, description, is_premium, topic, display_order, slug, created_at, updated_at, difficulty')
         .eq('id', problemId)
         .single();
 
@@ -79,10 +79,6 @@ const fetchAdminProblemDetailFromSupabase = async (problemId) => {
         id: problem?.id,
         title: problem?.title,
         description: problem?.description,
-        answer: problem?.answer,
-        acceptedAnswers: problem?.accepted_answers || [],
-        hints: problem?.hints || [],
-        solution: problem?.solution,
         premium: Boolean(problem?.is_premium),
         topic: problem?.topic,
         displayOrder: problem?.display_order,
@@ -99,7 +95,7 @@ const fetchAdminProblemDetailFromSupabase = async (problemId) => {
 const fetchAllAdminProblemDetailsFromSupabase = async () => {
     const { data: problems, error } = await supabase
         .from('problems')
-        .select('id, title, description, answer, accepted_answers, hints, solution, is_premium, topic, display_order, slug, created_at, updated_at, difficulty')
+        .select('id, title, description, is_premium, topic, display_order, slug, created_at, updated_at, difficulty')
         .eq('is_active', true)
         .order('id', { ascending: true });
 
@@ -154,10 +150,6 @@ const fetchAllAdminProblemDetailsFromSupabase = async () => {
             id: problem?.id,
             title: problem?.title,
             description: problem?.description,
-            answer: problem?.answer,
-            acceptedAnswers: problem?.accepted_answers || [],
-            hints: problem?.hints || [],
-            solution: problem?.solution,
             premium: Boolean(problem?.is_premium),
             topic: problem?.topic,
             displayOrder: problem?.display_order,

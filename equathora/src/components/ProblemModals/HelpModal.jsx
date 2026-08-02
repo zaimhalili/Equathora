@@ -55,9 +55,9 @@ const HelpModal = ({ isOpen, onClose }) => {
                         <ul className='font-[Sansation] text-sm text-[var(--secondary-color)] leading-relaxed list-disc list-inside flex flex-col'>
                             <li>Use the <strong>MathLive editor on the right side</strong> to write your solution</li>
                             <li>Work through the problem step-by-step in separate boxes</li>
-                            <li>Click "+ Add Step" to add more steps to your mathematical solution</li>
+                            <li>Click (Enter) or the button "+ Add New Line" to add more steps to your mathematical solution</li>
                             <li>Use the math toolbar to insert equations, symbols, fractions, and expressions</li>
-                            <li>Delete unwanted steps using the × button next to each step</li>
+                            <li>Delete unwanted steps using the "Trash Can" Icon button next to each step</li>
                         </ul>
                         <div className='pt-3 p-3 bg-[var(--accent-color)]/5 border-2 border-[var(--accent-color)]/20 rounded-md flex flex-col'>
                             <p className='font-[Sansation] text-sm font-bold text-[var(--secondary-color)]'>⚠️ Important:</p>
@@ -96,6 +96,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                             <li><strong>Description Tab:</strong> View the problem statement and examples</li>
                             <li><strong>Solution Tab:</strong> After attempting, view the official solution</li>
                             <li><strong>Submissions Tab:</strong> Review your past attempts and performance</li>
+                            <li><strong>Ask Sigma:</strong> AI tutor that guides you towards the solution</li>
                             <li><strong>Desktop Collapse:</strong> Click the arrow to expand the solution workspace</li>
                         </ul>
                     </div>
@@ -105,7 +106,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                             <FaLightbulb className='text-[var(--accent-color)]' /> Pro Tip</h3>
                         <p className='font-[Sansation] text-sm text-[var(--secondary-color)] leading-relaxed'>Try to solve the problem on your own before viewing hints or the solution. Use the sketch pad to visualize the problem. Learning mathematics happens best when you work through the challenge!</p>
                     </div>
-                    <button type="button" onClick={onClose} className='flex justify-center px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-[var(--white)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base cursor-pointer'>Got It!</button>
+                    <button type="button" onClick={onClose} className='flex justify-center px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base cursor-pointer'>Got It!</button>
                 </div>
 
 

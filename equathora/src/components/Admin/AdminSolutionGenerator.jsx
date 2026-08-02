@@ -382,12 +382,12 @@ const AdminSolutionGenerator = () => {
 
     return (
         <section className='flex flex-col gap-5 px-3 py-3 text-[var(--secondary-color)] md:px-5'>
-            <header className='rounded-xl border p-5' style={{ borderColor: 'var(--mid-main-secondary)', background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))' }}>
+            <header className='rounded-md border p-5' style={{ borderColor: 'var(--mid-main-secondary)', background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))' }}>
                 <h1 className='text-2xl font-black md:text-3xl'>OpenStax Problem Extraction Workflow</h1>
                 <p className='pt-2 text-sm md:text-base'>Pick a book and page range, run the generated Python command, then copy each batch with one click and move to the next instantly.</p>
             </header>
 
-            <div className='grid grid-cols-1 gap-4 rounded-xl border p-4 md:grid-cols-2' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='grid grid-cols-1 gap-4 rounded-md border p-4 md:grid-cols-2' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <label className='flex flex-col gap-1 text-sm font-semibold'>
                     Book (OpenStax)
                     <select
@@ -487,7 +487,7 @@ const AdminSolutionGenerator = () => {
                 </label>
             </div>
 
-            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex flex-wrap items-center gap-2'>
                     <button
                         type='button'
@@ -528,7 +528,7 @@ const AdminSolutionGenerator = () => {
                 {!hasInvalidRange && !isCharLimitTooLow && <p className='pt-2 text-xs text-[var(--mid-main-secondary)]'>This command uses raw mode + stdout mode, so no output files are created. Use the clipboard command for a faster flow.</p>}
             </div>
 
-            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex flex-wrap items-center justify-between gap-3'>
                     <h2 className='text-lg font-bold'>Load From Terminal Output</h2>
                     <div className='flex flex-wrap items-center gap-2'>
@@ -561,7 +561,7 @@ const AdminSolutionGenerator = () => {
                 />
             </div>
 
-            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex flex-wrap items-center justify-between gap-3'>
                     <h2 className='text-lg font-bold'>Copy Queue</h2>
                     <p className='text-xs text-[var(--mid-main-secondary)]'>

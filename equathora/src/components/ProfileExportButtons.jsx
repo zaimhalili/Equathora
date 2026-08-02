@@ -1,11 +1,8 @@
-import React, { useMemo, useState, useRef, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { FaFileDownload, FaFilePdf, FaFileCsv, FaChevronDown } from 'react-icons/fa';
 import { jsPDF } from 'jspdf';
 import Logo from '../assets/logo/EquathoraSymbolIcon.png';
-import { getAchievementProgress, getCompletedProblems, getUserSubmissions } from '../lib/databaseService';
-import { getAllProblems } from '../lib/problemService';
-import { supabase } from '../lib/supabaseClient';
-import { formatTopicLabel } from '../lib/utils';
+import { useUserStats } from '../context/UserStatsContext';
 
 const formatDuration = (totalSeconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(totalSeconds));
@@ -27,117 +24,75 @@ const formatDate = (iso, includeTime = false) => {
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 };
 
-const buildDataSnapshot = async () => {
-    const [achievementSnapshot, completedIds, allProblems, allSubmissions, sessionResult] = await Promise.all([
-        getAchievementProgress(),
-        getCompletedProblems(),
-        getAllProblems(),
-        getUserSubmissions(),
-        supabase.auth.getSession()
-    ]);
+const normalizeDifficultySummary = (difficultyBreakdown) => {
+    const array = Array.isArray(difficultyBreakdown) ? difficultyBreakdown : [];
+    return array.reduce((acc, entry) => {
+        const key = String(entry?.key || '').toLowerCase();
+        if (!key) return acc;
+        acc[key] = {
+            solved: Number(entry.solved || 0),
+            total: Number(entry.total || 0),
+            percentage: entry.total > 0 ? Math.round((Number(entry.solved || 0) / Number(entry.total || 0)) * 100) : 0
+        };
+        return acc;
+    }, {
+        easy: { solved: 0, total: 0, percentage: 0 },
+        medium: { solved: 0, total: 0, percentage: 0 },
+        hard: { solved: 0, total: 0, percentage: 0 }
+    });
+};
 
-    const session = sessionResult?.data?.session || null;
-    const completedIdSet = new Set((completedIds || []).map((id) => String(id)));
-    const completed = allProblems.filter((problem) => completedIdSet.has(String(problem.id)));
-
-    const totalAttempts = Number(achievementSnapshot?.total_attempts || 0);
-    const wrongSubmissions = Number(achievementSnapshot?.wrong_submissions || 0);
-    const correctSubmissions = totalAttempts > 0
-        ? Math.max(totalAttempts - wrongSubmissions, 0)
-        : Number(achievementSnapshot?.correct_answers || 0);
-    const accuracy = totalAttempts > 0
-        ? Math.round((correctSubmissions / totalAttempts) * 100)
-        : 0;
-
-    const dbTimeSeconds = Math.max(0, Number(achievementSnapshot?.total_time_minutes || 0)) * 60;
-    const fallbackSubmissionTimeSeconds = (allSubmissions || []).reduce((sum, sub) => {
-        return sum + (sub.time_spent_seconds || 0);
-    }, 0);
-    const totalTimeSeconds = dbTimeSeconds || fallbackSubmissionTimeSeconds;
-
-    const latestCompletion = allSubmissions?.[0]?.submitted_at || null;
-    const firstCompletion = allSubmissions?.length
-        ? allSubmissions[allSubmissions.length - 1]?.submitted_at
-        : (session?.user?.created_at || null);
-
-    const difficulty = achievementSnapshot?.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 };
-    const topicFrequency = Array.isArray(achievementSnapshot?.topicFrequency)
-        ? achievementSnapshot.topicFrequency
-        : [];
-    const favoriteTopics = topicFrequency
-        .slice()
-        .sort((a, b) => (b.count || 0) - (a.count || 0))
-        .slice(0, 3)
-        .map((item) => formatTopicLabel(item.topic))
-        .filter(Boolean);
-
-    const weeklyProgress = Array.isArray(achievementSnapshot?.weeklyProgress)
-        ? achievementSnapshot.weeklyProgress
-        : Array(7).fill(0);
-
-    const username = session?.user?.user_metadata?.username
-        || session?.user?.user_metadata?.preferred_username
-        || session?.user?.user_metadata?.full_name
-        || session?.user?.user_metadata?.name
-        || session?.user?.email?.split('@')[0]
-        || 'Student';
-
-    const stats = {
-        username,
-        joinDate: session?.user?.created_at || new Date().toISOString(),
-        problemsSolved: completed.length,
-        accuracy,
-        accuracyBreakdown: {
-            correct: correctSubmissions,
-            wrong: wrongSubmissions,
-            total: totalAttempts
-        },
-        totalAttempts,
-        difficultyBreakdown: difficulty,
-        currentStreak: Number(achievementSnapshot?.currentStreak || 0),
-        longestStreak: Number(achievementSnapshot?.longestStreak || 0),
-        reputation: Number(achievementSnapshot?.reputation || 0),
-        weeklyProgress,
-        favoriteTopics
-    };
-
-    // Additional comprehensive data
-    const avgTimePerProblem = completed.length > 0 ? Math.round(totalTimeSeconds / completed.length) : 0;
-    const totalSessions = weeklyProgress.reduce((a, b) => a + b, 0);
-    const avgProblemsPerSession = totalSessions > 0 ? (completed.length / totalSessions).toFixed(1) : '0';
+const buildDataSnapshot = (stats = {}) => {
+    const normalizedDifficulty = normalizeDifficultySummary(stats.difficultyBreakdown);
+    const weeklyProgress = Array.isArray(stats.weeklyProgress) ? stats.weeklyProgress : Array(7).fill(0);
+    const completedCount = Number(stats.problemsSolved || 0);
+    const totalSubmissions = Number(stats.totalSubmissions || 0);
+    const totalTimeSeconds = Number(stats.totalTimeSeconds || 0);
+    const avgTimePerProblem = completedCount > 0 ? Math.round(totalTimeSeconds / completedCount) : 0;
+    const totalSessions = weeklyProgress.reduce((sum, value) => sum + Number(value || 0), 0);
+    const avgProblemsPerSession = totalSessions > 0 ? (completedCount / totalSessions).toFixed(1) : '0';
 
     return {
-        stats,
-        completed,
-        completedCount: completed.length,
+        stats: {
+            username: stats.username || 'Student',
+            joinDate: stats.joinDate || null,
+            problemsSolved: completedCount,
+            accuracy: Number(stats.accuracy || 0),
+            accuracyBreakdown: {
+                correct: Number(stats.accuracyBreakdown?.correct || 0),
+                wrong: Number(stats.accuracyBreakdown?.wrong || 0),
+                total: Number(stats.accuracyBreakdown?.total || 0)
+            },
+            totalAttempts: Number(stats.totalAttempts || 0),
+            difficultyBreakdown: stats.difficultyBreakdown || [],
+            currentStreak: Number(stats.currentStreak || 0),
+            longestStreak: Number(stats.longestStreak || 0),
+            reputation: Number(stats.reputation || 0),
+            weeklyProgress,
+            favoriteTopics: Array.isArray(stats.favoriteTopics) ? stats.favoriteTopics : [],
+            totalProblems: Number(stats.totalProblems || 0)
+        },
+        totalSubmissions,
         totalTimeSeconds,
-        latestCompletion,
-        firstCompletion,
-        difficulty,
-        favoriteTopics,
+        latestCompletion: stats.latestSubmissionAt || null,
+        firstCompletion: stats.firstSubmissionAt || stats.joinDate || null,
+        difficulty: normalizedDifficulty,
+        favoriteTopics: Array.isArray(stats.favoriteTopics) ? stats.favoriteTopics : [],
         avgTimePerProblem,
         totalSessions,
         avgProblemsPerSession,
-        totalSubmissions: (allSubmissions || []).length,
-        totalProblems: allProblems.length,
-        easyTotal: allProblems.filter(p => p.difficulty === 'Easy').length,
-        mediumTotal: allProblems.filter(p => p.difficulty === 'Medium').length,
-        hardTotal: allProblems.filter(p => p.difficulty === 'Hard').length
+        totalProblems: Number(stats.totalProblems || 0),
+        easyTotal: normalizedDifficulty.easy.total,
+        mediumTotal: normalizedDifficulty.medium.total,
+        hardTotal: normalizedDifficulty.hard.total
     };
 };
 
 const ProfileExportButtons = () => {
-    const [snapshot, setSnapshot] = useState(null);
+    const { stats, loading } = useUserStats();
+    const snapshot = useMemo(() => buildDataSnapshot(stats), [stats]);
     const [showMenu, setShowMenu] = useState(false);
     const menuRef = useRef(null);
-
-    useEffect(() => {
-        const loadData = async () => {
-            const data = await buildDataSnapshot();
-            setSnapshot(data);
-        };
-        loadData();
-    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -149,44 +104,61 @@ const ProfileExportButtons = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    if (!snapshot) {
+    if (loading) {
         return <div className="flex gap-2">Loading...</div>;
     }
 
     const {
-        stats, completed, completedCount, totalTimeSeconds, latestCompletion, firstCompletion,
-        difficulty, favoriteTopics, avgTimePerProblem, totalSessions, avgProblemsPerSession,
-        totalSubmissions, totalProblems, easyTotal, mediumTotal, hardTotal
+        stats: exportStats,
+        totalTimeSeconds,
+        latestCompletion,
+        firstCompletion,
+        difficulty,
+        favoriteTopics,
+        avgTimePerProblem,
+        totalSessions,
+        avgProblemsPerSession,
+        totalSubmissions,
+        totalProblems,
+        easyTotal,
+        mediumTotal,
+        hardTotal
     } = snapshot;
+
+    const statsUsername = exportStats.username || 'Student';
+    const accuracyRateLabel = exportStats.accuracy ?? 0;
+    const totalAttemptsLabel = exportStats.totalAttempts ?? 0;
+    const correctSubmissions = exportStats.accuracyBreakdown?.correct || 0;
+    const wrongSubmissions = exportStats.accuracyBreakdown?.wrong || 0;
 
     const comprehensiveData = [
         {
             section: 'Account Information', items: [
-                ['Account Username', stats.username || 'Student'],
-                ['Account Created', formatDate(stats.joinDate)],
+                ['Account Username', statsUsername],
+                ['Account Created', formatDate(exportStats.joinDate)],
                 ['Account Status', 'Active'],
-                ['User ID', `EQ-${stats.joinDate ? new Date(stats.joinDate).getTime().toString(36).toUpperCase() : 'GUEST'}`],
+                ['User ID', `EQ-${exportStats.joinDate ? new Date(exportStats.joinDate).getTime().toString(36).toUpperCase() : 'GUEST'}`],
                 ['Platform Access Level', 'Standard Member']
             ]
         },
         {
             section: 'Performance Metrics', items: [
-                ['Problems Solved', `${stats.problemsSolved || 0} / ${totalProblems}`],
-                ['Overall Accuracy Rate', `${stats.accuracy || 0}%`],
-                ['Correct Submissions', stats.accuracyBreakdown?.correct || 0],
-                ['Incorrect Submissions', stats.accuracyBreakdown?.wrong || 0],
-                ['Total Submission Attempts', stats.totalAttempts || 0],
-                ['Success Rate (First Attempt)', totalSubmissions > 0 ? `${Math.round(((stats.accuracyBreakdown?.correct || 0) / totalSubmissions) * 100)}%` : 'N/A']
+                ['Problems Solved', `${exportStats.problemsSolved || 0} / ${totalProblems}`],
+                ['Overall Accuracy Rate', `${accuracyRateLabel || 0}%`],
+                ['Correct Submissions', correctSubmissions],
+                ['Incorrect Submissions', wrongSubmissions],
+                ['Total Submission Attempts', totalAttemptsLabel],
+                ['Success Rate (First Attempt)', totalSubmissions > 0 ? `${Math.round(((correctSubmissions || 0) / totalSubmissions) * 100)}%` : 'N/A']
             ]
         },
         {
             section: 'Difficulty Breakdown', items: [
-                ['Easy Problems Solved', `${difficulty.easy || 0} / ${easyTotal}`],
-                ['Medium Problems Solved', `${difficulty.medium || 0} / ${mediumTotal}`],
-                ['Hard Problems Solved', `${difficulty.hard || 0} / ${hardTotal}`],
-                ['Easy Completion Rate', `${easyTotal > 0 ? Math.round((difficulty.easy / easyTotal) * 100) : 0}%`],
-                ['Medium Completion Rate', `${mediumTotal > 0 ? Math.round((difficulty.medium / mediumTotal) * 100) : 0}%`],
-                ['Hard Completion Rate', `${hardTotal > 0 ? Math.round((difficulty.hard / hardTotal) * 100) : 0}%`]
+                ['Easy Problems Solved', `${difficulty.easy.solved || 0} / ${easyTotal}`],
+                ['Medium Problems Solved', `${difficulty.medium.solved || 0} / ${mediumTotal}`],
+                ['Hard Problems Solved', `${difficulty.hard.solved || 0} / ${hardTotal}`],
+                ['Easy Completion Rate', `${easyTotal > 0 ? difficulty.easy.percentage : 0}%`],
+                ['Medium Completion Rate', `${mediumTotal > 0 ? difficulty.medium.percentage : 0}%`],
+                ['Hard Completion Rate', `${hardTotal > 0 ? difficulty.hard.percentage : 0}%`]
             ]
         },
         {
@@ -210,7 +182,7 @@ const ProfileExportButtons = () => {
             section: 'Learning Focus', items: [
                 ['Favorite Topics', favoriteTopics.length > 0 ? favoriteTopics.join(', ') : 'Diverse Learning'],
                 ['Total Topics Explored', favoriteTopics.length],
-                ['Primary Skill Level', difficulty.hard > 5 ? 'Advanced' : difficulty.medium > 10 ? 'Intermediate' : 'Beginner']
+                ['Primary Skill Level', difficulty.hard.solved > 5 ? 'Advanced' : difficulty.medium.solved > 10 ? 'Intermediate' : 'Beginner']
             ]
         }
     ];

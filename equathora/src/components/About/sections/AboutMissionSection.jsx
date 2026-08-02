@@ -26,10 +26,10 @@ const AboutMissionSection = () => {
                             </h2>
                         </div>
                         <p className="text-sm sm:text-xl md:text-2xl font-light text-[var(--secondary-color)]">
-                            Transform how students approach mathematics, not as a subject to fear, but as a <span className="font-bold text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">journey of discovery</span>.
+                            Transform how students approach mathematics, not as a subject to fear, but as a <span className="font-bold text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">journey of discovery</span> guided by clarity, structure, and intelligent feedback.
                         </p>
                         <p className="text-sm sm:text-xl md:text-2xl font-light text-[var(--secondary-color)]">
-                            We provide an interactive platform where learners build <span className="font-bold text-[var(--secondary-color)]">confidence through step-by-step guidance</span> and achievement-based motivation.
+                            We provide an interactive platform where learners build <span className="font-bold text-[var(--secondary-color)]">confidence through step-by-step math help</span>, Sigma AI support, and achievement-based motivation.
                         </p>
                         <div className="flex flex-wrap gap-3 pt-8">
                             <motion.div className="cursor-default pointer-events-none flex items-center gap-2 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white px-5 py-3 rounded-md shadow-lg">

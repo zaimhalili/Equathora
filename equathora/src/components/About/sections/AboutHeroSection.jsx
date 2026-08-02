@@ -62,7 +62,7 @@ const AboutHeroSection = () => {
                         transition={{ delay: 0.25, duration: 0.55 }}
                         className="text-xs sm:text-sm md:text-base text-[var(--secondary-color)]/70 leading-relaxed max-w-lg"
                     >
-                        We design focused math practice that values clarity over speed, depth over noise, and long-term reasoning over short-term memorization.
+                        We help students learn math online with a step-by-step workspace, structured practice, and Sigma AI guidance that turns confusion into confidence.
                     </motion.p>
 
                     <motion.div

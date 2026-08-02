@@ -235,7 +235,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     onClick={handleAvatarClick}
                                     className="absolute inset-0 bg-[var(--raisin-black)]/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer active:scale-95"
                                 >
-                                    <FaCamera className="text-[var(--white)] text-2xl" />
+                                    <FaCamera className="text-white text-2xl" />
                                 </button>
                                 <input
                                     ref={fileInputRef}
@@ -335,7 +335,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-[var(--white)] font-semibold rounded-md hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                                className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white font-semibold rounded-md hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                             >
                                 {isLoading ? (
                                     <>

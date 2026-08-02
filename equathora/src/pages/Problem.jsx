@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Navbar from '@/components/Navbar.jsx';
+import '../components/MathLiveExample.css';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import FeedbackBanner from '../components/FeedbackBanner.jsx';
 import LoadingSpinner from '../components/LoadingSpinner';
-import LilArrow from '../assets/images/lilArrow.svg';
 import MathLiveExample from '../components/MathLiveExample';
 import MathJaxRenderer from '../components/MathJaxRenderer';
 import SolutionStepsDisplay from '../components/SolutionStepsDisplay';
@@ -13,6 +11,8 @@ import StreakPopup from '../components/StreakPopup.jsx';
 import AchievementPopup from '../components/AchievementPopup.jsx';
 import InsightPanel from '../components/InsightPanel.jsx';
 import MentorChat from '../components/ProblemModals/MentorChat.jsx';
+import ChatPanel from '@/components/ChatAI/ChatPanel';
+import PremiumButton from '@/components/Premium/PremiumButton';
 import {
     ReportModal,
     HelpModal,
@@ -20,28 +20,28 @@ import {
     SubmissionDetailModal
 } from '../components/ProblemModals';
 import {
-    FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaRegStar, FaPencilAlt, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaTimes, FaStar, FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft, FaGraduationCap
+    FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaRegStar, FaPencilAlt, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaTimes, FaStar, FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft, FaGraduationCap, FaCrown, FaCode
 } from 'react-icons/fa';
 import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
 import { formatTopicLabel } from '../lib/utils';
+import { normalizeAnswer } from '../lib/answerValidation';
 import {
-    isProblemCompleted,
-    isFavorite as checkFavorite,
-    toggleFavorite,
-    getSubmissions,
-    addSubmission,
-    markProblemCompleted,
-    syncStreakData,
+    getCompletedProblems as getCompletedProblemsDb,
+    toggleFavorite as toggleFavoriteDb,
+    getFavorites as getFavoritesDb,
+    markProblemComplete as markProblemCompleteDb,
+    hasViewedSolutionDb,
+    markSolutionViewedDb,
+    markProblemInProgressDb,
+    removeProblemFromInProgressDb,
+    saveSubmission,
+    getUserSubmissions,
+    updateStreakForCorrectSolve,
     recordProblemStats,
-    markProblemInProgress,
-    removeProblemFromInProgress,
     getUserStats,
-    hasViewedSolution,
-    markSolutionViewed
-} from '../lib/progressStorage';
+} from '../lib/databaseService';
 import { validateAnswer } from '../lib/answerValidation';
-import { recordSubmission, updateStreakForCorrectSolve } from '../lib/databaseService';
 import { trackActivityEvent } from '../lib/activityTrackingService';
 import { buildAchievements } from '../data/achievements';
 import {
@@ -51,7 +51,12 @@ import {
     notifyAchievementUnlocked,
     notifyStreakMilestone,
 } from '../lib/notificationService';
-
+import { useUserProfile } from '@/hooks/useUserProfile';
+import OverflowChecker from './OverflowChecker.jsx';
+import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
+import { supabase } from '@/lib/supabaseClient';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 const formatDurationLabel = (seconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(seconds));
@@ -118,8 +123,11 @@ const hydrateStoredSubmissions = (records = []) => {
 };
 
 const Problem = () => {
+    const { premium, loading: subLoading } = useSubscription();
+    const chatPanelRef = useRef(null);
     const { slug } = useParams();
     const navigate = useNavigate();
+    const { user } = useUserProfile();
 
     // Extract problem ID from slug for backwards compatibility
     const numericProblemId = extractIdFromSlug(slug);
@@ -143,7 +151,7 @@ const Problem = () => {
 
                 // Mark problem as in-progress when viewing
                 if (problemData) {
-                    markProblemInProgress(problemData.id);
+                    markProblemInProgressDb(problemData.id);
                 }
             } catch (error) {
                 console.error('Failed to load problem:', error);
@@ -153,6 +161,30 @@ const Problem = () => {
         };
         loadProblems();
     }, [slug]);
+
+    useEffect(() => {
+        if (!problem) return;
+        getUserSubmissions(problem.id).then(data => {
+            const mapped = data.map((s, index) => ({
+                id: s.id,
+                problemId: s.problem_id,
+                submittedAnswer: s.submitted_answer ?? '',
+                steps: s.steps ?? [],
+                status: s.is_correct ? 'accepted' : 'wrong',
+                is_correct: s.is_correct,
+                timestamp: s.submitted_at,
+                metadata: {
+                    attempts: data.length - index,
+                    hintsUsed: 0,
+                    timeSpent: s.time_spent_seconds,
+                    timeSpentLabel: formatDurationLabel(s.time_spent_seconds)
+                }
+            }));
+            const hydrated = hydrateStoredSubmissions(mapped);
+            setSubmissions(hydrated);
+            problemSolvedRef.current = hydrated.some(sub => sub.status === 'accepted' || sub.is_correct || sub.status === 'correct');
+        });
+    }, [problem]);
 
     // Sort all problems by display order first, then by id for stable navigation.
     const sortedProblems = [...allProblems].sort((a, b) => {
@@ -176,6 +208,9 @@ const Problem = () => {
     const prevProblemSlug = prevProblem ? (prevProblem.slug || generateProblemSlug(prevProblem.title, prevProblem.id)) : null;
     const nextProblemSlug = nextProblem ? (nextProblem.slug || generateProblemSlug(nextProblem.title, nextProblem.id)) : null;
 
+    const [reportReason, setReportReason] = useState('');
+    const [reportDetails, setReportDetails] = useState('');
+    const [showReportModal, setShowReportModal] = useState(false);
     const [openHints, setOpenHints] = useState({});
     const [isFavorite, setIsFavorite] = useState(false);
     const [showDescription, setShowDescription] = useState(true);
@@ -183,15 +218,14 @@ const Problem = () => {
     const [showSolution, setShowSolution] = useState(false);
     const [showTop, setShowTop] = useState(false);
     const [descriptionCollapsed, setDescriptionCollapsed] = useState(false);
-    const [showReportModal, setShowReportModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
     const [showSubmissions, setShowSubmissions] = useState(false);
     const [showMentorChat, setShowMentorChat] = useState(false);
-    const [reportReason, setReportReason] = useState('');
-    const [reportDetails, setReportDetails] = useState('');
+    const [chatPanel, setChatPanel] = useState(false);
     const [selectedSubmission, setSelectedSubmission] = useState(null);
     const [showSubmissionDetail, setShowSubmissionDetail] = useState(false);
     const [hintsOpened, setHintsOpened] = useState([]);
+    const [loadedHints, setLoadedHints] = useState({})
     const [submissions, setSubmissions] = useState([]);
     const [solutionViewed, setSolutionViewed] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
@@ -205,6 +239,14 @@ const Problem = () => {
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [newAchievements, setNewAchievements] = useState([]);
     const [showInsightPanel, setShowInsightPanel] = useState(false);
+    const [fields, setFields] = useState([]);
+    const [latexOpen, setLatexOpen] = useState(false);
+    const [chatSeed, setChatSeed] = useState(null);
+    const [pendingSigmaPrompt, setPendingSigmaPrompt] = useState('');
+    const [isCompleted, setIsCompleted] = useState(false);
+    const [sigmaBusy, setSigmaBusy] = useState(false);
+    const [solutionText, setSolutionText] = useState(null);
+
 
     // Track theme dynamically from data-theme attribute
     const [currentTheme, setCurrentTheme] = useState(() =>
@@ -212,11 +254,33 @@ const Problem = () => {
     );
 
     const prevProblemIdRef = useRef(problem?.id);
+    const problemSolvedRef = useRef(false);
     const canvasRef = useRef(null);
     const isDrawingRef = useRef(false);
     const currentStrokeRef = useRef([]);
     const sessionStartRef = useRef(Date.now());
     const strokesCacheRef = useRef({});
+
+    const handleFieldsChange = useCallback((f) => {
+        setTimeout(() => setFields(f), 0);
+    }, []);
+
+    const userStorageScope = user?.id || user?.email || 'anonymous';
+    const problemStorageScope = problem?.id ? `${problem.id}:${userStorageScope}` : '';
+    const mathDraftStorageKey = problemStorageScope ? `equathora:math-draft:${problemStorageScope}` : '';
+    const sigmaChatStorageKey = problemStorageScope ? `equathora:sigma-chat:${problemStorageScope}` : '';
+
+    const openSigmaChat = useCallback((message) => {
+        if (!message) return;
+        setShowDescription(false);
+        setShowSolution(false);
+        setShowSubmissions(false);
+        setShowTop(false);
+        setShowMentorChat(false);
+        setChatPanel(true);
+        setPendingSigmaPrompt(message);
+        if (descriptionCollapsed) setDescriptionCollapsed(false);
+    }, [descriptionCollapsed]);
 
     const resolveColor = useCallback((color) => {
         if (typeof color === 'string' && color.startsWith('var(')) {
@@ -331,14 +395,14 @@ const Problem = () => {
         setStrokes((prev) => prev.slice(0, -1));
     }, []);
 
-    const isCompleted = problem ? isProblemCompleted(problem.id) : false;
-    const [timerRunning, setTimerRunning] = useState(!isCompleted);
 
     useEffect(() => {
         if (!problem) return;
-        const existing = hydrateStoredSubmissions(getSubmissions(problem.id));
-        setSubmissions(existing);
+        getCompletedProblemsDb().then(ids => {
+            setIsCompleted(ids.includes(String(problem.id)));
+        });
     }, [problem]);
+    const [timerRunning, setTimerRunning] = useState(!isCompleted);
 
     useEffect(() => {
         setTimerRunning(!isCompleted);
@@ -394,23 +458,32 @@ const Problem = () => {
         setShowDescription(true);
         setShowSubmissions(false);
         setShowMentorChat(false);
+        setChatPanel(false);
         setShowTop(false);
         setDescriptionCollapsed(false);
         setOpenHints({});
         setHintsOpened([]);
         setSelectedSubmission(null);
         setShowSubmissionDetail(false);
-        setSolutionViewed(problem ? hasViewedSolution(problem.id) : false);
         setReportReason('');
         setReportDetails('');
         setShowReportModal(false);
         setShowHelpModal(false);
-        setIsFavorite(problem ? checkFavorite(problem.id) : false);
         setShowDrawingPad(false);
         setDrawingColor('var(--secondary-color)');
         setShowMobileMenu(false);
-        // Strokes are now loaded from cache in the other useEffect
+        setPendingSigmaPrompt('');
     }, [problem, slug]);
+
+    useEffect(() => {
+        if (problem) {
+            hasViewedSolutionDb(problem.id).then(setSolutionViewed);
+            getFavoritesDb().then(favs => setIsFavorite(favs.includes(String(problem.id))));
+        } else {
+            setSolutionViewed(false);
+            setIsFavorite(false);
+        }
+    }, [problem]);
 
     // Close mobile menu when clicking outside
     useEffect(() => {
@@ -475,13 +548,56 @@ const Problem = () => {
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, []);
 
-    const toggleHint = (index) => {
-        setOpenHints(prev => ({
-            ...prev,
-            [index]: !prev[index]
-        }));
-        // Track hint usage
-        if (!openHints[index] && !hintsOpened.includes(index)) {
+    useEffect(() => {
+        // 1. If problem is missing, don't run
+        if (!problem?.id) return;
+
+        // 2. IF IT'S A PREMIUM PROBLEM AND YOU ARE ON FREE TIER -> STOP HERE.
+        // This prevents free users from triggering the 403 network error entirely.
+        if (problem.is_premium && !premium) return;
+
+        // 3. User must have completed it or clicked view solution
+        if (!isCompleted && !solutionViewed) return;
+
+        let isMounted = true;
+
+        supabase.functions.invoke('fetch-problem-solution', {
+            body: { p_problem_id: problem.id }
+        })
+            .then(({ data, error }) => {
+                if (error) {
+                    console.info('Solution request blocked:', error.message);
+                    return;
+                }
+                if (isMounted && data?.solution) {
+                    setSolutionText(data.solution);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [problem?.id, problem?.is_premium, premium, isCompleted, solutionViewed]);
+
+    const toggleHint = async (index) => {
+        if (openHints[index]) {
+            setOpenHints(prev => ({ ...prev, [index]: false }));
+            return;
+        }
+
+        if (!loadedHints[index]) {
+            const { data: hintText, error } = await supabase.rpc('fetch_problem_hint', {
+                p_problem_id: problem.id,
+                p_hint_index: index
+            });
+            if (!error && hintText) {
+                setLoadedHints(prev => ({ ...prev, [index]: hintText }));
+            }
+        }
+
+        setOpenHints(prev => ({ ...prev, [index]: true }));
+
+        if (!hintsOpened.includes(index)) {
             setHintsOpened(prev => [...prev, index]);
         }
     };
@@ -490,10 +606,6 @@ const Problem = () => {
         if (!problem) {
             return { success: false, message: 'Problem not found.' };
         }
-
-        // Determine if this problem was already solved BEFORE this submission.
-        // This is the single source of truth for "practice mode" vs "first solve".
-        const alreadySolvedBefore = isProblemCompleted(problem.id);
 
         const safeSteps = steps || [];
         const lastStep = safeSteps[safeSteps.length - 1];
@@ -506,14 +618,47 @@ const Problem = () => {
             return { success: false, message: feedback };
         }
 
-        // Always validate the answer — even in practice mode
-        const validation = await validateAnswer(finalAnswer, problem);
+        // 1. Validate answer via Supabase edge function FIRST
+        const { data: validationData, error: validationError } = await supabase.functions.invoke('validate-problem-answer', {
+            body: { p_problem_id: problem.id, p_user_answer: finalAnswer }
+        });
 
-        // Get actual time from localStorage (what the Timer component tracks)
+        if (validationError) {
+            const isRateLimited = validationError.context?.status === 429;
+            const feedback = isRateLimited
+                ? 'Too many attempts — please wait a moment before trying again.'
+                : 'Could not validate your answer right now. Please try again.';
+
+            setSubmissionFeedback({ message: feedback, isCorrect: false });
+            return { success: false, message: feedback };
+        }
+
+        const validation = {
+            isCorrect: validationData?.isCorrect ?? false,
+            feedback: validationData?.feedback ?? ''
+        };
+
         const storageKey = `eq:problemTime:${problem.id}`;
         const storedTime = typeof window !== 'undefined' ? window.localStorage.getItem(storageKey) : null;
         const timeSpentSeconds = storedTime ? Math.max(1, parseInt(storedTime, 10)) : Math.max(1, Math.round((Date.now() - sessionStartRef.current) / 1000));
         const attemptNumber = submissions.length + 1;
+        const normalizedFinalAnswer = normalizeAnswer(finalAnswer);
+        const knownNormalizedAcceptedAnswers = acceptedAnswers
+            .flatMap(answer => {
+                if (typeof answer !== 'string') return [];
+                const normalized = normalizeAnswer(answer);
+                return normalized ? [normalized] : [];
+            })
+            .filter(Boolean);
+
+        const hasPriorAcceptedSubmission = submissions.some((s) => {
+            const previousAnswer = s.submittedAnswer || s.steps?.[s.steps.length - 1]?.latex || '';
+            return (s.status === 'accepted' || s.is_correct || s.status === 'correct') && normalizeAnswer(previousAnswer) === normalizedFinalAnswer;
+        });
+
+        const alreadySolvedBefore = problemSolvedRef.current || isCompleted || submissions.some(s => s.status === 'accepted' || s.is_correct || s.status === 'correct');
+        const isRepeatCorrectFromFeedback = submissionFeedback?.isCorrect && normalizeAnswer(submissionFeedback?.submittedAnswer || '') === normalizedFinalAnswer;
+        const matchesKnownAcceptedAnswer = alreadySolvedBefore && (hasPriorAcceptedSubmission || knownNormalizedAcceptedAnswers.includes(normalizedFinalAnswer) || isRepeatCorrectFromFeedback);
 
         void trackActivityEvent(
             validation.isCorrect ? 'problem_solved' : 'problem_attempt',
@@ -529,99 +674,114 @@ const Problem = () => {
         );
 
         // ================================================================
-        // PRACTICE MODE PATH — problem was already solved before
-        // Show feedback only, never touch progression/stats/achievements.
+        // PRACTICE MODE PATH
+        // Triggered ONLY if already solved before AND current submission is correct,
+        // OR if the same previously accepted answer is re-submitted.
         // ================================================================
-        if (alreadySolvedBefore) {
+        if ((alreadySolvedBefore && validation.isCorrect) || matchesKnownAcceptedAnswer) {
+            problemSolvedRef.current = true;
             setSubmissionFeedback({
-                message: validation.isCorrect
-                    ? 'Correct! (Practice mode — no additional points awarded)'
-                    : validation.feedback,
-                isCorrect: validation.isCorrect,
+                message: 'Correct! (Practice mode - no additional points awarded)',
+                isCorrect: true,
+                success: true,
                 attemptNumber,
                 timeSpent: timeSpentSeconds,
                 topic: problem.topic,
                 difficulty: problem.difficulty,
-                isPracticeMode: true
+                isPracticeMode: true,
+                submittedAnswer: finalAnswer,
+                timestamp: new Date().toISOString()
             });
+
+            setShowInsightPanel(true);
+            setShowSubmissions(true);
+            setShowDescription(false);
+            setShowTop(false);
+            setChatPanel(false);
+            setShowMentorChat(false);
+            setShowSolution(false);
+            setShowSolutionPopup(false);
+            setShowSubmissionDetail(false);
+            setSelectedSubmission(null);
+
             return {
-                success: validation.isCorrect,
-                message: validation.isCorrect
-                    ? 'Correct! (Practice mode)'
-                    : validation.feedback,
+                success: true,
+                message: 'Correct! (Practice mode)',
                 isPracticeMode: true
             };
         }
 
         // ================================================================
-        // FIRST SOLVE PATH — normal progression flow
-        // This code only runs when the problem has NOT been solved before.
+        // FIRST SOLVE OR INCORRECT SUBMISSION PATH
         // ================================================================
-        const entry = addSubmission(
-            problem.id,
-            finalAnswer,
-            validation.isCorrect,
-            validation.score,
-            timeSpentSeconds,
-            safeSteps,
-            attemptNumber,
-            hintsOpened.length,
-            { feedback: validation.feedback }
-        );
-        entry.metadata = {
-            ...(entry.metadata || {}),
-            attempts: entry.metadata?.attempts || attemptNumber,
-            hintsUsed: entry.metadata?.hintsUsed || hintsOpened.length,
-            timeSpent: entry.metadata?.timeSpent || timeSpentSeconds,
-            timeSpentLabel: entry.metadata?.timeSpentLabel || formatDurationLabel(timeSpentSeconds)
+        await saveSubmission(problem.id, finalAnswer, validation.isCorrect, timeSpentSeconds, {
+            topic: problem.topic,
+            difficulty: problem.difficulty
+        }, safeSteps);
+
+        const entry = {
+            id: Date.now(),
+            problemId: problem.id,
+            submittedAnswer: finalAnswer,
+            steps: safeSteps,
+            status: validation.isCorrect ? 'accepted' : 'wrong',
+            is_correct: validation.isCorrect,
+            timestamp: new Date().toISOString(),
+            metadata: {
+                attempts: attemptNumber,
+                hintsUsed: hintsOpened.length,
+                timeSpent: timeSpentSeconds,
+                timeSpentLabel: formatDurationLabel(timeSpentSeconds)
+            }
         };
 
+        // Prepend new submission entry locally immediately
         setSubmissions(prev => [entry, ...prev]);
+
         setSubmissionFeedback({
             message: validation.feedback,
             isCorrect: validation.isCorrect,
+            success: validation.isCorrect,
             attemptNumber,
             timeSpent: timeSpentSeconds,
             topic: problem.topic,
             difficulty: problem.difficulty,
-            isPracticeMode: false
+            isPracticeMode: false,
+            submittedAnswer: finalAnswer,
+            timestamp: new Date().toISOString()
         });
 
-        // Show the InsightPanel ribbon for correct answers
+        setChatPanel(false);
+        setShowMentorChat(false);
+        setShowSolution(false);
+        setShowSolutionPopup(false);
+        setShowInsightPanel(false);
+        setShowSubmissionDetail(false);
+        setSelectedSubmission(null);
+
         if (validation.isCorrect) {
+            problemSolvedRef.current = true;
             setShowInsightPanel(true);
-        }
-
-        setShowSubmissions(true);
-        setShowDescription(false);
-        setShowTop(false);
-        if (descriptionCollapsed) {
-            setDescriptionCollapsed(false);
-        }
-
-        if (validation.isCorrect) {
             setTimerRunning(false);
             setShowSolution(true);
             setShowSolutionPopup(false);
             setSolutionViewed(true);
 
-            markProblemCompleted(problem.id, validation.score, timeSpentSeconds);
+            // Instantly mark as completed locally FIRST before DB calls finish
+            setIsCompleted(true);
 
-            // Remove from in-progress since it's now completed
-            removeProblemFromInProgress(problem.id);
+            await markProblemCompleteDb(problem.id, timeSpentSeconds, problem.difficulty, problem.topic || 'General');
+            await removeProblemFromInProgressDb(problem.id);
         }
 
-        // Persist attempt to backend (best-effort; does not block UI)
-        try {
-            void recordSubmission(problem.id, finalAnswer, validation.isCorrect, timeSpentSeconds, {
-                topic: problem.topic,
-                difficulty: problem.difficulty
-            });
-        } catch {
-            // noop
+        setShowSubmissions(true);
+        setShowDescription(false);
+        setShowTop(false);
+        setShowDrawingPad(false);
+        if (descriptionCollapsed) {
+            setDescriptionCollapsed(false);
         }
 
-        // Streak should only update on a correct first-solve submission.
         let previousStreak = 0;
         let streakData = null;
 
@@ -629,20 +789,19 @@ const Problem = () => {
             try {
                 const streakUpdate = await updateStreakForCorrectSolve();
                 previousStreak = streakUpdate.previous_streak || 0;
-                streakData = syncStreakData({
+                streakData = {
                     current: streakUpdate.current_streak || 0,
                     longest: streakUpdate.longest_streak || 0,
                     lastDate: streakUpdate.last_activity_date || null
-                });
+                };
 
-                // Show popup if streak was incremented (first solve of the day)
                 if (streakUpdate.incremented && streakData.current > previousStreak) {
                     setCurrentStreakValue(streakData.current);
                     setShowStreakPopup(true);
                 }
 
                 if (typeof window !== 'undefined') {
-                    window.dispatchEvent(new CustomEvent('equathora:streak-updated', {
+                    window.dispatchEvent(new CustomEvent('equathora:stats-updated', {
                         detail: {
                             currentStreak: streakData.current,
                             longestStreak: streakData.longest
@@ -664,37 +823,25 @@ const Problem = () => {
             solutionViewed
         });
 
-        // Check for newly unlocked achievements after stats update
         if (validation.isCorrect) {
             try {
                 const seenIds = getSeenAchievements();
-                const updatedStats = getUserStats();
+                const updatedStats = await getUserStats();
                 const currentAchievements = buildAchievements(updatedStats);
                 const freshlyUnlocked = checkNewAchievements(seenIds, currentAchievements);
 
                 if (freshlyUnlocked.length > 0) {
                     setNewAchievements(freshlyUnlocked);
                     setShowAchievementPopup(true);
-
-                    // Fire background notifications for each new achievement
-                    freshlyUnlocked.forEach(a => {
-                        void notifyAchievementUnlocked(a.title, a.description).catch(() => { });
-                    });
-                }
-
-                // Also fire streak milestone notification
-                if (streakData?.current > previousStreak && [7, 14, 30, 60, 90, 180, 365].includes(streakData.current)) {
-                    void notifyStreakMilestone(streakData.current).catch(() => { });
                 }
             } catch {
-                // achievement check is non-blocking
+                // ignore achievement calculation error
             }
         }
 
         return {
             success: validation.isCorrect,
-            message: validation.feedback,
-            isPracticeMode: false
+            message: validation.feedback
         };
     };
 
@@ -717,6 +864,33 @@ const Problem = () => {
         );
     }
 
+
+
+    if (problem.locked) {
+        return (
+            <>
+                <Navbar />
+
+                <div className="h-200 flex items-center justify-center">
+                    <div className="text-center flex flex-col items-center gap-3 px-3">
+                        <FaCrown className="text-3xl text-amber-500" />
+                        <h2 className="text-2xl font-bold">Premium Problem</h2>
+                        <p className="text-[var(--mid-main-secondary)]">Upgrade to premium to view this problem.</p>
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="text-white font-medium bg-gradient-to-b from-amber-600 to-amber-500 px-4 py-2 rounded-md hover:to-amber-600 transition-all active:scale-95 cursor-pointer"
+                        >
+                            Go back
+                        </button>
+                    </div>
+                </div>
+
+                <Footer />
+            </>
+
+        );
+    }
+
     // Generate similar questions from the same topic when available.
     const similarQuestions = allProblems
         .filter(p => problem.topic && p.topic === problem.topic && p.id !== problem.id)
@@ -729,39 +903,21 @@ const Problem = () => {
         }));
 
     // Get hints and accepted answers from database format
-    const hints = problem.hints || [];
+    const hintCount = problem.hint_count || 0;
     const acceptedAnswers = problem.accepted_answers || problem.acceptedAnswers || [problem.answer];
 
     const examples = Array.isArray(problem.examples) ? problem.examples : [];
 
-    const handleFavoriteToggle = () => {
-        toggleFavorite(problem.id);
-        setIsFavorite(!isFavorite);
-    };
-
-    const handleReport = () => {
-        if (!reportReason) {
-            alert('Please select a reason for reporting');
-            return;
-        }
-
-        void trackActivityEvent('problem_report');
-
-        // Send report to backend
-        console.log('Report submitted:', { reason: reportReason, details: reportDetails });
-        alert('Thank you for your report! We will review it shortly.');
-        setShowReportModal(false);
-        setReportReason('');
-        setReportDetails('');
+    const handleFavoriteToggle = async () => {
+        const newState = await toggleFavoriteDb(problem.id);
+        setIsFavorite(newState);
     };
 
     return (
         <>
-            {/* <FeedbackBanner /> */}
-            {/* <Navbar></Navbar> */}
-            <main className="flex flex-col text-[var(--secondary-color)] bg-[var(--mid-main-secondary)] ">
+            <main className="flex flex-col text-[var(--secondary-color)] bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed items-center">
                 {/* Navigation Header */}
-                <header className="flex items-center justify-between gap-2 md:gap-3 font-[Sansation,sans-serif] bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0">
+                <header className="flex items-center justify-between gap-2 md:gap-3 font-[Sansation,sans-serif] bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0 max-w-600">
                     {/* Left side - Back button and Navigation */}
                     <div className="flex items-center gap-2">
                         <Link to="/learn" className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-md hover:bg-[var(--french-gray)] hover:text-[var(--main-color)] h-9 md:h-10">
@@ -788,12 +944,13 @@ const Problem = () => {
                         </div>
                     </div>
 
-                    {/* Right side - Timer and Actions */}
+                    {/* Right side - Premium Button, Timer and Actions */}
                     <div className="flex items-center gap-2">
+                        <PremiumButton premium={problem?.is_premium} />
                         <Timer key={`${problem?.id}-${timerResetSeq}`} problemId={problem?.id} isRunning={timerRunning} />
 
                         {/* Desktop buttons - hidden on mobile */}
-                        <div className="hidden md:flex items-center gap-2">
+                        <div className="hidden lg:flex items-center gap-2">
                             <button
                                 onClick={() => {
                                     setShowDrawingPad((prev) => !prev);
@@ -802,9 +959,10 @@ const Problem = () => {
                                     setShowSolution(false);
                                     setShowTop(false);
                                     setShowSubmissions(false);
+                                    setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }}
-                                className={`bg-transparent border-1 px-3 md:px-4 rounded-md cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)] hover:text-[var(--accent-color)]'}`}
+                                className={`bg-transparent border-1 px-3 lg:px-4 rounded-md cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)] hover:text-[var(--accent-color)]'}`}
                                 title={showDrawingPad ? "Hide sketch pad" : "Show sketch pad"}
                             >
                                 <FaPencilAlt className="text-sm md:text-base" />
@@ -853,7 +1011,6 @@ const Problem = () => {
                         />
                     </div>
                 </header>
-
                 {/* Modals */}
                 <ViewSolutionModal
                     isOpen={showSolutionPopup}
@@ -866,21 +1023,11 @@ const Problem = () => {
                         setShowSolution(true);
                         setShowSolutionPopup(false);
                         if (problem?.id) {
-                            markSolutionViewed(problem.id);
+                            markSolutionViewedDb(problem.id);
                         }
                         setSolutionViewed(true);
                         setShowMentorChat(false);
                     }}
-                />
-
-                <ReportModal
-                    isOpen={showReportModal}
-                    onClose={() => setShowReportModal(false)}
-                    reportReason={reportReason}
-                    setReportReason={setReportReason}
-                    reportDetails={reportDetails}
-                    setReportDetails={setReportDetails}
-                    onSubmit={handleReport}
                 />
 
                 <HelpModal
@@ -892,6 +1039,9 @@ const Problem = () => {
                     isOpen={showSubmissionDetail}
                     onClose={() => setShowSubmissionDetail(false)}
                     submission={selectedSubmission}
+                    premium={premium}
+                    problem={problem}
+                    studentName={user?.user_metadata?.full_name ?? user?.email ?? 'Student'}
                 />
 
                 {showStreakPopup && (
@@ -913,8 +1063,10 @@ const Problem = () => {
                 )}
 
                 {/* Insight Panel - correct answer ribbon */}
-                {showInsightPanel && submissionFeedback?.isCorrect && (
+                {/* Insight Panel - correct answer ribbon */}
+                {showInsightPanel && (submissionFeedback?.success || submissionFeedback?.isCorrect) && (
                     <InsightPanel
+                        key={submissionFeedback?.timestamp || Date.now()} // Forces React to refresh panel on re-submissions
                         insight={submissionFeedback.message}
                         topic={submissionFeedback.topic}
                         difficulty={submissionFeedback.difficulty}
@@ -926,16 +1078,16 @@ const Problem = () => {
                             setSolutionViewed(true);
                         }}
                         onDismiss={() => setShowInsightPanel(false)}
-                        autoDismissSeconds={600}
+                        autoDismissSeconds={12}
                     />
                 )}
 
                 {/* Main Content */}
-                <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed pt-3 md:pt-5 px-3 md:px-6 lg:px-8 pb-3 md:pb-5 lg:max-h-[calc(100vh-80px)] lg:overflow-hidden">
+                <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 lg:overflow-y-hidden max-h-dvh">
                     {/* Description Side Left Side */}
-                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] lg:h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 xl:min-h-[calc(100vh-100px)]'}`}>
+                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
-                            <div className={`flex gap-1 ${descriptionCollapsed ? 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full' : ''}`}>
+                            <div className={`flex gap-1 flex-wrap ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
 
                                 {/* Description Button */}
                                 <button type="button" onClick={() => {
@@ -945,6 +1097,7 @@ const Problem = () => {
                                     setShowTop(false);
                                     setShowSubmissions(false);
                                     setShowMentorChat(false);
+                                    setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Description</span>
@@ -958,6 +1111,7 @@ const Problem = () => {
                                     setShowTop(false);
                                     setShowSubmissions(false);
                                     setShowMentorChat(false);
+                                    setChatPanel(false);
                                     if (!solutionViewed && !isCompleted) {
                                         setShowSolutionPopup(true);
                                     } else {
@@ -977,6 +1131,7 @@ const Problem = () => {
                                     setShowSubmissions(true);
                                     setShowTop(false);
                                     setShowMentorChat(false);
+                                    setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 
                                 ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} 
@@ -996,6 +1151,7 @@ const Problem = () => {
                                     setShowSubmissions(false);
                                     setShowTop(false);
                                     setShowMentorChat(true);
+                                    setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 
                                 ${showMentorChat && !showDescription ? 'bg-[var(--main-color)]' : ''} 
@@ -1007,6 +1163,41 @@ const Problem = () => {
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Need Help</span>}
                                     <FaGraduationCap className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
                                 </button> */}
+
+                                {/* AI chat panel */}
+                                <button type="button" onClick={() => {
+                                    setShowDescription(false);
+                                    setShowSolution(false);
+                                    setShowSubmissions(false);
+                                    setShowTop(false);
+                                    setShowMentorChat(false);
+                                    setChatPanel(true);
+                                    if (descriptionCollapsed) setDescriptionCollapsed(false);
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 min-w-fit
+                                ${chatPanel && !showDescription ? 'bg-[var(--main-color)]' : ''} 
+                                ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
+                                    style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Ask Sigma" : ""}>
+                                    <span className={descriptionCollapsed ? 'lg:hidden' : ''}>
+                                        Ask Sigma
+                                    </span>
+                                    {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Ask Sigma</span>}
+                                    <FaCrown
+                                        className={`h-3 w-3 md:h-4 md:w-4 ${descriptionCollapsed ? "lg:hidden" : ""
+                                            }`}
+                                        style={{
+                                            fill: "url(#crownGradient)"
+                                        }}
+                                    />
+
+                                    <svg width="0" height="0">
+                                        <defs>
+                                            <linearGradient id="crownGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stopColor="#fbbf24" />
+                                                <stop offset="100%" stopColor="#d97706" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </button>
                             </div>
 
                             {/* Mobile Only - Toggle Collapse/Expand */}
@@ -1024,67 +1215,52 @@ const Problem = () => {
                             </button>
                         </div>
 
-                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex-col p-0 font-[Sansation,sans-serif] text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'max-h-[60vh] lg:max-h-full opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
+                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex flex-col font-[Sansation,sans-serif] text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-100px)] lg:h-[calc(100vh-72px-74px)] overflow-y-auto opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
 
-                            <div className={`w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 flex flex-col gap-4 md:gap-5 overflow-y-auto flex-1 problem-description-scroll lg:max-h-[calc(100vh-180px)]`}>
+                            <div className={`w-full px-4 pt-4 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll h-full`}>
                                 {/* Problem Title & Badges */}
-                                <div>
-                                    <h1 className="font-[Sansation,sans-serif] text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold pb-2 md:pb-3">{problem.title}</h1>
-                                    <div className="flex gap-1.5 md:gap-2 flex-wrap font-[Sansation,sans-serif] items-center">
-                                        <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-500' :
-                                            problem.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
-                                                'bg-red-500/10 text-[var(--accent-color)]'
-                                            }`}>
-                                            {problem.difficulty}
-                                        </span>
-                                        {problem.premium ? (
-                                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-yellow-500/10 text-yellow-700">Premium</span>
-                                        ) : (
-                                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-[var(--secondary-color)]">Free</span>
-                                        )}
-                                        {problem.topic && (
-                                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--mid-main-secondary)] text-white">{formatTopicLabel(problem.topic)}</span>
-                                        )}
-                                        {isCompleted && (
-                                            <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
-                                        )}
-                                    </div>
-                                </div>
-
-                                {/* Inline feedback for incorrect answers only */}
-                                {submissionFeedback && !submissionFeedback.isCorrect && (
-                                    <div className="rounded-xl px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
-                                        <div className="flex items-center gap-2 pb-1.5">
-                                            <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-[var(--dark-accent-color)]">
-                                                <FaTimes className='text-white' />
-                                            </div>
-                                            <span className="text-sm font-bold font-[Sansation,sans-serif] text-[var(--accent-color)]">
-                                                Incorrect
+                                {!chatPanel ? (
+                                    <div className="flex flex-col gap-3">
+                                        <h1 className="font-[Sansation,sans-serif] text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold m-0">{problem.title}</h1>
+                                        <div className="flex gap-1.5 md:gap-2 flex-wrap font-[Sansation,sans-serif] items-center">
+                                            <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-500' :
+                                                problem.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
+                                                    'bg-red-500/10 text-[var(--accent-color)]'
+                                                }`}>
+                                                {problem.difficulty}
                                             </span>
-                                            {submissionFeedback.isPracticeMode && (
-                                                <span className="text-[10px] font-medium text-gray-400 font-[Sansation,sans-serif]">Practice Mode</span>
+                                            {problem?.is_premium ? (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-gradient-to-b text-white from-amber-600 to-amber-400">
+                                                    Premium
+                                                </span>
+                                            ) : (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-[var(--secondary-color)]">
+                                                    Free
+                                                </span>
                                             )}
-                                            {!submissionFeedback.isPracticeMode && submissionFeedback.attemptNumber > 1 && (
-                                                <span className="text-[10px] text-gray-400 font-[Sansation,sans-serif]">Attempt {submissionFeedback.attemptNumber}</span>
+                                            {problem.topic && (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--mid-main-secondary)] text-white">{formatTopicLabel(problem.topic)}</span>
+                                            )}
+                                            {isCompleted && (
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
                                             )}
                                         </div>
-                                        <p className="text-xs md:text-[0.82rem] leading-relaxed font-[Sansation,sans-serif] text-[var(--accent-color)]/85">
-                                            {submissionFeedback.message}
-                                        </p>
                                     </div>
-                                )}
+                                ) : (<></>)}
+
+
+
+
 
                                 {/* Show Description State Check */}
                                 {showDescription &&
                                     <>
                                         {/* Problem Description */}
-                                        <div>
-                                            <MathJaxRenderer
-                                                content={problem.description}
-                                                className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Sansation,sans-serif] m-0"
-                                                as="p"
-                                            />
-                                        </div>
+                                        <MathJaxRenderer
+                                            content={problem.description}
+                                            className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Sansation,sans-serif] m-0"
+                                            as="p"
+                                        />
 
                                         {showDrawingPad && (
                                             <div className="rounded-md border border-[var(--mid-main-secondary)] bg-[var(--french-gray)]/20 p-3 md:p-4 flex flex-col gap-3">
@@ -1178,11 +1354,10 @@ const Problem = () => {
 
                                         {/* Hints Section - Collapsible like LeetCode */}
                                         <div>
-                                            {problem.hints && problem.hints.length > 0 && (
+                                            {hintCount > 0 && (
                                                 <div className="border-t border-[var(--mid-main-secondary)]">
-
                                                     <div className="flex flex-col">
-                                                        {problem.hints.map((hint, index) => (
+                                                        {Array.from({ length: hintCount }).map((_, index) => (
                                                             <div key={index} className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
                                                                 <button
                                                                     className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
@@ -1197,7 +1372,7 @@ const Problem = () => {
                                                                 <div className={`transition-all duration-300 ease-in-out ${openHints[index] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                                                                     <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--mid-main-secondary)]">
                                                                         <MathJaxRenderer
-                                                                            content={hint}
+                                                                            content={loadedHints[index] ?? 'Loading hint...'}
                                                                             className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed font-[Sansation] m-0"
                                                                             as="p"
                                                                         />
@@ -1211,123 +1386,187 @@ const Problem = () => {
 
                                             {/* Similar Questions Section */}
                                             {similarQuestions && similarQuestions.length > 0 && (
-                                                <div className="">
-                                                    <div className="flex flex-col">
-                                                        <div className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
-                                                            <button
-                                                                className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
-                                                                onClick={() => toggleHint('similar')}
-                                                            >
-                                                                <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">
-                                                                    <FaLink className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
-                                                                    Similar Questions
-                                                                </span>
-                                                                <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
-                                                            </button>
-                                                            <div className={`transition-all duration-300 ease-in-out ${openHints['similar'] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                                                <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--mid-main-secondary)] flex flex-col">
-                                                                    {similarQuestions.map((question, index) => (
-                                                                        <Link
-                                                                            key={index}
-                                                                            to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
-                                                                            className="flex items-center justify-between p-2 md:p-3 rounded-md group"
-                                                                        >
-                                                                            <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] group-hover:text-[var(--dark-accent-color)]">
-                                                                                {question.title}
-                                                                            </span>
-                                                                            <span className={`px-2 py-0.5 rounded-md text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
-                                                                                question.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
-                                                                                    'bg-red-500/10 text-[var(--accent-color)]'
-                                                                                }`}>
-                                                                                {question.difficulty}
-                                                                            </span>
-                                                                        </Link>
-                                                                    ))}
-                                                                </div>
+                                                <div className="flex flex-col">
+                                                    <div className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
+                                                        <button
+                                                            className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
+                                                            onClick={() => toggleHint('similar')}
+                                                        >
+                                                            <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">
+                                                                <FaLink className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                                                                Similar Questions
+                                                            </span>
+                                                            <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
+                                                        </button>
+                                                        <div className={`transition-all duration-300 ease-in-out ${openHints['similar'] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                                            <div className=" bg-[var(--main-color)] flex flex-col">
+                                                                {similarQuestions.map((question, index) => (
+                                                                    <Link
+                                                                        key={index}
+                                                                        to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
+                                                                        className="flex items-center justify-between p-2 md:p-3 rounded-md group hover:bg-[var(--white)]"
+                                                                    >
+                                                                        <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] group-hover:text-[var(--dark-accent-color)]">
+                                                                            {question.title}
+                                                                        </span>
+                                                                        <span className={`px-2 py-0.5 rounded-md text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
+                                                                            question.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
+                                                                                'bg-red-500/10 text-[var(--accent-color)]'
+                                                                            }`}>
+                                                                            {question.difficulty}
+                                                                        </span>
+                                                                    </Link>
+                                                                ))}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             )}
+                                            <div className="flex flex-col">
+                                                <div className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
+                                                    <button
+                                                        className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
+                                                        onClick={() => setLatexOpen(o => !o)}
+                                                    >
+                                                        <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">
+                                                            <FaCode className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                                                            Your solution in LaTeX
+                                                        </span>
+                                                        <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${latexOpen ? 'rotate-180' : ''}`} />
+                                                    </button>
+                                                    <div className={`transition-all duration-300 ease-in-out ${latexOpen ? 'max-h-96 opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'}`}>
+                                                        <div className="bg-[var(--main-color)] flex flex-col gap-1">
+                                                            {fields.map((f, i) => (
+                                                                <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] p-2 md:p-3 bg-[var(--white)] rounded-md">
+                                                                    <span className="font-bold pr-2">Step {i + 1}: </span>{f.latex || <span className="opacity-30 italic">empty</span>}
+                                                                </p>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </>
                                 }
 
                                 {/* Show Solution State Check */}
                                 {showSolution && <SolutionStepsDisplay
-                                    solution={problem.solution}
+                                    solution={solutionText}
                                 />}
 
                                 {/* Show Submissions State Check */}
-                                {showSubmissions && <div>
-                                    <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Sansation,sans-serif] pb-4">Your Submissions</h2>
-                                    <div className="flex flex-col gap-2">
-                                        {submissions.map((submission) => (
-                                            <div
-                                                key={submission.id}
-                                                onClick={() => {
-                                                    setSelectedSubmission(submission);
-                                                    setShowSubmissionDetail(true);
-                                                }}
-                                                className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-md border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/70' :
-                                                    submission.status === 'wrong' ? 'border-[var(--accent-color)] hover:bg-[var(--french-gray)]/30' :
-                                                        'border-yellow-500 hover:bg-[var(--french-gray)]/30'
-                                                    }`}
-                                            >
-                                                <div className="flex flex-wrap justify-between items-center gap-2">
-                                                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                                                        {submission.status === 'accepted' && <FaCheckCircle className="text-green-600 text-xs flex-shrink-0" />}
-                                                        {submission.status === 'wrong' && <FaTimesCircle className="text-red-600 text-xs flex-shrink-0" />}
-                                                        <span className={`text-xs font-semibold truncate ${submission.status === 'accepted' ? 'text-green-600' :
-                                                            submission.status === 'wrong' ? 'text-[var(--accent-color)]' :
-                                                                'text-yellow-600'
-                                                            }`}>
-                                                            {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong' : 'Pending'}
-                                                        </span>
-                                                        <span className="text-[10px] text-[vvar(--mid-main-secondary)] hidden sm:inline">•</span>
-                                                        <span className="text-[10px] text-[vvar(--mid-main-secondary)] hidden sm:inline">{submission.steps.length} steps</span>
+                                {showSubmissions &&
+                                    <div>
+                                        {/* Inline feedback for incorrect answers only */}
+                                        {submissionFeedback && !submissionFeedback.isCorrect && (
+                                            <div className="rounded-md px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
+                                                <div className="flex items-center gap-2 pb-1.5">
+                                                    <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-[var(--dark-accent-color)]">
+                                                        <FaTimes className='text-white' />
                                                     </div>
-                                                    <div className="flex items-center gap-3 text-[10px] text-[vvar(--mid-main-secondary)] flex-shrink-0">
-                                                        {typeof submission.metadata?.hintsUsed === 'number' && (
-                                                            <span>{submission.metadata.hintsUsed} hints</span>
-                                                        )}
-                                                        {submission.metadata?.timeSpentLabel && (
-                                                            <span>{submission.metadata.timeSpentLabel}</span>
-                                                        )}
-                                                        <div className="flex items-center gap-1">
-                                                            <FaClock className="text-[8px]" />
-                                                            <span>{new Date(submission.timestamp).toLocaleString('en-US', {
-                                                                month: 'short',
-                                                                day: 'numeric',
-                                                                hour: 'numeric',
-                                                                minute: '2-digit'
-                                                            })}</span>
+                                                    <span className="text-sm font-bold font-[Sansation,sans-serif] text-[var(--accent-color)]">
+                                                        Incorrect
+                                                    </span>
+                                                    {submissionFeedback.isPracticeMode && (
+                                                        <span className="text-[10px] font-medium text-gray-400 font-[Sansation,sans-serif]">Practice Mode</span>
+                                                    )}
+                                                    {!submissionFeedback.isPracticeMode && submissionFeedback.attemptNumber > 1 && (
+                                                        <span className="text-[10px] text-[var(--secondary-color)] font-[Sansation,sans-serif]">Attempt {submissionFeedback.attemptNumber}</span>
+                                                    )}
+                                                </div>
+                                                <p className="text-xs md:text-[0.82rem] leading-relaxed font-[Sansation,sans-serif] text-[var(--accent-color)]/85">
+                                                    {submissionFeedback.message}
+                                                </p>
+                                            </div>
+                                        )}
+                                        <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Sansation,sans-serif] py-4">Your Submissions</h2>
+                                        <div className="flex flex-col gap-2">
+                                            {submissions.map((submission) => (
+                                                <div
+                                                    key={submission.id}
+                                                    onClick={() => {
+                                                        setSelectedSubmission(submission);
+                                                        setShowSubmissionDetail(true);
+                                                        setChatPanel(false);
+                                                    }}
+                                                    className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-md border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/70' :
+                                                        submission.status === 'wrong' ? 'border-[var(--accent-color)] hover:bg-[var(--french-gray)]/30' :
+                                                            'border-yellow-500 hover:bg-[var(--french-gray)]/30'
+                                                        }`}
+                                                >
+                                                    <div className="flex flex-wrap justify-between items-center gap-2">
+                                                        <div className="flex items-center gap-2 min-w-0 flex-1">
+                                                            {submission.status === 'accepted' && <FaCheckCircle className="text-green-600 text-xs flex-shrink-0" />}
+                                                            {submission.status === 'wrong' && <FaTimesCircle className="text-red-600 text-xs flex-shrink-0" />}
+                                                            <span className={`text-xs font-semibold truncate ${submission.status === 'accepted' ? 'text-green-600' :
+                                                                submission.status === 'wrong' ? 'text-[var(--accent-color)]' :
+                                                                    'text-yellow-600'
+                                                                }`}>
+                                                                {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong' : 'Pending'}
+                                                            </span>
+                                                            <span className="text-[10px] text-[vvar(--mid-main-secondary)] hidden sm:inline">•</span>
+                                                            <span className="text-[10px] text-[vvar(--mid-main-secondary)] hidden sm:inline">{submission.steps.length} steps</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-3 text-[10px] text-[vvar(--mid-main-secondary)] flex-shrink-0">
+                                                            {typeof submission.metadata?.hintsUsed === 'number' && (
+                                                                <span>{submission.metadata.hintsUsed} hints</span>
+                                                            )}
+                                                            {submission.metadata?.timeSpentLabel && (
+                                                                <span>{submission.metadata.timeSpentLabel}</span>
+                                                            )}
+                                                            <div className="flex items-center gap-1">
+                                                                <FaClock className="text-[8px]" />
+                                                                <span>{new Date(submission.timestamp).toLocaleString('en-US', {
+                                                                    month: 'short',
+                                                                    day: 'numeric',
+                                                                    hour: 'numeric',
+                                                                    minute: '2-digit'
+                                                                })}</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        ))}
-                                        {submissions.length === 0 && (
-                                            <p className="text-center text-sm text-[vvar(--mid-main-secondary)] py-8">No submissions yet. Start solving to see your history!</p>
-                                        )}
+                                            ))}
+                                            {submissions.length === 0 && (
+                                                <p className="text-center text-sm text-[vvar(--mid-main-secondary)] py-8">No submissions yet. Start solving to see your history!</p>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>}
+                                }
 
                                 {/* Show Mentor Chat State Check
                                 {showMentorChat && <MentorChat />} */}
+
+                                {/* Show AI chat panel */}
+                                {chatPanel && <ChatPanel ref={chatPanelRef}
+                                    problemDescription={problem.description}
+                                    acceptedSolution={solutionText}
+                                    fields={fields}
+                                    storageKey={sigmaChatStorageKey}
+                                    pendingMessage={pendingSigmaPrompt}
+                                    onPendingMessageSent={() => setPendingSigmaPrompt('')}
+                                    onBusyChange={setSigmaBusy}
+                                />}
                             </div>
                         </article>
                     </aside>
 
 
                     {/* Solving Side - Math Live*/}
-                    <article className={`flex justify-start items-stretch flex-col w-full min-h-[500px] lg:h-full overflow-hidden rounded-md transition-all duration-300 ${descriptionCollapsed ? 'lg:w-full' : 'lg:w-1/2'}`}>
+                    {/* We also pass the problem description and accepted solution to be checked by the AI */}
+                    <article className={`flex justify-start items-stretch flex-col w-full lg:h-full overflow-hidden rounded-md transition-all duration-300 ${descriptionCollapsed ? 'lg:w-full' : 'lg:w-1/2'}`}>
                         <MathLiveExample
                             key={`ml-${problem?.id}-${timerResetSeq}`}
                             onSubmit={handleNewSubmission}
                             nextProblemPath={nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
                             isSolved={isCompleted}
                             isPracticeMode={isCompleted}
+                            problemDescription={problem.description}
+                            acceptedSolution={solutionText}
+                            onFieldsChange={handleFieldsChange}
+                            onExplainMore={openSigmaChat}
+                            isAiBusy={sigmaBusy}
+                            storageKey={mathDraftStorageKey}
                         />
                     </article>
                 </section>

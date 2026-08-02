@@ -3,35 +3,49 @@ import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
 import Footer from '../components/Footer.jsx';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
-import BetaBanner from '../components/BetaBanner.jsx';
 import CookieConsent from '../components/CookieConsent.jsx';
 import Teacher from '../assets/images/Professor-pana.svg';
 import YourTrack from '../components/YourTrack.jsx';
 import Books from '../assets/images/learningBooks.svg';
-import Mentoring from '../assets/images/mentoring.svg';
-import QuestionMark from '../assets/images/questionMark.svg';
+import QuestionMark from '../assets/images/questionMark1.svg';
 import Leaderboards from '../assets/images/leaderboards.svg'
 import { Link } from 'react-router-dom';
 import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
-import { getDailyProblemSlug } from '../lib/utils';
+import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem.js';
 import { supabase } from '../lib/supabaseClient';
-import LoadingSpinner from '@/components/LoadingSpinner.jsx';
+import JourneyImg from '../assets/images/journey.svg';
+import { FaCrown } from 'react-icons/fa';
+// Pass premium state
+import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
+// Upgraded to premium popup
+import UpgradedPopup from '@/components/Premium/UpgradedPopup.jsx';
 
 const Dashboard = () => {
+    const { premium, loading: subLoading } = useSubscription();
     const [username, setUsername] = useState("Friend");
-    const [dailyProblemSlug, setDailyProblemSlug] = useState('');
+    const [nextProblem, setNextProblem] = useState(null);
+    const [showUpgradedPopup, setShowUpgradedPopup] = useState(false);
 
     useEffect(() => {
-        const loadDailyProblem = async () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('upgraded') === true) {
+            setShowUpgradedPopup(true);
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }, [])
+
+    useEffect(() => {
+        const loadNextProblem = async () => {
             try {
-                const slug = await getDailyProblemSlug();
-                setDailyProblemSlug(slug);
+                const problem = await getNextRecommendedProblem();
+                setNextProblem(problem || null);
             } catch (error) {
-                console.error('Failed to load daily problem:', error);
+                console.error('Failed to load next recommended problem:', error);
+                setNextProblem(null);
             }
         };
-        loadDailyProblem();
+        loadNextProblem();
     }, []);
 
     // Fetch username from database
@@ -53,7 +67,10 @@ const Dashboard = () => {
         fetchUsername();
     }, []);
 
-
+    // Only link into a problem once we actually have a recommended slug —
+    // otherwise send them to /journey (always valid) instead of a
+    // /problems/undefined dead link / 404.
+    const dailyChallengeTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
 
     return (
         <>
@@ -80,7 +97,8 @@ const Dashboard = () => {
                                     transition={{ duration: 0.5, delay: 0.1 }}
                                     className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-extrabold"
                                 >
-                                    Welcome Back, <span className="text-[var(--secondary-color)]">{username}</span>!
+                                    {premium && (<FaCrown className='text-amber-500 inline pb-2 pr-1' />)}
+                                    Welcome Back, {username}!
                                 </motion.h1>
                                 <motion.h4
                                     initial={{ opacity: 0, y: 20 }}
@@ -110,12 +128,28 @@ const Dashboard = () => {
                                             className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
                                         >
                                             <Link
-                                                to={`/problems/${dailyProblemSlug}`}
-                                                className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
+                                                to={dailyChallengeTo}
+                                                className={`w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 ${premium ? '' : ''}`}
                                             >
-                                                <img src={QuestionMark} alt="daily-challenge" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                                                <img src={QuestionMark} alt="Daily challenge" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation,sans-serif] text-lg font-normal w-full text-center flex items-center justify-center">
                                                     Daily challenge
+                                                </h6>
+                                            </Link>
+                                        </motion.div>
+
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
+                                        >
+                                            <Link
+                                                to="/journey"
+                                                className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
+                                            >
+                                                <img src={JourneyImg} alt="Journey" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
+                                                <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
+                                                    Your journey
                                                 </h6>
                                             </Link>
                                         </motion.div>
@@ -129,25 +163,9 @@ const Dashboard = () => {
                                                 to="/learn"
                                                 className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
-                                                <img src={Books} alt="books" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                                                <img src={Books} alt="Books" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
                                                     Browse problems
-                                                </h6>
-                                            </Link>
-                                        </motion.div>
-
-                                        <motion.div
-                                            initial={{ opacity: 0, scale: 0.9 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
-                                        >
-                                            <Link
-                                                to="/applyMentor"
-                                                className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
-                                            >
-                                                <img src={Mentoring} alt="mentoring" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
-                                                <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center">
-                                                    Try mentoring
                                                 </h6>
                                             </Link>
                                         </motion.div>
@@ -161,7 +179,7 @@ const Dashboard = () => {
                                                 to="/leaderboards/global"
                                                 className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-sm hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
-                                                <img src={Leaderboards} alt="leaderboards" className="h-[50%] lg:h-[40%] w-[60%] lg:w-[60%]" />
+                                                <img src={Leaderboards} alt="Leaderboards" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
                                                 <h6 className="text-[var(--secondary-color)] font-[Sansation] text-lg font-normal w-full text-center flex items-center justify-center ">
                                                     Join the race
                                                 </h6>
@@ -176,7 +194,7 @@ const Dashboard = () => {
                                 transition={{ duration: 0.5, delay: 0.8 }}
                                 className="w-full"
                             >
-                                <YourTrack />
+                                <YourTrack premium={premium} loading={subLoading} />
                             </motion.div>
                             {/* Community Posts - That Leads to Forum, Blog and News Page */}
                             <motion.article
@@ -263,6 +281,9 @@ const Dashboard = () => {
                         </a>
                     </div>
                 </footer>
+                {showUpgradedPopup && (
+                    <UpgradedPopup onClose={() => setShowUpgradedPopup(false)} />
+                )}
             </main>
         </>
     );

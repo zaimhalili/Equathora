@@ -19,7 +19,7 @@ const ProblemMobileMenu = ({
     handleFavoriteToggle
 }) => {
     return (
-        <div className="md:hidden relative mobile-menu-container">
+        <div className="lg:hidden relative mobile-menu-container">
             <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
                 className="flex items-center justify-center w-9 h-9 rounded-md transition-all duration-200 bg-transparent border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
@@ -30,7 +30,7 @@ const ProblemMobileMenu = ({
 
             {/* Mobile dropdown menu */}
             {showMobileMenu && (
-                <div className="absolute right-0 top-full pt-2 w-48 bg-[var(--main-color)] border border-[var(--mid-main-secondary)] rounded-md shadow-lg z-50 overflow-hidden">
+                <div className="absolute right-0 top-full w-48 bg-[var(--main-color)] border border-[var(--mid-main-secondary)] rounded-md shadow-lg z-50 overflow-hidden">
                     <button
                         onClick={() => {
                             setShowDrawingPad((prev) => !prev);

@@ -588,7 +588,7 @@ ENHANCED FILTERING SYSTEM
 .results-refreshing {
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--dark-accent-color);
+    color: var(--secondary-color);
     opacity: 1;
 }
 
@@ -805,7 +805,7 @@ ENHANCED FILTERING SYSTEM
 }
 
 .filter-dropdown-option:hover {
-    background-color: rgba(43, 45, 66, 0.05);
+    background-color: var(--french-gray) !important;
 }
 
 .filter-dropdown-option:active {
@@ -957,6 +957,40 @@ ENHANCED FILTERING SYSTEM
 .reset-filters-btn:active {
     scale: 0.95;
 }
+
+.problem-card-wrapper {
+    position: relative;
+}
+
+.problem-card-wrapper.premium-problem {
+    border: 2px solid #d97706;
+    /* amber-600 */
+    border-radius: 12px;
+}
+
+.problem-card-wrapper.locked {
+    cursor: pointer;
+}
+
+.problem-card-wrapper.locked>* {
+    filter: blur(2px);
+    opacity: 0.75;
+    pointer-events: none;
+    /* belt-and-suspenders: nothing inside is clickable anyway */
+}
+
+.premium-lock-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 12px;
+    pointer-events: none; }
 
 /* Mobile Responsive for Dropdowns */
 @media only screen and (max-width: 480px) {

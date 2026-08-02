@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar.jsx';
+import NavigationBar from '@/components/Landing/NavigationBar.jsx';
 import Footer from '../components/Footer.jsx';
 import { motion } from 'framer-motion';
 import EquathoraBriefsModal from '@/components/EquathoraBriefs/EquathoraBriefsModal.jsx';
 import { subscribeToEquathoraBriefs } from '@/lib/equathoraBriefsService.js';
-import { useAuth } from '@/hooks/useAuth.js';
+import { useAuth } from '@/hooks/useAuth.jsx';
 import CommunityBro from '../assets/images/communityBro.svg';
 import Mail from '../assets/images/Mail-amico.svg';
 import { FaDiscord, FaMailBulk, FaBookmark } from 'react-icons/fa';
 
 
-const EquathoraBriefsPage = () => {
+const EquathoraBriefs = () => {
+
     const [isBriefsModalOpen, setIsBriefsModalOpen] = useState(false);
     const { user } = useAuth() || {};
 
@@ -25,12 +27,13 @@ const EquathoraBriefsPage = () => {
 
     return (
         <>
-            <Navbar />
+            {user ? <Navbar /> : <NavigationBar />}
             <main className='w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen'>
                 <div className='flex w-full justify-center items-center pb-12 sm:pb-16 lg:pb-20'>
                     <div className='flex flex-col justify-start items-center lg:items-start px-4 sm:px-[4vw] xl:px-[6vw] max-w-[1500px] pt-6 sm:pt-8 lg:pt-20 gap-10 sm:gap-12 lg:gap-14'>
                         {/* Hero Section */}
                         <section className='w-full flex flex-col items-center gap-4 sm:gap-6'>
+                            {!user && <div className='w-full h-20 lg:h-10'></div>}
                             <div className='flex flex-col items-center gap-2'>
                                 <FaMailBulk className='text-3xl sm:text-5xl' />
                                 <h1 className='text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)] pb-2'>Join {' '}
@@ -55,7 +58,7 @@ const EquathoraBriefsPage = () => {
                                             />
                                         </motion.svg>
                                     </span></h1>
-                                <h3 className='text-sm sm:text-xl md:text-2xl font-light text-center sm:text-left'>Get <strong> weekly math practice</strong>, learning tips, and Equathora <strong>updates</strong> made for students.</h3>
+                                <h3 className='text-sm sm:text-xl md:text-2xl font-light text-center'>Get <strong> weekly math practice</strong>, learning tips, and Equathora <strong>updates</strong> made for students.</h3>
                             </div>
 
                             <button type='button' className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold text-white rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full sm:w-2/3 md:w-1/3 lg:w-1/5' onClick={() => setIsBriefsModalOpen(true)}>Get weekly updates</button>
@@ -130,4 +133,4 @@ const EquathoraBriefsPage = () => {
     );
 };
 
-export default EquathoraBriefsPage;
+export default EquathoraBriefs;

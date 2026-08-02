@@ -27,6 +27,7 @@ const ProblemCard = ({ problem }) => {
 
     const problemSlug = problem.slug || generateProblemSlug(problem.title, problem.id);
     const difficultyColor = getDifficultyColor(problem.difficulty);
+    const isPremium = problem.is_premium ?? problem.premium;
 
     return (
         <Link
@@ -39,7 +40,9 @@ const ProblemCard = ({ problem }) => {
                     <span>{problem.topic ? formatTopicLabel(problem.topic) : 'General'}</span>
                 </div>
                 <div className="pc-actions">
-                    {problem.premium && <FaCrown className="pc-icon-premium" title="Premium Equivalent" />}
+                    {isPremium && (
+                        <FaCrown className="text-amber-500" title="Premium Equivalent" />
+                    )}
                     {problem.favourite && <FaStar className="pc-icon-fav" title="Favourite" />}
                 </div>
             </div>

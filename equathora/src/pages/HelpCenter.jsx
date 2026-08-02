@@ -5,9 +5,12 @@ import { FaQuestionCircle, FaChevronDown } from 'react-icons/fa';
 import { FaChevronUp, FaLightbulb, FaShieldAlt, FaRocket } from 'react-icons/fa';
 import { FaStar, FaClock, FaTrophy, FaArrowRight, FaUsers, FaComments, FaHeadset } from 'react-icons/fa';
 import FeedbackBanner from '../components/FeedbackBanner.jsx';
-import shrug from '../assets/images/Shrug-pana.svg'
+import shrug from '../assets/images/Shrug-pana.svg';
+import NavigationBar from '@/components/Landing/NavigationBar';
+import { useAuth } from '@/hooks/useAuth';
 
 const HelpCenter = () => {
+    const { user } = useAuth();
     const [openFaq, setOpenFaq] = useState(null);
 
     const quickLinks = [
@@ -91,7 +94,7 @@ const HelpCenter = () => {
             <FeedbackBanner />
             <div className="w-full min-h-screen bg-[var(--main-color)] font-[Sansation] text-[var(--secondary-color)]">
                 <header>
-                    <Navbar />
+                    {user ? <Navbar /> : <NavigationBar />}
                 </header>
 
                 {/* Hero Section with Illustration */}

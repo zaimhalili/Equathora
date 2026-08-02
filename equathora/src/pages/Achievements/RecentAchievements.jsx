@@ -1,67 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './RecentAchievements.css';
-import { getAchievementProgress } from '../../lib/databaseService';
 import { buildAchievements, RARITY_ORDER } from '../../data/achievements';
-import { FaLock } from 'react-icons/fa'
+import { FaLock } from 'react-icons/fa';
+import { useUserStats } from '../../context/UserStatsContext';
 
-const toAchievementStats = (snapshot = {}) => {
-    const solvedProblems = Array.isArray(snapshot.solved_problems)
-        ? snapshot.solved_problems.length
-        : Number(snapshot.problemsSolved || 0);
-
-    const currentStreak = Number(snapshot.currentStreak ?? snapshot.current_streak ?? 0);
-    const longestStreak = Number(snapshot.longestStreak ?? snapshot.longest_streak ?? 0);
-
-    const topicFrequency = Array.isArray(snapshot.topicFrequency)
-        ? snapshot.topicFrequency
-        : [];
-
-    const favoriteTopics = topicFrequency
-        .map((item) => item.topic)
-        .filter(Boolean);
-
-    const totalTimeSeconds = Math.max(0, Number(snapshot.total_time_minutes || 0)) * 60;
+const toAchievementStats = (stats = {}) => {
+    const difficultyByBucket = Array.isArray(stats.difficultyBreakdown)
+        ? stats.difficultyBreakdown.reduce((acc, item) => {
+            const key = (item.key || '').toLowerCase();
+            if (['easy', 'medium', 'hard'].includes(key)) {
+                acc[key] = Number(item.solved || 0);
+            }
+            return acc;
+        }, { easy: 0, medium: 0, hard: 0 })
+        : (stats.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 });
 
     return {
-        problemsSolved: solvedProblems,
-        currentStreak,
-        longestStreak,
-        bestStreak: longestStreak,
-        totalTime: totalTimeSeconds,
-        difficultyBreakdown: snapshot.difficultyBreakdown || { easy: 0, medium: 0, hard: 0 },
-        perfectStreak: Number(snapshot.perfect_streak || snapshot.perfectStreak || 0),
-        favoriteTopics,
-        joinDate: snapshot.account_created || null
+        problemsSolved: Number(stats.problemsSolved || 0),
+        currentStreak: Number(stats.currentStreak || 0),
+        longestStreak: Number(stats.longestStreak || 0),
+        bestStreak: Number(stats.longestStreak || stats.currentStreak || 0),
+        totalTime: Number(stats.totalTimeSeconds || 0),
+        difficultyBreakdown: difficultyByBucket,
+        perfectStreak: Number(stats.perfectStreak || 0),
+        favoriteTopics: Array.isArray(stats.favoriteTopics) ? stats.favoriteTopics : [],
+        joinDate: stats.joinDate || null
     };
 };
 
 const RecentAchievements = () => {
-    const [userStats, setUserStats] = useState(() => toAchievementStats());
+    const { stats, loading, refreshStats } = useUserStats();
+    const [isAnimated, setIsAnimated] = useState(false);
 
     useEffect(() => {
-        let isMounted = true;
+        void refreshStats();
+    }, [refreshStats]);
 
-        const fetchStats = async () => {
-            const snapshot = await getAchievementProgress();
-            if (!isMounted) return;
-            setUserStats(toAchievementStats(snapshot));
-        };
-
-        void fetchStats();
-
-        const handleRefresh = () => {
-            void fetchStats();
-        };
-
-        window.addEventListener('focus', handleRefresh);
-        window.addEventListener('equathora:streak-updated', handleRefresh);
-
-        return () => {
-            isMounted = false;
-            window.removeEventListener('focus', handleRefresh);
-            window.removeEventListener('equathora:streak-updated', handleRefresh);
-        };
+    useEffect(() => {
+        setIsAnimated(true);
     }, []);
+
+    const userStats = useMemo(() => toAchievementStats(stats), [stats]);
 
     const streakDays = userStats.currentStreak || 0;
     const conceptsLearned = Array.isArray(userStats.favoriteTopics)
@@ -76,11 +55,6 @@ const RecentAchievements = () => {
         if (a.unlocked !== b.unlocked) return b.unlocked - a.unlocked;
         return RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity];
     });
-
-    const [isAnimated, setIsAnimated] = useState(false);
-    useEffect(() => {
-        setIsAnimated(true);
-    }, []);
 
     const getRarityStyle = (rarity) => {
         switch (rarity) {
@@ -98,6 +72,10 @@ const RecentAchievements = () => {
                 return { start: '#4a2b12', end: '#c67b34', border: '#d69557' };
         }
     };
+
+    if (loading) {
+        return <div className='rec-achievements'><div className='py-12 flex justify-center items-center'>Loading achievements...</div></div>;
+    }
 
     return (
         <section className='rec-achievements'>

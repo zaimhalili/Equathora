@@ -21,9 +21,9 @@ const Timer = ({ problemId, isRunning = true }) => {
         const pad = (n) => n < 10 ? '0' + n : n;
 
         if (hours > 0) {
-            return "Time: " + pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+            return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
         }
-        return "Time: " + pad(minutes) + ':' + pad(seconds);
+        return pad(minutes) + ':' + pad(seconds);
     };
 
     useEffect(() => {
@@ -44,7 +44,7 @@ const Timer = ({ problemId, isRunning = true }) => {
 
     return (
         <div className='stopwatch'>
-            <p className="timer">{format(time)}</p>
+            <p className="timer flex">{format(time)}</p>
             <div className="actions" />
         </div>
     );

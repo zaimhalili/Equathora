@@ -27,11 +27,11 @@ const LeaderboardsLayout = () => {
                     }>
                         Friends Leaderboard
                     </NavLink>
-                    <NavLink to="top-solvers" className={({ isActive }) =>
+                    {/* <NavLink to="top-solvers" className={({ isActive }) =>
                         isActive ? 'lb-option active bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]' : 'lb-option'
                     }>
                         Performance Board
-                    </NavLink>
+                    </NavLink> */}
                 </motion.nav>
                 {/* <div className="leaderboards-content" style={{ backgroundImage: `url(${Race})`, backgroundSize: 'cover', backgroundPosition: 'center', backdropFilter: 'blur(8px)' }}> */}
                 <motion.div

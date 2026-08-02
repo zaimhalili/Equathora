@@ -481,7 +481,7 @@ const AdminProblems = () => {
     return (
         <section className='flex flex-col gap-6 px-3 py-2 md:px-5' style={{ color: 'var(--secondary-color)' }}>
             <header
-                className='rounded-xl border p-5'
+                className='rounded-md border p-5'
                 style={{
                     borderColor: 'var(--mid-main-secondary)',
                     background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))'
@@ -576,25 +576,25 @@ const AdminProblems = () => {
             </header>
 
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4'>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Filtered Problems</p>
                     <p className='pt-1 text-2xl font-black'>{overview.total}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Completed</p>
                     <p className='pt-1 text-2xl font-black'>{overview.published}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>In Progress</p>
                     <p className='pt-1 text-2xl font-black'>{overview.review}</p>
                 </article>
-                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: 'var(--mid-main-secondary)' }}>Avg Solve Rate</p>
                     <p className='pt-1 text-2xl font-black'>{overview.avgSolveRate}%</p>
                 </article>
             </div>
 
-            <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <h2 className='pb-3 text-lg font-bold'>Search and Filters</h2>
 
                 <div className='grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4'>
@@ -649,7 +649,7 @@ const AdminProblems = () => {
             </article>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-5'>
-                <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4 xl:col-span-3' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Problem Flow (Created / Completed / In Progress)</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: 'var(--french-gray)', color: 'var(--secondary-color)' }}>
@@ -671,7 +671,7 @@ const AdminProblems = () => {
                     </div>
                 </article>
 
-                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Difficulty Mix (Filtered)</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: 'var(--french-gray)', color: 'var(--secondary-color)' }}>
@@ -711,7 +711,7 @@ const AdminProblems = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-3'>
-                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Average Solve Rate Trend</h3>
                         <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: 'var(--french-gray)', color: 'var(--secondary-color)' }}>
@@ -731,7 +731,7 @@ const AdminProblems = () => {
                     </div>
                 </article>
 
-                <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-md border p-4 xl:col-span-1' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <h3 className='pb-3 text-sm font-semibold md:text-base'>Review Queue Snapshot</h3>
                     <div className='space-y-2'>
                         <div className='rounded-lg border p-3' style={{ borderColor: 'var(--french-gray)' }}>
@@ -750,7 +750,7 @@ const AdminProblems = () => {
                 </article>
             </div>
 
-            <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <header className='pb-3 flex items-center justify-between gap-2'>
                     <h2 className='text-lg font-bold'>All Problems Table</h2>
                     <div className='flex items-center gap-2'>
@@ -834,7 +834,7 @@ const AdminProblems = () => {
                 {isReaderOpen && selectedProblem && (
                     <div className='fixed inset-0 z-[1300] flex items-center justify-center bg-black/55 px-3 py-6' onClick={() => setIsReaderOpen(false)}>
                         <article
-                            className='max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-xl border p-4 md:p-5'
+                            className='max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-md border p-4 md:p-5'
                             style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                             onClick={(event) => event.stopPropagation()}
                         >

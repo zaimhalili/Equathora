@@ -96,7 +96,7 @@ const StreakPopup = ({ streak, onClose }) => {
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{ delay: 0.4, type: "spring" }}
-                                    className="inline-block bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-[var(--white)] px-6 py-2 rounded-full text-sm font-bold"
+                                    className="inline-block bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-6 py-2 rounded-full text-sm font-bold"
                                 >
                                     Keep it up!
                                 </motion.div>

@@ -1,8 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import Screenshot from "../../assets/images/screenshotNew.png";
+import ScreenshotDark from "../../assets/images/SigmaStepDark.png";
+import ScreenshotLight from "../../assets/images/SigmaStepLight.png";
+
+// Custom hook to track active dark/light mode from document element
+function useCurrentTheme() {
+    const [theme, setTheme] = useState(() => {
+        if (typeof document !== 'undefined') {
+            const root = document.documentElement;
+            return root.classList.contains('dark') || root.dataset.theme === 'dark' ? 'dark' : 'light';
+        }
+        return 'light';
+    });
+
+    useEffect(() => {
+        const updateTheme = () => {
+            const root = document.documentElement;
+            const isDark = root.classList.contains('dark') || root.dataset.theme === 'dark';
+            setTheme(isDark ? 'dark' : 'light');
+        };
+
+        updateTheme();
+
+        const observer = new MutationObserver(updateTheme);
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class', 'data-theme'],
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    return theme;
+}
 
 const ExercisesSection = () => {
+    const theme = useCurrentTheme();
+
     const exercises = [
         {
             icon: <svg className="w-6 h-6" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +51,6 @@ const ExercisesSection = () => {
             title: 'Linear Equations',
             description: 'Master the fundamentals of solving linear equations.',
             topics: ['Algebra', 'Functions', 'Graphs'],
-            // moreCount: 40,
         },
         {
             icon: <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
@@ -32,7 +65,6 @@ const ExercisesSection = () => {
             title: 'Quadratic Formula',
             description: 'Given the coefficients of a quadratic equation, determine its roots.',
             topics: ['Algebra', 'Polynomials', 'Calculus'],
-            // moreCount: 60,
         },
         {
             icon: <svg className="w-6 h-6" viewBox="0 0 256 512" xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +79,6 @@ const ExercisesSection = () => {
             title: 'Pythagorean Puzzle',
             description: 'Can you find all Pythagorean triples below a given number?',
             topics: ['Geometry', 'Number Theory', 'Algebra'],
-            // moreCount: 70,
         },
     ];
 
@@ -100,7 +131,7 @@ const ExercisesSection = () => {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
                 <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
 
-                <article className='w-full  relative z-10 flex gap-10 flex-col'>
+                <article className='w-full relative z-10 flex gap-10 flex-col'>
                     <div className="w-full flex flex-col lg:flex-row gap-6">
                         {/* Section header */}
                         <motion.div
@@ -114,7 +145,7 @@ const ExercisesSection = () => {
                                 <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2">
                                     Over {' '}
                                     <span className="text-[var(--secondary-color)] relative inline-block">
-                                        250 math exercises.
+                                        300 math exercises.
                                         <motion.svg
                                             className="absolute -bottom-2 left-0 w-full"
                                             viewBox="0 0 200 8"
@@ -142,7 +173,6 @@ const ExercisesSection = () => {
                                     Learn by doing. Get better at mathematics through fun problem-solving that builds your understanding of concepts.
                                 </p>
                             </div>
-
                         </motion.div>
 
                         {/* Exercise cards grid */}
@@ -160,11 +190,9 @@ const ExercisesSection = () => {
                                         {exercise.icon}
                                     </div>
                                     <div className='flex flex-col justify-center w-full'>
-                                        {/* Title */}
                                         <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)]">
                                             {exercise.title}
                                         </h3>
-                                        {/* Description */}
                                         <p className="text-[var(--secondary-color)] font-light text-sm sm:text-base">
                                             {exercise.description}
                                         </p>
@@ -173,8 +201,15 @@ const ExercisesSection = () => {
                             ))}
                         </div>
                     </div>
-                    <div className='w-full'>
-                        <img src={Screenshot} alt="List of the problems" className='rounded-md w-full shadow-[0px_10px_35px_5px_rgba(141,153,174,0.4)] dark:shadow-black/20' />
+
+                    {/* Single dynamic image tag */}
+                    <div className="w-full">
+                        <img
+                            src={theme === 'dark' ? ScreenshotDark : ScreenshotLight}
+                            alt="List of the problems"
+                            className="rounded-md w-full shadow-[0px_10px_35px_5px_rgba(141,153,174,0.4)] dark:shadow-black/20"
+                            loading="lazy"
+                        />
                     </div>
                 </article>
 
@@ -189,17 +224,12 @@ const ExercisesSection = () => {
                             viewport={{ once: true, amount: 0.3 }}
                             transition={{ delay: index * 0.15, duration: 0.5, ease: "easeOut" }}
                         >
-                            {/* Icon */}
                             <div className="pb-2 sm:pb-4">
                                 {feature.icon}
                             </div>
-
-                            {/* Title */}
                             <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)] pb-1 sm:pb-2">
                                 {feature.title}
                             </h3>
-
-                            {/* Description */}
                             <p className="text-[var(--secondary-color)] font-light text-sm sm:text-base">
                                 {feature.description}
                             </p>
@@ -208,7 +238,6 @@ const ExercisesSection = () => {
                 </div>
             </section>
         </div>
-
     );
 };
 

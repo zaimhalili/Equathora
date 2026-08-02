@@ -10,9 +10,9 @@ import teachers from '../assets/images/teachers.svg';
 import mentoring from '../assets/images/mentoring.svg';
 import achievements from '../assets/images/achievements.svg';
 import { subscribeToEquathoraBriefs } from '@/lib/equathoraBriefsService.js';
-import { useAuth } from '@/hooks/useAuth.js';
+import { useAuth } from '@/hooks/useAuth.jsx';
 import { Link } from 'react-router-dom';
-import { FaCheckCircle, FaUsers, FaChalkboardTeacher, FaHeart, FaArrowRight, FaStar, FaGraduationCap } from 'react-icons/fa';
+import { FaCheckCircle, FaUsers, FaChalkboardTeacher, FaHeart, FaArrowRight, FaStar, FaGraduationCap, FaBrain, FaChartLine } from 'react-icons/fa';
 
 const ApplyMentor = () => {
     const [isBriefsModalOpen, setIsBriefsModalOpen] = useState(false);
@@ -44,48 +44,48 @@ const ApplyMentor = () => {
                 >
                     <div className='flex flex-col items-center gap-6'>
                         <div className='text-center flex flex-col gap-2'>
-                            <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>Why Become a Mentor?</h2>
-                            <p className='text-sm md:text-base text-[var(--mid-main-secondary)] max-w-2xl'>
-                                Join a vibrant community making math accessible and enjoyable for everyone
+                            <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>Why Join Equathora’s Future Teacher Network?</h2>
+                            <p className='text-sm md:text-base text-[var(--secondary-color)] max-w-2xl'>
+                                Help shape a math learning experience built around step-by-step guidance, Sigma AI feedback, and clearer insight into student struggles.
                             </p>
                         </div>
 
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full'>
                             {[
                                 {
-                                    icon: <FaGraduationCap className='text-xl text-white' />,
-                                    title: 'Reinforce Expertise',
-                                    description: 'Master subjects by teaching. Solidify understanding while helping others learn.',
+                                    icon: <FaBrain className='text-xl text-white' />,
+                                    title: 'AI-Enhanced Teaching',
+                                    description: 'Support students with a platform designed around Sigma AI feedback, guided problem solving, and clearer explanations.',
                                     gradient: 'from-blue-500 to-cyan-500'
                                 },
                                 {
                                     icon: <FaUsers className='text-xl text-white' />,
-                                    title: 'Build Network',
-                                    description: 'Connect with educators, students, and mentors worldwide.',
+                                    title: 'Shape the Experience',
+                                    description: 'Help define how teachers and learners interact with Equathora as the platform grows.',
                                     gradient: 'from-purple-500 to-pink-500'
                                 },
                                 {
                                     icon: <FaHeart className='text-xl text-white' />,
-                                    title: 'Make Impact',
-                                    description: 'Inspire students to fall in love with mathematics and logic.',
+                                    title: 'Support Real Learning',
+                                    description: 'Help students move from confusion to confidence by focusing on the exact mistakes they make.',
                                     gradient: 'from-red-500 to-orange-500'
                                 },
                                 {
-                                    icon: <FaStar className='text-xl text-white' />,
-                                    title: 'Earn Recognition',
-                                    description: 'Build reputation with badges and testimonials from students.',
+                                    icon: <FaChartLine className='text-xl text-white' />,
+                                    title: 'Detailed Student Insights',
+                                    description: 'Future tools will make it easier to spot repeated mistakes and understand where support is needed.',
                                     gradient: 'from-yellow-500 to-orange-500'
                                 },
                                 {
                                     icon: <FaCheckCircle className='text-xl text-white' />,
-                                    title: 'Flexible Schedule',
-                                    description: 'Mentor on your time. No commitments, contribute when you can.',
+                                    title: 'Flexible Participation',
+                                    description: 'Join early and contribute on your own terms as the teacher and mentor experience develops.',
                                     gradient: 'from-green-500 to-teal-500'
                                 },
                                 {
                                     icon: <FaChalkboardTeacher className='text-xl text-white' />,
-                                    title: 'Free Tools',
-                                    description: 'Access platform features to track progress and engage students.',
+                                    title: 'Future Classroom Tools',
+                                    description: 'Be part of a roadmap that includes homework assignment, reporting, and richer teacher workflows.',
                                     gradient: 'from-indigo-500 to-blue-500'
                                 }
                             ].map((benefit, index) => (
@@ -116,47 +116,14 @@ const ApplyMentor = () => {
                     <div className='flex flex-col items-center gap-6'>
                         <div className='text-center flex flex-col gap-2'>
                             <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>
-                                Who Can <span className='text-[var(--accent-color)]'>Apply?</span>
+                                Who Can <span className='text-[var(--accent-color)]'>Join Early?</span>
                             </h2>
-                            <p className='text-sm md:text-base text-[var(--mid-main-secondary)] max-w-2xl'>
-                                All backgrounds welcome, share your passion for teaching
+                            <p className='text-sm md:text-base text-[var(--secondary-color)] max-w-xl'>
+                                Educators, teachers, and learning supporters who want to help build a more thoughtful math experience are welcome.
                             </p>
                         </div>
 
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full'>
-                            {/* Community Mentors */}
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.3, delay: 0.4 }}
-                                className='bg-[var(--white)] rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
-                            >
-                                <div className='relative h-48 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden'>
-                                    <img
-                                        src={skate}
-                                        alt="Community mentors"
-                                        className='w-40 h-40 object-contain'
-                                    />
-                                </div>
-                                <div className='flex flex-col p-5 gap-3'>
-                                    <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-md flex items-center justify-center text-[var(--white)] text-lg shadow-md'>
-                                        <FaUsers />
-                                    </div>
-                                    <h3 className='text-lg md:text-xl font-bold'>Community Mentors</h3>
-                                    <p className='text-sm text-[var(--mid-main-secondary)] leading-relaxed'>
-                                        Guide students publicly, answer questions, and share solutions that inspire the community.
-                                    </p>
-                                    <div className='flex flex-wrap gap-2'>
-                                        <span className='px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 
-                                        text-blue-700 rounded-full text-xs font-semibold'>Public Forums</span>
-                                        <span className='px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 
-                                        text-purple-700 rounded-full text-xs font-semibold'>Q&A</span>
-                                        <span className='px-3 py-1 bg-gradient-to-r from-pink-100 to-red-100 
-                                        text-pink-700 rounded-full text-xs font-semibold'>Solutions</span>
-                                    </div>
-                                </div>
-                            </motion.div>
-
                             {/* Teachers */}
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.95 }}
@@ -177,12 +144,12 @@ const ApplyMentor = () => {
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Teachers</h3>
                                     <p className='text-sm text-[var(--mid-main-secondary)] leading-relaxed'>
-                                        Track student progress, assign problems, and provide personalized classroom feedback.
+                                        Shape classroom workflows with homework assignment, skill insights, and detailed feedback on recurring mistakes.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>
                                         <span className='px-3 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 rounded-full text-xs font-semibold'>Progress Tracking</span>
                                         <span className='px-3 py-1 bg-gradient-to-r from-teal-100 to-cyan-100 text-teal-700 rounded-full text-xs font-semibold'>Assignments</span>
-                                        <span className='px-3 py-1 bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700 rounded-full text-xs font-semibold'>Feedback</span>
+                                        <span className='px-3 py-1 bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700 rounded-full text-xs font-semibold'>Reports</span>
                                     </div>
                                 </div>
                             </motion.div>
@@ -207,7 +174,7 @@ const ApplyMentor = () => {
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Parents</h3>
                                     <p className='text-sm text-[var(--mid-main-secondary)] leading-relaxed'>
-                                        Monitor your child's learning journey and provide encouragement where needed.
+                                        Follow your child’s learning journey and see where they need support most with clearer progress signals.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>
                                         <span className='px-3 py-1 bg-gradient-to-r from-orange-100 to-red-100 text-orange-700 rounded-full text-xs font-semibold'>Monitoring</span>
@@ -216,11 +183,44 @@ const ApplyMentor = () => {
                                     </div>
                                 </div>
                             </motion.div>
+
+                            {/* Community Mentors */}
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.3, delay: 0.4 }}
+                                className='bg-[var(--white)] rounded-md shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
+                            >
+                                <div className='relative h-48 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden'>
+                                    <img
+                                        src={skate}
+                                        alt="Community mentors"
+                                        className='w-40 h-40 object-contain'
+                                    />
+                                </div>
+                                <div className='flex flex-col p-5 gap-3'>
+                                    <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-md flex items-center justify-center text-[var(--white)] text-lg shadow-md'>
+                                        <FaUsers />
+                                    </div>
+                                    <h3 className='text-lg md:text-xl font-bold'>Learning Supporters</h3>
+                                    <p className='text-sm text-[var(--mid-main-secondary)] leading-relaxed'>
+                                        Help students publicly, share useful approaches, and contribute to a community focused on understanding rather than shortcuts.
+                                    </p>
+                                    <div className='flex flex-wrap gap-2'>
+                                        <span className='px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 
+                                        text-blue-700 rounded-full text-xs font-semibold'>Guidance</span>
+                                        <span className='px-3 py-1 bg-gradient-to-r from-purple-100 to-pink-100 
+                                        text-purple-700 rounded-full text-xs font-semibold'>Discussion</span>
+                                        <span className='px-3 py-1 bg-gradient-to-r from-pink-100 to-red-100 
+                                        text-pink-700 rounded-full text-xs font-semibold'>Community</span>
+                                    </div>
+                                </div>
+                            </motion.div>
                         </div>
                     </div>
                 </motion.div>
             </section>
-            
+
 
             {/* Final CTA Section */}
             <section className='relative w-full flex justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-[var(--white)] overflow-hidden theme-lock'>
@@ -239,10 +239,10 @@ const ApplyMentor = () => {
                                 COMING SOON
                             </div>
                             <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>
-                                Applications Opening Soon!
+                                Teacher and Learning Support Features Coming Soon!
                             </h2>
                             <p className='text-base md:text-lg text-gray-300 max-w-xl lg:max-w-none'>
-                                We're putting the final touches on the mentor platform. Join 50+ educators already following Equathora Briefs.
+                                We’re building the next phase of Equathora around guided feedback, AI-assisted support, and teacher workflows such as homework assignment and detailed mistake reporting.
                             </p>
 
                             <div className='flex flex-col gap-3'>
@@ -263,7 +263,7 @@ const ApplyMentor = () => {
                                     </div>
                                     <div className='flex items-center gap-1.5'>
                                         <FaCheckCircle className='text-green-400' />
-                                        <span>Always free</span>
+                                        <span>Join for free</span>
                                     </div>
                                     <div className='flex items-center gap-1.5'>
                                         <FaCheckCircle className='text-green-400' />

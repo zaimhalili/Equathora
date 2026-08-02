@@ -1,7 +1,3 @@
-// Client-side answer validation for static MVP
-// This validates student answers against the problem's accepted answers
-
-import { validateExpression } from '../utils/mathNetService';
 import { evaluate, parse, simplify } from 'mathjs';
 
 const ABS_TOLERANCE = 1e-6;
@@ -193,10 +189,30 @@ const expressionEqual = (leftExpression, rightExpression) => {
     return numericEqual(leftExpression, rightExpression);
 };
 
+// ─────────────────────────────────────────────────────────────────────────
+// FIX: The numeric fallback below is only valid for answers that are
+// PLAIN NUMBERS (e.g. "42", "-3.5"). `parseFloat` silently parses only the
+// leading numeric prefix of a string and ignores the rest — so previously,
+// two *completely different algebraic expressions* that merely started
+// with the same coefficient (e.g. "2x^3-3x^2-5x" vs "2x^3-3x^2+6x", both
+// parsing to the leading "2") were incorrectly treated as numerically
+// equal and marked correct. This guard ensures the fallback only ever
+// fires when both sides are unambiguously bare numbers, never expressions.
+// ─────────────────────────────────────────────────────────────────────────
+const PLAIN_NUMBER_PATTERN = /^-?\d+(\.\d+)?(e-?\d+)?$/;
+const isPlainNumber = (value) => typeof value === 'string' && PLAIN_NUMBER_PATTERN.test(value);
+
 /**
- * Check if answer is within numerical tolerance
+ * Check if answer is within numerical tolerance.
+ * Only applies to plain numeric answers — never to algebraic expressions,
+ * since parseFloat() would otherwise only read the leading numeric prefix
+ * and silently ignore everything after it (see fix note above).
  */
 const isNumericallyEqual = (userAnswer, correctAnswer, tolerance = 0.01) => {
+    if (!isPlainNumber(userAnswer) || !isPlainNumber(correctAnswer)) {
+        return false;
+    }
+
     const userNum = parseFloat(userAnswer);
     const correctNum = parseFloat(correctAnswer);
 
@@ -294,20 +310,6 @@ export const validateAnswer = async (userAnswer, problem) => {
                 score: 1
             };
         }
-    }
-
-    // Try Math.NET backend validation as a last resort
-    try {
-        const mathNetValidation = await validateExpression(userAnswer, problem);
-        if (mathNetValidation.isCorrect) {
-            return {
-                isCorrect: true,
-                feedback: getCorrectFeedback(problem),
-                score: mathNetValidation.score || 1
-            };
-        }
-    } catch {
-        // Backend unavailable — fall through to incorrect
     }
 
     return {
@@ -472,6 +474,8 @@ export const getSmartFeedback = async (userAnswer, problem) => {
     const validation = await validateAnswer(userAnswer, problem);
     return validation.feedback;
 };
+
+export { normalizeAnswer };
 
 export default {
     validateAnswer,

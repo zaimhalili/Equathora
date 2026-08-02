@@ -19,7 +19,17 @@
         --black: #000000;
 
         /* Exceptions */
-        --rare-blue:#1e40af;
+        --rare-blue: #1e40af;
+
+        /* Difficulty colors */
+        --beginner: #2563eb;
+        --easy: #16a34a;
+        --standard: #0f766e;
+        --intermediate: #be123c;
+        --medium: #d97706;
+        --challenging: #f97316;
+        --hard: #a3142c;
+        --advanced: #6366f1;
     }
 
     :root[data-theme='dark'] {
@@ -59,7 +69,7 @@
     box-sizing: border-box;
     margin: 0;
     /* This is for debugging */
-    /* outline: 2px solid skyblue; */
+    /* outline: 1px solid skyblue; */
 }
 
 body,
@@ -236,4 +246,14 @@ button {
 
 select {
     cursor: pointer;
+}
+
+.mathjax-renderer mjx-container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.mathjax-renderer mjx-container svg {
+    max-width: 100% !important;
+    height: auto !important;
 }

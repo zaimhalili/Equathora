@@ -1,7 +1,7 @@
 import React, { useId, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
+const Dropdown = ({ label, items, alignRight = false, ariaLabel}) => {
     const dropdownId = useId();
     const wrapperRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +79,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                                     <img
                                         src={item.image}
                                         alt={item.text}
-                                        className={item.isAvatar ? 'h-[50px] w-[50px] rounded-full object-cover' : 'h-[50px] w-[50px]'}
+                                        className={item.isAvatar ? 'h-[50px] w-[50px] rounded-full object-cover bg-white' : 'h-[50px] w-[50px]'}
                                     />
                                 )}
                                 <div className="flex flex-col justify-center font-[Sansation,serif]">

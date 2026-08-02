@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 /* ─── tiny helpers ─────────────────────────────────────── */
 const Check = () => (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 2 }}>
-        <circle cx="8" cy="8" r="7.5" stroke="currentColor" strokeOpacity=".25" />
+    <circle cx="8" cy="8" r="7.5" stroke="currentColor" strokeOpacity=".25" />
         <path d="M4.5 8.5l2.5 2.5 4.5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
 );

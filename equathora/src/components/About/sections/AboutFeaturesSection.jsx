@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaChartLine, FaClock, FaCode, FaFire, FaLightbulb, FaRocket, FaTrophy, FaUsers } from 'react-icons/fa';
+import { FaChartLine, FaClock, FaCode, FaFire, FaLightbulb, FaRocket, FaTrophy, FaUsers, FaBrain, FaGraduationCap } from 'react-icons/fa';
 import ScrollReveal from '../ScrollReveal';
 
 const AboutFeaturesSection = () => {
@@ -26,7 +26,7 @@ const AboutFeaturesSection = () => {
                                     transition={{ type: 'spring', stiffness: 300, duration: 0.8 }}
                                     className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/20 backdrop-blur-sm rounded-md"
                                 >
-                                    <FaCode className="text-[var(--white)] text-3xl" />
+                                    <FaCode className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-[var(--white)]">Math Editor</h3>
@@ -48,11 +48,11 @@ const AboutFeaturesSection = () => {
                                 whileHover={{ scale: 1.1, rotate: 12 }}
                                 className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-md relative z-10"
                             >
-                                <FaLightbulb className="text-[var(--white)] text-3xl" />
+                                <FaBrain className="text-white text-3xl" />
                             </motion.div>
                             <div>
-                                <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-[var(--accent-color)] transition-colors">Smart Hints</h3>
-                                <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed">Progressive guidance that adapts to your level</p>
+                                <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-[var(--accent-color)] transition-colors">Sigma AI Debugger</h3>
+                                <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed">Pinpoints where your algebra or logic breaks and explains the missing step in plain language.</p>
                             </div>
                         </motion.div>
                     </ScrollReveal>
@@ -68,7 +68,7 @@ const AboutFeaturesSection = () => {
                                 transition={{ duration: 0.5 }}
                                 className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-md relative z-10"
                             >
-                                <FaRocket className="text-[var(--white)] text-3xl" />
+                                <FaRocket className="text-white text-3xl" />
                             </motion.div>
                             <div>
                                 <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">Achievements</h3>
@@ -88,11 +88,11 @@ const AboutFeaturesSection = () => {
                                 transition={{ duration: 0.5 }}
                                 className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-md relative z-10 shadow-lg"
                             >
-                                <FaUsers className="text-[var(--white)] text-3xl" />
+                                <FaGraduationCap className="text-white text-3xl" />
                             </motion.div>
                             <div>
-                                <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-[var(--accent-color)] transition-colors">Mentorship</h3>
-                                <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed">Expert support when you need it most. Real guidance from experienced math educators.</p>
+                                <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-[var(--accent-color)] transition-colors">Teacher Insights</h3>
+                                <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed">Coming soon: assign homework, review student work, and receive detailed reports on repeated mistakes.</p>
                             </div>
                         </motion.div>
                     </ScrollReveal>
@@ -109,7 +109,7 @@ const AboutFeaturesSection = () => {
                                     transition={{ duration: 0.6 }}
                                     className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-md relative z-10 shadow-md"
                                 >
-                                    <FaTrophy className="text-[var(--white)] text-3xl" />
+                                    <FaTrophy className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-green-600 transition-colors relative z-10">Leaderboards</h3>
@@ -128,7 +128,7 @@ const AboutFeaturesSection = () => {
                                     whileHover={{ scale: 1.15, rotate: 15 }}
                                     className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-md relative z-10"
                                 >
-                                    <FaChartLine className="text-[var(--white)] text-3xl" />
+                                    <FaChartLine className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">Progress Analytics</h3>
@@ -141,18 +141,18 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="up" delay={0.25} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ y: -8 }}
-                            className="group bg-gradient-to-br from-blue-500 to-cyan-400 rounded-md shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
+                            className="group bg-gradient-to-br from-blue-600 to-cyan-500 rounded-md shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
                         >
-                            <div className="absolute top-0 right-0 text-[var(--white)]/10 text-[200px] font-black">250+</div>
+                            <div className="absolute top-0 right-0 text-[var(--white)]/10 text-[200px] font-black">AI</div>
                             <motion.div
                                 whileHover={{ scale: 1.15, rotate: -12 }}
                                 className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-md relative z-10"
                             >
-                                <FaChartLine className="text-[var(--white)] text-3xl" />
+                                <FaBrain className="text-white text-3xl" />
                             </motion.div>
                             <div>
-                                <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">250+ Problems</h3>
-                                <p className="text-[var(--white)]/90 text-sm md:text-base leading-relaxed relative z-10">Curated library across many topics</p>
+                                <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">Step-by-Step Feedback</h3>
+                                <p className="text-[var(--white)]/90 text-sm md:text-base leading-relaxed relative z-10">See exactly where your reasoning goes off track and learn from it in real time.</p>
                             </div>
                         </motion.div>
                     </ScrollReveal>
@@ -168,7 +168,7 @@ const AboutFeaturesSection = () => {
                                     whileHover={{ scale: 1.2, rotate: -15 }}
                                     className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-md relative z-10 shadow-md"
                                 >
-                                    <FaFire className="text-[var(--white)] text-3xl" />
+                                    <FaFire className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-orange-600 transition-colors relative z-10">Study Streaks</h3>
@@ -188,11 +188,11 @@ const AboutFeaturesSection = () => {
                                     transition={{ duration: 0.5 }}
                                     className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-md relative z-10 shadow-md"
                                 >
-                                    <FaClock className="text-[var(--white)] text-3xl" />
+                                    <FaLightbulb className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
-                                    <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-blue-600 transition-colors relative z-10">Real-time Feedback</h3>
-                                    <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed relative z-10">Instant validation as you solve</p>
+                                    <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-blue-600 transition-colors relative z-10">Step-by-Step Guidance</h3>
+                                    <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed relative z-10">Build confidence with guidance that supports each move, not just the final answer.</p>
                                 </div>
                             </motion.div>
                         </ScrollReveal>

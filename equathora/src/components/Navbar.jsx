@@ -8,16 +8,14 @@ import Dropdown from './Dropdown';
 import OverflowChecker from "../pages/OverflowChecker";
 import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
-import { getStreakData } from '../lib/databaseService';
 import { getUnreadCount, NOTIFICATION_EVENTS } from '../lib/notificationService';
 import { useUserProfile } from '../hooks/useUserProfile';
+import { useUserStats } from '../context/UserStatsContext';
 //Dropdown svgs
-import Daily from '../assets/images/questionMark.svg';
+import Daily from '../assets/images/questionMark1.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
 import Favourite from '../assets/images/favourite.svg';
 import Premium from '../assets/images/Premium.svg';
-import Progress from '../assets/images/Progress.svg';
-import Choice from '../assets/images/choice.svg';
 import Journey from '../assets/images/journey.svg';
 import Mentoring from '../assets/images/mentoring.svg';
 import Faq from '../assets/images/faq.svg';
@@ -27,12 +25,14 @@ import Statistics from '../assets/images/statistics.svg';
 import Settings from '../assets/images/settings.svg';
 import Updates from '../assets/images/updates.svg';
 import Notifications from '../assets/images/notificationsDD.svg';
-import Teacher from '../assets/images/teacher.svg';
 import Achievements from '../assets/images/achievementsDD.svg';
 import Events from '../assets/images/specialEvents.svg';
-import { getDailyProblemSlug } from '../lib/utils';
+import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
 import Books from '../assets/images/learningBooks.svg';
 import Sigma from '../assets/logo/TransparentSymbol.png';
+import Mail from '../assets/images/mail1.svg';
+import PremiumButton from './Premium/PremiumButton';
+import { useSubscriptionStatus } from '@/hooks/useSubscription';
 
 const getLowResAvatarUrl = (avatarUrl) => {
   if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
@@ -52,24 +52,27 @@ const getLowResAvatarUrl = (avatarUrl) => {
 
 const Navbar = () => {
   const { profile } = useUserProfile();
-
+  const { premium, loading: onloading } = useSubscriptionStatus();
+  const { stats, refreshStats } = useUserStats();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [dailyProblemSlug, setDailyProblemSlug] = useState('');
-  const [currentStreak, setCurrentStreak] = useState(0);
+  const [nextProblem, setNextProblem] = useState(null);
   const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
 
   useEffect(() => {
-    const loadDailyProblem = async () => {
+    if (onloading) return;
+
+    const loadNextProblem = async () => {
       try {
-        const slug = await getDailyProblemSlug();
-        setDailyProblemSlug(slug);
+        const problem = await getNextRecommendedProblem(premium);
+        setNextProblem(problem || null);
       } catch (error) {
-        console.error('Failed to load daily problem:', error);
+        console.error('Failed to load next recommended problem:', error);
+        setNextProblem(null);
       }
     };
-    loadDailyProblem();
-  }, []);
+    loadNextProblem();
+  }, [premium, onloading]);
 
   useEffect(() => {
     const refreshNavbarSignals = async () => {
@@ -81,13 +84,12 @@ const Navbar = () => {
         const avatarUrl = metadata.avatar_url || metadata.picture || metadata.image || metadata.photo_url || '';
         setProfileAvatarSrc(getLowResAvatarUrl(avatarUrl));
 
-        const streakData = await getStreakData();
-        setCurrentStreak(streakData?.current_streak || 0);
-
         const unreadCount = await getUnreadCount();
         setUnreadNotificationCount(unreadCount);
+
+        await refreshStats();
       } catch (error) {
-        console.error('Failed to fetch streak:', error);
+        console.error('Failed to refresh navbar signals:', error);
       }
     };
     void refreshNavbarSignals();
@@ -98,27 +100,32 @@ const Navbar = () => {
 
     // Refresh on focus or when in-app notifications are created.
     window.addEventListener('focus', refreshNavbarSignals);
-    window.addEventListener('equathora:streak-updated', refreshNavbarSignals);
+    window.addEventListener('equathora:stats-updated', refreshNavbarSignals);
     window.addEventListener(NOTIFICATION_EVENTS.CREATED, handleNotificationCreated);
 
     return () => {
       window.removeEventListener('focus', refreshNavbarSignals);
-      window.removeEventListener('equathora:streak-updated', refreshNavbarSignals);
+      window.removeEventListener('equathora:stats-updated', refreshNavbarSignals);
       window.removeEventListener(NOTIFICATION_EVENTS.CREATED, handleNotificationCreated);
     };
-  }, []);
+  }, [refreshStats]);
+
+  // Only link into a problem once we actually have a recommended slug —
+  // otherwise send them to /journey (always valid) instead of a
+  // /problems/undefined dead link / 404.
+  const dailyProblemTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
 
   const learnItems = [
     {
-      to: `/problems/${dailyProblemSlug}`,
+      to: dailyProblemTo,
       text: "Daily Problem",
       description: "Solve a fresh daily challenge.",
       image: Daily
     },
     {
-      to: '/tracks',
-      text: "Your Track",
-      description: "Track topics and problems solved.",
+      to: '/journey',
+      text: "Your Journey",
+      description: "Unlock topics as you progress. ",
       image: Journey
     },
     {
@@ -146,15 +153,8 @@ const Navbar = () => {
       to: '/equathora-briefs',
       text: "Equathora Briefs",
       description: "Weekly product updates and math drops.",
-      image: Daily
+      image: Mail
     },
-    // Hidden for MVP - will be added after launch
-    // {
-    //   to: "/",
-    //   text: "Learning Paths",
-    //   description: "Curated sequences of related problems.",
-    //   image: Progress
-    // }
   ]
 
   const moreItems = [
@@ -236,14 +236,6 @@ const Navbar = () => {
       description: "Manage your account and preferences",
       image: Settings
     },
-    ...(profile?.role === 'admin'
-      ? [{
-        to: '/adminDashboard',
-        text: "Admin Dashboard",
-        description: "Open admin tools and analytics",
-        image: Teacher
-      }]
-      : []),
     {
       text: "Sign Out",
       description: "Securely log out of your account",
@@ -255,13 +247,6 @@ const Navbar = () => {
         window.location.href = '/';
       }
     }
-    // Hidden for MVP
-    // {
-    //   to: '/premium',
-    //   text: "Upgrade to Premium",
-    //   description: "Access unlimited mentor guidance and exam-mode practice.",
-    //   image: Premium
-    // }
   ];
 
   const notificationBellLabel = (
@@ -277,7 +262,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* <OverflowChecker></OverflowChecker> */}
       <header className='w-full bg-[var(--main-color)] h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
         <nav aria-label="Primary" className='w-full h-full flex justify-center'>
           <div className='w-full h-full mx-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
@@ -289,18 +273,18 @@ const Navbar = () => {
                   <p className='font-[Sansation,Arial] pl-6 text-lg font-black'>Equathora</p>
                 </Link>
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                 <Dropdown
                   label="Learn"
                   items={learnItems} />
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                 <Dropdown
                   label="Discover"
                   items={discoverItems}
                 />
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                 <Dropdown
                   label="More"
                   items={moreItems} />
@@ -310,7 +294,7 @@ const Navbar = () => {
             {/* Streak */}
             <div className='flex justify-end items-center shrink-0'>
               <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
-                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                   <Link to="/achievements/stats" className='flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors' title='Your Streak'>
                     <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                       <defs>
@@ -321,10 +305,10 @@ const Navbar = () => {
                       </defs>
                       <path fill="url(#icon-gradient-fire-navbar)" d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 53.8 77.7 84c11-14.4 23.5-30.1 37-42.9c7.9-7.4 20.1-7.4 28 .1c34.6 33 63.9 76.6 84.5 118c20.3 40.8 33.8 82.5 33.8 111.9C448 404.2 348.2 512 224 512C98.4 512 0 404.1 0 276.5c0-38.4 17.8-85.3 45.4-131.7C73.3 97.7 112.7 48.6 159.3 5.4zM225.7 416c25.3 0 47.7-7 68.8-21c42.1-29.4 53.4-88.2 28.1-134.4c-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5c-16.5-21-46-58.5-62.8-79.8c-6.3-8-18.3-8.1-24.7-.1c-33.8 42.5-50.8 69.3-50.8 99.4C112 375.4 162.6 416 225.7 416z" />
                     </svg>
-                    <span className='font-bold'>{currentStreak}</span>
+                    <span className='font-bold'>{stats.currentStreak}</span>
                   </Link>
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                   <Dropdown
                     label={notificationBellLabel}
                     ariaLabel="Notifications menu"
@@ -332,7 +316,7 @@ const Navbar = () => {
                     alignRight={true}
                   />
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden  text-[var(--secondary-color)]'>
                   <Dropdown
                     label={<FaTrophy size={24} />}
                     ariaLabel="Achievements menu"
@@ -340,13 +324,16 @@ const Navbar = () => {
                     alignRight={true}
                   />
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-md:hidden  text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden  text-[var(--secondary-color)]'>
                   <Dropdown
-                    label={<img src={profileAvatarSrc} alt="Profile" width={28} height={28} style={{ borderRadius: '9999px', objectFit: 'cover', border: '2px solid var(--secondary-color)' }} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />}
+                    label={<img src={profileAvatarSrc} alt="Profile" width={28} height={28} style={{ borderRadius: '9999px', objectFit: 'cover', border: '2px solid var(--secondary-color)', background: '#edf2f4' }} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />}
                     ariaLabel="Profile menu"
                     items={profileItems}
                     alignRight={true}
                   />
+                </li>
+                <li className='pl-6'>
+                  <PremiumButton premium={premium}></PremiumButton>
                 </li>
                 <li className='pl-6 lg:pl-4'>
                   <button
@@ -357,7 +344,7 @@ const Navbar = () => {
                     aria-expanded={sidebarOpen}
                     aria-controls="mobile-navigation"
                   >
-                    <FaBars size={24} className='hidden max-md:block' aria-hidden="true" />
+                    <FaBars size={24} className='hidden max-lg:block' aria-hidden="true" />
                   </button>
                 </li>
               </ul>

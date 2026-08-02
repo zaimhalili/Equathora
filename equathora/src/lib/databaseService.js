@@ -1,8 +1,10 @@
 import { supabase } from './supabaseClient';
+import { calculateProblemXP } from './leaderboardService';
+import { FaArrowAltCircleDown } from 'react-icons/fa';
 
 /**
  * Database service for user progress using Supabase
- * Replaces localStorage-based progressStorage
+ * Fully replaces localStorage-based progressStorage — no localStorage calls anywhere in this file.
  */
 
 // ============================================================================
@@ -20,14 +22,8 @@ export async function getUserProgress() {
             .eq('user_id', session.user.id)
             .maybeSingle();
 
-        // PostgREST returns 406 when no rows with single(); maybeSingle avoids that
         if (error) throw error;
-
-        // Return default if no data
-        if (!data) {
-            return createDefaultProgress();
-        }
-
+        if (!data) return createDefaultProgress();
         return data;
     } catch (error) {
         console.error('Error getting user progress:', error);
@@ -68,6 +64,7 @@ function createDefaultProgress() {
         reputation: 0,
         accuracy_rate: 0,
         last_reputation_streak: 0,
+        total_xp: 0,
         account_created: Date.now()
     };
 }
@@ -88,10 +85,8 @@ export async function getCompletedProblems() {
 
         if (error) throw error;
 
-        // Clean corrupted data: extract IDs from both simple strings and JSON objects
         const cleanedIds = (data || []).map(item => {
             const pid = item.problem_id;
-            // If it's a JSON string, parse it and extract problemId
             if (typeof pid === 'string' && pid.startsWith('{')) {
                 try {
                     const parsed = JSON.parse(pid);
@@ -101,23 +96,18 @@ export async function getCompletedProblems() {
                     return null;
                 }
             }
-            // Otherwise use as is
             return String(pid);
         }).filter(id => id !== null && id !== '');
 
-        // Ensure we only return UNIQUE problem IDs to prevent duplicate counts
         let uniqueProblemIds = [...new Set(cleanedIds)];
 
-        // If we found duplicates, clean them up in the database
         if (cleanedIds.length > uniqueProblemIds.length) {
             console.log(`Found ${cleanedIds.length - uniqueProblemIds.length} duplicate problem entries, cleaning up...`);
-            // Delete all entries for this user first
             await supabase
                 .from('user_completed_problems')
                 .delete()
                 .eq('user_id', session.user.id);
 
-            // Re-insert only unique entries
             if (uniqueProblemIds.length > 0) {
                 const uniqueEntries = uniqueProblemIds.map(pid => ({
                     user_id: session.user.id,
@@ -131,7 +121,6 @@ export async function getCompletedProblems() {
             }
         }
 
-        // Fallback: If user_completed_problems is empty, check user_progress.solved_problems for legacy data
         if (uniqueProblemIds.length === 0) {
             const { data: progressRow } = await supabase
                 .from('user_progress')
@@ -143,7 +132,6 @@ export async function getCompletedProblems() {
                 uniqueProblemIds = progressRow.solved_problems.map(id => String(id));
                 console.log(`Loaded ${uniqueProblemIds.length} solved problems from user_progress fallback`);
 
-                // Migrate this data to user_completed_problems for consistency
                 const entries = uniqueProblemIds.map(pid => ({
                     user_id: session.user.id,
                     problem_id: pid,
@@ -160,30 +148,6 @@ export async function getCompletedProblems() {
     } catch (error) {
         console.error('Error getting completed problems:', error);
         return [];
-    }
-}
-
-export async function recordSubmission(problemId, submittedAnswer, isCorrect, timeSpentSeconds, metadata = {}) {
-    // Best-effort: persist the submission only.
-    // Counter increments are handled by recordProblemStats in progressStorage.js
-    try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return;
-
-        const normalizedProblemId = String(problemId);
-
-        await saveSubmission(
-            normalizedProblemId,
-            submittedAnswer,
-            Boolean(isCorrect),
-            Number.isFinite(timeSpentSeconds) ? timeSpentSeconds : 0,
-            metadata
-        );
-
-        // Note: Do NOT update progress counters here.
-        // That is handled by recordProblemStats in progressStorage.js to avoid double-counting.
-    } catch (error) {
-        console.error('Error recording submission:', error);
     }
 }
 
@@ -231,7 +195,6 @@ export async function getFavorites() {
     }
 }
 
-// Alias for consistency
 export const getFavoriteProblems = getFavorites;
 
 export async function toggleFavorite(problemId) {
@@ -239,7 +202,6 @@ export async function toggleFavorite(problemId) {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return false;
 
-        // Check if already favorited
         const { data: existing } = await supabase
             .from('user_favorites')
             .select('id')
@@ -248,7 +210,6 @@ export async function toggleFavorite(problemId) {
             .single();
 
         if (existing) {
-            // Remove from favorites
             const { error } = await supabase
                 .from('user_favorites')
                 .delete()
@@ -256,9 +217,8 @@ export async function toggleFavorite(problemId) {
                 .eq('problem_id', problemId);
 
             if (error) throw error;
-            return false; // now unfavorited
+            return false;
         } else {
-            // Add to favorites
             const { error } = await supabase
                 .from('user_favorites')
                 .insert({
@@ -267,7 +227,7 @@ export async function toggleFavorite(problemId) {
                 });
 
             if (error) throw error;
-            return true; // now favorited
+            return true;
         }
     } catch (error) {
         console.error('Error toggling favorite:', error);
@@ -312,9 +272,7 @@ const getUtcDayDiff = (fromDateKey, toDateKey) => {
     const from = new Date(`${fromDateKey}T00:00:00.000Z`);
     const to = new Date(`${toDateKey}T00:00:00.000Z`);
 
-    if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime())) {
-        return null;
-    }
+    if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime())) return null;
 
     return Math.floor((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24));
 };
@@ -366,11 +324,7 @@ export async function updateStreakForCorrectSolve() {
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
-            return {
-                ...createDefaultStreak(),
-                previous_streak: 0,
-                incremented: false
-            };
+            return { ...createDefaultStreak(), previous_streak: 0, incremented: false };
         }
 
         const todayKey = toUtcDateKey(new Date());
@@ -448,11 +402,7 @@ export async function updateStreakForCorrectSolve() {
         };
     } catch (error) {
         console.error('Error updating streak for correct solve:', error);
-        return {
-            ...createDefaultStreak(),
-            previous_streak: 0,
-            incremented: false
-        };
+        return { ...createDefaultStreak(), previous_streak: 0, incremented: false };
     }
 }
 
@@ -469,56 +419,24 @@ function createDefaultStreak() {
 // SUBMISSIONS
 // ============================================================================
 
-export async function saveSubmission(problemId, submittedAnswer, isCorrect, timeSpentSeconds, metadata = {}) {
+export async function saveSubmission(problemId, submittedAnswer, isCorrect, timeSpentSeconds, metadata = {}, steps = []) {
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
 
-        const basePayload = {
-            user_id: session.user.id,
-            problem_id: problemId,
-            submitted_answer: submittedAnswer,
-            is_correct: isCorrect,
-            time_spent_seconds: timeSpentSeconds,
-            submitted_at: new Date().toISOString()
-        };
+        const { error } = await supabase
+            .from('user_submissions')
+            .insert({
+                user_id: session.user.id,
+                problem_id: problemId,
+                submitted_answer: submittedAnswer,
+                is_correct: isCorrect,
+                time_spent_seconds: timeSpentSeconds,
+                submitted_at: new Date().toISOString(),
+                steps: steps,
+            });
 
-        const normalizedTopic = typeof metadata.topic === 'string' ? metadata.topic.trim() : '';
-        const normalizedDifficulty = typeof metadata.difficulty === 'string' ? metadata.difficulty.trim() : '';
-
-        const hasAnalyticsMetadata = Boolean(normalizedTopic || normalizedDifficulty);
-        const payloadCandidates = hasAnalyticsMetadata
-            ? [
-                {
-                    ...basePayload,
-                    ...(normalizedTopic ? { topic: normalizedTopic, problem_topic: normalizedTopic } : {}),
-                    ...(normalizedDifficulty ? { difficulty: normalizedDifficulty, problem_difficulty: normalizedDifficulty } : {})
-                },
-                {
-                    ...basePayload,
-                    ...(normalizedTopic ? { topic: normalizedTopic } : {}),
-                    ...(normalizedDifficulty ? { difficulty: normalizedDifficulty } : {})
-                },
-                {
-                    ...basePayload,
-                    ...(normalizedTopic ? { problem_topic: normalizedTopic } : {}),
-                    ...(normalizedDifficulty ? { problem_difficulty: normalizedDifficulty } : {})
-                },
-                basePayload
-            ]
-            : [basePayload];
-
-        let lastError = null;
-        for (const candidate of payloadCandidates) {
-            const { error } = await supabase
-                .from('user_submissions')
-                .insert(candidate);
-
-            if (!error) return;
-            lastError = error;
-        }
-
-        if (lastError) throw lastError;
+        if (error) throw error;
     } catch (error) {
         console.error('Error saving submission:', error);
     }
@@ -563,7 +481,6 @@ export async function getTopicFrequency() {
             .eq('user_id', session.user.id);
 
         if (error) throw error;
-
         return data || [];
     } catch (error) {
         console.error('Error getting topic frequency:', error);
@@ -576,7 +493,6 @@ export async function incrementTopicFrequency(topic) {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
 
-        // Check if topic exists
         const { data: existing } = await supabase
             .from('user_topic_frequency')
             .select('count')
@@ -585,26 +501,17 @@ export async function incrementTopicFrequency(topic) {
             .single();
 
         if (existing) {
-            // Increment
             const { error } = await supabase
                 .from('user_topic_frequency')
-                .update({
-                    count: existing.count + 1,
-                    updated_at: new Date().toISOString()
-                })
+                .update({ count: existing.count + 1, updated_at: new Date().toISOString() })
                 .eq('user_id', session.user.id)
                 .eq('topic', topic);
 
             if (error) throw error;
         } else {
-            // Insert new
             const { error } = await supabase
                 .from('user_topic_frequency')
-                .insert({
-                    user_id: session.user.id,
-                    topic,
-                    count: 1
-                });
+                .insert({ user_id: session.user.id, topic, count: 1 });
 
             if (error) throw error;
         }
@@ -652,7 +559,6 @@ export async function incrementWeeklyProgress(dayIndex) {
 
         const weekStart = getWeekStartDate();
 
-        // Check if entry exists
         const { data: existing } = await supabase
             .from('user_weekly_progress')
             .select('count')
@@ -662,28 +568,18 @@ export async function incrementWeeklyProgress(dayIndex) {
             .single();
 
         if (existing) {
-            // Increment
             const { error } = await supabase
                 .from('user_weekly_progress')
-                .update({
-                    count: existing.count + 1,
-                    updated_at: new Date().toISOString()
-                })
+                .update({ count: existing.count + 1, updated_at: new Date().toISOString() })
                 .eq('user_id', session.user.id)
                 .eq('day_index', dayIndex)
                 .eq('week_start_date', weekStart);
 
             if (error) throw error;
         } else {
-            // Insert new
             const { error } = await supabase
                 .from('user_weekly_progress')
-                .insert({
-                    user_id: session.user.id,
-                    day_index: dayIndex,
-                    count: 1,
-                    week_start_date: weekStart
-                });
+                .insert({ user_id: session.user.id, day_index: dayIndex, count: 1, week_start_date: weekStart });
 
             if (error) throw error;
         }
@@ -695,7 +591,6 @@ export async function incrementWeeklyProgress(dayIndex) {
 function getWeekStartDate() {
     const now = new Date();
     const dayOfWeek = now.getDay();
-    // Monday = 0 index in our graph (Mon-Sun), JS getDay() returns 0=Sun,1=Mon...
     const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
     const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff);
     return weekStart.toISOString().split('T')[0];
@@ -747,7 +642,6 @@ export async function incrementDifficultyBreakdown(difficulty) {
 
         const difficultyBucket = normalizeDifficultyBucket(difficulty);
 
-        // Check if entry exists
         const { data: existing } = await supabase
             .from('user_difficulty_breakdown')
             .select('count')
@@ -756,26 +650,17 @@ export async function incrementDifficultyBreakdown(difficulty) {
             .single();
 
         if (existing) {
-            // Increment
             const { error } = await supabase
                 .from('user_difficulty_breakdown')
-                .update({
-                    count: existing.count + 1,
-                    updated_at: new Date().toISOString()
-                })
+                .update({ count: existing.count + 1, updated_at: new Date().toISOString() })
                 .eq('user_id', session.user.id)
                 .eq('difficulty', difficultyBucket);
 
             if (error) throw error;
         } else {
-            // Insert new
             const { error } = await supabase
                 .from('user_difficulty_breakdown')
-                .insert({
-                    user_id: session.user.id,
-                    difficulty: difficultyBucket,
-                    count: 1
-                });
+                .insert({ user_id: session.user.id, difficulty: difficultyBucket, count: 1 });
 
             if (error) throw error;
         }
@@ -785,7 +670,49 @@ export async function incrementDifficultyBreakdown(difficulty) {
 }
 
 // ============================================================================
-// HELPER: Get full achievement progress snapshot
+// SOLUTION VIEWS / IN-PROGRESS
+// ============================================================================
+
+export async function hasViewedSolutionDb(problemId) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return false;
+    const { data } = await supabase
+        .from('user_solution_views')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .eq('problem_id', String(problemId))
+        .maybeSingle();
+    return !!data;
+}
+
+export async function markSolutionViewedDb(problemId) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+    await supabase
+        .from('user_solution_views')
+        .upsert({ user_id: session.user.id, problem_id: String(problemId) }, { onConflict: 'user_id,problem_id' });
+}
+
+export async function markProblemInProgressDb(problemId) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+    await supabase
+        .from('user_in_progress_problems')
+        .upsert({ user_id: session.user.id, problem_id: String(problemId) }, { onConflict: 'user_id,problem_id' });
+}
+
+export async function removeProblemFromInProgressDb(problemId) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+    await supabase
+        .from('user_in_progress_problems')
+        .delete()
+        .eq('user_id', session.user.id)
+        .eq('problem_id', String(problemId));
+}
+
+// ============================================================================
+// ACHIEVEMENT PROGRESS SNAPSHOT
 // ============================================================================
 
 export async function getAchievementProgress() {
@@ -818,3 +745,236 @@ export async function getAchievementProgress() {
         return createDefaultProgress();
     }
 }
+
+// ============================================================================
+// PROBLEM STATS - This function is called after a problem submission to update all relevant stats in the database
+// ============================================================================
+
+const formatHoursMinutes = (totalMinutes) => {
+    const minutes = Math.max(0, Math.round(totalMinutes));
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}m`;
+};
+
+const getWeekdayIndex = (date) => {
+    const day = new Date(date).getDay();
+    return day === 0 ? 6 : day - 1; // Monday -> 0 ... Sunday -> 6
+};
+
+export async function recordProblemStats(
+    problem,
+    {
+        isCorrect = false,
+        timeSpentSeconds = 0,
+        timestamp = new Date().toISOString(),
+        attemptNumber = 1,
+        streakData = null,
+        hintsUsed = 0,
+        solutionViewed = false
+    } = {}
+) {
+    if (!problem) return null;
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return null;
+    const userId = session.user.id;
+
+    const completedIds = await getCompletedProblems();
+    const alreadySolved = completedIds.includes(String(problem.id));
+    if (alreadySolved && isCorrect) {
+        console.log('Practice mode submission, skipping stats update for problem', problem.id);
+        return null;
+    }
+
+    const { data: dbProgress, error: fetchError } = await supabase
+        .from('user_progress')
+        .select('*')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+    if (fetchError) {
+        console.error('Failed to fetch user_progress:', fetchError);
+    }
+
+    const currentTotalAttempts = Number(dbProgress?.total_attempts ?? 0);
+    const currentCorrectAnswers = Number(dbProgress?.correct_answers ?? 0);
+    const currentWrongSubmissions = Number(dbProgress?.wrong_submissions ?? 0);
+    const currentPerfectStreak = Number(dbProgress?.perfect_streak ?? 0);
+    const currentReputation = Number(dbProgress?.reputation ?? 0);
+    const currentLastReputationStreak = Number(dbProgress?.last_reputation_streak ?? 0);
+    const currentTotalXP = Number(dbProgress?.total_xp ?? 0);
+    const currentTimeMinutes = Number(dbProgress?.total_time_minutes ?? 0);
+
+    const totalAttempts = currentTotalAttempts + 1;
+    let correctAnswers = currentCorrectAnswers;
+    let wrongSubmissions = currentWrongSubmissions;
+    let perfectStreak = currentPerfectStreak;
+    let reputation = currentReputation;
+    let lastReputationStreak = currentLastReputationStreak;
+
+    if (isCorrect) {
+        if (!alreadySolved) correctAnswers += 1;
+        wrongSubmissions = currentWrongSubmissions;
+    } else {
+        wrongSubmissions += 1;
+    }
+
+    const correctSubmissions = totalAttempts - wrongSubmissions;
+    const accuracyRate = totalAttempts > 0
+        ? Math.round((correctSubmissions / totalAttempts) * 100)
+        : 0;
+
+    let problemXP = 0;
+    if (isCorrect && !alreadySolved) {
+        const xpResult = calculateProblemXP(
+            problem.difficulty,
+            timeSpentSeconds,
+            attemptNumber === 1,
+            hintsUsed,
+            solutionViewed
+        );
+        problemXP = xpResult.totalXP;
+    }
+    const totalXP = currentTotalXP + problemXP;
+
+    const minutesSpent = Math.max(1, Math.round(timeSpentSeconds / 60));
+    const updatedTotalTimeMinutes = currentTimeMinutes + minutesSpent;
+
+    if (isCorrect && !alreadySolved && attemptNumber === 1) {
+        perfectStreak += 1;
+    } else if (!isCorrect) {
+        perfectStreak = 0;
+    }
+
+    if (isCorrect && !alreadySolved) {
+        reputation += 20;
+    }
+    if (streakData && typeof streakData.current === 'number') {
+        const previous = lastReputationStreak || 0;
+        if (streakData.current > previous) {
+            reputation += (streakData.current - previous) * 2;
+            lastReputationStreak = streakData.current;
+        }
+    }
+
+    const { error: upsertError } = await supabase
+        .from('user_progress')
+        .upsert({
+            user_id: userId,
+            total_attempts: totalAttempts,
+            correct_answers: correctAnswers,
+            wrong_submissions: wrongSubmissions,
+            accuracy_rate: accuracyRate,
+            reputation,
+            perfect_streak: perfectStreak,
+            last_reputation_streak: lastReputationStreak,
+            total_xp: totalXP,
+            total_time_minutes: updatedTotalTimeMinutes,
+            updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
+
+    if (upsertError) {
+        console.error('Failed to upsert user_progress:', upsertError);
+    }
+
+    const weekdayIndex = getWeekdayIndex(timestamp);
+    if (isCorrect && !alreadySolved) {
+        try { await incrementWeeklyProgress(weekdayIndex); }
+        catch (e) { console.error('Failed to increment weekly progress:', e); }
+    }
+
+    const topicKey = problem.topic || 'General Concepts';
+    if (isCorrect && !alreadySolved) {
+        try { await incrementTopicFrequency(topicKey); }
+        catch (e) { console.error('Failed to increment topic frequency:', e); }
+    }
+
+    if (isCorrect && !alreadySolved) {
+        try { await incrementDifficultyBreakdown(problem.difficulty); }
+        catch (e) { console.error('Failed to increment difficulty breakdown:', e); }
+    }
+
+    return {
+        totalAttempts,
+        correctAnswers,
+        wrongSubmissions,
+        accuracyRate,
+        reputation,
+        perfectStreak,
+        totalXP,
+        totalTimeMinutes: updatedTotalTimeMinutes,
+        totalTimeSpent: formatHoursMinutes(updatedTotalTimeMinutes)
+    };
+}
+
+// ============================================================================
+// GET USER STATS — used by achievement checks, fully Supabase
+// ============================================================================
+
+export async function getUserStats() {
+    return await getAchievementProgress();
+}
+
+export async function getInProgressProblemsDb() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return [];
+    const { data } = await supabase
+        .from('user_in_progress_problems')
+        .select('problem_id')
+        .eq('user_id', session.user.id);
+    return (data || []).map(r => String(r.problem_id));
+}
+
+// Get started onboarding supabase calls
+
+// Student Profile Methods
+export async function getStudentProfile() {
+    try {
+        const {
+            data: { user }
+        } = await supabase.auth.getUser();
+
+        const { data, error } = await supabase
+            .from('student_profile')
+            .select(`
+                onboarding_completed,
+                goal,
+                level,
+                weekly_commitment,
+                preferred_challenge,
+                adaptive_learning_enabled
+            `)
+            .eq('id', user.id)
+            .single();
+
+        if (error) throw error;
+
+        return data;
+    } catch (error) {
+        console.error("Error getting student profile:", error);
+        return null;
+    }
+}
+
+// Student Topics Methods
+export async function getStudentTopics() {
+    try {
+        const {
+            data: { user }
+        } = await supabase.auth.getUser();
+
+        const { data, error } = await supabase
+            .from('student_topics')
+            .select('topic')
+            .eq('student_id', user.id);
+
+        if (error) throw error;
+
+        return data;
+    } catch (error) {
+        console.error("Error getting student topics:", error);
+        return [];
+    }
+}
+

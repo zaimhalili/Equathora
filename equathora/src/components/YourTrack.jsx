@@ -1,80 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import LilArrow from '../assets/images/lilArrow.svg';
 import { Link } from 'react-router-dom';
-import { getUserProgress, getStreakData, getCompletedProblems } from '../lib/databaseService';
-import { getAllProblems } from '../lib/problemService';
-import { supabase } from '../lib/supabaseClient';
-import { computeAccuracyFromSubmissions } from '../lib/accuracyService';
+import { useUserStats } from '../context/UserStatsContext';
 import { FaArrowRight } from 'react-icons/fa';
 
-const fallbackStats = {
-    problemsSolved: 0,
-    accuracy: 0,
-    currentStreak: 0,
-    longestStreak: 0,
-    totalProblems: 30
-};
-
-const YourTrack = () => {
-    const [stats, setStats] = useState({
-        problemsSolved: 0,
-        accuracy: 0,
-        currentStreak: 0,
-        longestStreak: 0,
-        totalProblems: 5,
-        totalAttempts: 0
-    });
-
-    useEffect(() => {
-        const fetchStats = async () => {
-            try {
-                const { data: { session } } = await supabase.auth.getSession();
-                if (!session) return;
-
-                // Fetch from database
-                const [userProgress, streakData, allProblems, completedProblemIds, submissionsResponse] = await Promise.all([
-                    getUserProgress(),
-                    getStreakData(),
-                    getAllProblems(),
-                    getCompletedProblems(),
-                    supabase
-                        .from('user_submissions')
-                        .select('problem_id, is_correct')
-                        .eq('user_id', session.user.id)
-                ]);
-
-                const totalProblems = allProblems.length || 0;
-                const validProblemIds = new Set((allProblems || []).map(p => String(p.id)));
-                const solved = (completedProblemIds || []).filter(id => validProblemIds.has(String(id))).length;
-                const submissions = submissionsResponse?.data || [];
-                const accuracyStats = computeAccuracyFromSubmissions({
-                    submissions,
-                    validProblemIds,
-                    solvedCount: solved
-                });
-
-                setStats({
-                    problemsSolved: solved,
-                    accuracy: accuracyStats.accuracy,
-                    currentStreak: streakData?.current_streak || 0,
-                    longestStreak: streakData?.longest_streak || 0,
-                    totalProblems: totalProblems,
-                    totalAttempts: accuracyStats.total
-                });
-            } catch (error) {
-                console.error('Failed to fetch stats:', error);
-            }
-        };
-
-        fetchStats();
-
-        // Refresh on focus
-        window.addEventListener('focus', fetchStats);
-        return () => window.removeEventListener('focus', fetchStats);
-    }, []);
+const YourTrack = ({ premium, loading }) => {
+    const { stats } = useUserStats();
 
     const solved = stats.problemsSolved;
-    const total = stats.totalProblems;
+    const total = stats.totalProblems || 5;
     const percentage = Math.min(100, (solved / (total || 1)) * 100);
     const nextMilestone = solved >= total
         ? total
@@ -99,7 +33,8 @@ const YourTrack = () => {
                     <h3 className="font-[Sansation] text-[var(--secondary-color)] text-2xl font-bold">
                         Your Track
                     </h3>
-                    <span className="text-sm font-semibold text-[var(--dark-accent-color)] px-3 py-1 rounded-md bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white">
+                    <span className={`text-sm font-semibold px-3 py-1 rounded-md bg-gradient-to-br 
+                        ${premium ? 'from-amber-600 to-amber-400' : 'text-[var(--dark-accent-color)] from-[rgba(237,242,244,0.8)] to-white'}`}>
                         Level {level}
                     </span>
                 </div>
@@ -107,11 +42,11 @@ const YourTrack = () => {
                 {/* Progress Bar */}
                 <div className="flex items-center justify-between w-full gap-3 p-0">
                     <Link
-                        to="/tracks"
+                        to="/journey"
                         className="flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group"
                     >
                         <div
-                            className="h-full rounded-md bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] transition-all duration-500 relative"
+                            className={`h-full rounded-tr-md rounded-br-md bg-gradient-to-r transition-all duration-500 relative ${premium ? 'from-amber-600 to-amber-400' : 'from-[var(--accent-color)] to-[var(--dark-accent-color)]'}`}
                             role="progressbar"
                             aria-label={progressLabel}
                             aria-valuenow={Math.round(percentage)}
@@ -119,11 +54,10 @@ const YourTrack = () => {
                             aria-valuemax={100}
                             style={{ width: `${percentage}%` }}
                         >
-                            <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
                         </div>
                     </Link>
                     <Link
-                        to="/tracks"
+                        to="/journey"
                         className="w-10 h-10 flex items-center justify-center transition-transform duration-150 ease-in hover:translate-x-2 hover:scale-110"
                     >
                         <FaArrowRight className='h-full w-full text-white' />
@@ -143,7 +77,8 @@ const YourTrack = () => {
 
                 {/* Mini Stats Grid */}
                 <div className="grid grid-cols-3 gap-3 pt-2 p-0 md:max-w-1/2 justify-items-center lg:justify-items-start theme-lock">
-                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full">
+                    <div className={`bg-gradient-to-br rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
+                        ${premium ? 'from-amber-500 to-amber-200 font-bold' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Current Streak</div>
                         <div className="text-2xl font-bold text-[var(--accent-color)] flex items-center gap-1 justify-center lg:justify-start">
                             <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
@@ -158,7 +93,8 @@ const YourTrack = () => {
                             {currentStreak}
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full">
+                    <div className={`bg-gradient-to-br rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
+                        ${premium ? 'from-amber-500 to-amber-200' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Best Streak</div>
                         <div className="text-2xl font-bold text-[var(--secondary-color)] flex items-center gap-1 justify-center lg:justify-start">
                             <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
@@ -173,7 +109,8 @@ const YourTrack = () => {
                             {bestStreak}
                         </div>
                     </div>
-                    <div className="bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full">
+                    <div className={`bg-gradient-to-br rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
+                        ${premium ? 'from-amber-500 to-amber-200' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Accuracy</div>
                         <div className="text-2xl font-bold text-[var(--secondary-color)] justify-center lg:justify-start flex">
                             {avgAccuracy === null ? 'N/A' : `${avgAccuracy}%`}

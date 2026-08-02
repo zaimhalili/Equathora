@@ -1,6 +1,5 @@
 import React, { lazy, Suspense, useEffect, useMemo } from "react";
 import { Analytics } from "@vercel/analytics/react";
-
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -13,11 +12,10 @@ import { getUserSettings } from "./lib/notificationService";
 import AuthCallback from "./pages/AuthCallback";
 import {
     normalizeThemePreference,
-    getStoredThemePreference,
     setThemePreference,
     syncThemeWithSystemPreference
 } from "./lib/theme";
-import { useAuth } from "./hooks/useAuth";
+import { useAuth, getOnboardingStatus } from "./hooks/useAuth";
 import { trackActivityEvent, trackDailyActivity } from "./lib/activityTrackingService";
 import {
     initPostHog,
@@ -36,7 +34,6 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Problem = lazy(() => import("./pages/Problem"));
 const More = lazy(() => import("./pages/More"));
 const Learn = lazy(() => import("./pages/Learn"));
-const Discover = lazy(() => import("./pages/Discover"));
 const ApplyMentor = lazy(() => import("./pages/ApplyMentor"));
 const HelpCenter = lazy(() => import("./pages/HelpCenter"));
 const SystemUpdates = lazy(() => import("./pages/SystemUpdates"));
@@ -46,8 +43,6 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogList = lazy(() => import("./pages/BlogList"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
-const SubmitProblem = lazy(() => import("./pages/SubmitProblem/SubmitProblem"));
-const Recommended = lazy(() => import("./pages/Recommended"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -65,21 +60,20 @@ const Resend = lazy(() => import("./pages/Resend"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const Premium = lazy(() => import("./pages/Premium/Premium"));
-const Tracks = lazy(() => import("./pages/Tracks"));
+const Journey = lazy(() => import("./pages/Journey"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const EquathoraBriefs = lazy(() => import("./pages/EquathoraBriefs"));
-const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard"));
 
 function HomeRoute() {
-    const { loading, isAuth } = useAuth();
+    const { loading, isAuth, onboardingCompleted } = useAuth();
 
     if (loading) {
         return <LoadingSpinner />;
     }
 
     if (isAuth) {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to={onboardingCompleted ? "/dashboard" : "/getStarted"} replace />;
     }
 
     return <Landing />;
@@ -101,8 +95,7 @@ function PageTitleUpdater() {
             '/feedback': 'Share Feedback - Equathora',
             '/applymentor': 'Become a Mentor - Equathora',
             '/leaderboards': 'Top Solvers - Equathora',
-            '/discover': 'Explore More - Equathora',
-            '/tracks': 'Tracks - Equathora',
+            '/journey': 'Your Journey - Equathora',
             '/notifications': 'Updates - Equathora',
             '/settings': 'Your Settings - Equathora',
             '/premium': 'Go Premium - Equathora',
@@ -117,14 +110,12 @@ function PageTitleUpdater() {
             '/pageNotFound': '404 - Page Not Found - Equathora',
             '/blog': 'Blog - Equathora',
             '/blogs': 'All Posts - Equathora',
-            '/adminDashboard': 'Admin Dashboard - Equathora',
-            '/recommended': 'Recommended Path - Equathora',
             '/getStarted': 'Choose Your Path - Equathora',
-            '/submitProblem': 'Submit a problem - Equathora',
+            '/submit-problem': 'Submit a problem - Equathora',
         };
 
         const matchedRoute = Object.keys(pageTitles).find(route =>
-            location.pathname === route || location.pathname.startsWith(route + '/')
+            location.pathname === route || (route !== '/' && location.pathname.startsWith(route + '/'))
         );
 
         document.title = pageTitles[matchedRoute] || 'Equathora - Master Math Through Practice';
@@ -143,7 +134,10 @@ export default function App() {
     }, [location.search]);
 
     const canUseSpeedInsights = useMemo(() => {
-        const isEnabled = import.meta.env.VITE_ENABLE_SPEED_INSIGHTS === "true";
+        const isEnabled =
+            import.meta.env.PROD ||
+            import.meta.env.VITE_ENABLE_SPEED_INSIGHTS === "true";
+
         if (!isEnabled || typeof window === "undefined") {
             return false;
         }
@@ -162,7 +156,6 @@ export default function App() {
         initPostHog();
     }, []);
 
-
     useEffect(() => {
         const cleanupSystemThemeSync = syncThemeWithSystemPreference();
         return cleanupSystemThemeSync;
@@ -178,12 +171,8 @@ export default function App() {
 
                 const userSettings = await getUserSettings();
                 if (isDisposed) return;
-                const storedPreference = getStoredThemePreference();
                 const normalizedTheme = normalizeThemePreference(userSettings?.theme);
-                const nextTheme = (normalizedTheme === 'system' && storedPreference !== 'system')
-                    ? storedPreference
-                    : normalizedTheme;
-                setThemePreference(nextTheme, { persist: true });
+                setThemePreference(normalizedTheme, { persist: true });
             } catch (error) {
                 console.error("Error syncing theme preference:", error);
             }
@@ -202,26 +191,20 @@ export default function App() {
         });
     }, [location.pathname]);
 
-    // Handle OAuth callback and redirect to dashboard
     useEffect(() => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_IN' && session) {
                 void (async () => {
                     try {
                         const userSettings = await getUserSettings();
-                        const storedPreference = getStoredThemePreference();
                         const normalizedTheme = normalizeThemePreference(userSettings?.theme);
-                        const nextTheme = (normalizedTheme === 'system' && storedPreference !== 'system')
-                            ? storedPreference
-                            : normalizedTheme;
-                        setThemePreference(nextTheme, { persist: true });
+                        setThemePreference(normalizedTheme, { persist: true });
                     } catch (error) {
                         console.error('Error syncing signed-in theme preference:', error);
                     }
                 })();
 
                 identifyPostHogUser(session.user);
-
 
                 void capturePostHogEvent('user_signed_in', {
                     email: session.user?.email || null
@@ -230,10 +213,12 @@ export default function App() {
                     route: window.location.pathname
                 });
 
-                // Check if we're not already on dashboard or a protected route
                 const currentPath = window.location.pathname;
                 if (currentPath === '/' || currentPath === '/login' || currentPath === '/signup') {
-                    navigate('/dashboard', { replace: true });
+                    void (async () => {
+                        const { onboardingCompleted } = await getOnboardingStatus(session.user.id);
+                        navigate(onboardingCompleted ? '/dashboard' : '/getStarted', { replace: true });
+                    })();
                 }
             }
 
@@ -250,12 +235,9 @@ export default function App() {
         void trackDailyActivity();
     }, [location.pathname]);
 
-
-
     return (
         <>
             <PageTitleUpdater />
-            {/* <OverflowChecker /> */}
             <Suspense fallback={<LoadingSpinner />}>
                 <div id="main-content" tabIndex={-1} className="outline-none">
                     <Routes>
@@ -279,33 +261,28 @@ export default function App() {
                         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="/terms-of-service" element={<TermsOfService />} />
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
-                        {/* <Route path="/recommended" element={<Recommended />} /> */}
-                        {/* <Route path="/getStarted" element={<GetStarted />} /> */}
-                        {/* <Route path="/premium" element={<Premium />} /> */}
 
+                        {/* Protected Onboarding Flow (Allows access when logged in) */}
+                        <Route path="/getStarted" element={<ProtectedRoute><GetStarted /></ProtectedRoute>} />
+                        <Route path="/premium" element={<Premium />} />
 
-                        {/* Protected Routes - Require Authentication */}
+                        {/* Protected Routes */}
                         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                         <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
                         <Route path="/learn" element={<Learn />} />
                         <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
                         <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
-                        {/* <Route path="/discover" element={<ProtectedRoute><Discover /></ProtectedRoute>} /> */}
-                        <Route path="/tracks" element={<ProtectedRoute><Tracks /></ProtectedRoute>} />
+                        <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />
                         <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
                         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-                        <Route path="/adminDashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>}></Route>
-                        <Route path="/submit-problem" element={<AdminRoute><SubmitProblem /></AdminRoute>}></Route>
-
-
 
                         {/* Protected Nested Routes */}
                         <Route path="/leaderboards" element={<ProtectedRoute><LeaderboardsLayout /></ProtectedRoute>}>
+                            <Route index element={<Navigate to="global" replace />} />
                             <Route path="global" element={<GlobalLeaderboard />} />
                             <Route path="friends" element={<FriendsLeaderboard />} />
                             <Route path="top-solvers" element={<TopSolversLeaderboard />} />
                         </Route>
-
 
                         <Route path="/achievements" element={<ProtectedRoute><AchievementsLayout /></ProtectedRoute>}>
                             <Route index element={<RecentAchievements />} />
@@ -314,7 +291,7 @@ export default function App() {
                             <Route path="events" element={<SpecialEvents />} />
                         </Route>
 
-                        {/* Protected Dynamic Routes */}
+                        {/* Dynamic Routes */}
                         <Route path="/problems/:slug" element={<ProtectedRoute><Problem /></ProtectedRoute>} />
                         <Route path="/profile/:profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 

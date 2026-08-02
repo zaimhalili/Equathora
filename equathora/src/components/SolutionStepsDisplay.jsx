@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import MathJaxRenderer from './MathJaxRenderer';
+import { FaSpinner } from 'react-icons/fa';
 
 /**
  * SolutionStepsDisplay — renders solution text as numbered steps
@@ -110,8 +111,9 @@ const SolutionStepsDisplay = ({ solution }) => {
 
     if (!solution) {
         return (
-            <div className="w-full font-[Sansation,sans-serif] p-4 text-sm text-[var(--secondary-color)] opacity-70">
-                Solution will be available soon.
+            <div className="w-full font-[Sansation,sans-serif] p-4 text-sm text-[var(--secondary-color)] opacity-70 flex gap-1 items-center">
+                <FaSpinner className='animate-spin'/>
+                Loading Solution...
             </div>
         );
     }
