@@ -235,7 +235,7 @@ const ApplyMentor = () => {
                 >
                     <div className='flex flex-col lg:flex-row items-center gap-8'>
                         <div className='flex-1 flex flex-col text-center lg:text-left gap-5'>
-                            <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-[var(--secondary-color)]/20 border border-[var(--[var(--white)]-color)]/50 rounded-full text-[var(--white)] text-xs font-semibold self-center lg:self-start'>
+                            <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-[var(--secondary-color)]/20 border border-[var(--white)]/50 rounded-full text-[var(--white)] text-xs font-semibold self-center lg:self-start'>
                                 COMING SOON
                             </div>
                             <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>

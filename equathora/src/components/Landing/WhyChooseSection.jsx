@@ -64,9 +64,9 @@ const WhyChooseSection = () => {
                             transition={{ duration: 0.5, ease: "easeOut" }}
                         >
                             <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold text-[var(--secondary-color)] leading-tight">
-                                Real learning, real{' '}
+                                We'll build you a{' '}
                                 <span className="text-[var(--secondary-color)] relative inline-block">
-                                    progress
+                                    customized plan
                                     <motion.svg
                                         className="absolute -bottom-1 left-0 w-full rotate-1"
                                         viewBox="0 0 200 8"
@@ -78,7 +78,7 @@ const WhyChooseSection = () => {
                                             d="M0 4 Q50 0 100 4 Q150 8 200 4"
                                             fill="none"
                                             stroke="var(--secondary-color)"
-                                            strokeWidth="6"
+                                            strokeWidth="4"
                                             strokeLinecap="round"
                                             initial={{ pathLength: 0 }}
                                             animate={{ pathLength: 1 }}
