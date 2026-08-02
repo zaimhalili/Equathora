@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './VerifyEmail.css';
 import '../components/Auth.css';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
-import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import { validatePassword } from "../utils/passwordUtil";
 
@@ -17,26 +16,36 @@ const ResetPassword = () => {
     const [isValidSession, setIsValidSession] = useState(false);
     const navigate = useNavigate();
 
-    // Check if user accessed via password reset link
     useEffect(() => {
-        const checkSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
+        // Listen for recovery state or active session via Auth State Change
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'PASSWORD_RECOVERY' || session) {
                 setIsValidSession(true);
+                setError('');
             } else {
+                setIsValidSession(false);
                 setError('Invalid or expired reset link. Please request a new one.');
             }
-        };
-        checkSession();
+        });
+
+        // Fallback session check for pre-parsed auth states
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                setIsValidSession(true);
+            }
+        });
+
+        return () => subscription.unsubscribe();
     }, []);
 
     async function handleResetPassword(e) {
         e.preventDefault();
+
         setError('');
         setMessage('');
 
         if (!isValidSession) {
-            setError('Invalid session. Please request a new reset link.');
+            setError('Invalid or expired session. Please request a new reset link.');
             return;
         }
 
@@ -64,102 +73,104 @@ const ResetPassword = () => {
                 return;
             }
 
-            setMessage('Password reset successfully! Redirecting...');
-            // Sign out and redirect to login for security
+            setMessage('Password reset successfully! Redirecting to login...');
+
+            // Sign out the temporary recovery session and navigate to login
             await supabase.auth.signOut();
             setTimeout(() => {
                 navigate('/login');
             }, 1500);
+
         } catch (err) {
-            setError('An unexpected error occurred');
+            setError('An unexpected error occurred. Please try again.');
             setLoading(false);
         }
     }
 
     return (
-        <>
-            <main id='body-verify'>
-                <section id='verify-container'>
-                    <div id='verify-logo-name'>
-                        <img src={Logo} alt="Logo" id='verify-logoIMG' className='w-70' />
-                    </div>
+        <main id='body-verify'>
+            <section id='verify-container'>
+                <div id='verify-logo-name'>
+                    <img src={Logo} alt="Logo" id='verify-logoIMG' className='w-70' />
+                </div>
 
-                    <div id='verify-text-container'>
-                        <h3>Reset your password</h3>
-                        <h6><br />Choose a new password for your account.</h6>
-                    </div>
+                <div id='verify-text-container'>
+                    <h3>Reset your password</h3>
+                    <h6><br />Choose a new password for your account.</h6>
+                </div>
 
-                    <form id='auth' onSubmit={handleResetPassword}>
-                        {error && (
-                            <div style={{
-                                backgroundColor: '#fee',
-                                border: '1px solid #fcc',
-                                borderRadius: '8px',
-                                padding: '12px 16px',
-                                marginBottom: '16px',
-                                color: '#c33',
-                                fontSize: '14px',
-                                fontFamily: 'Sansation, sans-serif'
-                            }}>
-                                {error}
-                            </div>
-                        )}
-
-                        {message && (
-                            <div style={{
-                                backgroundColor: '#efe',
-                                border: '1px solid #cfc',
-                                borderRadius: '8px',
-                                padding: '12px 16px',
-                                marginBottom: '16px',
-                                color: '#3c3',
-                                fontSize: '14px',
-                                fontFamily: 'Sansation, sans-serif'
-                            }}>
-                                {message}
-                            </div>
-                        )}
-
-                        <h5 className='typeOfInput'>NEW PASSWORD</h5>
-                        <input
-                            type="password"
-                            className='inputAuth'
-                            placeholder='Enter new password'
-                            minLength="6"
-                            maxLength="128"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                        />
-
-                        <h5 className='typeOfInput'>CONFIRM PASSWORD</h5>
-                        <input
-                            type="password"
-                            className='inputAuth'
-                            placeholder='Confirm new password'
-                            maxLength="128"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-
-                        <button type="submit" id="verify-btn" disabled={loading}>
-                            {loading ? 'Resetting...' : 'Reset Password'}
-                        </button>
-
-                        <div id='auth-other-options'>
-                            <p className='auth-other-options-text'>
-                                Remember your password?{' '}
-                                <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
-                                    Log In
-                                </Link>
-                            </p>
+                <form id='auth' onSubmit={handleResetPassword}>
+                    {error && (
+                        <div style={{
+                            backgroundColor: '#fee',
+                            border: '1px solid #fcc',
+                            borderRadius: '8px',
+                            padding: '12px 16px',
+                            marginBottom: '16px',
+                            color: '#c33',
+                            fontSize: '14px',
+                            fontFamily: 'Sansation, sans-serif'
+                        }}>
+                            {error}
                         </div>
-                    </form>
-                </section>
-                <aside id="background-container"><BackgroundPolygons /></aside>
-            </main>
-        </>
+                    )}
+
+                    {message && (
+                        <div style={{
+                            backgroundColor: '#efe',
+                            border: '1px solid #cfc',
+                            borderRadius: '8px',
+                            padding: '12px 16px',
+                            marginBottom: '16px',
+                            color: '#3c3',
+                            fontSize: '14px',
+                            fontFamily: 'Sansation, sans-serif'
+                        }}>
+                            {message}
+                        </div>
+                    )}
+
+                    <h5 className='typeOfInput'>NEW PASSWORD</h5>
+                    <input
+                        type="password"
+                        className='inputAuth'
+                        placeholder='Enter new password'
+                        minLength="6"
+                        maxLength="128"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        disabled={loading}
+                        required
+                    />
+
+                    <h5 className='typeOfInput'>CONFIRM PASSWORD</h5>
+                    <input
+                        type="password"
+                        className='inputAuth'
+                        placeholder='Confirm new password'
+                        maxLength="128"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        disabled={loading}
+                        required
+                    />
+
+                    <button type="submit" id="verify-btn" disabled={loading || !isValidSession}>
+                        {loading ? 'Resetting...' : 'Reset Password'}
+                    </button>
+
+                    <div id='auth-other-options'>
+                        <p className='auth-other-options-text'>
+                            Remember your password?{' '}
+                            <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                                Log In
+                            </Link>
+                        </p>
+                    </div>
+                </form>
+            </section>
+            <aside id="background-container"><BackgroundPolygons /></aside>
+        </main>
     );
 };
 

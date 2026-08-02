@@ -235,6 +235,56 @@ export default function App() {
         void trackDailyActivity();
     }, [location.pathname]);
 
+    useEffect(() => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            // Handle password recovery link click explicitly
+            if (event === 'PASSWORD_RECOVERY') {
+                navigate('/reset-password');
+                return;
+            }
+
+            if (event === 'SIGNED_IN' && session) {
+                void (async () => {
+                    try {
+                        const userSettings = await getUserSettings();
+                        const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+                        setThemePreference(normalizedTheme, { persist: true });
+                    } catch (error) {
+                        console.error('Error syncing signed-in theme preference:', error);
+                    }
+                })();
+
+                identifyPostHogUser(session.user);
+
+                void capturePostHogEvent('user_signed_in', {
+                    email: session.user?.email || null
+                });
+                void trackActivityEvent('session_start', new Date(), {
+                    route: window.location.pathname
+                });
+
+                const currentPath = window.location.pathname;
+
+                // PREVENT REDIRECT IF USER IS ON RESET PASSWORD PAGES
+                const isResetFlow = currentPath.includes('/reset-password') || currentPath.includes('/forgotpassword');
+
+                if (!isResetFlow && (currentPath === '/' || currentPath === '/login' || currentPath === '/signup')) {
+                    void (async () => {
+                        const { onboardingCompleted } = await getOnboardingStatus(session.user.id);
+                        navigate(onboardingCompleted ? '/dashboard' : '/getStarted', { replace: true });
+                    })();
+                }
+            }
+
+            if (event === 'SIGNED_OUT') {
+                void capturePostHogEvent('user_signed_out');
+                resetPostHogUser();
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [navigate]);
+
     return (
         <>
             <PageTitleUpdater />
