@@ -9,6 +9,7 @@ import AdminRoute from "./components/AdminRoute";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { supabase } from "./lib/supabaseClient";
 import { getUserSettings } from "./lib/notificationService";
+import AuthCallback from "./pages/AuthCallback";
 import {
     normalizeThemePreference,
     setThemePreference,
@@ -23,6 +24,7 @@ import {
     capturePostHogEvent,
     capturePostHogPageView
 } from "./lib/posthogClient";
+import { captureRecruitmentAttribution } from "./lib/recruitmentAttribution";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -126,6 +128,10 @@ export default function App() {
     const navigate = useNavigate();
     const location = useLocation();
     const shouldEnableVercelAnalytics = import.meta.env.PROD || import.meta.env.VITE_ENABLE_VERCEL_ANALYTICS === "true";
+
+    useEffect(() => {
+        captureRecruitmentAttribution(location.search);
+    }, [location.search]);
 
     const canUseSpeedInsights = useMemo(() => {
         const isEnabled =
@@ -241,6 +247,7 @@ export default function App() {
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/verify" element={<VerifyEmail />} />
                         <Route path="/resend" element={<Resend />} />
+                        <Route path="/auth/callback" element={<AuthCallback />} />
                         <Route path="/forgotpassword" element={<ForgotPassword />} />
                         <Route path="/reset-password" element={<ResetPassword />} />
                         <Route path="/about" element={<About />} />

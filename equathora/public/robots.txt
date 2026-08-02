@@ -1,0 +1,27 @@
+# Global rule for all standard search engine bots
+User-agent: *
+Allow: /$
+Allow: /premium
+Allow: /pricing
+Allow: /about
+
+# Block app workspace dashboards and tracking routes
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /submissions
+Disallow: /checkout
+Disallow: /premium-success
+
+# Strict explicit block for image search engine indexers
+User-agent: Googlebot-Image
+Disallow: /assets/
+
+# Safe global directory backup block
+User-agent: *
+Disallow: /assets/
+
+# Link to your index mapping profile layout
+Sitemap: https://equathora.com
+
+User-agent: *
+Allow: /

@@ -1,18 +1,20 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import GoogleAuth from '../components/GoogleAuth.jsx';
+import { SITE_URL } from '../lib/config';
 import { Link } from 'react-router-dom';
 import './Signup.css';
 import '../components/Auth.css';
 import { supabase } from '../lib/supabaseClient';
+import { buildVerificationPath } from '../lib/emailVerification';
 import { validatePassword } from "../utils/passwordUtil";
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 
 const Signup = () => {
+  const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -53,6 +55,15 @@ const Signup = () => {
     e.preventDefault();
     setError('');
 
+    const normalizedFullName = fullName.trim();
+    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedUsername = username.trim();
+
+    if (!normalizedFullName) {
+      setError('Please enter your name');
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -68,11 +79,14 @@ const Signup = () => {
 
     try {
       const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
+        email: normalizedEmail,
         password,
         options: {
-          data: { username },
-          emailRedirectTo: `${window.location.origin}`
+          data: {
+            username: normalizedUsername,
+            full_name: normalizedFullName
+          },
+          emailRedirectTo: `${SITE_URL}/auth/callback`
         }
       });
 
@@ -85,11 +99,13 @@ const Signup = () => {
       // Check if email confirmation is required
       if (data?.user && !data.session) {
         // Email confirmation required
-        navigate(`/verify?email=${encodeURIComponent(email)}`);
+        navigate(buildVerificationPath(normalizedEmail), {
+          state: { confirmationJustSent: true, email: normalizedEmail }
+        });
       } else if (data?.session) {
         navigate('/dashboard');
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred');
       setLoading(false);
     }
@@ -101,7 +117,7 @@ const Signup = () => {
     const { error: googleError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}`,
+        redirectTo: `${SITE_URL}/auth/callback`,
         queryParams: {
           prompt: 'select_account'
         }
@@ -139,6 +155,17 @@ const Signup = () => {
               {error}
             </div>
           )}
+
+          <h5 className='typeOfInput'>NAME</h5>
+          <input
+            type="text"
+            className='inputAuth'
+            placeholder='Enter your full name'
+            maxLength="80"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+          />
 
           <h5 className='typeOfInput'>USERNAME</h5>
           <input
@@ -223,7 +250,11 @@ const Signup = () => {
 
             <p className='auth-other-options-text text-black dark:text-white'>
               Didn't receive your confirmation email?{' '}
-              <Link to="/resend" className="other-option-link" style={{ textDecoration: 'underline' }}>
+              <Link
+                to={email.trim() ? `/resend?email=${encodeURIComponent(email.trim().toLowerCase())}` : '/resend'}
+                className="other-option-link"
+                style={{ textDecoration: 'underline' }}
+              >
                 Resend it.
               </Link>
             </p>

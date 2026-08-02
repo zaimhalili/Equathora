@@ -106,6 +106,7 @@ admin-console-helper.js
 Program.cs
 *.pdf
 *.txt
+!public/robots.txt
 *.md
 *.drawio
 *.excalibur
