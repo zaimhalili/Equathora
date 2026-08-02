@@ -56,7 +56,6 @@ const Landing = () => {
                 <hr className="border-[var(--mid-main-secondary)]" />
                 <CTASection />
                 {/* <EquathoraBriefsSection /> */}
-                </main>
 
                 <Footer />
                 <div className="flex flex-col lg:flex-row items-center text-[var(--french-gray)] bg-[var(--secondary-color)] underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center font-[Sansation] theme-lock">
