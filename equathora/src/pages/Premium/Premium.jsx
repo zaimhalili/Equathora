@@ -246,14 +246,15 @@ const Premium = () => {
                     <p className='text-md text-black/80 font-light xl:block hidden'>Prices are marked in Euros</p>
                   </div>
 
-                  <button
+                  {/* <button
                     onClick={handleUpgrade}
                     disabled={subLoading || checkoutLoading}
                     type="button"
                     className="bg-[var(--black)] text-[var(--white)] py-2 rounded-md text-xl transition-all duration-200 hover:contrast-80 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {renderButtonText()}
-                  </button>
+                  </button> */}
+                  <button type="button" className='bg-[var(--black)] text-[var(--white)] py-2 rounded-md text-xl transition-all duration-200 hover:contrast-80 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'>Premium is not available yet!</button>
                   <ul className="flex flex-col gap-2 pt-2 text-black">
                     {proFeatures.map((feature, idx) => (
                       <li key={idx} className="text-md">
