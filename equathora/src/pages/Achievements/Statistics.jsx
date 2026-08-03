@@ -60,6 +60,7 @@ const hexToRgba = (hex, alpha) => {
 
 const Statistics = () => {
   const { stats, loading, refreshStats } = useUserStats();
+  const [isAnimated, setIsAnimated] = useState(false);
 
   useEffect(() => {
     void refreshStats();
@@ -83,10 +84,6 @@ const Statistics = () => {
     ? stats.difficultyBreakdown
     : [];
 
-  if (loading) {
-    return <div className="statistics-container"><div className="py-12 flex justify-center items-center"><div>Loading statistics...</div></div></div>;
-  }
-
   const displayStats = {
     totalProblems,
     solvedProblems: solved,
@@ -102,10 +99,13 @@ const Statistics = () => {
   };
   const completionRate = displayStats.totalProblems > 0 ? Math.round((displayStats.solvedProblems / displayStats.totalProblems) * 100) : 0;
 
-  const [isAnimated, setIsAnimated] = useState(false);
   useEffect(() => {
     setIsAnimated(true);
   }, []);
+
+  if (loading) {
+    return <div className="statistics-container"><div className="py-12 flex justify-center items-center"><div>Loading statistics...</div></div></div>;
+  }
 
   return (
     <div className="statistics-container">
@@ -115,33 +115,37 @@ const Statistics = () => {
       </div>
 
       {/* Overview Cards */}
+      {/* Overview Cards */}
       <div className="stats-overview">
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''} primary`}>
-          <div className="stat-number">{stats.solvedProblems}</div>
+          {/* FIXED: Changed stats.solvedProblems -> displayStats.solvedProblems */}
+          <div className="stat-number">{displayStats.solvedProblems}</div>
           <div className="stat-label">Problems Solved</div>
-          <div className="stat-sublabel">out of {stats.totalProblems}</div>
+          <div className="stat-sublabel">out of {displayStats.totalProblems}</div>
         </div>
 
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
           <div className="stat-number">{accuracyRate === null ? 'N/A' : `${accuracyRate}%`}</div>
           <div className="stat-label">Accuracy Rate</div>
           <div className="stat-sublabel">
-            {stats.totalAttempts > 0
-              ? `${stats.correctAnswers} correct · ${stats.wrongSubmissions} wrong`
+            {displayStats.totalAttempts > 0
+              ? `${displayStats.correctAnswers} correct · ${displayStats.wrongSubmissions} wrong`
               : 'No attempts tracked'}
           </div>
         </div>
 
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
-          <div className="stat-number">{stats.streakDays}</div>
+          {/* FIXED: Changed stats.streakDays -> displayStats.streakDays */}
+          <div className="stat-number">{displayStats.streakDays}</div>
           <div className="stat-label">Day Streak</div>
           <div className="stat-sublabel">Keep it up!</div>
         </div>
 
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
-          <div className="stat-number">{stats.totalTimeSpent}</div>
+          {/* FIXED: Changed stats.totalTimeSpent -> displayStats.totalTimeSpent */}
+          <div className="stat-number">{displayStats.totalTimeSpent}</div>
           <div className="stat-label">Time Spent</div>
-          <div className="stat-sublabel">Avg: {stats.averageTime}</div>
+          <div className="stat-sublabel">Avg: {displayStats.averageTime}</div>
         </div>
       </div>
 

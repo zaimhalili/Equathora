@@ -1116,7 +1116,7 @@ const Settings = () => {
                                     </div>
 
                                     <div className="border-t border-[var(--mid-main-secondary)] pt-3 text-sm font-bold">
-                                        To unsubscribe from <i>Equathora Briefs / Email Notifications</i> contact us at <strong><u>equathora@gmail.com</u></strong>
+                                        If you are subscribed and want to unsubscribe from <i>Equathora Briefs / Email Notifications</i> contact us at <strong><u>equathora@gmail.com</u></strong>
                                         {/* <ToggleSwitch
                                             label="Email Notifications"
                                             description="Receive important updates via email (weekly digest)"

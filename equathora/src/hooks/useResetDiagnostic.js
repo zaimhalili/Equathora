@@ -18,7 +18,6 @@ export function useResetDiagnostic() {
                 throw new Error('User is not authenticated.');
             }
 
-            // 1. Reset diagnostic_score in profiles
             const { error: updateError } = await supabase
                 .from('profiles')
                 .update({
@@ -29,11 +28,14 @@ export function useResetDiagnostic() {
 
             if (updateError) throw updateError;
 
-            // 2. Clear client storage flags
             localStorage.removeItem('diagnostic_completed');
 
-            // 3. Force navigate to getStarted
-            navigate('/getStarted', { replace: true });
+            // retake: true is required — OnboardingRoute redirects a
+            // completed-onboarding user straight back to /dashboard
+            // unless this is set, so without it the retake button
+            // silently did nothing (score reset, but the user never
+            // saw the GetStarted flow).
+            navigate('/getStarted', { replace: true, state: { retake: true } });
         } catch (err) {
             console.error('[useResetDiagnostic] Failed to reset diagnostic:', err);
             setError(err.message || 'An unexpected error occurred.');
