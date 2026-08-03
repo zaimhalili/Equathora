@@ -222,6 +222,10 @@ const Problem = () => {
     const [showSubmissions, setShowSubmissions] = useState(false);
     const [showMentorChat, setShowMentorChat] = useState(false);
     const [chatPanel, setChatPanel] = useState(false);
+    // Whether the ChatPanel component has ever been mounted for the current problem.
+    // Kept true across tab switches so an in-flight AI request/response isn't lost
+    // when the user navigates away from the "Ask Sigma" tab and back.
+    const [chatPanelMounted, setChatPanelMounted] = useState(false);
     const [selectedSubmission, setSelectedSubmission] = useState(null);
     const [showSubmissionDetail, setShowSubmissionDetail] = useState(false);
     const [hintsOpened, setHintsOpened] = useState([]);
@@ -278,6 +282,7 @@ const Problem = () => {
         setShowTop(false);
         setShowMentorChat(false);
         setChatPanel(true);
+        setChatPanelMounted(true);
         setPendingSigmaPrompt(message);
         if (descriptionCollapsed) setDescriptionCollapsed(false);
     }, [descriptionCollapsed]);
@@ -459,6 +464,7 @@ const Problem = () => {
         setShowSubmissions(false);
         setShowMentorChat(false);
         setChatPanel(false);
+        setChatPanelMounted(false);
         setShowTop(false);
         setDescriptionCollapsed(false);
         setOpenHints({});
@@ -1172,6 +1178,7 @@ const Problem = () => {
                                     setShowTop(false);
                                     setShowMentorChat(false);
                                     setChatPanel(true);
+                                    setChatPanelMounted(true);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 min-w-fit
                                 ${chatPanel && !showDescription ? 'bg-[var(--main-color)]' : ''} 
@@ -1537,16 +1544,21 @@ const Problem = () => {
                                 {/* Show Mentor Chat State Check
                                 {showMentorChat && <MentorChat />} */}
 
-                                {/* Show AI chat panel */}
-                                {chatPanel && <ChatPanel ref={chatPanelRef}
-                                    problemDescription={problem.description}
-                                    acceptedSolution={solutionText}
-                                    fields={fields}
-                                    storageKey={sigmaChatStorageKey}
-                                    pendingMessage={pendingSigmaPrompt}
-                                    onPendingMessageSent={() => setPendingSigmaPrompt('')}
-                                    onBusyChange={setSigmaBusy}
-                                />}
+                                {/* Show AI chat panel — kept mounted (just hidden) while switching tabs
+                                    so in-flight AI requests/responses aren't lost */}
+                                {chatPanelMounted && (
+                                    <div className={chatPanel ? 'flex-1 min-h-0 flex flex-col' : 'hidden'}>
+                                        <ChatPanel ref={chatPanelRef}
+                                            problemDescription={problem.description}
+                                            acceptedSolution={solutionText}
+                                            fields={fields}
+                                            storageKey={sigmaChatStorageKey}
+                                            pendingMessage={pendingSigmaPrompt}
+                                            onPendingMessageSent={() => setPendingSigmaPrompt('')}
+                                            onBusyChange={setSigmaBusy}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </article>
                     </aside>
@@ -1575,4 +1587,4 @@ const Problem = () => {
     );
 };
 
-export default Problem;
+export default Problem; 
