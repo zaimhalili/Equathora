@@ -1466,7 +1466,7 @@ const Problem = () => {
                                     <div>
                                         {/* Inline feedback for incorrect answers only */}
                                         {submissionFeedback && !submissionFeedback.isCorrect && (
-                                            <div className="rounded-md px-4 py-3 border transition-all duration-300 bg-red-500/8 border-red-500/25">
+                                            <div className="rounded-md px-4 py-3 border transition-all duration-300 border-[var(--dark-accent-color)]">
                                                 <div className="flex items-center gap-2 pb-1.5">
                                                     <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-[var(--dark-accent-color)]">
                                                         <FaTimes className='text-white' />
@@ -1481,7 +1481,7 @@ const Problem = () => {
                                                         <span className="text-[10px] text-[var(--secondary-color)] font-[Sansation,sans-serif]">Attempt {submissionFeedback.attemptNumber}</span>
                                                     )}
                                                 </div>
-                                                <p className="text-xs md:text-[0.82rem] leading-relaxed font-[Sansation,sans-serif] text-[var(--accent-color)]/85">
+                                                <p className="text-xs md:text-[0.82rem] leading-relaxed font-[Sansation,sans-serif] text-[var(--secondary-color)]">
                                                     {submissionFeedback.message}
                                                 </p>
                                             </div>

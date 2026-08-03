@@ -214,7 +214,17 @@ export default function MathLiveEditor({
             const aiResponse = await testGemini({ problemDescription, userSteps: formattedUserSteps, acceptedAnswer: acceptedSolution });
 
             if (aiResponse) {
-                setWrongStepNumber(aiResponse.step);
+                // A step number outside the range of steps actually submitted
+                // isn't useful to highlight — fall back to "no specific step"
+                // so the message still renders via the general feedback block
+                // below instead of silently matching nothing.
+                const validStep = typeof aiResponse.step === 'number'
+                    && aiResponse.step >= 1
+                    && aiResponse.step <= nonEmptyFields.length
+                    ? aiResponse.step
+                    : null;
+
+                setWrongStepNumber(validStep);
                 const fb = { message: aiResponse.text, success: false, isCorrect: false, loading: false };
                 setSubmissionFeedback(fb);
                 onFeedbackChange?.(fb);
@@ -242,7 +252,8 @@ export default function MathLiveEditor({
             }));
             return;
         }
-        onExplainMore?.(`Can you explain in more detail what went wrong at step ${wrongStepNumber}? The hint says: "${submissionFeedback.message}"`);
+        const stepText = wrongStepNumber != null ? `step ${wrongStepNumber}` : 'my solution';
+        onExplainMore?.(`Can you explain in more detail what went wrong at ${stepText}? The hint says: "${submissionFeedback.message}"`);
     };
 
     useEffect(() => {
@@ -250,6 +261,15 @@ export default function MathLiveEditor({
     }, [isSolved]);
 
     const showNextProblem = Boolean(canShowNext && nextProblemPath);
+
+    // General (non-step-specific) feedback: shown when there's an incorrect
+    // submission but no valid step number to attach it to (AI error, unclear
+    // response, or an out-of-range step) — so the message is never silently
+    // dropped just because it didn't match a field in the loop below.
+    const showGeneralFeedback = submissionFeedback
+        && !submissionFeedback.success
+        && !submissionFeedback.loading
+        && wrongStepNumber == null;
 
     return (
         <>
@@ -350,6 +370,21 @@ export default function MathLiveEditor({
                             })}
                         </div>
                     </div>
+
+                    {showGeneralFeedback && (
+                        <div className="w-full pt-2 flex justify-between px-6 md:px-8 items-center pb-4 flex-wrap border-t border-[var(--mid-main-secondary)]/30">
+                            <p className="text-xs md:text-sm leading-relaxed text-[var(--secondary-color)]">
+                                {submissionFeedback.message}
+                            </p>
+                            <button
+                                onClick={handleExplainMoreClick}
+                                disabled={isAiBusy}
+                                className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-md cursor-pointer text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isAiBusy ? "Sigma is thinking…" : "Explain more"}
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="ml-toolbar-sticky">
