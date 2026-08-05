@@ -5,8 +5,8 @@ Welcome to **Equathora**, the innovative platform that transforms math practice 
 ![Equathora Logo](equathora/src/assets/logo/EquathoraLogoFull.png)
 
 ## 📊 Key Metrics
-- **2,500+ Views** and growing!
-- **~60 Daily Active Users** — a vibrant community of math enthusiasts.
+- **6,000+ Views** and growing!
+- **~80 Daily Active Users** - a vibrant community of math enthusiasts.
 - Steady organic growth, proving the power of consistent, fun learning.
 
 ## 📋 Table of Contents
@@ -73,7 +73,7 @@ Equathora is built with modern, scalable technologies:
 We love contributions! Whether you're fixing bugs, adding features, or improving docs:
 - Fork the repo and submit a PR.
 - Report issues or suggest enhancements via GitHub Issues.
-- Join our community discussions — let's build the future of math education together.
+- Join our community discussions - let's build the future of math education together.
 
 **Ideas for Future Updates:**
 - Mobile app version.
