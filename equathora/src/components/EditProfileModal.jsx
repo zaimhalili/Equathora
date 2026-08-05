@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaCamera, FaUser, FaEnvelope, FaGlobeAmericas } from 'react-icons/fa';
+import { FaTimes, FaCamera, FaUser, FaGlobeAmericas } from 'react-icons/fa';
 import { supabase } from '../lib/supabaseClient';
 import imageCompression from 'browser-image-compression';
 import useBodyScrollLock from '../hooks/useBodyScrollLock';
@@ -13,7 +13,6 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
         username: userData?.username || '',
         bio: userData?.bio || '',
         location: userData?.location || '',
-        website: userData?.website || '',
         avatar_url: userData?.avatar_url || ''
     });
 
@@ -31,7 +30,6 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
             username: userData?.username || '',
             bio: userData?.bio || '',
             location: userData?.location || '',
-            website: userData?.website || '',
             avatar_url: userData?.avatar_url || ''
         });
         setAvatarPreview(userData?.avatar_url || '');
@@ -140,7 +138,6 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     preferred_username: formData.username,
                     bio: formData.bio,
                     location: formData.location,
-                    website: formData.website,
                     avatar_url: avatarUrl
                 }
             });
@@ -157,7 +154,6 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     avatar_url: avatarUrl,
                     bio: formData.bio,
                     location: formData.location,
-                    website: formData.website,
                     updated_at: new Date().toISOString()
                 }, { onConflict: 'id' });
 
@@ -318,8 +314,6 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     placeholder="City, Country"
                                 />
                             </div>
-
-                            {/* Website */}
                         </div>
 
                         {/* Action Buttons */}
