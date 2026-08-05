@@ -20,7 +20,7 @@ const OnboardingRoute = ({ children }) => {
     const isRetake = location.state?.retake === true;
 
     if (onboardingCompleted && !isRetake) {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to="/journey" replace />;
     }
 
     return children;

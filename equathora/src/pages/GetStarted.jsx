@@ -29,6 +29,7 @@ const GetStarted = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedOptions, setSelectedOptions] = useState({});
     const [saving, setSaving] = useState(false);
+    const [saveError, setSaveError] = useState('');
 
     const steps = [
         {
@@ -147,7 +148,6 @@ const GetStarted = () => {
                 const { data: { user } } = await supabase.auth.getUser();
                 if (!user) return;
 
-                // 1. Fetch Profile Role
                 const { data: profile } = await supabase
                     .from('profiles')
                     .select('role')
@@ -156,14 +156,12 @@ const GetStarted = () => {
 
                 const role = profile?.role || 'student';
 
-                // 2. Fetch Student Data
                 const { data: studentData } = await supabase
                     .from('student_profile')
                     .select('goal, level, weekly_commitment, preferred_challenge')
                     .eq('id', user.id)
                     .maybeSingle();
 
-                // 3. Fetch Selected Topics
                 const { data: topicData } = await supabase
                     .from('student_topics')
                     .select('topic')
@@ -171,7 +169,6 @@ const GetStarted = () => {
 
                 const topics = topicData ? topicData.map(t => t.topic) : [];
 
-                // Pre-fill state based on step indices (1 to 6)
                 setSelectedOptions({
                     1: role,
                     2: studentData?.goal || undefined,
@@ -227,13 +224,9 @@ const GetStarted = () => {
 
             const selectedRole = selectedOptions[1] || 'student';
 
-            const { error: roleError } = await supabase
-                .from('profiles')
-                .update({
-                    role: selectedRole,
-                    onboarding_completed: true
-                })
-                .eq('id', user.id);
+            const { error: roleError } = await supabase.rpc('complete_onboarding', {
+                p_role: selectedRole
+            });
 
             if (roleError) throw roleError;
 
@@ -289,15 +282,19 @@ const GetStarted = () => {
             return;
         }
 
+        setSaveError('');
         const success = await saveQuestionnaire();
 
         if (success) {
             await refreshOnboardingStatus();
-            navigate('/dashboard', { replace: true });
+            navigate('/journey', { replace: true });
+        } else {
+            setSaveError("Something went wrong saving your answers. Please try again, or contact support if this keeps happening.");
         }
     };
 
     const handleBack = () => {
+        setSaveError('');
         if (currentStep > 0) {
             setCurrentStep(currentStep - 1);
         }
@@ -321,12 +318,14 @@ const GetStarted = () => {
     const imageSrc = typeof WelcomeTeacher === 'string' ? WelcomeTeacher : WelcomeTeacher?.default || WelcomeTeacher;
 
     return (
-        <main className='relative flex flex-col w-full bg-[var(--main-color)] h-screen overflow-hidden items-center justify-center px-4 sm:px-6 font-[Sansation,sans-serif]'>
+        <main className='relative flex flex-col w-full bg-[var(--main-color)] min-h-screen h-full overflow-y-auto items-center px-4 sm:px-6 font-[Sansation,sans-serif]'>
 
-            {/* 1. PROGRESS BAR PINNED TO THE VERY TOP */}
-            <header className='absolute top-6 left-1/2 -translate-x-1/2 w-full max-w-xl px-4 flex flex-col gap-2 z-10'>
+            {/* Progress bar — sticky instead of absolute, so it always stays
+                pinned above the content instead of overlapping it when the
+                viewport is short. */}
+            <header className='sticky top-0 z-20 w-full max-w-xl px-4 pt-4 pb-2 flex flex-col gap-2 bg-[var(--main-color)]'>
                 <div className='flex items-center gap-3 w-full'>
-                    <div className='w-8 flex justify-start'>
+                    <div className='w-8 flex justify-start shrink-0'>
                         {currentStep > 0 && (
                             <button
                                 onClick={handleBack}
@@ -345,42 +344,42 @@ const GetStarted = () => {
                         />
                     </div>
 
-                    <span className='text-xs font-medium text-[var(--secondary-color)] opacity-50 w-10 text-right'>
+                    <span className='text-xs font-medium text-[var(--secondary-color)] opacity-50 w-10 text-right shrink-0'>
                         {currentStep + 1} / {totalSteps}
                     </span>
                 </div>
 
-                <div className="text-center text-[var(--secondary-color)] opacity-70 text-xs sm:text-sm">
+                <div className="text-center text-[var(--secondary-color)] opacity-70 text-xs sm:text-sm px-2">
                     Don't worry - you can change these answers whenever you like.
                 </div>
             </header>
 
-            {/* 2. FIXED HEIGHT CONTAINER (PREVENTS PAGE RESIZING) */}
-            <div className='w-full max-w-xl h-[580px] flex flex-col justify-between items-center mt-12'>
+            {/* Main content column. min-h instead of a fixed h so it can grow
+                on short/narrow viewports instead of clipping; content still
+                centers within it on tall viewports via justify-between +
+                flex-1 spacers. */}
+            <div className='w-full max-w-xl flex-1 flex flex-col justify-between items-center py-4 sm:py-6'>
 
-                {/* Question Title & Subtitle Section */}
-                <div className='flex flex-col items-center justify-center text-center h-[100px] w-full'>
-                    <h1 className='text-2xl sm:text-3xl font-bold text-[var(--secondary-color)] line-clamp-1 relative'>
+                <div className='flex flex-col items-center justify-center text-center w-full px-2 min-h-[64px] sm:min-h-[80px]'>
+                    <h1 className='text-xl sm:text-2xl md:text-3xl font-bold text-[var(--secondary-color)]'>
                         {currentStepData.title}
                     </h1>
 
-                    <p className='text-sm sm:text-base text-[var(--secondary-color)] pt-1 line-clamp-1'>
+                    <p className='text-xs sm:text-sm md:text-base text-[var(--secondary-color)] pt-1'>
                         {currentStepData.subtitle}
                     </p>
 
                     {currentStepData.description && (
-                        <p className='text-xs sm:text-sm text-[var(--secondary-color)] opacity-80 pt-1 max-w-md line-clamp-2'>
+                        <p className='text-xs sm:text-sm text-[var(--secondary-color)] opacity-80 pt-1 max-w-md'>
                             {currentStepData.description}
                         </p>
                     )}
                 </div>
 
-                {/* 3. CENTERED FIXED CONTENT SLOT */}
-                <div className='w-full h-[340px] flex flex-col justify-center items-center'>
+                <div className='w-full flex-1 flex flex-col justify-center items-center py-4 min-h-0'>
 
-                    {/* Welcome Step Illustration */}
                     {currentStepData.type === 'welcome' && (
-                        <div className='h-full flex items-center justify-center w-full'>
+                        <div className='h-full w-full flex items-center justify-center min-h-[160px]'>
                             <img
                                 src={imageSrc}
                                 alt="Welcome to Equathora Illustration"
@@ -389,9 +388,8 @@ const GetStarted = () => {
                         </div>
                     )}
 
-                    {/* Options Grid (Selection & Multi-selection) */}
                     {(currentStepData.type === 'selection' || currentStepData.type === 'multi-selection') && (
-                        <div className='w-full flex items-center justify-center h-full'>
+                        <div className='w-full flex items-center justify-center'>
                             {currentStepData.type === 'selection' && (
                                 <div className='flex flex-col gap-2.5 w-full justify-center'>
                                     {currentStepData.options.map((option) => (
@@ -408,14 +406,14 @@ const GetStarted = () => {
                                                 {option.icon}
                                             </div>
 
-                                            <div className='flex-1'>
-                                                <div className='font-semibold text-sm md:text-base'>
+                                            <div className='flex-1 min-w-0'>
+                                                <div className='font-semibold text-sm md:text-base break-words'>
                                                     {option.label}
                                                 </div>
 
                                                 {option.description && (
                                                     <div
-                                                        className={`text-xs md:text-sm pt-0.5 leading-tight ${selectedOptions[currentStep] === option.id
+                                                        className={`text-xs md:text-sm pt-0.5 leading-tight break-words ${selectedOptions[currentStep] === option.id
                                                             ? 'opacity-90'
                                                             : 'opacity-60'
                                                             }`}
@@ -425,7 +423,7 @@ const GetStarted = () => {
                                                 )}
                                             </div>
 
-                                            <div className='text-base w-5 flex justify-center font-bold'>
+                                            <div className='text-base w-5 flex-shrink-0 flex justify-center font-bold'>
                                                 {selectedOptions[currentStep] === option.id ? '✓' : ''}
                                             </div>
                                         </button>
@@ -434,7 +432,7 @@ const GetStarted = () => {
                             )}
 
                             {currentStepData.type === 'multi-selection' && (
-                                <div className='grid grid-cols-2 gap-3 w-full justify-center'>
+                                <div className='grid grid-cols-1 xs:grid-cols-2 gap-3 w-full justify-center'>
                                     {currentStepData.options.map((option) => {
                                         const isSelected = (
                                             selectedOptions[currentStep] || []
@@ -454,11 +452,11 @@ const GetStarted = () => {
                                                     {option.icon}
                                                 </div>
 
-                                                <div className='flex-1 text-left text-xs sm:text-sm font-semibold leading-tight'>
+                                                <div className='flex-1 min-w-0 text-left text-xs sm:text-sm font-semibold leading-tight break-words'>
                                                     {option.label}
                                                 </div>
 
-                                                <div className='w-4 flex justify-center font-bold'>
+                                                <div className='w-4 flex-shrink-0 flex justify-center font-bold'>
                                                     {isSelected ? '✓' : ''}
                                                 </div>
                                             </button>
@@ -469,20 +467,26 @@ const GetStarted = () => {
                         </div>
                     )}
 
-                    {/* Final Step Icon Display */}
                     {currentStepData.type === 'final' && (
-                        <div className='h-full flex items-center justify-center w-full'>
+                        <div className='h-full flex items-center justify-center w-full min-h-[100px]'>
                             {currentStepData.icon}
                         </div>
                     )}
                 </div>
 
-                {/* 4. CONTINUE BUTTON FIXED POSITION AT THE BOTTOM */}
-                <div className='h-[60px] w-full flex justify-center items-center'>
+                {saveError && (
+                    <div className='w-full px-2 pb-2'>
+                        <p className='text-xs sm:text-sm text-red-500 text-center break-words'>
+                            {saveError}
+                        </p>
+                    </div>
+                )}
+
+                <div className='w-full flex justify-center items-center py-2'>
                     <button
                         onClick={handleContinue}
                         disabled={!canContinue() || saving}
-                        className={`w-60 px-8 py-3 rounded-full font-semibold text-sm transition-all ${canContinue() && !saving
+                        className={`w-60 max-w-full px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm transition-all ${canContinue() && !saving
                             ? 'bg-[var(--secondary-color)] text-[var(--white)] hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-pointer'
                             : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                             }`}

@@ -74,7 +74,7 @@ function HomeRoute() {
     }
 
     if (isAuth) {
-        return <Navigate to={onboardingCompleted ? "/dashboard" : "/getStarted"} replace />;
+        return <Navigate to={onboardingCompleted ? "/journey" : "/getStarted"} replace />;
     }
 
     return <Landing />;
