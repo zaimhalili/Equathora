@@ -1,6 +1,6 @@
 // Blog posts data - Add new posts here without creating new JSX files
 import Journey from '../assets/images/journey.jpg';
-import Me from '../assets/images/mePr.jpg';
+import Me from '../assets/images/mePr.webp';
 import Sketch from '../assets/images/sketch.svg';
 import Math from '../assets/images/mathfix.svg';
 // Note: Add 'features.jpg' to src/assets/images/ or use a different image

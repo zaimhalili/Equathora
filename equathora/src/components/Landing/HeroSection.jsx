@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
-import YoungStudent from '../../assets/images/hBooks.png';
+import YoungStudent from '../../assets/images/hBooks.webp';
 import MouseFollower from './MouseFollower';
 
 // Animated counter component
@@ -290,6 +290,7 @@ const HeroSection = () => {
                         saturation-95
                     "
                                         loading="eager"
+                                        fetchPriority="high"
                                     />
                                 </div>
 
