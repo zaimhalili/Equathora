@@ -61,6 +61,22 @@ const Sidebar = ({ isOpen, onClose }) => {
         account: false,
     });
 
+    // Lock body scroll and prevent background touch interactions when sidebar is open
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const originalStyle = window.getComputedStyle(document.body).overflow;
+        const originalTouchAction = document.body.style.touchAction;
+
+        document.body.style.overflow = 'hidden';
+        document.body.style.touchAction = 'none';
+
+        return () => {
+            document.body.style.overflow = originalStyle;
+            document.body.style.touchAction = originalTouchAction;
+        };
+    }, [isOpen]);
+
     const toggleSection = (section) => {
         setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
     };
@@ -113,17 +129,18 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     return (
         <div className="fixed inset-0 z-[1100] flex justify-end">
-            {/* Overlay Backdrop */}
+            {/* Overlay Backdrop - Blocks touches/clicks to background */}
             <div
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity touch-none overscroll-contain"
                 onClick={onClose}
+                onTouchMove={(e) => e.preventDefault()}
                 aria-hidden="true"
             />
 
             {/* Sidebar Content Panel */}
             <div
                 id="mobile-navigation"
-                className="relative w-full max-w-xs sm:max-w-sm bg-[var(--main-color)] h-full shadow-2xl overflow-y-auto flex flex-col z-[1110] text-[var(--secondary-color)]"
+                className="relative w-full max-w-xs sm:max-w-sm bg-[var(--main-color)] h-full shadow-2xl overflow-y-auto flex flex-col z-[1110] text-[var(--secondary-color)] overscroll-contain"
             >
                 {/* Top Header */}
                 <div className="flex items-center justify-between p-5 border-b border-gray-700/30">
