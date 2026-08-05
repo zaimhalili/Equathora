@@ -19,7 +19,7 @@ const Footer = () => {
                 <div id="center">
                     <h1>
                         Your contribution helps us keep this learning platform available for
-                        <span className="text-[var(--accent-color)] relative inline-block">
+                        <span className="footer-highlight relative inline-block">
                             students worldwide
                             <motion.svg
                                 className="absolute -bottom-2 left-0 w-full"
@@ -74,8 +74,8 @@ const Footer = () => {
                             <FaYoutube />
                         </a>
                     </div>
-                    <div className="w-full flex justify-center"><Link to="/dashboard" className='cursor-pointer w-14'>
-                        <img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: '60px', width: '60px', margin: '1rem auto', borderRadius: '10px' }} />
+                    <div className="w-full flex justify-center"><Link to="/dashboard" className='cursor-pointer w-[60px]'>
+                        <img src={Symbol} alt="Equathora" className="footer-logo" style={{ height: 'auto', width: '60px', margin: '1rem auto', borderRadius: '10px' }} />
                     </Link>
                     </div>
 
