@@ -266,6 +266,7 @@ export default function App() {
                         <Route path="/reset-password" element={<ResetPassword />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/helpCenter" element={<HelpCenter />} />
+                        <Route path="/system-updates" element={<Navigate to="/systemupdates" replace />} />
                         <Route path="/systemupdates" element={<SystemUpdates />} />
                         <Route path="/pageNotFound" element={<PageNotFound />} />
                         <Route path="/equathora-briefs" element={<EquathoraBriefs />} />
