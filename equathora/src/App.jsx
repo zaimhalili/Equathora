@@ -85,7 +85,7 @@ function PageTitleUpdater() {
 
     useEffect(() => {
         const pageTitles = {
-            '/': 'Equathora - Master Math Through Practice',
+            '/': 'Focused Mathematics Practice | Equathora',
             '/dashboard': 'Equathora',
             '/learn': 'Practice Problems - Equathora',
             '/problems': 'Solve Challenge - Equathora',
@@ -119,7 +119,7 @@ function PageTitleUpdater() {
             location.pathname === route || (route !== '/' && location.pathname.startsWith(route + '/'))
         );
 
-        document.title = pageTitles[matchedRoute] || 'Equathora - Master Math Through Practice';
+        document.title = pageTitles[matchedRoute] || 'Focused Mathematics Practice | Equathora';
     }, [location]);
 
     return null;
