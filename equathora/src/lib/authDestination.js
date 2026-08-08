@@ -26,9 +26,10 @@ export function getAuthDestination(search = '', stateFrom, fallback = DEFAULT_AU
     return getSafeAuthDestination(requestedDestination, fallback);
 }
 
-export function buildAuthPath(path, destination) {
+export function buildAuthPath(path, destination, additionalParams = {}) {
     const safeDestination = getSafeAuthDestination(destination);
-    const searchParams = new URLSearchParams({ next: safeDestination });
+    const searchParams = new URLSearchParams(additionalParams);
+    searchParams.set('next', safeDestination);
 
     return `${path}?${searchParams.toString()}`;
 }

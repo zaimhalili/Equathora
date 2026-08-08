@@ -34,4 +34,8 @@ test('carries the intended page through auth routes and callbacks', () => {
         buildAuthCallbackUrl('https://www.equathora.com', '/learn?topic=algebra'),
         'https://www.equathora.com/auth/callback?next=%2Flearn%3Ftopic%3Dalgebra',
     );
+    assert.equal(
+        buildAuthPath('/resend', '/problems/evaluate-455', { email: 'learner+algebra@example.com' }),
+        '/resend?email=learner%2Balgebra%40example.com&next=%2Fproblems%2Fevaluate-455',
+    );
 });

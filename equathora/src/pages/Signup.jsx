@@ -254,7 +254,11 @@ const Signup = () => {
             <p className='auth-other-options-text text-black dark:text-white'>
               Didn't receive your confirmation email?{' '}
               <Link
-                to={email.trim() ? `/resend?email=${encodeURIComponent(email.trim().toLowerCase())}` : '/resend'}
+                to={buildAuthPath(
+                  '/resend',
+                  destination,
+                  email.trim() ? { email: email.trim().toLowerCase() } : {}
+                )}
                 className="other-option-link"
                 style={{ textDecoration: 'underline' }}
               >

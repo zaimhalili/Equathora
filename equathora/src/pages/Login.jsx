@@ -162,7 +162,7 @@ const Login = () => {
 
               <p className='auth-other-options-text text-black dark:text-white'>
                 Didn't receive your confirmation email?{' '}
-                <Link to="/resend" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                <Link to={buildAuthPath('/resend', destination)} className="other-option-link" style={{ textDecoration: 'underline' }}>
                   Resend it.
                 </Link>
               </p>
