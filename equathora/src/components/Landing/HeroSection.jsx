@@ -205,7 +205,7 @@ const HeroSection = () => {
                                 className="group relative text-sm sm:text-base !text-[var(--secondary-color)] font-medium transition-all flex items-center gap-2 min-w-[140px]"
                             >
                                 <FaArrowRight className="text-xs sm:text-sm opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
-                                <span className="transition-transform duration-300">Learn more</span>
+                                <span className="transition-transform duration-300">Learn about Equathora</span>
                                 <FaArrowRight className="text-xs sm:text-sm opacity-100 group-hover:translate-x-4 group-hover:opacity-0 transition-all duration-300" />
                             </Link>
                         </motion.div>
