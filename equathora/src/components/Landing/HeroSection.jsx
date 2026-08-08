@@ -87,7 +87,7 @@ const Particles = () => {
 
 const HeroSection = () => {
     const stats = [
-        { value: 284, label: 'Practice Problems' },
+        { value: 321, label: 'Practice Problems' },
         { value: 53, label: 'Math Topics' },
     ];
 
@@ -301,7 +301,7 @@ const HeroSection = () => {
                                 >
                                     <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary-color)] rounded-md shadow-2xl">
                                         <div>
-                                            <p className="font-bold text-xl text-[var(--main-color)]">284</p>
+                                            <p className="font-bold text-xl text-[var(--main-color)]">321</p>
                                             <p className="text-[10px] text-[var(--mid-main-secondary)]">Practice problems</p>
                                         </div>
                                     </div>
