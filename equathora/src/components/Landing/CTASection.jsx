@@ -171,8 +171,8 @@ const CTASection = () => {
                                     <FaCheck className="w-3 h-3 sm:w-4 sm:h-4 text-[var(--white)]" />
                                 </div>
                                 <div>
-                                    <p className="text-xs text-gray-500">Problems solved</p>
-                                    <p className="font-bold text-[var(--secondary-color)]">124+</p>
+                                    <p className="text-xs text-gray-500">Math topics</p>
+                                    <p className="font-bold text-[var(--secondary-color)]">53</p>
                                 </div>
                             </div>
                         </motion.div>

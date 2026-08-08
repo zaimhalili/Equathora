@@ -87,9 +87,8 @@ const Particles = () => {
 
 const HeroSection = () => {
     const stats = [
-        { value: 300, label: 'Practice Problems', suffix: '+' },
-        { value: 30, label: 'Achievements', suffix: '+' },
-        { value: 50, label: 'Math Topics', suffix: '+' },
+        { value: 284, label: 'Practice Problems' },
+        { value: 53, label: 'Math Topics' },
     ];
 
     return (
@@ -302,8 +301,8 @@ const HeroSection = () => {
                                 >
                                     <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary-color)] rounded-md shadow-2xl">
                                         <div>
-                                            <p className="font-bold text-xl text-[var(--main-color)]">50+</p>
-                                            <p className="text-[10px] text-[var(--mid-main-secondary)]">Active learners</p>
+                                            <p className="font-bold text-xl text-[var(--main-color)]">284</p>
+                                            <p className="text-[10px] text-[var(--mid-main-secondary)]">Practice problems</p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -315,8 +314,8 @@ const HeroSection = () => {
                                     transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
                                 >
                                     <div className="px-4 py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] rounded-md shadow-2xl text-white">
-                                        <p className="text-2xl font-bold">98%</p>
-                                        <p className="text-[10px] opacity-90 ">Success Rate</p>
+                                        <p className="text-2xl font-bold">53</p>
+                                        <p className="text-[10px] opacity-90 ">Math topics</p>
                                     </div>
                                 </motion.div>
                             </motion.div>
