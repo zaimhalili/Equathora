@@ -1,6 +1,11 @@
 import posthog from 'posthog-js';
+import { resolvePostHogKey } from './posthogConfig';
 
-const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY;
+const POSTHOG_KEY = resolvePostHogKey({
+    configuredKey: import.meta.env.VITE_POSTHOG_KEY,
+    hostname: typeof window !== 'undefined' ? window.location.hostname : '',
+    isProduction: import.meta.env.PROD
+});
 const POSTHOG_HOST = import.meta.env.VITE_POSTHOG_HOST || 'https://us.i.posthog.com';
 
 let isInitialized = false;
