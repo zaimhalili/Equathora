@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Autumn from '../../assets/images/autumn.jpg';
-import Journey from '../../assets/images/journey.jpg';
+import Journey from '../../assets/images/journey.webp';
 import EquathoraBriefsImage from '../../assets/images/email.svg';
 import Shapes from '../../assets/images/redShapes.jpg';
 import LilArrow from '../../assets/images/lilArrow.svg';

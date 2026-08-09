@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar.jsx';
 import FeebackBanner from '../components/FeedbackBanner.jsx';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
-import Journey from '../assets/images/journey.jpg';
+import Journey from '../assets/images/journey.webp';
 import { getAllBlogPosts } from '../data/blogPosts.js';
 
 const Blog = () => {

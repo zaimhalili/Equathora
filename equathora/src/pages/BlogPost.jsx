@@ -6,7 +6,7 @@ import NavigationBar from '@/components/Landing/NavigationBar.jsx';
 import { useAuth } from '@/hooks/useAuth.jsx';
 import FeebackBanner from '../components/FeedbackBanner.jsx';
 import Footer from '../components/Footer.jsx';
-import Journey from '../assets/images/journey.jpg';
+import Journey from '../assets/images/journey.webp';
 import { getBlogPostBySlug, getAllBlogPosts } from '../data/blogPosts.js';
 
 const BlogPost = () => {
