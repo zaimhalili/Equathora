@@ -26,6 +26,7 @@ import {
     capturePostHogPageView
 } from "./lib/posthogClient";
 import { captureRecruitmentAttribution } from "./lib/recruitmentAttribution";
+import { updateCanonicalUrl } from "./lib/seoMetadata";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -80,7 +81,7 @@ function HomeRoute() {
     return <Landing />;
 }
 
-function PageTitleUpdater() {
+function PageMetadataUpdater() {
     const location = useLocation();
 
     useEffect(() => {
@@ -120,6 +121,7 @@ function PageTitleUpdater() {
         );
 
         document.title = pageTitles[matchedRoute] || 'Equathora - Master Math Through Practice';
+        updateCanonicalUrl(document, location.pathname);
     }, [location]);
 
     return null;
@@ -251,7 +253,7 @@ export default function App() {
 
     return (
         <>
-            <PageTitleUpdater />
+            <PageMetadataUpdater />
             <Suspense fallback={<LoadingSpinner />}>
                 <div id="main-content" tabIndex={-1} className="outline-none">
                     <Routes>
