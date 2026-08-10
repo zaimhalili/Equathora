@@ -1,15 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Login.css';
 import '../components/Auth.css';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/TransparentFullLogo.png';
 import GoogleAuth from '../components/GoogleAuth.jsx';
-import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import Sigma from '../assets/logo/TransparentSymbol.png';
+import { buildAuthCallbackUrl, buildAuthPath, getAuthDestination } from '../lib/authDestination';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +17,8 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const destination = getAuthDestination(location.search, location.state?.from);
 
   // Peek at password
   const [type, setType] = useState('password');
@@ -32,10 +34,10 @@ const Login = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/dashboard');
+        navigate(destination, { replace: true });
       }
     });
-  }, [navigate]);
+  }, [destination, navigate]);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -55,8 +57,8 @@ const Login = () => {
       }
 
       // Navigate immediately for better UX
-      navigate('/dashboard');
-    } catch (err) {
+      navigate(destination, { replace: true });
+    } catch {
       setError('An unexpected error occurred');
       setLoading(false);
     }
@@ -68,7 +70,7 @@ const Login = () => {
     const { error: googleError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}`,
+        redirectTo: buildAuthCallbackUrl(window.location.origin, destination),
         queryParams: {
           prompt: 'select_account'
         }
@@ -152,14 +154,14 @@ const Login = () => {
             <div id='auth-other-options'>
               <p className='auth-other-options-text text-black dark:text-white'>
                 Don't have an account yet?{' '}
-                <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                <Link to={buildAuthPath('/signup', destination)} className="other-option-link" style={{ textDecoration: 'underline' }}>
                   Sign up for free.
                 </Link>
               </p>
 
               <p className='auth-other-options-text text-black dark:text-white'>
                 Didn't receive your confirmation email?{' '}
-                <Link to="/resend" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                <Link to={buildAuthPath('/resend', destination)} className="other-option-link" style={{ textDecoration: 'underline' }}>
                   Resend it.
                 </Link>
               </p>

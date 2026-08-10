@@ -11,6 +11,7 @@ import {
   getResendErrorMessage,
   RESEND_COOLDOWN_SECONDS,
 } from '../lib/emailVerification';
+import { buildAuthCallbackUrl, buildAuthPath, getAuthDestination } from '../lib/authDestination';
 
 const Resend = () => {
   const [email, setEmail] = useState('');
@@ -19,6 +20,7 @@ const Resend = () => {
   const [loading, setLoading] = useState(false);
   const [cooldownSeconds, setCooldownSeconds] = useState(0);
   const [searchParams] = useSearchParams();
+  const destination = getAuthDestination(searchParams.toString());
 
   useEffect(() => {
     const emailParam = searchParams.get('email');
@@ -52,7 +54,7 @@ const Resend = () => {
         type: 'signup',
         email: normalizedEmail,
         options: {
-          emailRedirectTo: `${SITE_URL}/auth/callback`,
+          emailRedirectTo: buildAuthCallbackUrl(SITE_URL, destination),
         },
       });
 
@@ -110,14 +112,14 @@ const Resend = () => {
           <div id='auth-other-options'>
             <p className='auth-other-options-text text-black dark:text-white'>
               Already have an account?{' '}
-              <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
+              <Link to={buildAuthPath('/login', destination)} className="other-option-link" style={{ textDecoration: 'underline' }}>
                 Log In
               </Link>
             </p>
 
             <p className='auth-other-options-text text-black dark:text-white'>
               Don't have an account yet?{' '}
-              <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
+              <Link to={buildAuthPath('/signup', destination)} className="other-option-link" style={{ textDecoration: 'underline' }}>
                 Sign up for free.
               </Link>
             </p>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
     FaChartLine,
     FaFire,
@@ -21,9 +21,12 @@ import { BiMath } from 'react-icons/bi';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/hooks/useAuth';
 import WelcomeTeacher from '../assets/images/welcomeTeacher.svg';
+import { getAuthDestination } from '@/lib/authDestination';
 
 const GetStarted = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const destination = getAuthDestination(location.search, location.state?.from, '/journey');
     const { refreshOnboardingStatus } = useAuth();
 
     const [currentStep, setCurrentStep] = useState(0);
@@ -287,7 +290,7 @@ const GetStarted = () => {
 
         if (success) {
             await refreshOnboardingStatus();
-            navigate('/journey', { replace: true });
+            navigate(destination, { replace: true });
         } else {
             setSaveError("Something went wrong saving your answers. Please try again, or contact support if this keeps happening.");
         }
