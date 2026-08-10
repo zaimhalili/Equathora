@@ -1,27 +1,13 @@
-# Global rule for all standard search engine bots
+# Let search engines crawl the public site while keeping learner work private
 User-agent: *
-Allow: /$
-Allow: /premium
-Allow: /pricing
-Allow: /about
-
-# Block app workspace dashboards and tracking routes
+Allow: /
 Disallow: /dashboard
 Disallow: /profile
 Disallow: /submissions
 Disallow: /checkout
 Disallow: /premium-success
+Disallow: /assets/
 
-# Strict explicit block for image search engine indexers
+# Keep image assets out of image search
 User-agent: Googlebot-Image
 Disallow: /assets/
-
-# Safe global directory backup block
-User-agent: *
-Disallow: /assets/
-
-# Link to your index mapping profile layout
-Sitemap: https://equathora.com
-
-User-agent: *
-Allow: /
