@@ -1,4 +1,5 @@
 import posthog from 'posthog-js';
+import { hasSensitiveAuthCallbackLocation } from './authCallbackPrivacy';
 import { resolvePostHogKey } from './posthogConfig';
 
 const POSTHOG_KEY = resolvePostHogKey({
@@ -11,7 +12,10 @@ const POSTHOG_HOST = import.meta.env.VITE_POSTHOG_HOST || 'https://us.i.posthog.
 let isInitialized = false;
 
 const canUsePostHog = () =>
-    typeof window !== 'undefined' && typeof POSTHOG_KEY === 'string' && POSTHOG_KEY.trim().length > 0;
+    typeof window !== 'undefined' &&
+    typeof POSTHOG_KEY === 'string' &&
+    POSTHOG_KEY.trim().length > 0 &&
+    !hasSensitiveAuthCallbackLocation(window.location);
 
 export function isPostHogEnabled() {
     return canUsePostHog();
