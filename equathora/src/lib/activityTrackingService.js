@@ -5,6 +5,7 @@ import {
     clearRecruitmentAttribution,
     getRecruitmentEventProperties
 } from './recruitmentAttribution';
+import { createSignupEventTracker } from './signupEventTracker';
 
 const keyForUser = (userId) => `equathora_last_activity_ping_${userId}`;
 const keyForSignup = (userId) => `equathora_signup_event_ping_${userId}`;
@@ -80,10 +81,7 @@ export async function trackActivityEvent(eventType, eventTimestamp = new Date(),
     }
 }
 
-async function ensureSignupEvent(userId, userCreatedAt) {
-    const key = keyForSignup(userId);
-    if (localStorage.getItem(key) === '1') return;
-
+const findExistingSignup = async (userId) => {
     const { data: existingSignup, error: lookupError } = await supabase
         .from('user_activity_events')
         .select('id')
@@ -92,36 +90,29 @@ async function ensureSignupEvent(userId, userCreatedAt) {
         .limit(1)
         .maybeSingle();
 
-    if (lookupError) {
-        console.warn('Signup activity lookup failed:', lookupError.message || lookupError);
-        return;
+    return {
+        exists: Boolean(existingSignup?.id),
+        error: lookupError
+    };
+};
+
+const ensureSignupEvent = createSignupEventTracker({
+    storage: localStorage,
+    keyForUser: keyForSignup,
+    findExistingSignup,
+    insertSignup: (userId, userCreatedAt) => insertActivityEvent(userId, 'signup', userCreatedAt),
+    onExistingSignup: () => clearRecruitmentAttribution(),
+    onSignupRecorded: (userId, userCreatedAt) => {
+        const recruitmentProperties = bindRecruitmentAttributionToUser(userId);
+
+        capturePostHogEvent('signup', {
+            source: 'equathora_web',
+            user_id: userId,
+            created_at: isoTimestampFrom(userCreatedAt),
+            ...recruitmentProperties
+        });
     }
-
-    if (existingSignup?.id) {
-        clearRecruitmentAttribution();
-        localStorage.setItem(key, '1');
-        return;
-    }
-
-    const recruitmentProperties = bindRecruitmentAttributionToUser(userId);
-
-    const { error } = await insertActivityEvent(userId, 'signup', userCreatedAt);
-
-    if (error) {
-        // Keep this best-effort: analytics tracking must never block app usage.
-        console.warn('Signup activity tracking failed:', error.message || error);
-        return;
-    }
-
-    capturePostHogEvent('signup', {
-        source: 'equathora_web',
-        user_id: userId,
-        created_at: isoTimestampFrom(userCreatedAt),
-        ...recruitmentProperties
-    });
-
-    localStorage.setItem(key, '1');
-}
+});
 
 // Track one activity event per user per day to power DAU/WAU analytics.
 export async function trackDailyActivity() {
