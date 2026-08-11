@@ -52,11 +52,14 @@ import {
     notifyStreakMilestone,
 } from '../lib/notificationService';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import { useUserStats } from '@/context/UserStatsContext';
 import OverflowChecker from './OverflowChecker.jsx';
 import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
 import { supabase } from '@/lib/supabaseClient';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { capturePostHogEvent } from '@/lib/posthogClient';
+import { buildFirstProblemSubmitProperties } from '@/lib/firstProblemSubmit';
 
 const formatDurationLabel = (seconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(seconds));
@@ -128,6 +131,7 @@ const Problem = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
     const { user } = useUserProfile();
+    const { stats, loading: statsLoading } = useUserStats();
 
     // Extract problem ID from slug for backwards compatibility
     const numericProblemId = extractIdFromSlug(slug);
@@ -263,11 +267,37 @@ const Problem = () => {
     const isDrawingRef = useRef(false);
     const currentStrokeRef = useRef([]);
     const sessionStartRef = useRef(Date.now());
+    const firstProblemSubmitTrackedRef = useRef(false);
     const strokesCacheRef = useRef({});
 
     const handleFieldsChange = useCallback((f) => {
         setTimeout(() => setFields(f), 0);
     }, []);
+
+    const isFirstProblemSubmission = !statsLoading
+        && Number(stats?.totalSubmissions || 0) === 0
+        && Number(stats?.totalAttempts || 0) === 0
+        && Number(stats?.problemsSolved || 0) === 0
+        && submissions.length === 0
+        && !isCompleted;
+
+    const handleFirstProblemSubmitInitiated = useCallback(({ stepCount, totalCharacters }) => {
+        if (!isFirstProblemSubmission || firstProblemSubmitTrackedRef.current || !problem) return;
+
+        const captured = capturePostHogEvent(
+            'first_problem_submit_clicked',
+            buildFirstProblemSubmitProperties({
+                problem,
+                stepCount,
+                totalCharacters,
+                timeSpentSeconds: (Date.now() - sessionStartRef.current) / 1000,
+            })
+        );
+
+        if (captured) {
+            firstProblemSubmitTrackedRef.current = true;
+        }
+    }, [isFirstProblemSubmission, problem]);
 
     const userStorageScope = user?.id || user?.email || 'anonymous';
     const problemStorageScope = problem?.id ? `${problem.id}:${userStorageScope}` : '';
@@ -1570,9 +1600,11 @@ const Problem = () => {
                         <MathLiveExample
                             key={`ml-${problem?.id}-${timerResetSeq}`}
                             onSubmit={handleNewSubmission}
+                            onSubmitInitiated={handleFirstProblemSubmitInitiated}
                             nextProblemPath={nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
                             isSolved={isCompleted}
                             isPracticeMode={isCompleted}
+                            isFirstProblemSubmission={isFirstProblemSubmission}
                             problemDescription={problem.description}
                             acceptedSolution={solutionText}
                             onFieldsChange={handleFieldsChange}
@@ -1587,4 +1619,4 @@ const Problem = () => {
     );
 };
 
-export default Problem; 
+export default Problem;

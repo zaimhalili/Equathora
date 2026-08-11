@@ -255,7 +255,7 @@ math-field:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40px;
+    min-height: 44px;
 }
 
 .ml-btn:hover {
@@ -267,15 +267,35 @@ math-field:hover {
 }
 
 .ml-btn.submit {
-    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
+    background: var(--french-gray);
     font-family: 'Sansation', sans-serif;
     font-weight: 700;
-    color: white; 
+    color: var(--mid-main-secondary);
     min-width: 140px;
+    border: 1px solid var(--mid-main-secondary);
+    box-shadow: none;
 }
 
-.ml-btn.submit:hover {
-    background: linear-gradient(360deg, var(--dark-accent-color), var(--dark-accent-color));
+.ml-btn.submit.ml-submit-ready {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+    box-shadow: 0 6px 16px rgba(215, 4, 39, 0.2);
+}
+
+.ml-btn.submit.ml-submit-ready:hover {
+    background: var(--dark-accent-color);
+    border-color: var(--dark-accent-color);
+}
+
+.ml-btn.submit:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent-color) 35%, transparent);
+    outline-offset: 2px;
+}
+
+.ml-btn.submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.72;
 }
 
 .ml-next-btn {
@@ -431,6 +451,22 @@ math-field::part(content) {
 
 /* Hide virtual keyboard toggle button on mobile */
 @media (max-width: 768px) {
+    .ml-wrapper--submit-docked {
+        padding-bottom: 4.75rem;
+    }
+
+    .ml-btn.submit.ml-submit-docked {
+        position: fixed;
+        right: 0.75rem;
+        bottom: max(0.75rem, env(safe-area-inset-bottom));
+        left: 0.75rem;
+        z-index: 40;
+        width: auto;
+        min-height: 48px;
+        border-radius: 12px;
+        box-shadow: 0 12px 30px rgba(43, 45, 66, 0.25);
+    }
+
     math-field {
         font-size: clamp(24px, 6vw, 28px) !important;
     }

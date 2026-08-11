@@ -49,9 +49,11 @@ const loadStoredFields = (storageKey) => {
 
 export default function MathLiveEditor({
     onSubmit,
+    onSubmitInitiated,
     nextProblemPath,
     isSolved = false,
     isPracticeMode = false,
+    isFirstProblemSubmission = false,
     problemDescription,
     acceptedSolution,
     onFieldsChange,
@@ -155,6 +157,11 @@ export default function MathLiveEditor({
         }
 
         const totalChars = nonEmptyFields.reduce((acc, f) => acc + f.latex.length, 0);
+        onSubmitInitiated?.({
+            stepCount: nonEmptyFields.length,
+            totalCharacters: totalChars,
+        });
+
         if (totalChars > MAX_TOTAL_CHARS) {
             const errFb = { message: "Your solution is too long...", success: false, isCorrect: false, loading: false };
             setSubmissionFeedback(errFb);
@@ -261,6 +268,8 @@ export default function MathLiveEditor({
     }, [isSolved]);
 
     const showNextProblem = Boolean(canShowNext && nextProblemPath);
+    const hasEnteredAnswer = fields.some((field) => field.latex?.trim());
+    const shouldDockFirstSubmit = isFirstProblemSubmission && hasEnteredAnswer && !isSolved;
 
     // General (non-step-specific) feedback: shown when there's an incorrect
     // submission but no valid step number to attach it to (AI error, unclear
@@ -278,7 +287,7 @@ export default function MathLiveEditor({
                 onClose={() => setDeleteAllPopup(false)}
                 onConfirm={() => { clearAll(); setDeleteAllPopup(false); }}
             />
-            <div className="ml-wrapper">
+            <div className={`ml-wrapper ${shouldDockFirstSubmit ? 'ml-wrapper--submit-docked' : ''}`}>
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                     <h2 className="ml-title w-full">Your Solution</h2>
                     {isPracticeMode && (
@@ -398,7 +407,11 @@ export default function MathLiveEditor({
                                 <FaPlus />
                                 Add New Line
                             </button>
-                            <button className={`ml-btn submit flex-1 ${isSubmitting ? 'active:scale-100 hover:bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] !cursor-not-allowed active:!translate-y-0' : ''}`} onClick={handleSubmit} disabled={isSubmitting}>
+                            <button
+                                className={`ml-btn submit flex-1 ${hasEnteredAnswer ? 'ml-submit-ready' : ''} ${shouldDockFirstSubmit ? 'ml-submit-docked' : ''} ${isSubmitting ? 'active:scale-100 !cursor-not-allowed active:!translate-y-0' : ''}`}
+                                onClick={handleSubmit}
+                                disabled={!hasEnteredAnswer || isSubmitting}
+                            >
                                 {isSubmitting ? "Checking..." : "Submit Solution"}
                             </button>
                             {showNextProblem && (
