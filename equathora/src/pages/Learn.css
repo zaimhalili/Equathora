@@ -68,6 +68,26 @@
     color: var(--secondary-color);
 }
 
+.learn-topic-entry {
+    margin-top: 0.85rem;
+    color: rgba(43, 45, 66, 0.72);
+    font-family: 'Sansation', sans-serif;
+    font-size: 0.95rem;
+}
+
+.learn-topic-entry a {
+    color: var(--secondary-color);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: rgba(215, 4, 39, 0.45);
+    text-underline-offset: 0.22rem;
+}
+
+.learn-topic-entry a:hover {
+    color: var(--accent-color);
+    text-decoration-color: var(--accent-color);
+}
+
 #search-filtering {
     width: 100%;
     margin-bottom: 1.5rem;

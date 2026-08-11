@@ -1,0 +1,639 @@
+.polynomial-page {
+    min-height: 100vh;
+    color: var(--secondary-color);
+    background:
+        radial-gradient(circle at 92% 7%, rgba(215, 4, 39, 0.075), transparent 28rem),
+        linear-gradient(180deg, var(--main-color) 0%, #f8fafb 48%, var(--main-color) 100%);
+}
+
+.polynomial-hero,
+.polynomial-skill-nav,
+.polynomial-library,
+.polynomial-method,
+.polynomial-faq,
+.polynomial-final-cta {
+    width: min(1180px, calc(100% - 2rem));
+    margin-inline: auto;
+}
+
+.polynomial-hero {
+    min-height: 720px;
+    padding: 9rem 0 5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1.03fr) minmax(390px, 0.97fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+}
+
+.polynomial-hero-copy {
+    max-width: 660px;
+}
+
+.polynomial-eyebrow {
+    margin: 0 0 0.8rem;
+    color: var(--accent-color);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.polynomial-hero h1,
+.polynomial-section-heading h2,
+.polynomial-group-heading h3,
+.polynomial-method h2,
+.polynomial-faq h2,
+.polynomial-final-cta h2 {
+    font-family: Lexend, Sansation, sans-serif;
+    letter-spacing: -0.045em;
+}
+
+.polynomial-hero h1 {
+    max-width: 13ch;
+    margin: 0;
+    font-size: clamp(3rem, 6vw, 5.2rem);
+    font-weight: 750;
+    line-height: 0.99;
+}
+
+.polynomial-intro {
+    max-width: 630px;
+    margin: 1.6rem 0 0;
+    color: rgba(43, 45, 66, 0.76);
+    font-size: clamp(1.05rem, 2vw, 1.22rem);
+    line-height: 1.65;
+}
+
+.polynomial-hero-actions {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.1rem 1.5rem;
+}
+
+.polynomial-primary-action {
+    min-height: 52px;
+    padding: 0.9rem 1.25rem;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    color: #fff;
+    background: var(--accent-color);
+    box-shadow: 0 12px 28px rgba(215, 4, 39, 0.24);
+    transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.polynomial-primary-action:hover {
+    color: #fff;
+    background: var(--dark-accent-color);
+    box-shadow: 0 15px 34px rgba(215, 4, 39, 0.3);
+    transform: translateY(-2px);
+}
+
+.polynomial-catalog-link {
+    padding: 0.55rem 0;
+    color: var(--secondary-color);
+    border-bottom: 1px solid rgba(43, 45, 66, 0.38);
+}
+
+.polynomial-catalog-link:hover {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.polynomial-proof {
+    margin: 2.1rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.4rem;
+}
+
+.polynomial-proof div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.1rem;
+}
+
+.polynomial-proof div + div {
+    padding-left: 1.4rem;
+    border-left: 1px solid rgba(43, 45, 66, 0.18);
+}
+
+.polynomial-proof dt {
+    color: rgba(43, 45, 66, 0.6);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.polynomial-proof dd {
+    margin: 0;
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.polynomial-hero-visual {
+    position: relative;
+    min-height: 520px;
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    border: 1px solid rgba(43, 45, 66, 0.09);
+    border-radius: 24px;
+    background:
+        linear-gradient(rgba(43, 45, 66, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(43, 45, 66, 0.035) 1px, transparent 1px),
+        rgba(255, 255, 255, 0.72);
+    background-size: 28px 28px;
+    box-shadow: 0 24px 70px rgba(43, 45, 66, 0.12);
+    overflow: hidden;
+}
+
+.polynomial-hero-visual img {
+    position: absolute;
+    right: -3rem;
+    top: -0.5rem;
+    width: min(70%, 360px);
+    height: auto;
+    opacity: 0.95;
+    filter: drop-shadow(0 16px 18px rgba(43, 45, 66, 0.1));
+}
+
+.polynomial-scratch-card {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 430px);
+    padding: 1.4rem;
+    border: 1px solid rgba(43, 45, 66, 0.12);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 16px 40px rgba(43, 45, 66, 0.14);
+}
+
+.polynomial-card-label {
+    color: var(--accent-color);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.polynomial-scratch-card > p {
+    margin: 0.8rem 0 1rem;
+    font-family: Lexend, Sansation, sans-serif;
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    font-weight: 650;
+}
+
+.polynomial-scratch-card ol {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+    list-style: none;
+}
+
+.polynomial-scratch-card li {
+    padding: 0.55rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(43, 45, 66, 0.09);
+    font-size: 0.82rem;
+}
+
+.polynomial-scratch-card li span {
+    color: rgba(43, 45, 66, 0.62);
+}
+
+.polynomial-answer {
+    margin-top: 1rem;
+    padding: 0.75rem 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    border-radius: 12px;
+    color: #1f6642;
+    background: #e6f5ed;
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.polynomial-skill-nav {
+    padding: 1.2rem 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.4rem;
+    border-radius: 16px;
+    background: var(--secondary-color);
+    color: #fff;
+    box-shadow: 0 16px 38px rgba(43, 45, 66, 0.14);
+}
+
+.polynomial-skill-nav > span {
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.polynomial-skill-nav div {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.polynomial-skill-nav a {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 0.86rem;
+}
+
+.polynomial-skill-nav a:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.polynomial-library {
+    padding: 7rem 0 4rem;
+}
+
+.polynomial-section-heading {
+    max-width: 720px;
+}
+
+.polynomial-section-heading h2,
+.polynomial-method h2,
+.polynomial-faq h2,
+.polynomial-final-cta h2 {
+    margin: 0;
+    font-size: clamp(2.25rem, 4.5vw, 3.8rem);
+    line-height: 1.05;
+}
+
+.polynomial-section-heading > p:last-child,
+.polynomial-method-copy > p:last-child {
+    margin-top: 1rem;
+    color: rgba(43, 45, 66, 0.72);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.polynomial-groups {
+    margin-top: 4rem;
+    display: grid;
+    gap: 5rem;
+}
+
+.polynomial-group {
+    scroll-margin-top: 6rem;
+}
+
+.polynomial-group-heading {
+    margin-bottom: 1.4rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.polynomial-group-heading > span {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(43, 45, 66, 0.16);
+    border-radius: 13px;
+    color: var(--accent-color);
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.polynomial-group-heading p {
+    margin: 0;
+    color: rgba(43, 45, 66, 0.64);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.polynomial-group-heading h3 {
+    margin: 0.15rem 0 0.45rem;
+    font-size: clamp(1.65rem, 3vw, 2.25rem);
+}
+
+.polynomial-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.polynomial-problem-card {
+    min-height: 210px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(43, 45, 66, 0.11);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 10px 26px rgba(43, 45, 66, 0.065);
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.polynomial-problem-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(43, 45, 66, 0.22);
+    box-shadow: 0 16px 34px rgba(43, 45, 66, 0.1);
+}
+
+.polynomial-card-meta,
+.polynomial-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+}
+
+.polynomial-card-meta {
+    color: rgba(43, 45, 66, 0.6);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.polynomial-problem-card h4 {
+    margin: 1.1rem 0 1.4rem;
+    font-family: Lexend, Sansation, sans-serif;
+    font-size: 1.18rem;
+    line-height: 1.35;
+}
+
+.polynomial-difficulty {
+    padding: 0.35rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+.polynomial-difficulty-easy {
+    color: #276649;
+    background: #e2f3ea;
+}
+
+.polynomial-difficulty-medium {
+    color: #745311;
+    background: #fff1c7;
+}
+
+.polynomial-card-footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--secondary-color);
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.polynomial-card-footer a:hover {
+    color: var(--accent-color);
+}
+
+.polynomial-method {
+    margin-top: 4rem;
+    padding: clamp(2rem, 5vw, 4rem);
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    border-radius: 22px;
+    color: #fff;
+    background: var(--secondary-color);
+    box-shadow: 0 22px 55px rgba(43, 45, 66, 0.18);
+}
+
+.polynomial-method .polynomial-eyebrow {
+    color: #ff7189;
+}
+
+.polynomial-method h2 {
+    max-width: 11ch;
+}
+
+.polynomial-method-copy > p:last-child {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.polynomial-method ol {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+}
+
+.polynomial-method li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+}
+
+.polynomial-method li > span {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    color: #fff;
+    background: var(--accent-color);
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 700;
+}
+
+.polynomial-method h3 {
+    margin: 0 0 0.2rem;
+    font-family: Lexend, Sansation, sans-serif;
+    font-size: 1rem;
+}
+
+.polynomial-method li p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.55;
+}
+
+.polynomial-faq {
+    padding: 8rem 0;
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2.5rem, 7vw, 7rem);
+}
+
+.polynomial-faq-list {
+    display: grid;
+}
+
+.polynomial-faq details {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(43, 45, 66, 0.15);
+}
+
+.polynomial-faq summary {
+    cursor: pointer;
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.polynomial-faq details p {
+    margin: 0.8rem 0 0;
+    color: rgba(43, 45, 66, 0.7);
+    line-height: 1.65;
+}
+
+.polynomial-final-cta {
+    margin-bottom: 7rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.5rem;
+    border: 1px solid rgba(43, 45, 66, 0.12);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 16px 40px rgba(43, 45, 66, 0.08);
+}
+
+.polynomial-final-cta > svg {
+    width: 32px;
+    height: 32px;
+    color: var(--accent-color);
+}
+
+.polynomial-final-cta h2 {
+    font-size: clamp(1.65rem, 3vw, 2.5rem);
+}
+
+.polynomial-final-cta .polynomial-eyebrow {
+    margin-bottom: 0.35rem;
+}
+
+.polynomial-illustration-credit {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    background: var(--secondary-color);
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.75rem;
+}
+
+.polynomial-illustration-credit a {
+    color: inherit;
+}
+
+@media (max-width: 900px) {
+    .polynomial-hero {
+        padding-top: 8rem;
+        grid-template-columns: 1fr;
+    }
+
+    .polynomial-hero-visual {
+        min-height: 470px;
+    }
+
+    .polynomial-card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .polynomial-method,
+    .polynomial-faq {
+        grid-template-columns: 1fr;
+    }
+
+    .polynomial-method h2 {
+        max-width: 15ch;
+    }
+}
+
+@media (max-width: 640px) {
+    .polynomial-hero,
+    .polynomial-library,
+    .polynomial-faq {
+        width: min(100% - 1.25rem, 1180px);
+    }
+
+    .polynomial-hero {
+        min-height: 0;
+        padding-top: 7rem;
+        padding-bottom: 3rem;
+    }
+
+    .polynomial-hero h1 {
+        font-size: clamp(2.65rem, 14vw, 4rem);
+    }
+
+    .polynomial-hero-actions,
+    .polynomial-primary-action {
+        width: 100%;
+    }
+
+    .polynomial-hero-visual {
+        min-height: 440px;
+        padding: 1rem;
+    }
+
+    .polynomial-hero-visual img {
+        right: -4.5rem;
+        width: 92%;
+    }
+
+    .polynomial-scratch-card li {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    .polynomial-skill-nav {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .polynomial-library {
+        padding-top: 5rem;
+    }
+
+    .polynomial-card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .polynomial-method {
+        width: calc(100% - 1.25rem);
+        border-radius: 18px;
+    }
+
+    .polynomial-faq {
+        padding: 5rem 0;
+    }
+
+    .polynomial-final-cta {
+        width: calc(100% - 1.25rem);
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .polynomial-final-cta .polynomial-primary-action {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .polynomial-primary-action,
+    .polynomial-problem-card {
+        transition: none;
+    }
+}
