@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
 import './Learn.css';
 import Idea from '../assets/images/Mathematics-bro.svg';
@@ -495,6 +495,9 @@ const Learn = () => {
                 </motion.svg>
               </span></h1>
               <h4>Unlock more exercises as you progress. They're great practise and fun to do!</h4>
+              <p className="learn-topic-entry">
+                Want a focused starting point? <Link to="/algebra-practice-problems">Explore Algebra practice problems</Link>.
+              </p>
             </div>
           </motion.article>
 

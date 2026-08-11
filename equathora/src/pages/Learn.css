@@ -68,6 +68,21 @@
     color: var(--secondary-color);
 }
 
+.learn-topic-entry {
+    margin-top: 0.9rem;
+    color: rgba(43, 45, 66, 0.72);
+    font-size: 0.95rem;
+}
+
+.learn-topic-entry a {
+    color: var(--accent-color);
+    border-bottom: 1px solid rgba(215, 4, 39, 0.35);
+}
+
+.learn-topic-entry a:hover {
+    border-bottom-color: var(--accent-color);
+}
+
 #search-filtering {
     width: 100%;
     margin-bottom: 1.5rem;

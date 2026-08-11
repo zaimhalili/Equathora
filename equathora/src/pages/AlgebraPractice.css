@@ -1,0 +1,529 @@
+.algebra-page {
+    min-height: 100vh;
+    color: var(--secondary-color);
+    background:
+        radial-gradient(circle at 88% 12%, rgba(215, 4, 39, 0.08), transparent 28rem),
+        linear-gradient(180deg, var(--main-color) 0%, #f8fafb 45%, var(--main-color) 100%);
+}
+
+.algebra-hero,
+.algebra-grade-nav,
+.algebra-problem-library,
+.algebra-how {
+    width: min(1180px, calc(100% - 2rem));
+    margin-inline: auto;
+}
+
+.algebra-hero {
+    min-height: 680px;
+    padding: 9rem 0 5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+}
+
+.algebra-hero-copy {
+    max-width: 650px;
+}
+
+.algebra-eyebrow {
+    margin: 0 0 0.8rem;
+    color: var(--accent-color);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+}
+
+.algebra-hero h1,
+.algebra-section-heading h2,
+.algebra-how h2,
+.algebra-grade-heading h3 {
+    font-family: Lexend, Sansation, sans-serif;
+    letter-spacing: -0.045em;
+}
+
+.algebra-hero h1 {
+    max-width: 12ch;
+    margin: 0;
+    font-size: clamp(3rem, 6.5vw, 5.5rem);
+    font-weight: 750;
+    line-height: 0.98;
+}
+
+.algebra-intro {
+    max-width: 610px;
+    margin: 1.6rem 0 0;
+    color: rgba(43, 45, 66, 0.78);
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.65;
+}
+
+.algebra-hero-actions {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.1rem 1.5rem;
+}
+
+.algebra-primary-action {
+    min-height: 52px;
+    padding: 0.9rem 1.25rem;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    color: #ffffff;
+    background: var(--accent-color);
+    box-shadow: 0 12px 28px rgba(215, 4, 39, 0.24);
+    transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.algebra-primary-action:hover {
+    color: #ffffff;
+    background: var(--dark-accent-color);
+    box-shadow: 0 15px 34px rgba(215, 4, 39, 0.3);
+    transform: translateY(-2px);
+}
+
+.algebra-catalog-link {
+    padding: 0.55rem 0;
+    color: var(--secondary-color);
+    border-bottom: 1px solid rgba(43, 45, 66, 0.38);
+}
+
+.algebra-catalog-link:hover {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.algebra-proof {
+    margin-top: 2.1rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.2rem;
+    color: rgba(43, 45, 66, 0.72);
+    font-size: 0.9rem;
+}
+
+.algebra-proof span + span {
+    padding-left: 1.2rem;
+    border-left: 1px solid rgba(43, 45, 66, 0.18);
+}
+
+.algebra-proof strong {
+    color: var(--secondary-color);
+}
+
+.algebra-hero-visual {
+    position: relative;
+    min-height: 480px;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(43, 45, 66, 0.09);
+    border-radius: 24px;
+    background:
+        linear-gradient(rgba(43, 45, 66, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(43, 45, 66, 0.035) 1px, transparent 1px),
+        rgba(255, 255, 255, 0.68);
+    background-size: 28px 28px;
+    box-shadow: 0 24px 70px rgba(43, 45, 66, 0.12);
+    overflow: hidden;
+}
+
+.algebra-hero-visual::before {
+    content: '';
+    position: absolute;
+    width: 290px;
+    height: 290px;
+    border-radius: 50%;
+    background: rgba(215, 4, 39, 0.08);
+    filter: blur(2px);
+}
+
+.algebra-hero-visual img {
+    position: relative;
+    z-index: 1;
+    width: min(90%, 460px);
+    height: auto;
+    filter: drop-shadow(0 16px 18px rgba(43, 45, 66, 0.12));
+}
+
+.algebra-hero-visual figcaption {
+    position: absolute;
+    z-index: 2;
+    right: 1.2rem;
+    bottom: 1.2rem;
+    left: 1.2rem;
+    padding: 0.95rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid rgba(43, 45, 66, 0.12);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 24px rgba(43, 45, 66, 0.1);
+    font-size: 0.88rem;
+}
+
+.algebra-hero-visual figcaption span:last-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.algebra-annotation {
+    color: var(--accent-color);
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.algebra-grade-nav {
+    padding: 1.2rem 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.4rem;
+    border: 1px solid rgba(43, 45, 66, 0.12);
+    border-radius: 16px;
+    background: var(--secondary-color);
+    color: #ffffff;
+    box-shadow: 0 16px 38px rgba(43, 45, 66, 0.14);
+}
+
+.algebra-grade-nav > span {
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.algebra-grade-nav div {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.algebra-grade-nav a {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 0.86rem;
+}
+
+.algebra-grade-nav a:hover {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.algebra-problem-library {
+    padding: 7rem 0 4rem;
+}
+
+.algebra-section-heading {
+    max-width: 680px;
+}
+
+.algebra-section-heading h2,
+.algebra-how h2 {
+    margin: 0;
+    font-size: clamp(2.25rem, 4.5vw, 3.8rem);
+    line-height: 1.05;
+}
+
+.algebra-section-heading > p:last-child {
+    margin-top: 1rem;
+    color: rgba(43, 45, 66, 0.72);
+    font-size: 1.05rem;
+    line-height: 1.65;
+}
+
+.algebra-grade-groups {
+    margin-top: 3.5rem;
+    display: grid;
+    gap: 5rem;
+}
+
+.algebra-grade-group {
+    scroll-margin-top: 6.5rem;
+}
+
+.algebra-grade-heading {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(43, 45, 66, 0.15);
+}
+
+.algebra-grade-heading p {
+    margin: 0 0 0.3rem;
+    color: rgba(43, 45, 66, 0.62);
+    font-size: 0.82rem;
+}
+
+.algebra-grade-heading h3 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.algebra-grade-heading > span {
+    color: rgba(43, 45, 66, 0.62);
+    font-size: 0.9rem;
+}
+
+.algebra-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.algebra-problem-card {
+    min-height: 230px;
+    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(43, 45, 66, 0.12);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 9px 25px rgba(43, 45, 66, 0.07);
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.algebra-problem-card:hover {
+    border-color: rgba(43, 45, 66, 0.28);
+    box-shadow: 0 14px 30px rgba(43, 45, 66, 0.11);
+    transform: translateY(-3px);
+}
+
+.algebra-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: rgba(43, 45, 66, 0.58);
+    font-size: 0.75rem;
+}
+
+.algebra-difficulty {
+    font-weight: 700;
+}
+
+.algebra-difficulty-beginner { color: var(--beginner); }
+.algebra-difficulty-easy { color: var(--easy); }
+.algebra-difficulty-medium { color: var(--medium); }
+.algebra-difficulty-hard { color: var(--hard); }
+
+.algebra-problem-card > p {
+    margin: 1.4rem 0 0.45rem;
+    color: var(--accent-color);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.algebra-problem-card h4 {
+    margin: 0;
+    font-family: Lexend, Sansation, sans-serif;
+    font-size: 1.12rem;
+    line-height: 1.4;
+}
+
+.algebra-problem-card a {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--secondary-color);
+    font-size: 0.86rem;
+}
+
+.algebra-problem-card a:hover {
+    color: var(--accent-color);
+}
+
+.algebra-problem-card a svg {
+    width: 0.72rem;
+    transition: transform 160ms ease;
+}
+
+.algebra-problem-card a:hover svg {
+    transform: translateX(3px);
+}
+
+.algebra-how {
+    margin-bottom: 6rem;
+    padding: clamp(2rem, 5vw, 4rem);
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(2rem, 6vw, 6rem);
+    border-radius: 24px;
+    background: var(--secondary-color);
+    color: #ffffff;
+}
+
+.algebra-how .algebra-eyebrow {
+    color: #ff6b80;
+}
+
+.algebra-how ol {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.algebra-how li {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    gap: 1rem;
+}
+
+.algebra-how li > span {
+    width: 2.4rem;
+    height: 2.4rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 50%;
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 700;
+}
+
+.algebra-how h3 {
+    margin: 0 0 0.3rem;
+    font-family: Lexend, Sansation, sans-serif;
+    font-size: 1.06rem;
+}
+
+.algebra-how li p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.5;
+}
+
+.algebra-illustration-credit {
+    padding: 1rem;
+    text-align: center;
+    background: var(--secondary-color);
+    color: rgba(255, 255, 255, 0.54);
+    font-size: 0.72rem;
+}
+
+.algebra-illustration-credit a:hover {
+    color: rgba(255, 255, 255, 0.84);
+}
+
+@media (max-width: 920px) {
+    .algebra-hero {
+        min-height: auto;
+        padding-top: 8rem;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .algebra-hero-copy {
+        max-width: 760px;
+    }
+
+    .algebra-hero-visual {
+        min-height: 420px;
+    }
+
+    .algebra-card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .algebra-how {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .algebra-hero,
+    .algebra-grade-nav,
+    .algebra-problem-library,
+    .algebra-how {
+        width: min(100% - 1.25rem, 1180px);
+    }
+
+    .algebra-hero {
+        padding-top: 7rem;
+        padding-bottom: 3.5rem;
+    }
+
+    .algebra-hero h1 {
+        font-size: clamp(2.65rem, 13vw, 4rem);
+    }
+
+    .algebra-primary-action {
+        width: 100%;
+    }
+
+    .algebra-proof {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .algebra-proof span + span {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .algebra-hero-visual {
+        min-height: 350px;
+        border-radius: 18px;
+    }
+
+    .algebra-hero-visual figcaption {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .algebra-grade-nav {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .algebra-problem-library {
+        padding-top: 5rem;
+    }
+
+    .algebra-grade-groups {
+        gap: 4rem;
+    }
+
+    .algebra-card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .algebra-problem-card {
+        min-height: 205px;
+    }
+
+    .algebra-how {
+        margin-bottom: 4rem;
+        border-radius: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .algebra-page *,
+    .algebra-page *::before,
+    .algebra-page *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
