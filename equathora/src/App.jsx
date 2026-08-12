@@ -26,7 +26,7 @@ import {
     capturePostHogPageView
 } from "./lib/posthogClient";
 import { captureRecruitmentAttribution } from "./lib/recruitmentAttribution";
-import { updateCanonicalUrl } from "./lib/seoMetadata";
+import { updateCanonicalUrl, updateMetaDescription } from "./lib/seoMetadata";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -36,6 +36,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Problem = lazy(() => import("./pages/Problem"));
 const More = lazy(() => import("./pages/More"));
 const Learn = lazy(() => import("./pages/Learn"));
+const QuadraticPractice = lazy(() => import("./pages/QuadraticPractice"));
 const ApplyMentor = lazy(() => import("./pages/ApplyMentor"));
 const HelpCenter = lazy(() => import("./pages/HelpCenter"));
 const SystemUpdates = lazy(() => import("./pages/SystemUpdates"));
@@ -89,6 +90,7 @@ function PageMetadataUpdater() {
             '/': 'Equathora - Master Math Through Practice',
             '/dashboard': 'Equathora',
             '/learn': 'Practice Problems - Equathora',
+            '/quadratic-equations-practice-problems': 'Quadratic Equations Practice Problems - Equathora',
             '/problems': 'Solve Challenge - Equathora',
             '/achievements': 'Your Progress - Equathora',
             '/about': 'Our Story - Equathora',
@@ -122,6 +124,7 @@ function PageMetadataUpdater() {
 
         document.title = pageTitles[matchedRoute] || 'Equathora - Master Math Through Practice';
         updateCanonicalUrl(document, location.pathname);
+        updateMetaDescription(document, location.pathname);
     }, [location]);
 
     return null;
@@ -294,6 +297,7 @@ export default function App() {
                         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                         <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
                         <Route path="/learn" element={<Learn />} />
+                        <Route path="/quadratic-equations-practice-problems" element={<QuadraticPractice />} />
                         <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
                         <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
                         <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />

@@ -1,0 +1,632 @@
+.quadratic-page {
+    min-height: 100vh;
+    color: var(--secondary-color);
+    background:
+        radial-gradient(circle at 12% 12%, rgba(215, 4, 39, 0.065), transparent 27rem),
+        linear-gradient(180deg, var(--main-color) 0%, #f9fbfc 48%, var(--main-color) 100%);
+}
+
+.quadratic-hero,
+.quadratic-skill-nav,
+.quadratic-library,
+.quadratic-method,
+.quadratic-faq,
+.quadratic-final-cta {
+    width: min(1180px, calc(100% - 2rem));
+    margin-inline: auto;
+}
+
+.quadratic-hero {
+    min-height: 720px;
+    padding: 9rem 0 5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(400px, 0.92fr);
+    gap: clamp(2.8rem, 6vw, 6rem);
+    align-items: center;
+}
+
+.quadratic-hero-copy {
+    max-width: 670px;
+}
+
+.quadratic-eyebrow {
+    margin: 0 0 0.8rem;
+    color: var(--accent-color);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.quadratic-hero h1,
+.quadratic-section-heading h2,
+.quadratic-group-heading h3,
+.quadratic-method h2,
+.quadratic-faq h2,
+.quadratic-final-cta h2 {
+    font-family: Lexend, Sansation, sans-serif;
+    letter-spacing: -0.045em;
+}
+
+.quadratic-hero h1 {
+    max-width: 11ch;
+    margin: 0;
+    font-size: clamp(3rem, 6vw, 5.25rem);
+    font-weight: 750;
+    line-height: 0.99;
+}
+
+.quadratic-intro {
+    max-width: 640px;
+    margin: 1.6rem 0 0;
+    color: rgba(43, 45, 66, 0.76);
+    font-size: clamp(1.05rem, 2vw, 1.22rem);
+    line-height: 1.65;
+}
+
+.quadratic-hero-actions {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.1rem 1.5rem;
+}
+
+.quadratic-primary-action {
+    min-height: 52px;
+    padding: 0.9rem 1.25rem;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    color: #fff;
+    background: var(--accent-color);
+    box-shadow: 0 12px 28px rgba(215, 4, 39, 0.24);
+    transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.quadratic-primary-action:hover {
+    color: #fff;
+    background: var(--dark-accent-color);
+    box-shadow: 0 15px 34px rgba(215, 4, 39, 0.3);
+    transform: translateY(-2px);
+}
+
+.quadratic-catalog-link {
+    padding: 0.55rem 0;
+    color: var(--secondary-color);
+    border-bottom: 1px solid rgba(43, 45, 66, 0.38);
+}
+
+.quadratic-catalog-link:hover {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.quadratic-proof {
+    margin: 2.1rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.4rem;
+}
+
+.quadratic-proof div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.1rem;
+}
+
+.quadratic-proof div + div {
+    padding-left: 1.4rem;
+    border-left: 1px solid rgba(43, 45, 66, 0.18);
+}
+
+.quadratic-proof dt {
+    color: rgba(43, 45, 66, 0.6);
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.quadratic-proof dd {
+    margin: 0;
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.quadratic-graph-card {
+    position: relative;
+    min-height: 520px;
+    margin: 0;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(43, 45, 66, 0.11);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.84);
+    box-shadow: 0 24px 70px rgba(43, 45, 66, 0.13);
+    overflow: hidden;
+}
+
+.quadratic-equation-label {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.quadratic-equation-label span {
+    color: var(--accent-color);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.quadratic-equation-label strong {
+    font-family: Lexend, Sansation, sans-serif;
+    font-size: 1.2rem;
+}
+
+.quadratic-graph-card svg {
+    width: 100%;
+    height: auto;
+    margin: -0.6rem 0 -0.2rem;
+}
+
+.quadratic-axis {
+    stroke: rgba(43, 45, 66, 0.44);
+    stroke-width: 2;
+}
+
+.quadratic-curve {
+    fill: none;
+    stroke: var(--accent-color);
+    stroke-linecap: round;
+    stroke-width: 7;
+}
+
+.quadratic-root {
+    fill: var(--secondary-color);
+    stroke: #fff;
+    stroke-width: 4;
+}
+
+.quadratic-graph-card text {
+    fill: var(--secondary-color);
+    font-family: Lexend, Sansation, sans-serif;
+    font-size: 18px;
+    font-weight: 650;
+}
+
+.quadratic-graph-card figcaption {
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 14px;
+    color: #1f6642;
+    background: #e6f5ed;
+}
+
+.quadratic-graph-card figcaption span {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.82rem;
+}
+
+.quadratic-graph-card figcaption strong {
+    font-family: Lexend, Sansation, sans-serif;
+}
+
+.quadratic-skill-nav {
+    padding: 1.2rem 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.4rem;
+    border-radius: 16px;
+    color: #fff;
+    background: var(--secondary-color);
+    box-shadow: 0 16px 38px rgba(43, 45, 66, 0.14);
+}
+
+.quadratic-skill-nav > span {
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.quadratic-skill-nav div {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.quadratic-skill-nav a {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 0.86rem;
+}
+
+.quadratic-skill-nav a:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.quadratic-library {
+    padding: 7rem 0 4rem;
+}
+
+.quadratic-section-heading {
+    max-width: 760px;
+}
+
+.quadratic-section-heading h2,
+.quadratic-method h2,
+.quadratic-faq h2,
+.quadratic-final-cta h2 {
+    margin: 0;
+    font-size: clamp(2.25rem, 4.5vw, 3.8rem);
+    line-height: 1.05;
+}
+
+.quadratic-section-heading > p:last-child,
+.quadratic-method-copy > p:last-child {
+    margin-top: 1rem;
+    color: rgba(43, 45, 66, 0.72);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.quadratic-groups {
+    margin-top: 4rem;
+    display: grid;
+    gap: 5rem;
+}
+
+.quadratic-group {
+    scroll-margin-top: 6rem;
+}
+
+.quadratic-group-heading {
+    margin-bottom: 1.4rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.quadratic-group-heading > span {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(43, 45, 66, 0.16);
+    border-radius: 13px;
+    color: var(--accent-color);
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.quadratic-group-heading p {
+    margin: 0;
+    color: rgba(43, 45, 66, 0.64);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.quadratic-group-heading h3 {
+    margin: 0.15rem 0 0.45rem;
+    font-size: clamp(1.65rem, 3vw, 2.25rem);
+}
+
+.quadratic-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.quadratic-problem-card {
+    min-height: 210px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(43, 45, 66, 0.11);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 10px 26px rgba(43, 45, 66, 0.065);
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.quadratic-problem-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(43, 45, 66, 0.22);
+    box-shadow: 0 16px 34px rgba(43, 45, 66, 0.1);
+}
+
+.quadratic-card-meta,
+.quadratic-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+}
+
+.quadratic-card-meta {
+    color: rgba(43, 45, 66, 0.6);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.quadratic-problem-card h4 {
+    margin: 1.1rem 0 1.4rem;
+    font-family: Lexend, Sansation, sans-serif;
+    font-size: 1.18rem;
+    line-height: 1.35;
+}
+
+.quadratic-difficulty {
+    padding: 0.35rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+.quadratic-difficulty-easy {
+    color: #276649;
+    background: #e2f3ea;
+}
+
+.quadratic-difficulty-medium {
+    color: #745311;
+    background: #fff1c7;
+}
+
+.quadratic-difficulty-hard {
+    color: #8c1730;
+    background: #fbe4e9;
+}
+
+.quadratic-card-footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--secondary-color);
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.quadratic-card-footer a:hover {
+    color: var(--accent-color);
+}
+
+.quadratic-method {
+    margin-top: 4rem;
+    padding: clamp(2rem, 5vw, 4rem);
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    border-radius: 22px;
+    color: #fff;
+    background: var(--secondary-color);
+    box-shadow: 0 22px 55px rgba(43, 45, 66, 0.18);
+}
+
+.quadratic-method .quadratic-eyebrow {
+    color: #ff7189;
+}
+
+.quadratic-method h2 {
+    max-width: 12ch;
+}
+
+.quadratic-method-copy > p:last-child {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.quadratic-method ol {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+}
+
+.quadratic-method li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+}
+
+.quadratic-method li > span {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    color: #fff;
+    background: var(--accent-color);
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 700;
+}
+
+.quadratic-method h3 {
+    margin: 0 0 0.2rem;
+    font-family: Lexend, Sansation, sans-serif;
+    font-size: 1rem;
+}
+
+.quadratic-method li p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.55;
+}
+
+.quadratic-faq {
+    padding: 8rem 0;
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(2.5rem, 7vw, 7rem);
+}
+
+.quadratic-faq-list {
+    display: grid;
+}
+
+.quadratic-faq details {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(43, 45, 66, 0.15);
+}
+
+.quadratic-faq summary {
+    cursor: pointer;
+    font-family: Lexend, Sansation, sans-serif;
+    font-weight: 650;
+}
+
+.quadratic-faq details p {
+    margin: 0.8rem 0 0;
+    color: rgba(43, 45, 66, 0.7);
+    line-height: 1.65;
+}
+
+.quadratic-final-cta {
+    margin-bottom: 7rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.5rem;
+    border: 1px solid rgba(43, 45, 66, 0.12);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 16px 40px rgba(43, 45, 66, 0.08);
+}
+
+.quadratic-final-cta > svg {
+    width: 32px;
+    height: 32px;
+    color: var(--accent-color);
+}
+
+.quadratic-final-cta h2 {
+    font-size: clamp(1.65rem, 3vw, 2.5rem);
+}
+
+.quadratic-final-cta .quadratic-eyebrow {
+    margin-bottom: 0.35rem;
+}
+
+@media (max-width: 900px) {
+    .quadratic-hero {
+        padding-top: 8rem;
+        grid-template-columns: 1fr;
+    }
+
+    .quadratic-graph-card {
+        min-height: 470px;
+    }
+
+    .quadratic-card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quadratic-method,
+    .quadratic-faq {
+        grid-template-columns: 1fr;
+    }
+
+    .quadratic-method h2 {
+        max-width: 15ch;
+    }
+}
+
+@media (max-width: 640px) {
+    .quadratic-hero,
+    .quadratic-library,
+    .quadratic-faq {
+        width: min(100% - 1.25rem, 1180px);
+    }
+
+    .quadratic-hero {
+        min-height: 0;
+        padding-top: 7rem;
+        padding-bottom: 3rem;
+    }
+
+    .quadratic-hero h1 {
+        font-size: clamp(2.65rem, 14vw, 4rem);
+    }
+
+    .quadratic-hero-actions,
+    .quadratic-primary-action {
+        width: 100%;
+    }
+
+    .quadratic-graph-card {
+        min-height: 390px;
+        padding: 1rem;
+    }
+
+    .quadratic-equation-label {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .quadratic-graph-card figcaption {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .quadratic-skill-nav {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .quadratic-library {
+        padding-top: 5rem;
+    }
+
+    .quadratic-card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quadratic-method {
+        width: calc(100% - 1.25rem);
+        border-radius: 18px;
+    }
+
+    .quadratic-faq {
+        padding: 5rem 0;
+    }
+
+    .quadratic-final-cta {
+        width: calc(100% - 1.25rem);
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .quadratic-final-cta .quadratic-primary-action {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .quadratic-primary-action,
+    .quadratic-problem-card {
+        transition: none;
+    }
+}
