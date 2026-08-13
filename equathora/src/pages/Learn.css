@@ -592,6 +592,89 @@ ENHANCED FILTERING SYSTEM
     opacity: 1;
 }
 
+.comparison-guides {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin: 0.75rem 0 0.25rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid rgba(43, 45, 66, 0.12);
+    border-radius: 12px;
+    background: rgba(237, 242, 244, 0.72);
+    box-shadow: 0 8px 24px rgba(43, 45, 66, 0.06);
+}
+
+.comparison-guides-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.comparison-guides-label {
+    color: var(--accent-color);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.comparison-guides h2 {
+    color: var(--secondary-color);
+    font-family: 'Sansation', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    font-weight: 700;
+    line-height: 1.3;
+    text-wrap: balance;
+}
+
+.comparison-guides-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem 1rem;
+}
+
+.comparison-guides-links a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--accent-color);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    transition: color 0.18s ease;
+}
+
+.comparison-guides-links a:hover,
+.comparison-guides-links a:focus-visible {
+    color: var(--accent-color);
+}
+
+.comparison-guides-links a:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+@media only screen and (max-width: 767px) {
+    .comparison-guides {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .comparison-guides-links {
+        justify-content: flex-start;
+        width: 100%;
+    }
+}
+
 .problems-refreshing {
     opacity: 0.66;
     transition: opacity 0.2s ease;
