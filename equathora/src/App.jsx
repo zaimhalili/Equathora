@@ -26,7 +26,7 @@ import {
     capturePostHogPageView
 } from "./lib/posthogClient";
 import { captureRecruitmentAttribution } from "./lib/recruitmentAttribution";
-import { updateCanonicalUrl } from "./lib/seoMetadata";
+import { updateCanonicalUrl, updateMetaDescription } from "./lib/seoMetadata";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -45,6 +45,8 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogList = lazy(() => import("./pages/BlogList"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const IXLAlternative = lazy(() => import("./pages/IXLAlternative"));
+const BrilliantAlternative = lazy(() => import("./pages/BrilliantAlternative"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -114,6 +116,8 @@ function PageMetadataUpdater() {
             '/blogs': 'All Posts - Equathora',
             '/getStarted': 'Choose Your Path - Equathora',
             '/submit-problem': 'Submit a problem - Equathora',
+            '/ixl-alternative': 'IXL Alternative for Focused Math Practice | Equathora',
+            '/brilliant-alternative': 'Brilliant Alternative for School Math Practice | Equathora',
         };
 
         const matchedRoute = Object.keys(pageTitles).find(route =>
@@ -122,6 +126,7 @@ function PageMetadataUpdater() {
 
         document.title = pageTitles[matchedRoute] || 'Equathora - Master Math Through Practice';
         updateCanonicalUrl(document, location.pathname);
+        updateMetaDescription(document, location.pathname);
     }, [location]);
 
     return null;
@@ -278,6 +283,8 @@ export default function App() {
                         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="/terms-of-service" element={<TermsOfService />} />
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
+                        <Route path="/ixl-alternative" element={<IXLAlternative />} />
+                        <Route path="/brilliant-alternative" element={<BrilliantAlternative />} />
 
                         {/* Protected Onboarding Flow — guarded by OnboardingRoute, not
                             ProtectedRoute. OnboardingRoute allows a completed user back
