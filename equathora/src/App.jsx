@@ -46,6 +46,8 @@ const BlogList = lazy(() => import("./pages/BlogList"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const KhanAcademyAlternative = lazy(() => import("./pages/KhanAcademyAlternative"));
+const IXLAlternative = lazy(() => import("./pages/IXLAlternative"));
+const BrilliantAlternative = lazy(() => import("./pages/BrilliantAlternative"));
 
 const LeaderboardsLayout = lazy(() => import("./pages/Leaderboards/LeaderboardsLayout"));
 const GlobalLeaderboard = lazy(() => import("./pages/Leaderboards/GlobalLeaderboard"));
@@ -116,6 +118,8 @@ function PageMetadataUpdater() {
             '/getStarted': 'Choose Your Path - Equathora',
             '/submit-problem': 'Submit a problem - Equathora',
             '/khan-academy-alternative': 'Khan Academy Alternative for Focused Math Practice | Equathora',
+            '/ixl-alternative': 'IXL Alternative for Focused Math Practice | Equathora',
+            '/brilliant-alternative': 'Brilliant Alternative for School Math Practice | Equathora',
         };
 
         const matchedRoute = Object.keys(pageTitles).find(route =>
@@ -282,6 +286,8 @@ export default function App() {
                         <Route path="/terms-of-service" element={<TermsOfService />} />
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
                         <Route path="/khan-academy-alternative" element={<KhanAcademyAlternative />} />
+                        <Route path="/ixl-alternative" element={<IXLAlternative />} />
+                        <Route path="/brilliant-alternative" element={<BrilliantAlternative />} />
 
                         {/* Protected Onboarding Flow — guarded by OnboardingRoute, not
                             ProtectedRoute. OnboardingRoute allows a completed user back

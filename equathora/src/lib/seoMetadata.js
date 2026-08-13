@@ -1,13 +1,24 @@
 const SITE_URL = 'https://equathora.com';
 const DEFAULT_DESCRIPTION = 'Learn math online with structured practice, step-by-step math help, and Sigma AI feedback designed to improve problem solving and confidence.';
 
-const PAGE_DESCRIPTIONS = {
-    '/khan-academy-alternative': 'Compare Equathora and Khan Academy for math practice. See who each platform suits, then try real guided problems by grade and difficulty.',
+const PAGE_METADATA = {
+    '/khan-academy-alternative': {
+        title: 'Khan Academy Alternative for Focused Math Practice | Equathora',
+        description: 'Compare Equathora and Khan Academy for math practice. See who each platform suits, then try real guided problems by grade and difficulty.',
+    },
+    '/ixl-alternative': {
+        title: 'IXL Alternative for Focused Math Practice | Equathora',
+        description: 'Compare Equathora and IXL for high-school math practice. See which experience fits, then try real guided problems by grade and difficulty.',
+    },
+    '/brilliant-alternative': {
+        title: 'Brilliant Alternative for School Math Practice | Equathora',
+        description: 'Compare Equathora and Brilliant for interactive math practice. Explore the differences, then try real school-math problems by grade and difficulty.',
+    },
 };
 
 const PUBLIC_PAGE_PATHS = new Set([
     '/learn',
-    '/khan-academy-alternative',
+    ...Object.keys(PAGE_METADATA),
 ]);
 
 export function getCanonicalUrl(pathname) {
@@ -15,16 +26,14 @@ export function getCanonicalUrl(pathname) {
 }
 
 export function getMetaDescription(pathname) {
-    return PAGE_DESCRIPTIONS[pathname] || DEFAULT_DESCRIPTION;
+    return PAGE_METADATA[pathname]?.description || DEFAULT_DESCRIPTION;
 }
 
 export function updateMetaDescription(documentRef, pathname) {
     const descriptionMeta = documentRef?.querySelector('meta[name="description"]');
     const description = getMetaDescription(pathname);
 
-    if (descriptionMeta) {
-        descriptionMeta.setAttribute('content', description);
-    }
+    descriptionMeta?.setAttribute('content', description);
 
     return description;
 }
@@ -33,9 +42,7 @@ export function updateOpenGraphMetadata(documentRef, pathname) {
     const titleMeta = documentRef?.querySelector('meta[property="og:title"]');
     const descriptionMeta = documentRef?.querySelector('meta[property="og:description"]');
     const urlMeta = documentRef?.querySelector('meta[property="og:url"]');
-    const title = pathname === '/khan-academy-alternative'
-        ? 'Khan Academy Alternative for Focused Math Practice | Equathora'
-        : 'Equathora';
+    const title = PAGE_METADATA[pathname]?.title || 'Equathora';
     const description = getMetaDescription(pathname);
     const url = getCanonicalUrl(pathname);
 
