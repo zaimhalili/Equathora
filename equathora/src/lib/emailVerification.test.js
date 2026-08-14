@@ -6,7 +6,17 @@ import {
     getResendCooldownSeconds,
     getResendErrorMessage,
     RESEND_COOLDOWN_SECONDS,
+    VERIFICATION_PAGE_COPY,
 } from './emailVerification.js';
+
+test('verification instructions match the link delivered by email', () => {
+    const copy = Object.values(VERIFICATION_PAGE_COPY).join(' ');
+
+    assert.match(copy, /confirmation link/i);
+    assert.match(copy, /no code to enter/i);
+    assert.doesNotMatch(copy, /six-digit|verification code/i);
+    assert.doesNotMatch(copy, /dashboard|getStarted/i);
+});
 
 test('verification path preserves the complete email address', () => {
     assert.equal(
