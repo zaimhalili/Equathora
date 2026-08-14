@@ -27,6 +27,7 @@ import {
 } from "./lib/posthogClient";
 import { captureRecruitmentAttribution } from "./lib/recruitmentAttribution";
 import { updateCanonicalUrl } from "./lib/seoMetadata";
+import ReleaseTrafficTracker from "./components/ReleaseTrafficTracker";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -254,6 +255,7 @@ export default function App() {
     return (
         <>
             <PageMetadataUpdater />
+            <ReleaseTrafficTracker />
             <Suspense fallback={<LoadingSpinner />}>
                 <div id="main-content" tabIndex={-1} className="outline-none">
                     <Routes>
