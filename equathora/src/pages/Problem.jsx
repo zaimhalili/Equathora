@@ -162,15 +162,6 @@ const Problem = () => {
         loadProblems();
     }, [slug]);
 
-    // FIX: this effect previously had no error handling and no guard against
-    // a slow/failed fetch overwriting state for a problem the user has since
-    // navigated away from. If this request errored out silently, or resolved
-    // after the user had already moved to another problem, problemSolvedRef
-    // could be left "stuck" at a stale value from a *different* problem —
-    // which is what was causing every subsequent problem to be graded as
-    // practice mode. We now (1) reset the ref immediately when the problem
-    // changes, (2) guard the async result with an isMounted flag, and
-    // (3) handle rejection explicitly instead of letting it fail silently.
     useEffect(() => {
         if (!problem) return;
         let isMounted = true;
@@ -277,6 +268,18 @@ const Problem = () => {
     const [chatSeed, setChatSeed] = useState(null);
     const [pendingSigmaPrompt, setPendingSigmaPrompt] = useState('');
     const [isCompleted, setIsCompleted] = useState(false);
+    // True only when the DB confirms this problem was ALREADY completed
+    // before the current attempt (set once from the initial fetch, never
+    // flipped by a fresh correct solve). This is what "practice mode" means
+    // to the user — solving something you'd already solved. `isCompleted`
+    // itself gets flipped optimistically the instant you solve a problem
+    // for the first time, so it can't be used for this without showing the
+    // "practice mode" banner right after a brand-new correct solve.
+    const [alreadyCompletedOnLoad, setAlreadyCompletedOnLoad] = useState(false);
+    // True only once the DB has actually confirmed completion / solution-viewed
+    // state — used to gate the solution-fetch call below so it never fires
+    // before the corresponding DB write has landed (which was causing 403s).
+    const [canFetchSolution, setCanFetchSolution] = useState(false);
     const [sigmaBusy, setSigmaBusy] = useState(false);
     const [solutionText, setSolutionText] = useState(null);
 
@@ -430,22 +433,25 @@ const Problem = () => {
     }, []);
 
 
-    // FIX: same staleness/error-handling issue as the submissions effect
-    // above — `isCompleted` was only ever flipped from a resolved promise,
-    // so a slow or failed request for a new problem could leave the
-    // previous problem's "completed" flag in place indefinitely.
     useEffect(() => {
         if (!problem) return;
         let isMounted = true;
         getCompletedProblemsDb()
             .then(ids => {
                 if (!isMounted) return;
-                setIsCompleted(ids.includes(String(problem.id)));
+                const completed = ids.includes(String(problem.id));
+                setIsCompleted(completed);
+                // These reflect confirmed DB state at load time, so it's
+                // safe to use them for "was this already solved" and for
+                // gating the solution fetch.
+                setAlreadyCompletedOnLoad(completed);
+                if (completed) setCanFetchSolution(true);
             })
             .catch(error => {
                 console.error('Failed to load completed problems:', error);
                 if (!isMounted) return;
                 setIsCompleted(false);
+                setAlreadyCompletedOnLoad(false);
             });
         return () => {
             isMounted = false;
@@ -523,14 +529,9 @@ const Problem = () => {
         setDrawingColor('var(--secondary-color)');
         setShowMobileMenu(false);
         setPendingSigmaPrompt('');
-
-        // FIX (core bug): synchronously clear "solved" state the instant we
-        // switch problems, instead of waiting on the async DB effects above.
-        // Previously this state only got cleared once a fetch resolved, so
-        // any failed/slow request left the *previous* problem's solved
-        // status attached to the new problem — grading every subsequent
-        // problem as practice mode and awarding no XP.
         setIsCompleted(false);
+        setAlreadyCompletedOnLoad(false);
+        setCanFetchSolution(false);
         setSubmissions([]);
         setSolutionText(null);
         problemSolvedRef.current = false;
@@ -539,7 +540,10 @@ const Problem = () => {
     useEffect(() => {
         if (problem) {
             hasViewedSolutionDb(problem.id)
-                .then(setSolutionViewed)
+                .then(viewed => {
+                    setSolutionViewed(viewed);
+                    if (viewed) setCanFetchSolution(true);
+                })
                 .catch(error => {
                     console.error('Failed to check solution-viewed status:', error);
                     setSolutionViewed(false);
@@ -627,8 +631,11 @@ const Problem = () => {
         // This prevents free users from triggering the 403 network error entirely.
         if (problem.is_premium && !premium) return;
 
-        // 3. User must have completed it or clicked view solution
-        if (!isCompleted && !solutionViewed) return;
+        // 3. User must have a DB-CONFIRMED completion or solution-view —
+        // not just the optimistic local isCompleted/solutionViewed flags,
+        // which flip before the corresponding DB write has landed and were
+        // causing this call to fire too early (403 from the edge function).
+        if (!canFetchSolution) return;
 
         let isMounted = true;
 
@@ -648,7 +655,7 @@ const Problem = () => {
         return () => {
             isMounted = false;
         };
-    }, [problem?.id, problem?.is_premium, premium, isCompleted, solutionViewed]);
+    }, [problem?.id, problem?.is_premium, premium, canFetchSolution]);
 
     const toggleHint = async (index) => {
         if (openHints[index]) {
@@ -880,21 +887,7 @@ const Problem = () => {
                 // ignore background failure
             }
         }
-
-        // FIX (root cause): recordProblemStats must run BEFORE
-        // markProblemCompleteDb / removeProblemFromInProgressDb.
-        //
-        // recordProblemStats() independently re-checks the DB via
-        // getCompletedProblems() to guard against double-counting a
-        // resubmit. The old order awaited markProblemCompleteDb() first,
-        // which wrote this problem into the "completed" list — so by the
-        // time recordProblemStats() read that list back, it looked like
-        // the problem was "already solved," and it silently skipped the
-        // XP/stats update ("Practice mode submission, skipping stats
-        // update for problem ...") on every single first-time solve.
-        //
-        // Recording stats first, while the problem is still genuinely
-        // un-completed in the DB, removes that race entirely.
+        
         await recordProblemStats(problem, {
             isCorrect: validation.isCorrect,
             timeSpentSeconds,
@@ -908,6 +901,9 @@ const Problem = () => {
         if (validation.isCorrect) {
             await markProblemCompleteDb(problem.id, timeSpentSeconds, problem.difficulty, problem.topic || 'General');
             await removeProblemFromInProgressDb(problem.id);
+            // Only now is completion actually persisted — safe to let the
+            // solution-fetch effect fire.
+            setCanFetchSolution(true);
         }
 
         if (validation.isCorrect) {
@@ -1106,13 +1102,14 @@ const Problem = () => {
                         setShowDescription(true);
                         setShowMentorChat(false);
                     }}
-                    onConfirm={() => {
+                    onConfirm={async () => {
                         setShowSolution(true);
                         setShowSolutionPopup(false);
                         if (problem?.id) {
-                            markSolutionViewedDb(problem.id);
+                            await markSolutionViewedDb(problem.id);
                         }
                         setSolutionViewed(true);
+                        setCanFetchSolution(true);
                         setShowMentorChat(false);
                     }}
                 />
@@ -1633,7 +1630,7 @@ const Problem = () => {
                             onSubmit={handleNewSubmission}
                             nextProblemPath={nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
                             isSolved={isCompleted}
-                            isPracticeMode={isCompleted}
+                            isPracticeMode={alreadyCompletedOnLoad}
                             problemDescription={problem.description}
                             acceptedSolution={solutionText}
                             onFieldsChange={handleFieldsChange}
