@@ -29,7 +29,7 @@ const ForgotPassword = () => {
         return;
       }
 
-      setMessage('Password reset link sent! Check your email inbox and spam folder. Click the link to reset your password.');
+      setMessage('Password reset link sent! Check your email inbox and spam folder. Click the link to reset your password. It might be marked as dangerous, so just press "Looks safe" and then you can press "Reset Password". For any issues please contact me at equathora@gmail.com');
       setLoading(false);
     } catch (err) {
       setError('An unexpected error occurred');

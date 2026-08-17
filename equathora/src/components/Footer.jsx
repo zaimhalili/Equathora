@@ -110,10 +110,6 @@ const Footer = () => {
                 <div className="footer-bottom flex flex-col">
                     <p className="footer-copyright footer-attribution">
                         <span>© 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong></span>
-                        <a className="tin-credit" href="https://tin.computer" target="_blank" rel="noopener noreferrer">
-                            <span className="tin-mark" aria-hidden="true" />
-                            Growth by Tin
-                        </a>
                     </p>
 
                     <p className="footer-copyright">

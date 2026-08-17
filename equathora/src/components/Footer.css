@@ -171,8 +171,7 @@
     margin: 0;
 }
 
-.footer-attribution,
-.tin-credit {
+.footer-attribution{
     display: inline-flex;
     align-items: center;
 }
@@ -181,24 +180,6 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 0.45rem;
-}
-
-.tin-credit {
-    gap: 0.3rem;
-    color: inherit;
-    text-decoration: none;
-}
-
-.tin-credit:hover {
-    color: var(--main-color);
-    text-decoration: underline;
-}
-
-.tin-mark {
-    width: 0.72em;
-    height: 0.72em;
-    flex: 0 0 auto;
-    background: #66dc9d;
 }
 
 .footer-credit a {
