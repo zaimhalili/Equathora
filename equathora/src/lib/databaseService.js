@@ -498,7 +498,7 @@ export async function incrementTopicFrequency(topic) {
             .select('count')
             .eq('user_id', session.user.id)
             .eq('topic', topic)
-            .single();
+            .maybeSingle();
 
         if (existing) {
             const { error } = await supabase
@@ -519,6 +519,7 @@ export async function incrementTopicFrequency(topic) {
         console.error('Error incrementing topic frequency:', error);
     }
 }
+
 
 // ============================================================================
 // WEEKLY PROGRESS
@@ -565,7 +566,7 @@ export async function incrementWeeklyProgress(dayIndex) {
             .eq('user_id', session.user.id)
             .eq('day_index', dayIndex)
             .eq('week_start_date', weekStart)
-            .single();
+            .maybeSingle();
 
         if (existing) {
             const { error } = await supabase
@@ -587,6 +588,7 @@ export async function incrementWeeklyProgress(dayIndex) {
         console.error('Error incrementing weekly progress:', error);
     }
 }
+
 
 function getWeekStartDate() {
     const now = new Date();
@@ -647,7 +649,7 @@ export async function incrementDifficultyBreakdown(difficulty) {
             .select('count')
             .eq('user_id', session.user.id)
             .eq('difficulty', difficultyBucket)
-            .single();
+            .maybeSingle();
 
         if (existing) {
             const { error } = await supabase
@@ -668,6 +670,7 @@ export async function incrementDifficultyBreakdown(difficulty) {
         console.error('Error incrementing difficulty breakdown:', error);
     }
 }
+
 
 // ============================================================================
 // SOLUTION VIEWS / IN-PROGRESS
