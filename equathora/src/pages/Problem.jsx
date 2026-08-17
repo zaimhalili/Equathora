@@ -162,28 +162,57 @@ const Problem = () => {
         loadProblems();
     }, [slug]);
 
+    // FIX: this effect previously had no error handling and no guard against
+    // a slow/failed fetch overwriting state for a problem the user has since
+    // navigated away from. If this request errored out silently, or resolved
+    // after the user had already moved to another problem, problemSolvedRef
+    // could be left "stuck" at a stale value from a *different* problem —
+    // which is what was causing every subsequent problem to be graded as
+    // practice mode. We now (1) reset the ref immediately when the problem
+    // changes, (2) guard the async result with an isMounted flag, and
+    // (3) handle rejection explicitly instead of letting it fail silently.
     useEffect(() => {
         if (!problem) return;
-        getUserSubmissions(problem.id).then(data => {
-            const mapped = data.map((s, index) => ({
-                id: s.id,
-                problemId: s.problem_id,
-                submittedAnswer: s.submitted_answer ?? '',
-                steps: s.steps ?? [],
-                status: s.is_correct ? 'accepted' : 'wrong',
-                is_correct: s.is_correct,
-                timestamp: s.submitted_at,
-                metadata: {
-                    attempts: data.length - index,
-                    hintsUsed: 0,
-                    timeSpent: s.time_spent_seconds,
-                    timeSpentLabel: formatDurationLabel(s.time_spent_seconds)
-                }
-            }));
-            const hydrated = hydrateStoredSubmissions(mapped);
-            setSubmissions(hydrated);
-            problemSolvedRef.current = hydrated.some(sub => sub.status === 'accepted' || sub.is_correct || sub.status === 'correct');
-        });
+        let isMounted = true;
+
+        // Reset immediately so a slow/failed fetch can't leave a previous
+        // problem's "solved" state bleeding into this one.
+        problemSolvedRef.current = false;
+
+        getUserSubmissions(problem.id)
+            .then(data => {
+                if (!isMounted) return;
+                const mapped = data.map((s, index) => ({
+                    id: s.id,
+                    problemId: s.problem_id,
+                    submittedAnswer: s.submitted_answer ?? '',
+                    steps: s.steps ?? [],
+                    status: s.is_correct ? 'accepted' : 'wrong',
+                    is_correct: s.is_correct,
+                    timestamp: s.submitted_at,
+                    metadata: {
+                        attempts: data.length - index,
+                        hintsUsed: 0,
+                        timeSpent: s.time_spent_seconds,
+                        timeSpentLabel: formatDurationLabel(s.time_spent_seconds)
+                    }
+                }));
+                const hydrated = hydrateStoredSubmissions(mapped);
+                setSubmissions(hydrated);
+                problemSolvedRef.current = hydrated.some(sub => sub.status === 'accepted' || sub.is_correct || sub.status === 'correct');
+            })
+            .catch(error => {
+                console.error('Failed to load submissions for problem', problem.id, error);
+                if (!isMounted) return;
+                // Fail safe rather than fail stale: an errored fetch must not
+                // leave the previous problem's solved state in place.
+                setSubmissions([]);
+                problemSolvedRef.current = false;
+            });
+
+        return () => {
+            isMounted = false;
+        };
     }, [problem]);
 
     // Sort all problems by display order first, then by id for stable navigation.
@@ -401,11 +430,26 @@ const Problem = () => {
     }, []);
 
 
+    // FIX: same staleness/error-handling issue as the submissions effect
+    // above — `isCompleted` was only ever flipped from a resolved promise,
+    // so a slow or failed request for a new problem could leave the
+    // previous problem's "completed" flag in place indefinitely.
     useEffect(() => {
         if (!problem) return;
-        getCompletedProblemsDb().then(ids => {
-            setIsCompleted(ids.includes(String(problem.id)));
-        });
+        let isMounted = true;
+        getCompletedProblemsDb()
+            .then(ids => {
+                if (!isMounted) return;
+                setIsCompleted(ids.includes(String(problem.id)));
+            })
+            .catch(error => {
+                console.error('Failed to load completed problems:', error);
+                if (!isMounted) return;
+                setIsCompleted(false);
+            });
+        return () => {
+            isMounted = false;
+        };
     }, [problem]);
     const [timerRunning, setTimerRunning] = useState(!isCompleted);
 
@@ -479,12 +523,33 @@ const Problem = () => {
         setDrawingColor('var(--secondary-color)');
         setShowMobileMenu(false);
         setPendingSigmaPrompt('');
+
+        // FIX (core bug): synchronously clear "solved" state the instant we
+        // switch problems, instead of waiting on the async DB effects above.
+        // Previously this state only got cleared once a fetch resolved, so
+        // any failed/slow request left the *previous* problem's solved
+        // status attached to the new problem — grading every subsequent
+        // problem as practice mode and awarding no XP.
+        setIsCompleted(false);
+        setSubmissions([]);
+        setSolutionText(null);
+        problemSolvedRef.current = false;
     }, [problem, slug]);
 
     useEffect(() => {
         if (problem) {
-            hasViewedSolutionDb(problem.id).then(setSolutionViewed);
-            getFavoritesDb().then(favs => setIsFavorite(favs.includes(String(problem.id))));
+            hasViewedSolutionDb(problem.id)
+                .then(setSolutionViewed)
+                .catch(error => {
+                    console.error('Failed to check solution-viewed status:', error);
+                    setSolutionViewed(false);
+                });
+            getFavoritesDb()
+                .then(favs => setIsFavorite(favs.includes(String(problem.id))))
+                .catch(error => {
+                    console.error('Failed to load favorites:', error);
+                    setIsFavorite(false);
+                });
         } else {
             setSolutionViewed(false);
             setIsFavorite(false);
@@ -1150,26 +1215,6 @@ const Problem = () => {
                                     <FaList className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
                                 </button>
 
-                                {/* Need Help Button / Mentorship */}
-                                {/* <button type="button" onClick={() => {
-                                    setShowDescription(false);
-                                    setShowSolution(false);
-                                    setShowSubmissions(false);
-                                    setShowTop(false);
-                                    setShowMentorChat(true);
-                                    setChatPanel(false);
-                                    if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 
-                                ${showMentorChat && !showDescription ? 'bg-[var(--main-color)]' : ''} 
-                                ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
-                                    style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Need Help" : ""}>
-                                    <span className={descriptionCollapsed ? 'lg:hidden' : ''}>
-                                        Need Help
-                                    </span>
-                                    {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Need Help</span>}
-                                    <FaGraduationCap className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
-                                </button> */}
-
                                 {/* AI chat panel */}
                                 <button type="button" onClick={() => {
                                     setShowDescription(false);
@@ -1587,4 +1632,4 @@ const Problem = () => {
     );
 };
 
-export default Problem; 
+export default Problem;

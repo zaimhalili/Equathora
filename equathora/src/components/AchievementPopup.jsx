@@ -137,14 +137,14 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                                     {achievements.length > 1 && !isLast && (
                                         <button
                                             onClick={handleDismissAll}
-                                            className="bg-[var(--mid-main-secondary)] text-[var(--secondary-color)] px-5 py-2 rounded-full text-sm font-bold hover:bg-[var(--mid-main-secondary)]/80 transition-colors"
+                                            className="bg-[var(--mid-main-secondary)] text-[var(--secondary-color)] px-5 py-2 rounded-md text-sm font-bold hover:bg-[var(--mid-main-secondary)]/80 transition-colors cursor-pointer"
                                         >
                                             Skip All
                                         </button>
                                     )}
                                     <button
                                         onClick={handleNext}
-                                        className="bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-6 py-2 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
+                                        className="bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-6 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity cursor-pointer"
                                     >
                                         {isLast ? 'Awesome!' : 'Next'}
                                     </button>
