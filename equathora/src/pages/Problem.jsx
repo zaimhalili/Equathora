@@ -840,9 +840,6 @@ const Problem = () => {
 
             // Instantly mark as completed locally FIRST before DB calls finish
             setIsCompleted(true);
-
-            await markProblemCompleteDb(problem.id, timeSpentSeconds, problem.difficulty, problem.topic || 'General');
-            await removeProblemFromInProgressDb(problem.id);
         }
 
         setShowSubmissions(true);
@@ -884,6 +881,20 @@ const Problem = () => {
             }
         }
 
+        // FIX (root cause): recordProblemStats must run BEFORE
+        // markProblemCompleteDb / removeProblemFromInProgressDb.
+        //
+        // recordProblemStats() independently re-checks the DB via
+        // getCompletedProblems() to guard against double-counting a
+        // resubmit. The old order awaited markProblemCompleteDb() first,
+        // which wrote this problem into the "completed" list — so by the
+        // time recordProblemStats() read that list back, it looked like
+        // the problem was "already solved," and it silently skipped the
+        // XP/stats update ("Practice mode submission, skipping stats
+        // update for problem ...") on every single first-time solve.
+        //
+        // Recording stats first, while the problem is still genuinely
+        // un-completed in the DB, removes that race entirely.
         await recordProblemStats(problem, {
             isCorrect: validation.isCorrect,
             timeSpentSeconds,
@@ -893,6 +904,11 @@ const Problem = () => {
             hintsUsed: hintsOpened.length,
             solutionViewed
         });
+
+        if (validation.isCorrect) {
+            await markProblemCompleteDb(problem.id, timeSpentSeconds, problem.difficulty, problem.topic || 'General');
+            await removeProblemFromInProgressDb(problem.id);
+        }
 
         if (validation.isCorrect) {
             try {
