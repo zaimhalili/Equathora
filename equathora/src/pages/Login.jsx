@@ -148,6 +148,9 @@ const Login = () => {
             <button type="submit" id="login-btn" disabled={loading}>
               {loading ? 'Logging In...' : 'Log In'}
             </button>
+            <p className="text-sm text-[var(--secondary-color)] pt-4 font-medium">
+              If you run at any issues please contact me at: <u>equathora@gmail.com</u>
+            </p>
 
             <div id='auth-other-options'>
               <p className='auth-other-options-text text-black dark:text-white'>
