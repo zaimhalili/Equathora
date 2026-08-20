@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar.jsx';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Footer from '../components/Footer.jsx';
 import './Learn.css';
 import Idea from '../assets/images/Mathematics-bro.svg';
@@ -654,6 +654,17 @@ const Learn = () => {
             </span>
             {isRefreshing && <span className="results-refreshing animate-pulse duration-200">Updating problems…</span>}
           </div>
+          <aside className="comparison-guides" aria-labelledby="comparison-guides-title">
+            <div className="comparison-guides-copy">
+              <span className="comparison-guides-label">Choosing a practice platform?</span>
+              <h2 id="comparison-guides-title">Compare the experience before you start.</h2>
+            </div>
+            <nav className="comparison-guides-links" aria-label="Math practice platform comparisons">
+              <Link to="/khan-academy-alternative">Khan Academy</Link>
+              <Link to="/ixl-alternative">IXL</Link>
+              <Link to="/brilliant-alternative">Brilliant</Link>
+            </nav>
+          </aside>
           <motion.article
             id='problems-container'
             className={isRefreshing ? 'problems-refreshing' : ''}

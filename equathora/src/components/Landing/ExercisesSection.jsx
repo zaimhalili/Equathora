@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import ScreenshotDark from "../../assets/images/SigmaStepDark.png";
 import ScreenshotLight from "../../assets/images/SigmaStepLight.png";
 
@@ -172,6 +173,12 @@ const ExercisesSection = () => {
                                 <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
                                     Learn by doing. Get better at mathematics through fun problem-solving that builds your understanding of concepts.
                                 </p>
+                                <Link
+                                    className="mt-5 w-fit text-sm sm:text-base font-semibold text-[var(--secondary-color)] underline decoration-[var(--accent-color)] decoration-2 underline-offset-4 transition-colors hover:text-[var(--accent-color)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent-color)]"
+                                    to="/khan-academy-alternative"
+                                >
+                                    Comparing math practice platforms? Read our Khan Academy guide.
+                                </Link>
                             </div>
                         </motion.div>
 

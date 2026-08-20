@@ -1,13 +1,50 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getCanonicalUrl, updateCanonicalUrl } from './seoMetadata.js';
+import {
+    getCanonicalUrl,
+    getMetaDescription,
+    updateCanonicalUrl,
+    updateMetaDescription,
+    updateOpenGraphMetadata,
+} from './seoMetadata.js';
 
 test('the public exercise catalog identifies its own address', () => {
     assert.equal(getCanonicalUrl('/learn'), 'https://equathora.com/learn');
+    assert.equal(getCanonicalUrl('/khan-academy-alternative'), 'https://equathora.com/khan-academy-alternative');
+});
+
+test('comparison page receives focused search and social metadata', () => {
+    const attributes = {};
+    const elements = new Map([
+        ['meta[name="description"]', { setAttribute: (name, value) => { attributes.description = [name, value]; } }],
+        ['meta[property="og:title"]', { setAttribute: (name, value) => { attributes.ogTitle = [name, value]; } }],
+        ['meta[property="og:description"]', { setAttribute: (name, value) => { attributes.ogDescription = [name, value]; } }],
+        ['meta[property="og:url"]', { setAttribute: (name, value) => { attributes.ogUrl = [name, value]; } }],
+    ]);
+    const documentRef = { querySelector: selector => elements.get(selector) || null };
+
+    const description = updateMetaDescription(documentRef, '/khan-academy-alternative');
+    const openGraph = updateOpenGraphMetadata(documentRef, '/khan-academy-alternative');
+
+    assert.equal(description, getMetaDescription('/khan-academy-alternative'));
+    assert.deepEqual(attributes.description, ['content', description]);
+    assert.deepEqual(attributes.ogTitle, ['content', openGraph.title]);
+    assert.deepEqual(attributes.ogDescription, ['content', description]);
+    assert.deepEqual(attributes.ogUrl, ['content', 'https://equathora.com/khan-academy-alternative']);
 });
 
 test('the homepage keeps its existing preferred address', () => {
     assert.equal(getCanonicalUrl('/'), 'https://equathora.com/');
+});
+
+test('comparison pages identify their own public addresses', () => {
+    assert.equal(getCanonicalUrl('/ixl-alternative'), 'https://equathora.com/ixl-alternative');
+    assert.equal(getCanonicalUrl('/brilliant-alternative'), 'https://equathora.com/brilliant-alternative');
+});
+
+test('comparison pages provide focused search descriptions', () => {
+    assert.match(getMetaDescription('/ixl-alternative'), /IXL/);
+    assert.match(getMetaDescription('/brilliant-alternative'), /Brilliant/);
 });
 
 test('route metadata updates the canonical link without creating visible content', () => {
@@ -27,4 +64,39 @@ test('route metadata updates the canonical link without creating visible content
     updateCanonicalUrl(documentRef, '/learn');
 
     assert.equal(attributes.href, 'https://equathora.com/learn');
+});
+
+test('route metadata updates description and open graph tags', () => {
+    const attributes = {};
+    const elements = {
+        'meta[name="description"]': 'description',
+        'meta[property="og:title"]': 'og:title',
+        'meta[property="og:description"]': 'og:description',
+        'meta[property="og:url"]': 'og:url',
+    };
+    const documentRef = {
+        querySelector(selector) {
+            const key = elements[selector];
+            if (!key) return null;
+
+            return {
+                setAttribute(name, value) {
+                    assert.equal(name, 'content');
+                    attributes[key] = value;
+                },
+            };
+        },
+    };
+
+    updateMetaDescription(documentRef, '/brilliant-alternative');
+    const metadata = updateOpenGraphMetadata(documentRef, '/brilliant-alternative');
+
+    assert.match(attributes.description, /Brilliant/);
+    assert.equal(attributes['og:title'], 'Brilliant Alternative for School Math Practice | Equathora');
+    assert.equal(attributes['og:url'], 'https://equathora.com/brilliant-alternative');
+    assert.deepEqual(metadata, {
+        title: 'Brilliant Alternative for School Math Practice | Equathora',
+        description: attributes.description,
+        url: 'https://equathora.com/brilliant-alternative',
+    });
 });
