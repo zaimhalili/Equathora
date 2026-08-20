@@ -12,6 +12,7 @@ import {
     getResendErrorMessage,
     RESEND_COOLDOWN_SECONDS,
 } from '../lib/emailVerification';
+import { buildAuthCallbackUrl, buildAuthPath, getAuthDestination } from '../lib/authDestination';
 
 const VerifyEmail = () => {
     const [error, setError] = useState('');
@@ -21,6 +22,7 @@ const VerifyEmail = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [searchParams] = useSearchParams();
+    const destination = getAuthDestination(location.search, location.state?.from);
 
     // The email is only ever set from what the signup flow passed in —
     // never freely typed here, so this page can't be used to fire
@@ -32,9 +34,9 @@ const VerifyEmail = () => {
     // page rather than making them sign up again.
     useEffect(() => {
         if (!email) {
-            navigate('/resend', { replace: true });
+            navigate(buildAuthPath('/resend', destination), { replace: true });
         }
-    }, [email, navigate]);
+    }, [destination, email, navigate]);
 
     useEffect(() => {
         if (email && location.state?.confirmationJustSent) {
@@ -57,18 +59,18 @@ const VerifyEmail = () => {
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session) {
-                navigate('/dashboard', { replace: true });
+                navigate(destination, { replace: true });
             }
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             if (session) {
-                navigate('/dashboard', { replace: true });
+                navigate(destination, { replace: true });
             }
         });
 
         return () => subscription.unsubscribe();
-    }, [navigate]);
+    }, [destination, navigate]);
 
     async function handleResend(e) {
         e.preventDefault();
@@ -83,7 +85,7 @@ const VerifyEmail = () => {
                 type: 'signup',
                 email,
                 options: {
-                    emailRedirectTo: `${SITE_URL}/auth/callback`,
+                    emailRedirectTo: buildAuthCallbackUrl(SITE_URL, destination),
                 },
             });
 
@@ -176,14 +178,14 @@ const VerifyEmail = () => {
                         <div id='auth-other-options'>
                             <p className='auth-other-options-text'>
                                 Already verified?{' '}
-                                <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                                <Link to={buildAuthPath('/login', destination)} className="other-option-link" style={{ textDecoration: 'underline' }}>
                                     Log In
                                 </Link>
                             </p>
 
                             <p className='auth-other-options-text'>
                                 Used the wrong email?{' '}
-                                <Link to="/signup" className="other-option-link" style={{ textDecoration: 'underline' }}>
+                                <Link to={buildAuthPath('/signup', destination)} className="other-option-link" style={{ textDecoration: 'underline' }}>
                                     Start again.
                                 </Link>
                             </p>

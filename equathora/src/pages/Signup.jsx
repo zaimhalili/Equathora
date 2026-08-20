@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import BackgroundPolygons from '../components/BackgroundPolygons.jsx';
 import Logo from '../assets/logo/EquathoraLogoFull.svg';
 import GoogleAuth from '../components/GoogleAuth.jsx';
 import { SITE_URL } from '../lib/config';
-import { Link } from 'react-router-dom';
 import './Signup.css';
 import '../components/Auth.css';
 import { supabase } from '../lib/supabaseClient';
-import { buildVerificationPath } from '../lib/emailVerification';
 import { validatePassword } from "../utils/passwordUtil";
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import { buildAuthCallbackUrl, buildAuthPath, getAuthDestination } from '../lib/authDestination';
 
 const Signup = () => {
   const [fullName, setFullName] = useState('');
@@ -22,6 +21,8 @@ const Signup = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const destination = getAuthDestination(location.search, location.state?.from);
 
   // Password feedback state
   const { valid: isPasswordStrong, errors: passwordErrors } = validatePassword(password);
@@ -46,10 +47,10 @@ const Signup = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/dashboard');
+        navigate(destination, { replace: true });
       }
     });
-  }, [navigate]);
+  }, [destination, navigate]);
 
   async function handleSignup(e) {
     e.preventDefault();
@@ -86,7 +87,7 @@ const Signup = () => {
             username: normalizedUsername,
             full_name: normalizedFullName
           },
-          emailRedirectTo: `${SITE_URL}/auth/callback`
+          emailRedirectTo: buildAuthCallbackUrl(SITE_URL, destination)
         }
       });
 
@@ -99,11 +100,11 @@ const Signup = () => {
       // Check if email confirmation is required
       if (data?.user && !data.session) {
         // Email confirmation required
-        navigate(buildVerificationPath(normalizedEmail), {
-          state: { confirmationJustSent: true, email: normalizedEmail }
+        navigate(buildAuthPath('/verify', destination, { email: normalizedEmail }), {
+          state: { confirmationJustSent: true, email: normalizedEmail, from: destination }
         });
       } else if (data?.session) {
-        navigate('/dashboard');
+        navigate(destination, { replace: true });
       }
     } catch {
       setError('An unexpected error occurred');
@@ -117,7 +118,7 @@ const Signup = () => {
     const { error: googleError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${SITE_URL}/auth/callback`,
+        redirectTo: buildAuthCallbackUrl(SITE_URL, destination),
         queryParams: {
           prompt: 'select_account'
         }
@@ -246,7 +247,7 @@ const Signup = () => {
           <div id='auth-other-options'>
             <p className='auth-other-options-text text-black dark:text-white'>
               Already have an account?{' '}
-              <Link to="/login" className="other-option-link" style={{ textDecoration: 'underline' }}>
+              <Link to={buildAuthPath('/login', destination)} className="other-option-link" style={{ textDecoration: 'underline' }}>
                 Log In
               </Link>
             </p>
@@ -254,7 +255,11 @@ const Signup = () => {
             <p className='auth-other-options-text text-black dark:text-white'>
               Didn't receive your confirmation email?{' '}
               <Link
-                to={email.trim() ? `/resend?email=${encodeURIComponent(email.trim().toLowerCase())}` : '/resend'}
+                to={buildAuthPath(
+                  '/resend',
+                  destination,
+                  email.trim() ? { email: email.trim().toLowerCase() } : {}
+                )}
                 className="other-option-link"
                 style={{ textDecoration: 'underline' }}
               >
