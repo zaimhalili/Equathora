@@ -1,5 +1,12 @@
 export const RESEND_COOLDOWN_SECONDS = 60;
 
+export const VERIFICATION_PAGE_COPY = Object.freeze({
+    heading: 'Check your email',
+    instruction: 'We sent a confirmation link to your email. Open it to finish creating your account.',
+    noteTitle: 'Use the link in the email',
+    noteBody: 'There is no code to enter here. Once your address is confirmed, Equathora continues automatically.',
+});
+
 export function buildVerificationPath(email) {
     return `/verify?email=${encodeURIComponent(email.trim())}`;
 }

@@ -11,6 +11,7 @@ import {
     getResendCooldownSeconds,
     getResendErrorMessage,
     RESEND_COOLDOWN_SECONDS,
+    VERIFICATION_PAGE_COPY,
 } from '../lib/emailVerification';
 
 const VerifyEmail = () => {
@@ -120,8 +121,8 @@ const VerifyEmail = () => {
                     </div>
 
                     <div id='verify-text-container'>
-                        <h3>Check your email</h3>
-                        <h6><br />Open the confirmation link we sent to finish creating your account.</h6>
+                        <h3>{VERIFICATION_PAGE_COPY.heading}</h3>
+                        <p>{VERIFICATION_PAGE_COPY.instruction}</p>
                     </div>
 
                     <form id='auth' onSubmit={handleResend}>
@@ -156,18 +157,14 @@ const VerifyEmail = () => {
                         )}
 
                         <div className='verification-note' role='status'>
-                            <strong>No code to copy.</strong>
-                            <span>Use the button in the email, then Equathora will take you straight to your dashboard.</span>
+                            <strong>{VERIFICATION_PAGE_COPY.noteTitle}</strong>
+                            <span>{VERIFICATION_PAGE_COPY.noteBody}</span>
                         </div>
 
-                        <h5 className='typeOfInput'>CONFIRMATION EMAIL</h5>
-                        <input
-                            type="email"
-                            className='inputAuth'
-                            value={email}
-                            readOnly
-                            disabled
-                        />
+                        <div className='verification-email' aria-label={`Confirmation email sent to ${email}`}>
+                            <span>Confirmation email sent to</span>
+                            <strong>{email}</strong>
+                        </div>
 
                         <button type="submit" id="verify-btn" disabled={loading || cooldownSeconds > 0}>
                             {getResendButtonLabel({ loading, cooldownSeconds })}
