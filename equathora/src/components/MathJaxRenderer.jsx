@@ -7,11 +7,11 @@ function isLikelySingleDollarMath(inner) {
     const hasOperatorOrStructure = /[=+\-*/^_{}<>]/.test(value);
     const isSingleSymbol = /^[A-Za-z]$/.test(value);
     // A single bare number with nothing else ("1", "36", "3.5") is treated as
-    // math — the dominant case for problem descriptions in this app.
+    // math - the dominant case for problem descriptions in this app.
     const isSingleNumericToken = /^-?\d+(?:[.,]\d+)?%?$/.test(value);
 
     // Reject prose spanning two unrelated $ tokens, e.g. "5 and" from
-    // "between $5 and $10" — plain words/numbers with no math signal at all.
+    // "between $5 and $10" - plain words/numbers with no math signal at all.
     const isMultiWordProseSpan = /^[A-Za-z0-9.,]+(?:\s+[A-Za-z0-9.,]+)+$/.test(value)
         && !hasLatexCommand && !hasOperatorOrStructure;
     if (isMultiWordProseSpan) return false;
@@ -19,42 +19,49 @@ function isLikelySingleDollarMath(inner) {
     return isSingleSymbol || isSingleNumericToken || hasLatexCommand || hasOperatorOrStructure;
 }
 
+function findUnescapedDollar(text, fromIndex) {
+    let idx = fromIndex;
+    while (true) {
+        idx = text.indexOf('$', idx);
+        if (idx === -1) return -1;
+        if (text[idx - 1] === '\\') {
+            idx += 1;
+            continue;
+        }
+        return idx;
+    }
+}
+
 function convertSingleDollarPairs(text) {
     let result = '';
     let cursor = 0;
 
     while (cursor < text.length) {
-        const openIdx = text.indexOf('$', cursor);
+        const openIdx = findUnescapedDollar(text, cursor);
         if (openIdx === -1) {
             result += text.slice(cursor);
             break;
         }
 
-        // Skip escaped \$ — treat as a literal dollar sign, not a delimiter.
-        if (text[openIdx - 1] === '\\') {
-            result += text.slice(cursor, openIdx + 1);
-            cursor = openIdx + 1;
-            continue;
-        }
+        // Copy anything before the opening $ (including any escaped \$ we skipped past)
+        result += text.slice(cursor, openIdx);
 
-        const closeIdx = text.indexOf('$', openIdx + 1);
+        const closeIdx = findUnescapedDollar(text, openIdx + 1);
         if (closeIdx === -1) {
-            // No matching close — leave the rest of the text untouched.
-            result += text.slice(cursor);
+            // No matching close leave the rest of the text untouched.
+            result += text.slice(openIdx);
             break;
         }
 
         const inner = text.slice(openIdx + 1, closeIdx);
 
         if (inner.includes('\n') || !isLikelySingleDollarMath(inner)) {
-            // Not a real math span — move past just this one $ and keep scanning,
-            // so a later, genuine pair further in the text is still recovered.
-            result += text.slice(cursor, openIdx + 1);
+            result += text[openIdx];
             cursor = openIdx + 1;
             continue;
         }
 
-        result += text.slice(cursor, openIdx) + '\\(' + inner + '\\)';
+        result += '\\(' + inner + '\\)';
         cursor = closeIdx + 1;
     }
 
