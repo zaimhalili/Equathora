@@ -27,6 +27,7 @@ import {
 } from "./lib/posthogClient";
 import { captureRecruitmentAttribution } from "./lib/recruitmentAttribution";
 import { updateCanonicalUrl } from "./lib/seoMetadata";
+import { getAuthDestination } from "./lib/authDestination";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
@@ -229,8 +230,14 @@ export default function App() {
 
                 const currentPath = window.location.pathname;
                 const isResetFlow = currentPath.includes('/reset-password') || currentPath.includes('/forgotpassword');
+                const requestedDestination = getAuthDestination(window.location.search, undefined, null);
 
                 if (!isResetFlow && (currentPath === '/' || currentPath === '/login' || currentPath === '/signup')) {
+                    if (requestedDestination) {
+                        navigate(requestedDestination, { replace: true });
+                        return;
+                    }
+
                     void (async () => {
                         const { onboardingCompleted } = await getOnboardingStatus(session.user.id);
                         navigate(onboardingCompleted ? '/dashboard' : '/getStarted', { replace: true });
