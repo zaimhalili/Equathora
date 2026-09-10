@@ -180,7 +180,7 @@ const ExercisesSection = () => {
                             {exercises.map((exercise, index) => (
                                 <motion.div
                                     key={exercise.title}
-                                    className="bg-[var(--white)] rounded-md transition-all duration-300 p-3 sm:py-3 px-5 shadow-[0px_10px_35px_5px_rgba(141,153,174,0.1)] dark:shadow-black/20 flex items-center gap-6 h-22"
+                                    className="bg-[var(--white)] rounded-md transition-all duration-300 p-3 sm:py-3 px-5 flex items-center gap-6 h-22"
                                     initial={{ opacity: 0, y: -30 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, amount: 0.2 }}

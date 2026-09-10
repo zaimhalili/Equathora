@@ -997,11 +997,11 @@ const Problem = () => {
                 <header className="flex items-center justify-between gap-2 md:gap-3 font-[Sansation,sans-serif] bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0 max-w-600">
                     {/* Left side - Back button and Navigation */}
                     <div className="flex items-center gap-2">
-                        <Link to="/learn" className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-md hover:bg-[var(--french-gray)] hover:text-[var(--main-color)] h-9 md:h-10">
+                        <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-md hover:bg-[var(--french-gray)] h-9 md:h-10">
                             <FaArrowLeft />
                             <span className="hidden md:inline">Back to Exercises</span>
                             <span className="md:hidden">Back</span>
-                        </Link>
+                        </button>
                         <div className="flex items-center gap-1.5">
                             <button
                                 onClick={() => prevProblemSlug && navigate(`/problems/${prevProblemSlug}`)}

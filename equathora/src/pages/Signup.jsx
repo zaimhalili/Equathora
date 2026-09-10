@@ -239,9 +239,6 @@ const Signup = () => {
           <button type="submit" id="signup-btn" disabled={loading}>
             {loading ? 'Signing Up...' : 'Sign Up'}
           </button>
-          <p className="text-sm text-[var(--secondary-color)] pt-4 font-medium">
-              If you run at any issues please contact me at: <u>equathora@gmail.com</u>
-          </p>
 
           <div id='auth-other-options'>
             <p className='auth-other-options-text text-black dark:text-white'>
@@ -261,7 +258,12 @@ const Signup = () => {
                 Resend it.
               </Link>
             </p>
+
+            <p className="text-center auth-other-options-text">
+              If you run at any issues please contact me at: <u>equathora@gmail.com</u>
+            </p>
           </div>
+
         </form>
       </section>
 

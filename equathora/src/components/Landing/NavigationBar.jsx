@@ -42,16 +42,16 @@ const NavigationBar = () => {
                                     >
                                         <span
                                             aria-hidden="true"
-                                            className="absolute inset-0 rounded-[inherit] p-[2px] 
+                                            className="absolute inset-0 rounded-md p-[2px] 
                                             bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
                                             transition-opacity duration-150"
                                             style={{ WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }}
                                         />
                                         <span
                                             aria-hidden="true"
-                                            className="absolute inset-0 rounded-[inherit] opacity-0 group-hover:opacity-100
+                                            className="absolute inset-0 opacity-0 group-hover:opacity-100
                                             bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
-                                            transition-opacity duration-150 -z-10 hover:border-none"
+                                            transition-opacity duration-150 -z-10 hover:border-none rounded-md"
                                         />
                                         Get Started
                                     </Link>

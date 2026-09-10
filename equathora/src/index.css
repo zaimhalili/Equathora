@@ -1,5 +1,4 @@
-/* index.css or App.css */
-/* Google Fonts loaded via index.html with non-blocking preload pattern */
+/* index.css */
 @import "tailwindcss";
 
 @layer colors {
