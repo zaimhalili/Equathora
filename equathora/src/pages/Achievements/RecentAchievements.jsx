@@ -3,6 +3,7 @@ import './RecentAchievements.css';
 import { buildAchievements, RARITY_ORDER } from '../../data/achievements';
 import { FaLock } from 'react-icons/fa';
 import { useUserStats } from '../../context/UserStatsContext';
+import { FaSpinner } from 'react-icons/fa';
 
 const toAchievementStats = (stats = {}) => {
     const difficultyByBucket = Array.isArray(stats.difficultyBreakdown)
@@ -74,7 +75,12 @@ const RecentAchievements = () => {
     };
 
     if (loading) {
-        return <div className='rec-achievements'><div className='py-12 flex justify-center items-center'>Loading achievements...</div></div>;
+        return <div className="statistics-container">
+            <div className="py-6 flex justify-center items-center animate-spin">
+                <FaSpinner className='text-2xl' />
+            </div>
+            Loading Achievements
+        </div>;
     }
 
     return (

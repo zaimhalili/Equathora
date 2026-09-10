@@ -4,6 +4,7 @@ import './Statistics.css';
 import { useUserStats } from '../../context/UserStatsContext';
 import { formatTopicLabel } from '../../lib/utils';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { FaSpinner } from 'react-icons/fa';
 
 const normalizeCompletedProblemId = (rawValue) => {
   if (rawValue === null || rawValue === undefined) return '';
@@ -104,7 +105,12 @@ const Statistics = () => {
   }, []);
 
   if (loading) {
-    return <div className="statistics-container"><div className="py-12 flex justify-center items-center"><div>Loading statistics...</div></div></div>;
+    return <div className="statistics-container">
+      <div className="py-6 flex justify-center items-center animate-spin">
+        <FaSpinner className='text-2xl' />
+      </div>
+        Loading Statistics
+    </div>;
   }
 
   return (
