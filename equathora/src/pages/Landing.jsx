@@ -13,6 +13,7 @@ import TestimonialsSection from '../components/Landing/TestimonialsSection.jsx';
 import LatestArticlesSection from '../components/Landing/LatestArticlesSection.jsx';
 import EquathoraBriefsSection from '../components/Landing/EquathoraBriefsSection.jsx';
 import CTASection from '../components/Landing/CTASection.jsx';
+import CustomizedPlan from '@/components/Landing/CustomizedPlan';
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -48,6 +49,7 @@ const Landing = () => {
                 <hr className="border-[var(--mid-main-secondary)]" />
                 <WhyChooseSection />
                 <hr className="border-[var(--mid-main-secondary)]" />
+                {/* <CustomizedPlan /> */}
                 <HowItWorksSection />
                 <hr className="border-[var(--mid-main-secondary)]" />
                 <TestimonialsSection />
