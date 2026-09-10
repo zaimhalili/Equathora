@@ -77,8 +77,8 @@ const Feedback = () => {
             localStorage.setItem('equathoraFeedback', JSON.stringify(existingFeedback));
 
             // Log to console for development
-            console.log('✅ Feedback sent successfully!');
-            console.log('📝 Feedback Data:', sanitizedData);
+            // console.log('✅ Feedback sent successfully!');
+            // console.log('📝 Feedback Data:', sanitizedData);
 
             setSubmitSuccess(true);
             setFormData({
@@ -114,20 +114,22 @@ const Feedback = () => {
             'Button/Link not working',
             'Math input not functioning',
             'Performance/Speed issue',
-            'Mobile compatibility problem'
+            'Mobile compatibility problem',
+            'Other'
         ],
         visual: [
             'Text hard to read',
             'Colors not matching',
             'Layout broken on mobile',
             'Icons not displaying',
-            'Spacing/Alignment issue'
+            'Spacing/Alignment issue',
+            'Other'
         ],
         feature: [
             'Better problem filtering',
             'More hint options',
             'Keyboard shortcuts',
-            'Export/Print functionality'
+            'Other'
         ],
         other: [
             'Content suggestion',
@@ -273,7 +275,7 @@ const Feedback = () => {
                                         placeholder="your.email@example.com"
                                         className="w-full px-4 py-3 border-2 text-[var(--secondary-color)] !border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation]"
                                     />
-                                    <p className="text-xs text-gray-500 pt-2">
+                                    <p className="text-xs text-[var(--secondary-color)] pt-2">
                                         Provide your email so we can follow up with you.
                                     </p>
                                 </div>
@@ -303,7 +305,7 @@ const Feedback = () => {
                         </div>
 
                         <div className="bg-[var(--main-color)] border-l-4 border-green-500 rounded-md p-4">
-                            <h3 className="font-bold text-[var(--secondary-color)] pb-2 font-[Sansation]">📧 Instant Delivery</h3>
+                            <h3 className="font-bold text-[var(--secondary-color)] pb-2 font-[Sansation]">Instant Delivery</h3>
                             <p className="text-sm text-[var(--secondary-color)] font-[Sansation]">
                                 Your feedback will be sent directly to our team via email. We read every submission and typically respond within 24-48 hours.
                                 Thank you for helping us improve Equathora!

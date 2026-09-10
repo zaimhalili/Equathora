@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './PageNotFound.css';
+import { Link, useNavigate } from 'react-router-dom';
+import './PageNotFound.css';    
 
 const PageNotFound = () => {
+    const navigate = useNavigate();
     return (
         <div className='page-not-found theme-lock'>
             <div className='not-found-content'>
@@ -13,11 +14,11 @@ const PageNotFound = () => {
                     It might have been moved or deleted.
                 </p>
                 <div className='error-actions'>
-                    <Link to='/dashboard' className='btn-primary'>
+                    <button onClick={() => navigate(-1)} className='btn-primary'>
+                        Go Back
+                    </button>
+                    <Link to='/dashboard' className='btn-secondary'>
                         Go to Dashboard
-                    </Link>
-                    <Link to='/' className='btn-secondary'>
-                        Back to Home
                     </Link>
                 </div>
             </div>

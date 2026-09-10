@@ -57,6 +57,7 @@ import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
 import { supabase } from '@/lib/supabaseClient';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import PageNotFound from './PageNotFound';
 
 const formatDurationLabel = (seconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(seconds));
@@ -936,14 +937,7 @@ const Problem = () => {
     // Handle problem not found
     if (!problem) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <h2 className="text-2xl font-bold pb-4">Problem Not Found</h2>
-                    <Link to="/learn" className="text-[var(--accent-color)] hover:underline">
-                        Return to Learn Page
-                    </Link>
-                </div>
-            </div>
+            <PageNotFound />
         );
     }
 

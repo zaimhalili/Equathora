@@ -216,7 +216,7 @@ const Dashboard = () => {
                             className='flex flex-col w-full lg:w-[30%] gap-8'
                         >
                             <figure className="hidden lg:flex justify-center">
-                                <img src={Teacher} alt="teacher" loading='lazy' className="" />
+                                <img src={Teacher} alt="teacher" loading='lazy' height={100} />
                             </figure>
 
                             {/* Become a Mentor Section */}

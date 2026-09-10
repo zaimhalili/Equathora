@@ -111,13 +111,15 @@
 .btn-primary {
     background: var(--accent-color);
     color: white;
-    box-shadow: 0 4px 15px rgba(217, 4, 41, 0.3);
 }
 
 .btn-primary:hover {
     background: var(--dark-accent-color);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 25px rgba(217, 4, 41, 0.4);
+}
+
+.btn-primary:active,
+.btn-secondary:active{
+    scale: 0.95;
 }
 
 .btn-secondary {
@@ -129,7 +131,6 @@
 .btn-secondary:hover {
     background: var(--main-color);
     color: var(--secondary-color);
-    transform: translateY(-3px);
 }
 
 /* Responsive Design */
