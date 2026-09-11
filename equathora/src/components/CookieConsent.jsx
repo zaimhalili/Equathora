@@ -94,12 +94,12 @@ const CookieConsent = () => {
     if (!showBanner) return null;
 
     return (
-        <motion.div className="z-50 fixed bottom-5 right-5"
+        <motion.div className="z-50 fixed bottom-5 right-5 "
             initial={{ opacity: 0, y: "100%"}}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
         >
-            <div className="cookie-consent-banner w-100 max-w-100 flex flex-col bg-[var(--white)] border-[var(--main-color)] border-2 rounded-2xl px-3 py-4 gap-6">
+            <div className="cookie-consent-banner w-100 max-w-100 flex flex-col bg-[var(--white)] border-[var(--main-color)] border-2 rounded-2xl px-3 py-4 gap-6 shadow-xs overflow-hidden">
                 <p className='text-md'>
                     We use optional cookies for analytics and advertising. Choose either purpose separately, or learn more in our{' '}
                     <Link to="/cookie-policy" className="!underline underline-offset-3">Cookie Policy.</Link>
