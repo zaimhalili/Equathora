@@ -52,7 +52,7 @@ const LatestArticlesSection = () => {
                             >
                                 <Link
                                     to={`/blog/${post.slug}`}
-                                    className="group flex flex-col bg-[var(--white)] rounded-md border border-[var(--mid-main-secondary)] overflow-hidden transition-all shadow-[0_10px_10px_rgba(141,153,174,0.3)] hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] dark:shadow-black/20 dark:hover:shadow-black/70 duration-200 ease-out hover:scale-105"
+                                    className="group flex flex-col bg-[var(--white)] rounded-md border-2 border-[var(--main-color)] overflow-hidden transition-all duration-200 ease-out hover:scale-105"
                                 >
                                     {/* Image */}
                                     <div className="relative overflow-hidden h-44 sm:h-48">

@@ -101,16 +101,6 @@ const CTASection = () => {
                             </motion.span>
                         </Link>
                     </motion.div>
-
-                    <motion.p
-                        className="text-[var(--secondary-color)] text-sm font-light"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.4 }}
-                    >
-                        ✓ Free to start &nbsp;&nbsp; ✓ No credit card required
-                    </motion.p>
                 </div>
 
                 {/* Right side - Decorative card */}

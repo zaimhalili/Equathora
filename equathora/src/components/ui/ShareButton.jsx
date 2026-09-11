@@ -107,7 +107,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
             <button
                 type="button"
                 onClick={() => setShareNow(!shareNow)}
-                className="button border-[var(--accent-color)] border-2 text-center px-4 py-2 text-xl font-medium rounded-md shadow-lg cursor-pointer flex items-center gap-2"
+                className="button border-[var(--accent-color)] border-2 text-center px-4 py-2 text-xl font-medium rounded-md shadow-lg cursor-pointer flex items-center gap-2 bg-[var(--white)] hover:brightness-95"
             >
                 <FaShare className="text-lg" />
                 Share
@@ -127,7 +127,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             className="flex flex-col items-center gap-1 p-3 rounded-md hover:bg-green-50 transition-colors group cursor-pointer"
                             title="Share on WhatsApp"
                         >
-                            <FaWhatsapp className="text-3xl text-green-500 group-hover:scale-110 transition-transform" />
+                            <FaWhatsapp className="text-3xl text-green-500  transition-transform" />
                             <span className="text-xs text-[var(--mid-main-secondary)]">WhatsApp</span>
                         </button>
 
@@ -137,7 +137,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             className="flex flex-col items-center gap-1 p-3 rounded-md hover:bg-blue-50 transition-colors group cursor-pointer"
                             title="Share on Twitter"
                         >
-                            <FaTwitter className="text-3xl text-blue-400 group-hover:scale-110 transition-transform" />
+                            <FaTwitter className="text-3xl text-blue-400 transition-transform" />
                             <span className="text-xs text-[var(--mid-main-secondary)]">Twitter</span>
                         </button>
 
@@ -147,7 +147,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             className="flex flex-col items-center gap-1 p-3 rounded-md hover:bg-blue-50 transition-colors group cursor-pointer"
                             title="Share on LinkedIn"
                         >
-                            <FaLinkedin className="text-3xl text-blue-700 group-hover:scale-110 transition-transform" />
+                            <FaLinkedin className="text-3xl text-blue-700  transition-transform" />
                             <span className="text-xs text-[var(--mid-main-secondary)]">LinkedIn</span>
                         </button>
 
@@ -157,7 +157,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             className="flex flex-col items-center gap-1 p-3 rounded-md hover:bg-blue-50 transition-colors group cursor-pointer"
                             title="Share on Facebook"
                         >
-                            <FaFacebookMessenger className="text-3xl text-blue-600 group-hover:scale-110 transition-transform" />
+                            <FaFacebookMessenger className="text-3xl text-blue-600  transition-transform" />
                             <span className="text-xs text-[var(--mid-main-secondary)]">Facebook</span>
                         </button>
 
@@ -167,7 +167,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             className="flex flex-col items-center gap-1 p-3 rounded-md hover:bg-orange-50 transition-colors group cursor-pointer"
                             title="Share on Reddit"
                         >
-                            <FaReddit className="text-3xl text-orange-600 group-hover:scale-110 transition-transform" />
+                            <FaReddit className="text-3xl text-orange-600  transition-transform" />
                             <span className="text-xs text-[var(--mid-main-secondary)]">Reddit</span>
                         </button>
 
@@ -177,7 +177,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             className="flex flex-col items-center gap-1 p-3 rounded-md hover:bg-blue-50 transition-colors group cursor-pointer"
                             title="Share on Telegram"
                         >
-                            <FaTelegram className="text-3xl text-blue-500 group-hover:scale-110 transition-transform" />
+                            <FaTelegram className="text-3xl text-blue-500  transition-transform" />
                             <span className="text-xs text-[var(--mid-main-secondary)]">Telegram</span>
                         </button>
                     </div>
