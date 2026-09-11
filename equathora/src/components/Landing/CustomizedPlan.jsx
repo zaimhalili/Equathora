@@ -38,7 +38,7 @@ const CustomizedPlan = () => {
                     {/* Image details */}
                     <div className="flex gap-3">
                         <div className="flex flex-col gap-3 max-w-2/3 p-4 rounded-2xl bg-[var(--main-color)] overflow-hidden">
-                            <img src={ScreenshotLight} alt="" className='rounded-md' />
+                            <img src={ScreenshotLight} alt="" className='rounded-md min-h-4/5' />
                             <div className="flex flex-col gap-2">
                                 <h4 className='text-lg sm:text-xl font-bold text-[var(--secondary-color)]'>Know exactly where you stand</h4>
                                 <p className='text-[var(--secondary-color)] font-light text-sm sm:text-base'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati, incidunt. Aperiam neque ipsa incidunt sint?</p>

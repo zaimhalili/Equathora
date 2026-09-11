@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaShieldAlt } from 'react-icons/fa';
 import { getUserSettings, saveUserSettings } from '../lib/notificationService';
-import './CookieConsent.css';
+import { motion } from 'framer-motion';
+
 
 const CookieConsent = () => {
     const [showBanner, setShowBanner] = useState(false);
@@ -94,37 +94,32 @@ const CookieConsent = () => {
     if (!showBanner) return null;
 
     return (
-        <div className="cookie-consent-overlay">
-            <div className="cookie-consent-banner">
-                <div className="cookie-consent-content">
-                    <div className="cookie-consent-icon">
-                        <FaShieldAlt />
-                    </div>
-                    <div className="cookie-consent-text">
-                        <h3>We use cookies</h3>
-                        <p>
-                            We use essential cookies to keep you signed in and provide core functionality.
-                            By clicking "Accept All", you agree to our use of cookies for analytics and personalization.{' '}
-                            <Link to="/cookie-policy" className="cookie-policy-link">Learn more</Link>
-                        </p>
-                    </div>
-                </div>
-                <div className="cookie-consent-buttons">
+        <motion.div className="z-50 fixed bottom-5 right-5"
+            initial={{ opacity: 0, y: "100%"}}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+            <div className="cookie-consent-banner w-100 max-w-100 flex flex-col bg-[var(--white)] border-[var(--main-color)] border-2 rounded-2xl px-3 py-4 gap-6">
+                <p className='text-md'>
+                    We use optional cookies for analytics and advertising. Choose either purpose separately, or learn more in our{' '}
+                    <Link to="/cookie-policy" className="!underline underline-offset-3">Cookie Policy.</Link>
+                </p>
+                <div className="w-full flex gap-3">
                     <button
                         onClick={handleDecline}
-                        className="cookie-btn cookie-btn-decline"
+                        className="bg-[var(--main-color)] rounded-md flex-1 py-1 text-center text-[var(--secondary-color)]/70 hover:brightness-95 hover:text-[var(--secondary-color)] transition-all text-md font-medium"
                     >
-                        Essential Only
+                        Reject optional
                     </button>
                     <button
                         onClick={handleAccept}
-                        className="cookie-btn cookie-btn-accept"
+                        className="bg-[var(--main-color)] rounded-md flex-1 py-1 text-center text-[var(--secondary-color)]/70 hover:brightness-95 hover:text-[var(--secondary-color)] transition-all text-md font-medium"
                     >
-                        Accept All
+                        Allow all
                     </button>
                 </div>
             </div>
-        </div>
+        </motion.div >
     );
 };
 
