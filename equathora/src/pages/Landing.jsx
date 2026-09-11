@@ -14,6 +14,7 @@ import LatestArticlesSection from '../components/Landing/LatestArticlesSection.j
 import EquathoraBriefsSection from '../components/Landing/EquathoraBriefsSection.jsx';
 import CTASection from '../components/Landing/CTASection.jsx';
 import CustomizedPlan from '@/components/Landing/CustomizedPlan';
+import CookieConsent from '@/components/CookieConsent';
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -47,9 +48,9 @@ const Landing = () => {
                 {/* <TrustedBySection /> */}
                 <ExercisesSection />
                 <hr className="border-[var(--mid-main-secondary)]" />
-                <WhyChooseSection />
+                <CustomizedPlan />
                 <hr className="border-[var(--mid-main-secondary)]" />
-                {/* <CustomizedPlan /> */}
+                <WhyChooseSection />
                 <HowItWorksSection />
                 <hr className="border-[var(--mid-main-secondary)]" />
                 <TestimonialsSection />
@@ -58,6 +59,7 @@ const Landing = () => {
                 <hr className="border-[var(--mid-main-secondary)]" />
                 <CTASection />
                 {/* <EquathoraBriefsSection /> */}
+                <CookieConsent></CookieConsent>
 
                 <Footer />
                 <div className="flex flex-col lg:flex-row items-center text-[var(--french-gray)] bg-[var(--secondary-color)] underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center font-[Sansation] theme-lock">
