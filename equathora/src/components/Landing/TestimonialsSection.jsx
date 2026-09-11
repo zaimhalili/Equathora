@@ -81,16 +81,16 @@ const TestimonialsSection = () => {
                             <button type="button"
                                 onClick={next}
                                 aria-label="Show next testimonial"
-                                className='rounded-full border border-[var(--mid-main-secondary)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
-                            transition-opacity duration-150 text-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)] hover:text-[var(--main-color)] hover:border-[var(--main-color)] active:scale-95'>
+                                className='rounded-full outline outline-[var(--mid-main-secondary)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
+                            transition-opacity duration-150 text-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)] hover:text-[var(--main-color)] hover:outline-none active:scale-95'>
                                 <FaArrowLeft className='md:w-6 md:h-6' />
                             </button>
                             <button
                                 type="button"
                                 onClick={prev}
                                 aria-label="Show previous testimonial"
-                                className='rounded-full border border-[var(--mid-main-secondary)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
-                            transition-opacity duration-150 text-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)] hover:text-[var(--main-color)] hover:border-[var(--main-color)] active:scale-95'>
+                                className='rounded-full outline outline-[var(--mid-main-secondary)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
+                                transition-opacity duration-150 text-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)] hover:text-[var(--main-color)] hover:outline-none active:scale-95'>
                                 <FaArrowRight className='md:w-6 md:h-6' />
                             </button>
                         </div>

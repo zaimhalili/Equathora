@@ -5,13 +5,10 @@ import { supabase } from '../lib/supabaseClient';
 import Footer from '../components/Footer.jsx';
 import NavigationBar from '../components/Landing/NavigationBar.jsx';
 import HeroSection from '../components/Landing/HeroSection.jsx';
-import TrustedBySection from '../components/Landing/TrustedBySection.jsx';
 import ExercisesSection from '../components/Landing/ExercisesSection.jsx';
-import WhyChooseSection from '../components/Landing/WhyChooseSection.jsx';
 import HowItWorksSection from '../components/Landing/HowItWorksSection.jsx';
 import TestimonialsSection from '../components/Landing/TestimonialsSection.jsx';
 import LatestArticlesSection from '../components/Landing/LatestArticlesSection.jsx';
-import EquathoraBriefsSection from '../components/Landing/EquathoraBriefsSection.jsx';
 import CTASection from '../components/Landing/CTASection.jsx';
 import CustomizedPlan from '@/components/Landing/CustomizedPlan';
 
@@ -44,22 +41,14 @@ const Landing = () => {
             <div className="min-h-screen bg-[var(--white)] text-[var(--secondary-color)]">
                 <NavigationBar />
                 <HeroSection />
-                {/* <TrustedBySection /> */}
                 <ExercisesSection />
-                <hr className="border-[var(--mid-main-secondary)]" />
                 <CustomizedPlan />
-                <hr className="border-[var(--mid-main-secondary)]" />
-                <WhyChooseSection />
                 <HowItWorksSection />
-                <hr className="border-[var(--mid-main-secondary)]" />
                 <TestimonialsSection />
-                <hr className="border-[var(--mid-main-secondary)]" />
                 <LatestArticlesSection />
-                <hr className="border-[var(--mid-main-secondary)]" />
                 <CTASection />
-                {/* <EquathoraBriefsSection /> */}
-
                 <Footer />
+
                 <div className="flex flex-col lg:flex-row items-center text-[var(--french-gray)] bg-[var(--secondary-color)] underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center font-[Sansation] theme-lock">
                     <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="freepik-link">
                         Student PNGs by Vecteezy

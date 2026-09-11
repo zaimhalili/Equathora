@@ -2,37 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ScreenshotDark from "../../assets/images/SigmaStepDark.png";
 import ScreenshotLight from "../../assets/images/SigmaStepLight.png";
-
-// Custom hook to track active dark/light mode from document element
-function useCurrentTheme() {
-    const [theme, setTheme] = useState(() => {
-        if (typeof document !== 'undefined') {
-            const root = document.documentElement;
-            return root.classList.contains('dark') || root.dataset.theme === 'dark' ? 'dark' : 'light';
-        }
-        return 'light';
-    });
-
-    useEffect(() => {
-        const updateTheme = () => {
-            const root = document.documentElement;
-            const isDark = root.classList.contains('dark') || root.dataset.theme === 'dark';
-            setTheme(isDark ? 'dark' : 'light');
-        };
-
-        updateTheme();
-
-        const observer = new MutationObserver(updateTheme);
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['class', 'data-theme'],
-        });
-
-        return () => observer.disconnect();
-    }, []);
-
-    return theme;
-}
+import { useCurrentTheme } from '@/hooks/useCurrentTheme';
 
 const ExercisesSection = () => {
     const theme = useCurrentTheme();
