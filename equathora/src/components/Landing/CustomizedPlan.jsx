@@ -42,7 +42,7 @@ const CustomizedPlan = () => {
                     </div>
                     {/* Image details */}
                     <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-3 items-stretch">
-                        <div className="flex flex-col gap-3 lg:col-span-1 lg:h-full min-w-0 min-h-0 p-4 rounded-2xl bg-[var(--main-color)] overflow-hidden">
+                        <div className="flex flex-col gap-3 lg:col-span-1 lg:h-full min-w-0 min-h-0 p-3 rounded-2xl bg-[var(--main-color)] overflow-hidden">
                             <div className="w-full min-w-0 overflow-hidden rounded-md lg:flex-1 lg:min-h-0">
                                 <img src={theme === 'dark' ? JourneyDark : JourneyLight} alt="Preview of a personalized math learning path with recommended problems" className='block w-full max-w-full lg:h-full lg:object-cover' loading="lazy" />
                             </div>
@@ -52,14 +52,14 @@ const CustomizedPlan = () => {
                             </div>
                         </div>
                         <div className="flex min-w-0 flex-col gap-3">
-                            <div className="flex flex-col gap-3 p-4 rounded-2xl overflow-hidden bg-[var(--main-color)]">
+                            <div className="flex flex-col gap-3 p-3 rounded-2xl overflow-hidden bg-[var(--main-color)]">
                                 <img src={ScreenshotLight} alt="Preview of a daily math mission with recommended problems" className='rounded-md' loading="lazy" />
                                 <div className="flex flex-col gap-2">
                                     <h3 className='text-lg sm:text-xl font-bold text-[var(--secondary-color)]'>A realistic mission for today</h3>
                                     <p className='text-[var(--secondary-color)] font-light text-sm sm:text-base'>Get level-matched problems sized to your weekly study commitment.</p>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-3 p-4 rounded-2xl overflow-hidden bg-[var(--main-color)]">
+                            <div className="flex flex-col gap-3 p-3 rounded-2xl overflow-hidden bg-[var(--main-color)]">
                                 <img src={ScreenshotLight} alt="Preview of topic progress and recommended math problems" className='rounded-md' loading="lazy" />
                                 <div className="flex flex-col gap-2">
                                     <h3 className='text-lg sm:text-xl font-bold text-[var(--secondary-color)]'>Recommendations that move with you</h3>
