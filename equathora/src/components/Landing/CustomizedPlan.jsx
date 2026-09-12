@@ -42,7 +42,8 @@ const CustomizedPlan = () => {
                     </div>
                     {/* Image details */}
                     <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-3 items-stretch">
-                        <div className="flex flex-col gap-3 lg:col-span-1 lg:h-full min-w-0 min-h-0 p-3 rounded-2xl bg-[var(--main-color)] overflow-hidden">
+                        {/* Left Image */}
+                        <div className="flex flex-col gap-3 lg:col-span-1 lg:h-full min-w-0 min-h-0 p-3 rounded-2xl bg-[var(--main-color)] overflow-hidden md:max-h-160">
                             <div className="w-full min-w-0 overflow-hidden rounded-md lg:flex-1 lg:min-h-0">
                                 <img src={theme === 'dark' ? JourneyDark : JourneyLight} alt="Preview of a personalized math learning path with recommended problems" className='block w-full max-w-full lg:h-full lg:object-cover' loading="lazy" />
                             </div>
@@ -51,7 +52,8 @@ const CustomizedPlan = () => {
                                 <p className='text-[var(--secondary-color)] font-light text-sm sm:text-base'>Follow every subject and topic with clear progress toward your next problem.</p>
                             </div>
                         </div>
-                        <div className="flex min-w-0 flex-col gap-3">
+                        {/* Two images on the right */}
+                        <div className="flex min-w-0 flex-col gap-3 md:max-h-160">
                             <div className="flex flex-col gap-3 p-3 rounded-2xl overflow-hidden bg-[var(--main-color)]">
                                 <img src={ScreenshotLight} alt="Preview of a daily math mission with recommended problems" className='rounded-md' loading="lazy" />
                                 <div className="flex flex-col gap-2">

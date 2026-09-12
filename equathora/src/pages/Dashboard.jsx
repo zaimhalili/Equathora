@@ -67,7 +67,7 @@ const Dashboard = () => {
         fetchUsername();
     }, []);
 
-    // Only link into a problem once we actually have a recommended slug —
+    // Only link into a problem once we actually have a recommended slug -
     // otherwise send them to /journey (always valid) instead of a
     // /problems/undefined dead link / 404.
     const dailyChallengeTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';

@@ -46,7 +46,7 @@ const FEATURES = [
 const TESTIMONIALS = [
     { name: 'Aisha M.', role: 'AMC 12 qualifier', text: 'Equathora\'s Olympiad track is the only thing that pushed my score above 100. The problem quality is unmatched.', stars: 5 },
     { name: 'Lucas T.', role: 'Pre-calculus student', text: 'Scholar plan paid for itself in the first week. The mastery analytics showed exactly where my gaps were.', stars: 5 },
-    { name: 'Priya K.', role: 'Self-learner', text: 'I tried Brilliant and Khan — Equathora is where I actually improved. Daily challenges keep me accountable.', stars: 4 },
+    { name: 'Priya K.', role: 'Self-learner', text: 'I tried Brilliant and Khan - Equathora is where I actually improved. Daily challenges keep me accountable.', stars: 4 },
 ];
 
 /* ─── main component ───────────────────────────────────── */
@@ -487,7 +487,7 @@ const Premium = () => {
     };
 
     const faqs = [
-        { q: 'Is the Scholar trial truly free?', a: 'Yes — no charge for 7 days. Cancel any time before the trial ends and you\'ll never be billed.' },
+        { q: 'Is the Scholar trial truly free?', a: 'Yes - no charge for 7 days. Cancel any time before the trial ends and you\'ll never be billed.' },
         { q: 'Can I switch plans later?', a: 'Absolutely. You can upgrade, downgrade, or cancel from your account settings at any time. Billing is prorated.' },
         { q: 'Do you offer student or educator discounts?', a: 'We offer a 40% discount for verified students and educators. Submit verification through your account settings.' },
         { q: 'What payment methods are accepted?', a: 'We accept all major credit cards, debit cards, and PayPal through our secure Stripe billing portal.' },
@@ -511,7 +511,7 @@ const Premium = () => {
                         <span style={{ color: '#D70427' }}>math career.</span>
                     </h1>
                     <p style={s.heroSub}>
-                        Equathora is built for serious learners — from daily practice to full Olympiad prep.
+                        Equathora is built for serious learners - from daily practice to full Olympiad prep.
                         Pick the plan that matches your ambition.
                     </p>
 
@@ -707,7 +707,7 @@ const Premium = () => {
 
                         <h2 style={s.bottomCtaH2}>Stop practicing in the dark.</h2>
                         <p style={s.bottomCtaSub}>
-                            Join thousands of students who found exactly where they were getting stuck — and fixed it.
+                            Join thousands of students who found exactly where they were getting stuck - and fixed it.
                         </p>
                         <Link to="/signup?plan=scholar" style={s.bottomCtaBtn}>
                             Try Scholar Free for 7 Days →

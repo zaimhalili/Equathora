@@ -30,7 +30,7 @@ export function useResetDiagnostic() {
 
             localStorage.removeItem('diagnostic_completed');
 
-            // retake: true is required — OnboardingRoute redirects a
+            // retake: true is required - OnboardingRoute redirects a
             // completed-onboarding user straight back to /dashboard
             // unless this is set, so without it the retake button
             // silently did nothing (score reset, but the user never

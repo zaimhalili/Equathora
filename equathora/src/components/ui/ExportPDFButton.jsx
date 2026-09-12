@@ -42,7 +42,7 @@ export default function ExportPDFButton({ problem, fields, isCorrect, studentNam
         );
     }
 
-    // 3. Direct fetch call — deliberately NOT using supabase.functions.invoke().
+    // 3. Direct fetch call - deliberately NOT using supabase.functions.invoke().
     // That client parses the response based on the Content-Type header and has
     // no reliable way to force blob handling for an "application/pdf" response,
     // which corrupts binary payloads. A plain fetch() with res.blob() sidesteps

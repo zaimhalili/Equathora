@@ -4,7 +4,7 @@ import { FaArrowAltCircleDown } from 'react-icons/fa';
 
 /**
  * Database service for user progress using Supabase
- * Fully replaces localStorage-based progressStorage — no localStorage calls anywhere in this file.
+ * Fully replaces localStorage-based progressStorage - no localStorage calls anywhere in this file.
  */
 
 // ============================================================================
@@ -912,7 +912,7 @@ export async function recordProblemStats(
 }
 
 // ============================================================================
-// GET USER STATS — used by achievement checks, fully Supabase
+// GET USER STATS - used by achievement checks, fully Supabase
 // ============================================================================
 
 export async function getUserStats() {

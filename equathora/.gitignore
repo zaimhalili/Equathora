@@ -96,7 +96,7 @@ exercises.json
 fts.txt
 ftsHallKnight.txt
 
-# Admin tooling — should not be public
+# Admin tooling - should not be public
 admin-console-helper.js
 
 # Claude AI Standards (internal)

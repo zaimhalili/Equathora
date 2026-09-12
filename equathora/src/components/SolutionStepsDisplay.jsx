@@ -3,7 +3,7 @@ import MathJaxRenderer from './MathJaxRenderer';
 import { FaSpinner } from 'react-icons/fa';
 
 /**
- * SolutionStepsDisplay — renders solution text as numbered steps
+ * SolutionStepsDisplay - renders solution text as numbered steps
  * with MathJax for LaTeX and Tailwind CSS styling.
  *
  * For each step:
@@ -77,7 +77,7 @@ const separateTextAndMath = (step) => {
     const textParts = step.split(/\$[^$]+\$/).map((t) => t.trim()).filter(Boolean);
     // Strip trailing/leading punctuation noise from text parts
     const cleanText = textParts
-        .map((t) => t.replace(/^[.:;,\-–—]+\s*/, '').replace(/\s*[.:;,\-–—]+$/, ''))
+        .map((t) => t.replace(/^[.:;,\-–-]+\s*/, '').replace(/\s*[.:;,\-–-]+$/, ''))
         .filter(Boolean);
 
     const explanation = cleanText.length > 0 ? cleanText.join(' … ') : null;
@@ -137,7 +137,7 @@ const SolutionStepsDisplay = ({ solution }) => {
                                     </span>
                                 )}
 
-                                {/* Math content box — rendered by MathJax */}
+                                {/* Math content box - rendered by MathJax */}
                                 {math && (
                                     <div className="rounded-md border-2 border-[var(--mid-main-secondary)] bg-[var(--white)] px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-[var(--secondary-color)] overflow-x-auto">
                                         <MathJaxRenderer

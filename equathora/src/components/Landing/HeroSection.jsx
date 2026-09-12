@@ -33,11 +33,11 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
 const Particles = () => {
     const [positions, setPositions] = useState(
         Array.from({ length: 6 }, () => ({
-            x: Math.random() * 90,
-            y: Math.random() * 90,
-            vx: (Math.random() - 0.5) * 0.3,
-            vy: (Math.random() - 0.5) * 0.3,
-            size: Math.random() * 8 + 4, // 4-12px (smaller)
+            x: Math.random() * 110,
+            y: Math.random() * 110,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.45,
+            size: Math.random() * 10 + 6, // 4-12px (smaller)
         }))
     );
 
@@ -95,38 +95,19 @@ const HeroSection = () => {
     return (
         <section
             className=" w-full bg-[var(--main-color)] relative overflow-hidden flex items-center justify-center"
-            style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay', opacity: 0.98 }}
+        // style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay', opacity: 0.98 }}
         >
             {/* Background decorations */}
             <div className="absolute inset-0">
                 {/* Subtle texture overlay for depth */}
-                <div className="absolute inset-0 opacity-[0.85]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")' }}></div>
-                {/* Gradient orbs */}
-                {/* <div className="absolute top-0 right-0 w-[300px] sm:w-[400px] md:w-[600px] h-[300px] sm:h-[400px] md:h-[600px] bg-[var(--accent-color)]/20 rounded-full blur-[120px]" />
-                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--accent-color)]/10 rounded-full blur-[100px]" /> */}
-
-                {/* Grid lines */}
-                <div
-                    className="absolute inset-0 opacity-[0.03]"
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 10px),
-                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 10px)
-                        `,
-                        backgroundSize: '80px 80px'
-                    }}
-                />
-
-                {/* Half circle decoration */}
-                <div className="absolute -right-32 top-1/2 -translate-y-1/2 w-64 h-[500px] border border-[var(--secondary-color)]/10 rounded-l-full" />
-                <div className="absolute -left-20 bottom-20 w-40 h-40 border border-[var(--secondary-color)]/5 rounded-full" />
+                <div className="absolute inset-0 opacity-[0.75]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")' }} />
             </div>
 
             {/* Red Particles */}
             <Particles />
 
             <div className="relative z-10 w-full flex justify-center">
-                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1500px] pt-40 pb-[28px] sm:pt-24 md:pt-30 lg:pt-20 xl:pt-40 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-11 lg:gap-16 xl:gap-16 w-full">
+                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1500px] py-40 sm:pt-24 md:pt-30 lg:pt-20 xl:pt-40 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-11 lg:gap-16 xl:gap-16 w-full">
 
                     {/* Left Content - Centered */}
                     <motion.div
@@ -256,45 +237,33 @@ const HeroSection = () => {
                                 {/* Circle container with image clipped inside */}
                                 <div
                                     className="
-                    relative
-                    w-[320px]
-                    sm:w-[380px]
-                    md:w-[460px]
-                    lg:w-[560px]
-                    aspect-square
-                    rounded-full
-                    overflow-hidden
-                    z-10
-                    bg-gradient-to-b
-                    from-transparent
-                    to-[var(--french-gray)]/50
-                    backdrop-blur-sm"
+                                            relative w-[320px] sm:w-[380px] md:w-[460px] lg:w-[560px] aspect-square rounded-full overflow-hidden z- bg-gradient-to-b from-[var(--french-gray)]/5 to-[var(--french-gray)]/60 backdrop-blur-sm"
                                 >
                                     {/* Inner subtle circle */}
                                     <div className="absolute inset-[18%] rounded-full bg-[var(--main-color)]/80 z-0" />
 
-                                    {/* Student image – clipped by the circle */}
+                                    {/* Student image - clipped by the circle */}
                                     <img
                                         src={YoungStudent}
                                         alt="Student with books"
                                         className="
-                        absolute
-                        inset-0
-                        w-full
-                        h-full
-                        object-cover
-                        object-top
-                        drop-shadow-2xl
-                        brightness-90
-                        z-10
-                        saturation-95
-                    "
+                                            absolute
+                                            inset-0
+                                            w-full
+                                            h-full
+                                            object-cover
+                                            object-top
+                                            drop-shadow-2xl
+                                            brightness-90
+                                            z-10
+                                            saturation-95
+                                        "
                                         loading="eager"
                                         fetchPriority="high"
                                     />
                                 </div>
 
-                                {/* Floating badge – top right */}
+                                {/* Floating badge - top right */}
                                 <motion.div
                                     className="absolute top-[10%] right-[-3%] z-30 [transform:translateZ(40px)]" /* <-- FIX 2: Push out on Z-axis */
                                     animate={{ y: [0, -6, 0] }}
@@ -308,7 +277,7 @@ const HeroSection = () => {
                                     </div>
                                 </motion.div>
 
-                                {/* Floating badge – left */}
+                                {/* Floating badge - left */}
                                 <motion.div
                                     className="absolute top-[38%] left-[-5%] z-30 [transform:translateZ(50px)]" /* <-- FIX 3: Push out on Z-axis */
                                     animate={{ y: [0, 8, 0] }}

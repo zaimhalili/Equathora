@@ -23,7 +23,7 @@ const VerifyEmail = () => {
     const location = useLocation();
     const [searchParams] = useSearchParams();
 
-    // The email is only ever set from what the signup flow passed in —
+    // The email is only ever set from what the signup flow passed in -
     // never freely typed here, so this page can't be used to fire
     // confirmation emails at an arbitrary address.
     const email = searchParams.get('email') || location.state?.email || '';

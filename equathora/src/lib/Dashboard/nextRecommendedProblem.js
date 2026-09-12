@@ -66,7 +66,7 @@ function getSelectedSubjects(studentTopics) {
  * paywalled problem.
  *
  * IMPORTANT: callers must treat null as "not ready" and must NOT build
- * a /problems/:slug link from it — fall back to /journey instead, so
+ * a /problems/:slug link from it - fall back to /journey instead, so
  * nobody ever lands on a dead or not-found problem page.
  */
 export async function getNextRecommendedProblem(isPremiumUser = false) {

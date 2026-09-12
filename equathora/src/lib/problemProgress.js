@@ -44,21 +44,21 @@ export function annotateProblemStates(problems, completedSet, attemptedSet) {
 /**
  * Fallback time estimate by difficulty, used only when a problem doesn't
  * carry its own `estimated_time` from the backend. Harder problems take
- * longer — a flat "5–10 min" for every difficulty was misleading.
+ * longer - a flat "5-10 min" for every difficulty was misleading.
  */
 const DIFFICULTY_TIME_ESTIMATES = {
-    Beginner: "5–8 min",
-    Easy: "8–12 min",
-    Standard: "10–15 min",
-    Intermediate: "12–18 min",
-    Medium: "15–20 min",
-    Challenging: "20–30 min",
-    Hard: "25–35 min",
-    Advanced: "30–45 min"
+    Beginner: "5-8 min",
+    Easy: "8-12 min",
+    Standard: "10-15 min",
+    Intermediate: "12-18 min",
+    Medium: "15-20 min",
+    Challenging: "20-30 min",
+    Hard: "25-35 min",
+    Advanced: "30-45 min"
 };
 
 export function getEstimatedTime(difficulty) {
-    return DIFFICULTY_TIME_ESTIMATES[difficulty] ?? "10–15 min";
+    return DIFFICULTY_TIME_ESTIMATES[difficulty] ?? "10-15 min";
 }
 
 /**

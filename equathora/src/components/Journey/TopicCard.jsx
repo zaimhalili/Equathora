@@ -47,7 +47,7 @@ const TopicCard = ({
     );
 
     // How many of this topic's problems match the student's current level.
-    // Shown as a hint, not used to hide anything — the full list stays visible.
+    // Shown as a hint, not used to hide anything - the full list stays visible.
     const recommendedCount = useMemo(
         () => statedProblems.filter(p => recommendedIds.has(p.id)).length,
         [statedProblems, recommendedIds]
@@ -65,7 +65,7 @@ const TopicCard = ({
         // recommended-level, ACCESSIBLE problem that's current/unlocked,
         // then any accessible current/in-progress problem, then finally
         // fall back to anything at all (including locked premium) so the
-        // panel is never empty — the CTA below is what actually gates it.
+        // panel is never empty - the CTA below is what actually gates it.
         return (
             statedProblems.find(p => recommendedIds.has(p.id) && p.state === "current" && isAccessible(p)) ??
             statedProblems.find(p => p.state === "current" && isAccessible(p)) ??

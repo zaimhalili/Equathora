@@ -62,7 +62,7 @@ const normalizeAnswer = (answer) => {
     // Normalise multiplication symbols
     s = s.replace(/×|·|⋅/g, '*');
     // Normalise minus/dash symbols to ASCII hyphen
-    s = s.replace(/−|–|—/g, '-');
+    s = s.replace(/−|–|-/g, '-');
     // Remove all remaining whitespace
     s = s.replace(/\s+/g, '');
     // Remove commas, dollar signs, degree symbols
@@ -192,7 +192,7 @@ const expressionEqual = (leftExpression, rightExpression) => {
 // ─────────────────────────────────────────────────────────────────────────
 // FIX: The numeric fallback below is only valid for answers that are
 // PLAIN NUMBERS (e.g. "42", "-3.5"). `parseFloat` silently parses only the
-// leading numeric prefix of a string and ignores the rest — so previously,
+// leading numeric prefix of a string and ignores the rest - so previously,
 // two *completely different algebraic expressions* that merely started
 // with the same coefficient (e.g. "2x^3-3x^2-5x" vs "2x^3-3x^2+6x", both
 // parsing to the leading "2") were incorrectly treated as numerically
@@ -204,7 +204,7 @@ const isPlainNumber = (value) => typeof value === 'string' && PLAIN_NUMBER_PATTE
 
 /**
  * Check if answer is within numerical tolerance.
- * Only applies to plain numeric answers — never to algebraic expressions,
+ * Only applies to plain numeric answers - never to algebraic expressions,
  * since parseFloat() would otherwise only read the leading numeric prefix
  * and silently ignore everything after it (see fix note above).
  */
@@ -260,12 +260,12 @@ export const validateAnswer = async (userAnswer, problem) => {
         };
     }
 
-    // Proof problems cannot be auto-scored — reject with an informative message
+    // Proof problems cannot be auto-scored - reject with an informative message
     if (isProofProblem(problem)) {
         return {
             isCorrect: false,
             feedback:
-                'This is a proof problem. Automatic scoring is not supported — ' +
+                'This is a proof problem. Automatic scoring is not supported - ' +
                 'work through the proof on paper and check the solution when ready.',
             score: 0,
             isProofProblem: true,
@@ -327,21 +327,21 @@ const getCorrectFeedback = (problem) => {
     const difficulty = (problem.difficulty || '').toLowerCase();
 
     const topicInsights = {
-        'Linear Equations': 'You demonstrated strong algebraic reasoning — isolating variables is a fundamental skill.',
+        'Linear Equations': 'You demonstrated strong algebraic reasoning - isolating variables is a fundamental skill.',
         'Quadratic Equations': 'Solid work with quadratics. Recognizing the structure of the equation is the key insight here.',
         'Polynomials': 'Nice polynomial manipulation. Identifying terms and combining like terms shows real fluency.',
         'Trigonometry': 'Great trigonometric thinking. Understanding angle relationships is essential for advanced math.',
         'Calculus': 'Excellent calculus work. You applied differentiation/integration concepts correctly.',
         'Geometry': 'Strong geometric reasoning. Visualizing shapes and applying formulas accurately is a core skill.',
         'Area': 'You correctly identified the shape properties and applied the right formula.',
-        'Volume': 'Great spatial reasoning — computing volume requires understanding 3D relationships.',
+        'Volume': 'Great spatial reasoning - computing volume requires understanding 3D relationships.',
         'Probability': 'Good probabilistic thinking. You correctly identified the sample space and computed the outcome.',
         'Combinatorics': 'Nice combinatorial reasoning. Counting principles are fundamental to discrete math.',
         'Number Theory': 'Solid number theory work. Understanding divisibility and primes is a deep mathematical skill.',
         'Logic': 'Clean logical reasoning. Breaking down the problem step by step is exactly the right approach.',
         'Statistics': 'Great statistical analysis. You correctly interpreted and computed from the data.',
         'Series': 'Nice work with series. Recognizing the pattern is the critical step.',
-        'Inequalities': 'Well done. Manipulating inequalities requires careful attention to direction — you nailed it.',
+        'Inequalities': 'Well done. Manipulating inequalities requires careful attention to direction - you nailed it.',
     };
 
     const insight = topicInsights[topic] || 'You applied the right approach and executed it accurately.';
@@ -368,10 +368,10 @@ const getIncorrectFeedback = (userAnswer, problem) => {
     if (!isNaN(userNum) && !isNaN(correctNum)) {
         const diff = Math.abs(userNum - correctNum);
         if (diff > 0 && diff < 2) {
-            return 'Very close! Your approach seems right — double-check your arithmetic in the final step.';
+            return 'Very close! Your approach seems right - double-check your arithmetic in the final step.';
         }
         if (userNum === -correctNum) {
-            return 'Almost there — check your signs. A sign error flipped your answer.';
+            return 'Almost there - check your signs. A sign error flipped your answer.';
         }
         if (correctNum !== 0 && Math.abs(userNum / correctNum - 2) < 0.01) {
             return 'Your answer is exactly double the expected result. Did you forget to divide somewhere?';
@@ -388,12 +388,12 @@ const getIncorrectFeedback = (userAnswer, problem) => {
         'Trigonometry': 'Verify your angle units (degrees vs radians) and trig identity usage.',
         'Geometry': 'Double-check which formula applies to this shape and that all measurements are correct.',
         'Area': 'Make sure you selected the correct area formula and applied all dimensions properly.',
-        'Volume': 'Verify the 3D formula — common mistake is using area instead of volume formulas.',
+        'Volume': 'Verify the 3D formula - common mistake is using area instead of volume formulas.',
         'Calculus': 'Review the differentiation/integration rules you applied, especially chain rule or substitution.',
         'Probability': 'Check your sample space and whether events are independent or dependent.',
         'Combinatorics': 'Verify whether order matters (permutation vs combination) in this problem.',
         'Number Theory': 'Re-examine divisibility rules or prime factorization steps.',
-        'Logic': 'Trace through the logical steps again — check for any assumption gaps.',
+        'Logic': 'Trace through the logical steps again - check for any assumption gaps.',
         'Inequalities': 'Remember: multiplying or dividing by a negative flips the inequality direction.',
     };
 

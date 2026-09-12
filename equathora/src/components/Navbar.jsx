@@ -110,7 +110,7 @@ const Navbar = () => {
     };
   }, [refreshStats]);
 
-  // Only link into a problem once we actually have a recommended slug —
+  // Only link into a problem once we actually have a recommended slug -
   // otherwise send them to /journey (always valid) instead of a
   // /problems/undefined dead link / 404.
   const dailyProblemTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
@@ -268,9 +268,9 @@ const Navbar = () => {
             <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
               <li>
                 {/* Main Logo - Redirect to Dashboard */}
-                <Link to="/dashboard" className='!text-[var(--secondary-color)] flex justify-center items-center list-none font-bold relative' title='Dashboard'>
-                  <img src={Sigma} alt="Logo" className='w-6 h-6 absolute left-0 -top-[1px]' />
-                  <p className=' pl-6 text-lg font-black'>Equathora</p>
+                <Link to='/dashboard' className='!text-[var(--secondary-color)] list-none font-bold  text-lg relative pl-5' title='Home'>
+                  <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[1px] -top-[5px]' />
+                  quathora
                 </Link>
               </li>
               <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>

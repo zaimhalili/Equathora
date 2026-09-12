@@ -52,7 +52,7 @@ export async function askSigmaChat({
         acceptedAnswer: sanitizePromptText(acceptedAnswer, 500),
         userSteps: needsFullContext
             ? sanitizePromptText(userSteps || 'No steps submitted yet.', 4000)
-            : '(unchanged since last turn — see prior analysis in conversation history)',
+            : '(unchanged since last turn - see prior analysis in conversation history)',
         chatHistory: historyPayload,
         userNewMessage: sanitizePromptText(userNewMessage, 500),
     };

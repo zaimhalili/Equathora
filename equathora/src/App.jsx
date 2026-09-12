@@ -196,7 +196,7 @@ export default function App() {
     }, [location.pathname]);
 
     // Single onAuthStateChange listener. There used to be two near-identical
-    // ones here (a leftover from an earlier edit) — that meant every sign-in
+    // ones here (a leftover from an earlier edit) - that meant every sign-in
     // fired theme sync, PostHog events, and the onboarding redirect twice.
     // This is the merged, more complete version: it also handles
     // PASSWORD_RECOVERY and skips the auto-redirect while on the
@@ -281,14 +281,14 @@ export default function App() {
                         <Route path="/terms-of-service" element={<TermsOfService />} />
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
 
-                        {/* Protected Onboarding Flow — guarded by OnboardingRoute, not
+                        {/* Protected Onboarding Flow - guarded by OnboardingRoute, not
                             ProtectedRoute. OnboardingRoute allows a completed user back
                             in only when navigated with state={{ retake: true }} (e.g. a
                             "redo onboarding" link from Settings), and otherwise sends
                             completed users to /dashboard while letting first-time users
                             through. Using ProtectedRoute here caused a redirect loop:
-                            it sends incomplete-onboarding users to /getStarted — while
-                            already ON /getStarted — so the page never actually rendered. */}
+                            it sends incomplete-onboarding users to /getStarted - while
+                            already ON /getStarted - so the page never actually rendered. */}
                         <Route path="/getStarted" element={<OnboardingRoute><GetStarted /></OnboardingRoute>} />
                         <Route path="/premium" element={<Premium />} />
 

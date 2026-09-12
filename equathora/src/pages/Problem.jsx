@@ -272,13 +272,13 @@ const Problem = () => {
     // True only when the DB confirms this problem was ALREADY completed
     // before the current attempt (set once from the initial fetch, never
     // flipped by a fresh correct solve). This is what "practice mode" means
-    // to the user — solving something you'd already solved. `isCompleted`
+    // to the user - solving something you'd already solved. `isCompleted`
     // itself gets flipped optimistically the instant you solve a problem
     // for the first time, so it can't be used for this without showing the
     // "practice mode" banner right after a brand-new correct solve.
     const [alreadyCompletedOnLoad, setAlreadyCompletedOnLoad] = useState(false);
     // True only once the DB has actually confirmed completion / solution-viewed
-    // state — used to gate the solution-fetch call below so it never fires
+    // state - used to gate the solution-fetch call below so it never fires
     // before the corresponding DB write has landed (which was causing 403s).
     const [canFetchSolution, setCanFetchSolution] = useState(false);
     const [sigmaBusy, setSigmaBusy] = useState(false);
@@ -632,7 +632,7 @@ const Problem = () => {
         // This prevents free users from triggering the 403 network error entirely.
         if (problem.is_premium && !premium) return;
 
-        // 3. User must have a DB-CONFIRMED completion or solution-view —
+        // 3. User must have a DB-CONFIRMED completion or solution-view -
         // not just the optimistic local isCompleted/solutionViewed flags,
         // which flip before the corresponding DB write has landed and were
         // causing this call to fire too early (403 from the edge function).
@@ -705,7 +705,7 @@ const Problem = () => {
         if (validationError) {
             const isRateLimited = validationError.context?.status === 429;
             const feedback = isRateLimited
-                ? 'Too many attempts — please wait a moment before trying again.'
+                ? 'Too many attempts - please wait a moment before trying again.'
                 : 'Could not validate your answer right now. Please try again.';
 
             setSubmissionFeedback({ message: feedback, isCorrect: false });
@@ -902,7 +902,7 @@ const Problem = () => {
         if (validation.isCorrect) {
             await markProblemCompleteDb(problem.id, timeSpentSeconds, problem.difficulty, problem.topic || 'General');
             await removeProblemFromInProgressDb(problem.id);
-            // Only now is completion actually persisted — safe to let the
+            // Only now is completion actually persisted - safe to let the
             // solution-fetch effect fire.
             setCanFetchSolution(true);
         }
@@ -1596,7 +1596,7 @@ const Problem = () => {
                                 {/* Show Mentor Chat State Check
                                 {showMentorChat && <MentorChat />} */}
 
-                                {/* Show AI chat panel — kept mounted (just hidden) while switching tabs
+                                {/* Show AI chat panel - kept mounted (just hidden) while switching tabs
                                     so in-flight AI requests/responses aren't lost */}
                                 {chatPanelMounted && (
                                     <div className={chatPanel ? 'flex-1 min-h-0 flex flex-col' : 'hidden'}>

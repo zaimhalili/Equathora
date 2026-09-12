@@ -47,8 +47,8 @@ const LEVEL_LABELS = {
 
 const WEEKLY_LABELS = {
     'under-1': '< 1 hr / week',
-    '1-3': '1–3 hrs / week',
-    '3-6': '3–6 hrs / week',
+    '1-3': '1-3 hrs / week',
+    '3-6': '3-6 hrs / week',
     '6+': '6+ hrs / week',
 };
 
@@ -170,7 +170,7 @@ const Chip = ({ children }) => (
 );
 
 // ============================================================================
-// TOAST — a single, global piece of feedback. New messages replace the old
+// TOAST - a single, global piece of feedback. New messages replace the old
 // one instead of stacking, so only ever one banner is visible at a time.
 // ============================================================================
 
@@ -202,7 +202,7 @@ const Toast = ({ toast }) => {
 };
 
 // ============================================================================
-// CONFIRM MODAL — replaces window.confirm()/alert() everywhere in this page.
+// CONFIRM MODAL - replaces window.confirm()/alert() everywhere in this page.
 // ============================================================================
 
 const ConfirmModal = ({
@@ -403,7 +403,7 @@ const Settings = () => {
     const [activeSection, setActiveSection] = useState('profile');
     const [isLoading, setIsLoading] = useState(true);
 
-    // Global toast (single message at a time — replaces the old per-section
+    // Global toast (single message at a time - replaces the old per-section
     // banners that could all show the same text simultaneously)
     const [toast, setToast] = useState(null);
     const toastTimerRef = useRef(null);
@@ -416,7 +416,7 @@ const Settings = () => {
         if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     }, []);
 
-    // Read-only profile summary — editing lives on the public profile page,
+    // Read-only profile summary - editing lives on the public profile page,
     // so this page doesn't duplicate that form.
     const [profileSummary, setProfileSummary] = useState({
         full_name: '',
@@ -497,7 +497,7 @@ const Settings = () => {
                 const provider = session.user.app_metadata?.provider || 'email';
                 setAuthProvider(provider);
 
-                // Profile — read-only summary, matches the real `profiles` schema
+                // Profile - read-only summary, matches the real `profiles` schema
                 const { data: profile } = await supabase
                     .from('profiles')
                     .select('full_name, username, bio, role, deletion_requested, deletion_requested_at')
@@ -524,7 +524,7 @@ const Settings = () => {
                         .maybeSingle();
                     if (sp) setLearningProfile(sp);
                 } catch (e) {
-                    // No student_profile row yet (e.g. teacher account) — fine.
+                    // No student_profile row yet (e.g. teacher account) - fine.
                 }
 
                 // Fetch user settings
@@ -776,7 +776,7 @@ const Settings = () => {
                 return;
             }
             showToast(
-                enabled ? 'All cookies enabled.' : 'Optional cookies disabled — essential only.',
+                enabled ? 'All cookies enabled.' : 'Optional cookies disabled - essential only.',
                 'success'
             );
         } catch (error) {
@@ -919,7 +919,7 @@ const Settings = () => {
                     <div className="flex flex-col gap-6 flex-1 min-w-0 rounded-md">
 
                         {/* ============================================================ */}
-                        {/* PROFILE (read-only summary — editing happens on the public   */}
+                        {/* PROFILE (read-only summary - editing happens on the public   */}
                         {/* profile page, so this doesn't duplicate that form)            */}
                         {/* ============================================================ */}
                         <SectionCard id="profile">

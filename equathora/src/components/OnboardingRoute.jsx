@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import LoadingSpinner from "./LoadingSpinner";
 
 // Guards /getStarted. Does NOT redirect incomplete-onboarding users back
-// here (they're already here) — that's the difference from ProtectedRoute.
+// here (they're already here) - that's the difference from ProtectedRoute.
 const OnboardingRoute = ({ children }) => {
     const { loading, isAuth, onboardingCompleted } = useAuth();
     const location = useLocation();

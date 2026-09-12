@@ -118,8 +118,8 @@ const GetStarted = () => {
             subtitle: "We'll build recommendations that fit your schedule",
             options: [
                 { id: 'under-1', label: 'Less than 1 hour', icon: <FaCoffee />, description: 'A few short sessions' },
-                { id: '1-3', label: '1–3 hours', icon: <FaClock />, description: 'Steady weekly progress' },
-                { id: '3-6', label: '3–6 hours', icon: <MdTimeline />, description: 'Consistent practice' },
+                { id: '1-3', label: '1-3 hours', icon: <FaClock />, description: 'Steady weekly progress' },
+                { id: '3-6', label: '3-6 hours', icon: <MdTimeline />, description: 'Consistent practice' },
                 { id: '6+', label: '6+ hours', icon: <FaRocket />, description: 'Serious commitment' }
             ]
         },
@@ -320,7 +320,7 @@ const GetStarted = () => {
     return (
         <main className='relative flex flex-col w-full bg-[var(--main-color)] min-h-screen h-full overflow-y-auto items-center px-4 sm:px-6 '>
 
-            {/* Progress bar — sticky instead of absolute, so it always stays
+            {/* Progress bar - sticky instead of absolute, so it always stays
                 pinned above the content instead of overlapping it when the
                 viewport is short. */}
             <header className='sticky top-0 z-20 w-full max-w-xl px-4 pt-4 pb-2 flex flex-col gap-2 bg-[var(--main-color)]'>

@@ -12,7 +12,7 @@ import {
 //
 // Splits plain text from common LaTeX delimiters and renders math spans through
 // MathLive's static renderer. Only MathLive's own generated
-// markup goes through dangerouslySetInnerHTML — plain-text segments stay as
+// markup goes through dangerouslySetInnerHTML - plain-text segments stay as
 // normal React children, which React escapes automatically, so raw AI/user
 // text is never injected as HTML.
 //

@@ -152,7 +152,7 @@ export async function notifyAchievementUnlocked(achievementTitle, achievementDes
     return createNotification({
         type: NOTIFICATION_TYPES.ACHIEVEMENT,
         title: 'Achievement Unlocked!',
-        message: `${achievementTitle} — ${achievementDescription}`,
+        message: `${achievementTitle} - ${achievementDescription}`,
         link: '/achievements',
         metadata: { achievementTitle },
     });
@@ -447,7 +447,7 @@ export async function requestAccountDeletion() {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) throw new Error('Not authenticated');
 
-        // Mark account for deletion (soft delete — data retained for 30 days)
+        // Mark account for deletion (soft delete - data retained for 30 days)
         const { error } = await supabase
             .from('profiles')
             .update({

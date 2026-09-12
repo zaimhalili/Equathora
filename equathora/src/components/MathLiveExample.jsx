@@ -215,7 +215,7 @@ export default function MathLiveEditor({
 
             if (aiResponse) {
                 // A step number outside the range of steps actually submitted
-                // isn't useful to highlight — fall back to "no specific step"
+                // isn't useful to highlight - fall back to "no specific step"
                 // so the message still renders via the general feedback block
                 // below instead of silently matching nothing.
                 const validStep = typeof aiResponse.step === 'number'
@@ -248,7 +248,7 @@ export default function MathLiveEditor({
         if (isAiBusy) {
             setSubmissionFeedback(prev => ({
                 ...prev,
-                message: (prev?.message || '') + " (Sigma is still finishing the last response — try again in a moment.)",
+                message: (prev?.message || '') + " (Sigma is still finishing the last response - try again in a moment.)",
             }));
             return;
         }
@@ -264,7 +264,7 @@ export default function MathLiveEditor({
 
     // General (non-step-specific) feedback: shown when there's an incorrect
     // submission but no valid step number to attach it to (AI error, unclear
-    // response, or an out-of-range step) — so the message is never silently
+    // response, or an out-of-range step) - so the message is never silently
     // dropped just because it didn't match a field in the loop below.
     const showGeneralFeedback = submissionFeedback
         && !submissionFeedback.success

@@ -242,7 +242,7 @@ const ChatPanel = forwardRef(({
             // message: either the exact text from our backend for expected
             // cases (trial exhausted, monthly quota reached, at capacity),
             // or a generic friendly fallback for genuine infra failures.
-            // Don't reclassify it a second time here — that's what caused
+            // Don't reclassify it a second time here - that's what caused
             // "quota reached" messages to get overwritten with a generic
             // "high system load" message.
             const friendlyErrorText = sanitizeUnicode(

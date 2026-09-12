@@ -117,7 +117,7 @@ export function AuthProvider({ children }) {
 
         // onAuthStateChange fires immediately on subscribe with an
         // INITIAL_SESSION event carrying the current session, so a
-        // separate getSession().then(...) call is redundant — keeping
+        // separate getSession().then(...) call is redundant - keeping
         // both created two concurrent syncAuthAndOnboarding calls racing
         // to set state, which could leave onboardingCompleted stale
         // right after loading flips to false. One listener, one sync.

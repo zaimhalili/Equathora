@@ -49,7 +49,7 @@ const Journey = () => {
     };
 
     // Which difficulties count as "recommended" for a given level. This no
-    // longer FILTERS out other problems — it only tags them, so topics still
+    // longer FILTERS out other problems - it only tags them, so topics still
     // show their full problem list instead of a thin slice.
     const LEVEL_TO_DIFFICULTIES = {
         beginner: ["Beginner", "Easy", "Standard"],
@@ -59,7 +59,7 @@ const Journey = () => {
     };
 
     // How many problems get pulled into TODAY's Daily Mission queue.
-    // This is the only place weekly_commitment now limits anything —
+    // This is the only place weekly_commitment now limits anything -
     // Learning Paths / TopicCards always show the full set per topic.
     const DAILY_TARGET_BY_COMMITMENT = {
         "under-1": 2,
@@ -158,12 +158,12 @@ const Journey = () => {
         load();
     }, []);
 
-    // Full set of problems for the student's selected subjects — NOT sliced.
+    // Full set of problems for the student's selected subjects - NOT sliced.
     // This is what feeds the Learning Paths / TopicCards, so every topic
     // shows its complete list of problems instead of a thin global slice.
     // Premium problems ARE included here on purpose: Learning Paths is a
     // browsing surface, so free users should still see (locked) premium
-    // problems and know they exist — TopicCard handles the locked styling.
+    // problems and know they exist - TopicCard handles the locked styling.
     const journeyProblems = useMemo(() => {
         if (!studentTopics.length || allProblems.length === 0) return [];
 
@@ -176,7 +176,7 @@ const Journey = () => {
     }, [studentProfile]);
 
     // Ids of problems that match the student's current level. Used only to
-    // highlight/prioritize — never to hide problems from a topic.
+    // highlight/prioritize - never to hide problems from a topic.
     const recommendedIds = useMemo(() => {
         const ids = new Set();
         if (!allowedDifficulties.length) return ids;
@@ -203,7 +203,7 @@ const Journey = () => {
     // list (N = dailyTargetCount); totalRecommendedCount is the full
     // candidate pool size, so DailyTrack can show "+N more waiting"
     // accurately. Premium-only problems are excluded here unless the
-    // student actually has premium — the Daily Mission is meant to be a
+    // student actually has premium - the Daily Mission is meant to be a
     // free, frictionless habit loop, not a paywall funnel.
     const completedProblemIds = stats.completedProblemIds || [];
     const attemptedProblemIds = stats.attemptedProblemIds || [];
@@ -354,7 +354,7 @@ const Journey = () => {
                                 </div>
                             ) : Object.keys(personalizedJourney).length === 0 ? (
                                 <p className="text-center text-lg text-[var(--secondary-color)] py-8">
-                                    No recommended problems yet — check back soon, or update your goals below.
+                                    No recommended problems yet - check back soon, or update your goals below.
                                 </p>
                             ) : (
                                 Object.keys(personalizedJourney)

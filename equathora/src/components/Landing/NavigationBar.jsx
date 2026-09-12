@@ -11,7 +11,7 @@ const NavigationBar = () => {
     return (
         <>
             <motion.header
-                className='w-full bg-[var(--main-color)] py-2 fixed top-0 z-[1000] overflow-visible box-border border-b-2 border-[var(--french-gray)]/30 flex justify-center'
+                className='w-full bg-[var(--main-color)] py-2 fixed top-0 z-[1000] overflow-visible box-border border-b-2 border-[var(--french-gray)]/70 flex justify-center'
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
@@ -20,7 +20,7 @@ const NavigationBar = () => {
                     <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
                         <li className='shrink-0'>
                             <a href='/' className='!text-[var(--secondary-color)] list-none font-bold  text-lg relative pl-5' title='Home'>
-                                <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[2px] -top-[5px]' />
+                                <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[1px] -top-[5px]' />
                                 quathora
                             </a>
                         </li>
@@ -44,7 +44,7 @@ const NavigationBar = () => {
                         <li className='shrink-0 hidden md:block text-[var(--secondary-color)]'>
                             <Link
                                 to="/signup"
-                                className="relative inline-block px-3 sm:px-4 lg:px-5 py-1 text-xs sm:text-sm text-center !text-[var(--secondary-color)]/70 hover:!text-[var(--secondary-color)] transition-all group bg-[var(--main-color)] rounded-lg brightness-95 hover:brightness-90 !font-medium"
+                                className="relative inline-block px-3 sm:px-4 lg:px-5 py-1 text-xs sm:text-sm text-center !text-[var(--secondary-color)]/70 hover:!text-[var(--secondary-color)] transition-all group bg-[var(--white)] rounded-lg brightness-90 hover:brightness-85 !font-medium"
                                 style={{ isolation: 'isolate' }}>
                                 Log in
                             </Link>
