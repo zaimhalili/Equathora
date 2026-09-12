@@ -5,7 +5,7 @@
     flex-direction: column;
     gap: 1.5rem;
     padding: 1.5rem;
-    font-family: 'Sansation', sans-serif;
+
     background-color: var(--main-color);
     border-radius: 6px;
     color: var(--secondary-color);
@@ -18,7 +18,7 @@
 }
 
 .leaderboard-header h2 {
-    font-family: 'Sansation', sans-serif;
+
     font-size: clamp(1.5rem, 4vw, 2rem);
     color: var(--secondary-color);
     margin: 0 0 0.3rem 0;
@@ -71,7 +71,7 @@
     border: none;
     color: var(--secondary-color);
     font-size: 0.82rem;
-    font-family: 'Sansation', sans-serif;
+
     outline: none;
 }
 

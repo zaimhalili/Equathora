@@ -88,7 +88,7 @@ const TopicCard = ({
     const selectedLocked = selected ? !isAccessible(selected) : false;
 
     return (
-        <div className="w-full rounded-2xl bg-[var(--main-color)] backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
+        <div className="w-full rounded-2xl bg-[var(--main-color)] backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 ">
             {/* Header */}
             <button
                 onClick={() => setOpen(!open)}

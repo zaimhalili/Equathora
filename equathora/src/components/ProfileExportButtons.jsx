@@ -369,7 +369,7 @@ const ProfileExportButtons = () => {
         doc.text('VERIFIED BY EQUATHORA', margin + 8, yPos + 25.5);
 
         // Add page numbers to all pages
-        const totalPages = doc.Sansationnal.pages.length - 1;
+        const totalPages = doc.FiraSansnal.pages.length - 1;
         for (let i = 1; i <= totalPages; i++) {
             doc.setPage(i);
             doc.setFontSize(8);

@@ -41,13 +41,13 @@
 }
 
 #verify-text-container h3 {
-    font-family: 'Sansation', sans-serif;
+
     color: var(--secondary-color);
     font-size: 1.6rem;
 }
 
 #verify-text-container p {
-    font-family: 'Sansation', sans-serif;
+
     color: var(--secondary-color);
     font-size: 1.2rem;
     font-weight: 300;
@@ -81,7 +81,7 @@
     border-radius: 12px;
     background: var(--french-gray);
     color: var(--secondary-color);
-    font-family: 'Sansation', sans-serif;
+
     line-height: 1.5;
 }
 
@@ -99,7 +99,7 @@
     flex-direction: column;
     gap: 6px;
     color: var(--secondary-color);
-    font-family: 'Sansation', sans-serif;
+
 }
 
 .verification-email span {
@@ -120,7 +120,6 @@
     height: 50px;
     background-color: var(--dark-accent-color);
     color: white;
-    font-family: 'Sansation', Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: 600;
     display: flex;
@@ -150,7 +149,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'Sansation', Arial, Helvetica, sans-serif;
     font-size: 1rem;
     gap: 10px;
 }

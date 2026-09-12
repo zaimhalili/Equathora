@@ -90,7 +90,7 @@
 }
 
 .insight-title {
-    font-family: 'Sansation', sans-serif;
+
     font-weight: 700;
     font-size: 0.9375rem;
     color: var(--secondary-color);
@@ -105,7 +105,7 @@
 }
 
 .insight-btn-secondary {
-    font-family: 'Sansation', sans-serif;
+
     font-size: 0.8125rem;
     font-weight: 700;
     color: var(--secondary-color);
@@ -124,7 +124,7 @@
 }
 
 .insight-btn-primary {
-    font-family: 'Sansation', sans-serif;
+
     font-size: 0.8125rem;
     font-weight: 700;
     color: var(--white);
@@ -189,7 +189,7 @@
 }
 
 .insight-text {
-    font-family: 'Sansation', sans-serif;
+
     font-size: 0.8125rem;
     font-weight: 400;
     color: var(--secondary-color);

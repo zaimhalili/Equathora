@@ -67,7 +67,7 @@ const SubmitProblem = () => {
     ];
 
     return (
-        <div className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed font-[Sansation]">
+        <div className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed ">
             <header>
                 <Navbar />
             </header>

@@ -91,7 +91,7 @@
 
 .sidebar-profile-info h4 {
     margin: 0;
-    font-family: 'Sansation', sans-serif;
+
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--secondary-color);
@@ -99,7 +99,7 @@
 
 .sidebar-profile-info p {
     margin: 2px 0 0;
-    font-family: 'Sansation', sans-serif;
+
     font-size: 0.8rem;
     font-weight: 400;
     color: var(--mid-main-secondary);
@@ -131,7 +131,7 @@
 
 .sidebar-streak-text h4 {
     margin: 0;
-    font-family: 'Sansation', sans-serif;
+
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--secondary-color);
@@ -139,7 +139,7 @@
 
 .sidebar-streak-text p {
     margin: 2px 0 0;
-    font-family: 'Sansation', sans-serif;
+
     font-size: 0.8rem;
     font-weight: 400;
     color: var(--mid-main-secondary);
@@ -195,7 +195,7 @@
 
 .sidebar-item-text h4 {
     margin: 0;
-    font-family: 'Sansation', sans-serif;
+
     font-size: 1rem;
     font-weight: 600;
     color: var(--secondary-color);
@@ -204,7 +204,7 @@
 
 .sidebar-item-text p {
     margin: 2px 0 0;
-    font-family: 'Sansation', sans-serif;
+
     font-size: 0.75rem;
     font-weight: 400;
     color: var(--mid-main-secondary);

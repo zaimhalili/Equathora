@@ -888,7 +888,7 @@ const Problem = () => {
                 // ignore background failure
             }
         }
-        
+
         await recordProblemStats(problem, {
             isCorrect: validation.isCorrect,
             timeSpentSeconds,
@@ -994,7 +994,7 @@ const Problem = () => {
         <>
             <main className="flex flex-col text-[var(--secondary-color)] bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed items-center">
                 {/* Navigation Header */}
-                <header className="flex items-center justify-between gap-2 md:gap-3 font-[Sansation,sans-serif] bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0 max-w-600">
+                <header className="flex items-center justify-between gap-2 md:gap-3  bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0 max-w-600">
                     {/* Left side - Back button and Navigation */}
                     <div className="flex items-center gap-2">
                         <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-md hover:bg-[var(--french-gray)] h-9 md:h-10">
@@ -1163,7 +1163,7 @@ const Problem = () => {
                 {/* Main Content */}
                 <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 lg:overflow-y-hidden max-h-dvh">
                     {/* Description Side Left Side */}
-                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] font-[Sansation,sans-serif] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
+                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)]  text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
                             <div className={`flex gap-1 flex-wrap ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
 
@@ -1177,7 +1177,7 @@ const Problem = () => {
                                     setShowMentorChat(false);
                                     setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Description</span>
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Description</span>}
                                     <FaFileAlt className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
@@ -1196,7 +1196,7 @@ const Problem = () => {
                                         setShowSolution(true);
                                     }
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription && showSolution && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription && showSolution && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Solution</span>
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Solution</span>}
                                     <FaCalculator className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
@@ -1211,7 +1211,7 @@ const Problem = () => {
                                     setShowMentorChat(false);
                                     setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 
                                 ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} 
                                 ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
                                     style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
@@ -1232,7 +1232,7 @@ const Problem = () => {
                                     setChatPanel(true);
                                     setChatPanelMounted(true);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-1.5 font-medium transition-all duration-200 min-w-fit
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 min-w-fit
                                 ${chatPanel && !showDescription ? 'bg-[var(--main-color)]' : ''} 
                                 ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
                                     style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Ask Sigma" : ""}>
@@ -1262,26 +1262,26 @@ const Problem = () => {
                             {/* Mobile Only - Toggle Collapse/Expand */}
                             <button type="button" onClick={() => {
                                 setShowTop(!showTop);
-                            }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] flex items-center gap-2 font-medium transition-colors duration-200`}>
+                            }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  flex items-center gap-2 font-medium transition-colors duration-200`}>
                                 {showTop ? <FaChevronDown className="text-sm" /> : <FaChevronUp className="text-sm" />}
                             </button>
 
                             {/* Desktop Only - Horizontal Collapse Toggle */}
                             <button type="button" onClick={() => {
                                 setDescriptionCollapsed(!descriptionCollapsed);
-                            }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm font-[Sansation] items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
+                            }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
                                 <FaChevronRight className={`text-sm transition-transform duration-200 ${descriptionCollapsed ? 'rotate-0' : 'rotate-180'}`} />
                             </button>
                         </div>
 
-                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex flex-col font-[Sansation,sans-serif] text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-100px)] lg:h-[calc(100vh-72px-74px)] overflow-y-auto opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
+                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex flex-col  text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-100px)] lg:h-[calc(100vh-72px-74px)] overflow-y-auto opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
 
                             <div className={`w-full px-4 pt-4 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll h-full`}>
                                 {/* Problem Title & Badges */}
                                 {!chatPanel ? (
                                     <div className="flex flex-col gap-3">
-                                        <h1 className="font-[Sansation,sans-serif] text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold m-0">{problem.title}</h1>
-                                        <div className="flex gap-1.5 md:gap-2 flex-wrap font-[Sansation,sans-serif] items-center">
+                                        <h1 className=" text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold m-0">{problem.title}</h1>
+                                        <div className="flex gap-1.5 md:gap-2 flex-wrap  items-center">
                                             <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-500' :
                                                 problem.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
                                                     'bg-red-500/10 text-[var(--accent-color)]'
@@ -1317,7 +1317,7 @@ const Problem = () => {
                                         {/* Problem Description */}
                                         <MathJaxRenderer
                                             content={problem.description}
-                                            className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)] font-[Sansation,sans-serif] m-0"
+                                            className="text-sm md:text-[0.95rem] leading-relaxed text-[var(--secondary-color)]  m-0"
                                             as="p"
                                         />
 
@@ -1387,22 +1387,22 @@ const Problem = () => {
                                         {/* Examples */}
                                         {examples.length > 0 && (
                                             <div>
-                                                <h3 className="text-sm md:text-base pb-2 md:pb-3 text-[var(--secondary-color)] font-bold font-[Sansation,sans-serif]">Examples</h3>
+                                                <h3 className="text-sm md:text-base pb-2 md:pb-3 text-[var(--secondary-color)] font-bold ">Examples</h3>
                                                 {examples.map((example, index) => (
                                                     <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/40 rounded-md pb-2 md:pb-3 last:pb-0">
-                                                        <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 font-[Sansation,sans-serif]">Example {index + 1}:</div>
+                                                        <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 ">Example {index + 1}:</div>
                                                         <div className="flex flex-col gap-1.5 md:gap-2">
-                                                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Sansation,sans-serif]">
+                                                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm ">
                                                                 <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Input:</span>
                                                                 <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.input}</code>
                                                             </div>
-                                                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm font-[Sansation,sans-serif]">
+                                                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm ">
                                                                 <span className="font-semibold text-[var(--secondary-color)] sm:min-w-[50px]">Output:</span>
                                                                 <code className="bg-[var(--secondary-color)] text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.output}</code>
                                                             </div>
                                                         </div>
                                                         {example.explanation && (
-                                                            <div className="pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed font-[Sansation,sans-serif]">
+                                                            <div className="pt-2 border-t border-dashed border-gray-300 text-xs md:text-[0.85rem] text-gray-600 italic leading-relaxed ">
                                                                 {example.explanation}
                                                             </div>
                                                         )}
@@ -1422,7 +1422,7 @@ const Problem = () => {
                                                                     className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
                                                                     onClick={() => toggleHint(index)}
                                                                 >
-                                                                    <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">
+                                                                    <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)]  flex items-center gap-2">
                                                                         <FaLightbulb className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
                                                                         Hint {index + 1}
                                                                     </span>
@@ -1432,7 +1432,7 @@ const Problem = () => {
                                                                     <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--mid-main-secondary)]">
                                                                         <MathJaxRenderer
                                                                             content={loadedHints[index] ?? 'Loading hint...'}
-                                                                            className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed font-[Sansation] m-0"
+                                                                            className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed  m-0"
                                                                             as="p"
                                                                         />
                                                                     </div>
@@ -1451,7 +1451,7 @@ const Problem = () => {
                                                             className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
                                                             onClick={() => toggleHint('similar')}
                                                         >
-                                                            <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">
+                                                            <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)]  flex items-center gap-2">
                                                                 <FaLink className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
                                                                 Similar Questions
                                                             </span>
@@ -1465,7 +1465,7 @@ const Problem = () => {
                                                                         to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
                                                                         className="flex items-center justify-between p-2 md:p-3 rounded-md group hover:bg-[var(--white)]"
                                                                     >
-                                                                        <span className="text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] group-hover:text-[var(--dark-accent-color)]">
+                                                                        <span className="text-xs md:text-sm text-[var(--secondary-color)]  group-hover:text-[var(--dark-accent-color)]">
                                                                             {question.title}
                                                                         </span>
                                                                         <span className={`px-2 py-0.5 rounded-md text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
@@ -1487,7 +1487,7 @@ const Problem = () => {
                                                         className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
                                                         onClick={() => setLatexOpen(o => !o)}
                                                     >
-                                                        <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] flex items-center gap-2">
+                                                        <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)]  flex items-center gap-2">
                                                             <FaCode className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
                                                             Your solution in LaTeX
                                                         </span>
@@ -1496,7 +1496,7 @@ const Problem = () => {
                                                     <div className={`transition-all duration-300 ease-in-out ${latexOpen ? 'max-h-96 opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'}`}>
                                                         <div className="bg-[var(--main-color)] flex flex-col gap-1">
                                                             {fields.map((f, i) => (
-                                                                <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)] font-[Sansation] p-2 md:p-3 bg-[var(--white)] rounded-md">
+                                                                <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)]  p-2 md:p-3 bg-[var(--white)] rounded-md">
                                                                     <span className="font-bold pr-2">Step {i + 1}: </span>{f.latex || <span className="opacity-30 italic">empty</span>}
                                                                 </p>
                                                             ))}
@@ -1523,22 +1523,22 @@ const Problem = () => {
                                                     <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-[var(--dark-accent-color)]">
                                                         <FaTimes className='text-white' />
                                                     </div>
-                                                    <span className="text-sm font-bold font-[Sansation,sans-serif] text-[var(--accent-color)]">
+                                                    <span className="text-sm font-bold  text-[var(--accent-color)]">
                                                         Incorrect
                                                     </span>
                                                     {submissionFeedback.isPracticeMode && (
-                                                        <span className="text-[10px] font-medium text-gray-400 font-[Sansation,sans-serif]">Practice Mode</span>
+                                                        <span className="text-[10px] font-medium text-gray-400 ">Practice Mode</span>
                                                     )}
                                                     {!submissionFeedback.isPracticeMode && submissionFeedback.attemptNumber > 1 && (
-                                                        <span className="text-[10px] text-[var(--secondary-color)] font-[Sansation,sans-serif]">Attempt {submissionFeedback.attemptNumber}</span>
+                                                        <span className="text-[10px] text-[var(--secondary-color)] ">Attempt {submissionFeedback.attemptNumber}</span>
                                                     )}
                                                 </div>
-                                                <p className="text-xs md:text-[0.82rem] leading-relaxed font-[Sansation,sans-serif] text-[var(--secondary-color)]">
+                                                <p className="text-xs md:text-[0.82rem] leading-relaxed  text-[var(--secondary-color)]">
                                                     {submissionFeedback.message}
                                                 </p>
                                             </div>
                                         )}
-                                        <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)] font-[Sansation,sans-serif] py-4">Your Submissions</h2>
+                                        <h2 className="text-lg md:text-xl font-bold text-[var(--secondary-color)]  py-4">Your Submissions</h2>
                                         <div className="flex flex-col gap-2">
                                             {submissions.map((submission) => (
                                                 <div

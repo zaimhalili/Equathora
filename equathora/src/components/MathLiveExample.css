@@ -2,7 +2,7 @@
     width: 100%;
     background: var(--main-color);
     border: 1px solid var(--white);
-    font-family: 'Sansation', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -25,7 +25,7 @@
     color: var(--secondary-color);
     font-size: 12px;
     padding: 0.5rem 0;
-    font-family: 'Sansation', sans-serif;
+
     line-height: 1.5;
     border-bottom: 1px solid var(--french-gray);
     padding-bottom: 0.75rem;
@@ -268,9 +268,9 @@ math-field:hover {
 
 .ml-btn.submit {
     background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
-    font-family: 'Sansation', sans-serif;
+
     font-weight: 700;
-    color: white; 
+    color: white;
     min-width: 140px;
 }
 
@@ -294,7 +294,7 @@ math-field:hover {
     background-color: var(--white);
     color: var(--secondary-color);
     font-weight: 500;
-    font-family: 'Sansation', sans-serif;
+
 }
 
 .ml-btn.clear:hover {
@@ -306,7 +306,7 @@ math-field:hover {
 .ml-btn.addStep {
     color: var(--secondary-color);
     border-color: var(--mid-main-secondary);
-    font-family: 'Sansation', sans-serif;
+
     font-weight: 500;
     background-color: var(--white);
 }
@@ -356,7 +356,7 @@ math-field:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: 'Sansation', sans-serif;
+
     transition: all 0.150s ease;
 }
 
@@ -379,7 +379,7 @@ math-field:hover {
     border: 2px dashed var(--mid-main-secondary);
     border-radius: 6px;
     background: var(--white);
-    font-family: 'Sansation', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
     font-size: 13px;
     word-break: break-word;
     overflow-y: auto;

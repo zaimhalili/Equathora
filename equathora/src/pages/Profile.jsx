@@ -366,7 +366,7 @@ const Profile = () => {
                         e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name || 'User')}&background=d90429&color=fff&size=128&bold=true`;
                       }}
                     />
-                    <div className='text-[var(--secondary-color)] font-[Sansation] flex flex-col justify-between gap-1'>
+                    <div className='text-[var(--secondary-color)]  flex flex-col justify-between gap-1'>
                       <div>
                         <h5 className='font-bold text-xl md:text-2xl truncate max-w-[11ch] text-overflow: ellipsis'>{userData.name}</h5>
                         <h5 className='font-light text-md md:text-lg'>@{userData.username}</h5>

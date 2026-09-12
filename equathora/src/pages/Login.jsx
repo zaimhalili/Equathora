@@ -85,7 +85,7 @@ const Login = () => {
       <main id='body-login'>
         <section id='login-container'>
           <div id='login-logo-name' className='relative'>
-            <p className='font-[Sansation,Arial] pl-6 text-3xl font-black relative select-none'>
+            <p className=' pl-6 text-3xl font-black relative select-none'>
               <img src={Sigma} alt="Logo" className='w-11 h-11 absolute -left-5 -top-[11px] pointer-events-none' />
               Equathora
             </p>
@@ -102,7 +102,7 @@ const Login = () => {
                 marginBottom: '16px',
                 color: 'var(--accent-color',
                 fontSize: '14px',
-                fontFamily: 'Sansation, sans-serif'
+                fontFamily: 'FiraSans, sans-serif'
               }}>
                 {error}
               </div>

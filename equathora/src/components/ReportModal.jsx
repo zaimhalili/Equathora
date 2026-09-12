@@ -12,8 +12,8 @@ const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDet
             <div className='bg-[var(--white)] w-11/12 max-w-lg rounded-md px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-start pb-4'>
                     <div>
-                        <h2 className='font-[Sansation] font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>Report Problem</h2>
-                        <p className='font-[Sansation] text-[var(--secondary-color)] text-sm opacity-70 pt-2'>Help us improve by reporting any issues</p>
+                        <h2 className=' font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>Report Problem</h2>
+                        <p className=' text-[var(--secondary-color)] text-sm opacity-70 pt-2'>Help us improve by reporting any issues</p>
                     </div>
                     <button onClick={onClose} className='text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] transition-colors'>
                         <FaTimes className='text-xl' />
@@ -22,11 +22,11 @@ const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDet
 
                 <div className='flex flex-col gap-4 pt-4'>
                     <div>
-                        <label className='font-[Sansation] text-sm font-semibold text-[var(--secondary-color)] pb-2 block'>Reason for Report</label>
+                        <label className=' text-sm font-semibold text-[var(--secondary-color)] pb-2 block'>Reason for Report</label>
                         <select
                             value={reportReason}
                             onChange={(e) => setReportReason(e.target.value)}
-                            className='w-full p-3 border-2 text-[var(--secondary-color)] bg-[var(--white)] border-[var(--mid-main-secondary)] rounded-md font-[Sansation] text-sm focus:border-[var(--accent-color)] focus:outline-none transition-colors'
+                            className='w-full p-3 border-2 text-[var(--secondary-color)] bg-[var(--white)] border-[var(--mid-main-secondary)] rounded-md  text-sm focus:border-[var(--accent-color)] focus:outline-none transition-colors'
                         >
                             <option value="">Select a reason</option>
                             <option value="incorrect-answer">Incorrect Answer</option>
@@ -39,13 +39,13 @@ const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDet
                     </div>
 
                     <div>
-                        <label className='font-[Sansation] text-sm font-semibold text-[var(--secondary-color)] pb-2 block'>Additional Details (Optional)</label>
+                        <label className=' text-sm font-semibold text-[var(--secondary-color)] pb-2 block'>Additional Details (Optional)</label>
                         <textarea
                             value={reportDetails}
                             onChange={(e) => setReportDetails(e.target.value)}
                             placeholder='Provide more information about the issue...'
                             rows={4}
-                            className='w-full p-3 border-2 text-[var(--secondary-color)] bg-[var(--white)] border-[var(--mid-main-secondary)] rounded-md font-[Sansation] text-sm resize-none focus:border-[var(--accent-color)] focus:outline-none transition-colors'
+                            className='w-full p-3 border-2 text-[var(--secondary-color)] bg-[var(--white)] border-[var(--mid-main-secondary)] rounded-md  text-sm resize-none focus:border-[var(--accent-color)] focus:outline-none transition-colors'
                         />
                     </div>
                 </div>

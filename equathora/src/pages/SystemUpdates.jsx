@@ -457,7 +457,7 @@ const SystemUpdates = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full min-h-screen bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed font-[Sansation]">
+            <div className="w-full min-h-screen bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed ">
                 <header>
                     <Navbar />
                 </header>
@@ -472,7 +472,7 @@ const SystemUpdates = () => {
                     >
                         <div className="flex flex-col items-center text-center gap-3">
                             <div className="flex items-center gap-2">
-                                <h1 className="text-4xl font-bold text-[var(--secondary-color)] font-[Sansation]">
+                                <h1 className="text-4xl font-bold text-[var(--secondary-color)] ">
                                     System Updates
                                 </h1>
                             </div>
@@ -535,7 +535,7 @@ const SystemUpdates = () => {
                         {/* Subscribe Section */}
                         <div className="pt-8">
                             <div className="bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] rounded-md p-8 text-center text-[var(--white)] shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
-                                <h3 className="text-2xl font-bold pb-3 font-[Sansation]">Stay Updated</h3>
+                                <h3 className="text-2xl font-bold pb-3 ">Stay Updated</h3>
                                 <p className="text-gray-300 text-base pb-4">
                                     Get notified about new features and updates directly in your notifications
                                 </p>

@@ -3,7 +3,7 @@
     border-radius: 6px;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
     width: 100%;
-    font-family: 'Sansation', sans-serif;
+
     max-width: 1500px;
     margin: 0 auto;
 
@@ -79,7 +79,7 @@
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-family: 'Sansation', sans-serif;
+
 }
 
 .register-button:hover {

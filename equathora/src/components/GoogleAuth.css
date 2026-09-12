@@ -14,7 +14,7 @@
     justify-content: center;
     gap: 10px;
     color: var(--secondary-color);
-    font-family: 'Sansation', sans-serif;
+
     font-size: 16px;
     font-weight: 700;
     border-radius: 6px;
@@ -28,7 +28,7 @@
     box-shadow: 0 5px 8px 0 rgba(43, 45, 66, 0.8);
 }
 
-#google-btn:hover .dark{
+#google-btn:hover .dark {
     background-color: red;
 }
 

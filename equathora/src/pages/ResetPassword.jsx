@@ -109,7 +109,7 @@ const ResetPassword = () => {
                             marginBottom: '16px',
                             color: '#c33',
                             fontSize: '14px',
-                            fontFamily: 'Sansation, sans-serif'
+                            fontFamily: 'FiraSans, sans-serif'
                         }}>
                             {error}
                         </div>
@@ -124,7 +124,7 @@ const ResetPassword = () => {
                             marginBottom: '16px',
                             color: '#3c3',
                             fontSize: '14px',
-                            fontFamily: 'Sansation, sans-serif'
+                            fontFamily: 'FiraSans, sans-serif'
                         }}>
                             {message}
                         </div>

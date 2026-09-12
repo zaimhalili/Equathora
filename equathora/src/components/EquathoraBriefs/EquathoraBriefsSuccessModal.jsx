@@ -20,7 +20,7 @@ const EquathoraBriefsSuccessModal = ({ onClose }) => {
                     <FaCheckCircle className="text-5xl" />
                 </div>
 
-                <h2 className="font-[Sansation] pt-5 uppercase tracking-wider">
+                <h2 className=" pt-5 uppercase tracking-wider">
                     <span className="block text-xl font-bold text-[var(--secondary-color)]">You Are</span>
                     <span className="block text-4xl font-extrabold !text-[var(--accent-color)] leading-tight">Officially In</span>
                 </h2>

@@ -200,7 +200,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                 >
                     {/* Header */}
                     <div className="sticky top-0 bg-[var(--white)] border-b border-[var(--mid-main-secondary)] px-6 py-4 flex items-center justify-between z-10">
-                        <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Sansation]">Edit Profile</h2>
+                        <h2 className="text-2xl font-bold text-[var(--secondary-color)] ">Edit Profile</h2>
                         <button
                             onClick={onClose}
                             className="text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] transition-colors p-2 hover:bg-[var(--main-color)] rounded-md cursor-pointer active:scale-95"

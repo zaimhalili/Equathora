@@ -27,7 +27,7 @@ const About = () => {
     }, []);
 
     return (
-        <div className="font-[Sansation] w-full bg-[var(--white)] relative overflow-hidden min-h-screen flex items-center justify-center flex-col">
+        <div className=" w-full bg-[var(--white)] relative overflow-hidden min-h-screen flex items-center justify-center flex-col">
             {/* Conditional Navigation */}
             {user ? <Navbar /> : <NavigationBar />}
 

@@ -8,7 +8,7 @@ const AdminRoute = ({ children }) => {
 
     // if (loading) {
     //     return (
-    //         <div className="min-h-screen flex items-center justify-center text-[var(--secondary-color)] font-[Sansation]">
+    //         <div className="min-h-screen flex items-center justify-center text-[var(--secondary-color)] ">
     //             <LoadingSpinner />
     //         </div>
     //     );

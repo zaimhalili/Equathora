@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
+import NavigationBar from '@/components/Landing/NavigationBar';
 import Footer from '@/components/Footer';
 import { FaAngleDown, FaQuoteLeft, FaCrown, FaExclamationTriangle, FaFlagCheckered } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
 import { useSubscription } from '@/hooks/SubscriptionContext';
+import { useAuth } from '@/hooks/useAuth';
 
 const Premium = () => {
+  const { user } = useAuth();
+
   const {
     premium,
     cancelAtPeriodEnd,
@@ -142,11 +146,16 @@ const Premium = () => {
 
   return (
     <div>
-      <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen font-[Sansation,sans-serif]">
-        <Navbar />
+      <main className="w-full bg-[var(--main-color)] bg-fixed min-h-screen ">
+        {user ? <Navbar /> :
+          (<>
+            <NavigationBar />
+            <div className='flex pb-10 md:pb-12' />
+          </>)}
         <section className='flex w-full justify-center items-center'>
           <div className='flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:py-6'>
-            <h1 className='text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--black)] pb-2'>Premium</h1>
+            <h1 className='text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-medium leading-[1.1] text-[var(--black)] pb-2 text-center '>Your all-in-one
+              toolkit to <br /> ace your SAT, ACT, or AP exams</h1>
             <h2 className='text-sm sm:text-xl md:text-2xl font-light text-center pb-1'>Find the ideal plan that fits your budget and goals. Make informed choices with ease.</h2>
 
             {errorMessage && (
@@ -159,41 +168,36 @@ const Premium = () => {
             {/* Premium Card Section */}
             <article className="flex gap-5 pt-10 items-center lg:flex-row flex-col-reverse w-full">
               {/* Free Card */}
-              <div className='rounded-md flex-col flex bg-[var(--main-color)] px-8 py-10 gap-8 h-fit lg:w-2/5 transition-all border border-[var(--secondary-color)]/10'>
-                <div className="flex flex-col gap-4">
-                  <div className="flex justify-between sm:flex-row flex-col-reverse w-full items-center gap-1.5">
-                    <h3 className="text-2xl font-bold text-[var(--secondary-color)]">Free</h3>
-                    {!premium && (
-                      <div className='flex items-center gap-1 border-[var(--secondary-color)] border rounded-md px-1'>
-                        <FaFlagCheckered className='inline-block' />
-                        <span>Active</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <p className="text-md text-[var(--secondary-color)]/80 font-light">
-                    Master your foundational math skills completely for free with <strong>unlimited access</strong> to our standard challenge sets and <strong>interactive step-by-step canvas.</strong>
-                  </p>
+              <div className='rounded-2xl flex-col flex bg-[var(--white)] p-1 h-fit lg:w-2/5 transition-all border border-[var(--secondary-color)]/10'>
+                <div className="flex justify-between w-full items-center gap-1.5 px-4 py-4">
+                  <h3 className="text-2xl font-bold text-[var(--secondary-color)]">Free</h3>
+                  {!premium && (
+                    <div className='flex items-center gap-1 border-[var(--secondary-color)] border rounded-md px-1'>
+                      <FaFlagCheckered className='inline-block' />
+                      <span>Active</span>
+                    </div>
+                  )}
                 </div>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 bg-[var(--main-color)] px-4 py-4 rounded-lg">
                   <div className="flex justify-between items-end">
                     <div className="flex gap-2 items-end">
-                      <h3 className="text-4xl md:text-5xl text-[var(--secondary-color)] font-bold">€0.00
-                        <span className='text-2xl text-[var(--secondary-color)]/80 font-medium'>/mo</span>
+                      <h3 className="text-2xl md:text-3xl text-[var(--secondary-color)] font-bold">€0
+                        <span className='text-lg text-[var(--secondary-color)]/50 font-medium'>/month</span>
                       </h3>
                     </div>
                   </div>
 
-                  <Link to={'/login'} className='bg-[var(--black)] !text-[var(--white)] py-2 rounded-md text-xl hover:contrast-80 active:scale-95 transition-all duration-200 text-center !font-normal'>
-                    Get Started
-                  </Link>
+
                   <ul className="flex flex-col gap-2 pt-2">
                     {freeFeatures.map((feature, idx) => (
                       <li key={idx} className="text-sm">
-                        <strong>{feature.bold}</strong>{feature.text}
+                        <strong>{feature.bold}</strong>
                       </li>
                     ))}
                   </ul>
+                  <Link to={'/login'} className='bg-[var(--black)] !text-[var(--white)] py-2 rounded-md text-xl hover:contrast-80 active:scale-95 transition-all duration-200 text-center !font-normal'>
+                    Get started for free
+                  </Link>
                 </div>
               </div>
 

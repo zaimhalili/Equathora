@@ -11,7 +11,7 @@ const NavigationBar = () => {
     return (
         <>
             <motion.header
-                className='w-full bg-[var(--main-color)] h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] fixed top-0 z-[1000] overflow-visible box-border'
+                className='w-full bg-[var(--main-color)] py-2 fixed top-0 z-[1000] overflow-visible box-border border-b-2 border-[var(--french-gray)]/30'
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
@@ -20,9 +20,9 @@ const NavigationBar = () => {
                     <div className='w-full h-full mx-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
                         <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
                             <li className='shrink-0'>
-                                <a href='/' className='!text-[var(--secondary-color)] flex justify-center items-center list-none font-bold relative' title='Home'>
-                                    <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0' />
-                                    <p className='font-[Sansation,Arial] text-lg font-black'>Equathora</p>
+                                <a href='/' className='!text-[var(--secondary-color)] list-none font-bold  text-lg relative' title='Home'>
+                                    <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[20px] -top-[5px]' />
+                                    quathora
                                 </a>
                             </li>
                         </ul>
@@ -31,29 +31,32 @@ const NavigationBar = () => {
                             <ul className='flex items-center list-none h-full overflow-visible'>
                                 <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
                                     <Link to="/about"
-                                        className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center text-gray-700 transition-all hover:border-[var(--accent-color)] hover:!text-[var(--accent-color)]">Learn More</Link>
+                                        className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-xs sm:text-base text-center !text-[var(--secondary-color)]/70
+                                        hover:!text-[var(--secondary-color)] transition-all hover:border-[var(--accent-color)] !font-medium">Learn More</Link>
+                                </li>
+                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
+                                    <Link to="/premium"
+                                        className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-xs sm:text-base text-center !text-[var(--secondary-color)]/70
+                                        hover:!text-[var(--secondary-color)] transition-all hover:border-[var(--accent-color)] !font-medium">Pricing</Link>
                                 </li>
                                 <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
                                     <Link
-                                        to="/login"
-                                        className="relative inline-block px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 text-sm sm:text-base text-center 
-                                        !text-[var(--accent-color)] hover:!text-white transition-colors duration-150 group"
+                                        to="/signup"
+                                        className="relative inline-block px-3 sm:px-4 lg:px-5 py-1 text-xs sm:text-base text-center !text-[var(--secondary-color)]/70
+                                        hover:!text-[var(--secondary-color)] transition-all group bg-[var(--main-color)] rounded-md brightness-95 hover:brightness-90 !font-medium"
                                         style={{ isolation: 'isolate' }}
                                     >
-                                        <span
-                                            aria-hidden="true"
-                                            className="absolute inset-0 rounded-md p-[2px] 
-                                            bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
-                                            transition-opacity duration-150"
-                                            style={{ WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude' }}
-                                        />
-                                        <span
-                                            aria-hidden="true"
-                                            className="absolute inset-0 opacity-0 group-hover:opacity-100
-                                            bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
-                                            transition-opacity duration-150 -z-10 hover:border-none rounded-md"
-                                        />
-                                        Get Started
+                                        Log in
+                                    </Link>
+                                </li>
+                                <li className='pl-3 sm:pl-4 lg:pl-4 shrink-0 hidden md:block text-[var(--secondary-color)]'>
+                                    <Link
+                                        to="/signup"
+                                        className="relative inline-block px-3 sm:px-4 lg:px-5 py-1 text-xs sm:text-base text-center 
+                                        !text-white transition-colors duration-150 group bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] rounded-md !font-medium"
+                                        style={{ isolation: 'isolate' }}
+                                    >
+                                        Sign up
                                     </Link>
                                 </li>
                                 <li className='pl-6 lg:pl-4 shrink-0'>

@@ -111,8 +111,8 @@ const SolutionStepsDisplay = ({ solution }) => {
 
     if (!solution) {
         return (
-            <div className="w-full font-[Sansation,sans-serif] p-4 text-sm text-[var(--secondary-color)] opacity-70 flex gap-1 items-center">
-                <FaSpinner className='animate-spin'/>
+            <div className="w-full  p-4 text-sm text-[var(--secondary-color)] opacity-70 flex gap-1 items-center">
+                <FaSpinner className='animate-spin' />
                 Loading Solution...
             </div>
         );
@@ -123,7 +123,7 @@ const SolutionStepsDisplay = ({ solution }) => {
     return (
         <div
             ref={containerRef}
-            className="mathjax-renderer flex w-full flex-col overflow-hidden rounded-md bg-[var(--main-color)] font-[Sansation,sans-serif]"
+            className="mathjax-renderer flex w-full flex-col overflow-hidden rounded-md bg-[var(--main-color)] "
         >
             <div className="flex flex-1 flex-col overflow-hidden py-2">
                 <div className="flex-1 overflow-y-auto overflow-x-hidden">

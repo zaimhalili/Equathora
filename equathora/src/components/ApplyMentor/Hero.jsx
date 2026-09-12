@@ -29,7 +29,7 @@ const Hero = ({ onOpenBriefsModal }) => {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.15 }}
-                                className='text-3xl md:text-4xl font-bold leading-tight font-[Sansation]'
+                                className='text-3xl md:text-4xl font-bold leading-tight '
                             >
                                 <span className='text-[var(--accent-color)]'>Become a Mentor</span>
                                 <br />

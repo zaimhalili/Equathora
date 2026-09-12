@@ -329,7 +329,7 @@ const ChatPanel = forwardRef(({
     }
 
     return (
-        <div className="relative w-full flex-1 flex flex-col font-[Sansation,sans-serif] bg-[var(--white)] text-[var(--secondary-color)] rounded-md overflow-hidden min-h-0">
+        <div className="relative w-full flex-1 flex flex-col  bg-[var(--white)] text-[var(--secondary-color)] rounded-md overflow-hidden min-h-0">
             {/* Backdrop Lock Overlay */}
             {trialExhausted && (
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-black/60 backdrop-blur-sm transition-all duration-300">

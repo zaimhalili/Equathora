@@ -92,7 +92,7 @@ const HelpCenter = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full min-h-screen bg-[var(--main-color)] font-[Sansation] text-[var(--secondary-color)]">
+            <div className="w-full min-h-screen bg-[var(--main-color)]  text-[var(--secondary-color)]">
                 <header>
                     {user ? <Navbar /> : <NavigationBar />}
                 </header>
@@ -114,7 +114,7 @@ const HelpCenter = () => {
                                     <div className="w-12 h-12 rounded-md bg-[var(--white)]/15 flex items-center justify-center text-xl">
                                         <FaQuestionCircle />
                                     </div>
-                                    <h1 className="text-4xl font-bold text-[var(--white)] font-[Sansation]">
+                                    <h1 className="text-4xl font-bold text-[var(--white)] ">
                                         Help Center
                                     </h1>
                                 </div>
@@ -193,7 +193,7 @@ const HelpCenter = () => {
                 <section className="w-full flex justify-center">
                     <div className="px-[4vw] xl:px-[6vw] py-8 max-w-[1500px] w-full">
                         <div className="flex flex-col items-center gap-2 pb-6">
-                            <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Sansation] text-center">
+                            <h2 className="text-2xl font-bold text-[var(--secondary-color)]  text-center">
                                 Frequently Asked Questions
                             </h2>
                             <p className="text-[var(--mid-main-secondary)] text-center text-base">Everything you need to know about Equathora</p>
@@ -246,7 +246,7 @@ const HelpCenter = () => {
                                 <div className="flex-1 p-8 flex flex-col gap-4 text-[var(--white)]">
                                     <div className="flex items-center gap-2">
                                         <FaHeadset className="text-2xl" />
-                                        <h2 className="text-2xl font-bold font-[Sansation]">Still Need Help?</h2>
+                                        <h2 className="text-2xl font-bold ">Still Need Help?</h2>
                                     </div>
                                     <p className="text-gray-200 text-base">
                                         Can't find your answer? Our support team responds within 3 hours (usually) !

@@ -41,7 +41,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                 <div className='flex justify-between items-start pb-4'>
                     <div className='flex-1'>
                         <div className='flex items-center gap-3 pb-2'>
-                            <h2 className='font-[Sansation] font-bold text-2xl text-[var(--secondary-color)] leading-tight'>
+                            <h2 className=' font-bold text-2xl text-[var(--secondary-color)] leading-tight'>
                                 Submission Details
                             </h2>
                             <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 text-center ${submission.status === 'accepted' ? 'bg-[var(--french-gray)] text-[var(--secondary-color)]' :
@@ -66,7 +66,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                 <div className='flex flex-col gap-4 pb-5 '>
                     <div className='bg-[var(--french-gray)]/10 rounded-md'>
                         <div className='flex justify-between items-center pb-3'>
-                            <h3 className='font-[Sansation] font-bold text-sm text-[var(--secondary-color)]'>Your Solution Steps</h3>
+                            <h3 className=' font-bold text-sm text-[var(--secondary-color)]'>Your Solution Steps</h3>
                             <div className="flex items-center gap-2">
                                 <ExportPDFButton
                                     premium={premium}

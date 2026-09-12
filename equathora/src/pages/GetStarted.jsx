@@ -318,7 +318,7 @@ const GetStarted = () => {
     const imageSrc = typeof WelcomeTeacher === 'string' ? WelcomeTeacher : WelcomeTeacher?.default || WelcomeTeacher;
 
     return (
-        <main className='relative flex flex-col w-full bg-[var(--main-color)] min-h-screen h-full overflow-y-auto items-center px-4 sm:px-6 font-[Sansation,sans-serif]'>
+        <main className='relative flex flex-col w-full bg-[var(--main-color)] min-h-screen h-full overflow-y-auto items-center px-4 sm:px-6 '>
 
             {/* Progress bar — sticky instead of absolute, so it always stays
                 pinned above the content instead of overlapping it when the

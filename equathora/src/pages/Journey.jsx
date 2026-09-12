@@ -289,7 +289,7 @@ const Journey = () => {
                             transition={{ duration: 0.6 }}
                         >
                             <div className="flex flex-col md:w-2/3 justify-center">
-                                <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-extrabold">
+                                <h1 className="text-4xl text-center md:text-left pb-2 cursor-default  font-extrabold">
                                     Your Math Journey
                                 </h1>
                                 <p className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] lg:w-[80%] cursor-default text-[var(--secondary-color)]">

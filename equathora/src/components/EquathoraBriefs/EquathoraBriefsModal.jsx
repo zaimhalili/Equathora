@@ -171,7 +171,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
 
                                     {/* Right Column - Form */}
                                     <div className="flex flex-col">
-                                        <h2 className="font-[Sansation] uppercase tracking-wider pb-2">
+                                        <h2 className=" uppercase tracking-wider pb-2">
                                             <span className="block text-xl font-bold text-[var(--secondary-color)]">Join</span>
                                             <span className="block text-4xl font-extrabold !text-[var(--accent-color)] leading-tight">Equathora Briefs</span>
                                         </h2>

@@ -37,7 +37,7 @@
 #signup-name {
     display: flex;
     align-items: center;
-    font-family: 'Sansation', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
     color: var(--secondary-color);
     margin: 0;
     height: 100%;
@@ -66,7 +66,6 @@
 #forgotPass {
     color: var(--dark-accent-color);
     font-size: 15px;
-    font-family: 'Sansation', Arial, Helvetica, sans-serif;
     width: 100%;
     height: auto;
     text-align: left;
@@ -81,7 +80,6 @@
     height: 50px;
     background-color: var(--dark-accent-color);
     color: white;
-    font-family: 'Sansation', Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: 600;
     display: flex;
@@ -105,7 +103,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'Sansation', Arial, Helvetica, sans-serif;
     font-size: 1rem;
     gap: 5px;
 }

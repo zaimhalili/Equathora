@@ -10,8 +10,8 @@ const ViewSolutionModal = ({ isOpen, onClose, onConfirm }) => {
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
             <div className='bg-[var(--white)] w-11/12 max-w-md rounded-md px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
                 <div className='flex flex-col gap-3'>
-                    <h2 className='font-[Sansation] text-left font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>View Solution?</h2>
-                    <p className='font-[Sansation] text-[var(--secondary-color)] text-sm md:text-base leading-relaxed opacity-80'>Viewing the solution before solving reduces XP to 70%, but the problem will be marked as completed.</p>
+                    <h2 className=' text-left font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>View Solution?</h2>
+                    <p className=' text-[var(--secondary-color)] text-sm md:text-base leading-relaxed opacity-80'>Viewing the solution before solving reduces XP to 70%, but the problem will be marked as completed.</p>
                 </div>
 
                 <div className='flex w-full justify-between gap-3 pt-5'>

@@ -95,7 +95,7 @@ const Feedback = () => {
             }, 3000);
         } catch (error) {
             console.error('Error submitting feedback:', error);
-            alert('Failed to submit feedback. Please check your Sansationnet connection and try again.');
+            alert('Failed to submit feedback. Please check your Internet connection and try again.');
         } finally {
             setIsSubmitting(false);
         }
@@ -149,10 +149,10 @@ const Feedback = () => {
             <main className="min-h-screen bg-gradient-to-b from-[var(--mid-main-secondary)] to-[var(--main-color)] py-8 px-4 sm:px-6 md:px-8 w-full flex justify-center">
                 <div className="max-w-3xl">
                     <div className="bg-[var(--white)] rounded-md shadow-xl p-6 sm:p-8 md:p-10">
-                        <h1 className="text-3xl sm:text-4xl font-bold text-[var(--secondary-color)] font-[Sansation] pb-4">
+                        <h1 className="text-3xl sm:text-4xl font-bold text-[var(--secondary-color)]  pb-4">
                             Share Your Feedback
                         </h1>
-                        <p className="text-[var(--secondary-color)] opacity-80 font-[Sansation] pb-4 text-sm sm:text-base">
+                        <p className="text-[var(--secondary-color)] opacity-80  pb-4 text-sm sm:text-base">
                             Help us make Equathora better! Your feedback is valuable and helps us improve the platform for everyone.
                         </p>
 
@@ -166,7 +166,7 @@ const Feedback = () => {
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 {/* Feedback Type Selection */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pb-3 font-[Sansation]">
+                                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pb-3 ">
                                         What type of feedback do you have? <span className="text-[var(--accent-color)]">*</span>
                                     </label>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -195,7 +195,7 @@ const Feedback = () => {
 
                                 {/* Common Issues Radio Buttons */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pt-4 pb-3 font-[Sansation]">
+                                    <label className="block text-sm font-semibold text-[var(--secondary-color)] pt-4 pb-3 ">
                                         Common issues (optional)
                                     </label>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -215,7 +215,7 @@ const Feedback = () => {
                                                     onChange={handleChange}
                                                     className="w-4 h-4 text-[var(--accent-color)] border-[var(--mid-main-secondary)] focus:ring-[var(--accent-color)]"
                                                 />
-                                                <span className="font-[Sansation]">{issue}</span>
+                                                <span className="">{issue}</span>
                                             </label>
                                         ))}
                                     </div>
@@ -223,7 +223,7 @@ const Feedback = () => {
 
                                 {/* Title */}
                                 <div>
-                                    <label htmlFor="title" className="pt-4 block text-sm font-semibold text-[var(--secondary-color)] pb-2 font-[Sansation]">
+                                    <label htmlFor="title" className="pt-4 block text-sm font-semibold text-[var(--secondary-color)] pb-2 ">
                                         Title <span className="text-[var(--accent-color)]">*</span>
                                     </label>
                                     <input
@@ -235,13 +235,13 @@ const Feedback = () => {
                                         required
                                         maxLength={100}
                                         placeholder="Brief summary of your feedback"
-                                        className="w-full px-4 py-3 border-2 !border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation] text-[var(--secondary-color)]"
+                                        className="w-full px-4 py-3 border-2 !border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200  text-[var(--secondary-color)]"
                                     />
                                 </div>
 
                                 {/* Description */}
                                 <div>
-                                    <label htmlFor="description" className="block text-sm font-semibold text-[var(--secondary-color)] pt-4 pb-2 font-[Sansation]">
+                                    <label htmlFor="description" className="block text-sm font-semibold text-[var(--secondary-color)] pt-4 pb-2 ">
                                         Description <span className="text-[var(--accent-color)]">*</span>
                                     </label>
                                     <textarea
@@ -253,7 +253,7 @@ const Feedback = () => {
                                         maxLength={2000}
                                         rows={6}
                                         placeholder="Please provide detailed information about your feedback..."
-                                        className="w-full px-4 py-3 border-2 !border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation] resize-none text-black"
+                                        className="w-full px-4 py-3 border-2 !border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200  resize-none text-black"
                                     />
                                     <div className="text-xs text-gray-500 pt-1 text-right">
                                         {formData.description.length}/2000 characters
@@ -262,7 +262,7 @@ const Feedback = () => {
 
                                 {/* Email */}
                                 <div>
-                                    <label htmlFor="email" className="block text-sm font-semibold text-[var(--secondary-color)] pb-2 font-[Sansation]" required>
+                                    <label htmlFor="email" className="block text-sm font-semibold text-[var(--secondary-color)] pb-2 " required>
                                         Email <span className="text-[var(--accent-color)]">*</span>
                                     </label>
                                     <input
@@ -273,7 +273,7 @@ const Feedback = () => {
                                         onChange={handleChange}
                                         maxLength={100}
                                         placeholder="your.email@example.com"
-                                        className="w-full px-4 py-3 border-2 text-[var(--secondary-color)] !border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 font-[Sansation]"
+                                        className="w-full px-4 py-3 border-2 text-[var(--secondary-color)] !border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:border-[var(--accent-color)] transition-colors duration-200 "
                                     />
                                     <p className="text-xs text-[var(--secondary-color)] pt-2">
                                         Provide your email so we can follow up with you.
@@ -297,16 +297,16 @@ const Feedback = () => {
                     {/* Information Boxes */}
                     <div className="pt-6 flex flex-col gap-5">
                         <div className="bg-[var(--main-color)] border-l-4 border-blue-500 rounded-md p-4">
-                            <h3 className="font-bold text-[var(--secondary-color)] pb-2 font-[Sansation]">Privacy Notice</h3>
-                            <p className="text-sm text-[var(--secondary-color)] font-[Sansation]">
+                            <h3 className="font-bold text-[var(--secondary-color)] pb-2 ">Privacy Notice</h3>
+                            <p className="text-sm text-[var(--secondary-color)] ">
                                 Your feedback is important to us. We collect this information solely to improve Equathora.
                                 Your email address (if provided) will only be used to follow up on your feedback and will never be shared with third parties.
                             </p>
                         </div>
 
                         <div className="bg-[var(--main-color)] border-l-4 border-green-500 rounded-md p-4">
-                            <h3 className="font-bold text-[var(--secondary-color)] pb-2 font-[Sansation]">Instant Delivery</h3>
-                            <p className="text-sm text-[var(--secondary-color)] font-[Sansation]">
+                            <h3 className="font-bold text-[var(--secondary-color)] pb-2 ">Instant Delivery</h3>
+                            <p className="text-sm text-[var(--secondary-color)] ">
                                 Your feedback will be sent directly to our team via email. We read every submission and typically respond within 24-48 hours.
                                 Thank you for helping us improve Equathora!
                             </p>

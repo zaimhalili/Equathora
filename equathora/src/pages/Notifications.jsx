@@ -278,7 +278,7 @@ const Notifications = () => {
     return (
         <>
             <Navbar />
-            <main className="w-full min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed font-[Sansation,sans-serif] text-[var(--secondary-color)]">
+            <main className="w-full min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed  text-[var(--secondary-color)]">
                 {/* Header */}
                 <div className="w-full flex flex-col items-center gap-2 pt-8 pb-8 px-4">
                     <div className="flex items-center gap-3">

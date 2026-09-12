@@ -28,7 +28,7 @@ const ApplyMentor = () => {
     };
 
     return (
-        <div className='text-[var(--secondary-color)] font-[Sansation] w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))]'>
+        <div className='text-[var(--secondary-color)]  w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))]'>
             <header><Navbar /></header>
 
             {/* Hero Section */}
@@ -44,7 +44,7 @@ const ApplyMentor = () => {
                 >
                     <div className='flex flex-col items-center gap-6'>
                         <div className='text-center flex flex-col gap-2'>
-                            <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>Why Join Equathora’s Future Teacher Network?</h2>
+                            <h2 className='text-2xl md:text-3xl font-bold '>Why Join Equathora’s Future Teacher Network?</h2>
                             <p className='text-sm md:text-base text-[var(--secondary-color)] max-w-2xl'>
                                 Help shape a math learning experience built around step-by-step guidance, Sigma AI feedback, and clearer insight into student struggles.
                             </p>
@@ -115,7 +115,7 @@ const ApplyMentor = () => {
                 >
                     <div className='flex flex-col items-center gap-6'>
                         <div className='text-center flex flex-col gap-2'>
-                            <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>
+                            <h2 className='text-2xl md:text-3xl font-bold '>
                                 Who Can <span className='text-[var(--accent-color)]'>Join Early?</span>
                             </h2>
                             <p className='text-sm md:text-base text-[var(--secondary-color)] max-w-xl'>
@@ -238,7 +238,7 @@ const ApplyMentor = () => {
                             <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-[var(--secondary-color)]/20 border border-[var(--white)]/50 rounded-full text-[var(--white)] text-xs font-semibold self-center lg:self-start'>
                                 COMING SOON
                             </div>
-                            <h2 className='text-2xl md:text-3xl font-bold font-[Sansation]'>
+                            <h2 className='text-2xl md:text-3xl font-bold '>
                                 Teacher and Learning Support Features Coming Soon!
                             </h2>
                             <p className='text-base md:text-lg text-gray-300 max-w-xl lg:max-w-none'>

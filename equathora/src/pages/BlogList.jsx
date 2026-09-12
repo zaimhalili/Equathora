@@ -12,9 +12,9 @@ const BlogList = () => {
         <div>
             <FeebackBanner />
             <Navbar />
-            <main className='flex bg-[var(--main-color)] font-[Sansation] flex-col min-h-screen w-full items-center py-12'>
+            <main className='flex bg-[var(--main-color)]  flex-col min-h-screen w-full items-center py-12'>
                 <section className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px]'>
-                    <h1 className='text-4xl font-bold font-[Sansation] text-[var(--secondary-color)] pb-8'>
+                    <h1 className='text-4xl font-bold  text-[var(--secondary-color)] pb-8'>
                         Equathora Blog
                     </h1>
                     <p className='text-lg text-gray-600 pb-12'>
@@ -40,7 +40,7 @@ const BlogList = () => {
                                         </span>
                                         {post.readTime && <span>· {post.readTime}</span>}
                                     </div>
-                                    <h2 className='text-xl font-bold font-[Sansation] text-[var(--secondary-color)] line-clamp-2'>
+                                    <h2 className='text-xl font-bold  text-[var(--secondary-color)] line-clamp-2'>
                                         {post.title}
                                     </h2>
                                     <p className='text-gray-600 text-sm line-clamp-3 flex-1'>

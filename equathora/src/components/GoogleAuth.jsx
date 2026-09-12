@@ -2,7 +2,7 @@
 import React from 'react';
 import './GoogleAuth.css';
 
-const GoogleAuth = ({ onClick }) => { 
+const GoogleAuth = ({ onClick }) => {
     return (
         <>
             <div className="google-auth-container">
@@ -18,7 +18,7 @@ const GoogleAuth = ({ onClick }) => {
 
             <div className="google-auth-divider">
                 <hr className='bg-black' />
-                <p style={{ fontFamily: "'Sansation', sans-serif", fontWeight: '700', color: 'var(--secondary-color)', textAlign: 'center', padding: '0 10px' }}>
+                <p style={{ fontFamily: "'FiraSans', sans-serif", fontWeight: '700', color: 'var(--secondary-color)', textAlign: 'center', padding: '0 10px' }}>
                     OR
                 </p>
                 <hr className='bg-black' />

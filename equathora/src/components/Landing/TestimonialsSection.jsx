@@ -68,7 +68,7 @@ const TestimonialsSection = () => {
     }, [index]);
     return (
         <>
-            <section className='flex justify-center text-[var(--secondary-color)] font-[Sansation,Arial]'>
+            <section className='flex justify-center text-[var(--secondary-color)] '>
                 <div className='max-w-[1500px] mx-auto w-full bg-[var(--white)] relative overflow-hidden flex flex-col lg:flex-row justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 gap-3 sm:gap-5 md:gap-8 lg:gap-10'>
 
                     {/* Left Side - Header & Navigation Arrows */}

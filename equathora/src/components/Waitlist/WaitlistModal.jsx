@@ -81,7 +81,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                     ) : (
                         <>
                             <div className="sticky top-0 bg-[var(--white)] border-b border-[var(--mid-main-secondary)] px-6 py-4 flex items-center justify-between z-10">
-                                <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Sansation]">Join Equathora Briefs</h2>
+                                <h2 className="text-2xl font-bold text-[var(--secondary-color)] ">Join Equathora Briefs</h2>
                                 <button
                                     type="button"
                                     onClick={onClose}

@@ -150,7 +150,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                         className="flex items-center gap-3 font-bold text-2xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
                     >
                         <img src={Sigma} alt="Equathora Logo" className="w-8 h-8" />
-                        <span className="font-[Sansation,Arial]">Equathora</span>
+                        <span className="">Equathora</span>
                     </Link>
 
                     <button

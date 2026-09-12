@@ -30,7 +30,7 @@ const YourTrack = ({ premium, loading }) => {
         <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] pt-8 gap-8">
             <div className="flex flex-col w-full gap-3 p-0">
                 <div className="flex items-center justify-between p-0">
-                    <h3 className="font-[Sansation] text-[var(--secondary-color)] text-2xl font-bold">
+                    <h3 className=" text-[var(--secondary-color)] text-2xl font-bold">
                         Your Track
                     </h3>
                     <span className={`text-sm font-semibold px-3 py-1 rounded-md bg-gradient-to-br 
@@ -66,7 +66,7 @@ const YourTrack = ({ premium, loading }) => {
 
                 {/* Stats Row */}
                 <div className="flex items-center justify-between p-0">
-                    <div className="font-[Sansation] text-base">
+                    <div className=" text-base">
                         <span className="font-bold text-lg">{solved}</span>{' '}/{' '}{total}
                         <span className="text-sm pl-1">Problems Solved</span>
                     </div>

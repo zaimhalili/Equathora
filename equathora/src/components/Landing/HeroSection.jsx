@@ -94,7 +94,7 @@ const HeroSection = () => {
 
     return (
         <section
-            className="font-[Sansation] w-full bg-[var(--main-color)] relative overflow-hidden flex items-center justify-center"
+            className=" w-full bg-[var(--main-color)] relative overflow-hidden flex items-center justify-center"
             style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay', opacity: 0.98 }}
         >
             {/* Background decorations */}

@@ -24,7 +24,6 @@
 }
 
 .lb-option {
-    font-family: 'Sansation', Arial, Helvetica, sans-serif;
     font-size: clamp(0.85rem, 2vw, 0.95rem);
     padding: 0.6rem 1.2rem;
     border-radius: 6px;
@@ -33,6 +32,7 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
     transition: 0.150s ease-in-out;
 }
+
 .lb-option.active {
     color: rgb(255, 255, 255);
     border-color: var(--accent-color);
@@ -40,7 +40,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.lb-option:active{
+.lb-option:active {
     transform: scale(0.95);
 }
 

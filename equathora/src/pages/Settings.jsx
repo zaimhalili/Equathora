@@ -80,7 +80,7 @@ const SectionCard = ({ children, id }) => (
 
 const SectionTitle = ({ children, sub }) => (
     <div className="flex flex-col gap-1">
-        <h2 className="font-[Sansation,sans-serif] font-bold text-xl lg:text-2xl text-[var(--secondary-color)]">
+        <h2 className=" font-bold text-xl lg:text-2xl text-[var(--secondary-color)]">
             {children}
         </h2>
         {sub && <p className="text-sm text-[var(--mid-main-secondary)]">{sub}</p>}
@@ -93,7 +93,7 @@ const InputField = ({ label, description, ...props }) => (
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <input
             {...props}
-            className="text-lg font-black border rounded-md px-4 py-3 w-full border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all font-[Sansation,sans-serif]"
+            className="text-lg font-black border rounded-md px-4 py-3 w-full border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all "
         />
     </div>
 );
@@ -191,7 +191,7 @@ const Toast = ({ toast }) => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 12, scale: 0.96 }}
                         transition={{ duration: 0.18 }}
-                        className={`pointer-events-auto w-full sm:w-auto sm:max-w-sm text-white text-sm font-semibold px-4 py-3 rounded-md shadow-xl font-[Sansation,sans-serif] ${palette[toast.type] || palette.success}`}
+                        className={`pointer-events-auto w-full sm:w-auto sm:max-w-sm text-white text-sm font-semibold px-4 py-3 rounded-md shadow-xl  ${palette[toast.type] || palette.success}`}
                     >
                         {toast.message}
                     </motion.div>
@@ -244,7 +244,7 @@ const ConfirmModal = ({
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative bg-[var(--white)] rounded-md shadow-2xl max-w-md w-full p-6 flex flex-col gap-4 font-[Sansation,sans-serif]"
+                    className="relative bg-[var(--white)] rounded-md shadow-2xl max-w-md w-full p-6 flex flex-col gap-4 "
                 >
                     <div className="flex items-start justify-between gap-4">
                         <h2 className="text-xl font-bold text-[var(--secondary-color)]">{title}</h2>
@@ -870,7 +870,7 @@ const Settings = () => {
     return (
         <>
             <Navbar />
-            <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-[var(--secondary-color)] font-[Sansation,sans-serif]">
+            <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-[var(--secondary-color)] ">
                 {/* Header */}
                 <div className="flex flex-col items-center w-full gap-2 px-4 pt-8 pb-4">
                     <h1 className="text-4xl font-bold">Settings</h1>
