@@ -248,7 +248,7 @@ const AdminReviewProblems = () => {
     return (
         <section className='flex flex-col gap-6 px-3 py-2 text-[var(--secondary-color)] md:px-5'>
             <header
-                className='rounded-md border p-5'
+                className='rounded-xl border p-5'
                 style={{
                     borderColor: 'var(--mid-main-secondary)',
                     background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))'
@@ -266,7 +266,7 @@ const AdminReviewProblems = () => {
                         <button
                             type='button'
                             onClick={() => setShowQueueOnly((prev) => !prev)}
-                            className='rounded-md border px-3 py-2 text-sm font-semibold transition'
+                            className='rounded-xl border px-3 py-2 text-sm font-semibold transition'
                             style={{
                                 borderColor: showQueueOnly ? 'var(--accent-color)' : 'var(--mid-main-secondary)',
                                 backgroundColor: showQueueOnly ? 'var(--accent-color)' : 'var(--main-color)',
@@ -281,7 +281,7 @@ const AdminReviewProblems = () => {
                         <button
                             type='button'
                             onClick={jumpToNextPending}
-                            className='rounded-md border px-3 py-2 text-sm font-semibold transition'
+                            className='rounded-xl border px-3 py-2 text-sm font-semibold transition'
                             style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                         >
                             <span className='inline-flex items-center gap-2'>
@@ -294,27 +294,27 @@ const AdminReviewProblems = () => {
             </header>
 
             <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
-                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Total In Buffer</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.total}</p>
                 </article>
-                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Pending Review</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.pending}</p>
                 </article>
-                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Approved</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.approved}</p>
                 </article>
-                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Already Published</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.published}</p>
                 </article>
             </div>
 
-            <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='grid grid-cols-1 gap-3 md:grid-cols-5'>
-                    <label className='inline-flex items-center gap-2 rounded-md border px-3 py-2 md:col-span-2' style={{ borderColor: 'var(--mid-main-secondary)' }}>
+                    <label className='inline-flex items-center gap-2 rounded-xl border px-3 py-2 md:col-span-2' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                         <FiSearch />
                         <input
                             type='text'
@@ -328,7 +328,7 @@ const AdminReviewProblems = () => {
                     <select
                         value={topic}
                         onChange={(event) => setTopic(event.target.value)}
-                        className='rounded-md border px-2 py-2 text-sm outline-none'
+                        className='rounded-xl border px-2 py-2 text-sm outline-none'
                         style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                     >
                         {options.topics.map((item) => (
@@ -339,7 +339,7 @@ const AdminReviewProblems = () => {
                     <select
                         value={difficulty}
                         onChange={(event) => setDifficulty(event.target.value)}
-                        className='rounded-md border px-2 py-2 text-sm outline-none'
+                        className='rounded-xl border px-2 py-2 text-sm outline-none'
                         style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                     >
                         {options.difficulties.map((item) => (
@@ -350,7 +350,7 @@ const AdminReviewProblems = () => {
                     <select
                         value={publishFilter}
                         onChange={(event) => setPublishFilter(event.target.value)}
-                        className='rounded-md border px-2 py-2 text-sm outline-none'
+                        className='rounded-xl border px-2 py-2 text-sm outline-none'
                         style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                     >
                         {['All', 'Published', 'Unpublished'].map((item) => (
@@ -361,10 +361,10 @@ const AdminReviewProblems = () => {
 
                 <div className='pt-3 flex flex-wrap items-center justify-between gap-2'>
                     <div className='flex flex-wrap items-center gap-2'>
-                        <span className='rounded-md border px-2 py-1 text-xs font-semibold' style={{ borderColor: 'var(--mid-main-secondary)' }}>
+                        <span className='rounded-xl border px-2 py-1 text-xs font-semibold' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                             {filteredRows.length} visible
                         </span>
-                        <span className='rounded-md border px-2 py-1 text-xs font-semibold' style={{ borderColor: 'var(--mid-main-secondary)' }}>
+                        <span className='rounded-xl border px-2 py-1 text-xs font-semibold' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                             {selectedIds.length} selected
                         </span>
                     </div>
@@ -374,7 +374,7 @@ const AdminReviewProblems = () => {
                         <select
                             value={sortBy}
                             onChange={(event) => setSortBy(event.target.value)}
-                            className='rounded-md border px-2 py-1.5 text-sm outline-none'
+                            className='rounded-xl border px-2 py-1.5 text-sm outline-none'
                             style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                         >
                             {['Priority', 'Newest', 'Quality'].map((item) => (
@@ -386,7 +386,7 @@ const AdminReviewProblems = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.25fr)_minmax(340px,1fr)]'>
-                <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <div className='flex flex-wrap items-center justify-between gap-2 pb-3'>
                         <h2 className='text-lg font-black'>Review List</h2>
                         <div className='flex flex-wrap items-center gap-2'>
@@ -396,7 +396,7 @@ const AdminReviewProblems = () => {
                                     if (allVisibleSelected) setSelectedIds([]);
                                     else setSelectedIds(filteredRows.map((item) => item.id));
                                 }}
-                                className='rounded-md border px-3 py-1.5 text-xs font-semibold'
+                                className='rounded-xl border px-3 py-1.5 text-xs font-semibold'
                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                             >
                                 {allVisibleSelected ? 'Clear Visible' : 'Select Visible'}
@@ -404,7 +404,7 @@ const AdminReviewProblems = () => {
                             <button
                                 type='button'
                                 onClick={copyVisibleQueue}
-                                className='rounded-md border px-3 py-1.5 text-xs font-semibold'
+                                className='rounded-xl border px-3 py-1.5 text-xs font-semibold'
                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                             >
                                 <span className='inline-flex items-center gap-1'>
@@ -416,7 +416,7 @@ const AdminReviewProblems = () => {
                                 type='button'
                                 onClick={copySelectedQueue}
                                 disabled={!selectedIds.length}
-                                className='rounded-md border px-3 py-1.5 text-xs font-semibold disabled:opacity-70'
+                                className='rounded-xl border px-3 py-1.5 text-xs font-semibold disabled:opacity-70'
                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                             >
                                 <span className='inline-flex items-center gap-1'>
@@ -433,7 +433,7 @@ const AdminReviewProblems = () => {
 
                     <div className='max-h-[620px] space-y-3 overflow-auto pr-1'>
                         {!filteredRows.length && (
-                            <p className='rounded-md border px-3 py-4 text-sm' style={{ borderColor: 'var(--mid-main-secondary)' }}>
+                            <p className='rounded-xl border px-3 py-4 text-sm' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                                 No problems match your current filters.
                             </p>
                         )}
@@ -498,7 +498,7 @@ const AdminReviewProblems = () => {
                     </div>
                 </div>
 
-                <aside className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <aside className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     {!activeProblem ? (
                         <p className='text-sm'>Pick a problem from the list to inspect details.</p>
                     ) : (
@@ -518,18 +518,18 @@ const AdminReviewProblems = () => {
                             </p>
 
                             <div className='pt-4 space-y-3'>
-                                <div className='rounded-md border p-3' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--french-gray)' }}>
+                                <div className='rounded-xl border p-3' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--french-gray)' }}>
                                     <p className='text-xs font-semibold uppercase'>Statement</p>
                                     <p className='pt-1 text-sm'>{activeProblem.statement}</p>
                                 </div>
 
-                                <div className='rounded-md border p-3' style={{ borderColor: 'var(--mid-main-secondary)' }}>
+                                <div className='rounded-xl border p-3' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                                     <p className='text-xs font-semibold uppercase'>Expected Answer</p>
                                     <p className='pt-1 text-sm'>{activeProblem.expectedAnswer}</p>
                                 </div>
 
                                 {!!activeProblem.hints.length && (
-                                    <div className='rounded-md border p-3' style={{ borderColor: 'var(--mid-main-secondary)' }}>
+                                    <div className='rounded-xl border p-3' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                                         <p className='text-xs font-semibold uppercase'>Hints</p>
                                         <ul className='list-disc pl-5 pt-1 text-sm'>
                                             {activeProblem.hints.map((hint) => (
@@ -539,7 +539,7 @@ const AdminReviewProblems = () => {
                                     </div>
                                 )}
 
-                                <div className='rounded-md border p-3' style={{ borderColor: 'var(--mid-main-secondary)' }}>
+                                <div className='rounded-xl border p-3' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                                     <p className='text-xs font-semibold uppercase'>Review Flags</p>
                                     {!activeProblem.reviewFlags.length ? (
                                         <p className='pt-1 text-sm'>No active flags.</p>
@@ -559,7 +559,7 @@ const AdminReviewProblems = () => {
                                     <button
                                         type='button'
                                         onClick={() => setStatusForIds([activeProblem.id], 'In Review')}
-                                        className='rounded-md border px-3 py-1.5 text-xs font-semibold'
+                                        className='rounded-xl border px-3 py-1.5 text-xs font-semibold'
                                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                                     >
                                         Mark In Review
@@ -567,7 +567,7 @@ const AdminReviewProblems = () => {
                                     <button
                                         type='button'
                                         onClick={() => setStatusForIds([activeProblem.id], 'Needs Fix')}
-                                        className='rounded-md border px-3 py-1.5 text-xs font-semibold'
+                                        className='rounded-xl border px-3 py-1.5 text-xs font-semibold'
                                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                                     >
                                         Mark Needs Fix
@@ -575,7 +575,7 @@ const AdminReviewProblems = () => {
                                     <button
                                         type='button'
                                         onClick={() => setStatusForIds([activeProblem.id], 'Approved')}
-                                        className='rounded-md border px-3 py-1.5 text-xs font-semibold text-[var(--main-color)]'
+                                        className='rounded-xl border px-3 py-1.5 text-xs font-semibold text-[var(--main-color)]'
                                         style={{ borderColor: 'var(--secondary-color)', backgroundColor: 'var(--secondary-color)' }}
                                     >
                                         <span className='inline-flex items-center gap-1'>
@@ -595,7 +595,7 @@ const AdminReviewProblems = () => {
                                         setReviewNotesById((prev) => ({ ...prev, [activeProblem.id]: value }));
                                     }}
                                     placeholder='Write improvement notes, edge cases, or publish guidance...'
-                                    className='pt-2 min-h-24 w-full rounded-md border p-3 text-sm outline-none'
+                                    className='pt-2 min-h-24 w-full rounded-xl border p-3 text-sm outline-none'
                                     style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--french-gray)' }}
                                 />
                             </div>
@@ -604,7 +604,7 @@ const AdminReviewProblems = () => {
                                 <button
                                     type='button'
                                     onClick={() => copyText(`${activeProblem.id} | ${activeProblem.title}`, 'Copied active problem reference.')}
-                                    className='rounded-md border px-3 py-1.5 text-xs font-semibold'
+                                    className='rounded-xl border px-3 py-1.5 text-xs font-semibold'
                                     style={{ borderColor: 'var(--mid-main-secondary)' }}
                                 >
                                     Copy Active Ref
@@ -613,7 +613,7 @@ const AdminReviewProblems = () => {
                                     type='button'
                                     onClick={() => setStatusForIds(selectedIds, 'Approved')}
                                     disabled={!selectedIds.length}
-                                    className='rounded-md border px-3 py-1.5 text-xs font-semibold disabled:opacity-70'
+                                    className='rounded-xl border px-3 py-1.5 text-xs font-semibold disabled:opacity-70'
                                     style={{ borderColor: 'var(--mid-main-secondary)' }}
                                 >
                                     Approve Selected ({selectedIds.length})

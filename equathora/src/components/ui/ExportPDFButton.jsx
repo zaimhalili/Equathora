@@ -19,7 +19,7 @@ export default function ExportPDFButton({ problem, fields, isCorrect, studentNam
             <button
                 type="button"
                 disabled
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold border border-[var(--french-gray)] text-[var(--secondary-color)] opacity-50 cursor-not-allowed"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border border-[var(--french-gray)] text-[var(--secondary-color)] opacity-50 cursor-not-allowed"
             >
                 <FaSpinner className="animate-spin text-xs" />
                 Export PDF
@@ -33,7 +33,7 @@ export default function ExportPDFButton({ problem, fields, isCorrect, studentNam
         return (
             <Link
                 to="/premium"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold border border-amber-400/40 text-amber-500 hover:bg-amber-400/10 transition-all duration-200"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border border-amber-400/40 text-amber-500 hover:bg-amber-400/10 transition-all duration-200"
                 title="Upgrade to export PDF"
             >
                 <FaCrown className="text-amber-400 text-[10px]" />
@@ -122,7 +122,7 @@ export default function ExportPDFButton({ problem, fields, isCorrect, studentNam
             onClick={handleExport}
             disabled={exporting}
             title="Export your solution as PDF"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--white)] hover:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border border-[var(--french-gray)] text-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--white)] hover:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
         >
             {exporting ? (
                 <FaSpinner className="animate-spin text-xs" />

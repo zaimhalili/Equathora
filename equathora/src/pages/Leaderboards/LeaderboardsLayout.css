@@ -26,7 +26,7 @@
 .lb-option {
     font-size: clamp(0.85rem, 2vw, 0.95rem);
     padding: 0.6rem 1.2rem;
-    border-radius: 6px;
+    border-radius: 12px;
     font-weight: 600;
     text-align: center;
     border: 1px solid rgba(0, 0, 0, 0.1);

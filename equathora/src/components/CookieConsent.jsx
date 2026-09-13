@@ -95,7 +95,7 @@ const CookieConsent = () => {
 
     return (
         <motion.div className="z-50 fixed bottom-5 right-5 "
-            initial={{ opacity: 0, y: "100%"}}
+            initial={{ opacity: 0, y: "100%" }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
         >
@@ -107,13 +107,13 @@ const CookieConsent = () => {
                 <div className="w-full flex gap-3">
                     <button
                         onClick={handleDecline}
-                        className="bg-[var(--main-color)] rounded-md flex-1 py-1 text-center text-[var(--secondary-color)]/70 hover:brightness-95 hover:text-[var(--secondary-color)] transition-all text-md font-medium"
+                        className="bg-[var(--main-color)] rounded-xl flex-1 py-1 text-center text-[var(--secondary-color)]/70 hover:brightness-95 hover:text-[var(--secondary-color)] transition-all text-md font-medium"
                     >
                         Reject optional
                     </button>
                     <button
                         onClick={handleAccept}
-                        className="bg-[var(--main-color)] rounded-md flex-1 py-1 text-center text-[var(--secondary-color)]/70 hover:brightness-95 hover:text-[var(--secondary-color)] transition-all text-md font-medium"
+                        className="bg-[var(--main-color)] rounded-xl flex-1 py-1 text-center text-[var(--secondary-color)]/70 hover:brightness-95 hover:text-[var(--secondary-color)] transition-all text-md font-medium"
                     >
                         Allow all
                     </button>

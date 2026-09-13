@@ -382,16 +382,16 @@ const AdminSolutionGenerator = () => {
 
     return (
         <section className='flex flex-col gap-5 px-3 py-3 text-[var(--secondary-color)] md:px-5'>
-            <header className='rounded-md border p-5' style={{ borderColor: 'var(--mid-main-secondary)', background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))' }}>
+            <header className='rounded-xl border p-5' style={{ borderColor: 'var(--mid-main-secondary)', background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))' }}>
                 <h1 className='text-2xl font-black md:text-3xl'>OpenStax Problem Extraction Workflow</h1>
                 <p className='pt-2 text-sm md:text-base'>Pick a book and page range, run the generated Python command, then copy each batch with one click and move to the next instantly.</p>
             </header>
 
-            <div className='grid grid-cols-1 gap-4 rounded-md border p-4 md:grid-cols-2' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='grid grid-cols-1 gap-4 rounded-xl border p-4 md:grid-cols-2' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <label className='flex flex-col gap-1 text-sm font-semibold'>
                     Book (OpenStax)
                     <select
-                        className='rounded-md border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.book}
                         onChange={(event) => setField('book', event.target.value)}
@@ -403,7 +403,7 @@ const AdminSolutionGenerator = () => {
                 <label className='flex flex-col gap-1 text-sm font-semibold'>
                     Python Command
                     <input
-                        className='rounded-md border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.pythonCmd}
                         onChange={(event) => setField('pythonCmd', event.target.value)}
@@ -416,7 +416,7 @@ const AdminSolutionGenerator = () => {
                     <input
                         type='number'
                         min='1'
-                        className='rounded-md border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.startPage}
                         onChange={(event) => setField('startPage', event.target.value)}
@@ -428,7 +428,7 @@ const AdminSolutionGenerator = () => {
                     <input
                         type='number'
                         min='1'
-                        className='rounded-md border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.endPage}
                         onChange={(event) => setField('endPage', event.target.value)}
@@ -440,7 +440,7 @@ const AdminSolutionGenerator = () => {
                     <input
                         type='number'
                         min='1'
-                        className='rounded-md border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.pagesPerBatch}
                         onChange={(event) => setField('pagesPerBatch', event.target.value)}
@@ -452,7 +452,7 @@ const AdminSolutionGenerator = () => {
                     <input
                         type='number'
                         min='2000'
-                        className='rounded-md border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.maxChars}
                         onChange={(event) => setField('maxChars', event.target.value)}
@@ -462,7 +462,7 @@ const AdminSolutionGenerator = () => {
                 <label className='flex flex-col gap-1 text-sm font-semibold'>
                     Answer Handling
                     <select
-                        className='rounded-md border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.answerMode}
                         onChange={(event) => setField('answerMode', event.target.value)}
@@ -478,7 +478,7 @@ const AdminSolutionGenerator = () => {
                     <input
                         type='number'
                         min='1'
-                        className='rounded-md border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.answerPagesStart}
                         onChange={(event) => setField('answerPagesStart', event.target.value)}
@@ -487,13 +487,13 @@ const AdminSolutionGenerator = () => {
                 </label>
             </div>
 
-            <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex flex-wrap items-center gap-2'>
                     <button
                         type='button'
                         onClick={copyRunCommand}
                         disabled={hasInvalidRange || isCharLimitTooLow}
-                        className='inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-[var(--main-color)] disabled:opacity-70'
+                        className='inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[var(--main-color)] disabled:opacity-70'
                         style={{ background: 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' }}
                     >
                         <FiPlay />
@@ -503,13 +503,13 @@ const AdminSolutionGenerator = () => {
                         type='button'
                         onClick={copyRunCommandToClipboard}
                         disabled={hasInvalidRange || isCharLimitTooLow}
-                        className='inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold disabled:opacity-70'
+                        className='inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold disabled:opacity-70'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                     >
                         <FiClipboard />
                         Copy Command (Output -&gt; Clipboard)
                     </button>
-                    <label className='inline-flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold' style={{ borderColor: 'var(--mid-main-secondary)' }}>
+                    <label className='inline-flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                         <FiUpload />
                         Load JSON File (Optional)
                         <input type='file' accept='.json,application/json' onChange={onLoadOutputFile} className='hidden' />
@@ -519,7 +519,7 @@ const AdminSolutionGenerator = () => {
                 <textarea
                     readOnly
                     value={runCommand}
-                    className='pt-3 min-h-24 w-full rounded-md border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
+                    className='pt-3 min-h-24 w-full rounded-xl border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
                     style={{ borderColor: 'var(--mid-main-secondary)' }}
                 />
 
@@ -528,14 +528,14 @@ const AdminSolutionGenerator = () => {
                 {!hasInvalidRange && !isCharLimitTooLow && <p className='pt-2 text-xs text-[var(--mid-main-secondary)]'>This command uses raw mode + stdout mode, so no output files are created. Use the clipboard command for a faster flow.</p>}
             </div>
 
-            <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex flex-wrap items-center justify-between gap-3'>
                     <h2 className='text-lg font-bold'>Load From Terminal Output</h2>
                     <div className='flex flex-wrap items-center gap-2'>
                         <button
                             type='button'
                             onClick={onLoadFromClipboard}
-                            className='inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold'
+                            className='inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold'
                             style={{ borderColor: 'var(--mid-main-secondary)' }}
                         >
                             <FiClipboard />
@@ -544,7 +544,7 @@ const AdminSolutionGenerator = () => {
                         <button
                             type='button'
                             onClick={onLoadFromPastedOutput}
-                            className='inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-[var(--main-color)]'
+                            className='inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[var(--main-color)]'
                             style={{ background: 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' }}
                         >
                             <FiUpload />
@@ -556,12 +556,12 @@ const AdminSolutionGenerator = () => {
                     value={rawOutputInput}
                     onChange={(event) => setRawOutputInput(event.target.value)}
                     placeholder='Paste terminal JSON output here (or use Load From Clipboard).'
-                    className='pt-3 min-h-32 w-full rounded-md border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
+                    className='pt-3 min-h-32 w-full rounded-xl border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
                     style={{ borderColor: 'var(--mid-main-secondary)' }}
                 />
             </div>
 
-            <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex flex-wrap items-center justify-between gap-3'>
                     <h2 className='text-lg font-bold'>Copy Queue</h2>
                     <p className='text-xs text-[var(--mid-main-secondary)]'>
@@ -570,7 +570,7 @@ const AdminSolutionGenerator = () => {
                 </div>
 
                 {!!batches.length && (
-                    <div className='pt-3 grid grid-cols-1 gap-3 rounded-md border p-3 md:grid-cols-3' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--french-gray)' }}>
+                    <div className='pt-3 grid grid-cols-1 gap-3 rounded-xl border p-3 md:grid-cols-3' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--french-gray)' }}>
                         <div>
                             <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Batches Completed</p>
                             <p className='text-lg font-black'>{doneBatchSet.size} / {batches.length}</p>
@@ -592,7 +592,7 @@ const AdminSolutionGenerator = () => {
                             <button
                                 type='button'
                                 onClick={copyCurrentBatch}
-                                className='inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold'
+                                className='inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold'
                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                             >
                                 <FiClipboard />
@@ -602,7 +602,7 @@ const AdminSolutionGenerator = () => {
                             <button
                                 type='button'
                                 onClick={copyAndNext}
-                                className='inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-[var(--main-color)]'
+                                className='inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[var(--main-color)]'
                                 style={{ background: 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' }}
                             >
                                 <FiSkipForward />
@@ -613,7 +613,7 @@ const AdminSolutionGenerator = () => {
                                 type='button'
                                 onClick={() => canMovePrev && setBatchIndex((prev) => prev - 1)}
                                 disabled={!canMovePrev}
-                                className='rounded-md border px-3 py-2 text-sm font-semibold disabled:opacity-60'
+                                className='rounded-xl border px-3 py-2 text-sm font-semibold disabled:opacity-60'
                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                             >
                                 Prev
@@ -623,7 +623,7 @@ const AdminSolutionGenerator = () => {
                                 type='button'
                                 onClick={() => canMoveNext && setBatchIndex((prev) => prev + 1)}
                                 disabled={!canMoveNext}
-                                className='rounded-md border px-3 py-2 text-sm font-semibold disabled:opacity-60'
+                                className='rounded-xl border px-3 py-2 text-sm font-semibold disabled:opacity-60'
                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                             >
                                 Next
@@ -632,7 +632,7 @@ const AdminSolutionGenerator = () => {
                             <button
                                 type='button'
                                 onClick={() => markBatchDone(batchIndex, !doneBatchSet.has(batchIndex))}
-                                className='rounded-md border px-3 py-2 text-sm font-semibold'
+                                className='rounded-xl border px-3 py-2 text-sm font-semibold'
                                 style={{ borderColor: doneBatchSet.has(batchIndex) ? 'var(--secondary-color)' : 'var(--mid-main-secondary)' }}
                             >
                                 {doneBatchSet.has(batchIndex) ? 'Marked Done' : 'Mark Done'}
@@ -647,7 +647,7 @@ const AdminSolutionGenerator = () => {
                         <textarea
                             readOnly
                             value={currentBatch.prompt_text}
-                            className='pt-3 min-h-72 w-full rounded-md border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
+                            className='pt-3 min-h-72 w-full rounded-xl border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
                             style={{ borderColor: 'var(--mid-main-secondary)' }}
                         />
 
@@ -657,7 +657,7 @@ const AdminSolutionGenerator = () => {
                                 value={currentRunProgress.note || ''}
                                 onChange={(event) => setRunNote(event.target.value)}
                                 placeholder='Example: Completed page 1-16 today, continue from batch 9 tomorrow.'
-                                className='min-h-24 w-full rounded-md border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
+                                className='min-h-24 w-full rounded-xl border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                             />
                         </div>

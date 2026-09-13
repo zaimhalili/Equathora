@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     padding: clamp(1.5rem, 4vw, 3rem);
-    border-radius: 24px;
+    border-radius: 12px;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
     color: white;
 
@@ -41,7 +41,7 @@
 
 .stat-card {
     padding: clamp(1rem, 3vw, 1.5rem);
-    border-radius: 24px;
+    border-radius: 12px;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
     background-color: rgba(0, 0, 0, 0.1);
     transition:
@@ -89,7 +89,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: clamp(1rem, 4vw, 2rem);
-    border-radius: 24px;
+    border-radius: 12px;
     padding: clamp(1rem, 2vw, 2rem);
 
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
@@ -113,7 +113,7 @@
 .difficulty-item {
     background-color: rgba(255, 255, 255, 0.05);
     padding: clamp(1rem, 3vw, 1.5rem);
-    border-radius: 24px;
+    border-radius: 12px;
     text-align: center;
     transition: all 0.3s ease;
     border: 2px solid var(--difficulty-border, rgba(255, 255, 255, 0.15));
@@ -158,7 +158,7 @@
 
 .activity-section {
     padding: clamp(1rem, 2vw, 2rem);
-    border-radius: 24px;
+    border-radius: 12px;
     overflow: hidden;
 }
 
@@ -189,14 +189,14 @@
 .progress-section {
     background-color: rgba(0, 0, 0, 0.1);
     padding: clamp(1rem, 2vw, 1.5rem);
-    border-radius: 24px;
+    border-radius: 12px;
 }
 
 progress.progress-bar {
     width: 100%;
     height: clamp(16px, 3vw, 24px);
     border: none;
-    border-radius: 6px;
+    border-radius: 12px;
     overflow: hidden;
     appearance: none;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -204,18 +204,18 @@ progress.progress-bar {
 
 progress.progress-bar::-webkit-progress-bar {
     background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 6px;
+    border-radius: 12px;
 }
 
 progress.progress-bar::-webkit-progress-value {
     background: linear-gradient(90deg, var(--accent-color) 0%, var(--dark-accent-color) 100%);
-    border-radius: 6px;
+    border-radius: 12px;
     transition: width 0.5s ease;
 }
 
 progress.progress-bar::-moz-progress-bar {
     background: linear-gradient(90deg, var(--accent-color) 0%, var(--dark-accent-color) 100%);
-    border-radius: 6px;
+    border-radius: 12px;
     transition: width 0.5s ease;
 }
 
@@ -228,7 +228,7 @@ progress.progress-bar::-moz-progress-bar {
 .topics-section {
     background-color: rgba(0, 0, 0, 0.1);
     padding: clamp(1rem, 2vw, 1.5rem);
-    border-radius: 24px;
+    border-radius: 12px;
 }
 
 .topics-section h3 {

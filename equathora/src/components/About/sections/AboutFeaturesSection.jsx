@@ -17,14 +17,14 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="left" delay={0} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ scale: 1.02 }}
-                            className="group relative bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-md overflow-hidden shadow-2xl cursor-pointer flex flex-col justify-between p-8 h-full theme-lock"
+                            className="group relative bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-xl overflow-hidden shadow-2xl cursor-pointer flex flex-col justify-between p-8 h-full theme-lock"
                         >
                             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10"></div>
                             <div className="relative z-10 flex flex-col justify-between h-full">
                                 <motion.div
                                     whileHover={{ rotate: 360, scale: 1.2 }}
                                     transition={{ type: 'spring', stiffness: 300, duration: 0.8 }}
-                                    className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/20 backdrop-blur-sm rounded-md"
+                                    className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/20 backdrop-blur-sm rounded-xl"
                                 >
                                     <FaCode className="text-white text-3xl" />
                                 </motion.div>
@@ -41,12 +41,12 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="up" delay={0.1} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ y: -8 }}
-                            className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                            className="group bg-[var(--white)] rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                         >
                             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--accent-color)]/10 to-transparent rounded-bl-full"></div>
                             <motion.div
                                 whileHover={{ scale: 1.1, rotate: 12 }}
-                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-md relative z-10"
+                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-xl relative z-10"
                             >
                                 <FaBrain className="text-white text-3xl" />
                             </motion.div>
@@ -60,13 +60,13 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="right" delay={0.15} className="w-full md:w-[calc(33.333%-0.67rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ scale: 1.05 }}
-                            className="group bg-gradient-to-br from-yellow-400 to-orange-500 rounded-md shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
+                            className="group bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
                         >
                             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
                             <motion.div
                                 whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
                                 transition={{ duration: 0.5 }}
-                                className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-md relative z-10"
+                                className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-xl relative z-10"
                             >
                                 <FaRocket className="text-white text-3xl" />
                             </motion.div>
@@ -80,13 +80,13 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="left" delay={0.2} className="w-full md:w-[calc(33.333%-0.67rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ scale: 1.02 }}
-                            className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
+                            className="group bg-[var(--white)] rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
                         >
                             <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full group-hover:scale-125 transition-transform duration-500"></div>
                             <motion.div
                                 whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
                                 transition={{ duration: 0.5 }}
-                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-md relative z-10 shadow-lg"
+                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl relative z-10 shadow-lg"
                             >
                                 <FaGraduationCap className="text-white text-3xl" />
                             </motion.div>
@@ -101,13 +101,13 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="right" delay={0.3} className="flex-1">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
-                                className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-[var(--white)] rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 group-hover:from-green-500/10 group-hover:to-emerald-500/10 transition-all duration-300"></div>
                                 <motion.div
                                     whileHover={{ rotate: 360, scale: 1.2 }}
                                     transition={{ duration: 0.6 }}
-                                    className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-md relative z-10 shadow-md"
+                                    className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl relative z-10 shadow-md"
                                 >
                                     <FaTrophy className="text-white text-3xl" />
                                 </motion.div>
@@ -121,12 +121,12 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="left" delay={0.35} className="flex-1">
                             <motion.div
                                 whileHover={{ y: -8 }}
-                                className="group bg-gradient-to-br from-indigo-500 to-purple-500 rounded-md shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
+                                className="group bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
                             >
                                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-[var(--white)]/20 rounded-full blur-2xl"></div>
                                 <motion.div
                                     whileHover={{ scale: 1.15, rotate: 15 }}
-                                    className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-md relative z-10"
+                                    className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-xl relative z-10"
                                 >
                                     <FaChartLine className="text-white text-3xl" />
                                 </motion.div>
@@ -141,12 +141,12 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="up" delay={0.25} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ y: -8 }}
-                            className="group bg-gradient-to-br from-blue-600 to-cyan-500 rounded-md shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
+                            className="group bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
                         >
                             <div className="absolute top-0 right-0 text-[var(--white)]/10 text-[200px] font-black">AI</div>
                             <motion.div
                                 whileHover={{ scale: 1.15, rotate: -12 }}
-                                className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-md relative z-10"
+                                className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-xl relative z-10"
                             >
                                 <FaBrain className="text-white text-3xl" />
                             </motion.div>
@@ -161,12 +161,12 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="up" delay={0.4} className="flex-1">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
-                                className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-[var(--white)] rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-orange-500/10 to-transparent rounded-tl-full"></div>
                                 <motion.div
                                     whileHover={{ scale: 1.2, rotate: -15 }}
-                                    className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-md relative z-10 shadow-md"
+                                    className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl relative z-10 shadow-md"
                                 >
                                     <FaFire className="text-white text-3xl" />
                                 </motion.div>
@@ -180,13 +180,13 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="right" delay={0.45} className="flex-1">
                             <motion.div
                                 whileHover={{ y: -8 }}
-                                className="group bg-[var(--white)] rounded-md shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-[var(--white)] rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 group-hover:from-blue-500/10 group-hover:to-cyan-500/10 transition-all duration-300"></div>
                                 <motion.div
                                     whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
                                     transition={{ duration: 0.5 }}
-                                    className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-md relative z-10 shadow-md"
+                                    className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl relative z-10 shadow-md"
                                 >
                                     <FaLightbulb className="text-white text-3xl" />
                                 </motion.div>

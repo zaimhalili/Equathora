@@ -111,7 +111,7 @@ const HelpCenter = () => {
                             {/* Left: Content */}
                             <div className="flex-1 flex flex-col gap-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 rounded-md bg-[var(--white)]/15 flex items-center justify-center text-xl">
+                                    <div className="w-12 h-12 rounded-xl bg-[var(--white)]/15 flex items-center justify-center text-xl">
                                         <FaQuestionCircle />
                                     </div>
                                     <h1 className="text-4xl font-bold text-[var(--white)] ">
@@ -144,11 +144,11 @@ const HelpCenter = () => {
                             {quickLinks.map((link, index) => (
                                 <div
                                     key={index}
-                                    className="relative bg-[var(--white)] rounded-md p-4 flex flex-col gap-2 shadow-sm hover:shadow-lg transition-all duration-200 group overflow-hidden border border-gray-100"
+                                    className="relative bg-[var(--white)] rounded-xl p-4 flex flex-col gap-2 shadow-sm hover:shadow-lg transition-all duration-200 group overflow-hidden border border-gray-100"
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-5 group-hover:opacity-10 transition-opacity duration-200`}></div>
                                     <div className="relative">
-                                        <div className={`w-11 h-11 rounded-md bg-gradient-to-br ${link.color} flex items-center justify-center text-white shadow-md`}>
+                                        <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${link.color} flex items-center justify-center text-white shadow-md`}>
                                             {link.icon}
                                         </div>
                                         <h3 className="text-lg font-bold text-[var(--secondary-color)]">{link.title}</h3>
@@ -163,7 +163,7 @@ const HelpCenter = () => {
                 {/* Fun Stats Banner */}
                 <section className="w-full flex justify-center theme-lock">
                     <div className="px-[4vw] xl:px-[6vw] py-4 max-w-[1500px] w-full">
-                        <div className="w-full bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] rounded-md p-6 flex flex-wrap justify-around items-center gap-4 text-[var(--white)] shadow-sm">
+                        <div className="w-full bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] rounded-xl p-6 flex flex-wrap justify-around items-center gap-4 text-[var(--white)] shadow-sm">
                             <div className="flex flex-col items-center gap-1">
                                 <div className="flex items-center gap-2">
                                     <FaComments className="text-xl" />
@@ -203,7 +203,7 @@ const HelpCenter = () => {
                             {faqs.map((faq, index) => (
                                 <div
                                     key={index}
-                                    className="bg-[var(--white)] rounded-md shadow-sm border border-gray-100 overflow-hidden"
+                                    className="bg-[var(--white)] rounded-xl shadow-sm border border-gray-100 overflow-hidden"
                                 >
                                     <button
                                         className="w-full p-4 flex items-start gap-3 text-left cursor-pointer"
@@ -241,7 +241,7 @@ const HelpCenter = () => {
                 {/* Contact Section with Illustration */}
                 <section className="w-full flex justify-center theme-lock">
                     <div className="px-[4vw] xl:px-[6vw] py-8 max-w-[1500px] w-full">
-                        <div className="w-full bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] rounded-md overflow-hidden shadow-sm">
+                        <div className="w-full bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] rounded-xl overflow-hidden shadow-sm">
                             <div className="flex flex-col lg:flex-row items-center">
                                 <div className="flex-1 p-8 flex flex-col gap-4 text-[var(--white)]">
                                     <div className="flex items-center gap-2">
@@ -253,7 +253,7 @@ const HelpCenter = () => {
                                     </p>
                                     <a
                                         href="mailto:equathora@gmail.com"
-                                        className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--main-color)] !text-[var(--accent-color)] rounded-md font-bold text-base no-underline w-fit hover:bg-gray-200 transition-colors"
+                                        className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--main-color)] !text-[var(--accent-color)] rounded-xl font-bold text-base no-underline w-fit hover:bg-gray-200 transition-colors"
                                     >
                                         <span>Contact Support</span>
                                         <FaArrowRight className="text-sm" />

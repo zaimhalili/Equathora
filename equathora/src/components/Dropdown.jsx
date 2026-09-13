@@ -54,7 +54,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             <img
                                 src={item.image}
                                 alt={item.text}
-                                className={item.isAvatar ? 'h-[30px] w-[30px] rounded-md object-cover' : 'h-[50px] w-[50px]'}
+                                className={item.isAvatar ? 'h-[30px] w-[30px] rounded-xl object-cover' : 'h-[50px] w-[50px]'}
                             />
                             <div className="flex flex-col justify-center ">
                                 <h4 className='text-[1.1rem] font-medium'>{item.text}</h4>

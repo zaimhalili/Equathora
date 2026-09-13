@@ -372,7 +372,7 @@ const Journey = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ duration: 0.6 }}
                                         >
-                                            <h2 className="text-3xl font-bold rounded-md flex items-center justify-center">
+                                            <h2 className="text-3xl font-bold rounded-xl flex items-center justify-center">
                                                 {subject}
                                             </h2>
 
@@ -409,7 +409,7 @@ const Journey = () => {
                                         // Handled in hook
                                     }
                                 }}
-                                className="py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full text-center max-w-fit px-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white rounded-xl transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full text-center max-w-fit px-6 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isResetting ? 'Resetting...' : 'Retake Skill Assessment'}
                             </button>

@@ -92,7 +92,7 @@ const AdminEmailBriefs = () => {
 
     return (
         <section className='flex flex-col gap-6 px-3 py-2 text-[var(--secondary-color)] md:px-5'>
-            <header className='rounded-md border p-5' style={{ borderColor: 'var(--mid-main-secondary)', background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))' }}>
+            <header className='rounded-xl border p-5' style={{ borderColor: 'var(--mid-main-secondary)', background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))' }}>
                 <div className='flex flex-wrap items-start justify-between gap-3'>
                     <div>
                         <h1 className='text-2xl font-black md:text-3xl'>Email Briefs Waitlist</h1>
@@ -104,7 +104,7 @@ const AdminEmailBriefs = () => {
                             type='button'
                             onClick={load}
                             disabled={loading}
-                            className='inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold transition disabled:opacity-70'
+                            className='inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold transition disabled:opacity-70'
                             style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                         >
                             <FiRefreshCw className={loading ? 'animate-spin' : ''} />
@@ -114,7 +114,7 @@ const AdminEmailBriefs = () => {
                             type='button'
                             onClick={exportCsv}
                             disabled={!filteredRows.length}
-                            className='inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-semibold transition disabled:opacity-70'
+                            className='inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold transition disabled:opacity-70'
                             style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}
                         >
                             <FiDownload />
@@ -125,23 +125,23 @@ const AdminEmailBriefs = () => {
             </header>
 
             <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
-                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Filtered Subscribers</p>
                     <p className='pt-2 text-3xl font-black'>{filteredRows.length.toLocaleString()}</p>
                 </article>
-                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Unique Emails</p>
                     <p className='pt-2 text-3xl font-black'>{uniqueEmails.length.toLocaleString()}</p>
                 </article>
-                <article className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                     <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Ready For BCC</p>
                     <p className='pt-2 text-3xl font-black'>{uniqueEmails.length ? 'Yes' : 'No'}</p>
                 </article>
             </div>
 
-            <div className='rounded-md border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex flex-wrap items-center justify-between gap-3'>
-                    <label className='inline-flex min-w-[260px] flex-1 items-center gap-2 rounded-md border px-3 py-2' style={{ borderColor: 'var(--mid-main-secondary)' }}>
+                    <label className='inline-flex min-w-[260px] flex-1 items-center gap-2 rounded-xl border px-3 py-2' style={{ borderColor: 'var(--mid-main-secondary)' }}>
                         <FiSearch />
                         <input
                             value={search}
@@ -156,7 +156,7 @@ const AdminEmailBriefs = () => {
                         type='button'
                         onClick={copyBcc}
                         disabled={!uniqueEmails.length}
-                        className='inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-[var(--main-color)] transition disabled:opacity-70'
+                        className='inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-[var(--main-color)] transition disabled:opacity-70'
                         style={{ background: 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' }}
                     >
                         <FiCopy />
@@ -175,13 +175,13 @@ const AdminEmailBriefs = () => {
                     <textarea
                         readOnly
                         value={bccString}
-                        className='min-h-24 w-full rounded-md border p-3 text-xs md:text-sm'
+                        className='min-h-24 w-full rounded-xl border p-3 text-xs md:text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--french-gray)' }}
                     />
                 </div>
             </div>
 
-            <div className='rounded-md border' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
+            <div className='rounded-xl border' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex items-center gap-2 border-b px-4 py-3' style={{ borderColor: 'var(--french-gray)' }}>
                     <FiUsers />
                     <h2 className='font-bold'>Subscriber List</h2>
@@ -220,7 +220,7 @@ const AdminEmailBriefs = () => {
                                                     const mailtoLink = `mailto:${encodeURIComponent(row.email)}?subject=${encodeURIComponent(DEFAULT_EMAIL_SUBJECT)}&body=${encodeURIComponent(getDefaultEmailBody(row.name))}`;
                                                     window.open(mailtoLink, '_blank', 'noopener,noreferrer');
                                                 }}
-                                                className='inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-semibold hover:opacity-80 transition'
+                                                className='inline-flex items-center gap-1 rounded-xl border px-2 py-1 text-xs font-semibold hover:opacity-80 transition'
                                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                                             >
                                                 <FiMail />

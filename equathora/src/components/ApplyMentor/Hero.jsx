@@ -55,7 +55,7 @@ const Hero = ({ onOpenBriefsModal }) => {
                                 <button
                                     type='button'
                                     onClick={onOpenBriefsModal}
-                                    className='group relative bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-3 rounded-md !font-bold text-sm md:text-base overflow-hidden transition-all flex items-center justify-center gap-2 no-underline shadow-lg hover:shadow-xl w-full sm:w-auto'
+                                    className='group relative bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-3 rounded-xl !font-bold text-sm md:text-base overflow-hidden transition-all flex items-center justify-center gap-2 no-underline shadow-lg hover:shadow-xl w-full sm:w-auto'
                                 >
                                     <FaUsers />
                                     <span className='relative z-10'>Join 50+ Educators</span>

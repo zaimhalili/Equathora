@@ -72,7 +72,7 @@ const PLAN_LABELS = {
 const SectionCard = ({ children, id }) => (
     <section
         id={id}
-        className="bg-[var(--white)] rounded-md w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] scroll-mt-24"
+        className="bg-[var(--white)] rounded-xl w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] scroll-mt-24"
     >
         {children}
     </section>
@@ -80,7 +80,7 @@ const SectionCard = ({ children, id }) => (
 
 const SectionTitle = ({ children, sub }) => (
     <div className="flex flex-col gap-1">
-        <h2 className=" font-bold text-xl lg:text-2xl text-[var(--secondary-color)]">
+        <h2 className=" font-medium text-xl lg:text-2xl text-[var(--secondary-color)]">
             {children}
         </h2>
         {sub && <p className="text-sm text-[var(--mid-main-secondary)]">{sub}</p>}
@@ -93,7 +93,7 @@ const InputField = ({ label, description, ...props }) => (
         {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
         <input
             {...props}
-            className="text-lg font-black border rounded-md px-4 py-3 w-full border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all "
+            className="text-lg font-black border rounded-xl px-4 py-3 w-full border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all "
         />
     </div>
 );
@@ -132,7 +132,7 @@ const PrimaryButton = ({ children, onClick, disabled, loading, className = '', t
         title={title}
         onClick={onClick}
         disabled={disabled || loading}
-        className={`cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-bold text-sm rounded-md hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
+        className={`cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-medium text-sm rounded-xl hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
     >
         {loading && <Spinner />}
         {children}
@@ -144,7 +144,7 @@ const OutlineButton = ({ children, onClick, disabled, className = '' }) => (
         type="button"
         onClick={onClick}
         disabled={disabled}
-        className={`cursor-pointer py-2.5 px-5 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold text-sm rounded-md hover:bg-[var(--main-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+        className={`cursor-pointer py-2.5 px-5 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold text-sm rounded-xl hover:bg-[var(--main-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
     >
         {children}
     </button>
@@ -156,7 +156,7 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
         onClick={onClick}
         disabled={disabled || loading}
         title={title}
-        className="cursor-pointer py-2.5 px-5 bg-[var(--dark-accent-color)] text-white font-bold text-sm rounded-md hover:bg-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="cursor-pointer py-2.5 px-5 bg-[var(--dark-accent-color)] text-white font-medium text-sm rounded-xl hover:bg-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
     >
         {loading && <Spinner />}
         {children}
@@ -191,7 +191,7 @@ const Toast = ({ toast }) => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 12, scale: 0.96 }}
                         transition={{ duration: 0.18 }}
-                        className={`pointer-events-auto w-full sm:w-auto sm:max-w-sm text-white text-sm font-semibold px-4 py-3 rounded-md shadow-xl  ${palette[toast.type] || palette.success}`}
+                        className={`pointer-events-auto w-full sm:w-auto sm:max-w-sm text-white text-sm font-semibold px-4 py-3 rounded-xl shadow-xl  ${palette[toast.type] || palette.success}`}
                     >
                         {toast.message}
                     </motion.div>
@@ -244,13 +244,13 @@ const ConfirmModal = ({
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative bg-[var(--white)] rounded-md shadow-2xl max-w-md w-full p-6 flex flex-col gap-4 "
+                    className="relative bg-[var(--white)] rounded-xl shadow-2xl max-w-md w-full p-6 flex flex-col gap-4 "
                 >
                     <div className="flex items-start justify-between gap-4">
-                        <h2 className="text-xl font-bold text-[var(--secondary-color)]">{title}</h2>
+                        <h2 className="text-xl font-medium text-[var(--secondary-color)]">{title}</h2>
                         <button
                             onClick={() => !loading && onClose()}
-                            className="text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] p-1 rounded-md cursor-pointer transition-colors shrink-0"
+                            className="text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] p-1 rounded-xl cursor-pointer transition-colors shrink-0"
                             aria-label="Close"
                         >
                             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -271,7 +271,7 @@ const ConfirmModal = ({
                                 onChange={e => setTyped(e.target.value)}
                                 placeholder={confirmWord}
                                 autoFocus
-                                className="px-4 py-2.5 border rounded-md border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                                className="px-4 py-2.5 border rounded-xl border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                             />
                         </div>
                     )}
@@ -284,7 +284,7 @@ const ConfirmModal = ({
                             type="button"
                             onClick={onConfirm}
                             disabled={!canConfirm || loading}
-                            className={`flex-1 px-5 py-2.5 text-white font-bold text-sm rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer ${confirmColor}`}
+                            className={`flex-1 px-5 py-2.5 text-white font-medium text-sm rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer ${confirmColor}`}
                         >
                             {loading && <Spinner />}
                             {confirmLabel}
@@ -873,20 +873,20 @@ const Settings = () => {
             <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-[var(--secondary-color)] ">
                 {/* Header */}
                 <div className="flex flex-col items-center w-full gap-2 px-4 pt-8 pb-4">
-                    <h1 className="text-4xl font-bold">Settings</h1>
+                    <h1 className="text-4xl font-medium">Settings</h1>
                     <p className="text-md text-[var(--secondary-color)] text-center md:text-left">Manage your account, security, and preferences</p>
                 </div>
 
                 {/* Content wrapper */}
                 <div className="w-full flex flex-col lg:flex-row gap-6 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-[1500px] self-center flex-1">
                     {/* Sidebar (desktop) */}
-                    <nav className="hidden lg:flex flex-col w-56 shrink-0 sticky top-24 self-start bg-[var(--white)] rounded-md">
+                    <nav className="hidden lg:flex flex-col w-56 shrink-0 sticky top-24 self-start bg-[var(--white)] rounded-xl">
                         {sidebarSections.map(section => (
                             <button
                                 key={section.id}
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
-                                className={`flex items-center gap-3 rounded-md px-4 py-3 text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
                                     ? 'bg-[var(--accent-color)] text-white'
                                     : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
                                     }`}
@@ -916,7 +916,7 @@ const Settings = () => {
                     </div>
 
                     {/* Main sections */}
-                    <div className="flex flex-col gap-6 flex-1 min-w-0 rounded-md">
+                    <div className="flex flex-col gap-6 flex-1 min-w-0 rounded-xl">
 
                         {/* ============================================================ */}
                         {/* PROFILE (read-only summary - editing happens on the public   */}
@@ -925,10 +925,10 @@ const Settings = () => {
                         <SectionCard id="profile">
                             <SectionTitle sub="Your public identity on Equathora">Profile</SectionTitle>
 
-                            <div className="flex items-center justify-between gap-4 flex-wrap bg-[var(--main-color)] rounded-md px-4 py-4">
+                            <div className="flex items-center justify-between gap-4 flex-wrap bg-[var(--main-color)] rounded-xl px-4 py-4">
                                 <div className="flex flex-col gap-1 min-w-0">
                                     <div className="flex items-center gap-2 flex-wrap">
-                                        <span className="text-lg font-bold truncate">{profileSummary.full_name || 'Unnamed'}</span>
+                                        <span className="text-lg font-medium truncate">{profileSummary.full_name || 'Unnamed'}</span>
                                         <Chip>{profileSummary.role === 'admin' ? 'Admin' : 'Student'}</Chip>
                                     </div>
                                     <span className="text-sm text-[var(--mid-main-secondary)]">@{profileSummary.username || 'no-username'}</span>
@@ -950,9 +950,9 @@ const Settings = () => {
                         <SectionCard id="account">
                             <SectionTitle sub="Manage your email, password, and security settings">Account & Security</SectionTitle>
 
-                            <div className="flex flex-col gap-1 bg-[var(--main-color)] rounded-md px-4 py-3">
+                            <div className="flex flex-col gap-1 bg-[var(--main-color)] rounded-xl px-4 py-3">
                                 <span className="text-xs font-semibold text-[var(--mid-main-secondary)]">Current email</span>
-                                <span className="text-sm font-bold">{currentEmail}</span>
+                                <span className="text-sm font-medium">{currentEmail}</span>
                                 {authProvider !== 'email' && (
                                     <span className="text-xs text-[var(--mid-main-secondary)] font-semibold">
                                         Signed in via {authProvider === 'google' ? 'Google' : authProvider}
@@ -962,7 +962,7 @@ const Settings = () => {
 
                             {authProvider === 'email' && (
                                 <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
-                                    <h3 className="text-base font-bold">Change Email</h3>
+                                    <h3 className="text-base font-medium">Change Email</h3>
                                     <InputField
                                         label="New Email Address"
                                         type="email"
@@ -978,7 +978,7 @@ const Settings = () => {
 
                             {authProvider === 'email' && (
                                 <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
-                                    <h3 className="text-base font-bold">Change Password</h3>
+                                    <h3 className="text-base font-medium">Change Password</h3>
                                     <p className="text-xs text-[var(--mid-main-secondary)]">
                                         Minimum 8 characters with uppercase, lowercase, and a number.
                                     </p>
@@ -1048,7 +1048,7 @@ const Settings = () => {
                                             // Handled in hook
                                         }
                                     }}
-                                    className="py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full text-center max-w-fit px-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-medium !text-white rounded-xl transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full text-center max-w-fit px-6 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isResetting ? 'Resetting...' : 'Retake Skill Assessment'}
                                 </button>
@@ -1115,7 +1115,7 @@ const Settings = () => {
                                         />
                                     </div>
 
-                                    <div className="border-t border-[var(--mid-main-secondary)] pt-3 text-sm font-bold">
+                                    <div className="border-t border-[var(--mid-main-secondary)] pt-3 text-sm font-medium">
                                         If you are subscribed and want to unsubscribe from <i>Equathora Briefs / Email Notifications</i> contact us at <strong><u>equathora@gmail.com</u></strong>
                                         {/* <ToggleSwitch
                                             label="Email Notifications"
@@ -1143,7 +1143,7 @@ const Settings = () => {
                                             type="button"
                                             onClick={() => handleSettingChange('theme', opt.value)}
                                             aria-pressed={settings.theme === opt.value}
-                                            className={`flex items-center gap-2 px-4 py-2.5 rounded-md border-2 text-sm font-semibold transition-all cursor-pointer ${settings.theme === opt.value
+                                            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${settings.theme === opt.value
                                                 ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
                                                 : 'border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
                                                 }`}
@@ -1196,7 +1196,7 @@ const Settings = () => {
                             </div>
 
                             <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
-                                <h3 className="text-base font-bold">Data & Cookies</h3>
+                                <h3 className="text-base font-medium">Data & Cookies</h3>
                                 <p className="text-xs text-[var(--mid-main-secondary)]">
                                     We use essential cookies for authentication and localStorage for offline progress tracking.
                                     Optional cookies are used for analytics and personalization.
@@ -1241,11 +1241,11 @@ const Settings = () => {
                         <SectionCard id="subscription">
                             <SectionTitle sub="Manage your Equathora plan">Subscription</SectionTitle>
 
-                            <div className="flex items-center justify-between gap-4 flex-wrap bg-[var(--main-color)] rounded-md px-4 py-4">
+                            <div className="flex items-center justify-between gap-4 flex-wrap bg-[var(--main-color)] rounded-xl px-4 py-4">
                                 <div className="flex flex-col gap-1">
                                     <span className="text-xs font-semibold text-[var(--mid-main-secondary)] uppercase tracking-wide">Current plan</span>
                                     <div className="flex items-center gap-2">
-                                        <span className="text-lg font-bold">{premium ? 'Premium' : 'Free'}</span>
+                                        <span className="text-lg font-medium">{premium ? 'Premium' : 'Free'}</span>
                                     </div>
                                     {subscription.tier !== 'free' && subscription.renewsAt && (
                                         <span className="text-xs text-[var(--mid-main-secondary)]">
@@ -1262,7 +1262,7 @@ const Settings = () => {
                             <p className="text-xs text-[var(--mid-main-secondary)]">
                                 Premium unlocks AI step-by-step checking, detailed explanations, and solution verification.
                             </p>
-                            <p className='text-xs text-[var(--mid-main-secondary)]'>For any issues contact us at: <a href="mailto:equathora@gmail.com" className='font-bold hover:underline'>equathora@gmail.com</a></p>
+                            <p className='text-xs text-[var(--mid-main-secondary)]'>For any issues contact us at: <a href="mailto:equathora@gmail.com" className='font-medium hover:underline'>equathora@gmail.com</a></p>
                         </SectionCard>
 
                         {/* ============================================================ */}
@@ -1273,7 +1273,7 @@ const Settings = () => {
 
                             {currentSession ? (
                                 <div className="flex flex-col gap-3">
-                                    <div className="flex items-start gap-4 bg-[var(--main-color)] rounded-md px-4 py-4">
+                                    <div className="flex items-start gap-4 bg-[var(--main-color)] rounded-xl px-4 py-4">
                                         <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full shrink-0">
                                             <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1281,7 +1281,7 @@ const Settings = () => {
                                         </div>
                                         <div className="flex flex-col flex-1 min-w-0 gap-1">
                                             <div className="flex items-center gap-2">
-                                                <span className="text-sm font-bold">Current Session</span>
+                                                <span className="text-sm font-medium">Current Session</span>
                                                 <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Active</span>
                                             </div>
                                             <span className="text-xs text-[var(--mid-main-secondary)] truncate">
@@ -1297,33 +1297,33 @@ const Settings = () => {
                                 <p className="text-sm text-[var(--mid-main-secondary)]">Unable to load session information.</p>
                             )}
 
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 rounded">
                                 <PrimaryButton onClick={handleSignOutOthers} loading={sessionLoading}>
-                                    Sign Out Other Sessions
+                                    Sign out of all sessions
                                 </PrimaryButton>
                             </div>
 
                             <div className="flex flex-col gap-2 pt-4 border-t border-gray-100">
-                                <h3 className="text-base font-bold">Security Tips</h3>
+                                <h3 className="text-base font-medium">Security Tips</h3>
                                 <ul className="text-xs text-[var(--mid-main-secondary)] flex flex-col gap-1.5">
                                     <li className="flex items-start gap-2">
-                                        <span className="text-[var(--accent-color)] font-bold shrink-0">•</span>
+                                        <span className="text-[var(--accent-color)] font-medium shrink-0">•</span>
                                         Use a strong, unique password for your Equathora account
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-[var(--accent-color)] font-bold shrink-0">•</span>
+                                        <span className="text-[var(--accent-color)] font-medium shrink-0">•</span>
                                         Sign out from shared or public devices after each session
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-[var(--accent-color)] font-bold shrink-0">•</span>
+                                        <span className="text-[var(--accent-color)] font-medium shrink-0">•</span>
                                         Regularly review your active sessions and revoke unknown ones
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-[var(--accent-color)] font-bold shrink-0">•</span>
+                                        <span className="text-[var(--accent-color)] font-medium shrink-0">•</span>
                                         Never share your password with anyone, including mentors
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-[var(--accent-color)] font-bold shrink-0">•</span>
+                                        <span className="text-[var(--accent-color)] font-medium shrink-0">•</span>
                                         If you suspect unauthorized access, change your password immediately
                                     </li>
                                 </ul>
@@ -1338,8 +1338,8 @@ const Settings = () => {
 
                             {/* Delete Account / Cancel scheduled deletion */}
                             {profileSummary.deletionRequested ? (
-                                <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-md bg-red-50">
-                                    <h3 className="text-base font-bold text-red-800">Account Deletion Scheduled</h3>
+                                <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-xl bg-red-50">
+                                    <h3 className="text-base font-medium text-red-800">Account Deletion Scheduled</h3>
                                     <p className="text-sm text-[var(--dark-accent-color)]">
                                         You requested to delete your account
                                         {profileSummary.deletionRequestedAt
@@ -1351,8 +1351,8 @@ const Settings = () => {
                                     </DangerButton>
                                 </div>
                             ) : (
-                                <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-md bg-red-50">
-                                    <h3 className="text-base font-bold text-red-800">Delete Account</h3>
+                                <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-xl bg-red-50">
+                                    <h3 className="text-base font-medium text-red-800">Delete Account</h3>
                                     <p className="text-sm text-red-700">
                                         This will permanently remove your account and all associated data.
                                         You will be signed out immediately and your data will be deleted within 30 days.

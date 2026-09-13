@@ -281,7 +281,7 @@ const AdminUserManagement = () => {
     return (
         <section className='flex flex-col gap-6 px-3 py-2 md:px-5' style={{ color: palette.secondary }}>
             <header
-                className='rounded-md border p-5'
+                className='rounded-xl border p-5'
                 style={{
                     borderColor: palette.mid,
                     background: `linear-gradient(135deg, ${palette.main}, ${palette.french})`
@@ -302,7 +302,7 @@ const AdminUserManagement = () => {
                                 setRange('week');
                                 setWeekIndex(0);
                             }}
-                            className='rounded-md border px-3 py-1.5 text-sm font-semibold transition'
+                            className='rounded-xl border px-3 py-1.5 text-sm font-semibold transition'
                             style={{
                                 borderColor: range === 'week' ? palette.accent : palette.mid,
                                 backgroundColor: range === 'week' ? palette.accent : palette.main,
@@ -314,7 +314,7 @@ const AdminUserManagement = () => {
                         <button
                             type='button'
                             onClick={() => setRange('month')}
-                            className='rounded-md border px-3 py-1.5 text-sm font-semibold transition'
+                            className='rounded-xl border px-3 py-1.5 text-sm font-semibold transition'
                             style={{
                                 borderColor: range === 'month' ? palette.accent : palette.mid,
                                 backgroundColor: range === 'month' ? palette.accent : palette.main,
@@ -328,7 +328,7 @@ const AdminUserManagement = () => {
 
                 <div className='pt-3 flex flex-wrap items-center gap-2'>
                     <span
-                        className='rounded-md px-2 py-1 text-xs font-semibold'
+                        className='rounded-xl px-2 py-1 text-xs font-semibold'
                         style={{ backgroundColor: palette.secondary, color: palette.main }}
                     >
                         {rangeLabel}
@@ -340,7 +340,7 @@ const AdminUserManagement = () => {
                                 type='button'
                                 disabled={!canGoPrevWeek}
                                 onClick={() => setWeekIndex((prev) => prev + 1)}
-                                className='rounded-md border px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
+                                className='rounded-xl border px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
                                 style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                             >
                                 Previous Week
@@ -349,7 +349,7 @@ const AdminUserManagement = () => {
                                 type='button'
                                 disabled={!canGoNextWeek}
                                 onClick={() => setWeekIndex((prev) => prev - 1)}
-                                className='rounded-md border px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
+                                className='rounded-xl border px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
                                 style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                             >
                                 Next Week
@@ -371,29 +371,29 @@ const AdminUserManagement = () => {
             </header>
 
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5'>
-                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Filtered Users</p>
                     <p className='pt-1 text-2xl font-black'>{overview.total}</p>
                 </article>
-                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Active Users</p>
                     <p className='pt-1 text-2xl font-black'>{overview.active}</p>
                 </article>
-                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Suspended Users</p>
                     <p className='pt-1 text-2xl font-black'>{overview.suspended}</p>
                 </article>
-                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Pending Mentor Verif.</p>
                     <p className='pt-1 text-2xl font-black'>{overview.pendingMentor}</p>
                 </article>
-                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Total Attempts</p>
                     <p className='pt-1 text-2xl font-black'>{overview.totalAttempts}</p>
                 </article>
             </div>
 
-            <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+            <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                 <h2 className='pb-3 text-lg font-bold'>Search and Filters</h2>
 
                 <div className='grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4'>
@@ -401,23 +401,23 @@ const AdminUserManagement = () => {
                         value={search}
                         onChange={(event) => setSearch(event.target.value)}
                         placeholder='Search by name, email, or ID...'
-                        className='rounded-md border px-3 py-2 text-sm outline-none'
+                        className='rounded-xl border px-3 py-2 text-sm outline-none'
                         style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                     />
 
-                    <select value={role} onChange={(event) => setRole(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                    <select value={role} onChange={(event) => setRole(event.target.value)} className='rounded-xl border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                         {selectOptions.roles.map((value) => <option key={value} value={value}>{value}</option>)}
                     </select>
 
-                    <select value={permission} onChange={(event) => setPermission(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                    <select value={permission} onChange={(event) => setPermission(event.target.value)} className='rounded-xl border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                         {selectOptions.permissions.map((value) => <option key={value} value={value}>{value}</option>)}
                     </select>
 
-                    <select value={status} onChange={(event) => setStatus(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                    <select value={status} onChange={(event) => setStatus(event.target.value)} className='rounded-xl border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                         {selectOptions.statuses.map((value) => <option key={value} value={value}>{value}</option>)}
                     </select>
 
-                    <select value={verification} onChange={(event) => setVerification(event.target.value)} className='rounded-md border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                    <select value={verification} onChange={(event) => setVerification(event.target.value)} className='rounded-xl border px-3 py-2 text-sm' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                         {selectOptions.verifications.map((value) => <option key={value} value={value}>{value}</option>)}
                     </select>
 
@@ -425,7 +425,7 @@ const AdminUserManagement = () => {
                         type='date'
                         value={date}
                         onChange={(event) => setDate(event.target.value)}
-                        className='rounded-md border px-3 py-2 text-sm'
+                        className='rounded-xl border px-3 py-2 text-sm'
                         style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                     />
 
@@ -439,7 +439,7 @@ const AdminUserManagement = () => {
                             setVerification('All');
                             setDate('');
                         }}
-                        className='rounded-md border px-3 py-2 text-sm font-semibold'
+                        className='rounded-xl border px-3 py-2 text-sm font-semibold'
                         style={{ borderColor: palette.accent, backgroundColor: palette.accent, color: palette.main }}
                     >
                         Reset Filters
@@ -448,10 +448,10 @@ const AdminUserManagement = () => {
             </article>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-5'>
-                <article className='rounded-md border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>User Activity and Account Events</h3>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-xl px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             {range === 'month' ? 'Last 30 days' : 'Last 7 days'}
                         </span>
                     </header>
@@ -470,10 +470,10 @@ const AdminUserManagement = () => {
                     </div>
                 </article>
 
-                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Role Distribution</h3>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-xl px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Filter-aware
                         </span>
                     </header>
@@ -510,10 +510,10 @@ const AdminUserManagement = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-3'>
-                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Daily Active Users Trend</h3>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-xl px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Engagement
                         </span>
                     </header>
@@ -530,7 +530,7 @@ const AdminUserManagement = () => {
                     </div>
                 </article>
 
-                <article className='rounded-md border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <h3 className='pb-3 text-sm font-semibold md:text-base'>Action Queue Snapshot</h3>
                     <div className='space-y-2'>
                         <div className='rounded-lg border p-3' style={{ borderColor: palette.french }}>
@@ -550,10 +550,10 @@ const AdminUserManagement = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-3'>
-                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between gap-2'>
                         <h2 className='text-lg font-bold'>Users Table</h2>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-xl px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             {filteredUsers.length} users
                         </span>
                     </header>
@@ -589,12 +589,12 @@ const AdminUserManagement = () => {
                                         <td className='py-2 pr-4'>{row.role}</td>
                                         <td className='py-2 pr-4'>{row.permission}</td>
                                         <td className='py-2 pr-4'>
-                                            <span className='rounded-md px-2 py-1 text-xs font-semibold' style={statusBadge[row.status] || statusBadge.Active}>
+                                            <span className='rounded-xl px-2 py-1 text-xs font-semibold' style={statusBadge[row.status] || statusBadge.Active}>
                                                 {row.status}
                                             </span>
                                         </td>
                                         <td className='py-2 pr-4'>
-                                            <span className='rounded-md px-2 py-1 text-xs font-semibold' style={verificationBadge[row.mentorVerification] || verificationBadge['Not Required']}>
+                                            <span className='rounded-xl px-2 py-1 text-xs font-semibold' style={verificationBadge[row.mentorVerification] || verificationBadge['Not Required']}>
                                                 {row.mentorVerification}
                                             </span>
                                         </td>
@@ -613,7 +613,7 @@ const AdminUserManagement = () => {
                     )}
                 </article>
 
-                <article className='rounded-md border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <h3 className='pb-3 text-sm font-semibold md:text-base'>Selected Profile</h3>
 
                     {selectedUser ? (
@@ -628,17 +628,17 @@ const AdminUserManagement = () => {
 
                             <div className='space-y-2'>
                                 <label className='text-xs font-semibold' style={{ color: palette.mid }}>Role</label>
-                                <select value={roleDraft} onChange={(event) => setRoleDraft(event.target.value)} className='w-full rounded-md border px-2 py-2 text-xs font-semibold' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                                <select value={roleDraft} onChange={(event) => setRoleDraft(event.target.value)} className='w-full rounded-xl border px-2 py-2 text-xs font-semibold' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                                     {adminUserEnums.roleOptions.map((value) => <option key={value} value={value}>{value}</option>)}
                                 </select>
 
                                 <label className='text-xs font-semibold' style={{ color: palette.mid }}>Status</label>
-                                <select value={statusDraft} onChange={(event) => setStatusDraft(event.target.value)} className='w-full rounded-md border px-2 py-2 text-xs font-semibold' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                                <select value={statusDraft} onChange={(event) => setStatusDraft(event.target.value)} className='w-full rounded-xl border px-2 py-2 text-xs font-semibold' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                                     {adminUserEnums.statusOptions.map((value) => <option key={value} value={value}>{value}</option>)}
                                 </select>
 
                                 <label className='text-xs font-semibold' style={{ color: palette.mid }}>Mentor Verification</label>
-                                <select value={verificationDraft} onChange={(event) => setVerificationDraft(event.target.value)} className='w-full rounded-md border px-2 py-2 text-xs font-semibold' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                                <select value={verificationDraft} onChange={(event) => setVerificationDraft(event.target.value)} className='w-full rounded-xl border px-2 py-2 text-xs font-semibold' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                                     {adminUserEnums.verificationOptions.map((value) => <option key={value} value={value}>{value}</option>)}
                                 </select>
                             </div>
@@ -649,7 +649,7 @@ const AdminUserManagement = () => {
                                     onClick={() => {
                                         window.location.href = `/profile/${selectedUser.id}`;
                                     }}
-                                    className='rounded-md border px-2 py-2 text-xs font-semibold'
+                                    className='rounded-xl border px-2 py-2 text-xs font-semibold'
                                     style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                                 >
                                     View Profile
@@ -661,7 +661,7 @@ const AdminUserManagement = () => {
                                         () => updateAdminUserRole(selectedUser.id, roleDraft),
                                         `Change role for ${selectedUser.email} to ${roleDraft}?`
                                     )}
-                                    className='rounded-md border px-2 py-2 text-xs font-semibold disabled:opacity-60'
+                                    className='rounded-xl border px-2 py-2 text-xs font-semibold disabled:opacity-60'
                                     style={{ borderColor: palette.secondary, backgroundColor: palette.secondary, color: palette.main }}
                                 >
                                     Save Role
@@ -673,7 +673,7 @@ const AdminUserManagement = () => {
                                         () => updateAdminUserStatus({ ...selectedUser, status: statusDraft }),
                                         `Change status for ${selectedUser.email} to ${statusDraft}?`
                                     )}
-                                    className='rounded-md border px-2 py-2 text-xs font-semibold disabled:opacity-60'
+                                    className='rounded-xl border px-2 py-2 text-xs font-semibold disabled:opacity-60'
                                     style={{ borderColor: palette.accent, backgroundColor: palette.accent, color: palette.main }}
                                 >
                                     Save Status
@@ -685,7 +685,7 @@ const AdminUserManagement = () => {
                                         () => updateAdminMentorVerification(selectedUser.id, verificationDraft),
                                         `Set mentor verification for ${selectedUser.email} to ${verificationDraft}?`
                                     )}
-                                    className='col-span-2 rounded-md border px-2 py-2 text-xs font-semibold disabled:opacity-60'
+                                    className='col-span-2 rounded-xl border px-2 py-2 text-xs font-semibold disabled:opacity-60'
                                     style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                                 >
                                     Save Verification
@@ -704,7 +704,7 @@ const AdminUserManagement = () => {
                                     type='button'
                                     disabled={actionLoading}
                                     onClick={handleProgressCounterReset}
-                                    className='mt-3 w-full rounded-md border px-2 py-2 text-xs font-semibold disabled:opacity-60'
+                                    className='mt-3 w-full rounded-xl border px-2 py-2 text-xs font-semibold disabled:opacity-60'
                                     style={{ borderColor: palette.accent, backgroundColor: palette.main, color: palette.accent }}
                                 >
                                     Reset progress counters

@@ -44,7 +44,7 @@ const StreakPopup = ({ streak, onClose }) => {
                         }}
                         className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-[var(--white)] rounded-md shadow-2xl p-8 sm:p-12 max-w-md w-[90vw] border border-[var(--mid-main-secondary)]">
+                        <div className="bg-[var(--white)] rounded-xl shadow-2xl p-8 sm:p-12 max-w-md w-[90vw] border border-[var(--mid-main-secondary)]">
                             {/* Fire icon with animation */}
                             <motion.div
                                 initial={{ scale: 0, rotate: -180 }}

@@ -78,7 +78,7 @@
     margin-bottom: 24px;
     padding: 16px;
     border: 1px solid rgba(43, 45, 66, 0.18);
-    border-radius: 24px;
+    border-radius: 12px;
     background: var(--french-gray);
     color: var(--secondary-color);
 
@@ -126,7 +126,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    border-radius: 6px;
+    border-radius: 12px;
     margin: 30px 0 30px 0;
     transition: 0.1s ease-out;
     box-shadow: 0 5px 5px 0 rgba(43, 45, 66, 0.5);

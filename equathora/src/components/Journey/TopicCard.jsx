@@ -127,9 +127,9 @@ const TopicCard = ({
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="h-4 rounded-md bg-[var(--secondary-color)]/30 overflow-hidden">
+                    <div className="h-4 rounded-xl bg-[var(--secondary-color)]/30 overflow-hidden">
                         <div
-                            className="h-full rounded-md bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))]"
+                            className="h-full rounded-xl bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))]"
                             style={{ width: `${progress}%` }}
                         />
                     </div>
@@ -260,7 +260,7 @@ const TopicCard = ({
                             </article>
 
                             {/* RIGHT */}
-                            <article className="w-full lg:w-1/2 rounded-md bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-[var(--secondary-color)]">
+                            <article className="w-full lg:w-1/2 rounded-xl bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-[var(--secondary-color)]">
 
                                 <div className="flex items-center justify-between gap-2 pb-3">
                                     <h4 className="text-xl font-bold">

@@ -9,7 +9,7 @@ const HelpModal = ({ isOpen, onClose }) => {
 
     return (
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
-            <div className='bg-[var(--white)] w-11/12 max-w-2xl rounded-md px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto custom-scrollbar' onClick={(e) => e.stopPropagation()} style={{
+            <div className='bg-[var(--white)] w-11/12 max-w-2xl rounded-xl px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto custom-scrollbar' onClick={(e) => e.stopPropagation()} style={{
                 scrollbarWidth: 'thin',
                 scrollbarColor: 'var(--accent-color) transparent'
             }}>
@@ -41,14 +41,14 @@ const HelpModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className='flex flex-col gap-5'>
-                    <div className='bg-[var(--french-gray)]/20 p-4 rounded-md'>
+                    <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl'>
                         <h3 className=' font-bold text-lg text-[var(--secondary-color)] pb-2 flex items-center gap-2'>
                             <FaFileAlt className='text-[var(--accent-color)]' /> Reading the Problem
                         </h3>
                         <p className=' text-sm text-[var(--secondary-color)] leading-relaxed'>Start by carefully reading the mathematical problem description and examples. Make sure you understand what's being asked before attempting to solve.</p>
                     </div>
 
-                    <div className='bg-[var(--french-gray)]/20 p-4 rounded-md flex flex-col gap-4'>
+                    <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl flex flex-col gap-4'>
                         <h3 className=' font-bold text-lg text-[var(--secondary-color)] pb-2 flex items-center gap-2'>
                             <FaCalculator className='text-[var(--accent-color)]' /> Entering Your Solution
                         </h3>
@@ -59,7 +59,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                             <li>Use the math toolbar to insert equations, symbols, fractions, and expressions</li>
                             <li>Delete unwanted steps using the "Trash Can" Icon button next to each step</li>
                         </ul>
-                        <div className='pt-3 p-3 bg-[var(--accent-color)]/5 border-2 border-[var(--accent-color)]/20 rounded-md flex flex-col'>
+                        <div className='pt-3 p-3 bg-[var(--accent-color)]/5 border-2 border-[var(--accent-color)]/20 rounded-xl flex flex-col'>
                             <p className=' text-sm font-bold text-[var(--secondary-color)]'>⚠️ Important:</p>
                             <p className=' text-sm text-[var(--secondary-color)] leading-relaxed pt-1'>
                                 Your <strong>final answer must be in the LAST step</strong> before submitting. The system checks your last step to determine if your solution is correct. Make sure your final answer is clear and simplified.
@@ -67,7 +67,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                         </div>
                     </div>
 
-                    <div className='bg-[var(--french-gray)]/20 p-4 rounded-md'>
+                    <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl'>
                         <h3 className=' font-bold text-lg text-[var(--secondary-color)] pb-2 flex items-center gap-2'>
                             <FaPencilAlt className='text-[var(--accent-color)]' /> Sketch Pad
                         </h3>
@@ -81,14 +81,14 @@ const HelpModal = ({ isOpen, onClose }) => {
                         </ul>
                     </div>
 
-                    <div className='bg-[var(--french-gray)]/20 p-4 rounded-md'>
+                    <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl'>
                         <h3 className=' font-bold text-lg text-[var(--secondary-color)] pb-2 flex items-center gap-2'>
                             <FaLightbulb className='text-[var(--accent-color)]' /> Using Hints
                         </h3>
                         <p className=' text-sm text-[var(--secondary-color)] leading-relaxed'>Stuck? Scroll down to find mathematical hints that can guide you without giving away the answer. Hints are revealed one at a time to help you learn.</p>
                     </div>
 
-                    <div className='bg-[var(--french-gray)]/20 p-4 rounded-md'>
+                    <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl'>
                         <h3 className=' font-bold text-lg text-[var(--secondary-color)] pb-2 flex items-center gap-2'>
                             <FaChevronRight className='text-[var(--accent-color)]' /> Navigation & Tabs
                         </h3>
@@ -101,12 +101,12 @@ const HelpModal = ({ isOpen, onClose }) => {
                         </ul>
                     </div>
 
-                    <div className='bg-[var(--main-color)] border-2 border-[var(--mid-main-secondary)] p-4 rounded-md flex flex-col'>
+                    <div className='bg-[var(--main-color)] border-2 border-[var(--mid-main-secondary)] p-4 rounded-xl flex flex-col'>
                         <h3 className=' font-bold text-lg text-[var(--secondary-color)] pb-2 flex items-center gap-2'>
                             <FaLightbulb className='text-[var(--accent-color)]' /> Pro Tip</h3>
                         <p className=' text-sm text-[var(--secondary-color)] leading-relaxed'>Try to solve the problem on your own before viewing hints or the solution. Use the sketch pad to visualize the problem. Learning mathematics happens best when you work through the challenge!</p>
                     </div>
-                    <button type="button" onClick={onClose} className='flex justify-center px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base cursor-pointer'>Got It!</button>
+                    <button type="button" onClick={onClose} className='flex justify-center px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-xl bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base cursor-pointer'>Got It!</button>
                 </div>
 
 

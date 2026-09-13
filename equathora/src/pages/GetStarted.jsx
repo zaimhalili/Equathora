@@ -329,7 +329,7 @@ const GetStarted = () => {
                         {currentStep > 0 && (
                             <button
                                 onClick={handleBack}
-                                className='p-2 rounded-md hover:bg-[var(--french-gray)] transition-colors duration-200 text-[var(--secondary-color)] cursor-pointer'
+                                className='p-2 rounded-xl hover:bg-[var(--french-gray)] transition-colors duration-200 text-[var(--secondary-color)] cursor-pointer'
                                 aria-label='Go back'
                             >
                                 <FaArrowLeft className='text-lg' />
@@ -383,7 +383,7 @@ const GetStarted = () => {
                             <img
                                 src={imageSrc}
                                 alt="Welcome to Equathora Illustration"
-                                className='max-h-100 w-auto object-contain mx-auto rounded-md'
+                                className='max-h-100 w-auto object-contain mx-auto rounded-xl'
                             />
                         </div>
                     )}

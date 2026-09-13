@@ -62,7 +62,7 @@ const HowItWorksSection = () => {
                             return (
                                 <motion.div
                                     key={item.step}
-                                    className="relative flex flex-col gap-4 sm:gap-5 p-6 sm:p-7 md:p-8 bg-[var(--white)] rounded-md border border-[var(--main-color)] shadow-sm transition-all"
+                                    className="relative flex flex-col gap-4 sm:gap-5 p-6 sm:p-7 md:p-8 bg-[var(--white)] rounded-xl border border-[var(--main-color)] shadow-sm transition-all"
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, amount: 0.3 }}
@@ -75,7 +75,7 @@ const HowItWorksSection = () => {
 
                                     {/* Step number */}
                                     <div className="flex items-center justify-between">
-                                        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-md bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg`}>
+                                        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg`}>
                                             <IconComponent className="text-xl sm:text-2xl text-white" />
                                         </div>
                                         <span className="text-3xl sm:text-4xl font-bold text-[var(--main-color)]">{item.step}</span>

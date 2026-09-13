@@ -37,7 +37,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
 
     return (
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
-            <div className='bg-[var(--white)] w-11/12 max-w-2xl rounded-md px-6 py-6 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
+            <div className='bg-[var(--white)] w-11/12 max-w-2xl rounded-xl px-6 py-6 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-start pb-4'>
                     <div className='flex-1'>
                         <div className='flex items-center gap-3 pb-2'>
@@ -64,7 +64,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                 </div>
 
                 <div className='flex flex-col gap-4 pb-5 '>
-                    <div className='bg-[var(--french-gray)]/10 rounded-md'>
+                    <div className='bg-[var(--french-gray)]/10 rounded-xl'>
                         <div className='flex justify-between items-center pb-3'>
                             <h3 className=' font-bold text-sm text-[var(--secondary-color)]'>Your Solution Steps</h3>
                             <div className="flex items-center gap-2">
@@ -79,7 +79,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                         </div>
                         <div className='flex flex-col gap-1.5'>
                             {submission.steps && submission.steps.map((step, index) => (
-                                <div key={index} className='bg-[var(--white)] p-2.5 rounded-md border border-[var(--mid-main-secondary)]'>
+                                <div key={index} className='bg-[var(--white)] p-2.5 rounded-xl border border-[var(--mid-main-secondary)]'>
                                     <div className='flex items-center gap-2 pb-1'>
                                         <span className='bg-[var(--secondary-color)] text-[var(--white)] rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold'>
                                             {index + 1}
@@ -111,7 +111,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                     {submission.metadata && (
                         <div className='flex flex-wrap gap-3'>
                             {submission.metadata.timeSpent !== undefined && (
-                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-md border-[var(--mid-main-secondary)] border flex-1'>
+                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-xl border-[var(--mid-main-secondary)] border flex-1'>
                                     <div className='text-xs text-[var(--mid-main-secondary)] pb-1'>Time Spent</div>
                                     <div className='text-sm font-bold text-[var(--secondary-color)]'>
                                         {submission.metadata.timeSpent !== undefined
@@ -121,13 +121,13 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                                 </div>
                             )}
                             {submission.metadata.attempts && (
-                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-md border-[var(--mid-main-secondary)] border flex-1'>
+                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-xl border-[var(--mid-main-secondary)] border flex-1'>
                                     <div className='text-xs text-[var(--mid-main-secondary)] pb-1'>Attempt #</div>
                                     <div className='text-sm font-bold text-[var(--secondary-color)]'>{submission.metadata.attempts}</div>
                                 </div>
                             )}
                             {submission.metadata.hintsUsed !== undefined && (
-                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-md border-[var(--mid-main-secondary)] border flex-1'>
+                                <div className='bg-[var(--french-gray)]/10 p-3 rounded-xl border-[var(--mid-main-secondary)] border flex-1'>
                                     <div className='text-xs text-[var(--mid-main-secondary)] pb-1'>Hints Used</div>
                                     <div className='text-sm font-bold text-[var(--secondary-color)]'>{submission.metadata.hintsUsed}</div>
                                 </div>
@@ -139,7 +139,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                 <button
                     type="button"
                     onClick={onClose}
-                    className='cursor-pointer px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'
+                    className='cursor-pointer px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-xl bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'
                 >
                     Close
                 </button>

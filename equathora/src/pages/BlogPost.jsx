@@ -58,7 +58,7 @@ const BlogPost = () => {
                         key={index}
                         src={contentItem.src}
                         alt={contentItem.alt || ''}
-                        className='rounded-md w-full py-4'
+                        className='rounded-xl w-full py-4'
                     />
                 );
             default:
@@ -150,9 +150,9 @@ const BlogPost = () => {
                                 <Link
                                     key={otherPost.id}
                                     to={`/blog/${otherPost.slug}`}
-                                    className='bg-[var(--white)] rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80'
+                                    className='bg-[var(--white)] rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80'
                                 >
-                                    <img src={otherPost.thumbnail} alt="" className='rounded-md w-full max-h-40 object-cover' />
+                                    <img src={otherPost.thumbnail} alt="" className='rounded-xl w-full max-h-40 object-cover' />
                                     <p className='text-md text-left lg:text-lg cursor-pointer  text-[var(--secondary-color)] font-medium'>
                                         {otherPost.title}
                                     </p>

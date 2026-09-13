@@ -187,7 +187,7 @@ const Premium = () => {
             <h2 className='text-sm sm:text-lg text-center pb-1'>Find the ideal plan that fits your budget and goals.</h2>
 
             {errorMessage && (
-              <div className="w-full max-w-xl bg-[var(--accent-color)]/20 border border-[var(--accent-color)]/50 text-[var(--secondary-color)] px-4 py-3 rounded-md text-sm text-center flex items-center justify-center gap-2">
+              <div className="w-full max-w-xl bg-[var(--accent-color)]/20 border border-[var(--accent-color)]/50 text-[var(--secondary-color)] px-4 py-3 rounded-xl text-sm text-center flex items-center justify-center gap-2">
                 <FaExclamationTriangle />
                 <span>We ran into an issue. Try again later.</span>
               </div>
@@ -200,7 +200,7 @@ const Premium = () => {
                 <div className="flex justify-between w-full items-center gap-1.5 p-4">
                   <h3 className="text-2xl font-bold text-[var(--secondary-color)]">Free</h3>
                   {!premium && (
-                    <div className='flex items-center gap-1 border-[var(--secondary-color)] border rounded-md px-1'>
+                    <div className='flex items-center gap-1 border-[var(--secondary-color)] border rounded-xl px-1'>
                       <FaFlagCheckered className='inline-block' />
                       <span>Active</span>
                     </div>
@@ -246,14 +246,14 @@ const Premium = () => {
                     <h3 className="text-2xl font-bold text-[var(--main-color)]">Premium
                     </h3>
                     {premium && (
-                      <h3 className='bg-black/10 px-3 py-1 rounded-md text-[var(--secondary-color)] font-medium items-center flex gap-1.5 text-sm'>
+                      <h3 className='bg-black/10 px-3 py-1 rounded-xl text-[var(--secondary-color)] font-medium items-center flex gap-1.5 text-sm'>
                         {cancelAtPeriodEnd ? (
                           <>
                             <FaExclamationTriangle className='text-amber-900' />
                             <span>Cancels on {formattedCancelDate}</span>
                           </>
                         ) : (
-                          <div className='rounded-md px-1 flex items-center gap-1'>
+                          <div className='rounded-xl px-1 flex items-center gap-1'>
                             <FaCrown className='inline-block' />
                             <span>Active</span>
                           </div>
@@ -263,7 +263,7 @@ const Premium = () => {
                   </div>
 
                   {cancelAtPeriodEnd && (
-                    <div className="bg-black/15 border border-black/20 text-black p-3 rounded-md text-xs sm:text-sm flex items-start gap-2">
+                    <div className="bg-black/15 border border-black/20 text-black p-3 rounded-xl text-xs sm:text-sm flex items-start gap-2">
                       <FaExclamationTriangle className="mt-0.5 shrink-0" />
                       <span>
                         Your Pro subscription is set to cancel on <strong>{formattedCancelDate}</strong>. You retain full access to all Pro features until then.
@@ -314,14 +314,14 @@ const Premium = () => {
                     <h3 className="text-2xl font-bold text-white">Schools & Institutions
                     </h3>
                     {premium && (
-                      <h3 className='bg-black/10 px-3 py-1 rounded-md text-[var(--secondary-color)] font-medium items-center flex gap-1.5 text-sm'>
+                      <h3 className='bg-black/10 px-3 py-1 rounded-xl text-[var(--secondary-color)] font-medium items-center flex gap-1.5 text-sm'>
                         {cancelAtPeriodEnd ? (
                           <>
                             <FaExclamationTriangle className='text-amber-900' />
                             <span>Cancels on {formattedCancelDate}</span>
                           </>
                         ) : (
-                          <div className='rounded-md px-1 flex items-center gap-1'>
+                          <div className='rounded-xl px-1 flex items-center gap-1'>
                             <FaCrown className='inline-block' />
                             <span>Active</span>
                           </div>
@@ -331,7 +331,7 @@ const Premium = () => {
                   </div>
 
                   {cancelAtPeriodEnd && (
-                    <div className="bg-black/15 border border-black/20 text-black p-3 rounded-md text-xs sm:text-sm flex items-start gap-2">
+                    <div className="bg-black/15 border border-black/20 text-black p-3 rounded-xl text-xs sm:text-sm flex items-start gap-2">
                       <FaExclamationTriangle className="mt-0.5 shrink-0" />
                       <span>
                         Your Pro subscription is set to cancel on <strong>{formattedCancelDate}</strong>. You retain full access to all Pro features until then.

@@ -9,7 +9,7 @@ const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDet
 
     return (
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/40 backdrop-blur-sm' onClick={onClose}>
-            <div className='bg-[var(--white)] w-11/12 max-w-lg rounded-md px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
+            <div className='bg-[var(--white)] w-11/12 max-w-lg rounded-xl px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-start pb-4'>
                     <div>
                         <h2 className=' font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>Report Problem</h2>
@@ -26,7 +26,7 @@ const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDet
                         <select
                             value={reportReason}
                             onChange={(e) => setReportReason(e.target.value)}
-                            className='w-full p-3 border-2 text-[var(--secondary-color)] bg-[var(--white)] border-[var(--mid-main-secondary)] rounded-md  text-sm focus:border-[var(--accent-color)] focus:outline-none transition-colors'
+                            className='w-full p-3 border-2 text-[var(--secondary-color)] bg-[var(--white)] border-[var(--mid-main-secondary)] rounded-xl  text-sm focus:border-[var(--accent-color)] focus:outline-none transition-colors'
                         >
                             <option value="">Select a reason</option>
                             <option value="incorrect-answer">Incorrect Answer</option>
@@ -45,14 +45,14 @@ const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDet
                             onChange={(e) => setReportDetails(e.target.value)}
                             placeholder='Provide more information about the issue...'
                             rows={4}
-                            className='w-full p-3 border-2 text-[var(--secondary-color)] bg-[var(--white)] border-[var(--mid-main-secondary)] rounded-md  text-sm resize-none focus:border-[var(--accent-color)] focus:outline-none transition-colors'
+                            className='w-full p-3 border-2 text-[var(--secondary-color)] bg-[var(--white)] border-[var(--mid-main-secondary)] rounded-xl  text-sm resize-none focus:border-[var(--accent-color)] focus:outline-none transition-colors'
                         />
                     </div>
                 </div>
 
                 <div className='flex w-full justify-between gap-3 pt-6'>
-                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-[var(--mid-main-secondary)] rounded-md bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg transition-all duration-300 flex-1 text-sm md:text-base'>Cancel</button>
-                    <button type="button" onClick={onSubmit} className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-[var(--white)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 flex-1 text-sm md:text-base'>Submit Report</button>
+                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-[var(--mid-main-secondary)] rounded-xl bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg transition-all duration-300 flex-1 text-sm md:text-base'>Cancel</button>
+                    <button type="button" onClick={onSubmit} className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-xl bg-[var(--accent-color)] text-[var(--white)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 flex-1 text-sm md:text-base'>Submit Report</button>
                 </div>
             </div>
         </div>

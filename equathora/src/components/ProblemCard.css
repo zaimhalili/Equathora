@@ -4,7 +4,7 @@
     flex-direction: column;
     background-color: var(--white);
     border: 1px solid var(--french-gray);
-    border-radius: 6px;
+    border-radius: 12px;
     /* specifically requested */
     padding: 1rem 1.25rem;
     text-decoration: none;

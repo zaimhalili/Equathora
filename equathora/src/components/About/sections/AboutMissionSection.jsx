@@ -32,11 +32,11 @@ const AboutMissionSection = () => {
                             We provide an interactive platform where learners build <span className="font-bold text-[var(--secondary-color)]">confidence through step-by-step math help</span>, Sigma AI support, and achievement-based motivation.
                         </p>
                         <div className="flex flex-wrap gap-3 pt-8">
-                            <motion.div className="cursor-default pointer-events-none flex items-center gap-2 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white px-5 py-3 rounded-md shadow-lg">
+                            <motion.div className="cursor-default pointer-events-none flex items-center gap-2 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white px-5 py-3 rounded-xl shadow-lg">
                                 <FaGraduationCap className="text-xl" />
                                 <span className="font-semibold">Student-First</span>
                             </motion.div>
-                            <motion.div className="cursor-default pointer-events-none flex items-center gap-2 bg-[var(--white)] border-2 border-[var(--accent-color)] text-[var(--accent-color)] px-5 py-3 rounded-md shadow-lg theme-lock">
+                            <motion.div className="cursor-default pointer-events-none flex items-center gap-2 bg-[var(--white)] border-2 border-[var(--accent-color)] text-[var(--accent-color)] px-5 py-3 rounded-xl shadow-lg theme-lock">
                                 <FaRocket className="text-xl" />
                                 <span className="font-semibold text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">Growth-Oriented</span>
                             </motion.div>

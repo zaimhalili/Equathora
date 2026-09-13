@@ -351,7 +351,7 @@ const Profile = () => {
               transition={{ duration: 0.5 }}
             >
               {/* Combined Card */}
-              <div className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col gap-6'>
+              <div className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-6'>
                 {/* Profile Header Section */}
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center pb-4'>
@@ -360,7 +360,7 @@ const Profile = () => {
                         ? userData.avatar_url
                         : `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name || 'User')}&background=d90429&color=fff&size=128&bold=true`}
                       alt="Profile Picture"
-                      className='rounded-md h-20 w-20 md:h-24 md:w-24 object-cover'
+                      className='rounded-xl h-20 w-20 md:h-24 md:w-24 object-cover'
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name || 'User')}&background=d90429&color=fff&size=128&bold=true`;
@@ -394,7 +394,7 @@ const Profile = () => {
                   {viewingOwnProfile && (
                     <button
                       type="button"
-                      className='w-full py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold text-white rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))]'
+                      className='w-full py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold text-white rounded-xl transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))]'
                       onClick={() => setIsEditModalOpen(true)}
                     >
                       Edit Profile
@@ -460,7 +460,7 @@ const Profile = () => {
                   <div className='flex gap-2 md:gap-3 flex-wrap'>
                     {userData.mathTopics.length > 0 ? (
                       userData.mathTopics.map((topic, i) => (
-                        <p key={i} className='rounded-md bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)] cursor-default'>{formatTopicLabel(topic)}</p>
+                        <p key={i} className='rounded-xl bg-[var(--french-gray)] px-3 py-1 max-h-8 hover:scale-105 duration-150 transition-all text-[var(--secondary-color)] cursor-default'>{formatTopicLabel(topic)}</p>
                       ))
                     ) : (
                       <p className='text-sm text-[var(--french-gray)] italic'>No topic data yet. Solve a few problems and your strongest topics will appear here.</p>
@@ -474,7 +474,7 @@ const Profile = () => {
             <div className='lg:col-span-2 flex flex-col gap-4'>
               {/* Statistics Card */}
               <motion.div
-                className='bg-[var(--main-color)] rounded-md shadow-lg p-6'
+                className='bg-[var(--main-color)] rounded-xl shadow-lg p-6'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -484,7 +484,7 @@ const Profile = () => {
                   {difficultyStats.map((difficulty, index) => (
                     <div
                       key={`difficulty-top-${difficulty.key}-${index}`}
-                      className='inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-[11px] font-semibold'
+                      className='inline-flex items-center gap-1.5 px-2 py-1 rounded-xl text-[11px] font-semibold'
                       style={{
                         color: difficulty.color,
                         backgroundColor: getDifficultyChipBackground(difficulty.key)
@@ -572,7 +572,7 @@ const Profile = () => {
 
               {/* Solved Problems Card */}
               <motion.div
-                className='bg-[var(--main-color)] rounded-md shadow-lg p-6 flex flex-col'
+                className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -587,7 +587,7 @@ const Profile = () => {
                     >
                       <Link
                         to={`/problems/${problem.slug || generateProblemSlug(problem.title, problem.id)}`}
-                        className={`w-full px-5 py-4 transition-all hover:-translate-x-1 text-[var(--secondary-color)] duration-150 rounded-md text-md block ${i % 2 === 0 ? 'bg-[var(--french-gray)]' : 'bg-[var(--main-color)]'}`}>{problem.title}</Link>
+                        className={`w-full px-5 py-4 transition-all hover:-translate-x-1 text-[var(--secondary-color)] duration-150 rounded-xl text-md block ${i % 2 === 0 ? 'bg-[var(--french-gray)]' : 'bg-[var(--main-color)]'}`}>{problem.title}</Link>
                     </motion.div>
                   ))}
                 </div>

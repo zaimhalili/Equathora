@@ -322,14 +322,14 @@ const ChatPanel = forwardRef(({
 
     if (statusLoading) {
         return (
-            <div className="w-full h-full flex items-center justify-center bg-[var(--main-color)] rounded-md text-xs text-[var(--mid-main-secondary)]">
+            <div className="w-full h-full flex items-center justify-center bg-[var(--main-color)] rounded-xl text-xs text-[var(--mid-main-secondary)]">
                 Loading AI Mentor...
             </div>
         );
     }
 
     return (
-        <div className="relative w-full flex-1 flex flex-col  bg-[var(--white)] text-[var(--secondary-color)] rounded-md overflow-hidden min-h-0">
+        <div className="relative w-full flex-1 flex flex-col  bg-[var(--white)] text-[var(--secondary-color)] rounded-xl overflow-hidden min-h-0">
             {/* Backdrop Lock Overlay */}
             {trialExhausted && (
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-black/60 backdrop-blur-sm transition-all duration-300">
@@ -437,7 +437,7 @@ const ChatPanel = forwardRef(({
                             }
                             maxLength={MAX_INPUT_CHARS}
                             aria-label="Chat message input"
-                            className="w-full rounded-md px-4 py-2 text-sm md:text-base border bg-[var(--main-color)] border-[var(--french-gray)] text-[var(--secondary-color)] focus:!outline-none disabled:opacity-50 !h-full"
+                            className="w-full rounded-xl px-4 py-2 text-sm md:text-base border bg-[var(--main-color)] border-[var(--french-gray)] text-[var(--secondary-color)] focus:!outline-none disabled:opacity-50 !h-full"
                         />
                         {typedMessage.length > MAX_INPUT_CHARS * 0.8 && (
                             <span
@@ -452,7 +452,7 @@ const ChatPanel = forwardRef(({
                         type="submit"
                         disabled={isSendDisabled}
                         aria-label="Send message"
-                        className="font-bold text-xs py-2 px-4 rounded-md transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)] hover:text-[var(--white)] border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
+                        className="font-bold text-xs py-2 px-4 rounded-xl transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)] hover:text-[var(--white)] border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
                     >
                         <FaPaperPlane />
                     </button>

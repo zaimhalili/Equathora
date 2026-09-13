@@ -70,7 +70,7 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                         transition={{ type: 'spring', damping: 20, stiffness: 300 }}
                         className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-[var(--white)] rounded-md shadow-2xl max-w-sm w-[90vw] overflow-hidden border-[var(--mid-main-secondary)] border">
+                        <div className="bg-[var(--white)] rounded-xl shadow-2xl max-w-sm w-[90vw] overflow-hidden border-[var(--mid-main-secondary)] border">
                             {/* Header bar */}
                             <div className={`flex items-center justify-center gap-2 bg-gradient-to-r ${rarity.bg} px-4 py-3`}>
                                 <svg className="w-5 h-5 text-[var(--white)]" viewBox="0 0 576 512" fill="currentColor">
@@ -137,14 +137,14 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                                     {achievements.length > 1 && !isLast && (
                                         <button
                                             onClick={handleDismissAll}
-                                            className="bg-[var(--mid-main-secondary)] text-[var(--secondary-color)] px-5 py-2 rounded-md text-sm font-bold hover:bg-[var(--mid-main-secondary)]/80 transition-colors cursor-pointer"
+                                            className="bg-[var(--mid-main-secondary)] text-[var(--secondary-color)] px-5 py-2 rounded-xl text-sm font-bold hover:bg-[var(--mid-main-secondary)]/80 transition-colors cursor-pointer"
                                         >
                                             Skip All
                                         </button>
                                     )}
                                     <button
                                         onClick={handleNext}
-                                        className="bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-6 py-2 rounded-md text-sm font-bold hover:opacity-90 transition-opacity cursor-pointer"
+                                        className="bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-6 py-2 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity cursor-pointer"
                                     >
                                         {isLast ? 'Awesome!' : 'Next'}
                                     </button>

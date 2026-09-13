@@ -12,7 +12,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_NAME_LENGTH = 2;
 
 const INPUT_BASE_CLASSES =
-    'text-sm text-[var(--secondary-color)] w-full px-5 py-3.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]/20 focus:border-[var(--accent-color)] transition-all bg-[var(--main-color)]';
+    'text-sm text-[var(--secondary-color)] w-full px-5 py-3.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]/20 focus:border-[var(--accent-color)] transition-all bg-[var(--main-color)]';
 
 const INPUT_ERROR_CLASSES = 'border-[var(--accent-color)] bg-[var(--accent-color)]/5';
 const INPUT_NORMAL_CLASSES =
@@ -181,7 +181,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                         </p>
 
                                         {saveError && (
-                                            <div className="bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 text-[var(--dark-accent-color)] px-4 py-3 rounded-md text-sm">
+                                            <div className="bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 text-[var(--dark-accent-color)] px-4 py-3 rounded-xl text-sm">
                                                 {saveError}
                                             </div>
                                         )}
@@ -236,14 +236,14 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 type="button"
                                                 onClick={onClose}
                                                 disabled={isLoading}
-                                                className="flex-1 px-6 py-3 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+                                                className="flex-1 px-6 py-3 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold rounded-xl hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
                                             >
                                                 Cancel
                                             </button>
                                             <button
                                                 type="submit"
                                                 disabled={isLoading}
-                                                className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white font-semibold rounded-md hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                                                className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white font-semibold rounded-xl hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                                             >
                                                 {isLoading ? 'Saving...' : 'Subscribe'}
                                             </button>

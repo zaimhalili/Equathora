@@ -16,14 +16,14 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
     return (
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
-            <div className='bg-[var(--white)] w-11/12 max-w-md rounded-md px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
+            <div className='bg-[var(--white)] w-11/12 max-w-md rounded-xl px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
                 <div className='flex flex-col gap-3'>
                     <h2 className=' text-left font-bold text-2xl md:text-3xl text-[var(--secondary-color)] leading-tight'>Clear All Steps?</h2>
                     <p className=' text-[var(--secondary-color)] text-sm md:text-base leading-relaxed opacity-80'>This will delete all your current steps. This action cannot be undone.</p>
                 </div>
                 <div className='flex w-full justify-between gap-3 pt-7'>
-                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-[var(--mid-main-secondary)] rounded-md bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base theme-lock'>Cancel</button>
-                    <button type="button" className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base' onClick={onConfirm}>Clear All</button>
+                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-[var(--mid-main-secondary)] rounded-xl bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base theme-lock'>Cancel</button>
+                    <button type="button" className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-[var(--accent-color)] rounded-xl bg-[var(--accent-color)] text-white hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base' onClick={onConfirm}>Clear All</button>
                 </div>
             </div>
         </div>
@@ -282,7 +282,7 @@ export default function MathLiveEditor({
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                     <h2 className="ml-title w-full">Your Solution</h2>
                     {isPracticeMode && (
-                        <span className="w-full text-center flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] md:text-xs font-semibold bg-blue-500/10 text-blue-600">
+                        <span className="w-full text-center flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[10px] md:text-xs font-semibold bg-blue-500/10 text-blue-600">
                             <FaGraduationCap />
                             Practice Mode - already solved, no points this time
                         </span>
@@ -359,7 +359,7 @@ export default function MathLiveEditor({
                                                 <button
                                                     onClick={handleExplainMoreClick}
                                                     disabled={isAiBusy}
-                                                    className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-md cursor-pointer text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-xl cursor-pointer text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                                                 >
                                                     {isAiBusy ? "Sigma is thinking…" : "Explain more"}
                                                 </button>
@@ -379,7 +379,7 @@ export default function MathLiveEditor({
                             <button
                                 onClick={handleExplainMoreClick}
                                 disabled={isAiBusy}
-                                className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-md cursor-pointer text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-xl cursor-pointer text-[var(--secondary-color)] hover:to-amber-500 active:!scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isAiBusy ? "Sigma is thinking…" : "Explain more"}
                             </button>

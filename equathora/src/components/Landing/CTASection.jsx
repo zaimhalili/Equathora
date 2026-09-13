@@ -116,7 +116,7 @@ const CTASection = () => {
                         style={{ x: floatX, y: floatY }}
                     >
                         {/* Main card */}
-                        <div className="w-80 h-96 rounded-md bg-gradient-to-br from-[var(--secondary-color)] to-[#1a1a2e] p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
+                        <div className="w-80 h-96 rounded-xl bg-gradient-to-br from-[var(--secondary-color)] to-[#1a1a2e] p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
                             {/* Glow effect */}
                             <div className="absolute top-0 right-0 w-40 h-40 bg-[var(--accent-color)]/20 rounded-full blur-[60px]" />
 
@@ -152,7 +152,7 @@ const CTASection = () => {
 
                         {/* Floating badge */}
                         <motion.div
-                            className="absolute -bottom-6 -left-6 px-5 py-4 rounded-md bg-[var(--white)] shadow-2xl border border-gray-100"
+                            className="absolute -bottom-6 -left-6 px-5 py-4 rounded-xl bg-[var(--white)] shadow-2xl border border-gray-100"
                             animate={{ y: [0, -8, 0] }}
                             transition={{ duration: 3, repeat: Infinity }}
                         >
@@ -169,7 +169,7 @@ const CTASection = () => {
 
                         {/* Math symbol */}
                         <motion.div
-                            className="absolute -top-4 -right-4 w-16 h-16 rounded-md bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-[var(--white)] text-2xl font-bold shadow-lg"
+                            className="absolute -top-4 -right-4 w-16 h-16 rounded-xl bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-[var(--white)] text-2xl font-bold shadow-lg"
                             animate={{ rotate: [0, 5, -5, 0] }}
                             transition={{ duration: 4, repeat: Infinity }}
                         >

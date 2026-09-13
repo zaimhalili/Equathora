@@ -61,10 +61,10 @@ const EquathoraBriefs = () => {
                                 <h3 className='text-sm sm:text-xl md:text-2xl font-light text-center'>Get <strong> weekly math practice</strong>, learning tips, and Equathora <strong>updates</strong> made for students.</h3>
                             </div>
 
-                            <button type='button' className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold text-white rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full sm:w-2/3 md:w-1/3 lg:w-1/5' onClick={() => setIsBriefsModalOpen(true)}>Get weekly updates</button>
+                            <button type='button' className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold text-white rounded-xl transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full sm:w-2/3 md:w-1/3 lg:w-1/5' onClick={() => setIsBriefsModalOpen(true)}>Get weekly updates</button>
                         </section>
 
-                        <section className='bg-[var(--main-color)] w-full flex flex-col lg:flex-row gap-6 lg:gap-10 p-6 sm:p-8 lg:p-10 rounded-md shadow-[0_0_25px_rgba(141,153,174,0.7)]'>
+                        <section className='bg-[var(--main-color)] w-full flex flex-col lg:flex-row gap-6 lg:gap-10 p-6 sm:p-8 lg:p-10 rounded-xl shadow-[0_0_25px_rgba(141,153,174,0.7)]'>
                             <div className='flex flex-col lg:w-2/3 gap-2'>
                                 <FaBookmark className='text-2xl sm:text-3xl' />
                                 <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] py-2 text-center lg:text-left'>Get Equathora Briefs for {' '}
@@ -105,7 +105,7 @@ const EquathoraBriefs = () => {
                                 <FaDiscord className='text-[var(--dark-accent-color)] absolute -right-6 sm:-right-12 lg:-right-20 -bottom-3 sm:-bottom-4 lg:-bottom-5 -rotate-30 text-6xl sm:text-8xl lg:text-9xl -z-10' />
                             </h2>
                             <p className='text-sm sm:text-xl md:text-2xl max-w-3xl text-center font-light'>We share solutions, announcements, and <strong> friendly discussion</strong>, plus direct feedback channels for new Equathora features. Meet learners, mentors, and challenge creators who keep math <strong>fun and consistent.</strong> </p>
-                            <a href='https://discord.gg/s6tNSbyhB7' target='_blank' rel="noopener noreferrer" className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white flex justify-center rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full sm:w-2/3 md:w-1/3 lg:w-1/5'>Join Equathora Discord</a>
+                            <a href='https://discord.gg/s6tNSbyhB7' target='_blank' rel="noopener noreferrer" className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white flex justify-center rounded-xl transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full sm:w-2/3 md:w-1/3 lg:w-1/5'>Join Equathora Discord</a>
                         </section>
                     </div>
                 </div>

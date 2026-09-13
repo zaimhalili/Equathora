@@ -92,7 +92,7 @@ const AdminDashboard = () => {
                             <button
                                 type='button'
                                 onClick={() => setIsSidebarOpen(false)}
-                                className='rounded-md border px-2 py-1 text-sm font-semibold'
+                                className='rounded-xl border px-2 py-1 text-sm font-semibold'
                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                             >
                                 <span className='inline-flex items-center gap-1'>
@@ -120,7 +120,7 @@ const AdminDashboard = () => {
                         <button
                             type='button'
                             onClick={() => setIsSidebarOpen(true)}
-                            className='inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-semibold md:hidden'
+                            className='inline-flex items-center gap-1 rounded-xl border px-2 py-1 text-xs font-semibold md:hidden'
                             style={{ borderColor: 'var(--mid-main-secondary)' }}
                         >
                             <FiMenu />
@@ -129,7 +129,7 @@ const AdminDashboard = () => {
                         <span className='truncate' style={{ color: 'var(--mid-main-secondary)' }}>
                             {isSwitching ? 'Loading module...' : 'Module ready'}
                         </span>
-                        <span className='rounded-md px-2 py-1 whitespace-nowrap' style={{ backgroundColor: TAB_DATA_SOURCE[selected] === 'Real' ? 'var(--secondary-color)' : 'var(--mid-main-secondary)', color: 'var(--main-color)' }}>
+                        <span className='rounded-xl px-2 py-1 whitespace-nowrap' style={{ backgroundColor: TAB_DATA_SOURCE[selected] === 'Real' ? 'var(--secondary-color)' : 'var(--mid-main-secondary)', color: 'var(--main-color)' }}>
                             Data Source: {TAB_DATA_SOURCE[selected]}
                         </span>
                     </div>

@@ -150,7 +150,7 @@ const ExercisesSection = () => {
                             {exercises.map((exercise, index) => (
                                 <motion.div
                                     key={exercise.title}
-                                    className="bg-[var(--white)] rounded-md transition-all duration-300 p-3 sm:py-3 px-5 flex items-center gap-6 h-22"
+                                    className="bg-[var(--white)] rounded-xl transition-all duration-300 p-3 sm:py-3 px-5 flex items-center gap-6 h-22"
                                     initial={{ opacity: 0, y: -30 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, amount: 0.2 }}
@@ -177,7 +177,7 @@ const ExercisesSection = () => {
                         <img
                             src={theme === 'dark' ? ScreenshotDark : ScreenshotLight}
                             alt="List of the problems"
-                            className="rounded-md w-full shadow-[0px_10px_35px_5px_rgba(141,153,174,0.4)] dark:shadow-black/20"
+                            className="rounded-xl w-full shadow-[0px_10px_35px_5px_rgba(141,153,174,0.4)] dark:shadow-black/20"
                             loading="lazy"
                         />
                     </div>

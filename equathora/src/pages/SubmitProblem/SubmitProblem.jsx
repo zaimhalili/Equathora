@@ -49,9 +49,9 @@ const SubmitProblem = () => {
         alert('Thank you! Your problem has been submitted and will be reviewed.');
     };
 
-    const inputClasses = 'w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-md px-4 py-2.5 text-[var(--secondary-color)] focus:outline-none focus:border-[var(--accent-color)] transition-colors placeholder-[var(--mid-main-secondary)]';
+    const inputClasses = 'w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-4 py-2.5 text-[var(--secondary-color)] focus:outline-none focus:border-[var(--accent-color)] transition-colors placeholder-[var(--mid-main-secondary)]';
     const labelClasses = 'block text-sm font-semibold text-[var(--secondary-color)] opacity-90';
-    const cardClasses = 'bg-[var(--white)] rounded-md border border-[rgba(43,45,66,0.12)] p-6 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col gap-6';
+    const cardClasses = 'bg-[var(--white)] rounded-xl border border-[rgba(43,45,66,0.12)] p-6 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col gap-6';
     const fieldGroupClasses = 'flex flex-col gap-2';
     const sectionTitleClasses = 'text-2xl font-bold text-[var(--secondary-color)] flex items-center gap-2';
     const difficultyOptions = [
@@ -165,7 +165,7 @@ const SubmitProblem = () => {
                                     />
                                 </div>
 
-                                <div className="md:col-span-2 flex flex-col gap-3 rounded-md border border-[rgba(43,45,66,0.14)] bg-[var(--main-color)] p-4">
+                                <div className="md:col-span-2 flex flex-col gap-3 rounded-xl border border-[rgba(43,45,66,0.14)] bg-[var(--main-color)] p-4">
                                     <label htmlFor="share-author-name" className="flex items-center gap-3 cursor-pointer">
                                         <input
                                             id="share-author-name"
@@ -173,7 +173,7 @@ const SubmitProblem = () => {
                                             name="shareAuthorName"
                                             checked={formData.shareAuthorName}
                                             onChange={handleChange}
-                                            className="h-5 w-5 rounded-md border-[rgba(43,45,66,0.4)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
+                                            className="h-5 w-5 rounded-xl border-[rgba(43,45,66,0.4)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
                                         />
                                         <span className="text-md text-[var(--secondary-color)] font-semibold">
                                             Share my name as the contributor for this problem
@@ -200,7 +200,7 @@ const SubmitProblem = () => {
                                     )}
                                 </div>
 
-                                <div className="md:col-span-2 flex flex-col gap-4 rounded-md border border-[rgba(43,45,66,0.14)] bg-[var(--main-color)] p-4">
+                                <div className="md:col-span-2 flex flex-col gap-4 rounded-xl border border-[rgba(43,45,66,0.14)] bg-[var(--main-color)] p-4">
                                     <h3 className="text-lg font-semibold text-[var(--secondary-color)]">Additional Characteristics</h3>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -211,7 +211,7 @@ const SubmitProblem = () => {
                                                 name="isPremium"
                                                 checked={formData.isPremium}
                                                 onChange={handleChange}
-                                                className="h-5 w-5 rounded-md border-[rgba(43,45,66,0.4)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
+                                                className="h-5 w-5 rounded-xl border-[rgba(43,45,66,0.4)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
                                             />
                                             <span className="text-md text-[var(--secondary-color)] font-semibold">Mark as premium problem</span>
                                         </label>
@@ -223,7 +223,7 @@ const SubmitProblem = () => {
                                                 name="isActive"
                                                 checked={formData.isActive}
                                                 onChange={handleChange}
-                                                className="h-5 w-5 rounded-md border-[rgba(43,45,66,0.4)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
+                                                className="h-5 w-5 rounded-xl border-[rgba(43,45,66,0.4)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
                                             />
                                             <span className="text-md text-[var(--secondary-color)] font-semibold">Recommend active on approval</span>
                                         </label>
@@ -315,14 +315,14 @@ const SubmitProblem = () => {
                                                         value={ans}
                                                         onChange={(e) => handleArrayChange(index, 'accepted_answers', e.target.value)}
                                                         placeholder="e.g. -24.0"
-                                                        className="w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-md px-3 py-2 text-[var(--secondary-color)] focus:outline-none focus:border-[var(--accent-color)]"
+                                                        className="w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-3 py-2 text-[var(--secondary-color)] focus:outline-none focus:border-[var(--accent-color)]"
                                                         autoComplete="off"
                                                     />
                                                     {formData.accepted_answers.length > 1 && (
                                                         <button
                                                             type="button"
                                                             onClick={() => removeArrayItem(index, 'accepted_answers')}
-                                                            className="text-red-500 hover:bg-red-50 p-2 rounded-md transition-colors"
+                                                            className="text-red-500 hover:bg-red-50 p-2 rounded-xl transition-colors"
                                                             title="Remove format"
                                                             aria-label={`Remove accepted format ${index + 1}`}
                                                         >
@@ -364,20 +364,20 @@ const SubmitProblem = () => {
                                     <div className="flex flex-col gap-3">
                                         {formData.hints.map((hint, index) => (
                                             <div key={index} className="flex gap-2 items-start">
-                                                <span className="bg-[rgba(43,45,66,0.1)] text-[var(--secondary-color)] font-bold text-sm w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-md">{index + 1}</span>
+                                                <span className="bg-[rgba(43,45,66,0.1)] text-[var(--secondary-color)] font-bold text-sm w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-xl">{index + 1}</span>
                                                 <textarea
                                                     required
                                                     value={hint}
                                                     onChange={(e) => handleArrayChange(index, 'hints', e.target.value)}
                                                     rows="2"
                                                     placeholder="e.g. Substitute x = 2 first."
-                                                    className="w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-md px-3 py-2 text-[var(--secondary-color)] focus:outline-none focus:border-[var(--accent-color)] resize-y"
+                                                    className="w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-3 py-2 text-[var(--secondary-color)] focus:outline-none focus:border-[var(--accent-color)] resize-y"
                                                 />
                                                 {formData.hints.length > 1 && (
                                                     <button
                                                         type="button"
                                                         onClick={() => removeArrayItem(index, 'hints')}
-                                                        className="text-red-500 hover:bg-red-50 p-2 rounded-md transition-colors"
+                                                        className="text-red-500 hover:bg-red-50 p-2 rounded-xl transition-colors"
                                                         title="Remove hint"
                                                         aria-label={`Remove hint ${index + 1}`}
                                                     >
@@ -423,7 +423,7 @@ const SubmitProblem = () => {
                         <div className="w-full flex justify-end pb-8">
                             <button
                                 type="submit"
-                                className="cursor-pointer px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-md bg-[var(--accent-color)] text-[var(--white)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 text-sm md:text-base"
+                                className="cursor-pointer px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-xl bg-[var(--accent-color)] text-[var(--white)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 text-sm md:text-base"
                             >
                                 <span>Submit Problem</span>
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

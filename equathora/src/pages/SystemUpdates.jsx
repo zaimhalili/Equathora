@@ -493,11 +493,11 @@ const SystemUpdates = () => {
                                     initial={{ opacity: 0, y: 15 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.45, delay: 0.1 * index }}
-                                    className="bg-[var(--white)] rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
+                                    className="bg-[var(--white)] rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
                                 >
                                     {/* Header */}
                                     <div className="flex items-start gap-4 p-6 pb-4">
-                                        <div className="bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] p-3 rounded-md text-[var(--white)] flex-shrink-0 theme-lock">
+                                        <div className="bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] p-3 rounded-xl text-[var(--white)] flex-shrink-0 theme-lock">
                                             {update.icon}
                                         </div>
                                         <div className="flex-1">
@@ -505,7 +505,7 @@ const SystemUpdates = () => {
                                                 <h2 className="text-xl font-bold text-[var(--secondary-color)]">
                                                     {update.title}
                                                 </h2>
-                                                <span className={`px-2 py-1 rounded-md text-xs font-semibold ${getTypeStyle(update.type)}`}>
+                                                <span className={`px-2 py-1 rounded-xl text-xs font-semibold ${getTypeStyle(update.type)}`}>
                                                     {update.type === 'bugfix' ? 'Bug Fix' : update.type.charAt(0).toUpperCase() + update.type.slice(1)}
                                                 </span>
                                             </div>
@@ -534,7 +534,7 @@ const SystemUpdates = () => {
 
                         {/* Subscribe Section */}
                         <div className="pt-8">
-                            <div className="bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] rounded-md p-8 text-center text-[var(--white)] shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
+                            <div className="bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] rounded-xl p-8 text-center text-[var(--white)] shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
                                 <h3 className="text-2xl font-bold pb-3 ">Stay Updated</h3>
                                 <p className="text-gray-300 text-base pb-4">
                                     Get notified about new features and updates directly in your notifications

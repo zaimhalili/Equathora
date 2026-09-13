@@ -114,9 +114,9 @@ const DailyTrack = ({
                         {todayMinutes} / {goalMinutes} min
                     </span>
                 </div>
-                <div className="h-4 rounded-md bg-[var(--secondary-color)]/30 overflow-hidden">
+                <div className="h-4 rounded-xl bg-[var(--secondary-color)]/30 overflow-hidden">
                     <div
-                        className="h-full rounded-md bg-[linear-gradient(90deg,var(--accent-color),var(--dark-accent-color))]"
+                        className="h-full rounded-xl bg-[linear-gradient(90deg,var(--accent-color),var(--dark-accent-color))]"
                         style={{ width: `${goalPercent}%` }}
                     />
                 </div>

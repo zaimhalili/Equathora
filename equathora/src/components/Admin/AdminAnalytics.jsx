@@ -200,7 +200,7 @@ const AdminAnalytics = () => {
     return (
         <section className='flex flex-col gap-6 px-3 py-2 text-[var(--secondary-color)] md:px-5'>
             <div
-                className='rounded-md border p-5'
+                className='rounded-xl border p-5'
                 style={{
                     borderColor: palette.mid,
                     background: `linear-gradient(135deg, ${palette.main}, ${palette.french})`
@@ -221,7 +221,7 @@ const AdminAnalytics = () => {
                                 setRange('week');
                                 setWeekIndex(0);
                             }}
-                            className='rounded-md border px-3 py-1.5 text-sm font-semibold transition'
+                            className='rounded-xl border px-3 py-1.5 text-sm font-semibold transition'
                             style={{
                                 borderColor: range === 'week' ? palette.accent : palette.mid,
                                 backgroundColor: range === 'week' ? palette.accent : palette.main,
@@ -233,7 +233,7 @@ const AdminAnalytics = () => {
                         <button
                             type='button'
                             onClick={() => setRange('month')}
-                            className='rounded-md border px-3 py-1.5 text-sm font-semibold transition'
+                            className='rounded-xl border px-3 py-1.5 text-sm font-semibold transition'
                             style={{
                                 borderColor: range === 'month' ? palette.accent : palette.mid,
                                 backgroundColor: range === 'month' ? palette.accent : palette.main,
@@ -247,7 +247,7 @@ const AdminAnalytics = () => {
 
                 <div className='pt-3 flex flex-wrap items-center gap-2'>
                     <span
-                        className='rounded-md px-2 py-1 text-xs font-semibold'
+                        className='rounded-xl px-2 py-1 text-xs font-semibold'
                         style={{ backgroundColor: palette.secondary, color: palette.main }}
                     >
                         {analytics.rangeLabel}
@@ -259,7 +259,7 @@ const AdminAnalytics = () => {
                                 type='button'
                                 disabled={!canGoPrevWeek || loading}
                                 onClick={() => setWeekIndex((prev) => prev + 1)}
-                                className='rounded-md border px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
+                                className='rounded-xl border px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
                                 style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                             >
                                 Previous Week
@@ -268,7 +268,7 @@ const AdminAnalytics = () => {
                                 type='button'
                                 disabled={!canGoNextWeek || loading}
                                 onClick={() => setWeekIndex((prev) => prev - 1)}
-                                className='rounded-md border px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
+                                className='rounded-xl border px-2 py-1 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-50'
                                 style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                             >
                                 Next Week
@@ -290,23 +290,23 @@ const AdminAnalytics = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5'>
-                <article className='rounded-md border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Avg DAU</p>
                     <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.avgDau)}</p>
                 </article>
-                <article className='rounded-md border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Signups</p>
                     <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.totalSignups)}</p>
                 </article>
-                <article className='rounded-md border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Solved</p>
                     <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.totalSolved)}</p>
                 </article>
-                <article className='rounded-md border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Issue Signals</p>
                     <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.totalReports)}</p>
                 </article>
-                <article className='rounded-md border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 sm:col-span-2 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <p className='text-xs font-semibold uppercase tracking-wide' style={{ color: palette.mid }}>Issues / 1k Solves</p>
                     <p className='pt-1 text-2xl font-black'>{formatNumber(overviewStats.reportsPerThousand)}</p>
                 </article>
@@ -318,7 +318,7 @@ const AdminAnalytics = () => {
                     return (
                         <article
                             key={card.title}
-                            className='rounded-md border p-4'
+                            className='rounded-xl border p-4'
                             style={{ borderColor: palette.mid, backgroundColor: palette.main }}
                         >
                             <div className='flex items-start justify-between gap-2'>
@@ -333,11 +333,11 @@ const AdminAnalytics = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-5'>
-                <article className='rounded-md border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Active Users Trend</h3>
                         <span
-                            className='rounded-md px-2 py-1 text-xs'
+                            className='rounded-xl px-2 py-1 text-xs'
                             style={{ backgroundColor: palette.french, color: palette.secondary }}
                         >
                             {range === 'month' ? '30 points' : '7 points'}
@@ -367,11 +367,11 @@ const AdminAnalytics = () => {
                     </div>
                 </article>
 
-                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Issue Type Distribution</h3>
                         <span
-                            className='rounded-md px-2 py-1 text-xs'
+                            className='rounded-xl px-2 py-1 text-xs'
                             style={{ backgroundColor: palette.french, color: palette.secondary }}
                         >
                             Derived from attempts
@@ -410,10 +410,10 @@ const AdminAnalytics = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-6'>
-                <article className='rounded-md border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-3' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Signups, Solves & Issue Signals</h3>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-xl px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             {range === 'month' ? 'Monthly trend' : 'Weekly trend'}
                         </span>
                     </header>
@@ -432,10 +432,10 @@ const AdminAnalytics = () => {
                     </div>
                 </article>
 
-                <article className='rounded-md border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-2' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Retention Curve</h3>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-xl px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Cohort
                         </span>
                     </header>
@@ -458,7 +458,7 @@ const AdminAnalytics = () => {
                     </div>
                 </article>
 
-                <article className='rounded-md border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4 xl:col-span-1' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3'>
                         <h3 className='text-sm font-semibold md:text-base'>System Health</h3>
                     </header>
@@ -475,10 +475,10 @@ const AdminAnalytics = () => {
             </div>
 
             <div className='grid grid-cols-1 gap-4 xl:grid-cols-2'>
-                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Moderation Alerts</h3>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-xl px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Generated from live signals
                         </span>
                     </header>
@@ -496,10 +496,10 @@ const AdminAnalytics = () => {
                     </div>
                 </article>
 
-                <article className='rounded-md border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
+                <article className='rounded-xl border p-4' style={{ borderColor: palette.mid, backgroundColor: palette.main }}>
                     <header className='pb-3 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold md:text-base'>Top Topics Snapshot</h3>
-                        <span className='rounded-md px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
+                        <span className='rounded-xl px-2 py-1 text-xs' style={{ backgroundColor: palette.french, color: palette.secondary }}>
                             Live topic ranking
                         </span>
                     </header>

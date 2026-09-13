@@ -284,7 +284,7 @@ const Notifications = () => {
                     <div className="flex items-center gap-3">
                         <h1 className="font-bold text-3xl lg:text-4xl">Notifications</h1>
                         {unreadCount > 0 && (
-                            <span className="bg-[var(--accent-color)] text-white text-sm font-bold px-3 py-1 rounded-md">
+                            <span className="bg-[var(--accent-color)] text-white text-sm font-bold px-3 py-1 rounded-xl">
                                 {unreadCount}
                             </span>
                         )}
@@ -301,7 +301,7 @@ const Notifications = () => {
                             <button
                                 key={opt.value}
                                 onClick={() => { setFilter(opt.value); setSelectedIds([]); }}
-                                className={`px-4 py-2 rounded-md text-xs font-semibold [var(--white)]space-nowrap active:scale-95 transition-all shrink-0 cursor-pointer ${filter === opt.value
+                                className={`px-4 py-2 rounded-xl text-xs font-semibold [var(--white)]space-nowrap active:scale-95 transition-all shrink-0 cursor-pointer ${filter === opt.value
                                     ? 'bg-gradient-to-t from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white'
                                     : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--white)]/80 '
                                     }`}
@@ -322,7 +322,7 @@ const Notifications = () => {
                                     }}
                                     className={`
                                     w-7 h-7 flex items-center justify-center
-                                    border rounded-md cursor-pointer
+                                    border rounded-xl cursor-pointer
                                     transition-all duration-200
                                     hover:ring-offset-1
                                     active:scale-90
@@ -349,21 +349,21 @@ const Notifications = () => {
                                     <button
                                         onClick={handleMarkSelectedRead}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-md text-xs font-semibold hover:bg-gray-200 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-xl text-xs font-semibold hover:bg-gray-200 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Mark read
                                     </button>
                                     <button
                                         onClick={handleMarkSelectedUnread}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-md text-xs font-semibold hover:bg-gray-200 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-xl text-xs font-semibold hover:bg-gray-200 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Mark unread
                                     </button>
                                     <button
                                         onClick={handleDeleteSelected}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-red-50 text-[var(--accent-color)] rounded-md text-xs font-semibold hover:bg-red-100 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-red-50 text-[var(--accent-color)] rounded-xl text-xs font-semibold hover:bg-red-100 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Delete ({selectedIds.length})
                                     </button>
@@ -373,7 +373,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleMarkAllRead}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-[var(--accent-color)] text-white rounded-md text-xs font-semibold hover:bg-[var(--dark-accent-color)] transition-all cursor-pointer disabled:opacity-50"
+                                    className="px-3 py-1.5 bg-[var(--accent-color)] text-white rounded-xl text-xs font-semibold hover:bg-[var(--dark-accent-color)] transition-all cursor-pointer disabled:opacity-50"
                                 >
                                     Mark all read
                                 </button>
@@ -382,7 +382,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleClearAll}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-[var(--white)] text-[var(--raisin-black)] rounded-md border border-[var(--mid-main-secondary)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
+                                    className="px-3 py-1.5 bg-[var(--white)] text-[var(--raisin-black)] rounded-xl border border-[var(--mid-main-secondary)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
                                 >
                                     Clear all
                                 </button>
@@ -416,7 +416,7 @@ const Notifications = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, x: -20, height: 0 }}
                                             transition={{ duration: 0.2 }}
-                                            className={`flex items-center gap-3 rounded-md p-4 text-[var(--secondary-color)] transition-all cursor-pointer h-full border-l-4 ${!notification.read
+                                            className={`flex items-center gap-3 rounded-xl p-4 text-[var(--secondary-color)] transition-all cursor-pointer h-full border-l-4 ${!notification.read
                                                 ? `bg-[var(--white)] shadow-md ${config.borderColor}`
                                                 : 'bg-[var(--white)]/40 border-gray-200 shadow-sm text-[var(--secondary-color)] '
                                                 } hover:shadow-md`}
@@ -430,7 +430,7 @@ const Notifications = () => {
                                                     }}
                                                     className={`
                                                     w-6 h-6 flex items-center justify-center
-                                                    border rounded-md cursor-pointer
+                                                    border rounded-xl cursor-pointer
                                                     transition-all duration-200
                                                     hover:ring-2
                                                     hover:ring-[var(--accent-color)]
@@ -473,7 +473,7 @@ const Notifications = () => {
                                                     {formatTimeAgo(notification.created_at)}
                                                 </span>
                                             </div>
-                                            <div className={`flex items-center justify-center w-15 h-15 rounded-md shrink-0 ${config.bgColor}`}>
+                                            <div className={`flex items-center justify-center w-15 h-15 rounded-xl shrink-0 ${config.bgColor}`}>
                                                 {config.icon}
                                             </div>
                                         </motion.div>

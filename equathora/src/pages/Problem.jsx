@@ -955,7 +955,7 @@ const Problem = () => {
                         <p className="text-[var(--mid-main-secondary)]">Upgrade to premium to view this problem.</p>
                         <button
                             onClick={() => navigate(-1)}
-                            className="text-white font-medium bg-gradient-to-b from-amber-600 to-amber-500 px-4 py-2 rounded-md hover:to-amber-600 transition-all active:scale-95 cursor-pointer"
+                            className="text-white font-medium bg-gradient-to-b from-amber-600 to-amber-500 px-4 py-2 rounded-xl hover:to-amber-600 transition-all active:scale-95 cursor-pointer"
                         >
                             Go back
                         </button>
@@ -997,7 +997,7 @@ const Problem = () => {
                 <header className="flex items-center justify-between gap-2 md:gap-3  bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0 max-w-600">
                     {/* Left side - Back button and Navigation */}
                     <div className="flex items-center gap-2">
-                        <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-md hover:bg-[var(--french-gray)] h-9 md:h-10">
+                        <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-xs md:text-sm text-[var(--secondary-color)] font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-xl hover:bg-[var(--french-gray)] h-9 md:h-10">
                             <FaArrowLeft />
                             <span className="hidden md:inline">Back to Exercises</span>
                             <span className="md:hidden">Back</span>
@@ -1005,14 +1005,14 @@ const Problem = () => {
                         <div className="flex items-center gap-1.5">
                             <button
                                 onClick={() => prevProblemSlug && navigate(`/problems/${prevProblemSlug}`)}
-                                className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-md transition-all duration-200 bg-transparent border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
+                                className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl transition-all duration-200 bg-transparent border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                                 title={prevProblem ? `Previous: ${prevProblem.title}` : ''}
                             >
                                 <FaChevronLeft className="text-sm" />
                             </button>
                             <button
                                 onClick={() => nextProblemSlug && navigate(`/problems/${nextProblemSlug}`)}
-                                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-md transition-all duration-200 bg-transparent border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
+                                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-xl transition-all duration-200 bg-transparent border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
                                 title={nextProblem ? `Next: ${nextProblem.title}` : ''}
                             >
                                 <span className="hidden sm:inline text-xs md:text-sm font-medium">Next</span>
@@ -1039,7 +1039,7 @@ const Problem = () => {
                                     setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }}
-                                className={`bg-transparent border-1 px-3 lg:px-4 rounded-md cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)] hover:text-[var(--accent-color)]'}`}
+                                className={`bg-transparent border-1 px-3 lg:px-4 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-[var(--accent-color)] border-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)] hover:text-[var(--accent-color)]'}`}
                                 title={showDrawingPad ? "Hide sketch pad" : "Show sketch pad"}
                             >
                                 <FaPencilAlt className="text-sm md:text-base" />
@@ -1047,7 +1047,7 @@ const Problem = () => {
                             </button>
                             <button
                                 onClick={() => setShowHelpModal(true)}
-                                className="bg-transparent border-1 border-[var(--mid-main-secondary)] px-3 md:px-4 rounded-md cursor-pointer text-xs md:text-sm transition-all duration-200 hover:text-[var(--accent-color)] text-[var(--mid-main-secondary)] flex items-center gap-1.5 h-9 md:h-10"
+                                className="bg-transparent border-1 border-[var(--mid-main-secondary)] px-3 md:px-4 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 hover:text-[var(--accent-color)] text-[var(--mid-main-secondary)] flex items-center gap-1.5 h-9 md:h-10"
                                 title="Help & Guide"
                             >
                                 <FaQuestionCircle className="text-sm md:text-base" />
@@ -1055,13 +1055,13 @@ const Problem = () => {
                             </button>
                             <Link
                                 to="/feedback"
-                                className="bg-transparent border-1 border-[var(--mid-main-secondary)] px-3 rounded-md cursor-pointer text-xs md:text-sm transition-all duration-200 hover:!text-[var(--accent-color)] !text-[var(--mid-main-secondary)] flex items-center justify-center w-9 h-9 md:w-10 md:h-10"
+                                className="bg-transparent border-1 border-[var(--mid-main-secondary)] px-3 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 hover:!text-[var(--accent-color)] !text-[var(--mid-main-secondary)] flex items-center justify-center w-9 h-9 md:w-10 md:h-10"
                                 title="Report Problem"
                             >
                                 <FaFlag className="text-sm md:text-base" />
                             </Link>
                             <button
-                                className={`bg-transparent border-1 text-xs md:text-sm px-3 rounded-md cursor-pointer transition-all duration-200 hover:text-[var(--accent-color)] flex items-center justify-center w-9 h-9 md:w-10 md:h-10 ${isFavorite ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)]'}`}
+                                className={`bg-transparent border-1 text-xs md:text-sm px-3 rounded-xl cursor-pointer transition-all duration-200 hover:text-[var(--accent-color)] flex items-center justify-center w-9 h-9 md:w-10 md:h-10 ${isFavorite ? 'text-[var(--accent-color)] bg-[rgba(217,4,41,0.05)]' : 'text-[var(--mid-main-secondary)] border-[var(--mid-main-secondary)]'}`}
                                 onClick={handleFavoriteToggle}
                                 title={isFavorite ? "Remove from favorites" : "Add to favorites"}
                             >
@@ -1163,7 +1163,7 @@ const Problem = () => {
                 {/* Main Content */}
                 <section className="flex flex-col lg:flex-row flex-1 w-full gap-1 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 lg:overflow-y-hidden max-h-dvh">
                     {/* Description Side Left Side */}
-                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
+                    <aside className={`flex flex-col w-full rounded-xl bg-[var(--main-color)] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
                             <div className={`flex gap-1 flex-wrap ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
                                 {/* Description Button */}
@@ -1176,7 +1176,7 @@ const Problem = () => {
                                     setShowMentorChat(false);
                                     setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Description</span>
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Description</span>}
                                     <FaFileAlt className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
@@ -1195,7 +1195,7 @@ const Problem = () => {
                                         setShowSolution(true);
                                     }
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription && showSolution && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription && showSolution && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Solution</span>
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Solution</span>}
                                     <FaCalculator className={`text-[10px] md:text-xs text-[var(--secondary-color)] ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
@@ -1210,7 +1210,7 @@ const Problem = () => {
                                     setShowMentorChat(false);
                                     setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 
                                 ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} 
                                 ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
                                     style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
@@ -1231,7 +1231,7 @@ const Problem = () => {
                                     setChatPanel(true);
                                     setChatPanelMounted(true);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 min-w-fit
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 min-w-fit
                                 ${chatPanel && !showDescription ? 'bg-[var(--main-color)]' : ''} 
                                 ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
                                     style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Ask Sigma" : ""}>
@@ -1261,14 +1261,14 @@ const Problem = () => {
                             {/* Mobile Only - Toggle Collapse/Expand */}
                             <button type="button" onClick={() => {
                                 setShowTop(!showTop);
-                            }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  flex items-center gap-2 font-medium transition-colors duration-200`}>
+                            }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  flex items-center gap-2 font-medium transition-colors duration-200`}>
                                 {showTop ? <FaChevronDown className="text-sm" /> : <FaChevronUp className="text-sm" />}
                             </button>
 
                             {/* Desktop Only - Horizontal Collapse Toggle */}
                             <button type="button" onClick={() => {
                                 setDescriptionCollapsed(!descriptionCollapsed);
-                            }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-md text-xs md:text-sm  items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
+                            }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
                                 <FaChevronRight className={`text-sm transition-transform duration-200 ${descriptionCollapsed ? 'rotate-0' : 'rotate-180'}`} />
                             </button>
                         </div>
@@ -1281,26 +1281,26 @@ const Problem = () => {
                                     <div className="flex flex-col gap-3">
                                         <h1 className=" text-xl sm:text-2xl md:text-3xl text-[var(--secondary-color)] font-bold m-0">{problem.title}</h1>
                                         <div className="flex gap-1.5 md:gap-2 flex-wrap  items-center">
-                                            <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-500' :
+                                            <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium ${problem.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-500' :
                                                 problem.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
                                                     'bg-red-500/10 text-[var(--accent-color)]'
                                                 }`}>
                                                 {problem.difficulty}
                                             </span>
                                             {problem?.is_premium ? (
-                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-gradient-to-b text-white from-amber-600 to-amber-400">
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium bg-gradient-to-b text-white from-amber-600 to-amber-400">
                                                     Premium
                                                 </span>
                                             ) : (
-                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-[var(--secondary-color)]">
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium bg-[var(--french-gray)]/40 text-[var(--secondary-color)]">
                                                     Free
                                                 </span>
                                             )}
                                             {problem.topic && (
-                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-[var(--mid-main-secondary)] text-white">{formatTopicLabel(problem.topic)}</span>
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium bg-[var(--mid-main-secondary)] text-white">{formatTopicLabel(problem.topic)}</span>
                                             )}
                                             {isCompleted && (
-                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
                                             )}
                                         </div>
                                     </div>
@@ -1317,7 +1317,7 @@ const Problem = () => {
                                         />
 
                                         {showDrawingPad && (
-                                            <div className="rounded-md border border-[var(--mid-main-secondary)] bg-[var(--french-gray)]/20 p-3 md:p-4 flex flex-col gap-3">
+                                            <div className="rounded-xl border border-[var(--mid-main-secondary)] bg-[var(--french-gray)]/20 p-3 md:p-4 flex flex-col gap-3">
                                                 <div className="flex flex-wrap items-center justify-between gap-2">
                                                     <div className="flex items-center gap-2">
                                                         <span className="text-[10px] md:text-xs font-semibold text-[var(--secondary-color)] uppercase tracking-[0.05em]">Sketch</span>
@@ -1325,14 +1325,14 @@ const Problem = () => {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('var(--secondary-color)')}
-                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'bg-[var(--secondary-color)] text-[var(--main-color)] border-[var(--secondary-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--secondary-color)] active:scale-95'}`}
+                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'bg-[var(--secondary-color)] text-[var(--main-color)] border-[var(--secondary-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--secondary-color)] active:scale-95'}`}
                                                             >
                                                                 {currentTheme === 'dark' ? 'White' : 'Black'}
                                                             </button>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('red')}
-                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-[var(--accent-color)] text-[var(--main-color)] border-[var(--accent-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)] active:scale-95'}`}
+                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-[var(--accent-color)] text-[var(--main-color)] border-[var(--accent-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)] active:scale-95'}`}
                                                             >
                                                                 Red
                                                             </button>
@@ -1343,7 +1343,7 @@ const Problem = () => {
                                                             type="button"
                                                             onClick={undoStroke}
                                                             disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--secondary-color)] border-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)] active:scale-95'}`}
+                                                            className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--secondary-color)] border-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)] active:scale-95'}`}
                                                         >
                                                             Undo
                                                         </button>
@@ -1351,14 +1351,14 @@ const Problem = () => {
                                                             type="button"
                                                             onClick={clearCanvas}
                                                             disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--accent-color)] border-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white active:scale-95'}`}
+                                                            className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--accent-color)] border-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white active:scale-95'}`}
                                                         >
                                                             Clear
                                                         </button>
                                                     </div>
                                                 </div>
 
-                                                <div className="rounded-md border border-[var(--mid-main-secondary)] bg-[var(--main-color)] overflow-hidden shadow-sm">
+                                                <div className="rounded-xl border border-[var(--mid-main-secondary)] bg-[var(--main-color)] overflow-hidden shadow-sm">
                                                     <canvas
                                                         ref={canvasRef}
                                                         className="w-full h-48 md:h-56 bg-[var(--main-color)] cursor-crosshair"
@@ -1384,7 +1384,7 @@ const Problem = () => {
                                             <div>
                                                 <h3 className="text-sm md:text-base pb-2 md:pb-3 text-[var(--secondary-color)] font-bold ">Examples</h3>
                                                 {examples.map((example, index) => (
-                                                    <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/40 rounded-md pb-2 md:pb-3 last:pb-0">
+                                                    <div key={index} className="p-3 md:p-4 bg-[var(--french-gray)]/40 rounded-xl pb-2 md:pb-3 last:pb-0">
                                                         <div className="text-[10px] md:text-xs font-bold text-[var(--secondary-color)] pb-1.5 md:pb-2 ">Example {index + 1}:</div>
                                                         <div className="flex flex-col gap-1.5 md:gap-2">
                                                             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm ">
@@ -1458,12 +1458,12 @@ const Problem = () => {
                                                                     <Link
                                                                         key={index}
                                                                         to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
-                                                                        className="flex items-center justify-between p-2 md:p-3 rounded-md group hover:bg-[var(--white)]"
+                                                                        className="flex items-center justify-between p-2 md:p-3 rounded-xl group hover:bg-[var(--white)]"
                                                                     >
                                                                         <span className="text-xs md:text-sm text-[var(--secondary-color)]  group-hover:text-[var(--dark-accent-color)]">
                                                                             {question.title}
                                                                         </span>
-                                                                        <span className={`px-2 py-0.5 rounded-md text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
+                                                                        <span className={`px-2 py-0.5 rounded-xl text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
                                                                             question.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
                                                                                 'bg-red-500/10 text-[var(--accent-color)]'
                                                                             }`}>
@@ -1491,7 +1491,7 @@ const Problem = () => {
                                                     <div className={`transition-all duration-300 ease-in-out ${latexOpen ? 'max-h-96 opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'}`}>
                                                         <div className="bg-[var(--main-color)] flex flex-col gap-1">
                                                             {fields.map((f, i) => (
-                                                                <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)]  p-2 md:p-3 bg-[var(--white)] rounded-md">
+                                                                <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)]  p-2 md:p-3 bg-[var(--white)] rounded-xl">
                                                                     <span className="font-bold pr-2">Step {i + 1}: </span>{f.latex || <span className="opacity-30 italic">empty</span>}
                                                                 </p>
                                                             ))}
@@ -1513,7 +1513,7 @@ const Problem = () => {
                                     <div>
                                         {/* Inline feedback for incorrect answers only */}
                                         {submissionFeedback && !submissionFeedback.isCorrect && (
-                                            <div className="rounded-md px-4 py-3 border transition-all duration-300 border-[var(--dark-accent-color)]">
+                                            <div className="rounded-xl px-4 py-3 border transition-all duration-300 border-[var(--dark-accent-color)]">
                                                 <div className="flex items-center gap-2 pb-1.5">
                                                     <div className="w-5 h-5 rounded-full flex items-center justify-center text-[var(--white)] text-[10px] font-bold flex-shrink-0 bg-[var(--dark-accent-color)]">
                                                         <FaTimes className='text-white' />
@@ -1543,7 +1543,7 @@ const Problem = () => {
                                                         setShowSubmissionDetail(true);
                                                         setChatPanel(false);
                                                     }}
-                                                    className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-md border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/70' :
+                                                    className={`bg-[var(--french-gray)]/20 px-4 py-2.5 rounded-xl border-l-4 cursor-pointer transition-all duration-200 ${submission.status === 'accepted' ? 'border-green-500 hover:bg-[var(--french-gray)]/70' :
                                                         submission.status === 'wrong' ? 'border-[var(--accent-color)] hover:bg-[var(--french-gray)]/30' :
                                                             'border-yellow-500 hover:bg-[var(--french-gray)]/30'
                                                         }`}
@@ -1613,7 +1613,7 @@ const Problem = () => {
 
                     {/* Solving Side - Math Live*/}
                     {/* We also pass the problem description and accepted solution to be checked by the AI */}
-                    <article className={`flex justify-start items-stretch flex-col w-full lg:h-full overflow-hidden rounded-md transition-all duration-300 ${descriptionCollapsed ? 'lg:w-full' : 'lg:w-1/2'}`}>
+                    <article className={`flex justify-start items-stretch flex-col w-full lg:h-full overflow-hidden rounded-xl transition-all duration-300 ${descriptionCollapsed ? 'lg:w-full' : 'lg:w-1/2'}`}>
                         <MathLiveExample
                             key={`ml-${problem?.id}-${timerResetSeq}`}
                             onSubmit={handleNewSubmission}

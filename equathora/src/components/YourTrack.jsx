@@ -33,7 +33,7 @@ const YourTrack = ({ premium, loading }) => {
                     <h3 className=" text-[var(--secondary-color)] text-2xl font-medium">
                         Your Track
                     </h3>
-                    <span className={`text-sm font-medium px-3 py-1 rounded-md bg-gradient-to-br 
+                    <span className={`text-sm font-medium px-3 py-1 rounded-xl bg-gradient-to-br 
                         ${premium ? 'from-amber-600 to-amber-400' : 'text-[var(--dark-accent-color)] from-[rgba(237,242,244,0.8)] to-white'}`}>
                         Level {level}
                     </span>
@@ -43,7 +43,7 @@ const YourTrack = ({ premium, loading }) => {
                 <div className="flex items-center justify-between w-full gap-3 p-0">
                     <Link
                         to="/journey"
-                        className="flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-md flex items-center relative transition-all duration-300 overflow-hidden group"
+                        className="flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-xl flex items-center relative transition-all duration-300 overflow-hidden group"
                     >
                         <div
                             className={`h-full rounded-tr-md rounded-br-md bg-gradient-to-r transition-all duration-500 relative ${premium ? 'from-amber-600 to-amber-400' : 'from-[var(--accent-color)] to-[var(--dark-accent-color)]'}`}
@@ -77,7 +77,7 @@ const YourTrack = ({ premium, loading }) => {
 
                 {/* Mini Stats Grid */}
                 <div className="grid grid-cols-3 gap-3 pt-2 p-0 md:max-w-1/2 justify-items-center lg:justify-items-start theme-lock">
-                    <div className={`bg-gradient-to-br rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
+                    <div className={`bg-gradient-to-br rounded-xl border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
                         ${premium ? 'from-amber-500 to-amber-200 font-medium' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Current Streak</div>
                         <div className="text-2xl font-medium text-[var(--accent-color)] flex items-center gap-1 justify-center lg:justify-start">
@@ -93,7 +93,7 @@ const YourTrack = ({ premium, loading }) => {
                             {currentStreak}
                         </div>
                     </div>
-                    <div className={`bg-gradient-to-br rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
+                    <div className={`bg-gradient-to-br rounded-xl border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
                         ${premium ? 'from-amber-500 to-amber-200' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Best Streak</div>
                         <div className="text-2xl font-medium text-[var(--secondary-color)] flex items-center gap-1 justify-center lg:justify-start">
@@ -109,7 +109,7 @@ const YourTrack = ({ premium, loading }) => {
                             {bestStreak}
                         </div>
                     </div>
-                    <div className={`bg-gradient-to-br rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
+                    <div className={`bg-gradient-to-br rounded-xl border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
                         ${premium ? 'from-amber-500 to-amber-200' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Accuracy</div>
                         <div className="text-2xl font-medium text-[var(--secondary-color)] justify-center lg:justify-start flex">

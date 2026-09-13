@@ -29,7 +29,7 @@
     justify-content: center;
     width: 32px;
     height: 32px;
-    border-radius: 6px;
+    border-radius: 12px;
     transition: all 0.2s ease;
     background: transparent;
     border: none;
@@ -333,7 +333,7 @@
 
 .sidebar-content::-webkit-scrollbar-thumb {
     background: var(--french-gray);
-    border-radius: 6px;
+    border-radius: 12px;
 }
 
 .sidebar-content::-webkit-scrollbar-thumb:hover {
@@ -350,7 +350,7 @@
 
 .sidebar-nav::-webkit-scrollbar-thumb {
     background: var(--french-gray);
-    border-radius: 6px;
+    border-radius: 12px;
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb:hover {

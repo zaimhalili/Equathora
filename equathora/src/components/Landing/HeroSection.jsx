@@ -269,7 +269,7 @@ const HeroSection = () => {
                                     animate={{ y: [0, -6, 0] }}
                                     transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                                 >
-                                    <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary-color)] rounded-md shadow-2xl">
+                                    <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary-color)] rounded-xl shadow-2xl">
                                         <div>
                                             <p className="font-bold text-xl text-[var(--main-color)]">50+</p>
                                             <p className="text-[10px] text-[var(--mid-main-secondary)]">Active learners</p>
@@ -283,7 +283,7 @@ const HeroSection = () => {
                                     animate={{ y: [0, 8, 0] }}
                                     transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
                                 >
-                                    <div className="px-4 py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] rounded-md shadow-2xl text-white">
+                                    <div className="px-4 py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] rounded-xl shadow-2xl text-white">
                                         <p className="text-2xl font-bold">98%</p>
                                         <p className="text-[10px] opacity-90 ">Success Rate</p>
                                     </div>
