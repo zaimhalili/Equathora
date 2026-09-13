@@ -268,7 +268,7 @@ const Navbar = () => {
             <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
               <li>
                 {/* Main Logo - Redirect to Dashboard */}
-                <Link to='/dashboard' className='!text-[var(--secondary-color)] list-none font-bold  text-lg relative pl-5' title='Home'>
+                <Link to='/dashboard' className='!text-[var(--secondary-color)] list-none !font-bold text-lg relative pl-5' title='Home'>
                   <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[1px] -top-[5px]' />
                   quathora
                 </Link>

@@ -25,7 +25,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
         >
             <button
                 type="button"
-                className='bg-transparent text-[var(--secondary-color)] border-none  h-full my-auto w-auto list-none font-semibold text-lg px-3 lg:px-2 hover:text-[var(--accent-color)] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                className='bg-transparent text-[var(--secondary-color)] border-none h-full my-auto w-auto list-none font-medium text-lg px-3 lg:px-2 hover:text-[var(--accent-color)] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
                 aria-haspopup="true"
                 aria-expanded={isOpen}
                 aria-controls={dropdownId}
@@ -57,7 +57,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                                 className={item.isAvatar ? 'h-[30px] w-[30px] rounded-md object-cover' : 'h-[50px] w-[50px]'}
                             />
                             <div className="flex flex-col justify-center ">
-                                <h4 className='text-[1.1rem] font-semibold'>{item.text}</h4>
+                                <h4 className='text-[1.1rem] font-medium'>{item.text}</h4>
                                 <h6 className='text-[0.8rem] font-normal'>{item.description}</h6>
                             </div>
                         </button>
@@ -83,7 +83,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                                     />
                                 )}
                                 <div className="flex flex-col justify-center ">
-                                    <h4 className='text-[1.1rem] font-semibold'>{item.text}</h4>
+                                    <h4 className='text-[1.1rem] font-medium'>{item.text}</h4>
                                     <h6 className='text-[0.8rem] font-normal'>{item.description}</h6>
                                 </div>
                             </div>
@@ -117,7 +117,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                                     />
                                 )}
                                 <div className="flex flex-col justify-center ">
-                                    <h4 className='text-[1.1rem] font-semibold'>{item.text}</h4>
+                                    <h4 className='text-[1.1rem] font-medium'>{item.text}</h4>
                                     <h6 className='text-[0.8rem] font-normal'>{item.description}</h6>
                                 </div>
                             </div>

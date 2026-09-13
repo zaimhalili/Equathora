@@ -28,7 +28,7 @@ const BlogPost = () => {
         switch (contentItem.type) {
             case 'heading':
                 return (
-                    <h2 key={index} className='text-xl sm:text-2xl font-bold  pt-2'>
+                    <h2 key={index} className='text-xl sm:text-2xl font-medium  pt-2'>
                         {contentItem.text}
                     </h2>
                 );
@@ -107,7 +107,7 @@ const BlogPost = () => {
                                         className='rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 object-cover object-bottom'
                                     />
                                     <div className='flex flex-col gap-1'>
-                                        <h3 className='font-bold text-base sm:text-xl text-[var(--secondary-color)]'>Find the post interesting or useful?</h3>
+                                        <h3 className='font-medium text-base sm:text-xl text-[var(--secondary-color)]'>Find the post interesting or useful?</h3>
                                         <p className='text-sm sm:text-lg text-[var(--secondary-color)]'>Share it around and have others benefit too!</p>
                                     </div>
                                 </div>
@@ -144,7 +144,7 @@ const BlogPost = () => {
                 {/* Other Community Posts */}
                 <section className='w-full flex flex-col bg-[var(--main-color)] items-center py-4'>
                     <article className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pb-6 text-[var(--secondary-color)] flex flex-col gap-4'>
-                        <h1 className='text-xl sm:text-2xl font-bold  text-[var(--secondary-color)]'>Other Posts You Might Like</h1>
+                        <h1 className='text-xl sm:text-2xl font-medium  text-[var(--secondary-color)]'>Other Posts You Might Like</h1>
                         <div className='flex w-full gap-4 flex-wrap'>
                             {otherPosts.map(otherPost => (
                                 <Link
@@ -153,7 +153,7 @@ const BlogPost = () => {
                                     className='bg-[var(--white)] rounded-md shadow-[0_10px_10px_rgba(141,153,174,0.3)] py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80'
                                 >
                                     <img src={otherPost.thumbnail} alt="" className='rounded-md w-full max-h-40 object-cover' />
-                                    <p className='text-md text-left lg:text-lg cursor-pointer  text-[var(--secondary-color)] font-bold'>
+                                    <p className='text-md text-left lg:text-lg cursor-pointer  text-[var(--secondary-color)] font-medium'>
                                         {otherPost.title}
                                     </p>
                                     <p className='text-[var(--mid-main-secondary)] '>

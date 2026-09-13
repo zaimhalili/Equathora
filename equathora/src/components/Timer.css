@@ -1,18 +1,16 @@
 .stopwatch {
     padding: 0 0.75rem;
-    background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
-    color: white;
+    color: var(--mid-main-secondary);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.875rem;
-
+    border: 1px solid var(--mid-main-secondary);
     font-weight: 500;
     border-radius: 0.5rem;
     height: 2.25rem;
     white-space: nowrap;
     /* animation: changeColor 300s ease-in-out forwards; */
-    /* border: 2px solid var(--french-gray); */
 }
 
 @media only screen and (min-width: 768px) {

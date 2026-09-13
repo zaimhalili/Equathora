@@ -30,10 +30,10 @@ const YourTrack = ({ premium, loading }) => {
         <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] pt-8 gap-8">
             <div className="flex flex-col w-full gap-3 p-0">
                 <div className="flex items-center justify-between p-0">
-                    <h3 className=" text-[var(--secondary-color)] text-2xl font-bold">
+                    <h3 className=" text-[var(--secondary-color)] text-2xl font-medium">
                         Your Track
                     </h3>
-                    <span className={`text-sm font-semibold px-3 py-1 rounded-md bg-gradient-to-br 
+                    <span className={`text-sm font-medium px-3 py-1 rounded-md bg-gradient-to-br 
                         ${premium ? 'from-amber-600 to-amber-400' : 'text-[var(--dark-accent-color)] from-[rgba(237,242,244,0.8)] to-white'}`}>
                         Level {level}
                     </span>
@@ -67,20 +67,20 @@ const YourTrack = ({ premium, loading }) => {
                 {/* Stats Row */}
                 <div className="flex items-center justify-between p-0">
                     <div className=" text-base">
-                        <span className="font-bold text-lg">{solved}</span>{' '}/{' '}{total}
+                        <span className="font-medium text-lg">{solved}</span>{' '}/{' '}{total}
                         <span className="text-sm pl-1">Problems Solved</span>
                     </div>
                     <div className="text-s">
-                        <span className="font-semibold">{milestoneMessage}</span>
+                        <span className="font-medium">{milestoneMessage}</span>
                     </div>
                 </div>
 
                 {/* Mini Stats Grid */}
                 <div className="grid grid-cols-3 gap-3 pt-2 p-0 md:max-w-1/2 justify-items-center lg:justify-items-start theme-lock">
                     <div className={`bg-gradient-to-br rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
-                        ${premium ? 'from-amber-500 to-amber-200 font-bold' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
+                        ${premium ? 'from-amber-500 to-amber-200 font-medium' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Current Streak</div>
-                        <div className="text-2xl font-bold text-[var(--accent-color)] flex items-center gap-1 justify-center lg:justify-start">
+                        <div className="text-2xl font-medium text-[var(--accent-color)] flex items-center gap-1 justify-center lg:justify-start">
                             <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <linearGradient id="icon-gradient-fire-streak" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -96,7 +96,7 @@ const YourTrack = ({ premium, loading }) => {
                     <div className={`bg-gradient-to-br rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
                         ${premium ? 'from-amber-500 to-amber-200' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Best Streak</div>
-                        <div className="text-2xl font-bold text-[var(--secondary-color)] flex items-center gap-1 justify-center lg:justify-start">
+                        <div className="text-2xl font-medium text-[var(--secondary-color)] flex items-center gap-1 justify-center lg:justify-start">
                             <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <linearGradient id="icon-gradient-bolt-streak" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -112,7 +112,7 @@ const YourTrack = ({ premium, loading }) => {
                     <div className={`bg-gradient-to-br rounded-md border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
                         ${premium ? 'from-amber-500 to-amber-200' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
                         <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Accuracy</div>
-                        <div className="text-2xl font-bold text-[var(--secondary-color)] justify-center lg:justify-start flex">
+                        <div className="text-2xl font-medium text-[var(--secondary-color)] justify-center lg:justify-start flex">
                             {avgAccuracy === null ? 'N/A' : `${avgAccuracy}%`}
                         </div>
                     </div>

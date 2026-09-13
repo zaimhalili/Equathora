@@ -1161,12 +1161,11 @@ const Problem = () => {
                 )}
 
                 {/* Main Content */}
-                <section className="flex flex-col lg:flex-row flex-1 w-full gap-2 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 lg:overflow-y-hidden max-h-dvh">
+                <section className="flex flex-col lg:flex-row flex-1 w-full gap-1 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 lg:overflow-y-hidden max-h-dvh">
                     {/* Description Side Left Side */}
-                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)]  text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
+                    <aside className={`flex flex-col w-full rounded-md bg-[var(--main-color)] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
                             <div className={`flex gap-1 flex-wrap ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
-
                                 {/* Description Button */}
                                 <button type="button" onClick={() => {
                                     setShowDescription(true);
@@ -1251,8 +1250,8 @@ const Problem = () => {
                                     <svg width="0" height="0">
                                         <defs>
                                             <linearGradient id="crownGradient" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="0%" stopColor="#fbbf24" />
                                                 <stop offset="100%" stopColor="#d97706" />
+                                                <stop offset="0%" stopColor="#fbbf24" />
                                             </linearGradient>
                                         </defs>
                                     </svg>
@@ -1307,10 +1306,6 @@ const Problem = () => {
                                     </div>
                                 ) : (<></>)}
 
-
-
-
-
                                 {/* Show Description State Check */}
                                 {showDescription &&
                                     <>
@@ -1330,14 +1325,14 @@ const Problem = () => {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('var(--secondary-color)')}
-                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'bg-[var(--secondary-color)] text-[var(--main-color)] border-[var(--secondary-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--secondary-color)]'}`}
+                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'bg-[var(--secondary-color)] text-[var(--main-color)] border-[var(--secondary-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--secondary-color)] active:scale-95'}`}
                                                             >
                                                                 {currentTheme === 'dark' ? 'White' : 'Black'}
                                                             </button>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('red')}
-                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-[var(--accent-color)] text-[var(--main-color)] border-[var(--accent-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]'}`}
+                                                                className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-[var(--accent-color)] text-[var(--main-color)] border-[var(--accent-color)]' : 'text-[var(--secondary-color)] border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)] active:scale-95'}`}
                                                             >
                                                                 Red
                                                             </button>
@@ -1348,7 +1343,7 @@ const Problem = () => {
                                                             type="button"
                                                             onClick={undoStroke}
                                                             disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--secondary-color)] border-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'}`}
+                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--secondary-color)] border-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)] active:scale-95'}`}
                                                         >
                                                             Undo
                                                         </button>
@@ -1356,7 +1351,7 @@ const Problem = () => {
                                                             type="button"
                                                             onClick={clearCanvas}
                                                             disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--accent-color)] border-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white'}`}
+                                                            className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-[var(--mid-main-secondary)] text-[var(--french-gray)]' : 'text-[var(--accent-color)] border-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-white active:scale-95'}`}
                                                         >
                                                             Clear
                                                         </button>
@@ -1414,22 +1409,22 @@ const Problem = () => {
                                         {/* Hints Section - Collapsible like LeetCode */}
                                         <div>
                                             {hintCount > 0 && (
-                                                <div className="border-t border-[var(--mid-main-secondary)]">
-                                                    <div className="flex flex-col">
+                                                <div className="">
+                                                    <div className="flex flex-col gap-3">
                                                         {Array.from({ length: hintCount }).map((_, index) => (
-                                                            <div key={index} className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
+                                                            <div key={index} className=" overflow-hidden">
                                                                 <button
-                                                                    className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
+                                                                    className="rounded-t-2xl w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
                                                                     onClick={() => toggleHint(index)}
                                                                 >
-                                                                    <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)]  flex items-center gap-2">
+                                                                    <div className="font-medium text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
                                                                         <FaLightbulb className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
                                                                         Hint {index + 1}
-                                                                    </span>
+                                                                    </div>
                                                                     <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints[index] ? 'rotate-180' : ''}`} />
                                                                 </button>
                                                                 <div className={`transition-all duration-300 ease-in-out ${openHints[index] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                                                    <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--main-color)] border-t border-[var(--mid-main-secondary)]">
+                                                                    <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--french-gray)]/40 rounded-b-2xl">
                                                                         <MathJaxRenderer
                                                                             content={loadedHints[index] ?? 'Loading hint...'}
                                                                             className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed  m-0"

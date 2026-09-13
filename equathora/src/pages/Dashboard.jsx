@@ -95,7 +95,7 @@ const Dashboard = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.5, delay: 0.1 }}
-                                    className="text-4xl text-center md:text-left pb-2 cursor-default  font-extrabold"
+                                    className="text-4xl text-center md:text-left pb-2 cursor-default font-medium"
                                 >
                                     {premium && (<FaCrown className='text-amber-500 inline pb-2 pr-1' />)}
                                     Welcome Back, {username}!
@@ -104,7 +104,7 @@ const Dashboard = () => {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.5, delay: 0.2 }}
-                                    className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] w-4/5 lg:w-[90%] cursor-default text-[var(--secondary-color)]"
+                                    className="text-md text-center md:text-left lg:text-lg leading-[1.2] w-4/5 lg:w-[90%] cursor-default text-[var(--secondary-color)]"
                                 >
                                     Tackle fun math and logic challenges with guided support to master your topics. <span className="font-semibold">Equathora is open, student-centered, and built to grow with you.</span>
                                 </motion.h4>
@@ -116,7 +116,7 @@ const Dashboard = () => {
                                     transition={{ duration: 0.5, delay: 0.3 }}
                                     className="flex flex-col text-center sm:text-left pt-8 pb-8"
                                 >
-                                    <h3 className="text-[var(--secondary-color)]  text-2xl font-bold pb-2">
+                                    <h3 className="text-[var(--secondary-color)]  text-2xl font-medium pb-2">
                                         Where To Start...
                                     </h3>
 
@@ -216,7 +216,7 @@ const Dashboard = () => {
                             className='flex flex-col w-full lg:w-[30%] gap-8'
                         >
                             <figure className="hidden lg:flex justify-center">
-                                <img src={Teacher} alt="teacher" loading='lazy' height={100} />
+                                <img src={Teacher} alt="teacher" loading='lazy' height={300} />
                             </figure>
 
                             {/* Become a Mentor Section */}

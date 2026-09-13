@@ -402,7 +402,7 @@ const ChatPanel = forwardRef(({
                         </span>
                         <Link
                             to="/premium"
-                            className="inline-flex items-center gap-1 font-bold text-amber-600 hover:text-amber-500 transition-colors"
+                            className="inline-flex items-center gap-1 font-bold !text-amber-600 hover:!text-amber-400 transition-colors"
                         >
                             <FaCrown />
                             Upgrade

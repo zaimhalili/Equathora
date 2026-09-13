@@ -964,7 +964,7 @@ ENHANCED FILTERING SYSTEM
 .problem-card-wrapper.premium-problem {
     border: 2px solid #d97706;
     /* amber-600 */
-    border-radius: 12px;
+    border-radius: 24px;
 }
 
 .problem-card-wrapper.locked {
@@ -988,7 +988,7 @@ ENHANCED FILTERING SYSTEM
     font-weight: 600;
     color: #fff;
     background: rgba(0, 0, 0, 0.35);
-    border-radius: 12px;
+    border-radius: 24px;
     pointer-events: none;
 }
 

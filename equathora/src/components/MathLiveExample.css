@@ -1,8 +1,6 @@
 .ml-wrapper {
     width: 100%;
     background: var(--main-color);
-    border: 1px solid var(--white);
-
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -128,17 +126,19 @@ math-field {
     --selection-background-color: var(--really-light-accent);
     --placeholder-color: var(--mid-main-secondary);
     --contains-highlight-background-color: var(--french-gray);
-
     font-size: 25px;
     color: var(--black);
     background: var(--white);
-    border: 2px solid var(--french-gray);
     padding: 0;
     display: block;
     min-height: 3rem;
     flex: 1;
     transition: all 0.150s ease;
     overflow-x: auto;
+}
+
+math-field:first-child {
+    border-radius: 10px !important;
 }
 
 math-field::-webkit-scrollbar {

@@ -147,10 +147,10 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <Link
                         to="/dashboard"
                         onClick={onClose}
-                        className="flex items-center gap-3 font-bold text-2xl transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                        className="flex items-center font-bold text-xl transition-transform hover:scale-[1.02] active:scale-[0.98] relative"
                     >
-                        <img src={Sigma} alt="Equathora Logo" className="w-8 h-8" />
-                        <span className="">Equathora</span>
+                        <img src={Sigma} alt="Equathora Logo" className="w-6 h-6 absolute left-[3px] -top-[2px]" />
+                        <span className="pl-6">quathora</span>
                     </Link>
 
                     <button

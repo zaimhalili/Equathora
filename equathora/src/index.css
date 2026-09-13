@@ -1,8 +1,6 @@
-/* index.css */
 @import "tailwindcss";
 
 @layer colors {
-
     :root,
     :root[data-theme='dark'] .theme-lock {
         /* Core Equathora palette */
@@ -64,6 +62,12 @@
     color-scheme: dark;
 }
 
+#root {
+    overflow-x: hidden;
+    width: 100%;
+    background-color: inherit;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -72,12 +76,9 @@
     font-family: Fira Sans, sans-serif;
 }
 
-body,
-button,
-input,
-select,
-textarea {
-    font-family: Fira Sans, sans-serif;
+*::selection {
+    background-color: var(--dark-accent-color);
+    color: white;
 }
 
 input,
@@ -162,18 +163,15 @@ body {
 .admin-interactive summary,
 .admin-interactive input[type="button"],
 .admin-interactive input[type="submit"],
-.admin-interactive input[type="reset"] {
+.admin-interactive input[type="reset"],
+select,
+button,
+Link {
     cursor: pointer;
 }
 
-#root {
-    overflow-x: hidden;
-    width: 100%;
-    background-color: inherit;
-}
-
 a {
-    font-weight: 600;
+    font-weight: 400;
     color: inherit;
     text-decoration: inherit;
 }
@@ -186,7 +184,6 @@ a {
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {
-    background-color: var(--surface-card);
     color: var(--secondary-color);
     border-color: var(--mid-main-secondary);
 }
@@ -203,49 +200,12 @@ textarea::placeholder {
 }
 
 .problem-description-scroll::-webkit-scrollbar-track {
-    background: var(--surface-elevated);
     border-radius: 10px;
 }
 
 .problem-description-scroll::-webkit-scrollbar-thumb {
     background: var(--french-gray);
     border-radius: 10px;
-}
-
-.problem-description-scroll::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
-}
-
-input[type="text"]:-webkit-autofill,
-input[type="text"]:-webkit-autofill:active,
-input[type="text"]:-webkit-autofill:focus,
-input[type="text"]:-webkit-autofill:hover,
-input[type="email"]:-webkit-autofill,
-input[type="email"]:-webkit-autofill:hover,
-input[type="email"]:-webkit-autofill:active,
-input[type="email"]:-webkit-autofill:focus,
-.inputAuth:-webkit-autofill,
-.inputAuth:-webkit-autofill:hover,
-.inputAuth:-webkit-autofill:focus,
-.inputAuth:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px var(--autofill-bg) inset !important;
-    box-shadow: 0 0 0 1000px var(--autofill-bg) inset !important;
-    -webkit-text-fill-color: var(--autofill-text) !important;
-    background-color: var(--autofill-bg) !important;
-}
-
-.inputAuth:-moz-autofill {
-    box-shadow: 0 0 0 1000px var(--autofill-bg) inset !important;
-    -moz-text-fill-color: var(--autofill-text) !important;
-    background-color: var(--autofill-bg) !important;
-}
-
-button {
-    cursor: pointer;
-}
-
-select {
-    cursor: pointer;
 }
 
 .mathjax-renderer mjx-container {

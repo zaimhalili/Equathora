@@ -4,8 +4,8 @@
     align-items: center;
     justify-content: center;
     padding: clamp(1.5rem, 4vw, 3rem);
-    border-radius: 6px;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 24px;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
     color: white;
 
     margin-bottom: 2rem;
@@ -41,7 +41,7 @@
 
 .stat-card {
     padding: clamp(1rem, 3vw, 1.5rem);
-    border-radius: 6px;
+    border-radius: 24px;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
     background-color: rgba(0, 0, 0, 0.1);
     transition:
@@ -89,7 +89,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: clamp(1rem, 4vw, 2rem);
-    border-radius: 15px;
+    border-radius: 24px;
     padding: clamp(1rem, 2vw, 2rem);
 
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
@@ -113,7 +113,7 @@
 .difficulty-item {
     background-color: rgba(255, 255, 255, 0.05);
     padding: clamp(1rem, 3vw, 1.5rem);
-    border-radius: 6px;
+    border-radius: 24px;
     text-align: center;
     transition: all 0.3s ease;
     border: 2px solid var(--difficulty-border, rgba(255, 255, 255, 0.15));
@@ -158,7 +158,7 @@
 
 .activity-section {
     padding: clamp(1rem, 2vw, 2rem);
-    border-radius: 15px;
+    border-radius: 24px;
     overflow: hidden;
 }
 
@@ -189,7 +189,7 @@
 .progress-section {
     background-color: rgba(0, 0, 0, 0.1);
     padding: clamp(1rem, 2vw, 1.5rem);
-    border-radius: 15px;
+    border-radius: 24px;
 }
 
 progress.progress-bar {
@@ -228,7 +228,7 @@ progress.progress-bar::-moz-progress-bar {
 .topics-section {
     background-color: rgba(0, 0, 0, 0.1);
     padding: clamp(1rem, 2vw, 1.5rem);
-    border-radius: 15px;
+    border-radius: 24px;
 }
 
 .topics-section h3 {
