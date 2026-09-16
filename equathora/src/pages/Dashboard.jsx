@@ -131,7 +131,7 @@ const Dashboard = () => {
                                                 to={dailyChallengeTo}
                                                 className={`w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-lg hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 ${premium ? '' : ''}`}
                                             >
-                                                <img src={QuestionMark} alt="Daily challenge" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
+                                                <img src={QuestionMark} alt="Daily challenge" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" width={120} height={120} />
                                                 <h6 className="text-[var(--secondary-color)]  text-lg font-normal w-full text-center flex items-center justify-center">
                                                     Daily challenge
                                                 </h6>
@@ -147,7 +147,7 @@ const Dashboard = () => {
                                                 to="/journey"
                                                 className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-lg hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
-                                                <img src={JourneyImg} alt="Journey" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
+                                                <img src={JourneyImg} alt="Journey" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" width={120} height={120} />
                                                 <h6 className="text-[var(--secondary-color)]  text-lg font-normal w-full text-center flex items-center justify-center">
                                                     Your journey
                                                 </h6>
@@ -163,7 +163,7 @@ const Dashboard = () => {
                                                 to="/learn"
                                                 className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-lg hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
-                                                <img src={Books} alt="Books" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
+                                                <img src={Books} alt="Books" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" width={120} height={120} />
                                                 <h6 className="text-[var(--secondary-color)]  text-lg font-normal w-full text-center flex items-center justify-center">
                                                     Browse problems
                                                 </h6>
@@ -179,7 +179,7 @@ const Dashboard = () => {
                                                 to="/leaderboards/global"
                                                 className="w-full aspect-square bg-[var(--white)] transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-lg hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
                                             >
-                                                <img src={Leaderboards} alt="Leaderboards" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" />
+                                                <img src={Leaderboards} alt="Leaderboards" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" width={120} height={120} />
                                                 <h6 className="text-[var(--secondary-color)]  text-lg font-normal w-full text-center flex items-center justify-center ">
                                                     Join the race
                                                 </h6>

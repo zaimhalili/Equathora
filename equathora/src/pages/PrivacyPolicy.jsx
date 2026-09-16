@@ -9,7 +9,7 @@ const PrivacyPolicy = () => (
         <main className="legal-page">
             <div className="legal-content">
                 <h1>Privacy Policy</h1>
-                <p>Last updated: August 1, 2026</p>
+                <p>Last updated: September 16, 2026</p>
                 <p>
                     This Privacy Policy explains how Equathora collects, uses, and protects your information when you use our platform.
                 </p>
@@ -33,7 +33,7 @@ const PrivacyPolicy = () => (
                 <h2>How We Share Your Information</h2>
                 <ul>
                     <li>We do not sell your personal information.</li>
-                    <li>We may share data with service providers who support the platform, such as Supabase, Stripe, Vercel, and AI service providers.</li>
+                    <li>We may share data with service providers who support the platform, such as Supabase, Stripe, Vercel, PostHog and AI service providers (Gemini API).</li>
                     <li>We may share information with payment processors for billing and subscription management.</li>
                     <li>We may disclose information if required by law or to protect our rights and safety.</li>
                 </ul>

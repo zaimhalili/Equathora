@@ -38,10 +38,6 @@
     transition: transform 0.3s ease;
 }
 
-#welcome-learn figure img:hover {
-    transform: scale(1.05) rotate(5deg);
-}
-
 #learn-explore {
     color: var(--secondary-color);
     flex: 1;

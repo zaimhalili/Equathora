@@ -106,15 +106,18 @@ const Footer = () => {
                         </ul>
                     </div>
                 </div>
-
                 <div className="footer-bottom flex flex-col">
                     <p className="footer-copyright footer-attribution">
-                        <span>© 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong></span>
+                        <span>© 2025 equathora. All rights reserved. Developed by <strong><u>
+                            <a href="mailto:equathora@gmail.com" className='!underline !underline-offset-1 !font-medium hover:!text-white transition-all'>Zaim Halili</a>
+                        </u></strong></span>
                     </p>
 
                     <p className="footer-copyright">
                         Building products around learning, logic, and productivity.
-                        Interested in collaborating?<strong> Let’s connect.</strong>
+                        Interested in collaborating? <strong>
+                            <a href="mailto:equathora@gmail.com" className='!underline !underline-offset-1 !font-medium hover:!text-white transition-all'>Let's connect</a>
+                        </strong>
                     </p>
                     <p className="footer-credit">
                         Page design inspired by <a href="https://exercism.org" target="_blank" rel="noopener noreferrer" aria-label="Exercism">Exercism</a> - code practice & mentorship
