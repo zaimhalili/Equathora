@@ -4,22 +4,9 @@ import { Link } from 'react-router-dom';
 import { FaStar, FaCrown, FaCheckCircle, FaRegCircle, FaAdjust, FaChartBar, FaLayerGroup } from 'react-icons/fa';
 import { generateProblemSlug } from '../lib/slugify';
 import { formatTopicLabel } from '../lib/utils';
+import { getDifficultyColor } from '@/hooks/useStatisticsColors';
 
 const ProblemCard = ({ problem }) => {
-    const getDifficultyColor = (difficulty) => {
-        switch ((difficulty || '').toLowerCase()) {
-            case 'beginner': return '#38bdf8';
-            case 'easy': return '#22c55e';
-            case 'standard':
-            case 'intermediate': return '#14b8a6';
-            case 'medium': return '#e59e0b';
-            case 'challenging': return '#f97316';
-            case 'hard': return '#ef4444';
-            case 'advanced': return 'var(--advanced)'
-            case 'expert': return '#8b5cf6';
-            default: return 'var(--mid-main-secondary)';
-        }
-    };
 
     const getDifficultyLabel = (difficulty) => {
         return (difficulty || 'Unknown').charAt(0).toUpperCase() + (difficulty || 'unknown').slice(1);

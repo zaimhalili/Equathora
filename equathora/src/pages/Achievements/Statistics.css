@@ -98,7 +98,7 @@
 
 .difficulty-section h3 {
     font-size: clamp(1rem, 3vw, 1.8rem);
-    font-weight: 600;
+    font-weight: 500;
     width: 100%;
 }
 
@@ -133,7 +133,7 @@
 
 .difficulty-count {
     font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
+    font-weight: 500;
     color: white;
     margin-bottom: 0.5rem;
 }
@@ -164,7 +164,7 @@
 
 .activity-section h3 {
     font-size: clamp(1rem, 3vw, 1.8rem);
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: clamp(0.75rem, 2vw, 1rem);
 }
 
@@ -181,7 +181,7 @@
     justify-content: space-between;
     align-items: center;
     font-size: clamp(0.95rem, 2.5vw, 1.2rem);
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 0.8rem;
     color: white;
 }
@@ -233,7 +233,7 @@ progress.progress-bar::-moz-progress-bar {
 
 .topics-section h3 {
     text-align: center;
-    font-weight: 600;
+    font-weight: 500;
 
     margin: 0 0 clamp(1rem, 2vw, 1.5rem) 0;
     font-size: clamp(1rem, 3vw, 1.8rem);
@@ -251,7 +251,7 @@ progress.progress-bar::-moz-progress-bar {
     color: white;
     padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 3vw, 1.25rem);
     font-size: clamp(0.8rem, 2vw, 0.95rem);
-    font-weight: 600;
+    font-weight: 500;
 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;

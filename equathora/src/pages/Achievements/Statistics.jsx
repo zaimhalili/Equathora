@@ -5,6 +5,7 @@ import { useUserStats } from '../../context/UserStatsContext';
 import { formatTopicLabel } from '../../lib/utils';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { FaSpinner } from 'react-icons/fa';
+import { withAlpha } from '@/hooks/useStatisticsColors';
 
 const normalizeCompletedProblemId = (rawValue) => {
   if (rawValue === null || rawValue === undefined) return '';
@@ -19,44 +20,6 @@ const normalizeCompletedProblemId = (rawValue) => {
   }
 
   return String(rawValue).trim();
-};
-
-const difficultyDisplayRank = {
-  beginner: 1,
-  easy: 2,
-  standard: 3,
-  intermediate: 4,
-  medium: 5,
-  challenging: 6,
-  hard: 7,
-  advanced: 8,
-  expert: 9,
-};
-
-const difficultyPalette = ['#2563eb', '#7c3aed', '#0f766e', '#be123c', '#0ea5e9', '#f97316', '#6366f1'];
-
-const normalizeDifficultyKey = (difficulty) => String(difficulty || '').trim().toLowerCase();
-
-const formatDifficultyLabel = (difficulty) => {
-  const raw = String(difficulty || '').trim();
-  if (!raw) return 'Unspecified';
-  return raw.charAt(0).toUpperCase() + raw.slice(1);
-};
-
-const getDifficultyColor = (difficultyKey, index) => {
-  if (difficultyKey === 'easy') return '#16a34a';
-  if (difficultyKey === 'medium') return '#d97706';
-  if (difficultyKey === 'hard') return '#a3142c';
-  return difficultyPalette[index % difficultyPalette.length];
-};
-
-const hexToRgba = (hex, alpha) => {
-  const safeHex = String(hex || '').replace('#', '');
-  if (!/^[a-fA-F0-9]{6}$/.test(safeHex)) return `rgba(255,255,255,${alpha})`;
-  const r = parseInt(safeHex.slice(0, 2), 16);
-  const g = parseInt(safeHex.slice(2, 4), 16);
-  const b = parseInt(safeHex.slice(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
 const Statistics = () => {
@@ -109,7 +72,7 @@ const Statistics = () => {
       <div className="py-6 flex justify-center items-center animate-spin">
         <FaSpinner className='text-2xl' />
       </div>
-        Loading Statistics
+      Loading Statistics
     </div>;
   }
 
@@ -180,9 +143,9 @@ const Statistics = () => {
                 key={difficulty.key || difficulty.label}
                 className="difficulty-item"
                 style={{
-                  '--difficulty-border': hexToRgba(difficulty.color, 0.3),
-                  '--difficulty-hover-border': hexToRgba(difficulty.color, 0.6),
-                  '--difficulty-hover-bg': hexToRgba(difficulty.color, 0.12),
+                  '--difficulty-border': withAlpha(difficulty.color, 0.3),
+                  '--difficulty-hover-border': withAlpha(difficulty.color, 0.6),
+                  '--difficulty-hover-bg': withAlpha(difficulty.color, 0.12),
                 }}
               >
                 <div className="difficulty-count">{difficulty.solved}</div>

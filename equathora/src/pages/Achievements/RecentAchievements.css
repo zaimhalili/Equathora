@@ -197,7 +197,7 @@
 
 .a-list-component h3 {
     color: white;
-    font-weight: 700;
+    font-weight: 500;
     margin: 0;
     line-height: 1.2;
     word-break: break-word;
@@ -216,9 +216,9 @@
 
 .automatic-badge {
     font-size: 0.7rem;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: uppercase;
-    color: #FFD700;
+    color: #FFD500;
     background: rgba(255, 215, 0, 0.15);
     padding: 2px 8px;
     border-radius: 12px;
@@ -283,7 +283,7 @@
 
 @media (min-width: 1200px) {}
 
-@media (min-width: 1600px) {}
+@media (min-width: 1500px) {}
 
 .a-list-component.unlocked .achievement-icon-shell {
     filter: saturate(1.18) brightness(1.04);

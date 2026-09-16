@@ -19,14 +19,12 @@
         --rare-blue: #1e40af;
 
         /* Difficulty colors */
-        --beginner: #2563eb;
+        --beginner: #229cb7;
         --easy: #16a34a;
-        --standard: #0f766e;
-        --intermediate: #be123c;
-        --medium: #d97706;
-        --challenging: #f97316;
+        --medium: #efb801;
+        --challenging: #f95616;
         --hard: #a3142c;
-        --advanced: #6366f1;
+        --advanced: #494cfc;
 
         /* Achievement colors */
         --common-start: #4a2b12;

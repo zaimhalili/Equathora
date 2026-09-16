@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabaseClient';
 import { getAllProblems } from '../lib/problemService';
 import { getAchievementProgress, getUserSubmissions } from '../lib/databaseService';
 import { computeAccuracyFromSources } from '../lib/accuracyService';
+import { difficultyDisplayRank, formatDifficultyLabel, getDifficultyColor, normalizeDifficultyKey } from '../hooks/useStatisticsColors';
 
 const CACHE_KEY = 'eq_user_stats_cache';
 
@@ -36,34 +37,6 @@ const defaultStats = {
     userProgress: null,
     streakData: null,
     lastUpdated: null
-};
-
-const difficultyDisplayRank = {
-    beginner: 1,
-    easy: 2,
-    standard: 3,
-    intermediate: 4,
-    medium: 5,
-    challenging: 6,
-    hard: 7,
-    advanced: 8,
-    expert: 9
-};
-
-const normalizeDifficultyKey = (difficulty) => String(difficulty || '').trim().toLowerCase();
-
-const formatDifficultyLabel = (difficulty) => {
-    const raw = String(difficulty || '').trim();
-    if (!raw) return 'Unspecified';
-    return raw.charAt(0).toUpperCase() + raw.slice(1);
-};
-
-const getDifficultyColor = (difficultyKey, index) => {
-    if (difficultyKey === 'easy') return 'var(--beginner)';
-    if (difficultyKey === 'medium') return '(--medium)';
-    if (difficultyKey === 'hard') return '(--hard)';
-    const palette = ['var(--beginner)', '#7c3aed', '#0f766e', 'var(--intermediate)', '#0ea5e9', 'var(--challenging)', 'var(--advanced)'];
-    return palette[index % palette.length];
 };
 
 function getCachedStats() {

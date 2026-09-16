@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { FiCheck } from "react-icons/fi";
-import { FaBell } from 'react-icons/fa';
+import { FaSpinner } from 'react-icons/fa';
 import Bro from '../assets/images/notifications-bro.svg';
 
 import {
@@ -391,11 +391,11 @@ const Notifications = () => {
                     </div>
                     {/* Notification list */}
                     {loading ? (
-                        <div className="flex items-center justify-center py-20">
-                            <svg className="animate-spin h-8 w-8 text-[var(--accent-color)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                            </svg>
+                        <div className="statistics-container">
+                            <div className="py-6 flex justify-center items-center animate-spin">
+                                <FaSpinner className='text-2xl' />
+                            </div>
+                            Loading Achievements...
                         </div>
                     ) : filtered.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 gap-4">

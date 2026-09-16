@@ -15,6 +15,7 @@ import { getCachedGlobalLeaderboard } from '../lib/leaderboardService';
 import { formatTopicLabel } from '../lib/utils';
 import { computeAccuracyFromSubmissions } from '../lib/accuracyService';
 import { FaLandmark } from 'react-icons/fa';
+import { difficultyDisplayRank, formatDifficultyLabel, getDifficultyColor, normalizeDifficultyKey } from '@/hooks/useStatisticsColors';
 
 const getEffectiveStreak = (currentStreak = 0, lastActivityDate = null) => {
   if (!currentStreak || currentStreak <= 0) return 0;
@@ -46,48 +47,9 @@ const normalizeCompletedProblemId = (rawValue) => {
   return String(rawValue).trim();
 };
 
-const difficultyDisplayRank = {
-  beginner: 1,
-  easy: 2,
-  standard: 3,
-  intermediate: 4,
-  medium: 5,
-  challenging: 6,
-  hard: 7,
-  advanced: 8,
-  expert: 9,
-};
-
-const difficultyPalette = [
-  'var(--beginner)',
-  '#7c3aed',
-  'var(--standard)',
-  'var(--intermediate)',
-  'var(#0ea5e9)',
-  'var(--challenging)',
-  'var(--advanced)'
-];
-
-const normalizeDifficultyKey = (difficulty) => String(difficulty || '').trim().toLowerCase();
-
-const formatDifficultyLabel = (difficulty) => {
-  const raw = String(difficulty || '').trim();
-  if (!raw) return 'Unspecified';
-  return raw.charAt(0).toUpperCase() + raw.slice(1);
-};
-
-const getDifficultyColor = (difficultyKey, index) => {
-  // Keep colors aligned with Learn active difficulty pills.
-  if (difficultyKey === 'easy') return 'var(--easy)';
-  if (difficultyKey === 'medium') return 'var(--medium)';
-  if (difficultyKey === 'hard') return 'var(--hard)';
-  return difficultyPalette[index % difficultyPalette.length];
-};
-
 const getDifficultyChipBackground = (difficultyKey) => {
   return 'var(--white)';
 };
-
 
 const Profile = () => {
   const { profile } = useParams();
@@ -275,7 +237,7 @@ const Profile = () => {
           location,
           website,
           avatar_url: avatarUrl,
-          title: 'Problem Solver ∑',
+          title: 'Problem Solver',
           status: isSelf ? 'Online' : 'Viewing',
           stats: {
             problemsSolved: finalSolved,
@@ -483,11 +445,7 @@ const Profile = () => {
                   {difficultyStats.map((difficulty, index) => (
                     <div
                       key={`difficulty-top-${difficulty.key}-${index}`}
-                      className='inline-flex items-center gap-1.5 px-2 py-1 rounded-xl text-[11px] font-semibold'
-                      style={{
-                        color: difficulty.color,
-                        backgroundColor: getDifficultyChipBackground(difficulty.key)
-                      }}
+                      className='inline-flex items-center gap-1.5 px-2 py-1 rounded-xl text-[11px] font-semibold bg-[var(--white)]'
                     >
                       <span className='inline-block w-2 h-2 rounded-full' style={{ backgroundColor: difficulty.color }} />
                       <span>{difficulty.label}</span>
