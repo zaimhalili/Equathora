@@ -27,6 +27,23 @@
         --challenging: #f97316;
         --hard: #a3142c;
         --advanced: #6366f1;
+
+        /* Achievement colors */
+        --common-start: #4a2b12;
+        --common-end: #c67b34;
+        --common-border: #d69557;
+        --uncommon-start: #3e4a59;
+        --uncommon-end: #9caec2;
+        --uncommon-border: #c7d3df;
+        --rare-start: #6b4f09;
+        --rare-end: #f4c542;
+        --rare-border: #ffe083;
+        --epic-start: #120f1f;
+        --epic-end: #46356f;
+        --epic-border: #7f68b0;
+        --legendary-start: #0a3142;
+        --legendary-end: #6de3ff;
+        --legendary-border: #aef2ff;
     }
 
     :root[data-theme='dark'] {

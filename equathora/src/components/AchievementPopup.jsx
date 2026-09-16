@@ -1,13 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useBodyScrollLock from '../hooks/useBodyScrollLock';
+import { FaTrophy } from 'react-icons/fa';
 
 const RARITY_COLORS = {
-    Common: { bg: 'from-green-400 to-green-600', ring: 'ring-green-400/40', text: 'text-green-600' },
-    Uncommon: { bg: 'from-blue-400 to-blue-600', ring: 'ring-blue-400/40', text: 'text-blue-600' },
-    Rare: { bg: 'from-purple-400 to-purple-600', ring: 'ring-purple-400/40', text: 'text-purple-600' },
-    Epic: { bg: 'from-orange-400 to-orange-600', ring: 'ring-orange-400/40', text: 'text-orange-600' },
-    Legendary: { bg: 'from-yellow-400 to-yellow-600', ring: 'ring-yellow-400/40', text: 'text-yellow-600' },
+    Common: {
+        bg: 'linear-gradient(135deg, var(--common-start), var(--common-end))',
+        ring: 'var(--common-border)',
+        text: 'var(--common-border)',
+    },
+    Uncommon: {
+        bg: 'linear-gradient(135deg, var(--uncommon-start), var(--uncommon-end))',
+        ring: 'var(--uncommon-border)',
+        text: 'var(--uncommon-border)',
+    },
+    Rare: {
+        bg: 'linear-gradient(135deg, var(--rare-start), var(--rare-end))',
+        ring: 'var(--rare-border)',
+        text: 'var(--rare-border)',
+    },
+    Epic: {
+        bg: 'linear-gradient(135deg, var(--epic-start), var(--epic-end))',
+        ring: 'var(--epic-border)',
+        text: 'var(--epic-border)',
+    },
+    Legendary: {
+        bg: 'linear-gradient(135deg, var(--legendary-start), var(--legendary-end))',
+        ring: 'var(--legendary-border)',
+        text: 'var(--legendary-border)',
+    },
 };
 
 const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
@@ -52,36 +73,19 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
         <AnimatePresence>
             {show && (
                 <>
-                    {/* Backdrop */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-[var(--raisin-black)]/40 backdrop-blur-sm z-[9998]"
-                        onClick={handleDismissAll}
-                    />
-
                     {/* Popup */}
                     <motion.div
                         key={current.id}
-                        initial={{ scale: 0.5, opacity: 0, y: -50 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0.5, opacity: 0, y: 50 }}
-                        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-                        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
+                        initial={{ scale: 0.9, opacity: 0, y: -180 }}
+                        animate={{ scale: 1, opacity: 1, y: 25 }}
+                        exit={{ scale: 0.9, opacity: 0, y: 80 }}
+                        transition={{ type: 'spring', damping: 18, stiffness: 300 }}
+                        className="fixed left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-[var(--white)] rounded-xl shadow-2xl max-w-sm w-[90vw] overflow-hidden border-[var(--mid-main-secondary)] border">
-                            {/* Header bar */}
-                            <div className={`flex items-center justify-center gap-2 bg-gradient-to-r ${rarity.bg} px-4 py-3`}>
-                                <svg className="w-5 h-5 text-[var(--white)]" viewBox="0 0 576 512" fill="currentColor">
-                                    <path d="M400 0H176c-26.5 0-48.1 21.8-47.1 48.2c.2 5.3 .4 10.6 .7 15.8H24C10.7 64 0 74.7 0 88c0 92.6 33.5 157 78.5 200.7c44.3 43.1 98.3 64.8 138.1 75.8c23.4 6.5 39.4 26 39.4 45.6c0 20.9-17 37.9-37.9 37.9H192c-17.7 0-32 14.3-32 32s14.3 32 32 32H384c17.7 0 32-14.3 32-32s-14.3-32-32-32h-26.1c-20.9 0-37.9-17-37.9-37.9c0-19.6 15.9-39.2 39.4-45.6c39.9-11 93.9-32.7 138.2-75.8C542.5 245 576 180.6 576 88c0-13.3-10.7-24-24-24H446.4c.3-5.2 .5-10.4 .7-15.8C448.1 21.8 426.5 0 400 0zM48.9 112h84.4c9.1 90.1 29.2 150.3 51.9 190.6c-24.9-11-68.8-38.8-97.6-89.2C70.5 183.8 56.1 143.2 48.9 112zm384.2 0c-7.2 31.2-21.6 71.8-38.8 101.4c-28.8 50.4-72.7 78.2-97.6 89.2c22.7-40.3 42.8-100.5 51.9-190.6h84.4z" />
-                                </svg>
-                                <span className="text-white text-sm font-bold uppercase tracking-wider">Achievement Unlocked!</span>
-                            </div>
-
+                        <div className="bg-[var(--white)] rounded-xl shadow-2xl max-w-sm w-[90vw] overflow-hidden border-[var(--main-color)] border-2">
                             {/* Content */}
-                            <div className="flex flex-col items-center gap-4 px-6 py-8 bg-[var(--white)]">
-                                {/* Icon with glow */}
+                            <div className="flex items-center gap-4 p-3 bg-[var(--white)] shadow-xs">
+                                {/* Icon */}
                                 <motion.div
                                     initial={{ scale: 0, rotate: -180 }}
                                     animate={{ scale: 1, rotate: 0 }}
@@ -89,19 +93,16 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                                     className="relative"
                                 >
                                     <div
-                                        className={`flex items-center justify-center w-20 h-20 rounded-full ring-4 ${rarity.ring} text-4xl`}
-                                        style={{ backgroundColor: current.color + '22', color: current.color }}
+                                        className="flex items-center justify-center w-15 h-15 rounded-full ring-4 text-3xl"
+                                        style={{
+                                            background: rarity.bg,
+                                            borderColor: rarity.ring,
+                                            boxShadow: `0 0 0 4px ${rarity.ring}55`,
+                                            color: 'white',
+                                        }}
                                     >
                                         {current.icon}
                                     </div>
-                                    {/* Glow pulse */}
-                                    <motion.div
-                                        initial={{ scale: 0, opacity: 0 }}
-                                        animate={{ scale: [0, 1.6, 0], opacity: [0, 0.6, 0] }}
-                                        transition={{ duration: 1.5, repeat: Infinity, ease: 'easeOut' }}
-                                        className="absolute inset-0 rounded-full blur-xl"
-                                        style={{ backgroundColor: current.color + '33' }}
-                                    />
                                 </motion.div>
 
                                 {/* Achievement details */}
@@ -109,45 +110,18 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.3 }}
-                                    className="flex flex-col items-center gap-1 text-center"
+                                    className="flex flex-col"
                                 >
-                                    <h2 className="text-2xl font-black text-[var(--secondary-color)]">
+                                    <h2 className="text-md font-medium text-[var(--secondary-color)] flex justify-between">
                                         {current.title}
+                                        {/* Counter */}
+                                        {achievements.length > 1 && (
+                                            <p className="text-xs text-[var(--secondary-color)]/70 flex items-center">
+                                                {currentIndex + 1} / {achievements.length}
+                                            </p>
+                                        )}
                                     </h2>
-                                    <p className="text-sm text-[var(--secondary-color)]/70">{current.description}</p>
-                                    <span className={`text-xs font-bold uppercase tracking-widest ${rarity.text}`}>
-                                        {current.rarity}
-                                    </span>
-                                </motion.div>
-
-                                {/* Counter */}
-                                {achievements.length > 1 && (
-                                    <p className="text-xs text-[var(--mid-main-secondary)]">
-                                        {currentIndex + 1} / {achievements.length}
-                                    </p>
-                                )}
-
-                                {/* Action buttons */}
-                                <motion.div
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ delay: 0.4, type: 'spring' }}
-                                    className="flex gap-3"
-                                >
-                                    {achievements.length > 1 && !isLast && (
-                                        <button
-                                            onClick={handleDismissAll}
-                                            className="bg-[var(--mid-main-secondary)] text-[var(--secondary-color)] px-5 py-2 rounded-xl text-sm font-bold hover:bg-[var(--mid-main-secondary)]/80 transition-colors cursor-pointer"
-                                        >
-                                            Skip All
-                                        </button>
-                                    )}
-                                    <button
-                                        onClick={handleNext}
-                                        className="bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white px-6 py-2 rounded-xl text-sm font-bold hover:opacity-90 transition-opacity cursor-pointer"
-                                    >
-                                        {isLast ? 'Awesome!' : 'Next'}
-                                    </button>
+                                    <p className="text-sm text-[var(--secondary-color)]/70 overflow-hidden">{current.description}</p>
                                 </motion.div>
                             </div>
                         </div>

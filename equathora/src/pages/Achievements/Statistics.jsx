@@ -121,10 +121,8 @@ const Statistics = () => {
       </div>
 
       {/* Overview Cards */}
-      {/* Overview Cards */}
       <div className="stats-overview">
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''} primary`}>
-          {/* FIXED: Changed stats.solvedProblems -> displayStats.solvedProblems */}
           <div className="stat-number">{displayStats.solvedProblems}</div>
           <div className="stat-label">Problems Solved</div>
           <div className="stat-sublabel">out of {displayStats.totalProblems}</div>
@@ -141,14 +139,12 @@ const Statistics = () => {
         </div>
 
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
-          {/* FIXED: Changed stats.streakDays -> displayStats.streakDays */}
           <div className="stat-number">{displayStats.streakDays}</div>
           <div className="stat-label">Day Streak</div>
           <div className="stat-sublabel">Keep it up!</div>
         </div>
 
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
-          {/* FIXED: Changed stats.totalTimeSpent -> displayStats.totalTimeSpent */}
           <div className="stat-number">{displayStats.totalTimeSpent}</div>
           <div className="stat-label">Time Spent</div>
           <div className="stat-sublabel">Avg: {displayStats.averageTime}</div>

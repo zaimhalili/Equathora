@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import ReputationBadge from '../components/ReputationBadge';
 import EditProfileModal from '../components/EditProfileModal';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { FaFire, FaCheckCircle, FaTrophy, FaChartLine } from 'react-icons/fa';
+import { FaCheckCircle, FaChartLine } from 'react-icons/fa';
 import { getAllProblems } from '../lib/problemService';
 import { supabase } from '../lib/supabaseClient';
 import ProfileExportButtons from '../components/ProfileExportButtons';
@@ -15,7 +15,6 @@ import { getCachedGlobalLeaderboard } from '../lib/leaderboardService';
 import { formatTopicLabel } from '../lib/utils';
 import { computeAccuracyFromSubmissions } from '../lib/accuracyService';
 import { FaLandmark } from 'react-icons/fa';
-import { FaLocationArrow } from 'react-icons/fa';
 
 const getEffectiveStreak = (currentStreak = 0, lastActivityDate = null) => {
   if (!currentStreak || currentStreak <= 0) return 0;
@@ -60,13 +59,13 @@ const difficultyDisplayRank = {
 };
 
 const difficultyPalette = [
-  '#2563eb',
+  'var(--beginner)',
   '#7c3aed',
-  '#0f766e',
-  '#be123c',
-  '#0ea5e9',
-  '#f97316',
-  '#6366f1'
+  'var(--standard)',
+  'var(--intermediate)',
+  'var(#0ea5e9)',
+  'var(--challenging)',
+  'var(--advanced)'
 ];
 
 const normalizeDifficultyKey = (difficulty) => String(difficulty || '').trim().toLowerCase();
@@ -79,9 +78,9 @@ const formatDifficultyLabel = (difficulty) => {
 
 const getDifficultyColor = (difficultyKey, index) => {
   // Keep colors aligned with Learn active difficulty pills.
-  if (difficultyKey === 'easy') return '#16a34a';
-  if (difficultyKey === 'medium') return '#d97706';
-  if (difficultyKey === 'hard') return '#a3142c';
+  if (difficultyKey === 'easy') return 'var(--easy)';
+  if (difficultyKey === 'medium') return 'var(--medium)';
+  if (difficultyKey === 'hard') return 'var(--hard)';
   return difficultyPalette[index % difficultyPalette.length];
 };
 

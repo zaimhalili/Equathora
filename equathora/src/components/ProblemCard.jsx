@@ -15,7 +15,7 @@ const ProblemCard = ({ problem }) => {
             case 'medium': return '#e59e0b';
             case 'challenging': return '#f97316';
             case 'hard': return '#ef4444';
-            case 'advanced':
+            case 'advanced': return 'var(--advanced)'
             case 'expert': return '#8b5cf6';
             default: return 'var(--mid-main-secondary)';
         }
@@ -60,7 +60,7 @@ const ProblemCard = ({ problem }) => {
                     {problem.completed ? (
                         <div className="pc-status-item success">
                             <FaCheckCircle className="pc-icon-status" />
-                            <span>Done</span>
+                            <span>Solved</span>
                         </div>
                     ) : problem.inProgress ? (
                         <div className="pc-status-item warning">

@@ -86,7 +86,7 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All", 
       <button
         ref={triggerRef}
         type="button"
-        className={`filter-dropdown-trigger ${isOpen ? 'open' : ''} ${value ? 'has-value' : ''}`}
+        className={`filter-dropdown-trigger hover:brightness-90 ${isOpen ? 'open brightness-90 hover:!brightness-85' : ''} ${value ? 'has-value' : ''}`}
         onClick={handleOpen}
         onBlur={() => setTimeout(() => setIsOpen(false), 200)}
       >
@@ -319,7 +319,7 @@ const Learn = () => {
           grades,
           searchTerm,
           sort,
-          null,       // progress (legacy, unused by Learn page)
+          null, // progress (legacy, unused by Learn page)
           isPremium,
           status
         );

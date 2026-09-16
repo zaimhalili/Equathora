@@ -261,7 +261,7 @@ const Dashboard = () => {
                                         </Link>
                                         <Link
                                             to="/applymentor"
-                                            className="flex items-center justify-center  font-medium text-sm !text-[var(--secondary-color)] bg-transparent border rounded-xl no-underline transition-all duration-200 border-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:!text-[var(--white)] text-center py-2 px-2 md:flex-1 active:scale-95"
+                                            className="flex items-center justify-center font-medium text-sm !text-[var(--secondary-color)] bg-transparent border rounded-xl no-underline transition-all duration-200 border-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:!text-[var(--white)] text-center py-2 px-2 md:flex-1 active:scale-95"
                                         >
                                             Learn More
                                         </Link>

@@ -59,10 +59,10 @@ const formatDifficultyLabel = (difficulty) => {
 };
 
 const getDifficultyColor = (difficultyKey, index) => {
-    if (difficultyKey === 'easy') return '#16a34a';
-    if (difficultyKey === 'medium') return '#d97706';
-    if (difficultyKey === 'hard') return '#a3142c';
-    const palette = ['#2563eb', '#7c3aed', '#0f766e', '#be123c', '#0ea5e9', '#f97316', '#6366f1'];
+    if (difficultyKey === 'easy') return 'var(--beginner)';
+    if (difficultyKey === 'medium') return '(--medium)';
+    if (difficultyKey === 'hard') return '(--hard)';
+    const palette = ['var(--beginner)', '#7c3aed', '#0f766e', 'var(--intermediate)', '#0ea5e9', 'var(--challenging)', 'var(--advanced)'];
     return palette[index % palette.length];
 };
 

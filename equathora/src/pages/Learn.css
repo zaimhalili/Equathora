@@ -706,7 +706,7 @@ ENHANCED FILTERING SYSTEM
 }
 
 .filter-dropdown-trigger.open {
-    border-color: var(--accent-color);
+    outline-color: var(--accent-color);
 }
 
 .filter-dropdown-trigger.has-value {

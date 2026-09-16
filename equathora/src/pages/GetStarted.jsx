@@ -492,7 +492,7 @@ const GetStarted = () => {
                             }`}
                     >
                         {saving
-                            ? 'Saving...'
+                            ? 'Paving your journey'
                             : currentStep === totalSteps - 1
                                 ? 'Start Learning'
                                 : 'Continue'}

@@ -60,17 +60,17 @@ const RecentAchievements = () => {
     const getRarityStyle = (rarity) => {
         switch (rarity) {
             case 'Common':
-                return { start: '#4a2b12', end: '#c67b34', border: '#d69557' };
+                return { start: 'var(--common-start)', end: 'var(--common-end)', border: 'var(--common-border)' };
             case 'Uncommon':
-                return { start: '#3e4a59', end: '#9caec2', border: '#c7d3df' };
+                return { start: 'var(--uncommon-start)', end: 'var(--uncommon-end)', border: 'var(--uncommon-border)' };
             case 'Rare':
-                return { start: '#6b4f09', end: '#f4c542', border: '#ffe083' };
+                return { start: 'var(--rare-start)', end: 'var(--rare-end)', border: 'var(--rare-border)' };
             case 'Epic':
-                return { start: '#120f1f', end: '#46356f', border: '#7f68b0' };
+                return { start: 'var(--epic-start)', end: 'var(--epic-end)', border: 'var(--epic-border)' };
             case 'Legendary':
-                return { start: '#0a3142', end: '#6de3ff', border: '#aef2ff' };
+                return { start: 'var(--legendary-start)', end: 'var(--legendary-end)', border: 'var(--legendary-border)' };
             default:
-                return { start: '#4a2b12', end: '#c67b34', border: '#d69557' };
+                return { start: 'var(--common-start)', end: 'var(--common-end)', border: 'var(--common-border)' };
         }
     };
 
@@ -79,7 +79,7 @@ const RecentAchievements = () => {
             <div className="py-6 flex justify-center items-center animate-spin">
                 <FaSpinner className='text-2xl' />
             </div>
-            Loading Achievements
+            Loading Achievements...
         </div>;
     }
 
