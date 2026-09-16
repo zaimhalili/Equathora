@@ -20,12 +20,14 @@ import { FaCrown } from 'react-icons/fa';
 import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
 // Upgraded to premium popup
 import UpgradedPopup from '@/components/Premium/UpgradedPopup.jsx';
+import StreakPopup from '@/components/StreakPopup.jsx';
 
 const Dashboard = () => {
     const { premium, loading: subLoading } = useSubscription();
     const [username, setUsername] = useState("Friend");
     const [nextProblem, setNextProblem] = useState(null);
     const [showUpgradedPopup, setShowUpgradedPopup] = useState(false);
+    const [showStreakPopup, setShowStreakPopup] = useState(true);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -76,13 +78,17 @@ const Dashboard = () => {
         <>
             <FeedbackBanner />
             <CookieConsent />
+            {/* {showStreakPopup && (
+                <StreakPopup
+                    streak={4}
+                    onClose={() => setShowStreakPopup(false)}
+                />
+            )} */}
             <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
-                <header>
-                    <Navbar />
-                </header>
+                <Navbar />
 
                 {/* Hero Section */}
-                <div className='flex w-full justify-center items-center pb-6'>
+                <section className='flex w-full justify-center items-center pb-6'>
                     <div className='flex flex-col lg:flex-row justify-start items-center lg:items-start px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>
                         <section className="flex flex-col justify-start w-full lg:w-[70%]">
                             <motion.article
@@ -270,7 +276,7 @@ const Dashboard = () => {
                             </div>
                         </motion.aside>
                     </div>
-                </div>
+                </section>
 
 
                 <footer>

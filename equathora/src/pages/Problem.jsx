@@ -9,7 +9,6 @@ import Timer from '../components/Timer.jsx';
 import ProblemMobileMenu from '../components/ProblemMobileMenu.jsx';
 import StreakPopup from '../components/StreakPopup.jsx';
 import AchievementPopup from '../components/AchievementPopup.jsx';
-import InsightPanel from '../components/InsightPanel.jsx';
 import MentorChat from '../components/ProblemModals/MentorChat.jsx';
 import ChatPanel from '@/components/ChatAI/ChatPanel';
 import PremiumButton from '@/components/Premium/PremiumButton';
@@ -263,7 +262,6 @@ const Problem = () => {
     const [currentStreakValue, setCurrentStreakValue] = useState(0);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [newAchievements, setNewAchievements] = useState([]);
-    const [showInsightPanel, setShowInsightPanel] = useState(false);
     const [fields, setFields] = useState([]);
     const [latexOpen, setLatexOpen] = useState(false);
     const [chatSeed, setChatSeed] = useState(null);
@@ -772,7 +770,6 @@ const Problem = () => {
                 timestamp: new Date().toISOString()
             });
 
-            setShowInsightPanel(true);
             setShowSubmissions(true);
             setShowDescription(false);
             setShowTop(false);
@@ -834,13 +831,11 @@ const Problem = () => {
         setShowMentorChat(false);
         setShowSolution(false);
         setShowSolutionPopup(false);
-        setShowInsightPanel(false);
         setShowSubmissionDetail(false);
         setSelectedSubmission(null);
 
         if (validation.isCorrect) {
             problemSolvedRef.current = true;
-            setShowInsightPanel(true);
             setTimerRunning(false);
             setShowSolution(true);
             setShowSolutionPopup(false);
@@ -873,6 +868,8 @@ const Problem = () => {
 
                 if (streakUpdate.incremented && streakData.current > previousStreak) {
                     setCurrentStreakValue(streakData.current);
+                    setShowAchievementPopup(false);
+                    setNewAchievements([]);
                     setShowStreakPopup(true);
                 }
 
@@ -916,6 +913,7 @@ const Problem = () => {
 
                 if (freshlyUnlocked.length > 0) {
                     setNewAchievements(freshlyUnlocked);
+                    setShowStreakPopup(false);
                     setShowAchievementPopup(true);
                 }
             } catch {
@@ -1137,26 +1135,6 @@ const Problem = () => {
                             setNewAchievements([]);
                         }}
                         onDismissOne={(id) => markAchievementSeen(id)}
-                    />
-                )}
-
-                {/* Insight Panel - correct answer ribbon */}
-                {/* Insight Panel - correct answer ribbon */}
-                {showInsightPanel && (submissionFeedback?.success || submissionFeedback?.isCorrect) && (
-                    <InsightPanel
-                        key={submissionFeedback?.timestamp || Date.now()} // Forces React to refresh panel on re-submissions
-                        insight={submissionFeedback.message}
-                        topic={submissionFeedback.topic}
-                        difficulty={submissionFeedback.difficulty}
-                        nextProblemPath={nextProblemSlug ? `/problems/${nextProblemSlug}` : null}
-                        onViewSolution={() => {
-                            setShowSolution(true);
-                            setShowDescription(false);
-                            setShowSubmissions(false);
-                            setSolutionViewed(true);
-                        }}
-                        onDismiss={() => setShowInsightPanel(false)}
-                        autoDismissSeconds={12}
                     />
                 )}
 

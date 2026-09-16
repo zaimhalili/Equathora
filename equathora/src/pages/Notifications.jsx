@@ -349,14 +349,14 @@ const Notifications = () => {
                                     <button
                                         onClick={handleMarkSelectedRead}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-xl text-xs font-semibold hover:bg-gray-200 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-xl text-xs font-semibold hover:brightness-90 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Mark read
                                     </button>
                                     <button
                                         onClick={handleMarkSelectedUnread}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-xl text-xs font-semibold hover:bg-gray-200 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-xl text-xs font-semibold hover:brightness-90 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Mark unread
                                     </button>
@@ -382,7 +382,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleClearAll}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-[var(--white)] text-[var(--raisin-black)] rounded-xl border border-[var(--mid-main-secondary)] text-xs font-semibold hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-50"
+                                    className="px-3 py-1.5 bg-[var(--white)] text-[var(--raisin-black)] rounded-xl border border-[var(--mid-main-secondary)] text-xs font-semibold  transition-all cursor-pointer disabled:opacity-50 hover:brightness-90"
                                 >
                                     Clear all
                                 </button>
@@ -392,10 +392,10 @@ const Notifications = () => {
                     {/* Notification list */}
                     {loading ? (
                         <div className="statistics-container">
-                            <div className="py-6 flex justify-center items-center animate-spin">
+                            <div className="py-6 flex justify-center items-center animate-spin text-center">
                                 <FaSpinner className='text-2xl' />
                             </div>
-                            Loading Achievements...
+                            Loading Notifications...
                         </div>
                     ) : filtered.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 gap-4">

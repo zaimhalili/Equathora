@@ -538,29 +538,29 @@ ENHANCED FILTERING SYSTEM
 
 /* Difficulty chip colors */
 .filter-chip.easy:not(.active):hover {
-    border-color: #22c55e;
-    background-color: rgba(34, 197, 94, 0.1);
+    border-color: var(--easy);
+    background-color: color-mix(in srgb, var(--easy) 12%, transparent);
 }
 
 .filter-chip.medium:not(.active):hover {
-    border-color: #e59e0b;
-    background-color: rgba(229, 158, 11, 0.1);
+    border-color: var(--medium);
+    background-color: color-mix(in srgb, var(--medium) 12%, transparent);
 }
 
 .filter-chip.hard:not(.active):hover {
-    border-color: #a3142c;
-    background-color: rgba(163, 20, 44, 0.1);
+    border-color: var(--hard);
+    background-color: color-mix(in srgb, var(--hard) 12%, transparent);
 }
 
 /* Topic chip colors */
 .filter-chip.topic:not(.active):hover {
-    border-color: #3b82f6;
-    background-color: rgba(59, 130, 246, 0.1);
+    border-color: var(--beginner);
+    background-color: color-mix(in srgb, var(--beginner) 12%, transparent);
 }
 
 .filter-chip.topic.active {
-    background-color: #3b82f6;
-    border-color: #3b82f6;
+    background-color: var(--beginner);
+    border-color: var(--beginner);
 }
 
 /* Results Summary */
@@ -590,17 +590,6 @@ ENHANCED FILTERING SYSTEM
 .problems-refreshing {
     opacity: 0.66;
     transition: opacity 0.2s ease;
-}
-
-/* Topic chip colors */
-.filter-chip.topic:not(.active):hover {
-    border-color: #3b82f6;
-    background-color: rgba(59, 130, 246, 0.1);
-}
-
-.filter-chip.topic.active {
-    background-color: #3b82f6;
-    border-color: #3b82f6;
 }
 
 /* Results Summary */

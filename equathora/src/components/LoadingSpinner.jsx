@@ -162,7 +162,7 @@ const LoadingSpinner = () => {
                         }}
                     />
                 </div>
-                <p className="pt-5 text-center text-base font-bold text-[var(--secondary-color)]">
+                <p className="pt-5 text-center text-base font-medium text-[var(--secondary-color)]">
                     Preparing your workspace...
                 </p>
             </div>

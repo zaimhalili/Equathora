@@ -14,6 +14,7 @@ import {
     YAxis
 } from 'recharts';
 import { getAllAdminProblems, getAllAdminProblemDetails, getAdminProblemDetails } from '@/lib/adminProblemsService';
+import { getDifficultyColor } from '@/hooks/useStatisticsColors';
 
 const emptyLoadMeta = {
     count: 0,
@@ -48,29 +49,12 @@ const difficultyDisplayRank = {
     unknown: 99
 };
 
-const difficultyColorPalette = [
-    '#2563eb',
-    '#7c3aed',
-    '#0f766e',
-    '#be123c',
-    '#0ea5e9',
-    '#f97316',
-    '#6366f1'
-];
-
 const normalizeDifficultyKey = (difficulty) => String(difficulty || '').trim().toLowerCase();
 
 const formatDifficultyLabel = (difficulty) => {
     const raw = String(difficulty || '').trim();
     if (!raw) return 'Unknown';
     return raw.charAt(0).toUpperCase() + raw.slice(1);
-};
-
-const getDifficultyColor = (difficultyKey, index) => {
-    if (difficultyKey === 'easy') return '#16a34a';
-    if (difficultyKey === 'medium') return '#d97706';
-    if (difficultyKey === 'hard') return '#a3142c';
-    return difficultyColorPalette[index % difficultyColorPalette.length];
 };
 
 const dateFilterPass = (rowDate, selectedDate) => {

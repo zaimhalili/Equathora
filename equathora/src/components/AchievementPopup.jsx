@@ -34,36 +34,33 @@ const RARITY_COLORS = {
 const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [show, setShow] = useState(true);
+    const AUTO_DISMISS_MS = 3500;
 
     useBodyScrollLock(show && achievements.length > 0);
 
     const current = achievements[currentIndex];
-    const isLast = currentIndex >= achievements.length - 1;
 
     useEffect(() => {
         if (!current) {
             setShow(false);
-            setTimeout(onClose, 300);
+            const timer = setTimeout(() => onClose?.(), 220);
+            return () => clearTimeout(timer);
         }
-    }, [current, onClose]);
 
-    const handleNext = () => {
-        if (onDismissOne && current) onDismissOne(current.id);
-        if (isLast) {
+        const timer = setTimeout(() => {
+            onDismissOne?.(current.id);
+
+            if (currentIndex < achievements.length - 1) {
+                setCurrentIndex((prev) => prev + 1);
+                return;
+            }
+
             setShow(false);
-            setTimeout(onClose, 300);
-        } else {
-            setCurrentIndex(prev => prev + 1);
-        }
-    };
+            setTimeout(() => onClose?.(), 220);
+        }, AUTO_DISMISS_MS);
 
-    const handleDismissAll = () => {
-        if (onDismissOne) {
-            achievements.forEach(a => onDismissOne(a.id));
-        }
-        setShow(false);
-        setTimeout(onClose, 300);
-    };
+        return () => clearTimeout(timer);
+    }, [current, currentIndex, achievements, onDismissOne, onClose]);
 
     if (!current) return null;
 
@@ -77,7 +74,7 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                     <motion.div
                         key={current.id}
                         initial={{ scale: 0.9, opacity: 0, y: -180 }}
-                        animate={{ scale: 1, opacity: 1, y: 25 }}
+                        animate={{ scale: 1, opacity: 1, y: 60 }}
                         exit={{ scale: 0.9, opacity: 0, y: 80 }}
                         transition={{ type: 'spring', damping: 18, stiffness: 300 }}
                         className="fixed left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
@@ -90,7 +87,7 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                                     initial={{ scale: 0, rotate: -180 }}
                                     animate={{ scale: 1, rotate: 0 }}
                                     transition={{ delay: 0.2, type: 'spring', damping: 15 }}
-                                    className="relative"
+                                    className="relative max-w-1/5"
                                 >
                                     <div
                                         className="flex items-center justify-center w-15 h-15 rounded-full ring-4 text-3xl"
@@ -110,7 +107,7 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.3 }}
-                                    className="flex flex-col"
+                                    className="flex flex-col max-w-4/5"
                                 >
                                     <h2 className="text-md font-medium text-[var(--secondary-color)] flex justify-between">
                                         {current.title}
