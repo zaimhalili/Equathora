@@ -91,6 +91,7 @@ const Footer = () => {
                             <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
                             <li><Link to="/premium" className='footer-links'>Premium</Link></li>
                             <li><Link to="/equathora-briefs" className='footer-links'>Equathora Briefs</Link></li>
+                            <li><Link to="/khan-academy-alternative" className='footer-links'>Compare Math Platforms</Link></li>
                             <li><Link to="/profile/myprofile" className='footer-links'>My Profile</Link></li>
                         </ul>
                     </div>

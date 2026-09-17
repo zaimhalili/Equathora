@@ -123,7 +123,6 @@
 
 math-field {
     --caret-color: var(--accent-color);
-    --selection-background-color: var(--really-light-accent);
     --placeholder-color: var(--mid-main-secondary);
     --contains-highlight-background-color: var(--french-gray);
     font-size: 25px;
@@ -137,8 +136,9 @@ math-field {
     overflow-x: auto;
 }
 
-math-field:first-child {
-    border-radius: 10px !important;
+math-field:focus {
+    border-color: var(--mid-main-secondary);
+    border-left: 2px solid var(--dark-accent-color);
 }
 
 math-field::-webkit-scrollbar {
@@ -468,11 +468,6 @@ math-field::part(content) {
     --keycap-max-width: 76px;
     --keycap-gap: 6px;
     --keycap-font-size: clamp(16px, 2vw, 20px);
-}
-
-math-field:focus {
-    outline: var(--mid-main-secondary);
-    border-color: var(--mid-main-secondary);
 }
 
 /* Prevent keyboard from blocking input on mobile */

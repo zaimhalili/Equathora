@@ -67,6 +67,7 @@ const Journey = lazy(() => import("./pages/Journey"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const EquathoraBriefs = lazy(() => import("./pages/EquathoraBriefs"));
+const Comparison = lazy(() => import("./pages/Comparison"));
 
 function HomeRoute() {
     const { loading, isAuth, onboardingCompleted } = useAuth();
@@ -115,6 +116,9 @@ function PageMetadataUpdater() {
             '/blogs': 'All Posts - Equathora',
             '/getStarted': 'Choose Your Path - Equathora',
             '/submit-problem': 'Submit a problem - Equathora',
+            '/khan-academy-alternative': 'Equathora vs Khan Academy - Equathora',
+            '/brilliant-alternative': 'Equathora vs Brilliant - Equathora',
+            '/ixl-alternative': 'Equathora vs IXL - Equathora',
         };
 
         const matchedRoute = Object.keys(pageTitles).find(route =>
@@ -280,6 +284,9 @@ export default function App() {
                         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="/terms-of-service" element={<TermsOfService />} />
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
+                        <Route path="/khan-academy-alternative" element={<Comparison />} />
+                        <Route path="/brilliant-alternative" element={<Comparison />} />
+                        <Route path="/ixl-alternative" element={<Comparison />} />
 
                         {/* Protected Onboarding Flow - guarded by OnboardingRoute, not
                             ProtectedRoute. OnboardingRoute allows a completed user back

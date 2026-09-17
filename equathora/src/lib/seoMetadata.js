@@ -1,7 +1,8 @@
 const SITE_URL = 'https://equathora.com';
 
 export function getCanonicalUrl(pathname) {
-    return pathname === '/learn' ? `${SITE_URL}/learn` : `${SITE_URL}/`;
+    const normalizedPath = pathname && pathname !== '/' ? pathname.replace(/\/$/, '') : '';
+    return `${SITE_URL}${normalizedPath}`;
 }
 
 export function updateCanonicalUrl(documentRef, pathname) {
