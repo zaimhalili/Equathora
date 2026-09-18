@@ -31,7 +31,7 @@
 .ml-card {
     width: 100%;
     flex: 1;
-    padding: 1rem;
+    padding: 0 0 1rem 0;
     background: var(--main-color);
     display: flex;
     flex-direction: column;
@@ -72,22 +72,19 @@
 .ml-step-wrapper {
     display: flex;
     align-items: center;
-    position: relative;
     background-color: white;
+    border-top: 2px solid var(--main-color);
 }
 
 .ml-step-label {
     font-size: 0.875rem;
     font-weight: 700;
     color: var(--secondary-color);
-    min-width: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    border-right: 2px solid var(--main-color);
-    border-top: 2px solid var(--main-color);
-    height: 3rem;
+    padding: 0 1rem;
+    max-width: 21px;
 }
 
 math-field:focus .ml-step-label {
@@ -96,9 +93,8 @@ math-field:focus .ml-step-label {
 }
 
 .ml-delete-btn {
-    background: white;
+    color: var(--accent-color);
     border: none;
-    color: var(--mid-main-secondary);
     cursor: pointer;
     font-size: 18px;
     font-weight: 400;
@@ -109,11 +105,10 @@ math-field:focus .ml-step-label {
     transition: all 0.150s ease;
     flex-shrink: 0;
     padding-right: 10px;
-    border-top: 1px solid var(--main-color);
 }
 
 .ml-delete-btn:hover {
-    color: var(--secondary-color);
+    color: var(--dark-accent-color);
     /* transform: scale(1.1); */
 }
 
@@ -131,14 +126,16 @@ math-field {
     padding: 0;
     display: block;
     flex: 1;
+    overflow-y: visible !important;
     overflow-x: auto;
-    border-left: 4px solid transparent;
-    border-top: 2px solid var(--main-color);
+    border-left: 4px solid var(--main-color);
+    border-radius: 0px !important;
 }
 
 math-field:focus {
     border-left: 4px solid var(--dark-accent-color);
     outline: none;
+    filter: brightness(97%);
 }
 
 math-field:hover {
@@ -148,7 +145,6 @@ math-field:hover {
 math-field::-webkit-scrollbar {
     display: none;
 }
-
 
 .ml-toolbar-sticky {
     position: sticky;
@@ -304,16 +300,41 @@ math-field::-webkit-scrollbar {
     color: var(--accent-color);
 }
 
-.ml-btn.addStep {
-    color: var(--secondary-color);
-    border-color: var(--mid-main-secondary);
-
-    font-weight: 500;
-    background-color: var(--white);
+.ml-add-step {
+    width: 100%;
+    min-height: 42px;
+    padding: 0.75rem 0.75rem 0.75rem 1.25rem;
+    border: 0;
+    background-color: var(--main-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: filter 0.15s ease;
 }
 
-.ml-btn.addStep:hover {
-    background-color: var(--french-gray);
+.ml-add-step:hover {
+    filter: brightness(0.94);
+}
+
+.ml-add-step:active {
+    transform: translateY(2px);
+}
+
+.ml-add-step-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+}
+
+.ml-add-step-enter {
+    flex-shrink: 0;
+    margin-left: auto;
+    font-size: 1rem;
+    rotate: 90deg;
 }
 
 .ml-btn.subtle {
@@ -430,26 +451,33 @@ math-field::part(content) {
     line-height: 1.4 !important;
 }
 
-/* Hide virtual keyboard toggle button on mobile */
-@media (max-width: 768px) {
-    math-field {
-        font-size: clamp(24px, 6vw, 28px) !important;
-    }
+.ML__virtual-keyboard-toggle,
+.ML__menu-toggle {
+    box-sizing: border-box;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0px;
+    margin-right: 4px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: background 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+    color: var(--dark-accent-color) !important;
+    fill: var(--dark-accent-color) !important;
+    background: transparent;
+}
 
-    math-field::part(content) {
-        font-size: inherit !important;
-    }
-
-    math-field::part(virtual-keyboard-toggle) {
-        display: none !important;
-    }
-
-    /* Additional selectors for keyboard toggle */
-    .ML__virtual-keyboard-toggle,
-    [part="virtual-keyboard-toggle"] {
-        display: none !important;
-        visibility: hidden !important;
-    }
+.ML__virtual-keyboard-toggle:hover,
+.ML__menu-toggle:hover {
+    color: var(--dark-accent-color) !important;
+    fill: var(--dark-accent-color) !important;
+    background: var(--french-gray);
 }
 
 /*
@@ -459,8 +487,8 @@ math-field::part(content) {
  */
 .ML__keyboard {
     --keyboard-zindex: 10001;
-    --keyboard-accent-color: var(--accent-color);
-    --keyboard-background: var(--french-gray);
+    --keyboard-accent-color: var(--dark-accent-color);
+    --keyboard-background: var(--white);
     --keyboard-padding-horizontal: 8px;
     --keyboard-padding-top: 6px;
     --keyboard-padding-bottom: 6px;
@@ -469,6 +497,24 @@ math-field::part(content) {
     --keycap-max-width: 76px;
     --keycap-gap: 6px;
     --keycap-font-size: clamp(16px, 2vw, 20px);
+}
+
+.MLK__keycap,
+.MLK_tooltip {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer !important;
+    color: var(--secondary-color);
+    background-color: var(--main-color) !important;
+}
+
+.MLK__tooltip:hover {
+    background-color: var(--french-gray) !important;
+}
+
+.ML_edit-toolbar {
+    color: var(--secondary-color) !important;
 }
 
 /* Prevent keyboard from blocking input on mobile */
@@ -590,11 +636,6 @@ math-field:focus-within {
         min-width: 100px;
     }
 
-    .ml-btn.addStep {
-        flex: 1;
-        min-width: 90px;
-    }
-
     .ml-btn.clear {
         min-width: 80px;
     }
@@ -612,6 +653,26 @@ math-field:focus-within {
 
     math-field::part(content) {
         font-size: inherit !important;
+    }
+
+    /* Hide virtual keyboard toggle button on mobile */
+    math-field {
+        font-size: clamp(24px, 6vw, 28px) !important;
+    }
+
+    math-field::part(content) {
+        font-size: inherit !important;
+    }
+
+    math-field::part(virtual-keyboard-toggle) {
+        display: none !important;
+    }
+
+    /* Additional selectors for keyboard toggle */
+    .ML__virtual-keyboard-toggle,
+    [part="virtual-keyboard-toggle"] {
+        display: none !important;
+        visibility: hidden !important;
     }
 }
 

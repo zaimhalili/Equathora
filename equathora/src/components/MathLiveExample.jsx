@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/MathLiveExample.css";
-import { FaChevronDown, FaChevronUp, FaTrash, FaLightbulb, FaCheckCircle, FaPlus, FaGraduationCap } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaTrash, FaLightbulb, FaCheckCircle, FaPlus, FaGraduationCap, FaLevelDownAlt } from "react-icons/fa";
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
 import { testGemini } from "@/lib/geminiTest";
 import { useSubscription } from "@/hooks/SubscriptionContext";
@@ -67,7 +67,6 @@ export default function MathLiveEditor({
     const [deleteAllPopup, setDeleteAllPopup] = useState(false);
     const [submissionFeedback, setSubmissionFeedback] = useState(null);
     const [canShowNext, setCanShowNext] = useState(isSolved);
-    const [hintsOpen, setHintsOpen] = useState(false);
     const [wrongStepNumber, setWrongStepNumber] = useState(null);
     const [stepLimitWarning, setStepLimitWarning] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,7 +108,7 @@ export default function MathLiveEditor({
         });
     };
 
-    const addField = () => {
+    const addField = (afterFieldId = null) => {
         if (fields.length >= MAX_STEPS) {
             setStepLimitWarning(true);
             setTimeout(() => setStepLimitWarning(false), 3000);
@@ -117,7 +116,11 @@ export default function MathLiveEditor({
         }
         const newField = { id: Date.now(), latex: "" };
         setFields((prev) => {
-            const updated = [...prev, newField];
+            const afterIndex = afterFieldId == null
+                ? prev.length - 1
+                : prev.findIndex((field) => field.id === afterFieldId);
+            const insertAt = afterIndex === -1 ? prev.length : afterIndex + 1;
+            const updated = [...prev.slice(0, insertAt), newField, ...prev.slice(insertAt)];
             onFieldsChange?.(updated);
             return updated;
         });
@@ -289,29 +292,6 @@ export default function MathLiveEditor({
                     )}
                 </div>
 
-                <div className="ml-format-hints" onClick={() => setHintsOpen(!hintsOpen)}>
-                    <div className="ml-format-hints-toggle">
-                        <div className="ml-format-hints-title">
-                            <FaLightbulb />
-                            How to Use This Interface
-                        </div>
-                        {hintsOpen ? <FaChevronUp /> : <FaChevronDown />}
-                    </div>
-                    {hintsOpen && (
-                        <div className="ml-format-hints-content">
-                            <div className="ml-usage-instructions">
-                                Type each step. Press <strong>Enter</strong> to add a new step, use <strong>↑↓</strong> arrows to move between steps, and the last step counts as your final answer.
-                            </div>
-                            <ul className="ml-format-hints-list">
-                                <li>Fractions: Use <code>frac{"{numerator}"}{"{denominator}"}</code> or type "/" for quick fraction</li>
-                                <li>Exponents: Use ^ symbol (e.g., x^2 for x²)</li>
-                                <li>Square root: Type sqrt{"{x}"} or use √ button</li>
-                                <li>Multiplication: Use * or × (times symbol)</li>
-                            </ul>
-                        </div>
-                    )}
-                </div>
-
                 <div className="ml-card" aria-live="polite">
                     <div className="ml-steps-scrollable">
                         <div className="ml-steps-container cursor-text">
@@ -331,11 +311,11 @@ export default function MathLiveEditor({
                                                 className="ml-field"
                                                 virtualkeyboardmode="off"
                                                 smartfence="true"
-                                                placeholder=""
+                                                placeholder="Enter your next step"
                                                 value={field.latex}
                                                 onInput={(evt) => updateLatex(field.id, evt.target.getValue("latex"))}
                                                 onKeyDown={(e) => {
-                                                    if (e.key === "Enter") { e.preventDefault(); addField(); }
+                                                    if (e.key === "Enter") { e.preventDefault(); addField(field.id); }
                                                     if (e.key === "ArrowUp") { e.preventDefault(); const prev = fields[index - 1]; if (prev) fieldRefs.current[prev.id]?.focus(); }
                                                     if (e.key === "ArrowDown") { e.preventDefault(); const next = fields[index + 1]; if (next) fieldRefs.current[next.id]?.focus(); }
                                                 }}
@@ -345,6 +325,17 @@ export default function MathLiveEditor({
                                                 <FaTrash />
                                             </button>
                                         </div>
+
+                                        {index === fields.length - 1 && (
+                                            <button type="button" className="ml-add-step" onClick={addField}>
+                                                <span className="ml-add-step-label text-[var(--secondary-color)]/70">
+                                                    <FaPlus />
+                                                    Add next step...
+                                                </span>
+                                                <FaLevelDownAlt className="ml-add-step-enter" aria-hidden="true" />
+                                            </button>
+                                        )}
+
 
                                         {isThisStepWrong && submissionFeedback && !submissionFeedback.success && (
                                             <div className="w-full pt-2 flex justify-between px-6 md:px-8 items-center pb-4 flex-wrap">
@@ -394,10 +385,6 @@ export default function MathLiveEditor({
                             <p>Clear All</p>
                         </button>
                         <div className="flex gap-2 w-full sm:w-auto sm:order-2">
-                            <button className="ml-btn addStep flex gap-1 items-center" onClick={addField} title="Click (Enter)">
-                                <FaPlus />
-                                Add New Line
-                            </button>
                             <button className={`ml-btn submit flex-1 ${isSubmitting ? 'active:scale-100 hover:bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] !cursor-not-allowed active:!translate-y-0' : ''}`} onClick={handleSubmit} disabled={isSubmitting}>
                                 {isSubmitting ? "Checking..." : "Submit Solution"}
                             </button>

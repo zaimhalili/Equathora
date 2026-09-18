@@ -91,9 +91,9 @@ function Comparison() {
                 <main className="flex flex-col px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-20 gap-12">
                     <section className="flex flex-col gap-6 justify-center items-center">
                         <div className="flex gap-2 items-center text-[var(--secondary-color)]/70 text-md font-medium">
-                            <img src={Sigma} alt="Equathora Logo" className='w-12 h-12' />
+                            <img src={Sigma} alt="Equathora Logo" className='w-12 h-12' loading='lazy'/>
                             vs
-                            <img src={Sigma} alt="Equathora Logo" className='w-12 h-12' />
+                            <img src={Sigma} alt="Equathora Logo" className='w-12 h-12' loading='lazy'/>
                         </div>
                         <h1 className='text-4xl text-center font-medium'>{comparison.title}</h1>
                         <p className="text-md text-[var(--secondary-color)]/70 max-w-2xl">{comparison.intro}</p>

@@ -9,7 +9,8 @@ const HelpModal = ({ isOpen, onClose }) => {
 
     return (
         <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
-            <div className='bg-[var(--white)] w-11/12 max-w-2xl rounded-xl px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto custom-scrollbar' onClick={(e) => e.stopPropagation()} style={{
+            <div className='bg-[var(--white)] w-11/12 max-w-2xl rounded-xl px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] ' onClick={(e) => e.stopPropagation()}
+                style={{
                 scrollbarWidth: 'thin',
                 scrollbarColor: 'var(--accent-color) transparent'
             }}>
@@ -40,7 +41,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                     </button>
                 </div>
 
-                <div className='flex flex-col gap-5'>
+                <div className='flex flex-col gap-5 overflow-y-auto custom-scrollbar pr-2 py-2'>
                     <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl'>
                         <h3 className=' font-bold text-lg text-[var(--secondary-color)] pb-2 flex items-center gap-2'>
                             <FaFileAlt className='text-[var(--accent-color)]' /> Reading the Problem
@@ -49,7 +50,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                     </div>
 
                     <div className='bg-[var(--french-gray)]/20 p-4 rounded-xl flex flex-col gap-4'>
-                        <h3 className=' font-bold text-lg text-[var(--secondary-color)] pb-2 flex items-center gap-2'>
+                        <h3 className=' font-bold text-lg text-[var(--secondary-color)] flex items-center gap-2'>
                             <FaCalculator className='text-[var(--accent-color)]' /> Entering Your Solution
                         </h3>
                         <ul className=' text-sm text-[var(--secondary-color)] leading-relaxed list-disc list-inside flex flex-col'>
@@ -62,7 +63,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                         <div className='pt-3 p-3 bg-[var(--accent-color)]/5 border-2 border-[var(--accent-color)]/20 rounded-xl flex flex-col'>
                             <p className=' text-sm font-bold text-[var(--secondary-color)]'>⚠️ Important:</p>
                             <p className=' text-sm text-[var(--secondary-color)] leading-relaxed pt-1'>
-                                Your <strong>final answer must be in the LAST step</strong> before submitting. The system checks your last step to determine if your solution is correct. Make sure your final answer is clear and simplified.
+                                Your <strong>final answer must be in the LAST step</strong> before submitting. The system checks your last step to determine if your solution is correct. Unless you have the premium version for which the AI will check every step and tell you what went wrong. In short, make sure your final answer is clear and simplified.
                             </p>
                         </div>
                     </div>
