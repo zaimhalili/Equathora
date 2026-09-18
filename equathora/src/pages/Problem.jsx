@@ -946,17 +946,29 @@ const Problem = () => {
             <>
                 <Navbar />
 
-                <div className="h-200 flex items-center justify-center">
+                <div className="h-170 flex items-center justify-center">
                     <div className="text-center flex flex-col items-center gap-3 px-3">
                         <FaCrown className="text-3xl text-amber-500" />
                         <h2 className="text-2xl font-bold">Premium Problem</h2>
-                        <p className="text-[var(--mid-main-secondary)]">Upgrade to premium to view this problem.</p>
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="text-white font-medium bg-gradient-to-b from-amber-600 to-amber-500 px-4 py-2 rounded-xl hover:to-amber-600 transition-all active:scale-95 cursor-pointer"
-                        >
-                            Go back
-                        </button>
+                        <p className="text-[var(--mid-main-secondary)]">Upgrade to{' '}
+                            <Link to={'/premium'} className='inline !underline !underline-offset-2 !text-[var(--accent-color)] hover:!text-[var(--dark-accent-color)] /!font-medium'>premium</Link>{' '} to view this problem.</p>
+                        <div className="flex gap-3 pt-3">
+                            <button
+                                onClick={() => navigate(-1)}
+                                className="text-white font-medium bg-gradient-to-b from-amber-600 to-amber-500 px-4 py-2 rounded-xl hover:to-amber-600 transition-all active:scale-95 cursor-pointer"
+                            >
+                                Go back
+                            </button>
+                            <button
+                                onClick={() => nextProblemSlug && navigate(`/problems/${nextProblemSlug}`)}
+                                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-xl transition-all duration-200 bg-transparent border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] hover:bg-[var(--french-gray)] cursor-pointer"
+                                title={nextProblem ? `Next: ${nextProblem.title}` : ''}
+                            >
+                                <span className="hidden sm:inline text-xs md:text-sm font-medium">Next</span>
+                                <FaChevronRight className="text-sm" />
+                            </button>
+                        </div>
+                        
                     </div>
                 </div>
 
@@ -990,7 +1002,7 @@ const Problem = () => {
 
     return (
         <>
-            <main className="flex flex-col text-[var(--secondary-color)] bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed items-center">
+            <main className="flex flex-col text-[var(--secondary-color)] bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed items-center lg:h-svh lg:overflow-hidden">
                 {/* Navigation Header */}
                 <header className="flex items-center justify-between gap-2 md:gap-3  bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0 max-w-600">
                     {/* Left side - Back button and Navigation */}
@@ -1139,7 +1151,7 @@ const Problem = () => {
                 )}
 
                 {/* Main Content */}
-                <section className="flex flex-col lg:flex-row flex-1 w-full gap-1 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 lg:overflow-y-hidden max-h-dvh">
+                <section className="flex flex-col lg:flex-row flex-1 min-h-0 w-full gap-1 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 lg:overflow-hidden">
                     {/* Description Side Left Side */}
                     <aside className={`flex flex-col w-full rounded-xl bg-[var(--main-color)] text-[var(--secondary-color)] overflow-hidden border border-[var(--white)] h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-[var(--french-gray)] px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
