@@ -20,7 +20,7 @@ const NavigationBar = () => {
                     <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
                         <li className='shrink-0'>
                             <a href='/' className='!text-[var(--secondary-color)] list-none font-bold  text-lg relative pl-5' title='Home'>
-                                <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[1px] -top-[5px]' />
+                                <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[1px] -top-[5px] !font-black' />
                                 quathora
                             </a>
                         </li>

@@ -34,7 +34,7 @@ const About = () => {
             <main className="relative z-10 w-full flex flex-col items-center">
                 <AboutHeroSection />
                 <AboutIdentitySection />
-                <AboutPlatformStrengthsSection />
+                {/* <AboutPlatformStrengthsSection /> */}
                 <AboutMissionSection />
                 <AboutFeaturesSection />
                 <AboutCtaSection />

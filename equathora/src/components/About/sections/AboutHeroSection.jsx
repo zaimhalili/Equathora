@@ -5,24 +5,7 @@ import { FaArrowRight } from 'react-icons/fa';
 
 const AboutHeroSection = () => {
     return (
-        <section
-            className="w-full relative bg-[var(--main-color)] overflow-hidden flex justify-center shadow-[0_10px_25px_rgba(0,0,0,0.18)]"
-            style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay' }}
-        >
-            <div className="absolute inset-0">
-                <div className="absolute inset-0 opacity-[0.85]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")' }}></div>
-                <div
-                    className="absolute inset-0 opacity-[0.03]"
-                    style={{
-                        backgroundImage: `
-                            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 10px),
-                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 10px)
-                        `,
-                        backgroundSize: '80px 80px'
-                    }}
-                />
-            </div>
-
+        <section className="w-full relative bg-[var(--white)] overflow-hidden flex justify-center">
             <div className="relative z-10 w-full flex justify-center">
                 <div className="w-full max-w-[1500px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 pt-40 sm:pt-24 md:pt-30 lg:pt-20 xl:pt-40 pb-14 sm:pb-16 md:pb-18 lg:pb-20 flex flex-col items-center text-center gap-5 sm:gap-6">
                     <motion.h1
