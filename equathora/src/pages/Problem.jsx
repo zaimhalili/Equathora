@@ -968,7 +968,7 @@ const Problem = () => {
                                 <FaChevronRight className="text-sm" />
                             </button>
                         </div>
-                        
+
                     </div>
                 </div>
 
@@ -1431,7 +1431,7 @@ const Problem = () => {
                                             {/* Similar Questions Section */}
                                             {similarQuestions && similarQuestions.length > 0 && (
                                                 <div className="flex flex-col">
-                                                    <div className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
+                                                    <div className="rounded-t-2xl overflow-hidden">
                                                         <button
                                                             className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
                                                             onClick={() => toggleHint('similar')}

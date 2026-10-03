@@ -19,10 +19,10 @@ const NavigationBar = () => {
                 <nav aria-label="Primary" className='w-full h-full mx-auto flex items-center justify-between px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1500px]'>
                     <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
                         <li className='shrink-0'>
-                            <a href='/' className='!text-[var(--secondary-color)] list-none font-bold  text-lg relative pl-5' title='Home'>
-                                <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[1px] -top-[5px] !font-black' />
+                            <Link to='/' className='!text-[var(--secondary-color)] list-none !font-medium  text-lg relative pl-5' title='Home'>
+                                <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[1px] -top-[5px] ' />
                                 quathora
-                            </a>
+                            </Link>
                         </li>
                     </ul>
 

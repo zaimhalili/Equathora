@@ -95,19 +95,10 @@ const HeroSection = () => {
     return (
         <section
             className=" w-full bg-[var(--main-color)] relative overflow-hidden flex items-center justify-center"
-        // style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")', backgroundBlendMode: 'overlay', opacity: 0.98 }}
         >
-            {/* Background decorations */}
-            <div className="absolute inset-0">
-                {/* Subtle texture overlay for depth */}
-                <div className="absolute inset-0 opacity-[0.75]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")' }} />
-            </div>
-
-            {/* Red Particles */}
-            <Particles />
 
             <div className="relative z-10 w-full flex justify-center">
-                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1500px] py-40 sm:pt-24 md:pt-30 lg:pt-20 xl:pt-40 flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-11 lg:gap-16 xl:gap-16 w-full">
+                <div className="px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1500px] py-40 sm:pt-24 md:pt-30 lg:pt-20 xl:pt-40 flex flex-col xl:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-11 lg:gap-16 xl:gap-16 w-full">
 
                     {/* Left Content - Centered */}
                     <motion.div
@@ -220,7 +211,6 @@ const HeroSection = () => {
 
                     {/* Right Side - Student PNG with floating circle and MouseFollower */}
                     <div className="flex-1 relative flex justify-center items-center h-full">
-                        {/* MouseFollower wraps everything for parallax effect */}
                         <MouseFollower
                             intensity={25}
                             scale={1.05}
@@ -229,7 +219,7 @@ const HeroSection = () => {
                             className="relative z-20 w-full h-full flex items-center justify-center"
                         >
                             <motion.div
-                                className="relative [transform-style:preserve-3d]" /* <-- FIX 1: Enable 3D rendering context */
+                                className="relative [transform-style:preserve-3d]"
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -250,7 +240,6 @@ const HeroSection = () => {
                                             absolute
                                             inset-0
                                             w-full
-                                            h-full
                                             object-cover
                                             object-top
                                             drop-shadow-2xl
@@ -262,50 +251,8 @@ const HeroSection = () => {
                                         fetchPriority="high"
                                     />
                                 </div>
-
-                                {/* Floating badge - top right */}
-                                <motion.div
-                                    className="absolute top-[10%] right-[-3%] z-30 [transform:translateZ(40px)]" /* <-- FIX 2: Push out on Z-axis */
-                                    animate={{ y: [0, -6, 0] }}
-                                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                                >
-                                    <div className="flex items-center gap-2 px-3 py-2 bg-[var(--secondary-color)] rounded-xl shadow-2xl">
-                                        <div>
-                                            <p className="font-bold text-xl text-[var(--main-color)]">50+</p>
-                                            <p className="text-[10px] text-[var(--mid-main-secondary)]">Active learners</p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-
-                                {/* Floating badge - left */}
-                                <motion.div
-                                    className="absolute top-[38%] left-[-5%] z-30 [transform:translateZ(50px)]" /* <-- FIX 3: Push out on Z-axis */
-                                    animate={{ y: [0, 8, 0] }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                                >
-                                    <div className="px-4 py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] rounded-xl shadow-2xl text-white">
-                                        <p className="text-2xl font-bold">98%</p>
-                                        <p className="text-[10px] opacity-90 ">Success Rate</p>
-                                    </div>
-                                </motion.div>
                             </motion.div>
                         </MouseFollower>
-
-                        {/* Floating math symbols */}
-                        <motion.div
-                            className="absolute top-20 left-20 text-4xl text-[var(--secondary-color)]/20 font-light z-10 pointer-events-none"
-                            animate={{ rotate: [0, 10, -10, 0], y: [0, -5, 0] }}
-                            transition={{ duration: 6, repeat: Infinity }}
-                        >
-                            ∑
-                        </motion.div>
-                        <motion.div
-                            className="absolute bottom-32 right-16 text-3xl text-[var(--secondary-color)]/15 font-light z-10 pointer-events-none"
-                            animate={{ rotate: [0, -10, 10, 0], y: [0, -8, 0] }}
-                            transition={{ duration: 8, repeat: Infinity, delay: 1 }}
-                        >
-                            π
-                        </motion.div>
                     </div>
                 </div>
             </div>

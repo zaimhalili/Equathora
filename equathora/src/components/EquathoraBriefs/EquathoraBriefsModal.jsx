@@ -131,7 +131,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-[var(--raisin-black)]/50 backdrop-blur-sm"
+                        className="absolute inset-0 bg-[var(--raisin-black)]/50"
                     />
 
                     {/* Modal Container */}

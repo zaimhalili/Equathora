@@ -8,7 +8,7 @@ const HelpModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     return (
-        <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 ' onClick={onClose}>
             <div className='bg-[var(--white)] w-11/12 max-w-2xl rounded-xl px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] ' onClick={(e) => e.stopPropagation()}
                 style={{
                 scrollbarWidth: 'thin',

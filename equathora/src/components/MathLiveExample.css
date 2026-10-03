@@ -93,7 +93,7 @@ math-field:focus .ml-step-label {
 }
 
 .ml-delete-btn {
-    color: var(--accent-color);
+    color: #4D7CB3;
     border: none;
     cursor: pointer;
     font-size: 18px;
