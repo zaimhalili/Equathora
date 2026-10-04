@@ -138,10 +138,6 @@ math-field:focus {
     filter: brightness(97%);
 }
 
-math-field:hover {
-    border-left: 4px solid var(--accent-color);
-}
-
 math-field::-webkit-scrollbar {
     display: none;
 }

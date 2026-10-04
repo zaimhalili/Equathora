@@ -1265,7 +1265,7 @@ const Problem = () => {
 
                         <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex flex-col  text-[var(--secondary-color)] lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-100px)] lg:h-[calc(100vh-72px-74px)] overflow-y-auto opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
 
-                            <div className={`w-full px-4 pt-4 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll h-full`}>
+                            <div className={`w-full p-4 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll h-full`}>
                                 {/* Problem Title & Badges */}
                                 {!chatPanel ? (
                                     <div className="flex flex-col gap-3">
@@ -1396,101 +1396,115 @@ const Problem = () => {
                                             </div>
                                         )}
 
-                                        {/* Hints Section - Collapsible like LeetCode */}
-                                        <div className='flex-col flex gap-3'>
-                                            {hintCount > 0 && (
-                                                <div className="">
-                                                    <div className="flex flex-col gap-3">
-                                                        {Array.from({ length: hintCount }).map((_, index) => (
-                                                            <div key={index} className=" overflow-hidden">
-                                                                <button
-                                                                    className="rounded-t-2xl w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
-                                                                    onClick={() => toggleHint(index)}
-                                                                >
-                                                                    <div className="font-medium text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
-                                                                        <FaLightbulb className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
-                                                                        Hint {index + 1}
-                                                                    </div>
-                                                                    <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints[index] ? 'rotate-180' : ''}`} />
-                                                                </button>
-                                                                <div className={`transition-all duration-300 ease-in-out ${openHints[index] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                                                    <div className="px-3 md:px-4 py-2 md:py-3 bg-[var(--french-gray)]/40 rounded-b-2xl">
-                                                                        <MathJaxRenderer
-                                                                            content={loadedHints[index] ?? 'Loading hint...'}
-                                                                            className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed  m-0"
-                                                                            as="p"
-                                                                        />
-                                                                    </div>
+{/* Hints & Accordion Section */}
+                                    <div className="flex flex-col gap-4">
+
+                                        {/* Hints Section */}
+                                        {hintCount > 0 && (
+                                            <div className="flex flex-col gap-3">
+                                                {Array.from({ length: hintCount }).map((_, index) => {
+                                                    const isOpen = openHints[index];
+                                                    return (
+                                                        <div key={index} className="w-full">
+                                                            <button
+                                                                type="button"
+                                                                className={`w-full flex items-center justify-between px-3 md:px-4 py-2.5 md:py-3 bg-[var(--french-gray)]/40 hover:bg-[var(--french-gray)]/60 cursor-pointer text-left transition-all duration-200 ${isOpen ? 'rounded-t-2xl rounded-b-none' : 'rounded-2xl'
+                                                                    }`}
+                                                                onClick={() => toggleHint(index)}
+                                                            >
+                                                                <div className="font-medium text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
+                                                                    <FaLightbulb className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                                                                    Hint {index + 1}
+                                                                </div>
+                                                                <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                                                            </button>
+
+                                                            <div className={`transition-all duration-300 ease-in-out overflow-hidden bg-[var(--french-gray)]/40 ${isOpen ? 'max-h-96 opacity-100 rounded-b-2xl' : 'max-h-0 opacity-0 rounded-b-none'
+                                                                }`}>
+                                                                <div className="px-3 md:px-4 py-3 border-t border-[var(--secondary-color)]/10">
+                                                                    <MathJaxRenderer
+                                                                        content={loadedHints[index] ?? 'Loading hint...'}
+                                                                        className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed m-0"
+                                                                        as="p"
+                                                                    />
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+
+                                        {/* Similar Questions Section */}
+                                        {similarQuestions && similarQuestions.length > 0 && (
+                                            <div className="w-full">
+                                                <button
+                                                    type="button"
+                                                    className={`w-full flex items-center justify-between px-3 md:px-4 py-2.5 md:py-3 cursor-pointer text-left transition-all duration-200 bg-[var(--french-gray)]/40 hover:bg-[var(--french-gray)]/60 ${openHints['similar'] ? 'rounded-t-2xl rounded-b-none' : 'rounded-2xl'
+                                                        }`}
+                                                    onClick={() => toggleHint('similar')}
+                                                >
+                                                    <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
+                                                        <FaLink className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                                                        Similar Questions
+                                                    </span>
+                                                    <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
+                                                </button>
+
+                                                <div className={`transition-all duration-300 ease-in-out overflow-hidden bg-[var(--french-gray)]/40 ${openHints['similar'] ? 'max-h-96 opacity-100 rounded-b-2xl' : 'max-h-0 opacity-0 rounded-b-none'
+                                                    }`}>
+                                                    <div className="flex flex-col p-1.5 gap-1 border-t border-[var(--secondary-color)]/10">
+                                                        {similarQuestions.map((question, index) => (
+                                                            <Link
+                                                                key={index}
+                                                                to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
+                                                                className="flex items-center justify-between p-2 md:p-2.5 rounded-xl transition-colors duration-150 hover:bg-[var(--french-gray)]/60 group"
+                                                            >
+                                                                <span className="text-xs md:text-sm text-[var(--secondary-color)] group-hover:text-[var(--dark-accent-color)] font-medium">
+                                                                    {question.title}
+                                                                </span>
+                                                                <span className={`px-2 py-0.5 rounded-xl text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
+                                                                        question.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
+                                                                            'bg-red-500/10 text-[var(--accent-color)]'
+                                                                    }`}>
+                                                                    {question.difficulty}
+                                                                </span>
+                                                            </Link>
                                                         ))}
                                                     </div>
                                                 </div>
-                                            )}
+                                            </div>
+                                        )}
 
-                                            {/* Similar Questions Section */}
-                                            {similarQuestions && similarQuestions.length > 0 && (
-                                                <div className="flex flex-col">
-                                                    <div className="rounded-t-2xl overflow-hidden">
-                                                        <button
-                                                            className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 cursor-pointer text-left transition-colors duration-200  bg-[var(--french-gray)]/40"
-                                                            onClick={() => toggleHint('similar')}
-                                                        >
-                                                            <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)]  flex items-center gap-2">
-                                                                <FaLink className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
-                                                                Similar Questions
-                                                            </span>
-                                                            <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
-                                                        </button>
-                                                        <div className={`transition-all duration-300 ease-in-out ${openHints['similar'] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                                            <div className=" bg-[var(--main-color)] flex flex-col rounded-b-2xl">
-                                                            {similarQuestions.map((question, index) => (
-                                                                <Link
-                                                                    key={index}
-                                                                    to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
-                                                                    className={`flex items-center justify-between p-2 md:p-3 group bg-[var(--french-gray)]/40`}
-                                                                    >
-                                                                        <span className="text-xs md:text-sm text-[var(--secondary-color)]  group-hover:text-[var(--dark-accent-color)]">
-                                                                            {question.title}
-                                                                        </span>
-                                                                        <span className={`px-2 py-0.5 rounded-xl text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
-                                                                            question.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
-                                                                                'bg-red-500/10 text-[var(--accent-color)]'
-                                                                            }`}>
-                                                                            {question.difficulty}
-                                                                        </span>
-                                                                    </Link>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {/* Latex Steps */}
-                                            <div className="flex flex-col">
-                                                <div className="overflow-hidden rounded-t-2xl bg-[var(--french-gray)]/40">
-                                                    <button
-                                                        className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
-                                                        onClick={() => setLatexOpen(o => !o)}
-                                                    >
-                                                        <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)]  flex items-center gap-2">
-                                                            <FaCode className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
-                                                            Your solution in LaTeX
-                                                        </span>
-                                                        <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${latexOpen && 'rotate-180'}`} />
-                                                    </button>
-                                                    <div className={`transition-all duration-300  ease-in-out ${latexOpen ? 'max-h-96 opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'}`}>
-                                                        <div className="p-2 flex flex-col gap-1 bg-[var(--french-gray)]/40 !rounded-b-2xl">
-                                                            {fields.map((f, i) => (
-                                                                <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)] p-2 md:p-3 bg-[var(--white)] rounded-xl">
-                                                                    <span className="font-bold pr-2">Step {i + 1}: </span>{f.latex || <span className="opacity-30 italic">empty</span>}
-                                                                </p>
-                                                            ))}
-                                                        </div>
-                                                    </div>
+                                        {/* LaTeX Solution Section */}
+                                        <div className="w-full">
+                                            <button
+                                                type="button"
+                                                className={`w-full flex items-center justify-between px-3 md:px-4 py-2.5 md:py-3 cursor-pointer text-left transition-all duration-200 bg-[var(--french-gray)]/40 hover:bg-[var(--french-gray)]/60 ${latexOpen ? 'rounded-t-2xl rounded-b-none' : 'rounded-2xl'
+                                                    }`}
+                                                onClick={() => setLatexOpen(o => !o)}
+                                            >
+                                                <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
+                                                    <FaCode className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
+                                                    Your solution in LaTeX
+                                                </span>
+                                                <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${latexOpen ? 'rotate-180' : ''}`} />
+                                            </button>
+
+                                            <div className={`transition-all duration-300 ease-in-out bg-[var(--french-gray)]/40 ${latexOpen ? 'max-h-96 opacity-100 overflow-y-auto rounded-b-2xl' : 'max-h-0 opacity-0 overflow-hidden rounded-b-none'
+                                                }`}>
+                                                <div className="p-2 flex flex-col gap-1.5 border-t border-[var(--secondary-color)]/10">
+                                                    {fields.map((f, i) => (
+                                                        <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)] p-2 md:p-3 bg-[var(--white)] rounded-xl m-0">
+                                                            <span className="font-bold pr-2">Step {i + 1}: </span>
+                                                            {f.latex || <span className="opacity-30 italic">empty</span>}
+                                                        </p>
+                                                    ))}
                                                 </div>
                                             </div>
                                         </div>
+
+                                    </div>
                                     </>
                                 }
 

@@ -74,6 +74,20 @@ export default function MathLiveEditor({
     const navigate = useNavigate();
     const fieldRefs = useRef({});
 
+    const focusField = (id, command = null) => {
+        requestAnimationFrame(() => {
+            const el = fieldRefs.current[id];
+            if (el) {
+                el.focus();
+                if (command) {
+                    el.executeCommand(command);
+                }
+                const wrapper = el.closest('.ml-step-wrapper') || el;
+                wrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+    };
+
     useEffect(() => {
         (async () => {
             try {
@@ -112,7 +126,7 @@ export default function MathLiveEditor({
         if (fields.length >= MAX_STEPS) {
             setStepLimitWarning(true);
             setTimeout(() => setStepLimitWarning(false), 3000);
-            return;
+            return null;
         }
         const newField = { id: Date.now(), latex: "" };
         setFields((prev) => {
@@ -124,7 +138,9 @@ export default function MathLiveEditor({
             onFieldsChange?.(updated);
             return updated;
         });
-        setTimeout(() => { fieldRefs.current[newField.id]?.focus(); }, 0);
+
+        focusField(newField.id);
+        return newField.id;
     };
 
     const clearAll = () => {
@@ -132,7 +148,7 @@ export default function MathLiveEditor({
         setFields([newField]);
         onFieldsChange?.([newField]);
         setStepLimitWarning(false);
-        setTimeout(() => { fieldRefs.current[newField.id]?.focus(); }, 0);
+        focusField(newField.id);
     };
 
     const deleteField = (id) => {
@@ -140,6 +156,7 @@ export default function MathLiveEditor({
             const newField = { id: Date.now(), latex: "" };
             setFields([newField]);
             onFieldsChange?.([newField]);
+            focusField(newField.id);
             return;
         }
         setFields((prev) => {
@@ -165,7 +182,6 @@ export default function MathLiveEditor({
             return;
         }
 
-        // 1. Reset feedback state on every submission attempt to allow repeated solves
         setWrongStepNumber(null);
         setIsSubmitting(true);
         const loadingFb = { message: "Checking your answer...", success: false, isCorrect: false, loading: true };
@@ -176,7 +192,6 @@ export default function MathLiveEditor({
             const result = await onSubmit?.(nonEmptyFields);
             if (!result) return;
 
-            // 2. Handle correct solution submission
             if (result.success || result.isCorrect) {
                 const successFb = {
                     message: result.message || "Correct solution!",
@@ -192,7 +207,6 @@ export default function MathLiveEditor({
                 return;
             }
 
-            // 3. Handle incorrect solution submission (Check free trial limit first)
             if (trialExhausted) {
                 const trialFb = {
                     message: "You've used your free trial. Upgrade to Premium to see exactly where you went wrong.",
@@ -205,7 +219,6 @@ export default function MathLiveEditor({
                 return;
             }
 
-            // 4. Run AI step analyzer for incorrect submission
             const fbAi = { message: "AI Mentor is analyzing your steps...", success: false, isCorrect: false, loading: true };
             setSubmissionFeedback(fbAi);
             onFeedbackChange?.(fbAi);
@@ -217,10 +230,6 @@ export default function MathLiveEditor({
             const aiResponse = await testGemini({ problemDescription, userSteps: formattedUserSteps, acceptedAnswer: acceptedSolution });
 
             if (aiResponse) {
-                // A step number outside the range of steps actually submitted
-                // isn't useful to highlight - fall back to "no specific step"
-                // so the message still renders via the general feedback block
-                // below instead of silently matching nothing.
                 const validStep = typeof aiResponse.step === 'number'
                     && aiResponse.step >= 1
                     && aiResponse.step <= nonEmptyFields.length
@@ -265,10 +274,6 @@ export default function MathLiveEditor({
 
     const showNextProblem = Boolean(canShowNext && nextProblemPath);
 
-    // General (non-step-specific) feedback: shown when there's an incorrect
-    // submission but no valid step number to attach it to (AI error, unclear
-    // response, or an out-of-range step) - so the message is never silently
-    // dropped just because it didn't match a field in the loop below.
     const showGeneralFeedback = submissionFeedback
         && !submissionFeedback.success
         && !submissionFeedback.loading
@@ -285,7 +290,7 @@ export default function MathLiveEditor({
                 <div className="flex items-center justify-between gap-2 flex-wrap">
                     <h2 className="ml-title w-full">Your Solution</h2>
                     {isPracticeMode && (
-                        <span className="w-full text-center flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[10px] md:text-xs font-semibold bg-blue-500/10 text-blue-600">
+                        <span className="w-full text-center flex items-center gap-1.5 px-2.5 py-1 text-[10px] md:text-xs font-semibold bg-blue-500/10 text-blue-600">
                             <FaGraduationCap />
                             Practice Mode - already solved, no points this time
                         </span>
@@ -315,9 +320,51 @@ export default function MathLiveEditor({
                                                 value={field.latex}
                                                 onInput={(evt) => updateLatex(field.id, evt.target.getValue("latex"))}
                                                 onKeyDown={(e) => {
-                                                    if (e.key === "Enter") { e.preventDefault(); addField(field.id); }
-                                                    if (e.key === "ArrowUp") { e.preventDefault(); const prev = fields[index - 1]; if (prev) fieldRefs.current[prev.id]?.focus(); }
-                                                    if (e.key === "ArrowDown") { e.preventDefault(); const next = fields[index + 1]; if (next) fieldRefs.current[next.id]?.focus(); }
+                                                    const target = e.target;
+                                                    const selection = target.selection;
+                                                    const valueLength = target.getValue().length;
+                                                    const isAtStart = selection.start === 0 && selection.end === 0;
+                                                    const isAtEnd = selection.start === valueLength && selection.end === valueLength;
+
+                                                    if (e.key === "Enter") {
+                                                        e.preventDefault();
+                                                        addField(field.id);
+                                                    } else if (e.key === "ArrowLeft" && isAtStart) {
+                                                        const prev = fields[index - 1];
+                                                        if (prev) {
+                                                            e.preventDefault();
+                                                            focusField(prev.id, "moveToMathFieldEnd");
+                                                        }
+                                                    } else if (e.key === "ArrowRight" && isAtEnd) {
+                                                        const next = fields[index + 1];
+                                                        if (next) {
+                                                            e.preventDefault();
+                                                            focusField(next.id, "moveToMathFieldStart");
+                                                        }
+                                                    } else if (e.key === "ArrowUp") {
+                                                        const prev = fields[index - 1];
+                                                        if (prev) {
+                                                            e.preventDefault();
+                                                            focusField(prev.id);
+                                                        }
+                                                    } else if (e.key === "ArrowDown") {
+                                                        e.preventDefault();
+                                                        const next = fields[index + 1];
+                                                        if (next) {
+                                                            focusField(next.id);
+                                                        } else if (index === fields.length - 1) {
+                                                            addField(field.id);
+                                                        }
+                                                    } else if (e.key === "Backspace" && field.latex.trim() === "") {
+                                                        e.preventDefault();
+                                                        if (fields.length > 1) {
+                                                            deleteField(field.id);
+                                                            const prevField = fields[index - 1];
+                                                            if (prevField) {
+                                                                focusField(prevField.id);
+                                                            }
+                                                        }
+                                                    }
                                                 }}
                                             ></math-field>
 
@@ -327,7 +374,7 @@ export default function MathLiveEditor({
                                         </div>
 
                                         {index === fields.length - 1 && (
-                                            <button type="button" className="ml-add-step" onClick={addField}>
+                                            <button type="button" className="ml-add-step" onClick={() => addField()}>
                                                 <span className="ml-add-step-label text-[var(--secondary-color)]/70">
                                                     <FaPlus />
                                                     Add next step...
@@ -335,7 +382,6 @@ export default function MathLiveEditor({
                                                 <FaLevelDownAlt className="ml-add-step-enter" aria-hidden="true" />
                                             </button>
                                         )}
-
 
                                         {isThisStepWrong && submissionFeedback && !submissionFeedback.success && (
                                             <div className="w-full pt-2 flex justify-between px-6 md:px-8 items-center pb-4 flex-wrap">
