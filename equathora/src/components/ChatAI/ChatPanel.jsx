@@ -452,7 +452,7 @@ const ChatPanel = forwardRef(({
                         type="submit"
                         disabled={isSendDisabled}
                         aria-label="Send message"
-                        className="font-bold text-xs py-2 px-4 rounded-xl transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)] hover:text-[var(--white)] border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
+                        className="font-bold text-xs py-2 px-4 rounded-xl transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)] hover:text-[var(--white)] border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full disabled:active:scale-100"
                     >
                         <FaPaperPlane />
                     </button>

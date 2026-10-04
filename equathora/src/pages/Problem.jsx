@@ -1396,32 +1396,33 @@ const Problem = () => {
                                             </div>
                                         )}
 
-{/* Hints & Accordion Section */}
-                                    <div className="flex flex-col gap-4">
-
-                                        {/* Hints Section */}
+                                        {/* Hints & Accordion Section */}
                                         {hintCount > 0 && (
                                             <div className="flex flex-col gap-3">
                                                 {Array.from({ length: hintCount }).map((_, index) => {
-                                                    const isOpen = openHints[index];
+                                                    const isOpen = !!openHints[index];
                                                     return (
-                                                        <div key={index} className="w-full">
+                                                        <div key={index} className="w-full bg-[var(--french-gray)]/40 rounded-2xl px-3 md:px-4">
                                                             <button
                                                                 type="button"
-                                                                className={`w-full flex items-center justify-between px-3 md:px-4 py-2.5 md:py-3 bg-[var(--french-gray)]/40 hover:bg-[var(--french-gray)]/60 cursor-pointer text-left transition-all duration-200 ${isOpen ? 'rounded-t-2xl rounded-b-none' : 'rounded-2xl'
-                                                                    }`}
                                                                 onClick={() => toggleHint(index)}
+                                                                className="w-full flex items-center justify-between py-3 text-left cursor-pointer gap-3"
                                                             >
-                                                                <div className="font-medium text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
+                                                                <div className="font-semibold text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
                                                                     <FaLightbulb className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
                                                                     Hint {index + 1}
                                                                 </div>
-                                                                <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                                                                <FaChevronDown
+                                                                    className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180' : ''
+                                                                        }`}
+                                                                />
                                                             </button>
 
-                                                            <div className={`transition-all duration-300 ease-in-out overflow-hidden bg-[var(--french-gray)]/40 ${isOpen ? 'max-h-96 opacity-100 rounded-b-2xl' : 'max-h-0 opacity-0 rounded-b-none'
-                                                                }`}>
-                                                                <div className="px-3 md:px-4 py-3 border-t border-[var(--secondary-color)]/10">
+                                                            <div
+                                                                className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 pb-3' : 'max-h-0'
+                                                                    }`}
+                                                            >
+                                                                <div className="pt-2 border-t border-[var(--secondary-color)]/10">
                                                                     <MathJaxRenderer
                                                                         content={loadedHints[index] ?? 'Loading hint...'}
                                                                         className="text-xs md:text-sm text-[var(--secondary-color)] leading-relaxed m-0"
@@ -1437,23 +1438,27 @@ const Problem = () => {
 
                                         {/* Similar Questions Section */}
                                         {similarQuestions && similarQuestions.length > 0 && (
-                                            <div className="w-full">
+                                            <div className="w-full bg-[var(--french-gray)]/40 rounded-2xl px-3 md:px-4">
                                                 <button
                                                     type="button"
-                                                    className={`w-full flex items-center justify-between px-3 md:px-4 py-2.5 md:py-3 cursor-pointer text-left transition-all duration-200 bg-[var(--french-gray)]/40 hover:bg-[var(--french-gray)]/60 ${openHints['similar'] ? 'rounded-t-2xl rounded-b-none' : 'rounded-2xl'
-                                                        }`}
                                                     onClick={() => toggleHint('similar')}
+                                                    className="w-full flex items-center justify-between py-3 text-left cursor-pointer gap-3"
                                                 >
-                                                    <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
+                                                    <span className="font-semibold text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
                                                         <FaLink className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
                                                         Similar Questions
                                                     </span>
-                                                    <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
+                                                    <FaChevronDown
+                                                        className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-150 shrink-0 ${openHints['similar'] ? 'rotate-180' : ''
+                                                            }`}
+                                                    />
                                                 </button>
 
-                                                <div className={`transition-all duration-300 ease-in-out overflow-hidden bg-[var(--french-gray)]/40 ${openHints['similar'] ? 'max-h-96 opacity-100 rounded-b-2xl' : 'max-h-0 opacity-0 rounded-b-none'
-                                                    }`}>
-                                                    <div className="flex flex-col p-1.5 gap-1 border-t border-[var(--secondary-color)]/10">
+                                                <div
+                                                    className={`overflow-hidden transition-all duration-150 ease-in-out ${openHints['similar'] ? 'max-h-96 pb-3' : 'max-h-0'
+                                                        }`}
+                                                >
+                                                    <div className="flex flex-col pt-2 gap-1 border-t border-[var(--secondary-color)]/10">
                                                         {similarQuestions.map((question, index) => (
                                                             <Link
                                                                 key={index}
@@ -1463,10 +1468,14 @@ const Problem = () => {
                                                                 <span className="text-xs md:text-sm text-[var(--secondary-color)] group-hover:text-[var(--dark-accent-color)] font-medium">
                                                                     {question.title}
                                                                 </span>
-                                                                <span className={`px-2 py-0.5 rounded-xl text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy' ? 'bg-green-500/10 text-green-600' :
-                                                                        question.difficulty.toLowerCase() === 'medium' ? 'bg-yellow-500/10 text-yellow-700' :
-                                                                            'bg-red-500/10 text-[var(--accent-color)]'
-                                                                    }`}>
+                                                                <span
+                                                                    className={`px-2 py-0.5 rounded-xl text-[10px] md:text-xs font-medium ${question.difficulty.toLowerCase() === 'easy'
+                                                                        ? 'bg-green-500/10 text-green-600'
+                                                                        : question.difficulty.toLowerCase() === 'medium'
+                                                                            ? 'bg-yellow-500/10 text-yellow-700'
+                                                                            : 'bg-red-500/10 text-[var(--accent-color)]'
+                                                                        }`}
+                                                                >
                                                                     {question.difficulty}
                                                                 </span>
                                                             </Link>
@@ -1477,25 +1486,32 @@ const Problem = () => {
                                         )}
 
                                         {/* LaTeX Solution Section */}
-                                        <div className="w-full">
+                                        <div className="w-full bg-[var(--french-gray)]/40 rounded-2xl px-3 md:px-4">
                                             <button
                                                 type="button"
-                                                className={`w-full flex items-center justify-between px-3 md:px-4 py-2.5 md:py-3 cursor-pointer text-left transition-all duration-200 bg-[var(--french-gray)]/40 hover:bg-[var(--french-gray)]/60 ${latexOpen ? 'rounded-t-2xl rounded-b-none' : 'rounded-2xl'
-                                                    }`}
-                                                onClick={() => setLatexOpen(o => !o)}
+                                                onClick={() => setLatexOpen((o) => !o)}
+                                                className="w-full flex items-center justify-between py-3 text-left cursor-pointer gap-3"
                                             >
-                                                <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
+                                                <span className="font-semibold text-xs md:text-sm text-[var(--secondary-color)] flex items-center gap-2">
                                                     <FaCode className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
                                                     Your solution in LaTeX
                                                 </span>
-                                                <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${latexOpen ? 'rotate-180' : ''}`} />
+                                                <FaChevronDown
+                                                    className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-150 shrink-0 ${latexOpen ? 'rotate-180' : ''
+                                                        }`}
+                                                />
                                             </button>
 
-                                            <div className={`transition-all duration-300 ease-in-out bg-[var(--french-gray)]/40 ${latexOpen ? 'max-h-96 opacity-100 overflow-y-auto rounded-b-2xl' : 'max-h-0 opacity-0 overflow-hidden rounded-b-none'
-                                                }`}>
-                                                <div className="p-2 flex flex-col gap-1.5 border-t border-[var(--secondary-color)]/10">
+                                            <div
+                                                className={`overflow-hidden transition-all duration-150 ease-in-out ${latexOpen ? 'max-h-96 pb-3 overflow-y-auto' : 'max-h-0'
+                                                    }`}
+                                            >
+                                                <div className="pt-2 flex flex-col gap-1.5 border-t border-[var(--secondary-color)]/10">
                                                     {fields.map((f, i) => (
-                                                        <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)] p-2 md:p-3 bg-[var(--white)] rounded-xl m-0">
+                                                        <p
+                                                            key={f.id}
+                                                            className="text-xs md:text-sm text-[var(--secondary-color)] p-2 md:p-3 bg-[var(--white)] rounded-xl m-0"
+                                                        >
                                                             <span className="font-bold pr-2">Step {i + 1}: </span>
                                                             {f.latex || <span className="opacity-30 italic">empty</span>}
                                                         </p>
@@ -1503,8 +1519,6 @@ const Problem = () => {
                                                 </div>
                                             </div>
                                         </div>
-
-                                    </div>
                                     </>
                                 }
 
