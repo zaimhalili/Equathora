@@ -41,7 +41,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                 id={dropdownId}
                 role="menu"
                 aria-hidden={!isOpen}
-                className={`opacity-0 invisible absolute ${alignRight ? 'right-[-60px] lg:right-[-10px]' : 'left-[-60px]'} top-[45px] bg-[var(--main-color)] min-w-[360px] max-w-[360px] lg:min-w-[320px] lg:max-w-[320px] shadow-[0_10px_12px_rgba(0,0,0,0.2)]  rounded-[5px_5px_10px_10px] z-[1002] transition-all duration-200 group-hover:translate-y-2 group-hover:opacity-100 group-hover:visible group-focus-within:translate-y-2 group-focus-within:opacity-100 group-focus-within:visible`}
+                className={`opacity-0 invisible absolute ${alignRight ? 'right-[-60px] lg:right-[-10px]' : 'left-[-60px]'} top-[45px] bg-[var(--main-color)] min-w-[360px] max-w-[360px] lg:min-w-[320px] lg:max-w-[320px] shadow-[0_10px_12px_rgba(0,0,0,0.2)]  rounded-2xl overflow-hidden z-[1002] transition-all duration-200 group-hover:translate-y-2 group-hover:opacity-100 group-hover:visible group-focus-within:translate-y-2 group-focus-within:opacity-100 group-focus-within:visible`}
             >
                 {items.map((item, i) =>
                     item.isButton ? (
@@ -49,7 +49,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             key={i}
                             onClick={item.onClick}
                             role="menuitem"
-                            className='flex w-full p-2.5 gap-2.5 border-t border-x-0 border-b-0 border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] hover:rounded-[5px_5px_10px_10px] text-[var(--secondary-color)] text-left bg-transparent cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                            className='flex w-full p-2.5 gap-2.5 border-t border-x-0 border-b-0 border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] text-[var(--secondary-color)] text-left bg-transparent cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
                         >
                             <img
                                 src={item.image}
@@ -68,7 +68,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             target="_blank"
                             rel="noopener noreferrer"
                             role="menuitem"
-                            className='flex w-full p-2.5 gap-2.5 border-t border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] hover:rounded-[5px_5px_10px_10px] text-[var(--secondary-color)] no-underline justify-between focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                            className='flex w-full p-2.5 gap-2.5 border-t border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] text-[var(--secondary-color)] no-underline justify-between focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
                         >
                             <div className='flex gap-2.5'>
                                 {item.icon ? (
@@ -102,7 +102,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             to={item.to}
                             state={item.state}
                             role="menuitem"
-                            className='flex w-full p-2.5 gap-2.5 border-t border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] hover:rounded-[5px_5px_10px_10px] text-[var(--secondary-color)] no-underline justify-between focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                            className='flex w-full p-2.5 gap-2.5 border-t border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] text-[var(--secondary-color)] no-underline justify-between focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
                         >
                             <div className='flex gap-2.5'>
                                 {item.icon ? (

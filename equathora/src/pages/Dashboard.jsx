@@ -60,7 +60,6 @@ const Dashboard = () => {
             <CookieConsent />
             <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
                 <Navbar />
-
                 {/* Hero Section */}
                 <section className='flex w-full justify-center items-center pb-6'>
                     <div className='flex flex-col lg:flex-row justify-start items-center lg:items-start px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8'>

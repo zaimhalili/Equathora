@@ -203,10 +203,10 @@ const HelpCenter = () => {
                             {faqs.map((faq, index) => (
                                 <div
                                     key={index}
-                                    className="bg-[var(--white)] rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+                                    className="bg-[var(--white)] rounded-xl shadow-sm border border-gray-100 overflow-hidden "
                                 >
                                     <button
-                                        className="w-full p-4 flex items-start gap-3 text-left cursor-pointer"
+                                        className="w-full p-4 flex items-start gap-3 text-left cursor-pointer "
                                         onClick={() => toggleFaq(index)}
                                     >
                                         <div className={`${faq.color} text-xl flex-shrink-0 pt-1`}>
@@ -216,7 +216,7 @@ const HelpCenter = () => {
                                             <span className="font-semibold text-[var(--secondary-color)] text-base">
                                                 {faq.question}
                                             </span>
-                                            <div className="flex-shrink-0">
+                                            <div className="flex-shrink-0 ">
                                                 {openFaq === index ?
                                                     <FaChevronUp className="text-[var(--accent-color)] text-base" /> :
                                                     <FaChevronDown className="text-gray-400 text-base" />
@@ -225,7 +225,7 @@ const HelpCenter = () => {
                                         </div>
                                     </button>
                                     {openFaq === index && (
-                                        <div className="px-4 pb-4 pl-[60px]">
+                                        <div className="px-4 pb-4 pl-[60px] ">
                                             <div className="border-l-4 border-gray-200 pl-3">
                                                 <p className="text-[var(--mid-main-secondary)] leading-relaxed text-sm">{faq.answer}</p>
                                             </div>
@@ -275,7 +275,7 @@ const HelpCenter = () => {
                                 </div>
                                 <div className="flex-1 flex justify-center p-8">
                                     <img
-                                        src="https://illustrations.popsy.co/amber/customer-support.svg"
+                                        src={shrug}
                                         alt="Support illustration"
                                         className="w-40"
                                     />

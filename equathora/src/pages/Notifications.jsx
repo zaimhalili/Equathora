@@ -391,7 +391,7 @@ const Notifications = () => {
                     </div>
                     {/* Notification list */}
                     {loading ? (
-                        <div className="statistics-container">
+                        <div className="statistics-container justify-center items-center flex gap-3">
                             <div className="py-6 flex justify-center items-center animate-spin text-center">
                                 <FaSpinner className='text-2xl' />
                             </div>
