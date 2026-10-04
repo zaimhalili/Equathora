@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import Logo from '../assets/logo/TransparentFullLogo.png';
 import { Link } from 'react-router-dom';
 import { FaBell, FaTrophy, FaBars, FaDiscord } from 'react-icons/fa';
+
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Sidebar from './Sidebar';
 import Dropdown from './Dropdown';
-import OverflowChecker from "../pages/OverflowChecker";
 import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
-import { getUnreadCount, NOTIFICATION_EVENTS } from '../lib/notificationService';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { useUserStats } from '../context/UserStatsContext';
-//Dropdown svgs
+import { useSubscriptionStatus } from '@/hooks/useSubscription';
+
+import { useNotifications } from '../hooks/useNotifications';
+import { useRecommendedProblem } from '../hooks/useRecommendedProblem';
+import { useProfileAvatar } from '../hooks/useProfileAvatar';
+
+// Assets
 import Daily from '../assets/images/questionMark1.svg';
 import Leaderboards from '../assets/images/leaderboards.svg';
 import Favourite from '../assets/images/favourite.svg';
-import Premium from '../assets/images/Premium.svg';
 import Journey from '../assets/images/journey.svg';
 import Mentoring from '../assets/images/mentoring.svg';
 import Faq from '../assets/images/faq.svg';
@@ -27,93 +30,36 @@ import Updates from '../assets/images/updates.svg';
 import Notifications from '../assets/images/notificationsDD.svg';
 import Achievements from '../assets/images/achievementsDD.svg';
 import Events from '../assets/images/specialEvents.svg';
-import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
 import Books from '../assets/images/learningBooks.svg';
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import Mail from '../assets/images/mail1.svg';
 import PremiumButton from './Premium/PremiumButton';
-import { useSubscriptionStatus } from '@/hooks/useSubscription';
-
-const getLowResAvatarUrl = (avatarUrl) => {
-  if (!avatarUrl || typeof avatarUrl !== 'string' || avatarUrl.trim() === '') {
-    return GuestAvatar;
-  }
-
-  try {
-    const parsed = new URL(avatarUrl);
-    if (!parsed.searchParams.has('w')) parsed.searchParams.set('w', '48');
-    if (!parsed.searchParams.has('h')) parsed.searchParams.set('h', '48');
-    if (!parsed.searchParams.has('q')) parsed.searchParams.set('q', '40');
-    return parsed.toString();
-  } catch {
-    return avatarUrl;
-  }
-};
 
 const Navbar = () => {
   const { profile } = useUserProfile();
   const { premium, loading: onloading } = useSubscriptionStatus();
   const { stats, refreshStats } = useUserStats();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [nextProblem, setNextProblem] = useState(null);
-  const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
-  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
 
+  const { unreadCount } = useNotifications();
+  const { dailyProblemTo } = useRecommendedProblem(premium, onloading);
+  const { profileAvatarSrc } = useProfileAvatar();
+
+  // Sync user stats on window focus or custom events
   useEffect(() => {
-    if (onloading) return;
-
-    const loadNextProblem = async () => {
-      try {
-        const problem = await getNextRecommendedProblem(premium);
-        setNextProblem(problem || null);
-      } catch (error) {
-        console.error('Failed to load next recommended problem:', error);
-        setNextProblem(null);
-      }
-    };
-    loadNextProblem();
-  }, [premium, onloading]);
-
-  useEffect(() => {
-    const refreshNavbarSignals = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return;
-
-        const metadata = session.user?.user_metadata || {};
-        const avatarUrl = metadata.avatar_url || metadata.picture || metadata.image || metadata.photo_url || '';
-        setProfileAvatarSrc(getLowResAvatarUrl(avatarUrl));
-
-        const unreadCount = await getUnreadCount();
-        setUnreadNotificationCount(unreadCount);
-
-        await refreshStats();
-      } catch (error) {
-        console.error('Failed to refresh navbar signals:', error);
-      }
-    };
-    void refreshNavbarSignals();
-
-    const handleNotificationCreated = () => {
-      void refreshNavbarSignals();
+    const handleStatsSync = () => {
+      void refreshStats();
     };
 
-    // Refresh on focus or when in-app notifications are created.
-    window.addEventListener('focus', refreshNavbarSignals);
-    window.addEventListener('equathora:stats-updated', refreshNavbarSignals);
-    window.addEventListener(NOTIFICATION_EVENTS.CREATED, handleNotificationCreated);
+    window.addEventListener('focus', handleStatsSync);
+    window.addEventListener('equathora:stats-updated', handleStatsSync);
 
     return () => {
-      window.removeEventListener('focus', refreshNavbarSignals);
-      window.removeEventListener('equathora:stats-updated', refreshNavbarSignals);
-      window.removeEventListener(NOTIFICATION_EVENTS.CREATED, handleNotificationCreated);
+      window.removeEventListener('focus', handleStatsSync);
+      window.removeEventListener('equathora:stats-updated', handleStatsSync);
     };
   }, [refreshStats]);
-
-  // Only link into a problem once we actually have a recommended slug -
-  // otherwise send them to /journey (always valid) instead of a
-  // /problems/undefined dead link / 404.
-  const dailyProblemTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
 
   const learnItems = [
     {
@@ -125,7 +71,7 @@ const Navbar = () => {
     {
       to: '/journey',
       text: "Your Journey",
-      description: "Unlock topics as you progress. ",
+      description: "Unlock topics as you progress.",
       image: Journey
     },
     {
@@ -134,7 +80,7 @@ const Navbar = () => {
       description: "Explore all available challenges.",
       image: Books
     }
-  ]
+  ];
 
   const discoverItems = [
     {
@@ -155,7 +101,7 @@ const Navbar = () => {
       description: "Weekly product updates and math drops.",
       image: Mail
     },
-  ]
+  ];
 
   const moreItems = [
     {
@@ -175,14 +121,15 @@ const Navbar = () => {
       text: "About equathora",
       description: "Learn about its mission and vision.",
       image: AboutUs
-    }, {
+    },
+    {
       to: "https://discord.gg/s6tNSbyhB7",
       text: "Join our Discord",
       description: "Meet the Equathora community.",
       icon: <FaDiscord size={40} aria-hidden="true" color='var(--accent-color)' />,
       external: true
     }
-  ]
+  ];
 
   const notificationItems = [
     {
@@ -190,7 +137,7 @@ const Navbar = () => {
       text: "All Notifications",
       description: "View everything at once.",
       image: Notifications,
-      notificationsNo: unreadNotificationCount > 0 ? (unreadNotificationCount > 99 ? '99+' : String(unreadNotificationCount)) : ''
+      notificationsNo: unreadCount > 0 ? (unreadCount > 99 ? '99+' : String(unreadCount)) : ''
     },
     {
       to: '/systemupdates',
@@ -252,9 +199,9 @@ const Navbar = () => {
   const notificationBellLabel = (
     <span className='relative flex items-center justify-center w-6 h-6 leading-none'>
       <FaBell className='w-6 h-6 block' />
-      {unreadNotificationCount > 0 && (
+      {unreadCount > 0 && (
         <span className='absolute -top-1.5 -right-2 min-w-[18px] h-[18px] px-1 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white text-[10px] leading-[18px] text-center font-bold'>
-          {unreadNotificationCount > 99 ? '99+' : unreadNotificationCount}
+          {unreadCount > 99 ? '99+' : unreadCount}
         </span>
       )}
     </span>
@@ -267,31 +214,22 @@ const Navbar = () => {
           <div className='w-full h-full mx-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
             <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
               <li>
-                {/* Main Logo - Redirect to Dashboard */}
                 <Link to='/dashboard' className='!text-[var(--secondary-color)] list-none !font-medium text-lg relative pl-5' title='Home'>
                   <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[1px] -top-[5px]' />
                   quathora
                 </Link>
               </li>
               <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
-                <Dropdown
-                  label="Learn"
-                  items={learnItems} />
+                <Dropdown label="Learn" items={learnItems} />
               </li>
               <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
-                <Dropdown
-                  label="Discover"
-                  items={discoverItems}
-                />
+                <Dropdown label="Discover" items={discoverItems} />
               </li>
               <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
-                <Dropdown
-                  label="More"
-                  items={moreItems} />
+                <Dropdown label="More" items={moreItems} />
               </li>
             </ul>
 
-            {/* Streak */}
             <div className='flex justify-end items-center shrink-0'>
               <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
                 <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
@@ -305,7 +243,7 @@ const Navbar = () => {
                       </defs>
                       <path fill="url(#icon-gradient-fire-navbar)" d="M159.3 5.4c7.8-7.3 19.9-7.2 27.7 .1c27.6 25.9 53.5 53.8 77.7 84c11-14.4 23.5-30.1 37-42.9c7.9-7.4 20.1-7.4 28 .1c34.6 33 63.9 76.6 84.5 118c20.3 40.8 33.8 82.5 33.8 111.9C448 404.2 348.2 512 224 512C98.4 512 0 404.1 0 276.5c0-38.4 17.8-85.3 45.4-131.7C73.3 97.7 112.7 48.6 159.3 5.4zM225.7 416c25.3 0 47.7-7 68.8-21c42.1-29.4 53.4-88.2 28.1-134.4c-4.5-9-16-9.6-22.5-2l-25.2 29.3c-6.6 7.6-18.5 7.4-24.7-.5c-16.5-21-46-58.5-62.8-79.8c-6.3-8-18.3-8.1-24.7-.1c-33.8 42.5-50.8 69.3-50.8 99.4C112 375.4 162.6 416 225.7 416z" />
                     </svg>
-                    <span className='font-bold'>{stats.currentStreak}</span>
+                    <span className='font-bold'>{stats?.currentStreak ?? 0}</span>
                   </Link>
                 </li>
                 <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
@@ -316,7 +254,7 @@ const Navbar = () => {
                     alignRight={true}
                   />
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden  text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                   <Dropdown
                     label={<FaTrophy size={24} />}
                     ariaLabel="Achievements menu"
@@ -324,16 +262,29 @@ const Navbar = () => {
                     alignRight={true}
                   />
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden  text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
                   <Dropdown
-                    label={<img src={profileAvatarSrc} alt="Profile" width={28} height={28} style={{ borderRadius: '9999px', objectFit: 'cover', border: '2px solid var(--secondary-color)', background: '#edf2f4' }} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }} />}
+                    label={
+                      <img
+                        src={profileAvatarSrc}
+                        alt="Profile"
+                        width={28}
+                        height={28}
+                        decoding="sync"
+                        style={{ borderRadius: '9999px', objectFit: 'cover', border: '2px solid var(--secondary-color)', background: '#edf2f4' }}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = GuestAvatar;
+                        }}
+                      />
+                    }
                     ariaLabel="Profile menu"
                     items={profileItems}
                     alignRight={true}
                   />
                 </li>
                 <li className='pl-6'>
-                  <PremiumButton premium={premium}></PremiumButton>
+                  <PremiumButton premium={premium} />
                 </li>
                 <li className='pl-6 lg:pl-4'>
                   <button

@@ -20,14 +20,13 @@ import { FaCrown } from 'react-icons/fa';
 import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
 // Upgraded to premium popup
 import UpgradedPopup from '@/components/Premium/UpgradedPopup.jsx';
-import StreakPopup from '@/components/StreakPopup.jsx';
+import { useUser } from '@/hooks/Dashboard/useUser.js';
 
 const Dashboard = () => {
+    const { username } = useUser();
     const { premium, loading: subLoading } = useSubscription();
-    const [username, setUsername] = useState("Friend");
     const [nextProblem, setNextProblem] = useState(null);
     const [showUpgradedPopup, setShowUpgradedPopup] = useState(false);
-    const [showStreakPopup, setShowStreakPopup] = useState(true);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -50,25 +49,6 @@ const Dashboard = () => {
         loadNextProblem();
     }, []);
 
-    // Fetch username from database
-    useEffect(() => {
-        const fetchUsername = async () => {
-            try {
-                const { data: { session } } = await supabase.auth.getSession();
-                if (session?.user) {
-                    const displayName = session.user.user_metadata?.full_name ||
-                        session.user.user_metadata?.name ||
-                        session.user.email?.split('@')[0] ||
-                        "Friend";
-                    setUsername(displayName);
-                }
-            } catch (error) {
-                console.error('Failed to fetch username:', error);
-            }
-        };
-        fetchUsername();
-    }, []);
-
     // Only link into a problem once we actually have a recommended slug -
     // otherwise send them to /journey (always valid) instead of a
     // /problems/undefined dead link / 404.
@@ -78,12 +58,6 @@ const Dashboard = () => {
         <>
             <FeedbackBanner />
             <CookieConsent />
-            {/* {showStreakPopup && (
-                <StreakPopup
-                    streak={4}
-                    onClose={() => setShowStreakPopup(false)}
-                />
-            )} */}
             <main className="w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed min-h-screen">
                 <Navbar />
 
