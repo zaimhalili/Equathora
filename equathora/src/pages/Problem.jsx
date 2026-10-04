@@ -1397,7 +1397,7 @@ const Problem = () => {
                                         )}
 
                                         {/* Hints Section - Collapsible like LeetCode */}
-                                        <div>
+                                        <div className='flex-col flex gap-3'>
                                             {hintCount > 0 && (
                                                 <div className="">
                                                     <div className="flex flex-col gap-3">
@@ -1433,7 +1433,7 @@ const Problem = () => {
                                                 <div className="flex flex-col">
                                                     <div className="rounded-t-2xl overflow-hidden">
                                                         <button
-                                                            className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
+                                                            className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 cursor-pointer text-left transition-colors duration-200  bg-[var(--french-gray)]/40"
                                                             onClick={() => toggleHint('similar')}
                                                         >
                                                             <span className="font-medium text-xs md:text-sm text-[var(--secondary-color)]  flex items-center gap-2">
@@ -1443,12 +1443,12 @@ const Problem = () => {
                                                             <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${openHints['similar'] ? 'rotate-180' : ''}`} />
                                                         </button>
                                                         <div className={`transition-all duration-300 ease-in-out ${openHints['similar'] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                                            <div className=" bg-[var(--main-color)] flex flex-col">
-                                                                {similarQuestions.map((question, index) => (
-                                                                    <Link
-                                                                        key={index}
-                                                                        to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
-                                                                        className="flex items-center justify-between p-2 md:p-3 rounded-xl group hover:bg-[var(--white)]"
+                                                            <div className=" bg-[var(--main-color)] flex flex-col rounded-b-2xl">
+                                                            {similarQuestions.map((question, index) => (
+                                                                <Link
+                                                                    key={index}
+                                                                    to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
+                                                                    className={`flex items-center justify-between p-2 md:p-3 group bg-[var(--french-gray)]/40`}
                                                                     >
                                                                         <span className="text-xs md:text-sm text-[var(--secondary-color)]  group-hover:text-[var(--dark-accent-color)]">
                                                                             {question.title}
@@ -1466,8 +1466,9 @@ const Problem = () => {
                                                     </div>
                                                 </div>
                                             )}
+                                            {/* Latex Steps */}
                                             <div className="flex flex-col">
-                                                <div className="border-t border-[var(--mid-main-secondary)] overflow-hidden">
+                                                <div className="overflow-hidden rounded-t-2xl bg-[var(--french-gray)]/40">
                                                     <button
                                                         className="w-full flex items-center justify-between px-3 md:px-4 py-2 md:py-3 hover:bg-[var(--french-gray)]/40 cursor-pointer text-left transition-colors duration-200"
                                                         onClick={() => setLatexOpen(o => !o)}
@@ -1476,12 +1477,12 @@ const Problem = () => {
                                                             <FaCode className="text-[var(--secondary-color)] text-[10px] md:text-xs" />
                                                             Your solution in LaTeX
                                                         </span>
-                                                        <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${latexOpen ? 'rotate-180' : ''}`} />
+                                                        <FaChevronDown className={`text-[var(--secondary-color)] text-[10px] md:text-xs transition-transform duration-300 ${latexOpen && 'rotate-180'}`} />
                                                     </button>
-                                                    <div className={`transition-all duration-300 ease-in-out ${latexOpen ? 'max-h-96 opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'}`}>
-                                                        <div className="bg-[var(--main-color)] flex flex-col gap-1">
+                                                    <div className={`transition-all duration-300  ease-in-out ${latexOpen ? 'max-h-96 opacity-100 overflow-y-auto' : 'max-h-0 opacity-0'}`}>
+                                                        <div className="p-2 flex flex-col gap-1 bg-[var(--french-gray)]/40 !rounded-b-2xl">
                                                             {fields.map((f, i) => (
-                                                                <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)]  p-2 md:p-3 bg-[var(--white)] rounded-xl">
+                                                                <p key={f.id} className="text-xs md:text-sm text-[var(--secondary-color)] p-2 md:p-3 bg-[var(--white)] rounded-xl">
                                                                     <span className="font-bold pr-2">Step {i + 1}: </span>{f.latex || <span className="opacity-30 italic">empty</span>}
                                                                 </p>
                                                             ))}

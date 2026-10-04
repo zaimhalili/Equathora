@@ -1,14 +1,13 @@
 // TopicCard.jsx
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from "framer-motion";
 import { FaChevronDown, FaChevronUp, FaStar, FaCrown } from "react-icons/fa";
 import {
     FaCheck,
     FaLock,
     FaPlay,
-    FaClock,
-    FaArrowRight
+    FaClock
 } from 'react-icons/fa';
 import { formatTopicLabel } from '@/lib/utils';
 import { generateProblemSlug } from '@/lib/slugify';
@@ -22,6 +21,7 @@ const TopicCard = ({
     recommendedIds = new Set(),
     isPremiumUser = false
 }) => {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
 
     const isAccessible = (problem) => !problem?.is_premium || isPremiumUser;
@@ -163,7 +163,6 @@ const TopicCard = ({
                                 {/* Circle Container */}
                                 <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                                     {statedProblems.map(problem => {
-
                                         let style = "bg-[var(--white)] text-[var(--mid-main-secondary)]";
                                         let Icon = FaLock;
 
@@ -184,20 +183,31 @@ const TopicCard = ({
 
                                         const isRecommended = recommendedIds.has(problem.id);
                                         const isLockedByPremium = !isAccessible(problem);
+                                        const slug = problem.slug || generateProblemSlug(problem.title, problem.id);
+
+                                        const handleDoubleClick = () => {
+                                            if (isLockedByPremium) {
+                                                navigate("/premium");
+                                            } else if (slug) {
+                                                navigate(`/problems/${slug}`);
+                                            }
+                                        };
 
                                         return (
                                             <button
                                                 key={problem.id}
                                                 onClick={() => setSelectedId(problem.id)}
+                                                onMouseEnter={() => setSelectedId(problem.id)}
+                                                onDoubleClick={handleDoubleClick}
                                                 title={
                                                     isLockedByPremium
-                                                        ? "Premium problem - upgrade to unlock"
+                                                        ? "Premium problem - upgrade to unlock (Double click to navigate)"
                                                         : isRecommended
-                                                            ? "Matched to your level"
-                                                            : undefined
+                                                            ? "Matched to your level (Double click to open)"
+                                                            : "Double click to open"
                                                 }
                                                 className={`relative h-11 w-11 rounded-full flex items-center justify-center transition-all ${style}
-                                                ${selected?.id === problem.id
+            ${selected?.id === problem.id
                                                         ? "scale-110 ring-4 ring-white/80"
                                                         : isRecommended
                                                             ? "outline-4 outline-emerald-600 hover:scale-110"
@@ -329,9 +339,9 @@ const TopicCard = ({
                                     <Link
                                         to={selectedSlug ? `/problems/${selectedSlug}` : "#"}
                                         className="mt-5 rounded-xl py-3 flex items-center justify-center gap-2 font-semibold !text-white bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all active:scale-95"
-                                    >
+                                        >
+                                            <FaPlay/>
                                         Start Problem
-                                        <FaArrowRight />
                                     </Link>
                                 )}
 

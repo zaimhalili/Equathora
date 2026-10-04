@@ -187,7 +187,6 @@ const DailyTrack = ({
                                         >
                                             <FaPlay size={12} />
                                             Start
-                                            <FaArrowRight size={12} />
                                         </ReactRouterLink>
                                     ) : (
                                         <span className="px-4 py-2 rounded-xl bg-white/10 text-center text-sm text-[var(--secondary-color)]">
