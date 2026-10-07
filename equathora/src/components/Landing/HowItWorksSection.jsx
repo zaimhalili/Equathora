@@ -47,7 +47,7 @@ const HowItWorksSection = () => {
                         viewport={{ once: true, amount: 0.3 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
                     >
-                        <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-4">
+                        <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-(--secondary-color) pb-4">
                             Choose a topic, solve with support, and keep your progress.
                         </h2>
                         <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
@@ -62,7 +62,7 @@ const HowItWorksSection = () => {
                             return (
                                 <motion.div
                                     key={item.step}
-                                    className="relative flex flex-col gap-4 sm:gap-5 p-6 sm:p-7 md:p-8 bg-[var(--white)] rounded-xl border border-[var(--main-color)] shadow-sm transition-all"
+                                    className="relative flex flex-col gap-4 sm:gap-5 p-6 sm:p-7 md:p-8 bg-(--white) rounded-xl border border-[var(--main-color)] shadow-sm transition-all"
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, amount: 0.3 }}
@@ -83,8 +83,8 @@ const HowItWorksSection = () => {
 
                                     {/* Content */}
                                     <div className="flex flex-col gap-2">
-                                        <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)]">{item.title}</h3>
-                                        <p className="text-[var(--secondary-color)] font-light text-sm sm:text-base">{item.description}</p>
+                                        <h3 className="text-lg sm:text-xl font-bold text-(--secondary-color)">{item.title}</h3>
+                                        <p className="text-(--secondary-color) font-light text-sm sm:text-base">{item.description}</p>
                                     </div>
                                 </motion.div>
                             );

@@ -29,7 +29,7 @@ const StreakPopup = ({ streak, onClose }) => {
                         transition={{ type: 'spring', damping: 18, stiffness: 300 }}
                         className="fixed left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-[var(--white)] rounded-xl shadow-xs max-w-sm w-[90vw] overflow-hidden border-[var(--main-color)] border-2 p-3 flex gap-4 items-center">
+                        <div className="bg-(--white) rounded-xl shadow-xs max-w-sm w-[90vw] overflow-hidden border-[var(--main-color)] border-2 p-3 flex gap-4 items-center">
                             {/* Fire icon with animation */}
                             <motion.div
                                 initial={{ scale: 0, rotate: -180 }}
@@ -57,10 +57,10 @@ const StreakPopup = ({ streak, onClose }) => {
                                 transition={{ delay: 0.3 }}
                                 className="flex flex-col max-w-4/5"
                             >
-                                <h2 className="text-md font-black text-[var(--secondary-color)]">
+                                <h2 className="text-md font-black text-(--secondary-color)">
                                     {streak} Day Streak!
                                 </h2>
-                                <p className="text-sm text-[var(--secondary-color)]/70">
+                                <p className="text-sm text-(--secondary-color)/70">
                                     You're on fire! Keep solving daily to maintain your streak.
                                 </p>
                             </motion.div>

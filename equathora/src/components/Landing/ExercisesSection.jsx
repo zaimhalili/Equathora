@@ -96,10 +96,10 @@ const ExercisesSection = () => {
 
     return (
         <div className="flex justify-center">
-            <section className="max-w-[1500px] mx-auto w-full bg-[var(--white)] relative overflow-hidden flex justify-center flex-col px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10">
+            <section className="max-w-[1500px] mx-auto w-full bg-(--white) relative overflow-hidden flex justify-center flex-col px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10">
                 {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-(--accent-color)/5 to-transparent rounded-full blur-3xl" />
+                <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-(--secondary-color)/5 to-transparent rounded-full blur-3xl" />
 
                 <article className='w-full relative z-10 flex gap-10 flex-col'>
                     <div className="w-full flex flex-col lg:flex-row gap-6">
@@ -112,9 +112,9 @@ const ExercisesSection = () => {
                             transition={{ duration: 0.5, ease: "easeOut" }}
                         >
                             <div className='flex flex-col'>
-                                <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2">
+                                <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-(--secondary-color) pb-2">
                                     Over {' '}
-                                    <span className="text-[var(--secondary-color)] relative inline-block">
+                                    <span className="text-(--secondary-color) relative inline-block">
                                         300 math exercises.
                                         <motion.svg
                                             className="absolute -bottom-2 left-0 w-full"
@@ -136,7 +136,7 @@ const ExercisesSection = () => {
                                         </motion.svg>
                                     </span>
                                 </h2>
-                                <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-4">
+                                <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-(--secondary-color) pb-4">
                                     From "Algebra Basics" to "Calculus Puzzles".
                                 </h2>
                                 <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
@@ -150,7 +150,7 @@ const ExercisesSection = () => {
                             {exercises.map((exercise, index) => (
                                 <motion.div
                                     key={exercise.title}
-                                    className="bg-[var(--white)] rounded-xl transition-all duration-300 p-3 sm:py-3 px-5 flex items-center gap-6 h-22"
+                                    className="bg-(--white) rounded-xl transition-all duration-300 p-3 sm:py-3 px-5 flex items-center gap-6 h-22"
                                     initial={{ opacity: 0, y: -30 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true, amount: 0.2 }}
@@ -160,10 +160,10 @@ const ExercisesSection = () => {
                                         {exercise.icon}
                                     </div>
                                     <div className='flex flex-col justify-center w-full'>
-                                        <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)]">
+                                        <h3 className="text-lg sm:text-xl font-bold text-(--secondary-color)">
                                             {exercise.title}
                                         </h3>
-                                        <p className="text-[var(--secondary-color)] font-light text-sm sm:text-base">
+                                        <p className="text-(--secondary-color) font-light text-sm sm:text-base">
                                             {exercise.description}
                                         </p>
                                     </div>
@@ -197,10 +197,10 @@ const ExercisesSection = () => {
                             <div className="pb-2 sm:pb-4">
                                 {feature.icon}
                             </div>
-                            <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)] pb-1 sm:pb-2">
+                            <h3 className="text-lg sm:text-xl font-bold text-(--secondary-color) pb-1 sm:pb-2">
                                 {feature.title}
                             </h3>
-                            <p className="text-[var(--secondary-color)] font-light text-sm sm:text-base">
+                            <p className="text-(--secondary-color) font-light text-sm sm:text-base">
                                 {feature.description}
                             </p>
                         </motion.div>

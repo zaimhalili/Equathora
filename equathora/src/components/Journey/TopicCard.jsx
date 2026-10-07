@@ -114,7 +114,7 @@ const TopicCard = ({
                     </div>
 
                     <div className="flex items-center justify-between pb-3 flex-wrap gap-2">
-                        <span className="text-xs text-[var(--secondary-color)] opacity-70">
+                        <span className="text-xs text-(--secondary-color) opacity-70">
                             {statedProblems.length} problem{statedProblems.length === 1 ? "" : "s"}
                         </span>
 
@@ -127,7 +127,7 @@ const TopicCard = ({
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="h-4 rounded-xl bg-[var(--secondary-color)]/30 overflow-hidden">
+                    <div className="h-4 rounded-xl bg-(--secondary-color)/30 overflow-hidden">
                         <div
                             className="h-full rounded-xl bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))]"
                             style={{ width: `${progress}%` }}
@@ -163,7 +163,7 @@ const TopicCard = ({
                                 {/* Circle Container */}
                                 <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                                     {statedProblems.map(problem => {
-                                        let style = "bg-[var(--white)] text-[var(--mid-main-secondary)]";
+                                        let style = "bg-(--white) text-(---mid-main-secondary)";
                                         let Icon = FaLock;
 
                                         if (problem.state === "solved") {
@@ -232,21 +232,21 @@ const TopicCard = ({
                                 {/* Legend */}
                                 <div className="flex justify-between w-full flex-wrap gap-3">
 
-                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                    <div className="flex gap-2 items-center font-bold text-(--secondary-color)">
                                         <div className="rounded-full flex h-7 w-7 bg-amber-500 text-white justify-center items-center pl-1">
                                             <FaPlay size={12} />
                                         </div>
                                         Next
                                     </div>
 
-                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                    <div className="flex gap-2 items-center font-bold text-(--secondary-color)">
                                         <div className="rounded-full flex h-7 w-7 bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] text-white justify-center items-center">
                                             <FaCheck size={12} />
                                         </div>
                                         Completed <span className="font-normal">{solvedCount}</span>
                                     </div>
 
-                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                    <div className="flex gap-2 items-center font-bold text-(--secondary-color)">
                                         <div className="rounded-full flex h-7 w-7 bg-orange-500 text-white justify-center items-center">
                                             <FaClock size={12} />
                                         </div>
@@ -256,8 +256,8 @@ const TopicCard = ({
                                         </span>
                                     </div>
 
-                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
-                                        <div className="rounded-full flex h-7 w-7 bg-[var(--white)] text-[var(--mid-main-secondary)] justify-center items-center">
+                                    <div className="flex gap-2 items-center font-bold text-(--secondary-color)">
+                                        <div className="rounded-full flex h-7 w-7 bg-(--white) text-(---mid-main-secondary) justify-center items-center">
                                             <FaLock size={12} />
                                         </div>
                                         Not Started{" "}
@@ -270,7 +270,7 @@ const TopicCard = ({
                             </article>
 
                             {/* RIGHT */}
-                            <article className="w-full lg:w-1/2 rounded-xl bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-[var(--secondary-color)]">
+                            <article className="w-full lg:w-1/2 rounded-xl bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-(--secondary-color)">
 
                                 <div className="flex items-center justify-between gap-2 pb-3">
                                     <h4 className="text-xl font-bold">
@@ -339,8 +339,8 @@ const TopicCard = ({
                                     <Link
                                         to={selectedSlug ? `/problems/${selectedSlug}` : "#"}
                                         className="mt-5 rounded-xl py-3 flex items-center justify-center gap-2 font-semibold !text-white bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all active:scale-95"
-                                        >
-                                            <FaPlay/>
+                                    >
+                                        <FaPlay />
                                         Start Problem
                                     </Link>
                                 )}

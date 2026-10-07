@@ -292,7 +292,7 @@ const Journey = () => {
                                 <h1 className="text-4xl text-center md:text-left pb-2 cursor-default  font-extrabold">
                                     Your Math Journey
                                 </h1>
-                                <p className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] lg:w-[80%] cursor-default text-[var(--secondary-color)]">
+                                <p className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] lg:w-[80%] cursor-default text-(--secondary-color)">
                                     Follow structured learning paths designed to build your mathematical skills progressively. Each track guides you through concepts with increasing complexity.
                                 </p>
                             </div>
@@ -328,7 +328,7 @@ const Journey = () => {
                                                 ? `You've achieved a ${currentStreak}-day streak. You're on fire! 💥`
                                                 : `You're on a ${currentStreak}-day streak! Keep the momentum going!`}
                                         </h3>
-                                        <p className="text-sm text-[var(--secondary-color)]">
+                                        <p className="text-sm text-(--secondary-color)">
                                             Consistency is the key to mastering high-level math. Solve today's suggested targets to extend your streak!
                                         </p>
                                     </div>
@@ -353,7 +353,7 @@ const Journey = () => {
                                     <FaSpinner className='text-2xl' />
                                 </div>
                             ) : Object.keys(personalizedJourney).length === 0 ? (
-                                <p className="text-center text-lg text-[var(--secondary-color)] py-8">
+                                <p className="text-center text-lg text-(--secondary-color) py-8">
                                     No recommended problems yet - check back soon, or update your goals below.
                                 </p>
                             ) : (
@@ -395,8 +395,8 @@ const Journey = () => {
                         </section>
 
                         {/* Retake Diagnostic / Reset Goals CTA */}
-                        <div className="flex flex-col items-center justify-center py-6 w-full gap-3 border-t border-[var(--secondary-color)]/20 mt-4">
-                            <p className="text-sm text-[var(--secondary-color)] text-center">
+                        <div className="flex flex-col items-center justify-center py-6 w-full gap-3 border-t border-(--secondary-color)/20 mt-4">
+                            <p className="text-sm text-(--secondary-color) text-center">
                                 Want to adjust your focus areas or reset your recommended skill level?
                             </p>
                             <button

@@ -79,9 +79,9 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                         transition={{ type: 'spring', damping: 18, stiffness: 300 }}
                         className="fixed left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-[var(--white)] rounded-xl shadow-2xl max-w-sm w-[90vw] overflow-hidden border-[var(--main-color)] border-2">
+                        <div className="bg-(--white) rounded-xl shadow-2xl max-w-sm w-[90vw] overflow-hidden border-[var(--main-color)] border-2">
                             {/* Content */}
-                            <div className="flex items-center gap-4 p-3 bg-[var(--white)] shadow-xs">
+                            <div className="flex items-center gap-4 p-3 bg-(--white) shadow-xs">
                                 {/* Icon */}
                                 <motion.div
                                     initial={{ scale: 0, rotate: -180 }}
@@ -109,16 +109,16 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                                     transition={{ delay: 0.3 }}
                                     className="flex flex-col max-w-4/5"
                                 >
-                                    <h2 className="text-md font-medium text-[var(--secondary-color)] flex justify-between">
+                                    <h2 className="text-md font-medium text-(--secondary-color) flex justify-between">
                                         {current.title}
                                         {/* Counter */}
                                         {achievements.length > 1 && (
-                                            <p className="text-xs text-[var(--secondary-color)]/70 flex items-center">
+                                            <p className="text-xs text-(--secondary-color)/70 flex items-center">
                                                 {currentIndex + 1} / {achievements.length}
                                             </p>
                                         )}
                                     </h2>
-                                    <p className="text-sm text-[var(--secondary-color)]/70 overflow-hidden">{current.description}</p>
+                                    <p className="text-sm text-(--secondary-color)/70 overflow-hidden">{current.description}</p>
                                 </motion.div>
                             </div>
                         </div>

@@ -74,18 +74,18 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative bg-[var(--white)] rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                    className="relative bg-(--white) rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                 >
                     {isSubscribed ? (
                         <EquathoraBriefsSuccessModal onClose={onClose} />
                     ) : (
                         <>
-                            <div className="sticky top-0 bg-[var(--white)] border-b border-[var(--mid-main-secondary)] px-6 py-4 flex items-center justify-between z-10">
-                                <h2 className="text-2xl font-bold text-[var(--secondary-color)] ">Join Equathora Briefs</h2>
+                            <div className="sticky top-0 bg-(--white) border-b border-(---mid-main-secondary) px-6 py-4 flex items-center justify-between z-10">
+                                <h2 className="text-2xl font-bold text-(--secondary-color) ">Join Equathora Briefs</h2>
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] transition-colors p-2 hover:bg-[var(--main-color)] rounded-xl cursor-pointer active:scale-95"
+                                    className="text-(---mid-main-secondary) hover:text-(--secondary-color) transition-colors p-2 hover:bg-[var(--main-color)] rounded-xl cursor-pointer active:scale-95"
                                     aria-label="Close modal"
                                 >
                                     <FaTimes size={20} />
@@ -98,18 +98,18 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                 </div>
 
                                 {error && (
-                                    <div className="bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 text-[var(--dark-accent-color)] px-4 py-3 rounded-xl text-sm">
+                                    <div className="bg-(--accent-color)/10 border border-(--accent-color)/30 text-(---dark-accent-color) px-4 py-3 rounded-xl text-sm">
                                         {error}
                                     </div>
                                 )}
 
-                                <p className="text-sm text-[var(--mid-main-secondary)]">
+                                <p className="text-sm text-(---mid-main-secondary)">
                                     Get product updates, new challenge drops, and launch announcements. No spam.
                                 </p>
 
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="flex text-sm font-semibold text-[var(--secondary-color)] pb-2 items-end">
+                                        <label className="flex text-sm font-semibold text-(--secondary-color) pb-2 items-end">
                                             <FaUser className="h-5 w-5 pr-2" />
                                             Full Name *
                                         </label>
@@ -119,13 +119,13 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                             value={formData.full_name}
                                             onChange={handleInputChange}
                                             required
-                                            className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                                            className="text-(--secondary-color) w-full px-4 py-3 border border-(---mid-main-secondary) rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all"
                                             placeholder="Enter your full name"
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="flex text-sm font-semibold text-[var(--secondary-color)] pb-2 items-end">
+                                        <label className="flex text-sm font-semibold text-(--secondary-color) pb-2 items-end">
                                             <FaEnvelope className="h-5 w-5 pr-2" />
                                             Email *
                                         </label>
@@ -135,7 +135,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                             value={formData.email}
                                             onChange={handleInputChange}
                                             required
-                                            className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                                            className="text-(--secondary-color) w-full px-4 py-3 border border-(---mid-main-secondary) rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all"
                                             placeholder="you@example.com"
                                         />
                                     </div>
@@ -146,14 +146,14 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                         type="button"
                                         onClick={onClose}
                                         disabled={isLoading}
-                                        className="flex-1 px-6 py-3 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold rounded-xl hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+                                        className="flex-1 px-6 py-3 border border-(---mid-main-secondary) text-(--secondary-color) font-semibold rounded-xl hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
                                         disabled={isLoading}
-                                        className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-[var(--white)] font-semibold rounded-xl hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                                        className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-(--white) font-semibold rounded-xl hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                                     >
                                         {isLoading ? 'Saving...' : 'Subscribe'}
                                     </button>

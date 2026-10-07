@@ -72,7 +72,7 @@ const PLAN_LABELS = {
 const SectionCard = ({ children, id }) => (
     <section
         id={id}
-        className="bg-[var(--white)] rounded-xl w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] scroll-mt-24"
+        className="bg-(--white) rounded-xl w-full flex flex-col gap-6 p-6 lg:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] scroll-mt-24"
     >
         {children}
     </section>
@@ -80,20 +80,20 @@ const SectionCard = ({ children, id }) => (
 
 const SectionTitle = ({ children, sub }) => (
     <div className="flex flex-col gap-1">
-        <h2 className=" font-medium text-xl lg:text-2xl text-[var(--secondary-color)]">
+        <h2 className=" font-medium text-xl lg:text-2xl text-(--secondary-color)">
             {children}
         </h2>
-        {sub && <p className="text-sm text-[var(--mid-main-secondary)]">{sub}</p>}
+        {sub && <p className="text-sm text-(---mid-main-secondary)">{sub}</p>}
     </div>
 );
 
 const InputField = ({ label, description, ...props }) => (
     <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-semibold text-[var(--secondary-color)]">{label}</label>
-        {description && <p className="text-xs text-[var(--mid-main-secondary)]">{description}</p>}
+        <label className="text-sm font-semibold text-(--secondary-color)">{label}</label>
+        {description && <p className="text-xs text-(---mid-main-secondary)">{description}</p>}
         <input
             {...props}
-            className="text-lg font-black border rounded-xl px-4 py-3 w-full border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all "
+            className="text-lg font-black border rounded-xl px-4 py-3 w-full border-(---mid-main-secondary) bg-[var(--surface-card)] text-(--secondary-color) focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all "
         />
     </div>
 );
@@ -101,8 +101,8 @@ const InputField = ({ label, description, ...props }) => (
 const ToggleSwitch = ({ label, description, checked, onChange, disabled = false }) => (
     <div className="flex items-center justify-between gap-4 py-2">
         <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-            <span className="text-sm font-semibold text-[var(--secondary-color)]">{label}</span>
-            {description && <span className="text-xs text-[var(--mid-main-secondary)]">{description}</span>}
+            <span className="text-sm font-semibold text-(--secondary-color)">{label}</span>
+            {description && <span className="text-xs text-(---mid-main-secondary)">{description}</span>}
         </div>
         <button
             type="button"
@@ -110,7 +110,7 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
             aria-checked={checked}
             disabled={disabled}
             onClick={() => onChange(!checked)}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer overflow-hidden rounded-full transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-[var(--accent-color)]' : 'bg-[var(--mid-main-secondary)]'}`}
+            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer overflow-hidden rounded-full transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-(--accent-color)' : 'bg-(---mid-main-secondary)'}`}
         >
             <span
                 className={`pointer-events-none inline-block h-5 w-5 shadow-black/70 transform rounded-full bg-white ring-0 transition-transform duration-200 translate-y-[1.8px] ${checked ? 'translate-x-[21.5px]' : 'translate-x-[2px]'}`}
@@ -132,7 +132,7 @@ const PrimaryButton = ({ children, onClick, disabled, loading, className = '', t
         title={title}
         onClick={onClick}
         disabled={disabled || loading}
-        className={`cursor-pointer py-2.5 px-5 bg-[var(--accent-color)] text-white font-medium text-sm rounded-xl hover:bg-[var(--dark-accent-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
+        className={`cursor-pointer py-2.5 px-5 bg-(--accent-color) text-white font-medium text-sm rounded-xl hover:bg-(---dark-accent-color) transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
     >
         {loading && <Spinner />}
         {children}
@@ -144,7 +144,7 @@ const OutlineButton = ({ children, onClick, disabled, className = '' }) => (
         type="button"
         onClick={onClick}
         disabled={disabled}
-        className={`cursor-pointer py-2.5 px-5 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold text-sm rounded-xl hover:bg-[var(--main-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+        className={`cursor-pointer py-2.5 px-5 border border-(---mid-main-secondary) text-(--secondary-color) font-semibold text-sm rounded-xl hover:bg-[var(--main-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
     >
         {children}
     </button>
@@ -156,7 +156,7 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
         onClick={onClick}
         disabled={disabled || loading}
         title={title}
-        className="cursor-pointer py-2.5 px-5 bg-[var(--dark-accent-color)] text-white font-medium text-sm rounded-xl hover:bg-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="cursor-pointer py-2.5 px-5 bg-(---dark-accent-color) text-white font-medium text-sm rounded-xl hover:bg-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
     >
         {loading && <Spinner />}
         {children}
@@ -164,7 +164,7 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
 );
 
 const Chip = ({ children }) => (
-    <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[var(--main-color)] text-[var(--secondary-color)] border border-[var(--mid-main-secondary)]">
+    <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[var(--main-color)] text-(--secondary-color) border border-(---mid-main-secondary)">
         {children}
     </span>
 );
@@ -228,7 +228,7 @@ const ConfirmModal = ({
     const canConfirm = !confirmWord || typed.trim() === confirmWord;
     const confirmColor = variant === 'danger'
         ? 'bg-red-600 hover:bg-red-700'
-        : 'bg-[var(--accent-color)] hover:bg-[var(--dark-accent-color)]';
+        : 'bg-(--accent-color) hover:bg-(---dark-accent-color)';
 
     return (
         <AnimatePresence>
@@ -244,13 +244,13 @@ const ConfirmModal = ({
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative bg-[var(--white)] rounded-xl shadow-2xl max-w-md w-full p-6 flex flex-col gap-4 "
+                    className="relative bg-(--white) rounded-xl shadow-2xl max-w-md w-full p-6 flex flex-col gap-4 "
                 >
                     <div className="flex items-start justify-between gap-4">
-                        <h2 className="text-xl font-medium text-[var(--secondary-color)]">{title}</h2>
+                        <h2 className="text-xl font-medium text-(--secondary-color)">{title}</h2>
                         <button
                             onClick={() => !loading && onClose()}
-                            className="text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] p-1 rounded-xl cursor-pointer transition-colors shrink-0"
+                            className="text-(---mid-main-secondary) hover:text-(--secondary-color) p-1 rounded-xl cursor-pointer transition-colors shrink-0"
                             aria-label="Close"
                         >
                             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -259,11 +259,11 @@ const ConfirmModal = ({
                         </button>
                     </div>
 
-                    <p className="text-sm text-[var(--mid-main-secondary)]">{description}</p>
+                    <p className="text-sm text-(---mid-main-secondary)">{description}</p>
 
                     {confirmWord && (
                         <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-[var(--secondary-color)]">
+                            <label className="text-xs font-semibold text-(--secondary-color)">
                                 Type <span className="font-mono">{confirmWord}</span> to confirm
                             </label>
                             <input
@@ -271,7 +271,7 @@ const ConfirmModal = ({
                                 onChange={e => setTyped(e.target.value)}
                                 placeholder={confirmWord}
                                 autoFocus
-                                className="px-4 py-2.5 border rounded-xl border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                                className="px-4 py-2.5 border rounded-xl border-(---mid-main-secondary) bg-[var(--surface-card)] text-(--secondary-color) focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                             />
                         </div>
                     )}
@@ -870,25 +870,25 @@ const Settings = () => {
     return (
         <>
             <Navbar />
-            <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-[var(--secondary-color)] ">
+            <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-(--secondary-color) ">
                 {/* Header */}
                 <div className="flex flex-col items-center w-full gap-2 px-4 pt-8 pb-4">
                     <h1 className="text-4xl font-medium">Settings</h1>
-                    <p className="text-md text-[var(--secondary-color)] text-center md:text-left">Manage your account, security, and preferences</p>
+                    <p className="text-md text-(--secondary-color) text-center md:text-left">Manage your account, security, and preferences</p>
                 </div>
 
                 {/* Content wrapper */}
                 <div className="w-full flex flex-col lg:flex-row gap-6 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-[1500px] self-center flex-1">
                     {/* Sidebar (desktop) */}
-                    <nav className="hidden lg:flex flex-col w-56 shrink-0 sticky top-24 self-start bg-[var(--white)] rounded-xl">
+                    <nav className="hidden lg:flex flex-col w-56 shrink-0 sticky top-24 self-start bg-(--white) rounded-xl">
                         {sidebarSections.map(section => (
                             <button
                                 key={section.id}
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
-                                    ? 'bg-[var(--accent-color)] text-white'
-                                    : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
+                                    ? 'bg-(--accent-color) text-white'
+                                    : 'bg-(--white) text-(--secondary-color) hover:bg-(--secondary-color) hover:text-[var(--main-color)]'
                                     }`}
                             >
                                 {section.icon}
@@ -905,8 +905,8 @@ const Settings = () => {
                                 onClick={() => scrollToSection(section.id)}
                                 title={section.label}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all shrink-0 cursor-pointer ${activeSection === section.id
-                                    ? 'bg-[var(--accent-color)] text-white'
-                                    : 'bg-[var(--surface-card)] text-[var(--secondary-color)] border border-[var(--mid-main-secondary)] hover:bg-[var(--secondary-color)] hover:text-[var(--main-color)]'
+                                    ? 'bg-(--accent-color) text-white'
+                                    : 'bg-[var(--surface-card)] text-(--secondary-color) border border-(---mid-main-secondary) hover:bg-(--secondary-color) hover:text-[var(--main-color)]'
                                     }`}
                             >
                                 {section.icon}
@@ -931,9 +931,9 @@ const Settings = () => {
                                         <span className="text-lg font-medium truncate">{profileSummary.full_name || 'Unnamed'}</span>
                                         <Chip>{profileSummary.role === 'admin' ? 'Admin' : 'Student'}</Chip>
                                     </div>
-                                    <span className="text-sm text-[var(--mid-main-secondary)]">@{profileSummary.username || 'no-username'}</span>
+                                    <span className="text-sm text-(---mid-main-secondary)">@{profileSummary.username || 'no-username'}</span>
                                     {profileSummary.bio && (
-                                        <p className="text-xs text-[var(--mid-main-secondary)] line-clamp-2 pt-1">{profileSummary.bio}</p>
+                                        <p className="text-xs text-(---mid-main-secondary) line-clamp-2 pt-1">{profileSummary.bio}</p>
                                     )}
                                 </div>
                                 <div className="flex items-center gap-3 shrink-0">
@@ -951,17 +951,17 @@ const Settings = () => {
                             <SectionTitle sub="Manage your email, password, and security settings">Account & Security</SectionTitle>
 
                             <div className="flex flex-col gap-1 bg-[var(--main-color)] rounded-xl px-4 py-3">
-                                <span className="text-xs font-semibold text-[var(--mid-main-secondary)]">Current email</span>
+                                <span className="text-xs font-semibold text-(---mid-main-secondary)">Current email</span>
                                 <span className="text-sm font-medium">{currentEmail}</span>
                                 {authProvider !== 'email' && (
-                                    <span className="text-xs text-[var(--mid-main-secondary)] font-semibold">
+                                    <span className="text-xs text-(---mid-main-secondary) font-semibold">
                                         Signed in via {authProvider === 'google' ? 'Google' : authProvider}
                                     </span>
                                 )}
                             </div>
 
                             {authProvider === 'email' && (
-                                <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
+                                <div className="flex flex-col gap-3 border-t border-(---mid-main-secondary) pt-4">
                                     <h3 className="text-base font-medium">Change Email</h3>
                                     <InputField
                                         label="New Email Address"
@@ -977,9 +977,9 @@ const Settings = () => {
                             )}
 
                             {authProvider === 'email' && (
-                                <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
+                                <div className="flex flex-col gap-3 border-t border-(---mid-main-secondary) pt-4">
                                     <h3 className="text-base font-medium">Change Password</h3>
-                                    <p className="text-xs text-[var(--mid-main-secondary)]">
+                                    <p className="text-xs text-(---mid-main-secondary)">
                                         Minimum 8 characters with uppercase, lowercase, and a number.
                                     </p>
                                     <InputField
@@ -998,12 +998,12 @@ const Settings = () => {
                                         placeholder="••••••••"
                                         autoComplete="new-password"
                                     />
-                                    <label className="flex items-center gap-2 cursor-pointer text-xs text-[var(--mid-main-secondary)]">
+                                    <label className="flex items-center gap-2 cursor-pointer text-xs text-(---mid-main-secondary)">
                                         <input
                                             type="checkbox"
                                             checked={showPassword}
                                             onChange={() => setShowPassword(!showPassword)}
-                                            className="accent-[var(--accent-color)]"
+                                            className="accent-(--accent-color)"
                                         />
                                         Show passwords
                                     </label>
@@ -1014,8 +1014,8 @@ const Settings = () => {
                             )}
 
                             {authProvider !== 'email' && (
-                                <div className="flex flex-col gap-2 border-t border-[var(--mid-main-secondary)] pt-4">
-                                    <p className="text-sm text-[var(--mid-main-secondary)]">
+                                <div className="flex flex-col gap-2 border-t border-(---mid-main-secondary) pt-4">
+                                    <p className="text-sm text-(---mid-main-secondary)">
                                         Your account is managed through {authProvider === 'google' ? 'Google' : authProvider}.
                                         Email and password changes must be made through your provider.
                                     </p>
@@ -1034,7 +1034,7 @@ const Settings = () => {
                                     {learningChips.map(chip => <Chip key={chip}>{chip}</Chip>)}
                                 </div>
                             ) : (
-                                <p className="text-sm text-[var(--mid-main-secondary)]">You haven't completed the onboarding quiz yet.</p>
+                                <p className="text-sm text-(---mid-main-secondary)">You haven't completed the onboarding quiz yet.</p>
                             )}
 
                             <div>
@@ -1070,7 +1070,7 @@ const Settings = () => {
                                 />
 
                                 <div className={`flex flex-col gap-1 transition-opacity ${!settings.notifications_enabled ? 'opacity-40 pointer-events-none' : ''}`}>
-                                    <div className="border-t border-[var(--mid-main-secondary)] pt-2">
+                                    <div className="border-t border-(---mid-main-secondary) pt-2">
                                         <ToggleSwitch
                                             label="Achievement Alerts"
                                             description="Notified when you unlock a new achievement"
@@ -1115,7 +1115,7 @@ const Settings = () => {
                                         />
                                     </div>
 
-                                    <div className="border-t border-[var(--mid-main-secondary)] pt-3 text-sm font-medium">
+                                    <div className="border-t border-(---mid-main-secondary) pt-3 text-sm font-medium">
                                         If you are subscribed and want to unsubscribe from <i>Equathora Briefs / Email Notifications</i> contact us at <strong><u>equathora@gmail.com</u></strong>
                                         {/* <ToggleSwitch
                                             label="Email Notifications"
@@ -1144,8 +1144,8 @@ const Settings = () => {
                                             onClick={() => handleSettingChange('theme', opt.value)}
                                             aria-pressed={settings.theme === opt.value}
                                             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${settings.theme === opt.value
-                                                ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white'
-                                                : 'border-[var(--mid-main-secondary)] bg-[var(--surface-card)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                                ? 'border-(--accent-color) bg-(--accent-color) text-white'
+                                                : 'border-(---mid-main-secondary) bg-[var(--surface-card)] text-(--secondary-color) hover:border-(--accent-color)'
                                                 }`}
                                         >
                                             {opt.icon}
@@ -1155,8 +1155,8 @@ const Settings = () => {
                                 </div>
 
                                 {settings.theme === 'system' && (
-                                    <p className="text-xs text-[var(--mid-main-secondary)]">
-                                        Currently following your device preference: <span className="font-semibold text-[var(--secondary-color)]">{resolvedTheme === 'dark' ? 'Dark' : 'Light'}</span>.
+                                    <p className="text-xs text-(---mid-main-secondary)">
+                                        Currently following your device preference: <span className="font-semibold text-(--secondary-color)">{resolvedTheme === 'dark' ? 'Dark' : 'Light'}</span>.
                                     </p>
                                 )}
                             </div>
@@ -1195,15 +1195,15 @@ const Settings = () => {
                                 />
                             </div>
 
-                            <div className="flex flex-col gap-3 border-t border-[var(--mid-main-secondary)] pt-4">
+                            <div className="flex flex-col gap-3 border-t border-(---mid-main-secondary) pt-4">
                                 <h3 className="text-base font-medium">Data & Cookies</h3>
-                                <p className="text-xs text-[var(--mid-main-secondary)]">
+                                <p className="text-xs text-(---mid-main-secondary)">
                                     We use essential cookies for authentication and localStorage for offline progress tracking.
                                     Optional cookies are used for analytics and personalization.
                                     Read our full{' '}
-                                    <Link to="/privacy-policy" className="text-[var(--accent-color)] hover:underline">Privacy Policy</Link>{' '}
+                                    <Link to="/privacy-policy" className="text-(--accent-color) hover:underline">Privacy Policy</Link>{' '}
                                     and{' '}
-                                    <Link to="/cookie-policy" className="text-[var(--accent-color)] hover:underline">Cookie Policy</Link>.
+                                    <Link to="/cookie-policy" className="text-(--accent-color) hover:underline">Cookie Policy</Link>.
                                 </p>
 
                                 <ToggleSwitch
@@ -1227,7 +1227,7 @@ const Settings = () => {
                                         {cookieConsent === 'accepted' ? 'All Cookies Accepted' : 'Essential Only'}
                                     </span>
                                     {cookieConsent !== 'none' && (
-                                        <span className="text-[10px] text-[var(--mid-main-secondary)]">
+                                        <span className="text-[10px] text-(---mid-main-secondary)">
                                             Set on {settings.cookie_consent_date ? new Date(settings.cookie_consent_date).toLocaleDateString() : 'recently'}
                                         </span>
                                     )}
@@ -1243,12 +1243,12 @@ const Settings = () => {
 
                             <div className="flex items-center justify-between gap-4 flex-wrap bg-[var(--main-color)] rounded-xl px-4 py-4">
                                 <div className="flex flex-col gap-1">
-                                    <span className="text-xs font-semibold text-[var(--mid-main-secondary)] uppercase tracking-wide">Current plan</span>
+                                    <span className="text-xs font-semibold text-(---mid-main-secondary) uppercase tracking-wide">Current plan</span>
                                     <div className="flex items-center gap-2">
                                         <span className="text-lg font-medium">{premium ? 'Premium' : 'Free'}</span>
                                     </div>
                                     {subscription.tier !== 'free' && subscription.renewsAt && (
-                                        <span className="text-xs text-[var(--mid-main-secondary)]">
+                                        <span className="text-xs text-(---mid-main-secondary)">
                                             Renews on {new Date(subscription.renewsAt).toLocaleDateString()}
                                         </span>
                                     )}
@@ -1259,10 +1259,10 @@ const Settings = () => {
                                 </PrimaryButton>
                             </div>
 
-                            <p className="text-xs text-[var(--mid-main-secondary)]">
+                            <p className="text-xs text-(---mid-main-secondary)">
                                 Premium unlocks AI step-by-step checking, detailed explanations, and solution verification.
                             </p>
-                            <p className='text-xs text-[var(--mid-main-secondary)]'>For any issues contact us at: <a href="mailto:equathora@gmail.com" className='font-medium hover:underline'>equathora@gmail.com</a></p>
+                            <p className='text-xs text-(---mid-main-secondary)'>For any issues contact us at: <a href="mailto:equathora@gmail.com" className='font-medium hover:underline'>equathora@gmail.com</a></p>
                         </SectionCard>
 
                         {/* ============================================================ */}
@@ -1284,17 +1284,17 @@ const Settings = () => {
                                                 <span className="text-sm font-medium">Current Session</span>
                                                 <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Active</span>
                                             </div>
-                                            <span className="text-xs text-[var(--mid-main-secondary)] truncate">
+                                            <span className="text-xs text-(---mid-main-secondary) truncate">
                                                 {currentSession.user_agent?.substring(0, 80)}...
                                             </span>
-                                            <span className="text-xs text-[var(--mid-main-secondary)]">
+                                            <span className="text-xs text-(---mid-main-secondary)">
                                                 Last active: {new Date(currentSession.last_active).toLocaleString()}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
-                                <p className="text-sm text-[var(--mid-main-secondary)]">Unable to load session information.</p>
+                                <p className="text-sm text-(---mid-main-secondary)">Unable to load session information.</p>
                             )}
 
                             <div className="flex items-center gap-3 rounded">
@@ -1305,25 +1305,25 @@ const Settings = () => {
 
                             <div className="flex flex-col gap-2 pt-4 border-t border-gray-100">
                                 <h3 className="text-base font-medium">Security Tips</h3>
-                                <ul className="text-xs text-[var(--mid-main-secondary)] flex flex-col gap-1.5">
+                                <ul className="text-xs text-(---mid-main-secondary) flex flex-col gap-1.5">
                                     <li className="flex items-start gap-2">
-                                        <span className="text-[var(--accent-color)] font-medium shrink-0">•</span>
+                                        <span className="text-(--accent-color) font-medium shrink-0">•</span>
                                         Use a strong, unique password for your Equathora account
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-[var(--accent-color)] font-medium shrink-0">•</span>
+                                        <span className="text-(--accent-color) font-medium shrink-0">•</span>
                                         Sign out from shared or public devices after each session
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-[var(--accent-color)] font-medium shrink-0">•</span>
+                                        <span className="text-(--accent-color) font-medium shrink-0">•</span>
                                         Regularly review your active sessions and revoke unknown ones
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-[var(--accent-color)] font-medium shrink-0">•</span>
+                                        <span className="text-(--accent-color) font-medium shrink-0">•</span>
                                         Never share your password with anyone, including mentors
                                     </li>
                                     <li className="flex items-start gap-2">
-                                        <span className="text-[var(--accent-color)] font-medium shrink-0">•</span>
+                                        <span className="text-(--accent-color) font-medium shrink-0">•</span>
                                         If you suspect unauthorized access, change your password immediately
                                     </li>
                                 </ul>
@@ -1340,7 +1340,7 @@ const Settings = () => {
                             {profileSummary.deletionRequested ? (
                                 <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-xl bg-red-50">
                                     <h3 className="text-base font-medium text-red-800">Account Deletion Scheduled</h3>
-                                    <p className="text-sm text-[var(--dark-accent-color)]">
+                                    <p className="text-sm text-(---dark-accent-color)">
                                         You requested to delete your account
                                         {profileSummary.deletionRequestedAt
                                             ? ` on ${new Date(profileSummary.deletionRequestedAt).toLocaleDateString()}`

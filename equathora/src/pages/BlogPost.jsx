@@ -36,7 +36,7 @@ const BlogPost = () => {
                 return (
                     <p
                         key={index}
-                        className='text-[var(--secondary-color)] text-sm sm:text-base'
+                        className='text-(--secondary-color) text-sm sm:text-base'
                         dangerouslySetInnerHTML={{ __html: contentItem.text }}
                     />
                 );
@@ -47,7 +47,7 @@ const BlogPost = () => {
                     <Link
                         key={index}
                         to={contentItem.url}
-                        className='!underline !text-[var(--dark-accent-color)]'
+                        className='!underline !text-(---dark-accent-color)'
                     >
                         {contentItem.text}
                     </Link>
@@ -84,7 +84,7 @@ const BlogPost = () => {
                                 <h1 className='text-3xl sm:text-3xl md:text-3xl lg:text-4xl font-medium  text-white'>
                                     {post.title}
                                 </h1>
-                                <div className='flex flex-wrap gap-2 font-medium text-base sm:text-lg md:text-xl text-[var(--french-gray)]'>
+                                <div className='flex flex-wrap gap-2 font-medium text-base sm:text-lg md:text-xl text-(--french-gray)'>
                                     <p>{post.author.username}</p>
                                     <p>~ {post.date}</p>
                                     {post.readTime && <p>· {post.readTime}</p>}
@@ -98,7 +98,7 @@ const BlogPost = () => {
                         </div>
 
                         {/* Share Link Container */}
-                        <div className='flex flex-col sm:flex-row w-full sm:max-w-3/4 rounded-tr-2xl rounded-tl-2xl px-4 sm:px-8 py-6 gap-4 bg-[var(--white)] text-[var(--secondary-color)] items-center'>
+                        <div className='flex flex-col sm:flex-row w-full sm:max-w-3/4 rounded-tr-2xl rounded-tl-2xl px-4 sm:px-8 py-6 gap-4 bg-(--white) text-(--secondary-color) items-center'>
                             <div className='flex items-center gap-4 justify-between w-full flex-1'>
                                 <div className='flex items-center gap-3 sm:gap-8'>
                                     <img
@@ -107,8 +107,8 @@ const BlogPost = () => {
                                         className='rounded-full h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 object-cover object-bottom'
                                     />
                                     <div className='flex flex-col gap-1'>
-                                        <h3 className='font-medium text-base sm:text-xl text-[var(--secondary-color)]'>Find the post interesting or useful?</h3>
-                                        <p className='text-sm sm:text-lg text-[var(--secondary-color)]'>Share it around and have others benefit too!</p>
+                                        <h3 className='font-medium text-base sm:text-xl text-(--secondary-color)'>Find the post interesting or useful?</h3>
+                                        <p className='text-sm sm:text-lg text-(--secondary-color)'>Share it around and have others benefit too!</p>
                                     </div>
                                 </div>
                             </div>
@@ -123,13 +123,13 @@ const BlogPost = () => {
 
                 {/* Blog Content Section */}
                 <section className='flex flex-col md:flex-row justify-center bg-[var(--main-color)] w-full'>
-                    <article className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pb-6 gap-1 text-[var(--secondary-color)] flex flex-col'>
-                        <div className='flex w-full sm:max-w-3/4 bg-[var(--white)] flex-col px-4 sm:px-8 pt-6 pb-10 gap-2 rounded-b-2xl'>
+                    <article className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pb-6 gap-1 text-(--secondary-color) flex flex-col'>
+                        <div className='flex w-full sm:max-w-3/4 bg-(--white) flex-col px-4 sm:px-8 pt-6 pb-10 gap-2 rounded-b-2xl'>
                             {/* Render dynamic content */}
                             {post.content.map((contentItem, index) => renderContent(contentItem, index))}
 
                             <hr />
-                            <p className='text-[var(--mid-main-secondary)] text-sm sm:text-base'>
+                            <p className='text-(---mid-main-secondary) text-sm sm:text-base'>
                                 {post.date} · Found it useful?
                             </p>
                             <ShareButton
@@ -143,20 +143,20 @@ const BlogPost = () => {
 
                 {/* Other Community Posts */}
                 <section className='w-full flex flex-col bg-[var(--main-color)] items-center py-4'>
-                    <article className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pb-6 text-[var(--secondary-color)] flex flex-col gap-4'>
-                        <h1 className='text-xl sm:text-2xl font-medium  text-[var(--secondary-color)]'>Other Posts You Might Like</h1>
+                    <article className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pb-6 text-(--secondary-color) flex flex-col gap-4'>
+                        <h1 className='text-xl sm:text-2xl font-medium  text-(--secondary-color)'>Other Posts You Might Like</h1>
                         <div className='flex w-full gap-4 flex-wrap'>
                             {otherPosts.map(otherPost => (
                                 <Link
                                     key={otherPost.id}
                                     to={`/blog/${otherPost.slug}`}
-                                    className='bg-[var(--white)] rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80'
+                                    className='bg-(--white) rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80'
                                 >
                                     <img src={otherPost.thumbnail} alt="" className='rounded-xl w-full max-h-40 object-cover' />
-                                    <p className='text-md text-left lg:text-lg cursor-pointer  text-[var(--secondary-color)] font-medium'>
+                                    <p className='text-md text-left lg:text-lg cursor-pointer  text-(--secondary-color) font-medium'>
                                         {otherPost.title}
                                     </p>
-                                    <p className='text-[var(--mid-main-secondary)] '>
+                                    <p className='text-(---mid-main-secondary) '>
                                         {otherPost.author.name} ⋅ {otherPost.date}
                                     </p>
                                 </Link>

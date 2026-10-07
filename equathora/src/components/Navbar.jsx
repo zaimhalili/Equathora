@@ -214,26 +214,26 @@ const Navbar = () => {
           <div className='w-full h-full mx-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
             <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
               <li>
-                <Link to='/dashboard' className='!text-[var(--secondary-color)] list-none !font-medium text-lg relative pl-5' title='Home'>
+                <Link to='/dashboard' className='!text-(--secondary-color) list-none !font-medium text-lg relative pl-5' title='Home'>
                   <img src={Sigma} alt="Logo" className='w-6 h-6 shrink-0 absolute -left-[1px] -top-[5px]' />
                   quathora
                 </Link>
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-(--secondary-color)'>
                 <Dropdown label="Learn" items={learnItems} />
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-(--secondary-color)'>
                 <Dropdown label="Discover" items={discoverItems} />
               </li>
-              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
+              <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-(--secondary-color)'>
                 <Dropdown label="More" items={moreItems} />
               </li>
             </ul>
 
             <div className='flex justify-end items-center shrink-0'>
               <ul className='flex items-center list-none h-[7.5vh] overflow-visible'>
-                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
-                  <Link to="/achievements/stats" className='flex items-center gap-2 hover:text-[var(--accent-color)] transition-colors' title='Your Streak'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-(--secondary-color)'>
+                  <Link to="/achievements/stats" className='flex items-center gap-2 hover:text-(--accent-color) transition-colors' title='Your Streak'>
                     <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                       <defs>
                         <linearGradient id="icon-gradient-fire-navbar" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -246,7 +246,7 @@ const Navbar = () => {
                     <span className='font-bold'>{stats?.currentStreak ?? 0}</span>
                   </Link>
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-(--secondary-color)'>
                   <Dropdown
                     label={notificationBellLabel}
                     ariaLabel="Notifications menu"
@@ -254,7 +254,7 @@ const Navbar = () => {
                     alignRight={true}
                   />
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-(--secondary-color)'>
                   <Dropdown
                     label={<FaTrophy size={24} />}
                     ariaLabel="Achievements menu"
@@ -262,7 +262,7 @@ const Navbar = () => {
                     alignRight={true}
                   />
                 </li>
-                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-[var(--secondary-color)]'>
+                <li className='pl-6 lg:pl-4 shrink-0 max-lg:hidden text-(--secondary-color)'>
                   <Dropdown
                     label={
                       <img
@@ -289,7 +289,7 @@ const Navbar = () => {
                 <li className='pl-6 lg:pl-4'>
                   <button
                     type="button"
-                    className='h-[7.5vh] flex items-center justify-center transition-colors duration-200 cursor-pointer bg-transparent border-none text-[var(--secondary-color)] hover:text-[var(--accent-color)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                    className='h-[7.5vh] flex items-center justify-center transition-colors duration-200 cursor-pointer bg-transparent border-none text-(--secondary-color) hover:text-(--accent-color) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-color)'
                     onClick={() => setSidebarOpen(true)}
                     aria-label="Open navigation menu"
                     aria-expanded={sidebarOpen}

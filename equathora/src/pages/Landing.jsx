@@ -38,7 +38,7 @@ const Landing = () => {
     return (
         <>
             {/* <FeedbackBanner /> */}
-            <div className="min-h-screen bg-[var(--white)] text-[var(--secondary-color)]">
+            <div className="min-h-screen bg-(--white) text-(--secondary-color)">
                 <NavigationBar />
                 <HeroSection />
                 <ExercisesSection />
@@ -49,7 +49,7 @@ const Landing = () => {
                 <CTASection />
                 <Footer />
 
-                <div className="flex flex-col lg:flex-row items-center text-[var(--french-gray)] bg-[var(--secondary-color)] underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center  theme-lock">
+                <div className="flex flex-col lg:flex-row items-center text-(--french-gray) bg-(--secondary-color) underline border-t-1 border-gray-50/20 font-light gap-1 text-[12px] py-3 justify-center  theme-lock">
                     <a href="https://www.vecteezy.com/free-png/student" target="_blank" rel="noopener noreferrer" id="freepik-link">
                         Student PNGs by Vecteezy
                     </a>

@@ -5,18 +5,18 @@ import { FaArrowRight } from 'react-icons/fa';
 
 const AboutHeroSection = () => {
     return (
-        <section className="w-full relative bg-[var(--white)] overflow-hidden flex justify-center">
+        <section className="w-full relative bg-(--white) overflow-hidden flex justify-center">
             <div className="relative z-10 w-full flex justify-center">
                 <div className="w-full max-w-[1500px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 pt-40 sm:pt-24 md:pt-30 lg:pt-20 xl:pt-40 pb-14 sm:pb-16 md:pb-18 lg:pb-20 flex flex-col items-center text-center gap-5 sm:gap-6">
                     <motion.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)]"
+                        className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-(--secondary-color)"
                     >
                         Building stronger thinkers,<br />
                         {' '}
-                        <span className="text-[var(--accent-color)] relative inline-block">
+                        <span className="text-(--accent-color) relative inline-block">
                             one problem at a time
                             <motion.svg
                                 className="absolute -bottom-2 left-0 w-full"
@@ -43,7 +43,7 @@ const AboutHeroSection = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.25, duration: 0.55 }}
-                        className="text-xs sm:text-sm md:text-base text-[var(--secondary-color)]/70 leading-relaxed max-w-lg"
+                        className="text-xs sm:text-sm md:text-base text-(--secondary-color)/70 leading-relaxed max-w-lg"
                     >
                         We help students learn math online with a step-by-step workspace, structured practice, and Sigma AI guidance that turns confusion into confidence.
                     </motion.p>
@@ -68,7 +68,7 @@ const AboutHeroSection = () => {
                         </Link>
                         <Link
                             to="/equathora-briefs"
-                            className="group relative text-sm sm:text-base !text-[var(--secondary-color)] font-medium transition-all flex items-center gap-2 min-w-[140px]"
+                            className="group relative text-sm sm:text-base !text-(--secondary-color) font-medium transition-all flex items-center gap-2 min-w-[140px]"
                         >
                             <FaArrowRight className="text-xs sm:text-sm opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
                             <span className="transition-transform duration-300">Join Equathora Briefs</span>

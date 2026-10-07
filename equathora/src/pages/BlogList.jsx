@@ -14,7 +14,7 @@ const BlogList = () => {
             <Navbar />
             <main className='flex bg-[var(--main-color)]  flex-col min-h-screen w-full items-center py-12'>
                 <section className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px]'>
-                    <h1 className='text-4xl font-medium  text-[var(--secondary-color)] pb-8'>
+                    <h1 className='text-4xl font-medium  text-(--secondary-color) pb-8'>
                         Equathora Blog
                     </h1>
                     <p className='text-lg text-gray-600 pb-12'>
@@ -26,7 +26,7 @@ const BlogList = () => {
                             <Link
                                 key={post.id}
                                 to={`/blog/${post.slug}`}
-                                className='bg-[var(--white)] rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer flex flex-col'
+                                className='bg-(--white) rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer flex flex-col'
                             >
                                 <img
                                     src={post.thumbnail}
@@ -34,13 +34,13 @@ const BlogList = () => {
                                     className='w-full max-h-40 object-cover'
                                 />
                                 <div className='p-6 flex flex-col gap-3 flex-1'>
-                                    <div className='flex items-center gap-2 text-sm text-[var(--mid-main-secondary)]'>
-                                        <span className='px-3 py-1 bg-[var(--accent-color)] text-white rounded-full text-xs'>
+                                    <div className='flex items-center gap-2 text-sm text-(---mid-main-secondary)'>
+                                        <span className='px-3 py-1 bg-(--accent-color) text-white rounded-full text-xs'>
                                             {post.category}
                                         </span>
                                         {post.readTime && <span>· {post.readTime}</span>}
                                     </div>
-                                    <h2 className='text-xl font-medium  text-[var(--secondary-color)] line-clamp-2'>
+                                    <h2 className='text-xl font-medium  text-(--secondary-color) line-clamp-2'>
                                         {post.title}
                                     </h2>
                                     <p className='text-gray-600 text-sm line-clamp-3 flex-1'>
@@ -64,7 +64,7 @@ const BlogList = () => {
                 </section>
             </main>
             <Footer />
-            <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-5 text-white/60 text-xs'>
+            <div className='w-full bg-(--secondary-color) border-t border-white/10 flex justify-center py-5 text-white/60 text-xs'>
                 <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
                     Education illustrations by Storyset
                 </a>

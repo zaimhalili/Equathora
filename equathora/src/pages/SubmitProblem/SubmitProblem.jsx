@@ -49,11 +49,11 @@ const SubmitProblem = () => {
         alert('Thank you! Your problem has been submitted and will be reviewed.');
     };
 
-    const inputClasses = 'w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-4 py-2.5 text-[var(--secondary-color)] focus:outline-none focus:border-[var(--accent-color)] transition-colors placeholder-[var(--mid-main-secondary)]';
-    const labelClasses = 'block text-sm font-semibold text-[var(--secondary-color)] opacity-90';
-    const cardClasses = 'bg-[var(--white)] rounded-xl border border-[rgba(43,45,66,0.12)] p-6 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col gap-6';
+    const inputClasses = 'w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-4 py-2.5 text-(--secondary-color) focus:outline-none focus:border-(--accent-color) transition-colors placeholder-(---mid-main-secondary)';
+    const labelClasses = 'block text-sm font-semibold text-(--secondary-color) opacity-90';
+    const cardClasses = 'bg-(--white) rounded-xl border border-[rgba(43,45,66,0.12)] p-6 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col gap-6';
     const fieldGroupClasses = 'flex flex-col gap-2';
-    const sectionTitleClasses = 'text-2xl font-bold text-[var(--secondary-color)] flex items-center gap-2';
+    const sectionTitleClasses = 'text-2xl font-bold text-(--secondary-color) flex items-center gap-2';
     const difficultyOptions = [
         'Beginner',
         'Easy',
@@ -75,11 +75,11 @@ const SubmitProblem = () => {
             <main className='flex w-full justify-center items-center'>
                 <section className='flex flex-col justify-start items-center px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-6 gap-8 w-full'>
                     <article className='w-full flex flex-col gap-3 text-center md:text-left'>
-                        <h1 className="text-4xl text-[var(--secondary-color)] font-extrabold tracking-tight">Submit a New Problem</h1>
-                        <p className="text-md lg:text-lg font-normal leading-[1.2] text-[var(--secondary-color)] opacity-80">
+                        <h1 className="text-4xl text-(--secondary-color) font-extrabold tracking-tight">Submit a New Problem</h1>
+                        <p className="text-md lg:text-lg font-normal leading-[1.2] text-(--secondary-color) opacity-80">
                             Help expand Equathora by contributing high-quality challenges. Each submission is reviewed by AI checks and then manually approved before publishing.
                         </p>
-                        <p className="text-md lg:text-lg font-normal leading-[1.2] text-[var(--secondary-color)] opacity-70">
+                        <p className="text-md lg:text-lg font-normal leading-[1.2] text-(--secondary-color) opacity-70">
                             Include clear steps and accepted answer formats. Use LaTeX if possible, otherwise it is no issue.
                         </p>
                     </article>
@@ -91,7 +91,7 @@ const SubmitProblem = () => {
                     >
                         <section className={cardClasses} aria-labelledby="general-information-heading">
                             <h2 id="general-information-heading" className={sectionTitleClasses}>
-                                <svg className="w-6 h-6 text-[var(--accent-color)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <svg className="w-6 h-6 text-(--accent-color)" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 General Information
@@ -142,7 +142,7 @@ const SubmitProblem = () => {
                                                 <option key={level} value={level}>{level}</option>
                                             ))}
                                         </select>
-                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[var(--secondary-color)]">
+                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-(--secondary-color)">
                                             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                                             </svg>
@@ -173,13 +173,13 @@ const SubmitProblem = () => {
                                             name="shareAuthorName"
                                             checked={formData.shareAuthorName}
                                             onChange={handleChange}
-                                            className="h-5 w-5 rounded-xl border-[rgba(43,45,66,0.4)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
+                                            className="h-5 w-5 rounded-xl border-[rgba(43,45,66,0.4)] text-(--accent-color) focus:ring-(--accent-color)"
                                         />
-                                        <span className="text-md text-[var(--secondary-color)] font-semibold">
+                                        <span className="text-md text-(--secondary-color) font-semibold">
                                             Share my name as the contributor for this problem
                                         </span>
                                     </label>
-                                    <p className="text-sm text-[var(--secondary-color)] opacity-70">
+                                    <p className="text-sm text-(--secondary-color) opacity-70">
                                         If enabled, your problem can show author credit like "By Alex".
                                     </p>
 
@@ -201,7 +201,7 @@ const SubmitProblem = () => {
                                 </div>
 
                                 <div className="md:col-span-2 flex flex-col gap-4 rounded-xl border border-[rgba(43,45,66,0.14)] bg-[var(--main-color)] p-4">
-                                    <h3 className="text-lg font-semibold text-[var(--secondary-color)]">Additional Characteristics</h3>
+                                    <h3 className="text-lg font-semibold text-(--secondary-color)">Additional Characteristics</h3>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <label htmlFor="is-premium-problem" className="flex items-center gap-3 cursor-pointer">
@@ -211,9 +211,9 @@ const SubmitProblem = () => {
                                                 name="isPremium"
                                                 checked={formData.isPremium}
                                                 onChange={handleChange}
-                                                className="h-5 w-5 rounded-xl border-[rgba(43,45,66,0.4)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
+                                                className="h-5 w-5 rounded-xl border-[rgba(43,45,66,0.4)] text-(--accent-color) focus:ring-(--accent-color)"
                                             />
-                                            <span className="text-md text-[var(--secondary-color)] font-semibold">Mark as premium problem</span>
+                                            <span className="text-md text-(--secondary-color) font-semibold">Mark as premium problem</span>
                                         </label>
 
                                         <label htmlFor="is-active-problem" className="flex items-center gap-3 cursor-pointer">
@@ -223,9 +223,9 @@ const SubmitProblem = () => {
                                                 name="isActive"
                                                 checked={formData.isActive}
                                                 onChange={handleChange}
-                                                className="h-5 w-5 rounded-xl border-[rgba(43,45,66,0.4)] text-[var(--accent-color)] focus:ring-[var(--accent-color)]"
+                                                className="h-5 w-5 rounded-xl border-[rgba(43,45,66,0.4)] text-(--accent-color) focus:ring-(--accent-color)"
                                             />
-                                            <span className="text-md text-[var(--secondary-color)] font-semibold">Recommend active on approval</span>
+                                            <span className="text-md text-(--secondary-color) font-semibold">Recommend active on approval</span>
                                         </label>
                                     </div>
 
@@ -264,7 +264,7 @@ const SubmitProblem = () => {
 
                         <section className={cardClasses} aria-labelledby="problem-content-heading">
                             <h2 id="problem-content-heading" className={sectionTitleClasses}>
-                                <svg className="w-6 h-6 text-[var(--accent-color)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <svg className="w-6 h-6 text-(--accent-color)" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
                                 Problem Content
@@ -283,7 +283,7 @@ const SubmitProblem = () => {
                                         placeholder="e.g. Evaluate 8(x+3)-64 for x=2. Use LaTeX if possible, otherwise plain text is fine."
                                         className={`${inputClasses} resize-y`}
                                     />
-                                    <p className="text-sm text-[var(--secondary-color)] opacity-70">
+                                    <p className="text-sm text-(--secondary-color) opacity-70">
                                         Use LaTeX if possible, otherwise it is no issue.
                                     </p>
                                 </div>
@@ -315,7 +315,7 @@ const SubmitProblem = () => {
                                                         value={ans}
                                                         onChange={(e) => handleArrayChange(index, 'accepted_answers', e.target.value)}
                                                         placeholder="e.g. -24.0"
-                                                        className="w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-3 py-2 text-[var(--secondary-color)] focus:outline-none focus:border-[var(--accent-color)]"
+                                                        className="w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-3 py-2 text-(--secondary-color) focus:outline-none focus:border-(--accent-color)"
                                                         autoComplete="off"
                                                     />
                                                     {formData.accepted_answers.length > 1 && (
@@ -336,7 +336,7 @@ const SubmitProblem = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => addArrayItem('accepted_answers')}
-                                                className="text-sm text-[var(--accent-color)] font-medium hover:underline flex items-center gap-1"
+                                                className="text-sm text-(--accent-color) font-medium hover:underline flex items-center gap-1"
                                             >
                                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -351,7 +351,7 @@ const SubmitProblem = () => {
 
                         <section className={cardClasses} aria-labelledby="guidance-support-heading">
                             <h2 id="guidance-support-heading" className={sectionTitleClasses}>
-                                <svg className="w-6 h-6 text-[var(--accent-color)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <svg className="w-6 h-6 text-(--accent-color)" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                                 </svg>
                                 Guidance & Support
@@ -360,18 +360,18 @@ const SubmitProblem = () => {
                             <div className="flex flex-col gap-6">
                                 <div className="flex flex-col gap-3">
                                     <label className={labelClasses}>Step-by-Step Hints</label>
-                                    <p className="text-xs text-[var(--secondary-color)] opacity-70">Provide helpful clues without giving away the direct answer.</p>
+                                    <p className="text-xs text-(--secondary-color) opacity-70">Provide helpful clues without giving away the direct answer.</p>
                                     <div className="flex flex-col gap-3">
                                         {formData.hints.map((hint, index) => (
                                             <div key={index} className="flex gap-2 items-start">
-                                                <span className="bg-[rgba(43,45,66,0.1)] text-[var(--secondary-color)] font-bold text-sm w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-xl">{index + 1}</span>
+                                                <span className="bg-[rgba(43,45,66,0.1)] text-(--secondary-color) font-bold text-sm w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-xl">{index + 1}</span>
                                                 <textarea
                                                     required
                                                     value={hint}
                                                     onChange={(e) => handleArrayChange(index, 'hints', e.target.value)}
                                                     rows="2"
                                                     placeholder="e.g. Substitute x = 2 first."
-                                                    className="w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-3 py-2 text-[var(--secondary-color)] focus:outline-none focus:border-[var(--accent-color)] resize-y"
+                                                    className="w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-3 py-2 text-(--secondary-color) focus:outline-none focus:border-(--accent-color) resize-y"
                                                 />
                                                 {formData.hints.length > 1 && (
                                                     <button
@@ -391,7 +391,7 @@ const SubmitProblem = () => {
                                         <button
                                             type="button"
                                             onClick={() => addArrayItem('hints')}
-                                            className="text-sm text-[var(--accent-color)] font-medium hover:underline flex items-center gap-1"
+                                            className="text-sm text-(--accent-color) font-medium hover:underline flex items-center gap-1"
                                         >
                                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -413,7 +413,7 @@ const SubmitProblem = () => {
                                         placeholder="Write the complete solution that leads to the answer. Use LaTeX if possible, otherwise plain text is fine."
                                         className={`${inputClasses} resize-y`}
                                     />
-                                    <p className="text-sm text-[var(--secondary-color)] opacity-70">
+                                    <p className="text-sm text-(--secondary-color) opacity-70">
                                         Use LaTeX if possible, otherwise it is no issue.
                                     </p>
                                 </div>
@@ -423,7 +423,7 @@ const SubmitProblem = () => {
                         <div className="w-full flex justify-end pb-8">
                             <button
                                 type="submit"
-                                className="cursor-pointer px-6 py-3 font-bold text-center border-2 border-[var(--accent-color)] rounded-xl bg-[var(--accent-color)] text-[var(--white)] hover:bg-[var(--dark-accent-color)] hover:border-[var(--dark-accent-color)] shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 text-sm md:text-base"
+                                className="cursor-pointer px-6 py-3 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-(--white) hover:bg-(---dark-accent-color) hover:border-(---dark-accent-color) shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 text-sm md:text-base"
                             >
                                 <span>Submit Problem</span>
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

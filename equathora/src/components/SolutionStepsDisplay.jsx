@@ -111,7 +111,7 @@ const SolutionStepsDisplay = ({ solution }) => {
 
     if (!solution) {
         return (
-            <div className="w-full  p-4 text-sm text-[var(--secondary-color)] opacity-70 flex gap-1 items-center">
+            <div className="w-full  p-4 text-sm text-(--secondary-color) opacity-70 flex gap-1 items-center">
                 <FaSpinner className='animate-spin' />
                 Loading Solution...
             </div>
@@ -132,14 +132,14 @@ const SolutionStepsDisplay = ({ solution }) => {
                             <div key={index} className="flex flex-col gap-1">
                                 {/* Explanation label on top */}
                                 {explanation && (
-                                    <span className="text-xs font-semibold text-[var(--mid-main-secondary)] pl-1">
+                                    <span className="text-xs font-semibold text-(---mid-main-secondary) pl-1">
                                         {explanation}
                                     </span>
                                 )}
 
                                 {/* Math content box - rendered by MathJax */}
                                 {math && (
-                                    <div className="rounded-xl border-2 border-[var(--mid-main-secondary)] bg-[var(--white)] px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-[var(--secondary-color)] overflow-x-auto">
+                                    <div className="rounded-xl border-2 border-(---mid-main-secondary) bg-(--white) px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-(--secondary-color) overflow-x-auto">
                                         <MathJaxRenderer
                                             content={math}
                                             className="solution-step-math"

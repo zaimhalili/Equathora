@@ -322,14 +322,14 @@ const ChatPanel = forwardRef(({
 
     if (statusLoading) {
         return (
-            <div className="w-full h-full flex items-center justify-center bg-[var(--main-color)] rounded-xl text-xs text-[var(--mid-main-secondary)]">
+            <div className="w-full h-full flex items-center justify-center bg-[var(--main-color)] rounded-xl text-xs text-(---mid-main-secondary)">
                 Loading AI Mentor...
             </div>
         );
     }
 
     return (
-        <div className="relative w-full flex-1 flex flex-col  bg-[var(--white)] text-[var(--secondary-color)] rounded-xl overflow-hidden min-h-0">
+        <div className="relative w-full flex-1 flex flex-col  bg-(--white) text-(--secondary-color) rounded-xl overflow-hidden min-h-0">
             {/* Backdrop Lock Overlay */}
             {trialExhausted && (
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-black/60 backdrop-blur-sm transition-all duration-300">
@@ -337,11 +337,11 @@ const ChatPanel = forwardRef(({
                         <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 text-xl shadow-inner">
                             <FaLock />
                         </div>
-                        <h4 className="font-bold text-lg text-[var(--secondary-color)]">
+                        <h4 className="font-bold text-lg text-(--secondary-color)">
                             Free Trial Completed
                         </h4>
-                        <p className="text-xs text-[var(--mid-main-secondary)] leading-relaxed">
-                            You've used all <strong className="text-[var(--secondary-color)]">{FREE_TRIAL_LIMIT} free trial messages</strong>. Upgrade to Premium for unlimited step-by-step mathematical explanations.
+                        <p className="text-xs text-(---mid-main-secondary) leading-relaxed">
+                            You've used all <strong className="text-(--secondary-color)">{FREE_TRIAL_LIMIT} free trial messages</strong>. Upgrade to Premium for unlimited step-by-step mathematical explanations.
                         </p>
                         <Link
                             to="/premium"
@@ -357,14 +357,14 @@ const ChatPanel = forwardRef(({
             {/* Chat Container */}
             <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4 flex flex-col gap-4 bg-[var(--main-color)] p-4">
                 {isLoadingHistory ? (
-                    <div className="flex items-center gap-2 self-start rounded-2xl border border-[var(--french-gray)] bg-[var(--white)] px-3.5 py-2.5 text-xs text-[var(--secondary-color)]">
-                        <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[var(--dark-accent-color)]" />
+                    <div className="flex items-center gap-2 self-start rounded-2xl border border-(--french-gray) bg-(--white) px-3.5 py-2.5 text-xs text-(--secondary-color)">
+                        <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-(---dark-accent-color)" />
                         Loading your chat history...
                     </div>
                 ) : (
                     <>
                         {hiddenCount > 0 && (
-                            <p className="text-center text-[10px] text-[var(--mid-main-secondary)] shrink-0">
+                            <p className="text-center text-[10px] text-(---mid-main-secondary) shrink-0">
                                 {hiddenCount} earlier message{hiddenCount !== 1 ? 's' : ''} hidden.
                             </p>
                         )}
@@ -372,8 +372,8 @@ const ChatPanel = forwardRef(({
                             <div key={msg.id} className={`flex flex-col gap-1 max-w-[85%] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
                                 <div
                                     className={`border rounded-2xl px-4 py-2.5 text-xs md:text-sm leading-relaxed ${msg.sender === 'ai'
-                                        ? 'border-[var(--french-gray)] rounded-tl-none bg-[var(--white)] text-[var(--secondary-color)]'
-                                        : 'border-transparent rounded-tr-none bg-[var(--dark-accent-color)] text-white'
+                                        ? 'border-(--french-gray) rounded-tl-none bg-(--white) text-(--secondary-color)'
+                                        : 'border-transparent rounded-tr-none bg-(---dark-accent-color) text-white'
                                         }`}
                                     style={{ wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }}
                                 >
@@ -386,7 +386,7 @@ const ChatPanel = forwardRef(({
 
                 {isAiThinking && (
                     <div className="flex flex-col gap-1 max-w-[85%] self-start opacity-75 shrink-0">
-                        <div className="border border-[var(--secondary-color)] rounded-2xl rounded-tl-none px-3.5 py-2.5 text-xs bg-[var(--main-color)] text-[var(--secondary-color)] italic">
+                        <div className="border border-(--secondary-color) rounded-2xl rounded-tl-none px-3.5 py-2.5 text-xs bg-[var(--main-color)] text-(--secondary-color) italic">
                             Sigma is thinking…
                         </div>
                     </div>
@@ -394,9 +394,9 @@ const ChatPanel = forwardRef(({
             </div>
 
             {/* Input Form Area */}
-            <form onSubmit={handleSendMessage} className="shrink-0 p-3 flex flex-col gap-1.5 border-t border-[var(--french-gray)] bg-[var(--main-color)] rounded-b-md">
+            <form onSubmit={handleSendMessage} className="shrink-0 p-3 flex flex-col gap-1.5 border-t border-(--french-gray) bg-[var(--main-color)] rounded-b-md">
                 {tier === 'free' && (
-                    <div className="flex items-center justify-between px-1 text-[10px] text-[var(--mid-main-secondary)]">
+                    <div className="flex items-center justify-between px-1 text-[10px] text-(---mid-main-secondary)">
                         <span>
                             {remainingMessages} of {FREE_TRIAL_LIMIT} free messages remaining
                         </span>
@@ -437,7 +437,7 @@ const ChatPanel = forwardRef(({
                             }
                             maxLength={MAX_INPUT_CHARS}
                             aria-label="Chat message input"
-                            className="w-full rounded-xl px-4 py-2 text-sm md:text-base border bg-[var(--main-color)] border-[var(--french-gray)] text-[var(--secondary-color)] focus:!outline-none disabled:opacity-50 !h-full"
+                            className="w-full rounded-xl px-4 py-2 text-sm md:text-base border bg-[var(--main-color)] border-(--french-gray) text-(--secondary-color) focus:!outline-none disabled:opacity-50 !h-full"
                         />
                         {typedMessage.length > MAX_INPUT_CHARS * 0.8 && (
                             <span
@@ -452,7 +452,7 @@ const ChatPanel = forwardRef(({
                         type="submit"
                         disabled={isSendDisabled}
                         aria-label="Send message"
-                        className="font-bold text-xs py-2 px-4 rounded-xl transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)] hover:text-[var(--white)] border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full disabled:active:scale-100"
+                        className="font-bold text-xs py-2 px-4 rounded-xl transition-all active:scale-95 cursor-pointer text-(--secondary-color) hover:text-(--white) border hover:bg-(--secondary-color) border-(--secondary-color) hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full disabled:active:scale-100"
                     >
                         <FaPaperPlane />
                     </button>

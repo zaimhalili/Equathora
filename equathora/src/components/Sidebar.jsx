@@ -140,7 +140,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             {/* Sidebar Content Panel */}
             <div
                 id="mobile-navigation"
-                className="relative w-full max-w-xs sm:max-w-sm bg-[var(--main-color)] h-full shadow-2xl overflow-y-auto flex flex-col z-[1110] text-[var(--secondary-color)] overscroll-contain"
+                className="relative w-full max-w-xs sm:max-w-sm bg-[var(--main-color)] h-full shadow-2xl overflow-y-auto flex flex-col z-[1110] text-(--secondary-color) overscroll-contain"
             >
                 {/* Top Header */}
                 <div className="flex items-center justify-between p-5 border-b border-gray-700/30">
@@ -156,7 +156,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <button
                         type="button"
                         onClick={onClose}
-                        className="p-2 text-[var(--secondary-color)] hover:text-[var(--accent-color)] hover:bg-white/5 rounded-lg transition-colors"
+                        className="p-2 text-(--secondary-color) hover:text-(--accent-color) hover:bg-white/5 rounded-lg transition-colors"
                         aria-label="Close navigation menu"
                     >
                         <FaTimes size={30} />
@@ -170,7 +170,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                             <img
                                 src={profileAvatarSrc}
                                 alt="Profile Avatar"
-                                className="w-14 h-14 rounded-full object-cover border-2 border-[var(--secondary-color)] shadow-sm"
+                                className="w-14 h-14 rounded-full object-cover border-2 border-(--secondary-color) shadow-sm"
                                 onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = GuestAvatar; }}
                             />
                             <div>
@@ -187,7 +187,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                         <Link
                             to="/achievements/stats"
                             onClick={onClose}
-                            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[var(--main-color)] border border-gray-700/30 hover:border-[var(--accent-color)] hover:bg-white/5 transition-all active:scale-[0.96]"
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[var(--main-color)] border border-gray-700/30 hover:border-(--accent-color) hover:bg-white/5 transition-all active:scale-[0.96]"
                         >
                             <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
@@ -219,7 +219,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to={dailyProblemTo}
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Daily} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Daily Problem</span>
@@ -227,7 +227,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/journey"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Journey} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Your Journey</span>
@@ -235,7 +235,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/learn"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Books} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Browse Problems</span>
@@ -258,7 +258,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/leaderboards/global"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Leaderboards} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Leaderboards</span>
@@ -266,7 +266,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/learn?status=favorite"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Favourite} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Favourite Problems</span>
@@ -274,7 +274,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/equathora-briefs"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Mail} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Equathora Briefs</span>
@@ -297,7 +297,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/achievements/recent"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Achievements} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>All Achievements</span>
@@ -305,7 +305,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/achievements/stats"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Statistics} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Statistics</span>
@@ -313,7 +313,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/achievements/events"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Events} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Special Events</span>
@@ -336,7 +336,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/profile/myprofile"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={profileAvatarSrc} alt="" className="w-7 h-7 rounded-full object-cover transition-transform duration-200 group-hover:scale-110" />
                                     <span>My Profile</span>
@@ -344,7 +344,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/notifications"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Notifications} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Notifications</span>
@@ -352,7 +352,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/settings"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Settings} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Settings</span>
@@ -360,7 +360,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/systemupdates"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Updates} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>System Updates</span>
@@ -383,7 +383,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/applymentor"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Mentoring} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Teacher / Mentor</span>
@@ -391,7 +391,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/helpCenter"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Faq} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>Help Center</span>
@@ -399,7 +399,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                                 <Link
                                     to="/about"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={AboutUs} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
                                     <span>About Equathora</span>
@@ -409,9 +409,9 @@ const Sidebar = ({ isOpen, onClose }) => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-[var(--accent-color)] hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
-                                    <FaDiscord className="w-7 h-7 text-[var(--accent-color)] transition-transform duration-200 group-hover:scale-110" />
+                                    <FaDiscord className="w-7 h-7 text-(--accent-color) transition-transform duration-200 group-hover:scale-110" />
                                     <span>Join Discord</span>
                                 </a>
                             </div>

@@ -32,7 +32,7 @@ const CTASection = () => {
     return (
         <section
             ref={containerRef}
-            className="w-full bg-[var(--white)] relative overflow-hidden flex justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10"
+            className="w-full bg-(--white) relative overflow-hidden flex justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10"
         >
 
             <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-10 md:gap-12">
@@ -41,14 +41,14 @@ const CTASection = () => {
                 <div className="flex-1 flex flex-col gap-6 sm:gap-7 text-center lg:text-left items-center lg:items-start w-full">
 
                     <motion.h2
-                        className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-4"
+                        className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-(--secondary-color) pb-4"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.3 }}
                         transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
                     >
                         Ready to build{' '}
-                        <span className="text-[var(--secondary-color)] relative inline-block">
+                        <span className="text-(--secondary-color) relative inline-block">
                             confidence
                             <motion.svg
                                 className="absolute -bottom-1 left-0 w-full"
@@ -116,22 +116,22 @@ const CTASection = () => {
                         style={{ x: floatX, y: floatY }}
                     >
                         {/* Main card */}
-                        <div className="w-80 h-96 rounded-xl bg-gradient-to-br from-[var(--secondary-color)] to-[#1a1a2e] p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
+                        <div className="w-80 h-96 rounded-xl bg-gradient-to-br from-(--secondary-color) to-[#1a1a2e] p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
                             {/* Glow effect */}
-                            <div className="absolute top-0 right-0 w-40 h-40 bg-[var(--accent-color)]/20 rounded-full blur-[60px]" />
+                            <div className="absolute top-0 right-0 w-40 h-40 bg-(--accent-color)/20 rounded-full blur-[60px]" />
 
                             {/* Card dots */}
                             <div className="flex gap-2">
-                                <div className="w-3 h-3 rounded-full bg-[var(--accent-color)]"></div>
+                                <div className="w-3 h-3 rounded-full bg-(--accent-color)"></div>
                                 <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                                 <div className="w-3 h-3 rounded-full bg-green-400"></div>
                             </div>
 
                             {/* Placeholder lines */}
                             <div className="flex flex-col gap-3">
-                                <div className="h-3 w-3/4 bg-[var(--white)]/10 rounded-full"></div>
-                                <div className="h-3 w-1/2 bg-[var(--white)]/10 rounded-full"></div>
-                                <div className="h-3 w-2/3 bg-[var(--white)]/10 rounded-full"></div>
+                                <div className="h-3 w-3/4 bg-(--white)/10 rounded-full"></div>
+                                <div className="h-3 w-1/2 bg-(--white)/10 rounded-full"></div>
+                                <div className="h-3 w-2/3 bg-(--white)/10 rounded-full"></div>
                             </div>
 
                             {/* Chart bars */}
@@ -139,7 +139,7 @@ const CTASection = () => {
                                 {[40, 65, 45, 80, 55, 90, 70].map((height, i) => (
                                     <motion.div
                                         key={i}
-                                        className="flex-1 rounded-t-lg bg-gradient-to-t from-[var(--accent-color)] to-[var(--accent-color)]/60"
+                                        className="flex-1 rounded-t-lg bg-gradient-to-t from-(--accent-color) to-(--accent-color)/60"
                                         style={{ height: `${height}%` }}
                                         initial={{ height: 0 }}
                                         whileInView={{ height: `${height}%` }}
@@ -152,24 +152,24 @@ const CTASection = () => {
 
                         {/* Floating badge */}
                         <motion.div
-                            className="absolute -bottom-6 -left-6 px-5 py-4 rounded-xl bg-[var(--white)] shadow-2xl border border-gray-100"
+                            className="absolute -bottom-6 -left-6 px-5 py-4 rounded-xl bg-(--white) shadow-2xl border border-gray-100"
                             animate={{ y: [0, -8, 0] }}
                             transition={{ duration: 3, repeat: Infinity }}
                         >
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-green-900 text-xl font-extrabold">
-                                    <FaCheck className="w-3 h-3 sm:w-4 sm:h-4 text-[var(--white)]" />
+                                    <FaCheck className="w-3 h-3 sm:w-4 sm:h-4 text-(--white)" />
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500">Problems solved</p>
-                                    <p className="font-bold text-[var(--secondary-color)]">124+</p>
+                                    <p className="font-bold text-(--secondary-color)">124+</p>
                                 </div>
                             </div>
                         </motion.div>
 
                         {/* Math symbol */}
                         <motion.div
-                            className="absolute -top-4 -right-4 w-16 h-16 rounded-xl bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-[var(--white)] text-2xl font-bold shadow-lg"
+                            className="absolute -top-4 -right-4 w-16 h-16 rounded-xl bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] flex items-center justify-center text-(--white) text-2xl font-bold shadow-lg"
                             animate={{ rotate: [0, 5, -5, 0] }}
                             transition={{ duration: 4, repeat: Infinity }}
                         >

@@ -21,26 +21,26 @@ const ReputationBadge = ({
     const progressPercent = Math.min(100, (value % 100));
 
     return (
-        <div className="bg-[var(--white)] border border-[rgba(43,45,66,0.1)] rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] p-4 flex flex-col gap-3 w-full">
+        <div className="bg-(--white) border border-[rgba(43,45,66,0.1)] rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] p-4 flex flex-col gap-3 w-full">
             <div className="flex items-start justify-between">
                 <div>
-                    <p className="text-xs uppercase tracking-widest text-[var(--mid-main-secondary)] font-semibold">Reputation</p>
-                    <p className="text-3xl  font-bold text-[var(--secondary-color)]">{value}</p>
+                    <p className="text-xs uppercase tracking-widest text-(---mid-main-secondary) font-semibold">Reputation</p>
+                    <p className="text-3xl  font-bold text-(--secondary-color)">{value}</p>
                 </div>
                 <div className="text-right">
-                    <p className="text-sm font-semibold text-[var(--secondary-color)]">Level {level}</p>
-                    <p className="text-xs text-[var(--french-gray)]">{tierLabel}</p>
+                    <p className="text-sm font-semibold text-(--secondary-color)">Level {level}</p>
+                    <p className="text-xs text-(--french-gray)">{tierLabel}</p>
                 </div>
             </div>
 
-            <div className="w-full h-2 rounded-full bg-[var(--secondary-color)]/10 overflow-hidden">
+            <div className="w-full h-2 rounded-full bg-(--secondary-color)/10 overflow-hidden">
                 <div
-                    className="h-full rounded-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] transition-[width] duration-500"
+                    className="h-full rounded-full bg-gradient-to-r from-(--accent-color) to-(---dark-accent-color) transition-[width] duration-500"
                     style={{ width: `${progressPercent}%` }}
                 ></div>
             </div>
 
-            <div className="flex justify-between text-xs font-medium text-[var(--secondary-color)]">
+            <div className="flex justify-between text-xs font-medium text-(--secondary-color)">
                 <span>✓ {problemsSolved} solves</span>
                 <span className='flex gap-1'> {currentStreak} streak ({longestStreak} best)
                 </span>

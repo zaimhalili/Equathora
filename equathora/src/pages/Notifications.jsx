@@ -278,13 +278,13 @@ const Notifications = () => {
     return (
         <>
             <Navbar />
-            <main className="w-full min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed  text-[var(--secondary-color)]">
+            <main className="w-full min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed  text-(--secondary-color)">
                 {/* Header */}
                 <div className="w-full flex flex-col items-center gap-2 pt-8 pb-8 px-4">
                     <div className="flex items-center gap-3">
                         <h1 className="font-bold text-3xl lg:text-4xl">Notifications</h1>
                         {unreadCount > 0 && (
-                            <span className="bg-[var(--accent-color)] text-white text-sm font-bold px-3 py-1 rounded-xl">
+                            <span className="bg-(--accent-color) text-white text-sm font-bold px-3 py-1 rounded-xl">
                                 {unreadCount}
                             </span>
                         )}
@@ -301,9 +301,9 @@ const Notifications = () => {
                             <button
                                 key={opt.value}
                                 onClick={() => { setFilter(opt.value); setSelectedIds([]); }}
-                                className={`px-4 py-2 rounded-xl text-xs font-semibold [var(--white)]space-nowrap active:scale-95 transition-all shrink-0 cursor-pointer ${filter === opt.value
-                                    ? 'bg-gradient-to-t from-[var(--accent-color)] to-[var(--dark-accent-color)] text-white'
-                                    : 'bg-[var(--white)] text-[var(--secondary-color)] hover:bg-[var(--white)]/80 '
+                                className={`px-4 py-2 rounded-xl text-xs font-semibold (--white)space-nowrap active:scale-95 transition-all shrink-0 cursor-pointer ${filter === opt.value
+                                    ? 'bg-gradient-to-t from-(--accent-color) to-(---dark-accent-color) text-white'
+                                    : 'bg-(--white) text-(--secondary-color) hover:bg-(--white)/80 '
                                     }`}
                             >
                                 {opt.label}
@@ -327,7 +327,7 @@ const Notifications = () => {
                                     hover:ring-offset-1
                                     active:scale-90
                                     ${selectAll
-                                            ? "border-[var(--accent-color)] bg-[var(--accent-color)]"
+                                            ? "border-(--accent-color) bg-(--accent-color)"
                                             : " bg-transparent"
                                         }
                                 `}
@@ -349,21 +349,21 @@ const Notifications = () => {
                                     <button
                                         onClick={handleMarkSelectedRead}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-xl text-xs font-semibold hover:brightness-90 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-(--white) text-(--secondary-color) rounded-xl text-xs font-semibold hover:brightness-90 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Mark read
                                     </button>
                                     <button
                                         onClick={handleMarkSelectedUnread}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-[var(--white)] text-[var(--secondary-color)] rounded-xl text-xs font-semibold hover:brightness-90 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-(--white) text-(--secondary-color) rounded-xl text-xs font-semibold hover:brightness-90 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Mark unread
                                     </button>
                                     <button
                                         onClick={handleDeleteSelected}
                                         disabled={actionLoading}
-                                        className="px-3 py-1.5 bg-red-50 text-[var(--accent-color)] rounded-xl text-xs font-semibold hover:bg-red-100 transition-all cursor-pointer disabled:opacity-50"
+                                        className="px-3 py-1.5 bg-red-50 text-(--accent-color) rounded-xl text-xs font-semibold hover:bg-red-100 transition-all cursor-pointer disabled:opacity-50"
                                     >
                                         Delete ({selectedIds.length})
                                     </button>
@@ -373,7 +373,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleMarkAllRead}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-[var(--accent-color)] text-white rounded-xl text-xs font-semibold hover:bg-[var(--dark-accent-color)] transition-all cursor-pointer disabled:opacity-50"
+                                    className="px-3 py-1.5 bg-(--accent-color) text-white rounded-xl text-xs font-semibold hover:bg-(---dark-accent-color) transition-all cursor-pointer disabled:opacity-50"
                                 >
                                     Mark all read
                                 </button>
@@ -382,7 +382,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleClearAll}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-[var(--white)] text-[var(--raisin-black)] rounded-xl border border-[var(--mid-main-secondary)] text-xs font-semibold  transition-all cursor-pointer disabled:opacity-50 hover:brightness-90"
+                                    className="px-3 py-1.5 bg-(--white) text-[var(--raisin-black)] rounded-xl border border-(---mid-main-secondary) text-xs font-semibold  transition-all cursor-pointer disabled:opacity-50 hover:brightness-90"
                                 >
                                     Clear all
                                 </button>
@@ -416,9 +416,9 @@ const Notifications = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, x: -20, height: 0 }}
                                             transition={{ duration: 0.2 }}
-                                            className={`flex items-center gap-3 rounded-xl p-4 text-[var(--secondary-color)] transition-all cursor-pointer h-full border-l-4 ${!notification.read
-                                                ? `bg-[var(--white)] shadow-md ${config.borderColor}`
-                                                : 'bg-[var(--white)]/40 border-gray-200 shadow-sm text-[var(--secondary-color)] '
+                                            className={`flex items-center gap-3 rounded-xl p-4 text-(--secondary-color) transition-all cursor-pointer h-full border-l-4 ${!notification.read
+                                                ? `bg-(--white) shadow-md ${config.borderColor}`
+                                                : 'bg-(--white)/40 border-gray-200 shadow-sm text-(--secondary-color) '
                                                 } hover:shadow-md`}
                                             onClick={() => handleNotificationClick(notification)}
                                         >
@@ -433,10 +433,10 @@ const Notifications = () => {
                                                     border rounded-xl cursor-pointer
                                                     transition-all duration-200
                                                     hover:ring-2
-                                                    hover:ring-[var(--accent-color)]
+                                                    hover:ring-(--accent-color)
                                                     hover:ring-offset-1
                                                     ${selectedIds.includes(notification.id)
-                                                            ? "border-[var(--accent-color)] bg-[var(--accent-color)]"
+                                                            ? "border-(--accent-color) bg-(--accent-color)"
                                                             : "bg-transparent"
                                                         }`}
                                                 >
@@ -462,14 +462,14 @@ const Notifications = () => {
                                                             {config.label}
                                                         </span>
                                                         {!notification.read && (
-                                                            <span className="w-3 h-3 rounded-full bg-[var(--accent-color)] animate-pulse shrink-0" />
+                                                            <span className="w-3 h-3 rounded-full bg-(--accent-color) animate-pulse shrink-0" />
                                                         )}
                                                     </div>
                                                 </div>
                                                 <p className="text-md text-[var(--raisin-black)] leading-relaxed">
                                                     {notification.message}
                                                 </p>
-                                                <span className="text-xs text-[var(--secondary-color)]">
+                                                <span className="text-xs text-(--secondary-color)">
                                                     {formatTimeAgo(notification.created_at)}
                                                 </span>
                                             </div>
@@ -487,7 +487,7 @@ const Notifications = () => {
                     <div className="flex justify-center self-center-safe">
                         <Link
                             to="/settings/#notifications"
-                            className="text-sm text-[var(--accent-color)] !underline font-semibold"
+                            className="text-sm text-(--accent-color) !underline font-semibold"
                         >
                             Manage notification preferences
                         </Link>
@@ -495,7 +495,7 @@ const Notifications = () => {
                 </div>
             </main>
             <Footer />
-            <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
+            <div className='w-full bg-(--secondary-color) border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
                 <a href="https://storyset.com/online" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
                     Online illustrations by Storyset
                 </a>

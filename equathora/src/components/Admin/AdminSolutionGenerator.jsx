@@ -381,7 +381,7 @@ const AdminSolutionGenerator = () => {
     const isCharLimitTooLow = charLimit < 2000;
 
     return (
-        <section className='flex flex-col gap-5 px-3 py-3 text-[var(--secondary-color)] md:px-5'>
+        <section className='flex flex-col gap-5 px-3 py-3 text-(--secondary-color) md:px-5'>
             <header className='rounded-xl border p-5' style={{ borderColor: 'var(--mid-main-secondary)', background: 'linear-gradient(135deg, var(--main-color), var(--french-gray))' }}>
                 <h1 className='text-2xl font-black md:text-3xl'>OpenStax Problem Extraction Workflow</h1>
                 <p className='pt-2 text-sm md:text-base'>Pick a book and page range, run the generated Python command, then copy each batch with one click and move to the next instantly.</p>
@@ -391,7 +391,7 @@ const AdminSolutionGenerator = () => {
                 <label className='flex flex-col gap-1 text-sm font-semibold'>
                     Book (OpenStax)
                     <select
-                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-(--french-gray) px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.book}
                         onChange={(event) => setField('book', event.target.value)}
@@ -403,7 +403,7 @@ const AdminSolutionGenerator = () => {
                 <label className='flex flex-col gap-1 text-sm font-semibold'>
                     Python Command
                     <input
-                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-(--french-gray) px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.pythonCmd}
                         onChange={(event) => setField('pythonCmd', event.target.value)}
@@ -416,7 +416,7 @@ const AdminSolutionGenerator = () => {
                     <input
                         type='number'
                         min='1'
-                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-(--french-gray) px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.startPage}
                         onChange={(event) => setField('startPage', event.target.value)}
@@ -428,7 +428,7 @@ const AdminSolutionGenerator = () => {
                     <input
                         type='number'
                         min='1'
-                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-(--french-gray) px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.endPage}
                         onChange={(event) => setField('endPage', event.target.value)}
@@ -440,7 +440,7 @@ const AdminSolutionGenerator = () => {
                     <input
                         type='number'
                         min='1'
-                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-(--french-gray) px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.pagesPerBatch}
                         onChange={(event) => setField('pagesPerBatch', event.target.value)}
@@ -452,7 +452,7 @@ const AdminSolutionGenerator = () => {
                     <input
                         type='number'
                         min='2000'
-                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-(--french-gray) px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.maxChars}
                         onChange={(event) => setField('maxChars', event.target.value)}
@@ -462,7 +462,7 @@ const AdminSolutionGenerator = () => {
                 <label className='flex flex-col gap-1 text-sm font-semibold'>
                     Answer Handling
                     <select
-                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-(--french-gray) px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.answerMode}
                         onChange={(event) => setField('answerMode', event.target.value)}
@@ -478,7 +478,7 @@ const AdminSolutionGenerator = () => {
                     <input
                         type='number'
                         min='1'
-                        className='rounded-xl border bg-[var(--french-gray)] px-3 py-2 text-sm'
+                        className='rounded-xl border bg-(--french-gray) px-3 py-2 text-sm'
                         style={{ borderColor: 'var(--mid-main-secondary)' }}
                         value={config.answerPagesStart}
                         onChange={(event) => setField('answerPagesStart', event.target.value)}
@@ -519,13 +519,13 @@ const AdminSolutionGenerator = () => {
                 <textarea
                     readOnly
                     value={runCommand}
-                    className='pt-3 min-h-24 w-full rounded-xl border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
+                    className='pt-3 min-h-24 w-full rounded-xl border bg-(--french-gray) p-3 text-xs md:text-sm'
                     style={{ borderColor: 'var(--mid-main-secondary)' }}
                 />
 
-                {hasInvalidRange && <p className='pt-2 text-sm font-semibold text-[var(--accent-color)]'>End page must be greater than or equal to start page.</p>}
-                {isCharLimitTooLow && <p className='pt-2 text-sm font-semibold text-[var(--accent-color)]'>Character limit should be at least 2000.</p>}
-                {!hasInvalidRange && !isCharLimitTooLow && <p className='pt-2 text-xs text-[var(--mid-main-secondary)]'>This command uses raw mode + stdout mode, so no output files are created. Use the clipboard command for a faster flow.</p>}
+                {hasInvalidRange && <p className='pt-2 text-sm font-semibold text-(--accent-color)'>End page must be greater than or equal to start page.</p>}
+                {isCharLimitTooLow && <p className='pt-2 text-sm font-semibold text-(--accent-color)'>Character limit should be at least 2000.</p>}
+                {!hasInvalidRange && !isCharLimitTooLow && <p className='pt-2 text-xs text-(---mid-main-secondary)'>This command uses raw mode + stdout mode, so no output files are created. Use the clipboard command for a faster flow.</p>}
             </div>
 
             <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
@@ -556,7 +556,7 @@ const AdminSolutionGenerator = () => {
                     value={rawOutputInput}
                     onChange={(event) => setRawOutputInput(event.target.value)}
                     placeholder='Paste terminal JSON output here (or use Load From Clipboard).'
-                    className='pt-3 min-h-32 w-full rounded-xl border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
+                    className='pt-3 min-h-32 w-full rounded-xl border bg-(--french-gray) p-3 text-xs md:text-sm'
                     style={{ borderColor: 'var(--mid-main-secondary)' }}
                 />
             </div>
@@ -564,7 +564,7 @@ const AdminSolutionGenerator = () => {
             <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex flex-wrap items-center justify-between gap-3'>
                     <h2 className='text-lg font-bold'>Copy Queue</h2>
-                    <p className='text-xs text-[var(--mid-main-secondary)]'>
+                    <p className='text-xs text-(---mid-main-secondary)'>
                         {loadedFileName ? `${loadedFileName} | ${batches.length} batch(es)` : 'Load a generated JSON file to start'}
                     </p>
                 </div>
@@ -572,15 +572,15 @@ const AdminSolutionGenerator = () => {
                 {!!batches.length && (
                     <div className='pt-3 grid grid-cols-1 gap-3 rounded-xl border p-3 md:grid-cols-3' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--french-gray)' }}>
                         <div>
-                            <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Batches Completed</p>
+                            <p className='text-xs uppercase tracking-wide text-(---mid-main-secondary)'>Batches Completed</p>
                             <p className='text-lg font-black'>{doneBatchSet.size} / {batches.length}</p>
                         </div>
                         <div>
-                            <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Pages Covered (Current Queue)</p>
+                            <p className='text-xs uppercase tracking-wide text-(---mid-main-secondary)'>Pages Covered (Current Queue)</p>
                             <p className='text-lg font-black'>{donePagesInQueue} / {totalPagesInQueue}</p>
                         </div>
                         <div>
-                            <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Pages Covered (Lifetime)</p>
+                            <p className='text-xs uppercase tracking-wide text-(---mid-main-secondary)'>Pages Covered (Lifetime)</p>
                             <p className='text-lg font-black'>{lifetimePagesCovered}</p>
                         </div>
                     </div>
@@ -647,33 +647,33 @@ const AdminSolutionGenerator = () => {
                         <textarea
                             readOnly
                             value={currentBatch.prompt_text}
-                            className='pt-3 min-h-72 w-full rounded-xl border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
+                            className='pt-3 min-h-72 w-full rounded-xl border bg-(--french-gray) p-3 text-xs md:text-sm'
                             style={{ borderColor: 'var(--mid-main-secondary)' }}
                         />
 
                         <div className='pt-3'>
-                            <p className='pb-1 text-xs font-semibold uppercase tracking-wide text-[var(--mid-main-secondary)]'>Run Notes</p>
+                            <p className='pb-1 text-xs font-semibold uppercase tracking-wide text-(---mid-main-secondary)'>Run Notes</p>
                             <textarea
                                 value={currentRunProgress.note || ''}
                                 onChange={(event) => setRunNote(event.target.value)}
                                 placeholder='Example: Completed page 1-16 today, continue from batch 9 tomorrow.'
-                                className='min-h-24 w-full rounded-xl border bg-[var(--french-gray)] p-3 text-xs md:text-sm'
+                                className='min-h-24 w-full rounded-xl border bg-(--french-gray) p-3 text-xs md:text-sm'
                                 style={{ borderColor: 'var(--mid-main-secondary)' }}
                             />
                         </div>
                     </>
                 ) : (
-                    <p className='pt-3 text-sm text-[var(--mid-main-secondary)]'>No queue loaded yet.</p>
+                    <p className='pt-3 text-sm text-(---mid-main-secondary)'>No queue loaded yet.</p>
                 )}
 
                 {!!notice && (
-                    <p className='pt-3 text-sm font-semibold text-[var(--secondary-color)]'>
+                    <p className='pt-3 text-sm font-semibold text-(--secondary-color)'>
                         <FiCheck className='pr-1 inline-block align-[-2px]' />
                         {notice}
                     </p>
                 )}
 
-                {!!error && <p className='pt-3 text-sm font-semibold text-[var(--accent-color)]'>{error}</p>}
+                {!!error && <p className='pt-3 text-sm font-semibold text-(--accent-color)'>{error}</p>}
             </div>
         </section>
     );

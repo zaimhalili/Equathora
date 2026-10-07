@@ -28,7 +28,7 @@ const ApplyMentor = () => {
     };
 
     return (
-        <div className='text-[var(--secondary-color)]  w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))]'>
+        <div className='text-(--secondary-color)  w-full bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))]'>
             <header><Navbar /></header>
 
             {/* Hero Section */}
@@ -45,7 +45,7 @@ const ApplyMentor = () => {
                     <div className='flex flex-col items-center gap-6'>
                         <div className='text-center flex flex-col gap-2'>
                             <h2 className='text-2xl md:text-3xl font-bold '>Why Join Equathora’s Future Teacher Network?</h2>
-                            <p className='text-sm md:text-base text-[var(--secondary-color)] max-w-2xl'>
+                            <p className='text-sm md:text-base text-(--secondary-color) max-w-2xl'>
                                 Help shape a math learning experience built around step-by-step guidance, Sigma AI feedback, and clearer insight into student struggles.
                             </p>
                         </div>
@@ -94,14 +94,14 @@ const ApplyMentor = () => {
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
-                                    className='relative bg-[var(--white)] p-5 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 flex flex-col gap-3 overflow-hidden group'
+                                    className='relative bg-(--white) p-5 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 border border-gray-100 flex flex-col gap-3 overflow-hidden group'
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-200`}></div>
-                                    <div className={`relative w-12 h-12 bg-gradient-to-br ${benefit.gradient} rounded-xl flex items-center justify-center text-[var(--white)] shadow-md`}>
+                                    <div className={`relative w-12 h-12 bg-gradient-to-br ${benefit.gradient} rounded-xl flex items-center justify-center text-(--white) shadow-md`}>
                                         {benefit.icon}
                                     </div>
                                     <h3 className='relative text-base md:text-lg font-bold'>{benefit.title}</h3>
-                                    <p className='relative text-sm text-[var(--mid-main-secondary)] leading-relaxed'>{benefit.description}</p>
+                                    <p className='relative text-sm text-(---mid-main-secondary) leading-relaxed'>{benefit.description}</p>
                                 </motion.div>
                             ))}
                         </div>
@@ -116,9 +116,9 @@ const ApplyMentor = () => {
                     <div className='flex flex-col items-center gap-6'>
                         <div className='text-center flex flex-col gap-2'>
                             <h2 className='text-2xl md:text-3xl font-bold '>
-                                Who Can <span className='text-[var(--accent-color)]'>Join Early?</span>
+                                Who Can <span className='text-(--accent-color)'>Join Early?</span>
                             </h2>
-                            <p className='text-sm md:text-base text-[var(--secondary-color)] max-w-xl'>
+                            <p className='text-sm md:text-base text-(--secondary-color) max-w-xl'>
                                 Educators, teachers, and learning supporters who want to help build a more thoughtful math experience are welcome.
                             </p>
                         </div>
@@ -129,7 +129,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.5 }}
-                                className='bg-[var(--white)] rounded-xl shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
+                                className='bg-(--white) rounded-xl shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-green-50 to-teal-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -139,11 +139,11 @@ const ApplyMentor = () => {
                                     />
                                 </div>
                                 <div className='flex flex-col p-5 gap-3'>
-                                    <div className='w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center text-[var(--white)] text-lg shadow-md'>
+                                    <div className='w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center text-(--white) text-lg shadow-md'>
                                         <FaChalkboardTeacher />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Teachers</h3>
-                                    <p className='text-sm text-[var(--mid-main-secondary)] leading-relaxed'>
+                                    <p className='text-sm text-(---mid-main-secondary) leading-relaxed'>
                                         Shape classroom workflows with homework assignment, skill insights, and detailed feedback on recurring mistakes.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>
@@ -159,7 +159,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.6 }}
-                                className='bg-[var(--white)] rounded-xl shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col  md:col-span-2 lg:col-span-1 hover:scale-102'
+                                className='bg-(--white) rounded-xl shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col  md:col-span-2 lg:col-span-1 hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -169,11 +169,11 @@ const ApplyMentor = () => {
                                     />
                                 </div>
                                 <div className='flex flex-col p-5 gap-3'>
-                                    <div className='w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-[var(--white)] text-lg shadow-md'>
+                                    <div className='w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-(--white) text-lg shadow-md'>
                                         <FaHeart />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Parents</h3>
-                                    <p className='text-sm text-[var(--mid-main-secondary)] leading-relaxed'>
+                                    <p className='text-sm text-(---mid-main-secondary) leading-relaxed'>
                                         Follow your child’s learning journey and see where they need support most with clearer progress signals.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>
@@ -189,7 +189,7 @@ const ApplyMentor = () => {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: 0.4 }}
-                                className='bg-[var(--white)] rounded-xl shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
+                                className='bg-(--white) rounded-xl shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col hover:scale-102'
                             >
                                 <div className='relative h-48 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden'>
                                     <img
@@ -199,11 +199,11 @@ const ApplyMentor = () => {
                                     />
                                 </div>
                                 <div className='flex flex-col p-5 gap-3'>
-                                    <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-[var(--white)] text-lg shadow-md'>
+                                    <div className='w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center text-(--white) text-lg shadow-md'>
                                         <FaUsers />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Learning Supporters</h3>
-                                    <p className='text-sm text-[var(--mid-main-secondary)] leading-relaxed'>
+                                    <p className='text-sm text-(---mid-main-secondary) leading-relaxed'>
                                         Help students publicly, share useful approaches, and contribute to a community focused on understanding rather than shortcuts.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>
@@ -223,8 +223,8 @@ const ApplyMentor = () => {
 
 
             {/* Final CTA Section */}
-            <section className='relative w-full flex justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-[var(--white)] overflow-hidden theme-lock'>
-                <div className='absolute top-0 right-0 w-64 h-64 bg-[var(--accent-color)] rounded-full opacity-10 blur-3xl'></div>
+            <section className='relative w-full flex justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-(--white) overflow-hidden theme-lock'>
+                <div className='absolute top-0 right-0 w-64 h-64 bg-(--accent-color) rounded-full opacity-10 blur-3xl'></div>
                 <div className='absolute bottom-0 left-0 w-48 h-48 bg-blue-400 rounded-full opacity-10 blur-3xl'></div>
 
                 <motion.div
@@ -235,7 +235,7 @@ const ApplyMentor = () => {
                 >
                     <div className='flex flex-col lg:flex-row items-center gap-8'>
                         <div className='flex-1 flex flex-col text-center lg:text-left gap-5'>
-                            <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-[var(--secondary-color)]/20 border border-[var(--white)]/50 rounded-full text-[var(--white)] text-xs font-semibold self-center lg:self-start'>
+                            <div className='inline-flex items-center justify-center lg:justify-start px-4 py-1.5 bg-(--secondary-color)/20 border border-(--white)/50 rounded-full text-(--white) text-xs font-semibold self-center lg:self-start'>
                                 COMING SOON
                             </div>
                             <h2 className='text-2xl md:text-3xl font-bold '>
@@ -249,7 +249,7 @@ const ApplyMentor = () => {
                                 <button
                                     type='button'
                                     onClick={() => setIsBriefsModalOpen(true)}
-                                    className='bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-4 rounded-xl !font-bold text-base flex items-center justify-center gap-2 no-underline shadow-lg transition-colors duration-200 w-full sm:w-auto cursor-pointer'
+                                    className='bg-[var(--main-color)] hover:bg-gray-300 !text-(--accent-color) px-8 py-4 rounded-xl !font-bold text-base flex items-center justify-center gap-2 no-underline shadow-lg transition-colors duration-200 w-full sm:w-auto cursor-pointer'
                                 >
                                     <FaUsers />
                                     <span>Join Equathora Briefs</span>
@@ -294,8 +294,8 @@ const ApplyMentor = () => {
                 userData={user ? { name: user.user_metadata?.full_name || '', email: user.email } : null}
             />
 
-            <div className='w-full bg-[var(--secondary-color)] border-t border-[var(--white)]/10 flex justify-center py-5 text-[var(--white)]/60 text-xs'>
-                <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-[var(--white)]/80 transition-colors no-underline'>
+            <div className='w-full bg-(--secondary-color) border-t border-(--white)/10 flex justify-center py-5 text-(--white)/60 text-xs'>
+                <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-(--white)/80 transition-colors no-underline'>
                     Education illustrations by Storyset
                 </a>
             </div>

@@ -25,14 +25,14 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
         >
             <button
                 type="button"
-                className='bg-transparent text-[var(--secondary-color)] border-none h-full my-auto w-auto list-none font-medium text-lg px-3 lg:px-2 hover:text-[var(--accent-color)] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                className='bg-transparent text-(--secondary-color) border-none h-full my-auto w-auto list-none font-medium text-lg px-3 lg:px-2 hover:text-(--accent-color) transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-color)'
                 aria-haspopup="true"
                 aria-expanded={isOpen}
                 aria-controls={dropdownId}
                 aria-label={ariaLabel || (typeof label === 'string' ? label : undefined)}
             >
                 {typeof label === 'string' ? label : React.cloneElement(label, {
-                    className: `${label.props.className || ''} text-[var(--secondary-color)] transition-colors duration-200 group-hover:text-[var(--accent-color)]`.trim(),
+                    className: `${label.props.className || ''} text-(--secondary-color) transition-colors duration-200 group-hover:text-(--accent-color)`.trim(),
                     'aria-hidden': true,
                     focusable: false
                 })}
@@ -49,7 +49,7 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             key={i}
                             onClick={item.onClick}
                             role="menuitem"
-                            className='flex w-full p-2.5 gap-2.5 border-t border-x-0 border-b-0 border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] text-[var(--secondary-color)] text-left bg-transparent cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                            className='flex w-full p-2.5 gap-2.5 border-t border-x-0 border-b-0 border-(---mid-main-secondary) items-center hover:bg-(--white) text-(--secondary-color) text-left bg-transparent cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-color)'
                         >
                             <img
                                 src={item.image}
@@ -68,11 +68,11 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             target="_blank"
                             rel="noopener noreferrer"
                             role="menuitem"
-                            className='flex w-full p-2.5 gap-2.5 border-t border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] text-[var(--secondary-color)] no-underline justify-between focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                            className='flex w-full p-2.5 gap-2.5 border-t border-(---mid-main-secondary) items-center hover:bg-(--white) text-(--secondary-color) no-underline justify-between focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-color)'
                         >
                             <div className='flex gap-2.5'>
                                 {item.icon ? (
-                                    <span className='h-[50px] w-[50px] flex items-center justify-center text-[var(--secondary-color)]'>
+                                    <span className='h-[50px] w-[50px] flex items-center justify-center text-(--secondary-color)'>
                                         {item.icon}
                                     </span>
                                 ) : (
@@ -102,11 +102,11 @@ const Dropdown = ({ label, items, alignRight = false, ariaLabel }) => {
                             to={item.to}
                             state={item.state}
                             role="menuitem"
-                            className='flex w-full p-2.5 gap-2.5 border-t border-[var(--mid-main-secondary)] items-center hover:bg-[var(--white)] text-[var(--secondary-color)] no-underline justify-between focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-color)]'
+                            className='flex w-full p-2.5 gap-2.5 border-t border-(---mid-main-secondary) items-center hover:bg-(--white) text-(--secondary-color) no-underline justify-between focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-color)'
                         >
                             <div className='flex gap-2.5'>
                                 {item.icon ? (
-                                    <span className='h-[50px] w-[50px] flex items-center justify-center text-[var(--secondary-color)]'>
+                                    <span className='h-[50px] w-[50px] flex items-center justify-center text-(--secondary-color)'>
                                         {item.icon}
                                     </span>
                                 ) : (

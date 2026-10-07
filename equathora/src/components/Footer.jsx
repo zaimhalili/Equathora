@@ -19,7 +19,7 @@ const Footer = () => {
                 <div id="center">
                     <h1>
                         Your contribution helps us keep this learning platform available for
-                        <span className="text-[var(--accent-color)] relative inline-block">
+                        <span className="text-(--accent-color) relative inline-block">
                             students worldwide
                             <motion.svg
                                 className="absolute -bottom-2 left-0 w-full"

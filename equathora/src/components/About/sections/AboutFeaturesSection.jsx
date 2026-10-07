@@ -5,10 +5,10 @@ import ScrollReveal from '../ScrollReveal';
 
 const AboutFeaturesSection = () => {
     return (
-        <section className="w-full flex justify-center bg-gradient-to-b from-[var(--main-color)] via-[var(--white)] to-[var(--main-color)] py-20 overflow-hidden">
+        <section className="w-full flex justify-center bg-gradient-to-b from-[var(--main-color)] via-(--white) to-[var(--main-color)] py-20 overflow-hidden">
             <div className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] flex flex-col justify-center items-center">
                 <ScrollReveal direction="up">
-                    <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--secondary-color)] pb-16 text-center">
+                    <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-(--secondary-color) pb-16 text-center">
                         What Makes Us <span className="text-transparent bg-clip-text bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]">Different</span>
                     </h2>
                 </ScrollReveal>
@@ -17,20 +17,20 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="left" delay={0} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ scale: 1.02 }}
-                            className="group relative bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-2xl overflow-hidden shadow-2xl cursor-pointer flex flex-col justify-between p-8 h-full theme-lock"
+                            className="group relative bg-gradient-to-br from-(--accent-color) to-(---dark-accent-color) rounded-2xl overflow-hidden shadow-2xl cursor-pointer flex flex-col justify-between p-8 h-full theme-lock"
                         >
                             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10"></div>
                             <div className="relative z-10 flex flex-col justify-between h-full">
                                 <motion.div
                                     whileHover={{ rotate: 360, scale: 1.2 }}
                                     transition={{ type: 'spring', stiffness: 300, duration: 0.8 }}
-                                    className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/20 backdrop-blur-sm rounded-2xl"
+                                    className="flex items-center justify-center w-16 h-16 bg-(--white)/20 backdrop-blur-sm rounded-2xl"
                                 >
                                     <FaCode className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
-                                    <h3 className="text-2xl md:text-3xl font-black text-[var(--white)]">Math Editor</h3>
-                                    <p className="text-[var(--white)]/90 text-sm md:text-base leading-relaxed">
+                                    <h3 className="text-2xl md:text-3xl font-black text-(--white)">Math Editor</h3>
+                                    <p className="text-(--white)/90 text-sm md:text-base leading-relaxed">
                                         Natural LaTeX input with real-time preview. Write equations as easily as you think them.
                                     </p>
                                 </div>
@@ -41,18 +41,18 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="up" delay={0.1} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ y: -8 }}
-                            className="group bg-[var(--white)] rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                            className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(---mid-main-secondary) hover:border-(--accent-color)/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                         >
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--accent-color)]/10 to-transparent rounded-bl-full"></div>
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-(--accent-color)/10 to-transparent rounded-bl-full"></div>
                             <motion.div
                                 whileHover={{ scale: 1.1, rotate: 12 }}
-                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[var(--accent-color)] to-[var(--dark-accent-color)] rounded-2xl relative z-10"
+                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-(--accent-color) to-(---dark-accent-color) rounded-2xl relative z-10"
                             >
                                 <FaBrain className="text-white text-3xl" />
                             </motion.div>
                             <div>
-                                <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-[var(--accent-color)] transition-colors">Sigma AI Debugger</h3>
-                                <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed">Pinpoints where your algebra or logic breaks and explains the missing step in plain language.</p>
+                                <h3 className="text-2xl md:text-3xl font-black text-(--secondary-color) group-hover:text-(--accent-color) transition-colors">Sigma AI Debugger</h3>
+                                <p className="text-sm md:text-base text-(---mid-main-secondary) leading-relaxed">Pinpoints where your algebra or logic breaks and explains the missing step in plain language.</p>
                             </div>
                         </motion.div>
                     </ScrollReveal>
@@ -66,13 +66,13 @@ const AboutFeaturesSection = () => {
                             <motion.div
                                 whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
                                 transition={{ duration: 0.5 }}
-                                className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-2xl relative z-10"
+                                className="flex items-center justify-center w-16 h-16 bg-(--white)/30 backdrop-blur-sm rounded-2xl relative z-10"
                             >
                                 <FaRocket className="text-white text-3xl" />
                             </motion.div>
                             <div>
-                                <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">Achievements</h3>
-                                <p className="text-[var(--white)]/90 text-sm md:text-base leading-relaxed relative z-10">Track progress with meaningful milestones</p>
+                                <h3 className="text-2xl md:text-3xl font-black text-(--white) relative z-10">Achievements</h3>
+                                <p className="text-(--white)/90 text-sm md:text-base leading-relaxed relative z-10">Track progress with meaningful milestones</p>
                             </div>
                         </motion.div>
                     </ScrollReveal>
@@ -80,9 +80,9 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="left" delay={0.2} className="w-full md:w-[calc(33.333%-0.67rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ scale: 1.02 }}
-                            className="group bg-[var(--white)] rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-[var(--accent-color)]/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
+                            className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(---mid-main-secondary) hover:border-(--accent-color)/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
                         >
-                            <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full group-hover:scale-125 transition-transform duration-500"></div>
+                            <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-(--accent-color)/5 to-transparent rounded-full group-hover:scale-125 transition-transform duration-500"></div>
                             <motion.div
                                 whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.2 }}
                                 transition={{ duration: 0.5 }}
@@ -91,8 +91,8 @@ const AboutFeaturesSection = () => {
                                 <FaGraduationCap className="text-white text-3xl" />
                             </motion.div>
                             <div>
-                                <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-[var(--accent-color)] transition-colors">Teacher Insights</h3>
-                                <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed">Coming soon: assign homework, review student work, and receive detailed reports on repeated mistakes.</p>
+                                <h3 className="text-2xl md:text-3xl font-black text-(--secondary-color) group-hover:text-(--accent-color) transition-colors">Teacher Insights</h3>
+                                <p className="text-sm md:text-base text-(---mid-main-secondary) leading-relaxed">Coming soon: assign homework, review student work, and receive detailed reports on repeated mistakes.</p>
                             </div>
                         </motion.div>
                     </ScrollReveal>
@@ -101,7 +101,7 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="right" delay={0.3} className="flex-1">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
-                                className="group bg-[var(--white)] rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(---mid-main-secondary) hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 group-hover:from-green-500/10 group-hover:to-emerald-500/10 transition-all duration-300"></div>
                                 <motion.div
@@ -112,8 +112,8 @@ const AboutFeaturesSection = () => {
                                     <FaTrophy className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
-                                    <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-green-600 transition-colors relative z-10">Leaderboards</h3>
-                                    <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed relative z-10">Compete globally, grow together</p>
+                                    <h3 className="text-2xl md:text-3xl font-black text-(--secondary-color) group-hover:text-green-600 transition-colors relative z-10">Leaderboards</h3>
+                                    <p className="text-sm md:text-base text-(---mid-main-secondary) leading-relaxed relative z-10">Compete globally, grow together</p>
                                 </div>
                             </motion.div>
                         </ScrollReveal>
@@ -123,16 +123,16 @@ const AboutFeaturesSection = () => {
                                 whileHover={{ y: -8 }}
                                 className="group bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
                             >
-                                <div className="absolute -top-10 -right-10 w-32 h-32 bg-[var(--white)]/20 rounded-full blur-2xl"></div>
+                                <div className="absolute -top-10 -right-10 w-32 h-32 bg-(--white)/20 rounded-full blur-2xl"></div>
                                 <motion.div
                                     whileHover={{ scale: 1.15, rotate: 15 }}
-                                    className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-2xl relative z-10"
+                                    className="flex items-center justify-center w-16 h-16 bg-(--white)/30 backdrop-blur-sm rounded-2xl relative z-10"
                                 >
                                     <FaChartLine className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
-                                    <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">Progress Analytics</h3>
-                                    <p className="text-[var(--white)]/90 text-sm md:text-base leading-relaxed relative z-10">Deep insights into your learning journey</p>
+                                    <h3 className="text-2xl md:text-3xl font-black text-(--white) relative z-10">Progress Analytics</h3>
+                                    <p className="text-(--white)/90 text-sm md:text-base leading-relaxed relative z-10">Deep insights into your learning journey</p>
                                 </div>
                             </motion.div>
                         </ScrollReveal>
@@ -143,16 +143,16 @@ const AboutFeaturesSection = () => {
                             whileHover={{ y: -8 }}
                             className="group bg-gradient-to-br from-blue-600 to-cyan-500 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden p-8 h-full flex flex-col justify-between theme-lock"
                         >
-                            <div className="absolute top-0 right-0 text-[var(--white)]/10 text-[200px] font-black">AI</div>
+                            <div className="absolute top-0 right-0 text-(--white)/10 text-[200px] font-black">AI</div>
                             <motion.div
                                 whileHover={{ scale: 1.15, rotate: -12 }}
-                                className="flex items-center justify-center w-16 h-16 bg-[var(--white)]/30 backdrop-blur-sm rounded-2xl relative z-10"
+                                className="flex items-center justify-center w-16 h-16 bg-(--white)/30 backdrop-blur-sm rounded-2xl relative z-10"
                             >
                                 <FaBrain className="text-white text-3xl" />
                             </motion.div>
                             <div>
-                                <h3 className="text-2xl md:text-3xl font-black text-[var(--white)] relative z-10">Step-by-Step Feedback</h3>
-                                <p className="text-[var(--white)]/90 text-sm md:text-base leading-relaxed relative z-10">See exactly where your reasoning goes off track and learn from it in real time.</p>
+                                <h3 className="text-2xl md:text-3xl font-black text-(--white) relative z-10">Step-by-Step Feedback</h3>
+                                <p className="text-(--white)/90 text-sm md:text-base leading-relaxed relative z-10">See exactly where your reasoning goes off track and learn from it in real time.</p>
                             </div>
                         </motion.div>
                     </ScrollReveal>
@@ -161,7 +161,7 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="up" delay={0.4} className="flex-1">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
-                                className="group bg-[var(--white)] rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(---mid-main-secondary) hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-orange-500/10 to-transparent rounded-tl-full"></div>
                                 <motion.div
@@ -171,8 +171,8 @@ const AboutFeaturesSection = () => {
                                     <FaFire className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
-                                    <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-orange-600 transition-colors relative z-10">Study Streaks</h3>
-                                    <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed relative z-10">Build consistency with daily challenges</p>
+                                    <h3 className="text-2xl md:text-3xl font-black text-(--secondary-color) group-hover:text-orange-600 transition-colors relative z-10">Study Streaks</h3>
+                                    <p className="text-sm md:text-base text-(---mid-main-secondary) leading-relaxed relative z-10">Build consistency with daily challenges</p>
                                 </div>
                             </motion.div>
                         </ScrollReveal>
@@ -180,7 +180,7 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="right" delay={0.45} className="flex-1">
                             <motion.div
                                 whileHover={{ y: -8 }}
-                                className="group bg-[var(--white)] rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-[var(--mid-main-secondary)] hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(---mid-main-secondary) hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 group-hover:from-blue-500/10 group-hover:to-cyan-500/10 transition-all duration-300"></div>
                                 <motion.div
@@ -191,8 +191,8 @@ const AboutFeaturesSection = () => {
                                     <FaLightbulb className="text-white text-3xl" />
                                 </motion.div>
                                 <div>
-                                    <h3 className="text-2xl md:text-3xl font-black text-[var(--secondary-color)] group-hover:text-blue-600 transition-colors relative z-10">Step-by-Step Guidance</h3>
-                                    <p className="text-sm md:text-base text-[var(--mid-main-secondary)] leading-relaxed relative z-10">Build confidence with guidance that supports each move, not just the final answer.</p>
+                                    <h3 className="text-2xl md:text-3xl font-black text-(--secondary-color) group-hover:text-blue-600 transition-colors relative z-10">Step-by-Step Guidance</h3>
+                                    <p className="text-sm md:text-base text-(---mid-main-secondary) leading-relaxed relative z-10">Build confidence with guidance that supports each move, not just the final answer.</p>
                                 </div>
                             </motion.div>
                         </ScrollReveal>

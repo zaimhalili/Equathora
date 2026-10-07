@@ -11,8 +11,8 @@ const Hero = ({ onOpenBriefsModal }) => {
         <section className='relative  bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white flex justify-center overflow-hidden theme-lock'>
             {/* Decorative Elements */}
             <div className='px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:py-6 gap-8'>
-                <div className='absolute top-0 right-0 w-72 h-72 bg-[var(--accent-color)] rounded-full opacity-10 blur-3xl -translate-y-1/2 translate-x-1/2'></div>
-                <div className='absolute bottom-0 left-0 w-64 h-64 bg-[var(--accent-color)] rounded-full opacity-10 blur-3xl translate-y-1/2 -translate-x-1/2'></div>
+                <div className='absolute top-0 right-0 w-72 h-72 bg-(--accent-color) rounded-full opacity-10 blur-3xl -translate-y-1/2 translate-x-1/2'></div>
+                <div className='absolute bottom-0 left-0 w-64 h-64 bg-(--accent-color) rounded-full opacity-10 blur-3xl translate-y-1/2 -translate-x-1/2'></div>
                 <div className='absolute top-1/2 left-1/4 w-48 h-48 bg-blue-400 rounded-full opacity-5 blur-3xl'></div>
 
                 <motion.div
@@ -31,7 +31,7 @@ const Hero = ({ onOpenBriefsModal }) => {
                                 transition={{ duration: 0.5, delay: 0.15 }}
                                 className='text-3xl md:text-4xl font-bold leading-tight '
                             >
-                                <span className='text-[var(--accent-color)]'>Become a Mentor</span>
+                                <span className='text-(--accent-color)'>Become a Mentor</span>
                                 <br />
                                 <span>Shape the Future</span>
                             </motion.h1>
@@ -55,7 +55,7 @@ const Hero = ({ onOpenBriefsModal }) => {
                                 <button
                                     type='button'
                                     onClick={onOpenBriefsModal}
-                                    className='group relative bg-[var(--main-color)] hover:bg-gray-300 !text-[var(--accent-color)] px-8 py-3 rounded-xl !font-bold text-sm md:text-base overflow-hidden transition-all flex items-center justify-center gap-2 no-underline shadow-lg hover:shadow-xl w-full sm:w-auto'
+                                    className='group relative bg-[var(--main-color)] hover:bg-gray-300 !text-(--accent-color) px-8 py-3 rounded-xl !font-bold text-sm md:text-base overflow-hidden transition-all flex items-center justify-center gap-2 no-underline shadow-lg hover:shadow-xl w-full sm:w-auto'
                                 >
                                     <FaUsers />
                                     <span className='relative z-10'>Join 50+ Educators</span>
@@ -64,15 +64,15 @@ const Hero = ({ onOpenBriefsModal }) => {
 
                                 {/* Trust Indicators */}
                                 <div className='flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs text-gray-400'>
-                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-[var(--white)]'>
+                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-(--white)'>
                                         <FaCheckCircle className='text-green-400 flex-shrink-0' />
                                         <span>No commitment</span>
                                     </div>
-                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-[var(--white)]'>
+                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-(--white)'>
                                         <FaCheckCircle className='text-green-400 flex-shrink-0' />
                                         <span>2 min signup</span>
                                     </div>
-                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-[var(--white)]'>
+                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-(--white)'>
                                         <FaCheckCircle className='text-green-400 flex-shrink-0' />
                                         <span>No credit card required</span>
                                     </div>
@@ -106,7 +106,7 @@ const Hero = ({ onOpenBriefsModal }) => {
                             className='flex flex-1 justify-center lg:justify-end'
                         >
                             <div className='relative flex items-center justify-center'>
-                                <div className='absolute inset-0 bg-gradient-to-br from-[var(--accent-color)] to-blue-500 rounded-full blur-3xl opacity-20'></div>
+                                <div className='absolute inset-0 bg-gradient-to-br from-(--accent-color) to-blue-500 rounded-full blur-3xl opacity-20'></div>
                                 <img
                                     src={teacherSvg}
                                     alt="Mentor teaching"

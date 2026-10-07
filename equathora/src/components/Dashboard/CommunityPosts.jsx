@@ -17,7 +17,7 @@ const CommunityPosts = () => {
       <article className='w-full py-4 lg:py-6'>
         <div className='w-full flex flex-col'>
           <article className='w-full flex flex-col gap-3'>
-            <h3 className="text-[var(--secondary-color)]  text-2xl font-medium text-center md:text-left">
+            <h3 className="text-(--secondary-color)  text-2xl font-medium text-center md:text-left">
               Announcements & Discussions
             </h3>
             <div className='flex gap-3 flex-wrap justify-center md:justify-start'>
@@ -26,23 +26,23 @@ const CommunityPosts = () => {
                 <Link
                   key={post.id}
                   to={`/blog/${post.slug}`}
-                  className='bg-[var(--white)] rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-103 cursor-pointer min-w-50 flex-1 max-w-80 active:scale-100'
+                  className='bg-(--white) rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-103 cursor-pointer min-w-50 flex-1 max-w-80 active:scale-100'
                 >
                   <img src={post.thumbnail} alt={post.title} className='rounded-xl w-full max-h-40 object-cover' />
-                  <p className='text-md text-left lg:text-lg cursor-pointer  text-[var(--secondary-color)] font-medium line-clamp-2'>
+                  <p className='text-md text-left lg:text-lg cursor-pointer  text-(--secondary-color) font-medium line-clamp-2'>
                     {post.title}
                   </p>
-                  <p className='text-[var(--mid-main-secondary)] '>
+                  <p className='text-(---mid-main-secondary) '>
                     {post.author.name} ⋅ {post.date}
                   </p>
                 </Link>
               ))}
 
               {/* Equathora Briefs Card */}
-              <Link to="/equathora-briefs" className='bg-[var(--white)] rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80 active:scale-100'>
+              <Link to="/equathora-briefs" className='bg-(--white) rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80 active:scale-100'>
                 <img src={EquathoraBriefsImage} alt="" className='rounded-xl w-full max-h-40 object-cover' />
-                <p className='text-md text-left lg:text-lg cursor-pointer  text-[var(--secondary-color)] font-medium'>Join Equathora Briefs to receive weekly updates</p>
-                <p className='text-[var(--mid-main-secondary)] '>Zaim ⋅ Recently</p>
+                <p className='text-md text-left lg:text-lg cursor-pointer  text-(--secondary-color) font-medium'>Join Equathora Briefs to receive weekly updates</p>
+                <p className='text-(---mid-main-secondary) '>Zaim ⋅ Recently</p>
               </Link>
             </div>
 

@@ -7,17 +7,17 @@ import MouseFollower from './MouseFollower';
 const FeaturesSection = () => {
     const features = [
         {
-            icon: <FaBrain className="text-2xl text-[var(--accent-color)]" />,
+            icon: <FaBrain className="text-2xl text-(--accent-color)" />,
             title: 'Adaptive Learning',
             description: 'Problems that evolve with your skill level. Practice at your own pace with intelligent problem selection.',
         },
         {
-            icon: <FaChartLine className="text-2xl text-[var(--accent-color)]" />,
+            icon: <FaChartLine className="text-2xl text-(--accent-color)" />,
             title: 'Track Progress',
             description: 'Monitor your improvement with detailed statistics and insights. See where you excel and where to focus.',
         },
         {
-            icon: <FaTrophy className="text-2xl text-[var(--accent-color)]" />,
+            icon: <FaTrophy className="text-2xl text-(--accent-color)" />,
             title: 'Earn Achievements',
             description: 'Unlock badges and milestones as you master new concepts. Celebrate your learning journey.',
         },
@@ -26,8 +26,8 @@ const FeaturesSection = () => {
     return (
         <section className="w-full bg-[var(--main-color)] relative overflow-hidden flex justify-center">
             {/* Decorative elements */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-[var(--secondary-color)]/5 to-transparent rounded-full blur-3xl" />
+            <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-(--accent-color)/5 to-transparent rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-(--secondary-color)/5 to-transparent rounded-full blur-3xl" />
 
             <div className="max-w-[1500px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10">
 
@@ -39,13 +39,13 @@ const FeaturesSection = () => {
                     viewport={{ once: true, amount: 0.3 }}
                     transition={{ duration: 0.5, ease: "easeOut" }}
                 >
-                    <span className="flex items-center gap-6 text-[var(--accent-color)] text-xs font-semibold uppercase tracking-wider pb-2 sm:pb-3">
+                    <span className="flex items-center gap-6 text-(--accent-color) text-xs font-semibold uppercase tracking-wider pb-2 sm:pb-3">
                         Features
                     </span>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--secondary-color)] leading-tight pb-4 sm:pb-5 px-6">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-(--secondary-color) leading-tight pb-4 sm:pb-5 px-6">
                         Tools for serious learners
                     </h2>
-                    <p className="text-[var(--mid-main-secondary)] leading-relaxed max-w-2xl text-xs sm:text-sm px-6">
+                    <p className="text-(---mid-main-secondary) leading-relaxed max-w-2xl text-xs sm:text-sm px-6">
                         Everything you need to improve, all in one place
                     </p>
                 </motion.div>
@@ -124,7 +124,7 @@ const FeaturesSection = () => {
                                     transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
                                 >
                                     {/* Large background number */}
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[200px] md:text-[280px] lg:text-[320px] font-bold text-[var(--french-gray)] opacity-5 select-none pointer-events-none z-0 leading-none">
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[200px] md:text-[280px] lg:text-[320px] font-bold text-(--french-gray) opacity-5 select-none pointer-events-none z-0 leading-none">
                                         {String(index + 1).padStart(2, '0')}
                                     </div>
 
@@ -134,10 +134,10 @@ const FeaturesSection = () => {
                                     </div>
 
                                     {/* Content */}
-                                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[var(--secondary-color)] pb-3 sm:pb-4 relative z-10">
+                                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-(--secondary-color) pb-3 sm:pb-4 relative z-10">
                                         {feature.title}
                                     </h3>
-                                    <p className="text-[var(--mid-main-secondary)] leading-relaxed text-sm sm:text-base relative z-10">
+                                    <p className="text-(---mid-main-secondary) leading-relaxed text-sm sm:text-base relative z-10">
                                         {feature.description}
                                     </p>
                                 </motion.div>

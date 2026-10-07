@@ -92,18 +92,18 @@ const HelpCenter = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full min-h-screen bg-[var(--main-color)]  text-[var(--secondary-color)]">
+            <div className="w-full min-h-screen bg-[var(--main-color)]  text-(--secondary-color)">
                 <header>
                     {user ? <Navbar /> : <NavigationBar />}
                 </header>
 
                 {/* Hero Section with Illustration */}
-                <section className="w-full relative overflow-hidden flex justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-[var(--white)] theme-lock">
+                <section className="w-full relative overflow-hidden flex justify-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-(--white) theme-lock">
                     {/* Animated background shapes */}
                     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                        <div className="absolute top-20 left-10 w-32 h-32 bg-[var(--accent-color)] rounded-full opacity-25 blur-2xl"></div>
+                        <div className="absolute top-20 left-10 w-32 h-32 bg-(--accent-color) rounded-full opacity-25 blur-2xl"></div>
                         <div className="absolute top-40 right-20 w-40 h-40 bg-blue-300 rounded-full opacity-20 blur-2xl"></div>
-                        <div className="absolute bottom-20 left-1/3 w-36 h-36 bg-[var(--white)] rounded-full opacity-10 blur-2xl"></div>
+                        <div className="absolute bottom-20 left-1/3 w-36 h-36 bg-(--white) rounded-full opacity-10 blur-2xl"></div>
                     </div>
 
                     <div className="relative px-[4vw] xl:px-[6vw] py-12 max-w-[1500px] w-full">
@@ -111,10 +111,10 @@ const HelpCenter = () => {
                             {/* Left: Content */}
                             <div className="flex-1 flex flex-col gap-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 rounded-xl bg-[var(--white)]/15 flex items-center justify-center text-xl">
+                                    <div className="w-12 h-12 rounded-xl bg-(--white)/15 flex items-center justify-center text-xl">
                                         <FaQuestionCircle />
                                     </div>
-                                    <h1 className="text-4xl font-bold text-[var(--white)] ">
+                                    <h1 className="text-4xl font-bold text-(--white) ">
                                         Help Center
                                     </h1>
                                 </div>
@@ -144,15 +144,15 @@ const HelpCenter = () => {
                             {quickLinks.map((link, index) => (
                                 <div
                                     key={index}
-                                    className="relative bg-[var(--white)] rounded-xl p-4 flex flex-col gap-2 shadow-sm hover:shadow-lg transition-all duration-200 group overflow-hidden border border-gray-100"
+                                    className="relative bg-(--white) rounded-xl p-4 flex flex-col gap-2 shadow-sm hover:shadow-lg transition-all duration-200 group overflow-hidden border border-gray-100"
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-5 group-hover:opacity-10 transition-opacity duration-200`}></div>
                                     <div className="relative">
                                         <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${link.color} flex items-center justify-center text-white shadow-md`}>
                                             {link.icon}
                                         </div>
-                                        <h3 className="text-lg font-bold text-[var(--secondary-color)]">{link.title}</h3>
-                                        <p className="text-sm text-[var(--mid-main-secondary)] pt-0.5">{link.description}</p>
+                                        <h3 className="text-lg font-bold text-(--secondary-color)">{link.title}</h3>
+                                        <p className="text-sm text-(---mid-main-secondary) pt-0.5">{link.description}</p>
                                     </div>
                                 </div>
                             ))}
@@ -163,7 +163,7 @@ const HelpCenter = () => {
                 {/* Fun Stats Banner */}
                 <section className="w-full flex justify-center theme-lock">
                     <div className="px-[4vw] xl:px-[6vw] py-4 max-w-[1500px] w-full">
-                        <div className="w-full bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] rounded-xl p-6 flex flex-wrap justify-around items-center gap-4 text-[var(--white)] shadow-sm">
+                        <div className="w-full bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] rounded-xl p-6 flex flex-wrap justify-around items-center gap-4 text-(--white) shadow-sm">
                             <div className="flex flex-col items-center gap-1">
                                 <div className="flex items-center gap-2">
                                     <FaComments className="text-xl" />
@@ -193,17 +193,17 @@ const HelpCenter = () => {
                 <section className="w-full flex justify-center">
                     <div className="px-[4vw] xl:px-[6vw] py-8 max-w-[1500px] w-full">
                         <div className="flex flex-col items-center gap-2 pb-6">
-                            <h2 className="text-2xl font-bold text-[var(--secondary-color)]  text-center">
+                            <h2 className="text-2xl font-bold text-(--secondary-color)  text-center">
                                 Frequently Asked Questions
                             </h2>
-                            <p className="text-[var(--mid-main-secondary)] text-center text-base">Everything you need to know about Equathora</p>
+                            <p className="text-(---mid-main-secondary) text-center text-base">Everything you need to know about Equathora</p>
                         </div>
 
                         <div className="w-full flex flex-col gap-3">
                             {faqs.map((faq, index) => (
                                 <div
                                     key={index}
-                                    className="bg-[var(--white)] rounded-xl shadow-sm border border-gray-100 overflow-hidden "
+                                    className="bg-(--white) rounded-xl shadow-sm border border-gray-100 overflow-hidden "
                                 >
                                     <button
                                         className="w-full p-4 flex items-start gap-3 text-left cursor-pointer "
@@ -213,12 +213,12 @@ const HelpCenter = () => {
                                             {faq.icon}
                                         </div>
                                         <div className="flex-1 flex items-center justify-between gap-3">
-                                            <span className="font-semibold text-[var(--secondary-color)] text-base">
+                                            <span className="font-semibold text-(--secondary-color) text-base">
                                                 {faq.question}
                                             </span>
                                             <div className="flex-shrink-0 ">
                                                 {openFaq === index ?
-                                                    <FaChevronUp className="text-[var(--accent-color)] text-base" /> :
+                                                    <FaChevronUp className="text-(--accent-color) text-base" /> :
                                                     <FaChevronDown className="text-gray-400 text-base" />
                                                 }
                                             </div>
@@ -227,7 +227,7 @@ const HelpCenter = () => {
                                     {openFaq === index && (
                                         <div className="px-4 pb-4 pl-[60px] ">
                                             <div className="border-l-4 border-gray-200 pl-3">
-                                                <p className="text-[var(--mid-main-secondary)] leading-relaxed text-sm">{faq.answer}</p>
+                                                <p className="text-(---mid-main-secondary) leading-relaxed text-sm">{faq.answer}</p>
                                             </div>
                                         </div>
                                     )}
@@ -243,7 +243,7 @@ const HelpCenter = () => {
                     <div className="px-[4vw] xl:px-[6vw] py-8 max-w-[1500px] w-full">
                         <div className="w-full bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] rounded-xl overflow-hidden shadow-sm">
                             <div className="flex flex-col lg:flex-row items-center">
-                                <div className="flex-1 p-8 flex flex-col gap-4 text-[var(--white)]">
+                                <div className="flex-1 p-8 flex flex-col gap-4 text-(--white)">
                                     <div className="flex items-center gap-2">
                                         <FaHeadset className="text-2xl" />
                                         <h2 className="text-2xl font-bold ">Still Need Help?</h2>
@@ -253,7 +253,7 @@ const HelpCenter = () => {
                                     </p>
                                     <a
                                         href="mailto:equathora@gmail.com"
-                                        className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--main-color)] !text-[var(--accent-color)] rounded-xl font-bold text-base no-underline w-fit hover:bg-gray-200 transition-colors"
+                                        className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--main-color)] !text-(--accent-color) rounded-xl font-bold text-base no-underline w-fit hover:bg-gray-200 transition-colors"
                                     >
                                         <span>Contact Support</span>
                                         <FaArrowRight className="text-sm" />
@@ -287,7 +287,7 @@ const HelpCenter = () => {
 
                 <footer>
                     <Footer />
-                    <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
+                    <div className='w-full bg-(--secondary-color) border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
                         <a href="https://storyset.com/people" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
                             People illustrations by Storyset
                         </a>

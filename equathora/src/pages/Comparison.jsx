@@ -85,18 +85,18 @@ function Comparison() {
     }, [comparison]);
 
     return (
-        <div className="w-full bg-[var(--white)] bg-fixed min-h-screen">
+        <div className="w-full bg-(--white) bg-fixed min-h-screen">
             {user ? <Navbar /> : <NavigationBar />}
             <div className='flex w-full justify-center items-center'>
                 <main className="flex flex-col px-[4vw] xl:px-[6vw] max-w-[1500px] pt-4 lg:pt-20 gap-12">
                     <section className="flex flex-col gap-6 justify-center items-center">
-                        <div className="flex gap-2 items-center text-[var(--secondary-color)]/70 text-md font-medium">
-                            <img src={Sigma} alt="Equathora Logo" className='w-12 h-12' loading='lazy'/>
+                        <div className="flex gap-2 items-center text-(--secondary-color)/70 text-md font-medium">
+                            <img src={Sigma} alt="Equathora Logo" className='w-12 h-12' loading='lazy' />
                             vs
-                            <img src={Sigma} alt="Equathora Logo" className='w-12 h-12' loading='lazy'/>
+                            <img src={Sigma} alt="Equathora Logo" className='w-12 h-12' loading='lazy' />
                         </div>
                         <h1 className='text-4xl text-center font-medium'>{comparison.title}</h1>
-                        <p className="text-md text-[var(--secondary-color)]/70 max-w-2xl">{comparison.intro}</p>
+                        <p className="text-md text-(--secondary-color)/70 max-w-2xl">{comparison.intro}</p>
                     </section>
 
                     <section className="comparison-section" aria-labelledby="feature-comparison-title">
@@ -107,7 +107,7 @@ function Comparison() {
                                 <p>Each platform does something useful. The difference is how much of your time is spent watching, exploring, or solving.</p>
                             </div>
                             <div className="bg-[var(--main-color)] p-6">
-                                <div className="bg-[var(--white)] rounded-2xl" role="table" aria-label={`Equathora compared with ${comparison.name}`}>
+                                <div className="bg-(--white) rounded-2xl" role="table" aria-label={`Equathora compared with ${comparison.name}`}>
                                     <div className="flex justify-around text-xl" role="row">
                                         <div role="py-3">What matters</div>
                                         <div role="py-3">{comparison.name}</div>

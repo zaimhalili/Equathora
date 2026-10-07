@@ -99,7 +99,7 @@ const CookieConsent = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
         >
-            <div className="cookie-consent-banner w-100 max-w-100 flex flex-col bg-[var(--white)] border-[var(--main-color)] border-2 rounded-2xl px-3 py-4 gap-6 shadow-xs overflow-hidden">
+            <div className="cookie-consent-banner w-100 max-w-100 flex flex-col bg-(--white) border-[var(--main-color)] border-2 rounded-2xl px-3 py-4 gap-6 shadow-xs overflow-hidden">
                 <p className='text-md'>
                     We use optional cookies for analytics and advertising. Choose either purpose separately, or learn more in our{' '}
                     <Link to="/cookie-policy" className="!underline underline-offset-3">Cookie Policy.</Link>
@@ -107,13 +107,13 @@ const CookieConsent = () => {
                 <div className="w-full flex gap-3">
                     <button
                         onClick={handleDecline}
-                        className="bg-[var(--main-color)] rounded-xl flex-1 py-1 text-center text-[var(--secondary-color)]/70 hover:brightness-95 hover:text-[var(--secondary-color)] transition-all text-md font-medium"
+                        className="bg-[var(--main-color)] rounded-xl flex-1 py-1 text-center text-(--secondary-color)/70 hover:brightness-95 hover:text-(--secondary-color) transition-all text-md font-medium"
                     >
                         Reject optional
                     </button>
                     <button
                         onClick={handleAccept}
-                        className="bg-[var(--main-color)] rounded-xl flex-1 py-1 text-center text-[var(--secondary-color)]/70 hover:brightness-95 hover:text-[var(--secondary-color)] transition-all text-md font-medium"
+                        className="bg-[var(--main-color)] rounded-xl flex-1 py-1 text-center text-(--secondary-color)/70 hover:brightness-95 hover:text-(--secondary-color) transition-all text-md font-medium"
                     >
                         Allow all
                     </button>

@@ -12,9 +12,9 @@ const AboutPlatformStrengthsSection = () => {
             <div className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw]">
                 <ScrollReveal direction="up">
                     <div className="flex flex-col items-center justify-center w-full pb-12">
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--secondary-color)] pb-4">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-(--secondary-color) pb-4">
                             What We{' '}
-                            <span className="text-[var(--secondary-color)] relative inline-block">
+                            <span className="text-(--secondary-color) relative inline-block">
                                 Do Best
                                 <motion.svg
                                     className="absolute -bottom-0 left-0 w-full"
@@ -34,7 +34,7 @@ const AboutPlatformStrengthsSection = () => {
                                 </motion.svg>
                             </span>
                         </h2>
-                        <p className="text-sm sm:text-xl md:text-2xl font-light text-[var(--secondary-color)] max-w-3xl text-center">
+                        <p className="text-sm sm:text-xl md:text-2xl font-light text-(--secondary-color) max-w-3xl text-center">
                             Practice-first learning designed to build real mathematical confidence. The platform focuses on clarity, progression, and measurable improvement.
                         </p>
                     </div>
@@ -63,13 +63,13 @@ const AboutPlatformStrengthsSection = () => {
                                 <motion.div
                                     whileHover={{ y: -5, boxShadow: '0 20px 30px rgba(141,153,174,0.4)' }}
                                     transition={{ type: 'spring', stiffness: 300 }}
-                                    className="relative flex flex-col bg-[var(--white)] rounded-xl border border-[var(--mid-main-secondary)] shadow-lg hover:shadow-2xl duration-300 ease-out p-6 w-full min-h-[160px]"
+                                    className="relative flex flex-col bg-(--white) rounded-xl border border-(---mid-main-secondary) shadow-lg hover:shadow-2xl duration-300 ease-out p-6 w-full min-h-[160px]"
                                 >
-                                    <h3 className="text-lg font-bold text-[var(--secondary-color)] pb-2">{feature.title}</h3>
-                                    <p className="text-sm text-[var(--mid-main-secondary)] leading-relaxed">
+                                    <h3 className="text-lg font-bold text-(--secondary-color) pb-2">{feature.title}</h3>
+                                    <p className="text-sm text-(---mid-main-secondary) leading-relaxed">
                                         {feature.desc}
                                     </p>
-                                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[var(--accent-color)]/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-(--accent-color)/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 </motion.div>
                             </div>
                         </ScrollReveal>

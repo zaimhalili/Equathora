@@ -9,7 +9,7 @@ const LatestArticlesSection = () => {
     const displayedPosts = blogPosts.slice(0, 3);
 
     return (
-        <section className="w-full bg-[var(--white)] relative overflow-hidden flex justify-center">
+        <section className="w-full bg-(--white) relative overflow-hidden flex justify-center">
 
             <div className="max-w-[1500px] px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 relative z-10">
                 <div className="flex flex-col gap-8 sm:gap-10 md:gap-12">
@@ -23,7 +23,7 @@ const LatestArticlesSection = () => {
                         transition={{ duration: 0.5, ease: "easeOut" }}
                     >
                         <div className="flex flex-col text-center md:text-left">
-                            <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-4">
+                            <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-(--secondary-color) pb-4">
                                 Latest articles
                             </h2>
                             <p className="text-sm sm:text-xl md:text-2xl max-w-3xl font-light">
@@ -32,7 +32,7 @@ const LatestArticlesSection = () => {
                         </div>
                         <Link
                             to={blogPosts.length > 0 ? `/blog/${blogPosts[0].slug}` : "/blogs"}
-                            className="group relative text-sm sm:text-base !text-[var(--secondary-color)] font-medium transition-all flex items-center gap-2 min-w-[140px]"
+                            className="group relative text-sm sm:text-base !text-(--secondary-color) font-medium transition-all flex items-center gap-2 min-w-[140px]"
                         >
                             <FaArrowRight className="text-xs sm:text-sm opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
                             <span className="transition-transform duration-300">View all articles</span>
@@ -52,7 +52,7 @@ const LatestArticlesSection = () => {
                             >
                                 <Link
                                     to={`/blog/${post.slug}`}
-                                    className="group flex flex-col bg-[var(--white)] rounded-xl border-2 border-[var(--main-color)] overflow-hidden transition-all duration-200 ease-out hover:scale-105"
+                                    className="group flex flex-col bg-(--white) rounded-xl border-2 border-[var(--main-color)] overflow-hidden transition-all duration-200 ease-out hover:scale-105"
                                 >
                                     {/* Image */}
                                     <div className="relative overflow-hidden h-44 sm:h-48">
@@ -63,7 +63,7 @@ const LatestArticlesSection = () => {
                                             loading='lazy'
                                         />
                                         <div className="absolute top-3 sm:top-4 left-3 sm:left-4">
-                                            <span className="px-2.5 sm:px-3 py-1 bg-[var(--accent-color)] text-white text-[10px] sm:text-xs font-semibold rounded-full">
+                                            <span className="px-2.5 sm:px-3 py-1 bg-(--accent-color) text-white text-[10px] sm:text-xs font-semibold rounded-full">
                                                 {post.category}
                                             </span>
                                         </div>
@@ -71,14 +71,14 @@ const LatestArticlesSection = () => {
 
                                     {/* Content */}
                                     <div className="flex flex-col gap-2.5 sm:gap-3 p-5 sm:p-6">
-                                        <div className="flex items-center gap-2 text-xs sm:text-sm text-[var(--mid-main-secondary)]">
+                                        <div className="flex items-center gap-2 text-xs sm:text-sm text-(---mid-main-secondary)">
                                             <span>{post.date}</span>
                                             {post.readTime && <span>· {post.readTime}</span>}
                                         </div>
-                                        <h3 className="text-lg sm:text-xl font-bold text-[var(--secondary-color)] line-clamp-2 transition-colors">
+                                        <h3 className="text-lg sm:text-xl font-bold text-(--secondary-color) line-clamp-2 transition-colors">
                                             {post.title}
                                         </h3>
-                                        <p className="text-[var(--mid-main-secondary)] theme-lock text-xs sm:text-sm line-clamp-2">
+                                        <p className="text-(---mid-main-secondary) theme-lock text-xs sm:text-sm line-clamp-2">
                                             {post.description}
                                         </p>
 
@@ -90,7 +90,7 @@ const LatestArticlesSection = () => {
                                                 className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
                                             />
                                             <div>
-                                                <p className="text-xs sm:text-sm font-semibold text-[var(--secondary-color)]">{post.author.name}</p>
+                                                <p className="text-xs sm:text-sm font-semibold text-(--secondary-color)">{post.author.name}</p>
                                             </div>
                                         </div>
                                     </div>

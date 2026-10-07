@@ -187,7 +187,7 @@ const Premium = () => {
             <h2 className='text-sm sm:text-lg text-center pb-1'>Find the ideal plan that fits your budget and goals.</h2>
 
             {errorMessage && (
-              <div className="w-full max-w-xl bg-[var(--accent-color)]/20 border border-[var(--accent-color)]/50 text-[var(--secondary-color)] px-4 py-3 rounded-xl text-sm text-center flex items-center justify-center gap-2">
+              <div className="w-full max-w-xl bg-(--accent-color)/20 border border-(--accent-color)/50 text-(--secondary-color) px-4 py-3 rounded-xl text-sm text-center flex items-center justify-center gap-2">
                 <FaExclamationTriangle />
                 <span>We ran into an issue. Try again later.</span>
               </div>
@@ -196,11 +196,11 @@ const Premium = () => {
             {/* Cards' Section */}
             <article className="flex gap-5 pt-10 items-center w-full flex-wrap justify-center lg:px-20">
               {/* Free Card */}
-              <div className='rounded-3xl flex-col flex bg-[var(--white)] sm:min-w-70 p-1 h-fit lg:max-w-1/3 min-w-60 flex-1 transition-all border border-[var(--secondary-color)]/10 border-t-2'>
+              <div className='rounded-3xl flex-col flex bg-(--white) sm:min-w-70 p-1 h-fit lg:max-w-1/3 min-w-60 flex-1 transition-all border border-(--secondary-color)/10 border-t-2'>
                 <div className="flex justify-between w-full items-center gap-1.5 p-4">
-                  <h3 className="text-2xl font-bold text-[var(--secondary-color)]">Free</h3>
+                  <h3 className="text-2xl font-bold text-(--secondary-color)">Free</h3>
                   {!premium && (
-                    <div className='flex items-center gap-1 border-[var(--secondary-color)] border rounded-xl px-1'>
+                    <div className='flex items-center gap-1 border-(--secondary-color) border rounded-xl px-1'>
                       <FaFlagCheckered className='inline-block' />
                       <span>Active</span>
                     </div>
@@ -208,19 +208,19 @@ const Premium = () => {
                 </div>
                 <div className="flex flex-col gap-4 bg-[var(--main-color)]/90 p-4 rounded-2xl">
                   <div className="flex gap-2 flex-col">
-                    <h3 className="text-2xl md:text-3xl text-[var(--secondary-color)] font-bold flex items-end">€0
-                      <span className='text-sm text-[var(--secondary-color)]/50 font-normal'>/month</span>
+                    <h3 className="text-2xl md:text-3xl text-(--secondary-color) font-bold flex items-end">€0
+                      <span className='text-sm text-(--secondary-color)/50 font-normal'>/month</span>
                     </h3>
-                    <p className='text-sm text-[var(--secondary-color)]/50 font-normal'>No credit card required</p>
+                    <p className='text-sm text-(--secondary-color)/50 font-normal'>No credit card required</p>
                   </div>
 
 
-                  <ul className="flex flex-col gap-3 pt-2 h-90 text-[var(--secondary-color)]">
+                  <ul className="flex flex-col gap-3 pt-2 h-90 text-(--secondary-color)">
                     {freeFeatures.map((feature, idx) => {
                       const Icon = feature.icon;
                       return (
-                        <li key={idx} className="flex items-center gap-2 text-sm font-normal text-[var(--secondary-color)]/80">
-                          <Icon className=" h-3 w-3 shrink-0 text-[var(--secondary-color)]/50" />
+                        <li key={idx} className="flex items-center gap-2 text-sm font-normal text-(--secondary-color)/80">
+                          <Icon className=" h-3 w-3 shrink-0 text-(--secondary-color)/50" />
                           <span>
                             <strong>{feature.bold}</strong>
                           </span>
@@ -228,14 +228,14 @@ const Premium = () => {
                       );
                     })}
                   </ul>
-                  <Link to={'/login'} className='!text-[var(--secondary-color)]/70 hover:!text-[var(--secondary-color)] bg-[var(--main-color)] brightness-95 hover:brightness-90 py-2 rounded-xl text-xl active:scale-95 transition-all duration-200 text-center !font-normal border-[var(--white)] border-2'>
+                  <Link to={'/login'} className='!text-(--secondary-color)/70 hover:!text-(--secondary-color) bg-[var(--main-color)] brightness-95 hover:brightness-90 py-2 rounded-xl text-xl active:scale-95 transition-all duration-200 text-center !font-normal border-(--white) border-2'>
                     Get started for free
                   </Link>
                 </div>
               </div>
 
               {/* Pro Card */}
-              <div className='rounded-3xl flex-col flex bg-gradient-to-b from-amber-600 to-amber-400 shadow-2xl lg:max-w-1/3 min-w-60 w-full transition-all p-1 flex-1 relative border border-[var(--secondary-color)]/10 border-t-2'>
+              <div className='rounded-3xl flex-col flex bg-gradient-to-b from-amber-600 to-amber-400 shadow-2xl lg:max-w-1/3 min-w-60 w-full transition-all p-1 flex-1 relative border border-(--secondary-color)/10 border-t-2'>
                 {/* Label */}
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex w-fit rounded-2xl border-2 px-3 py-1 border-black bg-amber-500 text-black text-xs font-medium whitespace-nowrap gap-1 items-center z-40">
                   <FaUserShield />
@@ -246,7 +246,7 @@ const Premium = () => {
                     <h3 className="text-2xl font-bold text-[var(--main-color)]">Premium
                     </h3>
                     {premium && (
-                      <h3 className='bg-black/10 px-3 py-1 rounded-xl text-[var(--secondary-color)] font-medium items-center flex gap-1.5 text-sm'>
+                      <h3 className='bg-black/10 px-3 py-1 rounded-xl text-(--secondary-color) font-medium items-center flex gap-1.5 text-sm'>
                         {cancelAtPeriodEnd ? (
                           <>
                             <FaExclamationTriangle className='text-amber-900' />
@@ -274,20 +274,20 @@ const Premium = () => {
                 <div className="flex flex-col gap-5 bg-[var(--main-color)]/90 rounded-2xl p-4">
                   <div className="flex flex-col gap-2">
                     <div className="flex gap-2 items-end">
-                      <h3 className="text-xl font-medium line-through text-[var(--secondary-color)]/50">€24.99</h3>
-                      <h3 className="text-2xl md:text-3xl text-[var(--secondary-color)] font-bold">€19.99
-                        <span className='text-sm text-[var(--secondary-color)]/50 font-normal'>/month</span>
+                      <h3 className="text-xl font-medium line-through text-(--secondary-color)/50">€24.99</h3>
+                      <h3 className="text-2xl md:text-3xl text-(--secondary-color) font-bold">€19.99
+                        <span className='text-sm text-(--secondary-color)/50 font-normal'>/month</span>
                       </h3>
                     </div>
-                    <p className='text-sm text-[var(--secondary-color)]/50 font-normal'>Billed €19.99 monthly. Cancel anytime</p>
+                    <p className='text-sm text-(--secondary-color)/50 font-normal'>Billed €19.99 monthly. Cancel anytime</p>
                   </div>
 
 
-                  <ul className="flex flex-col gap-2 pt-2 h-90 lg:h-100 text-[var(--secondary-color)]">
+                  <ul className="flex flex-col gap-2 pt-2 h-90 lg:h-100 text-(--secondary-color)">
                     {proFeatures.map((feature, idx) => {
                       const Icon = feature.icon;
                       return (
-                        <li key={idx} className="flex items-center gap-2 text-sm font-normal text-[var(--secondary-color)]/80">
+                        <li key={idx} className="flex items-center gap-2 text-sm font-normal text-(--secondary-color)/80">
                           <Icon className="h-3 w-3 shrink-0 text-amber-500" />
                           <span>
                             <strong>{feature.bold}</strong>
@@ -308,13 +308,13 @@ const Premium = () => {
               </div>
 
               {/* Institutional Card */}
-              <div className='rounded-3xl flex-col flex bg-gradient-to-b from-[var(--dark-accent-color)] to-[var(--accent-color)] shadow-xl lg:max-w-1/3 min-w-60 w-full transition-all p-1 flex-1 border border-[var(--secondary-color)]/10 border-t-2'>
+              <div className='rounded-3xl flex-col flex bg-gradient-to-b from-(---dark-accent-color) to-(--accent-color) shadow-xl lg:max-w-1/3 min-w-60 w-full transition-all p-1 flex-1 border border-(--secondary-color)/10 border-t-2'>
                 <div className="flex flex-col gap-5 p-4">
                   <div className="flex justify-between items-center sm:flex-row flex-col-reverse gap-1.5">
                     <h3 className="text-2xl font-bold text-white">Schools & Institutions
                     </h3>
                     {premium && (
-                      <h3 className='bg-black/10 px-3 py-1 rounded-xl text-[var(--secondary-color)] font-medium items-center flex gap-1.5 text-sm'>
+                      <h3 className='bg-black/10 px-3 py-1 rounded-xl text-(--secondary-color) font-medium items-center flex gap-1.5 text-sm'>
                         {cancelAtPeriodEnd ? (
                           <>
                             <FaExclamationTriangle className='text-amber-900' />
@@ -342,20 +342,20 @@ const Premium = () => {
                 <div className="flex flex-col gap-5 bg-[var(--main-color)]/90 rounded-2xl p-4">
                   <div className="flex flex-col gap-2">
                     <div className="flex gap-2 items-end">
-                      <h3 className="text-2xl md:text-3xl text-[var(--secondary-color)] font-bold">€X
-                        <span className='text-sm text-[var(--secondary-color)]/50 font-normal'>/month</span>
+                      <h3 className="text-2xl md:text-3xl text-(--secondary-color) font-bold">€X
+                        <span className='text-sm text-(--secondary-color)/50 font-normal'>/month</span>
                       </h3>
                     </div>
-                    <p className='text-sm text-[var(--secondary-color)]/50 font-normal'>Custom pricing for schools and academies</p>
+                    <p className='text-sm text-(--secondary-color)/50 font-normal'>Custom pricing for schools and academies</p>
                   </div>
 
 
-                  <ul className="flex flex-col gap-2 pt-2 h-90 text-[var(--secondary-color)]">
+                  <ul className="flex flex-col gap-2 pt-2 h-90 text-(--secondary-color)">
                     {institutionalFeatures.map((feature, idx) => {
                       const Icon = feature.icon;
                       return (
-                        <li key={idx} className="flex items-center gap-2 text-sm font-normal text-[var(--secondary-color)]/80">
-                          <Icon className="h-3 w-3 shrink-0 text-[var(--accent-color)]" />
+                        <li key={idx} className="flex items-center gap-2 text-sm font-normal text-(--secondary-color)/80">
+                          <Icon className="h-3 w-3 shrink-0 text-(--accent-color)" />
                           <span>
                             <strong>{feature.bold}</strong>
                           </span>
@@ -365,7 +365,7 @@ const Premium = () => {
                   </ul>
                   <a
                     href='mailto:equathora@gmail.com'
-                    className="bg-[var(--dark-accent-color)] !text-white py-2 rounded-xl text-xl transition-all duration-200 hover:contrast-80 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-center !font-normal"
+                    className="bg-(---dark-accent-color) !text-white py-2 rounded-xl text-xl transition-all duration-200 hover:contrast-80 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-center !font-normal"
                   >
                     Contact me
                   </a>
@@ -374,10 +374,10 @@ const Premium = () => {
             </article>
 
             {/* Feedback OsRadar */}
-            <article className='flex lg:flex-row flex-col w-full justify-between items-center gap-5 text-[var(--secondary-color)] py-24'>
+            <article className='flex lg:flex-row flex-col w-full justify-between items-center gap-5 text-(--secondary-color) py-24'>
               <h4 className='text-3xl md:text-4xl font-bold pb-2'>What others are <br /> saying about us?</h4>
               <div className='lg:max-w-3/5 flex flex-col gap-3 relative items-center md:items-start'>
-                <FaQuoteLeft className='text-[var(--secondary-color)] absolute w-3 h-3 -left-5 hidden md:flex' />
+                <FaQuoteLeft className='text-(--secondary-color) absolute w-3 h-3 -left-5 hidden md:flex' />
                 <p className='text-xl md:text-2xl text-center md:text-left'>
                   Equathora is an <strong>excellent tool</strong> for the “serious” math student, specifically those preparing for Math Olympiads or early undergraduate STEM courses. It removes the friction of finding quality problems and provides <strong>a superior input method</strong> compared to standard multiple-choice platforms.
                 </p>
@@ -388,18 +388,18 @@ const Premium = () => {
             </article>
 
             {/* FAQ Accordion */}
-            <article className='flex flex-col w-full gap-2 pb-20 text-[var(--secondary-color)]'>
+            <article className='flex flex-col w-full gap-2 pb-20 text-(--secondary-color)'>
               <h4 className='text-3xl md:text-4xl font-bold pb-6'>Frequently asked questions</h4>
               {faq.map((item, i) => {
                 const isOpen = openFaqIndices.includes(i);
                 return (
-                  <div key={i} className='bg-[var(--white)] rounded-2xl px-3'>
+                  <div key={i} className='bg-(--white) rounded-2xl px-3'>
                     <button
                       onClick={() => toggleFaq(i)}
                       className='w-full flex justify-between items-center py-3 text-left gap-3 cursor-pointer'
                     >
                       <span className='font-semibold text-lg md:text-lg'>{item.q}</span>
-                      <span className={`text-lg transition-transform duration-200 shrink-0 text-[var(--secondary-color)] ${isOpen ? 'rotate-180' : ''}`}>
+                      <span className={`text-lg transition-transform duration-200 shrink-0 text-(--secondary-color) ${isOpen ? 'rotate-180' : ''}`}>
                         <FaAngleDown />
                       </span>
                     </button>

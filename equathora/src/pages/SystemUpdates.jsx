@@ -82,7 +82,7 @@ const SystemUpdates = () => {
             date: "April 10-11, 2026",
             type: "feature",
             icon: <FaRocket className="text-xl" />,
-            color: "from-[var(--accent-color)] to-[var(--dark-accent-color)]",
+            color: "from-(--accent-color) to-(---dark-accent-color)",
             title: "New Problems + Clearer Math Display",
             changes: [
                 "Added 50 new Grade 10 Algebra and Trigonometry problems",
@@ -96,7 +96,7 @@ const SystemUpdates = () => {
             date: "April 4, 2026",
             type: "feature",
             icon: <FaStar className="text-xl" />,
-            color: "from-[var(--accent-color)] to-[var(--dark-accent-color)]",
+            color: "from-(--accent-color) to-(---dark-accent-color)",
             title: "Equathora Briefs Is Easier to Join",
             changes: [
                 "Added a smoother newsletter signup flow",
@@ -110,7 +110,7 @@ const SystemUpdates = () => {
             date: "February 12, 2026",
             type: "improvement",
             icon: <FaPalette className="text-xl" />,
-            color: "from-[var(--accent-color)] to-[var(--dark-accent-color)]",
+            color: "from-(--accent-color) to-(---dark-accent-color)",
             title: "Cleaner Look + More Reliable Weekly Progress",
             changes: [
                 "Updated page backgrounds for a cleaner and more consistent look",
@@ -124,7 +124,7 @@ const SystemUpdates = () => {
             date: "January 18-21, 2026",
             type: "improvement",
             icon: <FaCode className="text-xl" />,
-            color: "from-[var(--accent-color)] to-[var(--dark-accent-color)]",
+            color: "from-(--accent-color) to-(---dark-accent-color)",
             title: "Readability and Filter Polish",
             changes: [
                 "Updated text styling to improve readability across the app",
@@ -472,11 +472,11 @@ const SystemUpdates = () => {
                     >
                         <div className="flex flex-col items-center text-center gap-3">
                             <div className="flex items-center gap-2">
-                                <h1 className="text-4xl font-bold text-[var(--secondary-color)] ">
+                                <h1 className="text-4xl font-bold text-(--secondary-color) ">
                                     System Updates
                                 </h1>
                             </div>
-                            <p className="text-base text-[var(--mid-main-secondary)] max-w-2xl">
+                            <p className="text-base text-(---mid-main-secondary) max-w-2xl">
                                 Stay informed about the latest features, improvements, and bug fixes in Equathora
                             </p>
                         </div>
@@ -493,23 +493,23 @@ const SystemUpdates = () => {
                                     initial={{ opacity: 0, y: 15 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.45, delay: 0.1 * index }}
-                                    className="bg-[var(--white)] rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
+                                    className="bg-(--white) rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] overflow-hidden"
                                 >
                                     {/* Header */}
                                     <div className="flex items-start gap-4 p-6 pb-4">
-                                        <div className="bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] p-3 rounded-xl text-[var(--white)] flex-shrink-0 theme-lock">
+                                        <div className="bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] p-3 rounded-xl text-(--white) flex-shrink-0 theme-lock">
                                             {update.icon}
                                         </div>
                                         <div className="flex-1">
                                             <div className="flex flex-wrap items-center gap-2 pb-2">
-                                                <h2 className="text-xl font-bold text-[var(--secondary-color)]">
+                                                <h2 className="text-xl font-bold text-(--secondary-color)">
                                                     {update.title}
                                                 </h2>
                                                 <span className={`px-2 py-1 rounded-xl text-xs font-semibold ${getTypeStyle(update.type)}`}>
                                                     {update.type === 'bugfix' ? 'Bug Fix' : update.type.charAt(0).toUpperCase() + update.type.slice(1)}
                                                 </span>
                                             </div>
-                                            <div className="flex items-center gap-3 text-sm text-[var(--mid-main-secondary)]">
+                                            <div className="flex items-center gap-3 text-sm text-(---mid-main-secondary)">
                                                 <span className="font-semibold">{update.version}</span>
                                                 <span>•</span>
                                                 <span>{update.date}</span>
@@ -521,7 +521,7 @@ const SystemUpdates = () => {
                                     <div className="px-6 pb-6">
                                         <ul className="flex flex-col gap-2">
                                             {update.changes.map((change, changeIndex) => (
-                                                <li key={changeIndex} className="flex items-start gap-2 text-[var(--mid-main-secondary)] text-sm">
+                                                <li key={changeIndex} className="flex items-start gap-2 text-(---mid-main-secondary) text-sm">
                                                     <FaCheckCircle className="text-green-500 flex-shrink-0 text-base pt-0.5" />
                                                     <span>{change}</span>
                                                 </li>
@@ -534,7 +534,7 @@ const SystemUpdates = () => {
 
                         {/* Subscribe Section */}
                         <div className="pt-8">
-                            <div className="bg-gradient-to-br from-[var(--secondary-color)] to-[#3a3d52] rounded-xl p-8 text-center text-[var(--white)] shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
+                            <div className="bg-gradient-to-br from-(--secondary-color) to-[#3a3d52] rounded-xl p-8 text-center text-(--white) shadow-[0_10px_10px_rgba(141,153,174,0.3)]">
                                 <h3 className="text-2xl font-bold pb-3 ">Stay Updated</h3>
                                 <p className="text-gray-300 text-base pb-4">
                                     Get notified about new features and updates directly in your notifications

@@ -16,15 +16,15 @@ const EquathoraBriefsSuccessModal = ({ onClose }) => {
             </div>
 
             <div className="p-8 sm:p-10 ">
-                <div className="mx-auto w-14 h-14 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-[var(--white)] flex items-center justify-center shadow-lg shadow-[var(--dark-accent-color)]/30">
+                <div className="mx-auto w-14 h-14 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-(--white) flex items-center justify-center shadow-lg shadow-(---dark-accent-color)/30">
                     <FaCheckCircle className="text-5xl" />
                 </div>
 
                 <h2 className=" pt-5 uppercase tracking-wider">
-                    <span className="block text-xl font-bold text-[var(--secondary-color)]">You Are</span>
-                    <span className="block text-4xl font-extrabold !text-[var(--accent-color)] leading-tight">Officially In</span>
+                    <span className="block text-xl font-bold text-(--secondary-color)">You Are</span>
+                    <span className="block text-4xl font-extrabold !text-(--accent-color) leading-tight">Officially In</span>
                 </h2>
-                <p className="pt-3 text-[var(--secondary-color)]/70 leading-relaxed max-w-lg mx-auto py-5">
+                <p className="pt-3 text-(--secondary-color)/70 leading-relaxed max-w-lg mx-auto py-5">
                     You are now subscribed to Equathora Briefs. Watch your inbox for curated updates, new challenge drops, and launch news.
                 </p>
 

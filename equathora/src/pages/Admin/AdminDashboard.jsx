@@ -88,7 +88,7 @@ const AdminDashboard = () => {
                 <aside className={`absolute inset-y-0 left-0 z-30 w-[84vw] max-w-[320px] overflow-y-auto border-r bg-[var(--main-color)] shadow-2xl transition-transform duration-200 md:static md:z-10 md:w-[280px] md:max-w-none md:min-w-[240px] md:translate-x-0 md:border-none ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ borderColor: 'var(--french-gray)' }}>
                     <div className='sticky top-0 z-10 border-b bg-[var(--main-color)] px-3 py-2 md:hidden' style={{ borderColor: 'var(--french-gray)' }}>
                         <div className='flex items-center justify-between'>
-                            <p className='text-sm font-black text-[var(--secondary-color)]'>Admin Modules</p>
+                            <p className='text-sm font-black text-(--secondary-color)'>Admin Modules</p>
                             <button
                                 type='button'
                                 onClick={() => setIsSidebarOpen(false)}
@@ -108,7 +108,7 @@ const AdminDashboard = () => {
                             type='button'
                             key={tab.id}
                             onClick={() => handleTabSelect(tab.id)}
-                            className={`w-full px-3 py-3 text-left text-sm shadow-sm transition md:text-base xl:text-xl ${selected === tab.id ? 'bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] relative z-10 font-black text-white' : 'bg-[var(--main-color)] font-medium text-[var(--secondary-color)] hover:bg-[var(--french-gray)]'}`}
+                            className={`w-full px-3 py-3 text-left text-sm shadow-sm transition md:text-base xl:text-xl ${selected === tab.id ? 'bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] relative z-10 font-black text-white' : 'bg-[var(--main-color)] font-medium text-(--secondary-color) hover:bg-(--french-gray)'}`}
                         >
                             {tab.label}
                         </button>

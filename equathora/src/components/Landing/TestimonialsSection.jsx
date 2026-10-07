@@ -68,20 +68,20 @@ const TestimonialsSection = () => {
     }, [index]);
     return (
         <>
-            <section className='flex justify-center text-[var(--secondary-color)] '>
-                <div className='max-w-[1500px] mx-auto w-full bg-[var(--white)] relative overflow-hidden flex flex-col lg:flex-row justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 gap-3 sm:gap-5 md:gap-8 lg:gap-10'>
+            <section className='flex justify-center text-(--secondary-color) '>
+                <div className='max-w-[1500px] mx-auto w-full bg-(--white) relative overflow-hidden flex flex-col lg:flex-row justify-center px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-7 sm:py-14 md:py-16 lg:py-18 gap-3 sm:gap-5 md:gap-8 lg:gap-10'>
 
                     {/* Left Side - Header & Navigation Arrows */}
                     <div className='flex flex-col w-full lg:w-1/2 pr-0 lg:pr-36'>
-                        <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl text-[var(--secondary-color)] pb-4 font-extrabold text-center md:text-left'>From our <br /><span className='font-black'>community.</span></h2>
-                        <p className='text-[var(--secondary-color)] font-light text-sm sm:text-xl md:text-2xl max-w-3xl text-center md:text-left'>What students say before and after Equathora are two different stories.</p>
+                        <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl text-(--secondary-color) pb-4 font-extrabold text-center md:text-left'>From our <br /><span className='font-black'>community.</span></h2>
+                        <p className='text-(--secondary-color) font-light text-sm sm:text-xl md:text-2xl max-w-3xl text-center md:text-left'>What students say before and after Equathora are two different stories.</p>
 
                         {/* Arrow Buttons */}
                         <div className='pt-3 sm:pt-5 md:pt-6 flex gap-3'>
                             <button type="button"
                                 onClick={next}
                                 aria-label="Show next testimonial"
-                                className='rounded-full outline outline-[var(--mid-main-secondary)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
+                                className='rounded-full outline outline-(---mid-main-secondary) p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
                             transition-opacity duration-150 text-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)] hover:text-[var(--main-color)] hover:outline-none active:scale-95'>
                                 <FaArrowLeft className='md:w-6 md:h-6' />
                             </button>
@@ -89,7 +89,7 @@ const TestimonialsSection = () => {
                                 type="button"
                                 onClick={prev}
                                 aria-label="Show previous testimonial"
-                                className='rounded-full outline outline-[var(--mid-main-secondary)] p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
+                                className='rounded-full outline outline-(---mid-main-secondary) p-3 cursor-pointer hover:bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]
                                 transition-opacity duration-150 text-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color)] hover:text-[var(--main-color)] hover:outline-none active:scale-95'>
                                 <FaArrowRight className='md:w-6 md:h-6' />
                             </button>
@@ -108,7 +108,7 @@ const TestimonialsSection = () => {
                                 className='flex flex-col gap-6 absolute inset-0 w-full justify-between'
                             >
 
-                                <FaQuoteLeft className='text-[var(--secondary-color)] absolute w-3 h-3 -left-5 hidden md:flex' />
+                                <FaQuoteLeft className='text-(--secondary-color) absolute w-3 h-3 -left-5 hidden md:flex' />
                                 <p className='text-lg sm:text-xl md:text-2xl xl:text-3xl font-light'>
                                     {testimonials[index].text}
                                 </p>
@@ -137,7 +137,7 @@ const TestimonialsSection = () => {
                                             className='rounded-full w-16 h-16'
                                         />
                                         <div>
-                                            <p className='text-lg font-bold hover:!text-[var(--dark-accent-color)] hover:!underline'>
+                                            <p className='text-lg font-bold hover:!text-(---dark-accent-color) hover:!underline'>
                                                 {testimonials[index].name}
                                             </p>
                                             <p className='text-sm font-light'>

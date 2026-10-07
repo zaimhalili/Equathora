@@ -46,7 +46,7 @@ const UpgradedPopup = ({ onClose }) => {
                         }}
                         className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-[var(--white)] rounded-xl shadow-2xl p-8 sm:p-12 max-w-md w-[90vw] border border-[var(--mid-main-secondary)] text-center relative overflow-hidden">
+                        <div className="bg-(--white) rounded-xl shadow-2xl p-8 sm:p-12 max-w-md w-[90vw] border border-(---mid-main-secondary) text-center relative overflow-hidden">
                             {/* Crown / Star Icon with spring rotation */}
                             <motion.div
                                 initial={{ scale: 0, rotate: -180 }}
@@ -77,7 +77,7 @@ const UpgradedPopup = ({ onClose }) => {
                                             repeat: Infinity,
                                             ease: "easeOut"
                                         }}
-                                        className="absolute inset-0 rounded-full bg-[var(--accent-color)]/25 blur-xl"
+                                        className="absolute inset-0 rounded-full bg-(--accent-color)/25 blur-xl"
                                     />
                                 </div>
                             </motion.div>
@@ -89,17 +89,17 @@ const UpgradedPopup = ({ onClose }) => {
                                 transition={{ delay: 0.3 }}
                                 className="text-center"
                             >
-                                <h2 className="text-3xl sm:text-4xl font-black text-[var(--secondary-color)] pb-3">
+                                <h2 className="text-3xl sm:text-4xl font-black text-(--secondary-color) pb-3">
                                     Welcome to Pro!
                                 </h2>
-                                <p className="text-base sm:text-lg text-[var(--secondary-color)]/70 pb-6 leading-relaxed">
+                                <p className="text-base sm:text-lg text-(--secondary-color)/70 pb-6 leading-relaxed">
                                     Your account has been upgraded. Unlimited AI breakdowns and practice problems are now unlocked.
                                 </p>
                                 <motion.button
                                     whileHover={{ scale: 1.03 }}
                                     whileTap={{ scale: 0.97 }}
                                     onClick={handleClose}
-                                    className="w-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] text-[var(--white)] py-3 rounded-xl text-base font-bold shadow-md cursor-pointer"
+                                    className="w-full bg-gradient-to-r from-(--accent-color) to-(---dark-accent-color) text-(--white) py-3 rounded-xl text-base font-bold shadow-md cursor-pointer"
                                 >
                                     Start Solving
                                 </motion.button>

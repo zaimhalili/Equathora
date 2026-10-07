@@ -246,7 +246,7 @@ const AdminReviewProblems = () => {
     };
 
     return (
-        <section className='flex flex-col gap-6 px-3 py-2 text-[var(--secondary-color)] md:px-5'>
+        <section className='flex flex-col gap-6 px-3 py-2 text-(--secondary-color) md:px-5'>
             <header
                 className='rounded-xl border p-5'
                 style={{
@@ -295,19 +295,19 @@ const AdminReviewProblems = () => {
 
             <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
                 <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
-                    <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Total In Buffer</p>
+                    <p className='text-xs uppercase tracking-wide text-(---mid-main-secondary)'>Total In Buffer</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.total}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
-                    <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Pending Review</p>
+                    <p className='text-xs uppercase tracking-wide text-(---mid-main-secondary)'>Pending Review</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.pending}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
-                    <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Approved</p>
+                    <p className='text-xs uppercase tracking-wide text-(---mid-main-secondary)'>Approved</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.approved}</p>
                 </article>
                 <article className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
-                    <p className='text-xs uppercase tracking-wide text-[var(--mid-main-secondary)]'>Already Published</p>
+                    <p className='text-xs uppercase tracking-wide text-(---mid-main-secondary)'>Already Published</p>
                     <p className='pt-2 text-3xl font-black'>{dashboardStats.published}</p>
                 </article>
             </div>
@@ -479,7 +479,7 @@ const AdminReviewProblems = () => {
                                         className='w-full pt-2 text-left'
                                     >
                                         <p className='font-bold'>{item.title}</p>
-                                        <p className='pt-1 text-xs text-[var(--mid-main-secondary)]'>
+                                        <p className='pt-1 text-xs text-(---mid-main-secondary)'>
                                             {item.topic} • {item.difficulty} • Grade {item.grade} • Quality {item.qualityScore}
                                         </p>
                                     </button>
@@ -505,7 +505,7 @@ const AdminReviewProblems = () => {
                         <>
                             <div className='flex flex-wrap items-start justify-between gap-2'>
                                 <div>
-                                    <p className='text-xs font-semibold text-[var(--mid-main-secondary)]'>{activeProblem.id}</p>
+                                    <p className='text-xs font-semibold text-(---mid-main-secondary)'>{activeProblem.id}</p>
                                     <h3 className='pt-1 text-lg font-black'>{activeProblem.title}</h3>
                                 </div>
                                 <span className='rounded px-2 py-1 text-xs font-semibold' style={workflowStyles[activeProblem.workflowStatus]}>
@@ -513,7 +513,7 @@ const AdminReviewProblems = () => {
                                 </span>
                             </div>
 
-                            <p className='pt-2 text-xs text-[var(--mid-main-secondary)]'>
+                            <p className='pt-2 text-xs text-(---mid-main-secondary)'>
                                 Author: {activeProblem.author} • Created: {new Date(activeProblem.createdAt).toLocaleDateString()} • Last edit: {new Date(activeProblem.lastEditedAt).toLocaleDateString()}
                             </p>
 

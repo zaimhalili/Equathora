@@ -11,18 +11,18 @@ const CustomizedPlan = () => {
 
     return (
         <div className='flex justify-center'>
-            <section aria-labelledby="journey-planner-heading" className='max-w-[1500px] mx-auto w-full bg-[var(--white)] relative overflow-hidden flex justify-center flex-col px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10'>
+            <section aria-labelledby="journey-planner-heading" className='max-w-[1500px] mx-auto w-full bg-(--white) relative overflow-hidden flex justify-center flex-col px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 py-12 sm:py-16 md:py-20 lg:py-24 gap-10'>
                 <article className='flex flex-col gap-10'>
                     {/* Top Section */}
                     <div className="flex flex-col lg:flex-row gap-6 w-full">
                         <div className="flex flex-col gap-3 lg:w-3/5 w-full">
-                            <p className='text-lg sm:text-xl font-bold text-[var(--secondary-color)] flex gap-3 items-center'>
+                            <p className='text-lg sm:text-xl font-bold text-(--secondary-color) flex gap-3 items-center'>
                                 <span aria-hidden="true" className='bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] p-3 rounded-xl text-white'><FaCalendar /></span>
                                 Your personalized math journey</p>
-                            <h2 id="journey-planner-heading" className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-[var(--secondary-color)] pb-2">Stop wondering what to study next</h2>
+                            <h2 id="journey-planner-heading" className="text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-(--secondary-color) pb-2">Stop wondering what to study next</h2>
                             <Link
                                 to="/learn"
-                                className="group inline-flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 !text-white text-base sm:text-lg font-semibold transition-all hover:!bg-[var(--accent-color)] shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1 w-fit"
+                                className="group inline-flex items-center gap-2 rounded-full !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 !text-white text-base sm:text-lg font-semibold transition-all hover:!bg-(--accent-color) shadow-lg shadow-[var(--raisin-black)]/30 active:translate-y-1 w-fit"
                             >
                                 Get started for free
                                 <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
@@ -48,8 +48,8 @@ const CustomizedPlan = () => {
                                 <img src={theme === 'dark' ? JourneyDark : JourneyLight} alt="Preview of a personalized math learning path with recommended problems" className='block w-full max-w-full lg:h-full lg:object-cover' loading="lazy" />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <h3 className='text-lg sm:text-xl font-bold text-[var(--secondary-color)]'>A clear path through every topic</h3>
-                                <p className='text-[var(--secondary-color)] font-light text-sm sm:text-base'>Follow every subject and topic with clear progress toward your next problem.</p>
+                                <h3 className='text-lg sm:text-xl font-bold text-(--secondary-color)'>A clear path through every topic</h3>
+                                <p className='text-(--secondary-color) font-light text-sm sm:text-base'>Follow every subject and topic with clear progress toward your next problem.</p>
                             </div>
                         </div>
                         {/* Two images on the right */}
@@ -57,15 +57,15 @@ const CustomizedPlan = () => {
                             <div className="flex flex-col gap-3 p-3 rounded-2xl overflow-hidden bg-[var(--main-color)]">
                                 <img src={ScreenshotLight} alt="Preview of a daily math mission with recommended problems" className='rounded-xl' loading="lazy" />
                                 <div className="flex flex-col gap-2">
-                                    <h3 className='text-lg sm:text-xl font-bold text-[var(--secondary-color)]'>A realistic mission for today</h3>
-                                    <p className='text-[var(--secondary-color)] font-light text-sm sm:text-base'>Get level-matched problems sized to your weekly study commitment.</p>
+                                    <h3 className='text-lg sm:text-xl font-bold text-(--secondary-color)'>A realistic mission for today</h3>
+                                    <p className='text-(--secondary-color) font-light text-sm sm:text-base'>Get level-matched problems sized to your weekly study commitment.</p>
                                 </div>
                             </div>
                             <div className="flex flex-col gap-3 p-3 rounded-2xl overflow-hidden bg-[var(--main-color)]">
                                 <img src={ScreenshotLight} alt="Preview of topic progress and recommended math problems" className='rounded-xl' loading="lazy" />
                                 <div className="flex flex-col gap-2">
-                                    <h3 className='text-lg sm:text-xl font-bold text-[var(--secondary-color)]'>Recommendations that move with you</h3>
-                                    <p className='text-[var(--secondary-color)] font-light text-sm sm:text-base'>Your recommendations update as you solve problems and your goals change.</p>
+                                    <h3 className='text-lg sm:text-xl font-bold text-(--secondary-color)'>Recommendations that move with you</h3>
+                                    <p className='text-(--secondary-color) font-light text-sm sm:text-base'>Your recommendations update as you solve problems and your goals change.</p>
                                 </div>
                             </div>
                         </div>

@@ -71,7 +71,7 @@ const Particles = () => {
             {positions.map((p, i) => (
                 <div
                     key={i}
-                    className="absolute rounded-full bg-[var(--accent-color)] transition-all duration-[50ms] ease-linear"
+                    className="absolute rounded-full bg-(--accent-color) transition-all duration-[50ms] ease-linear"
                     style={{
                         left: `${p.x}%`,
                         top: `${p.y}%`,
@@ -110,14 +110,14 @@ const HeroSection = () => {
 
                         {/* Main Heading */}
                         <motion.h1
-                            className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-[var(--secondary-color)]"
+                            className="text-3xl sm:text-3xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-(--secondary-color)"
                             initial={{ opacity: 0, rotateX: 45, scale: 0.8 }}
                             animate={{ opacity: 1, rotateX: 0, scale: 1 }}
                             transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
                             style={{ transformPerspective: 1000 }}
                         >
                             Master{' '}
-                            <span className="text-[var(--accent-color)] relative inline-block">
+                            <span className="text-(--accent-color) relative inline-block">
                                 mathematics
                                 <motion.svg
                                     className="absolute -bottom-2 left-0 w-full"
@@ -143,7 +143,7 @@ const HeroSection = () => {
 
                         {/* Description */}
                         <motion.p
-                            className="text-xs sm:text-sm md:text-base text-[var(--secondary-color)]/70 leading-relaxed max-w-lg"
+                            className="text-xs sm:text-sm md:text-base text-(--secondary-color)/70 leading-relaxed max-w-lg"
                             initial={{ opacity: 0, rotateX: 30, scale: 0.9 }}
                             animate={{ opacity: 1, rotateX: 0, scale: 1 }}
                             transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
@@ -174,7 +174,7 @@ const HeroSection = () => {
                             </Link>
                             <Link
                                 to="/about"
-                                className="group relative text-sm sm:text-base !text-[var(--secondary-color)] font-medium transition-all flex items-center gap-2 min-w-[140px]"
+                                className="group relative text-sm sm:text-base !text-(--secondary-color) font-medium transition-all flex items-center gap-2 min-w-[140px]"
                             >
                                 <FaArrowRight className="text-xs sm:text-sm opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300" />
                                 <span className="transition-transform duration-300">Learn more</span>
@@ -198,10 +198,10 @@ const HeroSection = () => {
                                     transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
                                     style={{ transformPerspective: 1000 }}
                                 >
-                                    <span className="text-xl sm:text-2xl font-bold text-[var(--secondary-color)]">
+                                    <span className="text-xl sm:text-2xl font-bold text-(--secondary-color)">
                                         <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                                     </span>
-                                    <span className="text-[10px] sm:text-xs text-[var(--secondary-color)]/60 border-t-2 border-[var(--accent-color)] pt-2">
+                                    <span className="text-[10px] sm:text-xs text-(--secondary-color)/60 border-t-2 border-(--accent-color) pt-2">
                                         {stat.label}
                                     </span>
                                 </motion.div>
@@ -227,7 +227,7 @@ const HeroSection = () => {
                                 {/* Circle container with image clipped inside */}
                                 <div
                                     className="
-                                            relative w-[320px] sm:w-[380px] md:w-[460px] lg:w-[560px] aspect-square rounded-full overflow-hidden z- bg-gradient-to-b from-[var(--french-gray)]/5 to-[var(--french-gray)]/60 backdrop-blur-sm"
+                                            relative w-[320px] sm:w-[380px] md:w-[460px] lg:w-[560px] aspect-square rounded-full overflow-hidden z- bg-gradient-to-b from-(--french-gray)/5 to-(--french-gray)/60 backdrop-blur-sm"
                                 >
                                     {/* Inner subtle circle */}
                                     <div className="absolute inset-[18%] rounded-full bg-[var(--main-color)]/80 z-0" />

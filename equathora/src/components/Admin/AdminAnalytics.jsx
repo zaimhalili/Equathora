@@ -198,7 +198,7 @@ const AdminAnalytics = () => {
     })), [analytics.issueDistribution]);
 
     return (
-        <section className='flex flex-col gap-6 px-3 py-2 text-[var(--secondary-color)] md:px-5'>
+        <section className='flex flex-col gap-6 px-3 py-2 text-(--secondary-color) md:px-5'>
             <div
                 className='rounded-xl border p-5'
                 style={{

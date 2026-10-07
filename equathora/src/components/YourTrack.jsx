@@ -27,14 +27,14 @@ const YourTrack = ({ premium, loading }) => {
     const progressLabel = `You have solved ${solved} of ${total} problems`;
 
     return (
-        <article className="flex flex-col lg:flex-row items-start justify-center w-full text-[var(--secondary-color)] pt-8 gap-8">
+        <article className="flex flex-col lg:flex-row items-start justify-center w-full text-(--secondary-color) pt-8 gap-8">
             <div className="flex flex-col w-full gap-3 p-0">
                 <div className="flex items-center justify-between p-0">
-                    <h3 className=" text-[var(--secondary-color)] text-2xl font-medium">
+                    <h3 className=" text-(--secondary-color) text-2xl font-medium">
                         Your Track
                     </h3>
                     <span className={`text-sm font-medium px-3 py-1 rounded-xl bg-gradient-to-br 
-                        ${premium ? 'from-amber-600 to-amber-400' : 'text-[var(--dark-accent-color)] from-[rgba(237,242,244,0.8)] to-white'}`}>
+                        ${premium ? 'from-amber-600 to-amber-400' : 'text-(---dark-accent-color) from-[rgba(237,242,244,0.8)] to-white'}`}>
                         Level {level}
                     </span>
                 </div>
@@ -46,7 +46,7 @@ const YourTrack = ({ premium, loading }) => {
                         className="flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-xl flex items-center relative transition-all duration-300 overflow-hidden group"
                     >
                         <div
-                            className={`h-full rounded-tr-md rounded-br-md bg-gradient-to-r transition-all duration-500 relative ${premium ? 'from-amber-600 to-amber-400' : 'from-[var(--accent-color)] to-[var(--dark-accent-color)]'}`}
+                            className={`h-full rounded-tr-md rounded-br-md bg-gradient-to-r transition-all duration-500 relative ${premium ? 'from-amber-600 to-amber-400' : 'from-(--accent-color) to-(---dark-accent-color)'}`}
                             role="progressbar"
                             aria-label={progressLabel}
                             aria-valuenow={Math.round(percentage)}
@@ -79,8 +79,8 @@ const YourTrack = ({ premium, loading }) => {
                 <div className="grid grid-cols-3 gap-3 pt-2 p-0 md:max-w-1/2 justify-items-center lg:justify-items-start theme-lock">
                     <div className={`bg-gradient-to-br rounded-xl border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
                         ${premium ? 'from-amber-500 to-amber-200 font-medium' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
-                        <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Current Streak</div>
-                        <div className="text-2xl font-medium text-[var(--accent-color)] flex items-center gap-1 justify-center lg:justify-start">
+                        <div className="text-xs text-(--secondary-color) font-medium pb-1 text-center lg:text-left">Current Streak</div>
+                        <div className="text-2xl font-medium text-(--accent-color) flex items-center gap-1 justify-center lg:justify-start">
                             <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <linearGradient id="icon-gradient-fire-streak" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -95,8 +95,8 @@ const YourTrack = ({ premium, loading }) => {
                     </div>
                     <div className={`bg-gradient-to-br rounded-xl border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
                         ${premium ? 'from-amber-500 to-amber-200' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
-                        <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Best Streak</div>
-                        <div className="text-2xl font-medium text-[var(--secondary-color)] flex items-center gap-1 justify-center lg:justify-start">
+                        <div className="text-xs text-(--secondary-color) font-medium pb-1 text-center lg:text-left">Best Streak</div>
+                        <div className="text-2xl font-medium text-(--secondary-color) flex items-center gap-1 justify-center lg:justify-start">
                             <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <linearGradient id="icon-gradient-bolt-streak" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -111,14 +111,14 @@ const YourTrack = ({ premium, loading }) => {
                     </div>
                     <div className={`bg-gradient-to-br rounded-xl border border-[rgba(43,45,66,0.1)] shadow-[0_10px_10px_rgba(141,153,174,0.3)] p-3 w-full 
                         ${premium ? 'from-amber-500 to-amber-200' : 'from-[rgba(237,242,244,0.8)] to-white'}`}>
-                        <div className="text-xs text-[var(--secondary-color)] font-medium pb-1 text-center lg:text-left">Accuracy</div>
-                        <div className="text-2xl font-medium text-[var(--secondary-color)] justify-center lg:justify-start flex">
+                        <div className="text-xs text-(--secondary-color) font-medium pb-1 text-center lg:text-left">Accuracy</div>
+                        <div className="text-2xl font-medium text-(--secondary-color) justify-center lg:justify-start flex">
                             {avgAccuracy === null ? 'N/A' : `${avgAccuracy}%`}
                         </div>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4 text-xs text-[var(--secondary-color)] opacity-80">
+                <div className="flex items-center gap-4 text-xs text-(--secondary-color) opacity-80">
                     <span>Total attempts: <strong>{totalAttempts}</strong></span>
                     <span>Updated just now</span>
                 </div>
