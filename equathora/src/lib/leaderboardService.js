@@ -174,18 +174,27 @@ export function calculateUserXP(userProgress, streakData) {
  * @param {boolean} solutionViewed - Whether the solution was viewed before solving
  */
 export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt, hintsUsed = 0, solutionViewed = false) {
-    let baseXP = 0;
+    let baseXP = 50; // Fallback default
 
-    // Base XP by difficulty
-    switch (difficulty?.toLowerCase()) {
+    // Base XP matched to Equathora's 6 difficulty tiers
+    switch (difficulty?.toLowerCase()?.trim()) {
+        case 'beginner':
+            baseXP = 25;
+            break;
         case 'easy':
             baseXP = 50;
             break;
         case 'medium':
             baseXP = 100;
             break;
+        case 'challenging':
+            baseXP = 175;
+            break;
         case 'hard':
-            baseXP = 200;
+            baseXP = 250;
+            break;
+        case 'advanced':
+            baseXP = 400;
             break;
         default:
             baseXP = 50;
@@ -197,7 +206,7 @@ export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt,
     // Speed bonus based on time spent (tiered system)
     let speedBonus = 0;
     if (timeSpentSeconds && timeSpentSeconds > 0) {
-        if (timeSpentSeconds < 60) { // Under 1 minute
+        if (timeSpentSeconds < 60) {         // Under 1 minute
             speedBonus = 50;
         } else if (timeSpentSeconds < 120) { // Under 2 minutes
             speedBonus = 35;
@@ -237,7 +246,7 @@ export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt,
 // ============================================================================
 
 /**
- * Build a lookup of user metadata from the `profiles` table when available.
+ * Build a lookup of user metadata from the `profiles` table when available.    
  * Falls back to empty map if the table is missing or returns an error.
  */
 async function getProfileMap(userIds = []) {

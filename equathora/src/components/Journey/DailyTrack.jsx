@@ -11,7 +11,6 @@ import {
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { generateProblemSlug } from '@/lib/slugify';
 import { getEstimatedTime } from '@/lib/problemProgress';
-import { calculateProblemXP } from '@/lib/leaderboardService';
 import { motion } from 'framer-motion';
 
 // Daily minutes goal per weekly commitment tier. Mirrors the pool-size
@@ -45,18 +44,6 @@ const DailyTrack = ({
 
     const queue = Array.isArray(recommendedQueue) ? recommendedQueue : [];
     const remainingInPool = Math.max(totalRecommendedCount - queue.length, 0);
-
-    // Defensive XP calc: never let a missing difficulty crash the render loop.
-    const getProblemXp = (problem) => {
-        if (!problem?.difficulty) return 0;
-        try {
-            const result = calculateProblemXP(problem.difficulty, 0, true, 0, false);
-            return Number.isFinite(result?.totalXP) ? result.totalXP : 0;
-        } catch (err) {
-            console.error("[DailyTrack] calculateProblemXP failed:", err);
-            return 0;
-        }
-    };
 
     const getProblemSlug = (problem) => {
         if (!problem?.id) return null;
