@@ -16,6 +16,7 @@ export async function getUserProgress() {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return null;
 
+        // READ operations via SELECT are allowed by RLS
         const { data, error } = await supabase
             .from('user_progress')
             .select('*')
@@ -31,22 +32,18 @@ export async function getUserProgress() {
     }
 }
 
-export async function saveUserProgress(progress) {
+export async function saveUserProgress() {
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
 
-        const { error } = await supabase
-            .from('user_progress')
-            .upsert({
-                user_id: session.user.id,
-                ...progress,
-                updated_at: new Date().toISOString()
-            }, { onConflict: 'user_id' });
+        const { error } = await supabase.rpc('recalculate_user_xp', {
+            p_user_id: session.user.id
+        });
 
         if (error) throw error;
     } catch (error) {
-        console.error('Error saving user progress:', error);
+        console.error('Error recalculating user progress:', error);
     }
 }
 
@@ -101,26 +98,7 @@ export async function getCompletedProblems() {
 
         let uniqueProblemIds = [...new Set(cleanedIds)];
 
-        if (cleanedIds.length > uniqueProblemIds.length) {
-            console.log(`Found ${cleanedIds.length - uniqueProblemIds.length} duplicate problem entries, cleaning up...`);
-            await supabase
-                .from('user_completed_problems')
-                .delete()
-                .eq('user_id', session.user.id);
-
-            if (uniqueProblemIds.length > 0) {
-                const uniqueEntries = uniqueProblemIds.map(pid => ({
-                    user_id: session.user.id,
-                    problem_id: pid,
-                    completed_at: new Date().toISOString()
-                }));
-
-                await supabase
-                    .from('user_completed_problems')
-                    .insert(uniqueEntries);
-            }
-        }
-
+        // Fallback check against user_progress if no completed problems found
         if (uniqueProblemIds.length === 0) {
             const { data: progressRow } = await supabase
                 .from('user_progress')
@@ -130,17 +108,6 @@ export async function getCompletedProblems() {
 
             if (progressRow && Array.isArray(progressRow.solved_problems) && progressRow.solved_problems.length > 0) {
                 uniqueProblemIds = progressRow.solved_problems.map(id => String(id));
-                console.log(`Loaded ${uniqueProblemIds.length} solved problems from user_progress fallback`);
-
-                const entries = uniqueProblemIds.map(pid => ({
-                    user_id: session.user.id,
-                    problem_id: pid,
-                    completed_at: new Date().toISOString()
-                }));
-
-                await supabase
-                    .from('user_completed_problems')
-                    .upsert(entries, { onConflict: 'user_id,problem_id' });
             }
         }
 
@@ -424,21 +391,17 @@ export async function saveSubmission(problemId, submittedAnswer, isCorrect, time
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return;
 
-        const { error } = await supabase
-            .from('user_submissions')
-            .insert({
-                user_id: session.user.id,
-                problem_id: problemId,
-                submitted_answer: submittedAnswer,
-                is_correct: isCorrect,
-                time_spent_seconds: timeSpentSeconds,
-                submitted_at: new Date().toISOString(),
-                steps: steps,
-            });
+        // Use RPC to write submission safely
+        const { error } = await supabase.rpc('submit_answer_write', {
+            p_user_id: session.user.id,
+            p_problem_id: problemId,
+            p_is_correct: isCorrect,
+            p_solution_viewed: metadata?.solutionViewed || false
+        });
 
         if (error) throw error;
     } catch (error) {
-        console.error('Error saving submission:', error);
+        console.error('Error saving submission via RPC:', error);
     }
 }
 
@@ -790,113 +753,59 @@ export async function recordProblemStats(
         return null;
     }
 
-    const { data: dbProgress, error: fetchError } = await supabase
+    // 1. Submit answer via secure RPC (handles user_submissions, user_completed_problems & streak)
+    try {
+        const { error: submitError } = await supabase.rpc('submit_answer_write', {
+            p_user_id: userId,
+            p_problem_id: String(problem.id),
+            p_is_correct: isCorrect,
+            p_user_answer: submittedAnswer || '',
+            p_xp_reward: problemXP || 0
+        });
+
+        if (submitError) {
+            console.error('Error recording submission via RPC:', submitError);
+        }
+    } catch (e) {
+        console.error('RPC submit_answer_write failed:', e);
+    }
+
+    // 2. Trigger server-side XP recalculation
+    try {
+        await supabase.rpc('recalculate_user_xp', { p_user_id: userId });
+    } catch (e) {
+        console.error('RPC recalculate_user_xp failed:', e);
+    }
+
+    // 3. Increment metadata stats (weekly, topic, difficulty) if first time correct
+    const weekdayIndex = getWeekdayIndex(timestamp);
+    if (isCorrect && !alreadySolved) {
+        try { await incrementWeeklyProgress(weekdayIndex); }
+        catch (e) { console.error('Failed to increment weekly progress:', e); }
+
+        const topicKey = problem.topic || 'General Concepts';
+        try { await incrementTopicFrequency(topicKey); }
+        catch (e) { console.error('Failed to increment topic frequency:', e); }
+
+        try { await incrementDifficultyBreakdown(problem.difficulty); }
+        catch (e) { console.error('Failed to increment difficulty breakdown:', e); }
+    }
+
+    // 4. Fetch updated progress to return immediate UI state
+    const { data: dbProgress } = await supabase
         .from('user_progress')
         .select('*')
         .eq('user_id', userId)
         .maybeSingle();
 
-    if (fetchError) {
-        console.error('Failed to fetch user_progress:', fetchError);
-    }
-
-    const currentTotalAttempts = Number(dbProgress?.total_attempts ?? 0);
-    const currentCorrectAnswers = Number(dbProgress?.correct_answers ?? 0);
-    const currentWrongSubmissions = Number(dbProgress?.wrong_submissions ?? 0);
-    const currentPerfectStreak = Number(dbProgress?.perfect_streak ?? 0);
-    const currentReputation = Number(dbProgress?.reputation ?? 0);
-    const currentLastReputationStreak = Number(dbProgress?.last_reputation_streak ?? 0);
-    const currentTotalXP = Number(dbProgress?.total_xp ?? 0);
-    const currentTimeMinutes = Number(dbProgress?.total_time_minutes ?? 0);
-
-    const totalAttempts = currentTotalAttempts + 1;
-    let correctAnswers = currentCorrectAnswers;
-    let wrongSubmissions = currentWrongSubmissions;
-    let perfectStreak = currentPerfectStreak;
-    let reputation = currentReputation;
-    let lastReputationStreak = currentLastReputationStreak;
-
-    if (isCorrect) {
-        if (!alreadySolved) correctAnswers += 1;
-        wrongSubmissions = currentWrongSubmissions;
-    } else {
-        wrongSubmissions += 1;
-    }
-
-    const correctSubmissions = totalAttempts - wrongSubmissions;
-    const accuracyRate = totalAttempts > 0
-        ? Math.round((correctSubmissions / totalAttempts) * 100)
-        : 0;
-
-    let problemXP = 0;
-    if (isCorrect && !alreadySolved) {
-        const xpResult = calculateProblemXP(
-            problem.difficulty,
-            timeSpentSeconds,
-            attemptNumber === 1,
-            hintsUsed,
-            solutionViewed
-        );
-        problemXP = xpResult.totalXP;
-    }
-    const totalXP = currentTotalXP + problemXP;
-
-    const minutesSpent = Math.max(1, Math.round(timeSpentSeconds / 60));
-    const updatedTotalTimeMinutes = currentTimeMinutes + minutesSpent;
-
-    if (isCorrect && !alreadySolved && attemptNumber === 1) {
-        perfectStreak += 1;
-    } else if (!isCorrect) {
-        perfectStreak = 0;
-    }
-
-    if (isCorrect && !alreadySolved) {
-        reputation += 20;
-    }
-    if (streakData && typeof streakData.current === 'number') {
-        const previous = lastReputationStreak || 0;
-        if (streakData.current > previous) {
-            reputation += (streakData.current - previous) * 2;
-            lastReputationStreak = streakData.current;
-        }
-    }
-
-    const { error: upsertError } = await supabase
-        .from('user_progress')
-        .upsert({
-            user_id: userId,
-            total_attempts: totalAttempts,
-            correct_answers: correctAnswers,
-            wrong_submissions: wrongSubmissions,
-            accuracy_rate: accuracyRate,
-            reputation,
-            perfect_streak: perfectStreak,
-            last_reputation_streak: lastReputationStreak,
-            total_xp: totalXP,
-            total_time_minutes: updatedTotalTimeMinutes,
-            updated_at: new Date().toISOString()
-        }, { onConflict: 'user_id' });
-
-    if (upsertError) {
-        console.error('Failed to upsert user_progress:', upsertError);
-    }
-
-    const weekdayIndex = getWeekdayIndex(timestamp);
-    if (isCorrect && !alreadySolved) {
-        try { await incrementWeeklyProgress(weekdayIndex); }
-        catch (e) { console.error('Failed to increment weekly progress:', e); }
-    }
-
-    const topicKey = problem.topic || 'General Concepts';
-    if (isCorrect && !alreadySolved) {
-        try { await incrementTopicFrequency(topicKey); }
-        catch (e) { console.error('Failed to increment topic frequency:', e); }
-    }
-
-    if (isCorrect && !alreadySolved) {
-        try { await incrementDifficultyBreakdown(problem.difficulty); }
-        catch (e) { console.error('Failed to increment difficulty breakdown:', e); }
-    }
+    const totalAttempts = Number(dbProgress?.total_attempts ?? 0);
+    const correctAnswers = Number(dbProgress?.correct_answers ?? 0);
+    const wrongSubmissions = Number(dbProgress?.wrong_submissions ?? 0);
+    const accuracyRate = Number(dbProgress?.accuracy_rate ?? 0);
+    const reputation = Number(dbProgress?.reputation ?? 0);
+    const perfectStreak = Number(dbProgress?.perfect_streak ?? 0);
+    const totalXP = Number(dbProgress?.total_xp ?? 0);
+    const updatedTotalTimeMinutes = Number(dbProgress?.total_time_minutes ?? 0);
 
     return {
         totalAttempts,

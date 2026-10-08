@@ -16,7 +16,7 @@ const INPUT_BASE_CLASSES =
 
 const INPUT_ERROR_CLASSES = 'border-(--accent-color) bg-(--accent-color)/5';
 const INPUT_NORMAL_CLASSES =
-    'border-(---mid-main-secondary) bg-(--white) placeholder:text-(---mid-main-secondary)';
+    'border-(--mid-main-secondary) bg-(--white) placeholder:text-(--mid-main-secondary)';
 
 function validateForm({ name, email, hasSession }) {
     const errors = {};
@@ -140,7 +140,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative bg-(--white) rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-(---mid-main-secondary)"
+                        className="relative bg-(--white) rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-(--mid-main-secondary)"
                     >
                         {isSubscribed ? (
                             <div>
@@ -152,7 +152,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="absolute top-4 right-4 text-(---mid-main-secondary) hover:text-(--secondary-color) transition-colors p-1.5 rounded-full cursor-pointer active:scale-95 z-50"
+                                    className="absolute top-4 right-4 text-(--mid-main-secondary) hover:text-(--secondary-color) transition-colors p-1.5 rounded-full cursor-pointer active:scale-95 z-50"
                                     aria-label="Close modal"
                                 >
                                     <FaTimes size={16} />
@@ -176,7 +176,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                             <span className="block text-4xl font-extrabold !text-(--accent-color) leading-tight">Equathora Briefs</span>
                                         </h2>
 
-                                        <p className="text-sm text-(---mid-main-secondary) pb-3 max-w-sm">
+                                        <p className="text-sm text-(--mid-main-secondary) pb-3 max-w-sm">
                                             Get product updates, new challenge drops, and launch announcements. No spam.
                                         </p>
 
@@ -205,10 +205,10 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
 
                                             {session ? (
                                                 <>
-                                                    <p className="text-xs text-(---mid-main-secondary) pl-1 pt-1">
+                                                    <p className="text-xs text-(--mid-main-secondary) pl-1 pt-1">
                                                         This is the email you'll use to subscribe
                                                     </p>
-                                                    <div className={`${INPUT_BASE_CLASSES} border-(---mid-main-secondary) bg-[var(--main-color)] cursor-default`}>
+                                                    <div className={`${INPUT_BASE_CLASSES} border-(--mid-main-secondary) bg-[var(--main-color)] cursor-default`}>
                                                         {session.user.email}
                                                     </div>
                                                 </>
@@ -236,7 +236,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 type="button"
                                                 onClick={onClose}
                                                 disabled={isLoading}
-                                                className="flex-1 px-6 py-3 border border-(---mid-main-secondary) text-(--secondary-color) font-semibold rounded-xl hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+                                                className="flex-1 px-6 py-3 border border-(--mid-main-secondary) text-(--secondary-color) font-semibold rounded-xl hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
                                             >
                                                 Cancel
                                             </button>

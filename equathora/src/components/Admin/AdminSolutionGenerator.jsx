@@ -525,7 +525,7 @@ const AdminSolutionGenerator = () => {
 
                 {hasInvalidRange && <p className='pt-2 text-sm font-semibold text-(--accent-color)'>End page must be greater than or equal to start page.</p>}
                 {isCharLimitTooLow && <p className='pt-2 text-sm font-semibold text-(--accent-color)'>Character limit should be at least 2000.</p>}
-                {!hasInvalidRange && !isCharLimitTooLow && <p className='pt-2 text-xs text-(---mid-main-secondary)'>This command uses raw mode + stdout mode, so no output files are created. Use the clipboard command for a faster flow.</p>}
+                {!hasInvalidRange && !isCharLimitTooLow && <p className='pt-2 text-xs text-(--mid-main-secondary)'>This command uses raw mode + stdout mode, so no output files are created. Use the clipboard command for a faster flow.</p>}
             </div>
 
             <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
@@ -564,7 +564,7 @@ const AdminSolutionGenerator = () => {
             <div className='rounded-xl border p-4' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--main-color)' }}>
                 <div className='flex flex-wrap items-center justify-between gap-3'>
                     <h2 className='text-lg font-bold'>Copy Queue</h2>
-                    <p className='text-xs text-(---mid-main-secondary)'>
+                    <p className='text-xs text-(--mid-main-secondary)'>
                         {loadedFileName ? `${loadedFileName} | ${batches.length} batch(es)` : 'Load a generated JSON file to start'}
                     </p>
                 </div>
@@ -572,15 +572,15 @@ const AdminSolutionGenerator = () => {
                 {!!batches.length && (
                     <div className='pt-3 grid grid-cols-1 gap-3 rounded-xl border p-3 md:grid-cols-3' style={{ borderColor: 'var(--mid-main-secondary)', backgroundColor: 'var(--french-gray)' }}>
                         <div>
-                            <p className='text-xs uppercase tracking-wide text-(---mid-main-secondary)'>Batches Completed</p>
+                            <p className='text-xs uppercase tracking-wide text-(--mid-main-secondary)'>Batches Completed</p>
                             <p className='text-lg font-black'>{doneBatchSet.size} / {batches.length}</p>
                         </div>
                         <div>
-                            <p className='text-xs uppercase tracking-wide text-(---mid-main-secondary)'>Pages Covered (Current Queue)</p>
+                            <p className='text-xs uppercase tracking-wide text-(--mid-main-secondary)'>Pages Covered (Current Queue)</p>
                             <p className='text-lg font-black'>{donePagesInQueue} / {totalPagesInQueue}</p>
                         </div>
                         <div>
-                            <p className='text-xs uppercase tracking-wide text-(---mid-main-secondary)'>Pages Covered (Lifetime)</p>
+                            <p className='text-xs uppercase tracking-wide text-(--mid-main-secondary)'>Pages Covered (Lifetime)</p>
                             <p className='text-lg font-black'>{lifetimePagesCovered}</p>
                         </div>
                     </div>
@@ -652,7 +652,7 @@ const AdminSolutionGenerator = () => {
                         />
 
                         <div className='pt-3'>
-                            <p className='pb-1 text-xs font-semibold uppercase tracking-wide text-(---mid-main-secondary)'>Run Notes</p>
+                            <p className='pb-1 text-xs font-semibold uppercase tracking-wide text-(--mid-main-secondary)'>Run Notes</p>
                             <textarea
                                 value={currentRunProgress.note || ''}
                                 onChange={(event) => setRunNote(event.target.value)}
@@ -663,7 +663,7 @@ const AdminSolutionGenerator = () => {
                         </div>
                     </>
                 ) : (
-                    <p className='pt-3 text-sm text-(---mid-main-secondary)'>No queue loaded yet.</p>
+                    <p className='pt-3 text-sm text-(--mid-main-secondary)'>No queue loaded yet.</p>
                 )}
 
                 {!!notice && (

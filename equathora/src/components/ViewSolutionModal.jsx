@@ -15,7 +15,7 @@ const ViewSolutionModal = ({ isOpen, onClose, onConfirm }) => {
                 </div>
 
                 <div className='flex w-full justify-between gap-3 pt-7'>
-                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-(---mid-main-secondary) rounded-xl bg-(--white) text-(--secondary-color) hover:bg-(--french-gray) shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base'>Cancel</button>
+                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-(--mid-main-secondary) rounded-xl bg-(--white) text-(--secondary-color) hover:bg-(--french-gray) shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base'>Cancel</button>
 
                     <button type="button" className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-(--white) hover:bg-(--dark-accent-color) hover:border-(--dark-accent-color) shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base' onClick={onConfirm}>View Solution</button>
                 </div>

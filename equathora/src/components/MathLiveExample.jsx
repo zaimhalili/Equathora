@@ -22,7 +22,7 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
                     <p className=' text-(--secondary-color) text-sm md:text-base leading-relaxed opacity-80'>This will delete all your current steps. This action cannot be undone.</p>
                 </div>
                 <div className='flex w-full justify-between gap-3 pt-7'>
-                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-(---mid-main-secondary) rounded-xl bg-(--white) text-(--secondary-color) hover:bg-(--french-gray) shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base theme-lock'>Cancel</button>
+                    <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-(--mid-main-secondary) rounded-xl bg-(--white) text-(--secondary-color) hover:bg-(--french-gray) shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base theme-lock'>Cancel</button>
                     <button type="button" className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-white hover:bg-(--dark-accent-color) hover:border-(--dark-accent-color) shadow-md hover:shadow-lg -translate-y-1 hover:translate-y-0 transition-all duration-300 flex-1 text-sm md:text-base' onClick={onConfirm}>Clear All</button>
                 </div>
             </div>
@@ -316,7 +316,7 @@ export default function MathLiveEditor({
                                                 className="ml-field"
                                                 virtualkeyboardmode="off"
                                                 smartfence="true"
-                                                placeholder="Enter your next step"
+                                                placeholder="Solve"
                                                 value={field.latex}
                                                 onInput={(evt) => updateLatex(field.id, evt.target.getValue("latex"))}
                                                 onKeyDown={(e) => {
@@ -409,7 +409,7 @@ export default function MathLiveEditor({
                     </div>
 
                     {showGeneralFeedback && (
-                        <div className="w-full pt-2 flex justify-between px-6 md:px-8 items-center pb-4 flex-wrap border-t border-(---mid-main-secondary)/30">
+                        <div className="w-full pt-2 flex justify-between px-6 md:px-8 items-center pb-4 flex-wrap border-t border-(--mid-main-secondary)/30">
                             <p className="text-xs md:text-sm leading-relaxed text-(--secondary-color)">
                                 {submissionFeedback.message}
                             </p>

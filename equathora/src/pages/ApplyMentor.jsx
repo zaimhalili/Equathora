@@ -101,7 +101,7 @@ const ApplyMentor = () => {
                                         {benefit.icon}
                                     </div>
                                     <h3 className='relative text-base md:text-lg font-bold'>{benefit.title}</h3>
-                                    <p className='relative text-sm text-(---mid-main-secondary) leading-relaxed'>{benefit.description}</p>
+                                    <p className='relative text-sm text-(--mid-main-secondary) leading-relaxed'>{benefit.description}</p>
                                 </motion.div>
                             ))}
                         </div>
@@ -143,7 +143,7 @@ const ApplyMentor = () => {
                                         <FaChalkboardTeacher />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Teachers</h3>
-                                    <p className='text-sm text-(---mid-main-secondary) leading-relaxed'>
+                                    <p className='text-sm text-(--mid-main-secondary) leading-relaxed'>
                                         Shape classroom workflows with homework assignment, skill insights, and detailed feedback on recurring mistakes.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>
@@ -173,7 +173,7 @@ const ApplyMentor = () => {
                                         <FaHeart />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Parents</h3>
-                                    <p className='text-sm text-(---mid-main-secondary) leading-relaxed'>
+                                    <p className='text-sm text-(--mid-main-secondary) leading-relaxed'>
                                         Follow your child’s learning journey and see where they need support most with clearer progress signals.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>
@@ -203,7 +203,7 @@ const ApplyMentor = () => {
                                         <FaUsers />
                                     </div>
                                     <h3 className='text-lg md:text-xl font-bold'>Learning Supporters</h3>
-                                    <p className='text-sm text-(---mid-main-secondary) leading-relaxed'>
+                                    <p className='text-sm text-(--mid-main-secondary) leading-relaxed'>
                                         Help students publicly, share useful approaches, and contribute to a community focused on understanding rather than shortcuts.
                                     </p>
                                     <div className='flex flex-wrap gap-2'>

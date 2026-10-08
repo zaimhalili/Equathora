@@ -83,17 +83,17 @@ const SectionTitle = ({ children, sub }) => (
         <h2 className=" font-medium text-xl lg:text-2xl text-(--secondary-color)">
             {children}
         </h2>
-        {sub && <p className="text-sm text-(---mid-main-secondary)">{sub}</p>}
+        {sub && <p className="text-sm text-(--mid-main-secondary)">{sub}</p>}
     </div>
 );
 
 const InputField = ({ label, description, ...props }) => (
     <div className="flex flex-col gap-1.5">
         <label className="text-sm font-semibold text-(--secondary-color)">{label}</label>
-        {description && <p className="text-xs text-(---mid-main-secondary)">{description}</p>}
+        {description && <p className="text-xs text-(--mid-main-secondary)">{description}</p>}
         <input
             {...props}
-            className="text-lg font-black border rounded-xl px-4 py-3 w-full border-(---mid-main-secondary) bg-[var(--surface-card)] text-(--secondary-color) focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all "
+            className="text-lg font-black border rounded-xl px-4 py-3 w-full border-(--mid-main-secondary) bg-[var(--surface-card)] text-(--secondary-color) focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all "
         />
     </div>
 );
@@ -102,7 +102,7 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
     <div className="flex items-center justify-between gap-4 py-2">
         <div className="flex flex-col gap-0.5 flex-1 min-w-0">
             <span className="text-sm font-semibold text-(--secondary-color)">{label}</span>
-            {description && <span className="text-xs text-(---mid-main-secondary)">{description}</span>}
+            {description && <span className="text-xs text-(--mid-main-secondary)">{description}</span>}
         </div>
         <button
             type="button"
@@ -110,7 +110,7 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
             aria-checked={checked}
             disabled={disabled}
             onClick={() => onChange(!checked)}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer overflow-hidden rounded-full transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-(--accent-color)' : 'bg-(---mid-main-secondary)'}`}
+            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer overflow-hidden rounded-full transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${checked ? 'bg-(--accent-color)' : 'bg-(--mid-main-secondary)'}`}
         >
             <span
                 className={`pointer-events-none inline-block h-5 w-5 shadow-black/70 transform rounded-full bg-white ring-0 transition-transform duration-200 translate-y-[1.8px] ${checked ? 'translate-x-[21.5px]' : 'translate-x-[2px]'}`}
@@ -144,7 +144,7 @@ const OutlineButton = ({ children, onClick, disabled, className = '' }) => (
         type="button"
         onClick={onClick}
         disabled={disabled}
-        className={`cursor-pointer py-2.5 px-5 border border-(---mid-main-secondary) text-(--secondary-color) font-semibold text-sm rounded-xl hover:bg-[var(--main-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+        className={`cursor-pointer py-2.5 px-5 border border-(--mid-main-secondary) text-(--secondary-color) font-semibold text-sm rounded-xl hover:bg-[var(--main-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
     >
         {children}
     </button>
@@ -164,7 +164,7 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
 );
 
 const Chip = ({ children }) => (
-    <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[var(--main-color)] text-(--secondary-color) border border-(---mid-main-secondary)">
+    <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[var(--main-color)] text-(--secondary-color) border border-(--mid-main-secondary)">
         {children}
     </span>
 );
@@ -250,7 +250,7 @@ const ConfirmModal = ({
                         <h2 className="text-xl font-medium text-(--secondary-color)">{title}</h2>
                         <button
                             onClick={() => !loading && onClose()}
-                            className="text-(---mid-main-secondary) hover:text-(--secondary-color) p-1 rounded-xl cursor-pointer transition-colors shrink-0"
+                            className="text-(--mid-main-secondary) hover:text-(--secondary-color) p-1 rounded-xl cursor-pointer transition-colors shrink-0"
                             aria-label="Close"
                         >
                             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -259,7 +259,7 @@ const ConfirmModal = ({
                         </button>
                     </div>
 
-                    <p className="text-sm text-(---mid-main-secondary)">{description}</p>
+                    <p className="text-sm text-(--mid-main-secondary)">{description}</p>
 
                     {confirmWord && (
                         <div className="flex flex-col gap-1.5">
@@ -271,7 +271,7 @@ const ConfirmModal = ({
                                 onChange={e => setTyped(e.target.value)}
                                 placeholder={confirmWord}
                                 autoFocus
-                                className="px-4 py-2.5 border rounded-xl border-(---mid-main-secondary) bg-[var(--surface-card)] text-(--secondary-color) focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                                className="px-4 py-2.5 border rounded-xl border-(--mid-main-secondary) bg-[var(--surface-card)] text-(--secondary-color) focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
                             />
                         </div>
                     )}
@@ -906,7 +906,7 @@ const Settings = () => {
                                 title={section.label}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all shrink-0 cursor-pointer ${activeSection === section.id
                                     ? 'bg-(--accent-color) text-white'
-                                    : 'bg-[var(--surface-card)] text-(--secondary-color) border border-(---mid-main-secondary) hover:bg-(--secondary-color) hover:text-[var(--main-color)]'
+                                    : 'bg-[var(--surface-card)] text-(--secondary-color) border border-(--mid-main-secondary) hover:bg-(--secondary-color) hover:text-[var(--main-color)]'
                                     }`}
                             >
                                 {section.icon}
@@ -931,9 +931,9 @@ const Settings = () => {
                                         <span className="text-lg font-medium truncate">{profileSummary.full_name || 'Unnamed'}</span>
                                         <Chip>{profileSummary.role === 'admin' ? 'Admin' : 'Student'}</Chip>
                                     </div>
-                                    <span className="text-sm text-(---mid-main-secondary)">@{profileSummary.username || 'no-username'}</span>
+                                    <span className="text-sm text-(--mid-main-secondary)">@{profileSummary.username || 'no-username'}</span>
                                     {profileSummary.bio && (
-                                        <p className="text-xs text-(---mid-main-secondary) line-clamp-2 pt-1">{profileSummary.bio}</p>
+                                        <p className="text-xs text-(--mid-main-secondary) line-clamp-2 pt-1">{profileSummary.bio}</p>
                                     )}
                                 </div>
                                 <div className="flex items-center gap-3 shrink-0">
@@ -951,17 +951,17 @@ const Settings = () => {
                             <SectionTitle sub="Manage your email, password, and security settings">Account & Security</SectionTitle>
 
                             <div className="flex flex-col gap-1 bg-[var(--main-color)] rounded-xl px-4 py-3">
-                                <span className="text-xs font-semibold text-(---mid-main-secondary)">Current email</span>
+                                <span className="text-xs font-semibold text-(--mid-main-secondary)">Current email</span>
                                 <span className="text-sm font-medium">{currentEmail}</span>
                                 {authProvider !== 'email' && (
-                                    <span className="text-xs text-(---mid-main-secondary) font-semibold">
+                                    <span className="text-xs text-(--mid-main-secondary) font-semibold">
                                         Signed in via {authProvider === 'google' ? 'Google' : authProvider}
                                     </span>
                                 )}
                             </div>
 
                             {authProvider === 'email' && (
-                                <div className="flex flex-col gap-3 border-t border-(---mid-main-secondary) pt-4">
+                                <div className="flex flex-col gap-3 border-t border-(--mid-main-secondary) pt-4">
                                     <h3 className="text-base font-medium">Change Email</h3>
                                     <InputField
                                         label="New Email Address"
@@ -977,9 +977,9 @@ const Settings = () => {
                             )}
 
                             {authProvider === 'email' && (
-                                <div className="flex flex-col gap-3 border-t border-(---mid-main-secondary) pt-4">
+                                <div className="flex flex-col gap-3 border-t border-(--mid-main-secondary) pt-4">
                                     <h3 className="text-base font-medium">Change Password</h3>
-                                    <p className="text-xs text-(---mid-main-secondary)">
+                                    <p className="text-xs text-(--mid-main-secondary)">
                                         Minimum 8 characters with uppercase, lowercase, and a number.
                                     </p>
                                     <InputField
@@ -998,7 +998,7 @@ const Settings = () => {
                                         placeholder="••••••••"
                                         autoComplete="new-password"
                                     />
-                                    <label className="flex items-center gap-2 cursor-pointer text-xs text-(---mid-main-secondary)">
+                                    <label className="flex items-center gap-2 cursor-pointer text-xs text-(--mid-main-secondary)">
                                         <input
                                             type="checkbox"
                                             checked={showPassword}
@@ -1014,8 +1014,8 @@ const Settings = () => {
                             )}
 
                             {authProvider !== 'email' && (
-                                <div className="flex flex-col gap-2 border-t border-(---mid-main-secondary) pt-4">
-                                    <p className="text-sm text-(---mid-main-secondary)">
+                                <div className="flex flex-col gap-2 border-t border-(--mid-main-secondary) pt-4">
+                                    <p className="text-sm text-(--mid-main-secondary)">
                                         Your account is managed through {authProvider === 'google' ? 'Google' : authProvider}.
                                         Email and password changes must be made through your provider.
                                     </p>
@@ -1034,7 +1034,7 @@ const Settings = () => {
                                     {learningChips.map(chip => <Chip key={chip}>{chip}</Chip>)}
                                 </div>
                             ) : (
-                                <p className="text-sm text-(---mid-main-secondary)">You haven't completed the onboarding quiz yet.</p>
+                                <p className="text-sm text-(--mid-main-secondary)">You haven't completed the onboarding quiz yet.</p>
                             )}
 
                             <div>
@@ -1070,7 +1070,7 @@ const Settings = () => {
                                 />
 
                                 <div className={`flex flex-col gap-1 transition-opacity ${!settings.notifications_enabled ? 'opacity-40 pointer-events-none' : ''}`}>
-                                    <div className="border-t border-(---mid-main-secondary) pt-2">
+                                    <div className="border-t border-(--mid-main-secondary) pt-2">
                                         <ToggleSwitch
                                             label="Achievement Alerts"
                                             description="Notified when you unlock a new achievement"
@@ -1115,7 +1115,7 @@ const Settings = () => {
                                         />
                                     </div>
 
-                                    <div className="border-t border-(---mid-main-secondary) pt-3 text-sm font-medium">
+                                    <div className="border-t border-(--mid-main-secondary) pt-3 text-sm font-medium">
                                         If you are subscribed and want to unsubscribe from <i>Equathora Briefs / Email Notifications</i> contact us at <strong><u>equathora@gmail.com</u></strong>
                                         {/* <ToggleSwitch
                                             label="Email Notifications"
@@ -1145,7 +1145,7 @@ const Settings = () => {
                                             aria-pressed={settings.theme === opt.value}
                                             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all cursor-pointer ${settings.theme === opt.value
                                                 ? 'border-(--accent-color) bg-(--accent-color) text-white'
-                                                : 'border-(---mid-main-secondary) bg-[var(--surface-card)] text-(--secondary-color) hover:border-(--accent-color)'
+                                                : 'border-(--mid-main-secondary) bg-[var(--surface-card)] text-(--secondary-color) hover:border-(--accent-color)'
                                                 }`}
                                         >
                                             {opt.icon}
@@ -1155,7 +1155,7 @@ const Settings = () => {
                                 </div>
 
                                 {settings.theme === 'system' && (
-                                    <p className="text-xs text-(---mid-main-secondary)">
+                                    <p className="text-xs text-(--mid-main-secondary)">
                                         Currently following your device preference: <span className="font-semibold text-(--secondary-color)">{resolvedTheme === 'dark' ? 'Dark' : 'Light'}</span>.
                                     </p>
                                 )}
@@ -1195,9 +1195,9 @@ const Settings = () => {
                                 />
                             </div>
 
-                            <div className="flex flex-col gap-3 border-t border-(---mid-main-secondary) pt-4">
+                            <div className="flex flex-col gap-3 border-t border-(--mid-main-secondary) pt-4">
                                 <h3 className="text-base font-medium">Data & Cookies</h3>
-                                <p className="text-xs text-(---mid-main-secondary)">
+                                <p className="text-xs text-(--mid-main-secondary)">
                                     We use essential cookies for authentication and localStorage for offline progress tracking.
                                     Optional cookies are used for analytics and personalization.
                                     Read our full{' '}
@@ -1227,7 +1227,7 @@ const Settings = () => {
                                         {cookieConsent === 'accepted' ? 'All Cookies Accepted' : 'Essential Only'}
                                     </span>
                                     {cookieConsent !== 'none' && (
-                                        <span className="text-[10px] text-(---mid-main-secondary)">
+                                        <span className="text-[10px] text-(--mid-main-secondary)">
                                             Set on {settings.cookie_consent_date ? new Date(settings.cookie_consent_date).toLocaleDateString() : 'recently'}
                                         </span>
                                     )}
@@ -1243,12 +1243,12 @@ const Settings = () => {
 
                             <div className="flex items-center justify-between gap-4 flex-wrap bg-[var(--main-color)] rounded-xl px-4 py-4">
                                 <div className="flex flex-col gap-1">
-                                    <span className="text-xs font-semibold text-(---mid-main-secondary) uppercase tracking-wide">Current plan</span>
+                                    <span className="text-xs font-semibold text-(--mid-main-secondary) uppercase tracking-wide">Current plan</span>
                                     <div className="flex items-center gap-2">
                                         <span className="text-lg font-medium">{premium ? 'Premium' : 'Free'}</span>
                                     </div>
                                     {subscription.tier !== 'free' && subscription.renewsAt && (
-                                        <span className="text-xs text-(---mid-main-secondary)">
+                                        <span className="text-xs text-(--mid-main-secondary)">
                                             Renews on {new Date(subscription.renewsAt).toLocaleDateString()}
                                         </span>
                                     )}
@@ -1259,10 +1259,10 @@ const Settings = () => {
                                 </PrimaryButton>
                             </div>
 
-                            <p className="text-xs text-(---mid-main-secondary)">
+                            <p className="text-xs text-(--mid-main-secondary)">
                                 Premium unlocks AI step-by-step checking, detailed explanations, and solution verification.
                             </p>
-                            <p className='text-xs text-(---mid-main-secondary)'>For any issues contact us at: <a href="mailto:equathora@gmail.com" className='font-medium hover:underline'>equathora@gmail.com</a></p>
+                            <p className='text-xs text-(--mid-main-secondary)'>For any issues contact us at: <a href="mailto:equathora@gmail.com" className='font-medium hover:underline'>equathora@gmail.com</a></p>
                         </SectionCard>
 
                         {/* ============================================================ */}
@@ -1284,17 +1284,17 @@ const Settings = () => {
                                                 <span className="text-sm font-medium">Current Session</span>
                                                 <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Active</span>
                                             </div>
-                                            <span className="text-xs text-(---mid-main-secondary) truncate">
+                                            <span className="text-xs text-(--mid-main-secondary) truncate">
                                                 {currentSession.user_agent?.substring(0, 80)}...
                                             </span>
-                                            <span className="text-xs text-(---mid-main-secondary)">
+                                            <span className="text-xs text-(--mid-main-secondary)">
                                                 Last active: {new Date(currentSession.last_active).toLocaleString()}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
-                                <p className="text-sm text-(---mid-main-secondary)">Unable to load session information.</p>
+                                <p className="text-sm text-(--mid-main-secondary)">Unable to load session information.</p>
                             )}
 
                             <div className="flex items-center gap-3 rounded">
@@ -1305,7 +1305,7 @@ const Settings = () => {
 
                             <div className="flex flex-col gap-2 pt-4 border-t border-gray-100">
                                 <h3 className="text-base font-medium">Security Tips</h3>
-                                <ul className="text-xs text-(---mid-main-secondary) flex flex-col gap-1.5">
+                                <ul className="text-xs text-(--mid-main-secondary) flex flex-col gap-1.5">
                                     <li className="flex items-start gap-2">
                                         <span className="text-(--accent-color) font-medium shrink-0">•</span>
                                         Use a strong, unique password for your Equathora account

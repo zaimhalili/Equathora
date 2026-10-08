@@ -146,7 +146,7 @@ const Feedback = () => {
                 <Navbar />
             </header>
 
-            <main className="min-h-screen bg-gradient-to-b from-(---mid-main-secondary) to-[var(--main-color)] py-8 px-4 sm:px-6 md:px-8 w-full flex justify-center">
+            <main className="min-h-screen bg-gradient-to-b from-(--mid-main-secondary) to-[var(--main-color)] py-8 px-4 sm:px-6 md:px-8 w-full flex justify-center">
                 <div className="max-w-3xl">
                     <div className="bg-(--white) rounded-xl shadow-xl p-6 sm:p-8 md:p-10">
                         <h1 className="text-3xl sm:text-4xl font-bold text-(--secondary-color)  pb-4">
@@ -175,7 +175,7 @@ const Feedback = () => {
                                                 key={type.value}
                                                 className={`flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${formData.feedbackType === type.value
                                                     ? 'border-(--accent-color) bg-(--accent-color)/5'
-                                                    : 'border-(---mid-main-secondary) hover:border-(---mid-main-secondary)'
+                                                    : 'border-(--mid-main-secondary) hover:border-(--mid-main-secondary)'
                                                     }`}
                                             >
                                                 <input
@@ -204,7 +204,7 @@ const Feedback = () => {
                                                 key={issue}
                                                 className={`flex items-center gap-2 px-3 py-2 border rounded-xl cursor-pointer transition-all duration-150 text-sm ${formData.commonIssue === issue
                                                     ? 'border-(--accent-color) bg-(--accent-color)/10 text-(--secondary-color) font-medium'
-                                                    : 'border-(---mid-main-secondary) hover:border-(---mid-main-secondary) text-(--secondary-color)'
+                                                    : 'border-(--mid-main-secondary) hover:border-(--mid-main-secondary) text-(--secondary-color)'
                                                     }`}
                                             >
                                                 <input
@@ -213,7 +213,7 @@ const Feedback = () => {
                                                     value={issue}
                                                     checked={formData.commonIssue === issue}
                                                     onChange={handleChange}
-                                                    className="w-4 h-4 text-(--accent-color) border-(---mid-main-secondary) focus:ring-(--accent-color)"
+                                                    className="w-4 h-4 text-(--accent-color) border-(--mid-main-secondary) focus:ring-(--accent-color)"
                                                 />
                                                 <span className="">{issue}</span>
                                             </label>
@@ -235,7 +235,7 @@ const Feedback = () => {
                                         required
                                         maxLength={100}
                                         placeholder="Brief summary of your feedback"
-                                        className="w-full px-4 py-3 border-2 !border-(---mid-main-secondary) rounded-xl focus:outline-none focus:border-(--accent-color) transition-colors duration-200  text-(--secondary-color)"
+                                        className="w-full px-4 py-3 border-2 !border-(--mid-main-secondary) rounded-xl focus:outline-none focus:border-(--accent-color) transition-colors duration-200  text-(--secondary-color)"
                                     />
                                 </div>
 
@@ -253,7 +253,7 @@ const Feedback = () => {
                                         maxLength={2000}
                                         rows={6}
                                         placeholder="Please provide detailed information about your feedback..."
-                                        className="w-full px-4 py-3 border-2 !border-(---mid-main-secondary) rounded-xl focus:outline-none focus:border-(--accent-color) transition-colors duration-200  resize-none text-black"
+                                        className="w-full px-4 py-3 border-2 !border-(--mid-main-secondary) rounded-xl focus:outline-none focus:border-(--accent-color) transition-colors duration-200  resize-none text-black"
                                     />
                                     <div className="text-xs text-gray-500 pt-1 text-right">
                                         {formData.description.length}/2000 characters
@@ -273,7 +273,7 @@ const Feedback = () => {
                                         onChange={handleChange}
                                         maxLength={100}
                                         placeholder="your.email@example.com"
-                                        className="w-full px-4 py-3 border-2 text-(--secondary-color) !border-(---mid-main-secondary) rounded-xl focus:outline-none focus:border-(--accent-color) transition-colors duration-200 "
+                                        className="w-full px-4 py-3 border-2 text-(--secondary-color) !border-(--mid-main-secondary) rounded-xl focus:outline-none focus:border-(--accent-color) transition-colors duration-200 "
                                     />
                                     <p className="text-xs text-(--secondary-color) pt-2">
                                         Provide your email so we can follow up with you.

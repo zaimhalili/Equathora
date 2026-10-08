@@ -163,7 +163,7 @@ const TopicCard = ({
                                 {/* Circle Container */}
                                 <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                                     {statedProblems.map(problem => {
-                                        let style = "bg-(--white) text-(---mid-main-secondary)";
+                                        let style = "bg-(--white) text-(--mid-main-secondary)";
                                         let Icon = FaLock;
 
                                         if (problem.state === "solved") {
@@ -257,7 +257,7 @@ const TopicCard = ({
                                     </div>
 
                                     <div className="flex gap-2 items-center font-bold text-(--secondary-color)">
-                                        <div className="rounded-full flex h-7 w-7 bg-(--white) text-(---mid-main-secondary) justify-center items-center">
+                                        <div className="rounded-full flex h-7 w-7 bg-(--white) text-(--mid-main-secondary) justify-center items-center">
                                             <FaLock size={12} />
                                         </div>
                                         Not Started{" "}

@@ -46,7 +46,7 @@ const UpgradedPopup = ({ onClose }) => {
                         }}
                         className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-(--white) rounded-xl shadow-2xl p-8 sm:p-12 max-w-md w-[90vw] border border-(---mid-main-secondary) text-center relative overflow-hidden">
+                        <div className="bg-(--white) rounded-xl shadow-2xl p-8 sm:p-12 max-w-md w-[90vw] border border-(--mid-main-secondary) text-center relative overflow-hidden">
                             {/* Crown / Star Icon with spring rotation */}
                             <motion.div
                                 initial={{ scale: 0, rotate: -180 }}

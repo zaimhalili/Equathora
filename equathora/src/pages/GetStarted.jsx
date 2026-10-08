@@ -399,7 +399,7 @@ const GetStarted = () => {
                                             onClick={() => handleSelection(option.id)}
                                             className={`group flex items-center gap-3 p-3.5 rounded-lg border-2 transition-all duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
                                                 ? 'border-(--accent-color) bg-(--accent-color) text-white shadow-sm'
-                                                : 'border-(---mid-main-secondary) bg-(--white) text-(--secondary-color) hover:border-(--accent-color)'
+                                                : 'border-(--mid-main-secondary) bg-(--white) text-(--secondary-color) hover:border-(--accent-color)'
                                                 }`}
                                         >
                                             <div className='md:text-xl flex-shrink-0 text-lg'>
@@ -445,7 +445,7 @@ const GetStarted = () => {
                                                 onClick={() => handleSelection(option.id)}
                                                 className={`flex items-center justify-center gap-2.5 px-3.5 py-3 rounded-lg border-2 transition-all duration-200 cursor-pointer ${isSelected
                                                     ? 'border-(--accent-color) bg-(--accent-color) text-white shadow-sm'
-                                                    : 'border-(---mid-main-secondary) bg-(--white) text-(--secondary-color) hover:border-(--accent-color)'
+                                                    : 'border-(--mid-main-secondary) bg-(--white) text-(--secondary-color) hover:border-(--accent-color)'
                                                     }`}
                                             >
                                                 <div className='text-lg flex-shrink-0'>

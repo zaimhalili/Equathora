@@ -49,7 +49,7 @@ const SubmitProblem = () => {
         alert('Thank you! Your problem has been submitted and will be reviewed.');
     };
 
-    const inputClasses = 'w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-4 py-2.5 text-(--secondary-color) focus:outline-none focus:border-(--accent-color) transition-colors placeholder-(---mid-main-secondary)';
+    const inputClasses = 'w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-4 py-2.5 text-(--secondary-color) focus:outline-none focus:border-(--accent-color) transition-colors placeholder-(--mid-main-secondary)';
     const labelClasses = 'block text-sm font-semibold text-(--secondary-color) opacity-90';
     const cardClasses = 'bg-(--white) rounded-xl border border-[rgba(43,45,66,0.12)] p-6 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col gap-6';
     const fieldGroupClasses = 'flex flex-col gap-2';

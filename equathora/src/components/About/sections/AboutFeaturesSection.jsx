@@ -41,7 +41,7 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="up" delay={0.1} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ y: -8 }}
-                            className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(---mid-main-secondary) hover:border-(--accent-color)/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                            className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(--mid-main-secondary) hover:border-(--accent-color)/30 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                         >
                             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-(--accent-color)/10 to-transparent rounded-bl-full"></div>
                             <motion.div
@@ -52,7 +52,7 @@ const AboutFeaturesSection = () => {
                             </motion.div>
                             <div>
                                 <h3 className="text-2xl md:text-3xl font-black text-(--secondary-color) group-hover:text-(--accent-color) transition-colors">Sigma AI Debugger</h3>
-                                <p className="text-sm md:text-base text-(---mid-main-secondary) leading-relaxed">Pinpoints where your algebra or logic breaks and explains the missing step in plain language.</p>
+                                <p className="text-sm md:text-base text-(--mid-main-secondary) leading-relaxed">Pinpoints where your algebra or logic breaks and explains the missing step in plain language.</p>
                             </div>
                         </motion.div>
                     </ScrollReveal>
@@ -80,7 +80,7 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="left" delay={0.2} className="w-full md:w-[calc(33.333%-0.67rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ scale: 1.02 }}
-                            className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(---mid-main-secondary) hover:border-(--accent-color)/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
+                            className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(--mid-main-secondary) hover:border-(--accent-color)/50 flex flex-col justify-between relative overflow-hidden p-8 h-full"
                         >
                             <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-gradient-to-br from-(--accent-color)/5 to-transparent rounded-full group-hover:scale-125 transition-transform duration-500"></div>
                             <motion.div
@@ -92,7 +92,7 @@ const AboutFeaturesSection = () => {
                             </motion.div>
                             <div>
                                 <h3 className="text-2xl md:text-3xl font-black text-(--secondary-color) group-hover:text-(--accent-color) transition-colors">Teacher Insights</h3>
-                                <p className="text-sm md:text-base text-(---mid-main-secondary) leading-relaxed">Coming soon: assign homework, review student work, and receive detailed reports on repeated mistakes.</p>
+                                <p className="text-sm md:text-base text-(--mid-main-secondary) leading-relaxed">Coming soon: assign homework, review student work, and receive detailed reports on repeated mistakes.</p>
                             </div>
                         </motion.div>
                     </ScrollReveal>
@@ -101,7 +101,7 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="right" delay={0.3} className="flex-1">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
-                                className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(---mid-main-secondary) hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(--mid-main-secondary) hover:border-green-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 group-hover:from-green-500/10 group-hover:to-emerald-500/10 transition-all duration-300"></div>
                                 <motion.div
@@ -113,7 +113,7 @@ const AboutFeaturesSection = () => {
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-(--secondary-color) group-hover:text-green-600 transition-colors relative z-10">Leaderboards</h3>
-                                    <p className="text-sm md:text-base text-(---mid-main-secondary) leading-relaxed relative z-10">Compete globally, grow together</p>
+                                    <p className="text-sm md:text-base text-(--mid-main-secondary) leading-relaxed relative z-10">Compete globally, grow together</p>
                                 </div>
                             </motion.div>
                         </ScrollReveal>
@@ -161,7 +161,7 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="up" delay={0.4} className="flex-1">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
-                                className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(---mid-main-secondary) hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(--mid-main-secondary) hover:border-orange-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-orange-500/10 to-transparent rounded-tl-full"></div>
                                 <motion.div
@@ -172,7 +172,7 @@ const AboutFeaturesSection = () => {
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-(--secondary-color) group-hover:text-orange-600 transition-colors relative z-10">Study Streaks</h3>
-                                    <p className="text-sm md:text-base text-(---mid-main-secondary) leading-relaxed relative z-10">Build consistency with daily challenges</p>
+                                    <p className="text-sm md:text-base text-(--mid-main-secondary) leading-relaxed relative z-10">Build consistency with daily challenges</p>
                                 </div>
                             </motion.div>
                         </ScrollReveal>
@@ -180,7 +180,7 @@ const AboutFeaturesSection = () => {
                         <ScrollReveal direction="right" delay={0.45} className="flex-1">
                             <motion.div
                                 whileHover={{ y: -8 }}
-                                className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(---mid-main-secondary) hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
+                                className="group bg-(--white) rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-(--mid-main-secondary) hover:border-blue-400 relative overflow-hidden p-8 h-full flex flex-col justify-between"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 group-hover:from-blue-500/10 group-hover:to-cyan-500/10 transition-all duration-300"></div>
                                 <motion.div
@@ -192,7 +192,7 @@ const AboutFeaturesSection = () => {
                                 </motion.div>
                                 <div>
                                     <h3 className="text-2xl md:text-3xl font-black text-(--secondary-color) group-hover:text-blue-600 transition-colors relative z-10">Step-by-Step Guidance</h3>
-                                    <p className="text-sm md:text-base text-(---mid-main-secondary) leading-relaxed relative z-10">Build confidence with guidance that supports each move, not just the final answer.</p>
+                                    <p className="text-sm md:text-base text-(--mid-main-secondary) leading-relaxed relative z-10">Build confidence with guidance that supports each move, not just the final answer.</p>
                                 </div>
                             </motion.div>
                         </ScrollReveal>

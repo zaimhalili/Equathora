@@ -152,7 +152,7 @@ const HelpCenter = () => {
                                             {link.icon}
                                         </div>
                                         <h3 className="text-lg font-bold text-(--secondary-color)">{link.title}</h3>
-                                        <p className="text-sm text-(---mid-main-secondary) pt-0.5">{link.description}</p>
+                                        <p className="text-sm text-(--mid-main-secondary) pt-0.5">{link.description}</p>
                                     </div>
                                 </div>
                             ))}
@@ -196,7 +196,7 @@ const HelpCenter = () => {
                             <h2 className="text-2xl font-bold text-(--secondary-color)  text-center">
                                 Frequently Asked Questions
                             </h2>
-                            <p className="text-(---mid-main-secondary) text-center text-base">Everything you need to know about Equathora</p>
+                            <p className="text-(--mid-main-secondary) text-center text-base">Everything you need to know about Equathora</p>
                         </div>
 
                         <div className="w-full flex flex-col gap-3">
@@ -227,7 +227,7 @@ const HelpCenter = () => {
                                     {openFaq === index && (
                                         <div className="px-4 pb-4 pl-[60px] ">
                                             <div className="border-l-4 border-gray-200 pl-3">
-                                                <p className="text-(---mid-main-secondary) leading-relaxed text-sm">{faq.answer}</p>
+                                                <p className="text-(--mid-main-secondary) leading-relaxed text-sm">{faq.answer}</p>
                                             </div>
                                         </div>
                                     )}

@@ -132,14 +132,14 @@ const SolutionStepsDisplay = ({ solution }) => {
                             <div key={index} className="flex flex-col gap-1">
                                 {/* Explanation label on top */}
                                 {explanation && (
-                                    <span className="text-xs font-semibold text-(---mid-main-secondary) pl-1">
+                                    <span className="text-xs font-semibold text-(--mid-main-secondary) pl-1">
                                         {explanation}
                                     </span>
                                 )}
 
                                 {/* Math content box - rendered by MathJax */}
                                 {math && (
-                                    <div className="rounded-xl border-2 border-(---mid-main-secondary) bg-(--white) px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-(--secondary-color) overflow-x-auto">
+                                    <div className="rounded-xl border-2 border-(--mid-main-secondary) bg-(--white) px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-(--secondary-color) overflow-x-auto">
                                         <MathJaxRenderer
                                             content={math}
                                             className="solution-step-math"

@@ -36,7 +36,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                         <h2 className=' font-bold text-2xl md:text-3xl text-(--secondary-color) leading-tight'>How to Use This Page</h2>
                         <p className=' text-(--secondary-color) text-sm opacity-70 pt-2'>Quick guide to solving math problems</p>
                     </div>
-                    <button onClick={onClose} className='text-(---mid-main-secondary) hover:text-(--secondary-color) transition-colors cursor-pointer'>
+                    <button onClick={onClose} className='text-(--mid-main-secondary) hover:text-(--secondary-color) transition-colors cursor-pointer'>
                         <FaTimes className='text-xl' />
                     </button>
                 </div>
@@ -102,7 +102,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                         </ul>
                     </div>
 
-                    <div className='bg-[var(--main-color)] border-2 border-(---mid-main-secondary) p-4 rounded-xl flex flex-col'>
+                    <div className='bg-[var(--main-color)] border-2 border-(--mid-main-secondary) p-4 rounded-xl flex flex-col'>
                         <h3 className=' font-bold text-lg text-(--secondary-color) pb-2 flex items-center gap-2'>
                             <FaLightbulb className='text-(--accent-color)' /> Pro Tip</h3>
                         <p className=' text-sm text-(--secondary-color) leading-relaxed'>Try to solve the problem on your own before viewing hints or the solution. Use the sketch pad to visualize the problem. Learning mathematics happens best when you work through the challenge!</p>

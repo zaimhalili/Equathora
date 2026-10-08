@@ -322,7 +322,7 @@ const ChatPanel = forwardRef(({
 
     if (statusLoading) {
         return (
-            <div className="w-full h-full flex items-center justify-center bg-[var(--main-color)] rounded-xl text-xs text-(---mid-main-secondary)">
+            <div className="w-full h-full flex items-center justify-center bg-[var(--main-color)] rounded-xl text-xs text-(--mid-main-secondary)">
                 Loading AI Mentor...
             </div>
         );
@@ -340,7 +340,7 @@ const ChatPanel = forwardRef(({
                         <h4 className="font-bold text-lg text-(--secondary-color)">
                             Free Trial Completed
                         </h4>
-                        <p className="text-xs text-(---mid-main-secondary) leading-relaxed">
+                        <p className="text-xs text-(--mid-main-secondary) leading-relaxed">
                             You've used all <strong className="text-(--secondary-color)">{FREE_TRIAL_LIMIT} free trial messages</strong>. Upgrade to Premium for unlimited step-by-step mathematical explanations.
                         </p>
                         <Link
@@ -364,7 +364,7 @@ const ChatPanel = forwardRef(({
                 ) : (
                     <>
                         {hiddenCount > 0 && (
-                            <p className="text-center text-[10px] text-(---mid-main-secondary) shrink-0">
+                            <p className="text-center text-[10px] text-(--mid-main-secondary) shrink-0">
                                 {hiddenCount} earlier message{hiddenCount !== 1 ? 's' : ''} hidden.
                             </p>
                         )}
@@ -396,7 +396,7 @@ const ChatPanel = forwardRef(({
             {/* Input Form Area */}
             <form onSubmit={handleSendMessage} className="shrink-0 p-3 flex flex-col gap-1.5 border-t border-(--french-gray) bg-[var(--main-color)] rounded-b-md">
                 {tier === 'free' && (
-                    <div className="flex items-center justify-between px-1 text-[10px] text-(---mid-main-secondary)">
+                    <div className="flex items-center justify-between px-1 text-[10px] text-(--mid-main-secondary)">
                         <span>
                             {remainingMessages} of {FREE_TRIAL_LIMIT} free messages remaining
                         </span>

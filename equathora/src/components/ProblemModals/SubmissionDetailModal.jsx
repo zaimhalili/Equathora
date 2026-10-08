@@ -53,12 +53,12 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                                 {submission.status === 'accepted' ? 'Accepted' : submission.status === 'wrong' ? 'Wrong Answer' : 'Pending'}
                             </span>
                         </div>
-                        <div className='flex items-center gap-2 text-sm text-(---mid-main-secondary)'>
+                        <div className='flex items-center gap-2 text-sm text-(--mid-main-secondary)'>
                             <FaClock className='text-xs' />
                             <span>{formatTimestamp(submission.timestamp)}</span>
                         </div>
                     </div>
-                    <button onClick={onClose} className='text-(---mid-main-secondary) hover:text-(--secondary-color) transition-colors duration-75 cursor-pointer'>
+                    <button onClick={onClose} className='text-(--mid-main-secondary) hover:text-(--secondary-color) transition-colors duration-75 cursor-pointer'>
                         <FaTimes className='text-xl' />
                     </button>
                 </div>
@@ -79,7 +79,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                         </div>
                         <div className='flex flex-col gap-1.5'>
                             {submission.steps && submission.steps.map((step, index) => (
-                                <div key={index} className='bg-(--white) p-2.5 rounded-xl border border-(---mid-main-secondary)'>
+                                <div key={index} className='bg-(--white) p-2.5 rounded-xl border border-(--mid-main-secondary)'>
                                     <div className='flex items-center gap-2 pb-1'>
                                         <span className='bg-(--secondary-color) text-(--white) rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold'>
                                             {index + 1}
@@ -111,8 +111,8 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                     {submission.metadata && (
                         <div className='flex flex-wrap gap-3'>
                             {submission.metadata.timeSpent !== undefined && (
-                                <div className='bg-(--french-gray)/10 p-3 rounded-xl border-(---mid-main-secondary) border flex-1'>
-                                    <div className='text-xs text-(---mid-main-secondary) pb-1'>Time Spent</div>
+                                <div className='bg-(--french-gray)/10 p-3 rounded-xl border-(--mid-main-secondary) border flex-1'>
+                                    <div className='text-xs text-(--mid-main-secondary) pb-1'>Time Spent</div>
                                     <div className='text-sm font-bold text-(--secondary-color)'>
                                         {submission.metadata.timeSpent !== undefined
                                             ? formatMinutesSeconds(submission.metadata.timeSpent)
@@ -121,14 +121,14 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                                 </div>
                             )}
                             {submission.metadata.attempts && (
-                                <div className='bg-(--french-gray)/10 p-3 rounded-xl border-(---mid-main-secondary) border flex-1'>
-                                    <div className='text-xs text-(---mid-main-secondary) pb-1'>Attempt #</div>
+                                <div className='bg-(--french-gray)/10 p-3 rounded-xl border-(--mid-main-secondary) border flex-1'>
+                                    <div className='text-xs text-(--mid-main-secondary) pb-1'>Attempt #</div>
                                     <div className='text-sm font-bold text-(--secondary-color)'>{submission.metadata.attempts}</div>
                                 </div>
                             )}
                             {submission.metadata.hintsUsed !== undefined && (
-                                <div className='bg-(--french-gray)/10 p-3 rounded-xl border-(---mid-main-secondary) border flex-1'>
-                                    <div className='text-xs text-(---mid-main-secondary) pb-1'>Hints Used</div>
+                                <div className='bg-(--french-gray)/10 p-3 rounded-xl border-(--mid-main-secondary) border flex-1'>
+                                    <div className='text-xs text-(--mid-main-secondary) pb-1'>Hints Used</div>
                                     <div className='text-sm font-bold text-(--secondary-color)'>{submission.metadata.hintsUsed}</div>
                                 </div>
                             )}

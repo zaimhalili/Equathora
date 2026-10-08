@@ -382,7 +382,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleClearAll}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-(--white) text-[var(--raisin-black)] rounded-xl border border-(---mid-main-secondary) text-xs font-semibold  transition-all cursor-pointer disabled:opacity-50 hover:brightness-90"
+                                    className="px-3 py-1.5 bg-(--white) text-[var(--raisin-black)] rounded-xl border border-(--mid-main-secondary) text-xs font-semibold  transition-all cursor-pointer disabled:opacity-50 hover:brightness-90"
                                 >
                                     Clear all
                                 </button>

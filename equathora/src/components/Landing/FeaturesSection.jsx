@@ -45,7 +45,7 @@ const FeaturesSection = () => {
                     <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-(--secondary-color) leading-tight pb-4 sm:pb-5 px-6">
                         Tools for serious learners
                     </h2>
-                    <p className="text-(---mid-main-secondary) leading-relaxed max-w-2xl text-xs sm:text-sm px-6">
+                    <p className="text-(--mid-main-secondary) leading-relaxed max-w-2xl text-xs sm:text-sm px-6">
                         Everything you need to improve, all in one place
                     </p>
                 </motion.div>
@@ -137,7 +137,7 @@ const FeaturesSection = () => {
                                     <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-(--secondary-color) pb-3 sm:pb-4 relative z-10">
                                         {feature.title}
                                     </h3>
-                                    <p className="text-(---mid-main-secondary) leading-relaxed text-sm sm:text-base relative z-10">
+                                    <p className="text-(--mid-main-secondary) leading-relaxed text-sm sm:text-base relative z-10">
                                         {feature.description}
                                     </p>
                                 </motion.div>

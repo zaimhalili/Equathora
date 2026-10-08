@@ -476,7 +476,7 @@ const SystemUpdates = () => {
                                     System Updates
                                 </h1>
                             </div>
-                            <p className="text-base text-(---mid-main-secondary) max-w-2xl">
+                            <p className="text-base text-(--mid-main-secondary) max-w-2xl">
                                 Stay informed about the latest features, improvements, and bug fixes in Equathora
                             </p>
                         </div>
@@ -509,7 +509,7 @@ const SystemUpdates = () => {
                                                     {update.type === 'bugfix' ? 'Bug Fix' : update.type.charAt(0).toUpperCase() + update.type.slice(1)}
                                                 </span>
                                             </div>
-                                            <div className="flex items-center gap-3 text-sm text-(---mid-main-secondary)">
+                                            <div className="flex items-center gap-3 text-sm text-(--mid-main-secondary)">
                                                 <span className="font-semibold">{update.version}</span>
                                                 <span>•</span>
                                                 <span>{update.date}</span>
@@ -521,7 +521,7 @@ const SystemUpdates = () => {
                                     <div className="px-6 pb-6">
                                         <ul className="flex flex-col gap-2">
                                             {update.changes.map((change, changeIndex) => (
-                                                <li key={changeIndex} className="flex items-start gap-2 text-(---mid-main-secondary) text-sm">
+                                                <li key={changeIndex} className="flex items-start gap-2 text-(--mid-main-secondary) text-sm">
                                                     <FaCheckCircle className="text-green-500 flex-shrink-0 text-base pt-0.5" />
                                                     <span>{change}</span>
                                                 </li>

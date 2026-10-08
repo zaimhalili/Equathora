@@ -129,7 +129,7 @@ const BlogPost = () => {
                             {post.content.map((contentItem, index) => renderContent(contentItem, index))}
 
                             <hr />
-                            <p className='text-(---mid-main-secondary) text-sm sm:text-base'>
+                            <p className='text-(--mid-main-secondary) text-sm sm:text-base'>
                                 {post.date} · Found it useful?
                             </p>
                             <ShareButton
@@ -156,7 +156,7 @@ const BlogPost = () => {
                                     <p className='text-md text-left lg:text-lg cursor-pointer  text-(--secondary-color) font-medium'>
                                         {otherPost.title}
                                     </p>
-                                    <p className='text-(---mid-main-secondary) '>
+                                    <p className='text-(--mid-main-secondary) '>
                                         {otherPost.author.name} ⋅ {otherPost.date}
                                     </p>
                                 </Link>

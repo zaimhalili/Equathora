@@ -80,12 +80,12 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                         <EquathoraBriefsSuccessModal onClose={onClose} />
                     ) : (
                         <>
-                            <div className="sticky top-0 bg-(--white) border-b border-(---mid-main-secondary) px-6 py-4 flex items-center justify-between z-10">
+                            <div className="sticky top-0 bg-(--white) border-b border-(--mid-main-secondary) px-6 py-4 flex items-center justify-between z-10">
                                 <h2 className="text-2xl font-bold text-(--secondary-color) ">Join Equathora Briefs</h2>
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="text-(---mid-main-secondary) hover:text-(--secondary-color) transition-colors p-2 hover:bg-[var(--main-color)] rounded-xl cursor-pointer active:scale-95"
+                                    className="text-(--mid-main-secondary) hover:text-(--secondary-color) transition-colors p-2 hover:bg-[var(--main-color)] rounded-xl cursor-pointer active:scale-95"
                                     aria-label="Close modal"
                                 >
                                     <FaTimes size={20} />
@@ -103,7 +103,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                     </div>
                                 )}
 
-                                <p className="text-sm text-(---mid-main-secondary)">
+                                <p className="text-sm text-(--mid-main-secondary)">
                                     Get product updates, new challenge drops, and launch announcements. No spam.
                                 </p>
 
@@ -119,7 +119,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                             value={formData.full_name}
                                             onChange={handleInputChange}
                                             required
-                                            className="text-(--secondary-color) w-full px-4 py-3 border border-(---mid-main-secondary) rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all"
+                                            className="text-(--secondary-color) w-full px-4 py-3 border border-(--mid-main-secondary) rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all"
                                             placeholder="Enter your full name"
                                         />
                                     </div>
@@ -135,7 +135,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                             value={formData.email}
                                             onChange={handleInputChange}
                                             required
-                                            className="text-(--secondary-color) w-full px-4 py-3 border border-(---mid-main-secondary) rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all"
+                                            className="text-(--secondary-color) w-full px-4 py-3 border border-(--mid-main-secondary) rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all"
                                             placeholder="you@example.com"
                                         />
                                     </div>
@@ -146,7 +146,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                         type="button"
                                         onClick={onClose}
                                         disabled={isLoading}
-                                        className="flex-1 px-6 py-3 border border-(---mid-main-secondary) text-(--secondary-color) font-semibold rounded-xl hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+                                        className="flex-1 px-6 py-3 border border-(--mid-main-secondary) text-(--secondary-color) font-semibold rounded-xl hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
                                     >
                                         Cancel
                                     </button>

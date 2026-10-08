@@ -71,14 +71,14 @@ const LatestArticlesSection = () => {
 
                                     {/* Content */}
                                     <div className="flex flex-col gap-2.5 sm:gap-3 p-5 sm:p-6">
-                                        <div className="flex items-center gap-2 text-xs sm:text-sm text-(---mid-main-secondary)">
+                                        <div className="flex items-center gap-2 text-xs sm:text-sm text-(--mid-main-secondary)">
                                             <span>{post.date}</span>
                                             {post.readTime && <span>· {post.readTime}</span>}
                                         </div>
                                         <h3 className="text-lg sm:text-xl font-bold text-(--secondary-color) line-clamp-2 transition-colors">
                                             {post.title}
                                         </h3>
-                                        <p className="text-(---mid-main-secondary) theme-lock text-xs sm:text-sm line-clamp-2">
+                                        <p className="text-(--mid-main-secondary) theme-lock text-xs sm:text-sm line-clamp-2">
                                             {post.description}
                                         </p>
 

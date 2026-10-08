@@ -34,7 +34,7 @@ const BlogList = () => {
                                     className='w-full max-h-40 object-cover'
                                 />
                                 <div className='p-6 flex flex-col gap-3 flex-1'>
-                                    <div className='flex items-center gap-2 text-sm text-(---mid-main-secondary)'>
+                                    <div className='flex items-center gap-2 text-sm text-(--mid-main-secondary)'>
                                         <span className='px-3 py-1 bg-(--accent-color) text-white rounded-full text-xs'>
                                             {post.category}
                                         </span>

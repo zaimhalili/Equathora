@@ -339,7 +339,7 @@ const Profile = () => {
                     <p className='text-sm text-(--secondary-color) italic'>{userData.bio}</p>
                   )}
                   {userData.location && (
-                    <p className='text-xs text-(---mid-main-secondary) flex gap-1'>
+                    <p className='text-xs text-(--mid-main-secondary) flex gap-1'>
                       <FaLandmark></FaLandmark> {userData.location}</p>
                   )}
                   {userData.website && (
@@ -363,7 +363,7 @@ const Profile = () => {
                   )}
                 </div>
 
-                <hr className='border-t-2 border-(---mid-main-secondary)' />
+                <hr className='border-t-2 border-(--mid-main-secondary)' />
 
                 {/* Community Stats Section */}
                 <div className='flex flex-col gap-5'>
@@ -393,7 +393,7 @@ const Profile = () => {
                       <div className='text-blue-500 text-2xl md:text-3xl'><FaChartLine /></div>
                       <div className='flex flex-col'>
                         <p className='text-sm md:text-base text-(--secondary-color)'>Accuracy <span className='font-bold'>{userData.stats.accuracy === null ? 'N/A' : `${userData.stats.accuracy}%`}</span></p>
-                        <span className='text-xs text-(---mid-main-secondary)'>
+                        <span className='text-xs text-(--mid-main-secondary)'>
                           {userData.stats.accuracyDetail.total > 0
                             ? `${userData.stats.accuracyDetail.correct} correct · ${userData.stats.accuracyDetail.wrong} wrong`
                             : 'No attempts tracked'}
@@ -410,7 +410,7 @@ const Profile = () => {
                   />
                 </div>
 
-                <hr className='border-t-2 border-(---mid-main-secondary)' />
+                <hr className='border-t-2 border-(--mid-main-secondary)' />
 
                 {/* Topics Section */}
                 <div className='flex flex-col gap-5'>

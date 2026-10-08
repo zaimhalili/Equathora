@@ -128,7 +128,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on WhatsApp"
                         >
                             <FaWhatsapp className="text-3xl text-green-500  transition-transform" />
-                            <span className="text-xs text-(---mid-main-secondary)">WhatsApp</span>
+                            <span className="text-xs text-(--mid-main-secondary)">WhatsApp</span>
                         </button>
 
                         {/* Twitter */}
@@ -138,7 +138,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on Twitter"
                         >
                             <FaTwitter className="text-3xl text-blue-400 transition-transform" />
-                            <span className="text-xs text-(---mid-main-secondary)">Twitter</span>
+                            <span className="text-xs text-(--mid-main-secondary)">Twitter</span>
                         </button>
 
                         {/* LinkedIn */}
@@ -148,7 +148,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on LinkedIn"
                         >
                             <FaLinkedin className="text-3xl text-blue-700  transition-transform" />
-                            <span className="text-xs text-(---mid-main-secondary)">LinkedIn</span>
+                            <span className="text-xs text-(--mid-main-secondary)">LinkedIn</span>
                         </button>
 
                         {/* Facebook */}
@@ -158,7 +158,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on Facebook"
                         >
                             <FaFacebookMessenger className="text-3xl text-blue-600  transition-transform" />
-                            <span className="text-xs text-(---mid-main-secondary)">Facebook</span>
+                            <span className="text-xs text-(--mid-main-secondary)">Facebook</span>
                         </button>
 
                         {/* Reddit */}
@@ -168,7 +168,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on Reddit"
                         >
                             <FaReddit className="text-3xl text-orange-600  transition-transform" />
-                            <span className="text-xs text-(---mid-main-secondary)">Reddit</span>
+                            <span className="text-xs text-(--mid-main-secondary)">Reddit</span>
                         </button>
 
                         {/* Telegram */}
@@ -178,7 +178,7 @@ const ShareButton = ({ text = "Check this out!", url = window.location.href, pop
                             title="Share on Telegram"
                         >
                             <FaTelegram className="text-3xl text-blue-500  transition-transform" />
-                            <span className="text-xs text-(---mid-main-secondary)">Telegram</span>
+                            <span className="text-xs text-(--mid-main-secondary)">Telegram</span>
                         </button>
                     </div>
 

@@ -24,7 +24,7 @@ const ReputationBadge = ({
         <div className="bg-(--white) border border-[rgba(43,45,66,0.1)] rounded-xl shadow-[0_10px_25px_rgba(0,0,0,0.08)] p-4 flex flex-col gap-3 w-full">
             <div className="flex items-start justify-between">
                 <div>
-                    <p className="text-xs uppercase tracking-widest text-(---mid-main-secondary) font-semibold">Reputation</p>
+                    <p className="text-xs uppercase tracking-widest text-(--mid-main-secondary) font-semibold">Reputation</p>
                     <p className="text-3xl  font-bold text-(--secondary-color)">{value}</p>
                 </div>
                 <div className="text-right">

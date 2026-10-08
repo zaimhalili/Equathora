@@ -950,7 +950,7 @@ const Problem = () => {
                     <div className="text-center flex flex-col items-center gap-3 px-3">
                         <FaCrown className="text-3xl text-amber-500" />
                         <h2 className="text-2xl font-bold">Premium Problem</h2>
-                        <p className="text-(---mid-main-secondary)">Upgrade to{' '}
+                        <p className="text-(--mid-main-secondary)">Upgrade to{' '}
                             <Link to={'/premium'} className='inline !underline !underline-offset-2 !text-(--accent-color) hover:!text-(--dark-accent-color) /!font-medium'>premium</Link>{' '} to view this problem.</p>
                         <div className="flex gap-3 pt-3">
                             <button
@@ -961,7 +961,7 @@ const Problem = () => {
                             </button>
                             <button
                                 onClick={() => nextProblemSlug && navigate(`/problems/${nextProblemSlug}`)}
-                                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-xl transition-all duration-200 bg-transparent border border-(---mid-main-secondary) text-(--secondary-color) hover:bg-(--french-gray) cursor-pointer"
+                                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-xl transition-all duration-200 bg-transparent border border-(--mid-main-secondary) text-(--secondary-color) hover:bg-(--french-gray) cursor-pointer"
                                 title={nextProblem ? `Next: ${nextProblem.title}` : ''}
                             >
                                 <span className="hidden sm:inline text-xs md:text-sm font-medium">Next</span>
@@ -1015,14 +1015,14 @@ const Problem = () => {
                         <div className="flex items-center gap-1.5">
                             <button
                                 onClick={() => prevProblemSlug && navigate(`/problems/${prevProblemSlug}`)}
-                                className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl transition-all duration-200 bg-transparent border border-(---mid-main-secondary) text-(--secondary-color) hover:bg-(--french-gray) cursor-pointer"
+                                className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl transition-all duration-200 bg-transparent border border-(--mid-main-secondary) text-(--secondary-color) hover:bg-(--french-gray) cursor-pointer"
                                 title={prevProblem ? `Previous: ${prevProblem.title}` : ''}
                             >
                                 <FaChevronLeft className="text-sm" />
                             </button>
                             <button
                                 onClick={() => nextProblemSlug && navigate(`/problems/${nextProblemSlug}`)}
-                                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-xl transition-all duration-200 bg-transparent border border-(---mid-main-secondary) text-(--secondary-color) hover:bg-(--french-gray) cursor-pointer"
+                                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-xl transition-all duration-200 bg-transparent border border-(--mid-main-secondary) text-(--secondary-color) hover:bg-(--french-gray) cursor-pointer"
                                 title={nextProblem ? `Next: ${nextProblem.title}` : ''}
                             >
                                 <span className="hidden sm:inline text-xs md:text-sm font-medium">Next</span>
@@ -1049,7 +1049,7 @@ const Problem = () => {
                                     setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
                                 }}
-                                className={`bg-transparent border-1 px-3 lg:px-4 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-(--accent-color) border-(--accent-color) bg-[rgba(217,4,41,0.05)]' : 'text-(---mid-main-secondary) border-(---mid-main-secondary) hover:text-(--accent-color)'}`}
+                                className={`bg-transparent border-1 px-3 lg:px-4 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-(--accent-color) border-(--accent-color) bg-[rgba(217,4,41,0.05)]' : 'text-(--mid-main-secondary) border-(--mid-main-secondary) hover:text-(--accent-color)'}`}
                                 title={showDrawingPad ? "Hide sketch pad" : "Show sketch pad"}
                             >
                                 <FaPencilAlt className="text-sm md:text-base" />
@@ -1057,7 +1057,7 @@ const Problem = () => {
                             </button>
                             <button
                                 onClick={() => setShowHelpModal(true)}
-                                className="bg-transparent border-1 border-(---mid-main-secondary) px-3 md:px-4 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 hover:text-(--accent-color) text-(---mid-main-secondary) flex items-center gap-1.5 h-9 md:h-10"
+                                className="bg-transparent border-1 border-(--mid-main-secondary) px-3 md:px-4 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 hover:text-(--accent-color) text-(--mid-main-secondary) flex items-center gap-1.5 h-9 md:h-10"
                                 title="Help & Guide"
                             >
                                 <FaQuestionCircle className="text-sm md:text-base" />
@@ -1065,13 +1065,13 @@ const Problem = () => {
                             </button>
                             <Link
                                 to="/feedback"
-                                className="bg-transparent border-1 border-(---mid-main-secondary) px-3 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 hover:!text-(--accent-color) !text-(---mid-main-secondary) flex items-center justify-center w-9 h-9 md:w-10 md:h-10"
+                                className="bg-transparent border-1 border-(--mid-main-secondary) px-3 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 hover:!text-(--accent-color) !text-(--mid-main-secondary) flex items-center justify-center w-9 h-9 md:w-10 md:h-10"
                                 title="Report Problem"
                             >
                                 <FaFlag className="text-sm md:text-base" />
                             </Link>
                             <button
-                                className={`bg-transparent border-1 text-xs md:text-sm px-3 rounded-xl cursor-pointer transition-all duration-200 hover:text-(--accent-color) flex items-center justify-center w-9 h-9 md:w-10 md:h-10 ${isFavorite ? 'text-(--accent-color) bg-[rgba(217,4,41,0.05)]' : 'text-(---mid-main-secondary) border-(---mid-main-secondary)'}`}
+                                className={`bg-transparent border-1 text-xs md:text-sm px-3 rounded-xl cursor-pointer transition-all duration-200 hover:text-(--accent-color) flex items-center justify-center w-9 h-9 md:w-10 md:h-10 ${isFavorite ? 'text-(--accent-color) bg-[rgba(217,4,41,0.05)]' : 'text-(--mid-main-secondary) border-(--mid-main-secondary)'}`}
                                 onClick={handleFavoriteToggle}
                                 title={isFavorite ? "Remove from favorites" : "Add to favorites"}
                             >
@@ -1287,7 +1287,7 @@ const Problem = () => {
                                                 </span>
                                             )}
                                             {problem.topic && (
-                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium bg-(---mid-main-secondary) text-white">{formatTopicLabel(problem.topic)}</span>
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium bg-(--mid-main-secondary) text-white">{formatTopicLabel(problem.topic)}</span>
                                             )}
                                             {isCompleted && (
                                                 <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
@@ -1307,7 +1307,7 @@ const Problem = () => {
                                         />
 
                                         {showDrawingPad && (
-                                            <div className="rounded-xl border border-(---mid-main-secondary) bg-(--french-gray)/20 p-3 md:p-4 flex flex-col gap-3">
+                                            <div className="rounded-xl border border-(--mid-main-secondary) bg-(--french-gray)/20 p-3 md:p-4 flex flex-col gap-3">
                                                 <div className="flex flex-wrap items-center justify-between gap-2">
                                                     <div className="flex items-center gap-2">
                                                         <span className="text-[10px] md:text-xs font-semibold text-(--secondary-color) uppercase tracking-[0.05em]">Sketch</span>
@@ -1315,14 +1315,14 @@ const Problem = () => {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('var(--secondary-color)')}
-                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'bg-(--secondary-color) text-[var(--main-color)] border-(--secondary-color)' : 'text-(--secondary-color) border-(---mid-main-secondary) hover:border-(--secondary-color) active:scale-95'}`}
+                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'bg-(--secondary-color) text-[var(--main-color)] border-(--secondary-color)' : 'text-(--secondary-color) border-(--mid-main-secondary) hover:border-(--secondary-color) active:scale-95'}`}
                                                             >
                                                                 {currentTheme === 'dark' ? 'White' : 'Black'}
                                                             </button>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('red')}
-                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-(--accent-color) text-[var(--main-color)] border-(--accent-color)' : 'text-(--secondary-color) border-(---mid-main-secondary) hover:border-(--accent-color) active:scale-95'}`}
+                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-(--accent-color) text-[var(--main-color)] border-(--accent-color)' : 'text-(--secondary-color) border-(--mid-main-secondary) hover:border-(--accent-color) active:scale-95'}`}
                                                             >
                                                                 Red
                                                             </button>
@@ -1333,7 +1333,7 @@ const Problem = () => {
                                                             type="button"
                                                             onClick={undoStroke}
                                                             disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-(---mid-main-secondary) text-(--french-gray)' : 'text-(--secondary-color) border-(--secondary-color) hover:bg-(--secondary-color) hover:text-[var(--main-color)] active:scale-95'}`}
+                                                            className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-(--mid-main-secondary) text-(--french-gray)' : 'text-(--secondary-color) border-(--secondary-color) hover:bg-(--secondary-color) hover:text-[var(--main-color)] active:scale-95'}`}
                                                         >
                                                             Undo
                                                         </button>
@@ -1341,14 +1341,14 @@ const Problem = () => {
                                                             type="button"
                                                             onClick={clearCanvas}
                                                             disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-(---mid-main-secondary) text-(--french-gray)' : 'text-(--accent-color) border-(--accent-color) hover:bg-(--accent-color) hover:text-white active:scale-95'}`}
+                                                            className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-(--mid-main-secondary) text-(--french-gray)' : 'text-(--accent-color) border-(--accent-color) hover:bg-(--accent-color) hover:text-white active:scale-95'}`}
                                                         >
                                                             Clear
                                                         </button>
                                                     </div>
                                                 </div>
 
-                                                <div className="rounded-xl border border-(---mid-main-secondary) bg-[var(--main-color)] overflow-hidden shadow-sm">
+                                                <div className="rounded-xl border border-(--mid-main-secondary) bg-[var(--main-color)] overflow-hidden shadow-sm">
                                                     <canvas
                                                         ref={canvasRef}
                                                         className="w-full h-48 md:h-56 bg-[var(--main-color)] cursor-crosshair"
