@@ -98,7 +98,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                 </div>
 
                                 {error && (
-                                    <div className="bg-(--accent-color)/10 border border-(--accent-color)/30 text-(---dark-accent-color) px-4 py-3 rounded-xl text-sm">
+                                    <div className="bg-(--accent-color)/10 border border-(--accent-color)/30 text-(--dark-accent-color) px-4 py-3 rounded-xl text-sm">
                                         {error}
                                     </div>
                                 )}

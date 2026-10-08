@@ -137,7 +137,7 @@ const TestimonialsSection = () => {
                                             className='rounded-full w-16 h-16'
                                         />
                                         <div>
-                                            <p className='text-lg font-bold hover:!text-(---dark-accent-color) hover:!underline'>
+                                            <p className='text-lg font-bold hover:!text-(--dark-accent-color) hover:!underline'>
                                                 {testimonials[index].name}
                                             </p>
                                             <p className='text-sm font-light'>

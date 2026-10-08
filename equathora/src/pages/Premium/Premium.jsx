@@ -308,7 +308,7 @@ const Premium = () => {
               </div>
 
               {/* Institutional Card */}
-              <div className='rounded-3xl flex-col flex bg-gradient-to-b from-(---dark-accent-color) to-(--accent-color) shadow-xl lg:max-w-1/3 min-w-60 w-full transition-all p-1 flex-1 border border-(--secondary-color)/10 border-t-2'>
+              <div className='rounded-3xl flex-col flex bg-gradient-to-b from-(--dark-accent-color) to-(--accent-color) shadow-xl lg:max-w-1/3 min-w-60 w-full transition-all p-1 flex-1 border border-(--secondary-color)/10 border-t-2'>
                 <div className="flex flex-col gap-5 p-4">
                   <div className="flex justify-between items-center sm:flex-row flex-col-reverse gap-1.5">
                     <h3 className="text-2xl font-bold text-white">Schools & Institutions
@@ -365,7 +365,7 @@ const Premium = () => {
                   </ul>
                   <a
                     href='mailto:equathora@gmail.com'
-                    className="bg-(---dark-accent-color) !text-white py-2 rounded-xl text-xl transition-all duration-200 hover:contrast-80 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-center !font-normal"
+                    className="bg-(--dark-accent-color) !text-white py-2 rounded-xl text-xl transition-all duration-200 hover:contrast-80 active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-center !font-normal"
                   >
                     Contact me
                   </a>

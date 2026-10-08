@@ -45,7 +45,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                                 Submission Details
                             </h2>
                             <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 text-center ${submission.status === 'accepted' ? 'bg-(--french-gray) text-(--secondary-color)' :
-                                submission.status === 'wrong' ? 'bg-[var(--main-color)] text-(---dark-accent-color)' :
+                                submission.status === 'wrong' ? 'bg-[var(--main-color)] text-(--dark-accent-color)' :
                                     'bg-[var(--main-color)] text-(--secondary-color)'
                                 }`}>
                                 {submission.status === 'accepted' && <FaCheck />}
@@ -139,7 +139,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                 <button
                     type="button"
                     onClick={onClose}
-                    className='cursor-pointer px-6 py-3 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-white hover:bg-(---dark-accent-color) hover:border-(---dark-accent-color) shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'
+                    className='cursor-pointer px-6 py-3 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-white hover:bg-(--dark-accent-color) hover:border-(--dark-accent-color) shadow-md hover:shadow-lg transition-colors duration-75 text-sm md:text-base'
                 >
                     Close
                 </button>

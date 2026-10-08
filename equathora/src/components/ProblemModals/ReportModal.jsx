@@ -52,7 +52,7 @@ const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDet
 
                 <div className='flex w-full justify-between gap-3 pt-6'>
                     <button type="button" onClick={onClose} className='px-4 cursor-pointer py-2.5 font-semibold text-center border-2 border-(---mid-main-secondary) rounded-xl bg-(--white) text-(--secondary-color) hover:bg-(--french-gray) shadow-md hover:shadow-lg transition-all duration-300 flex-1 text-sm md:text-base'>Cancel</button>
-                    <button type="button" onClick={onSubmit} className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-(--white) hover:bg-(---dark-accent-color) hover:border-(---dark-accent-color) shadow-md hover:shadow-lg transition-all duration-300 flex-1 text-sm md:text-base'>Submit Report</button>
+                    <button type="button" onClick={onSubmit} className='px-4 cursor-pointer py-2.5 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-(--white) hover:bg-(--dark-accent-color) hover:border-(--dark-accent-color) shadow-md hover:shadow-lg transition-all duration-300 flex-1 text-sm md:text-base'>Submit Report</button>
                 </div>
             </div>
         </div>

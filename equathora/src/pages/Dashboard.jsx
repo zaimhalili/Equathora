@@ -111,7 +111,7 @@ const Dashboard = () => {
                                                 className={`w-full aspect-square bg-(--white) transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-lg hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 ${premium ? '' : ''}`}
                                             >
                                                 <img src={QuestionMark} alt="Daily challenge" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" width={120} height={120} />
-                                                <h6 className="text-(--secondary-color)  text-lg font-normal w-full text-center flex items-center justify-center">
+                                                <h6 className="text-(--secondary-color) text-lg font-normal w-full text-center flex items-center justify-center">
                                                     Daily challenge
                                                 </h6>
                                             </Link>
@@ -231,16 +231,16 @@ const Dashboard = () => {
                                     </div>
 
                                     {/* CTA Buttons */}
-                                    <div className="flex gap-3 max-w-[400px]">
+                                    <div className="flex gap-3 max-w-100">
                                         <Link
                                             to="/applymentor"
-                                            className="flex items-center justify-center  font-semibold text-sm !text-(--white) bg-(--secondary-color) rounded-xl no-underline transition-all duration-200 hover:bg-transparent hover:!text-(--secondary-color) hover:outline-1 hover:outline-(--secondary-color) text-center flex-2 py-2 px-2 text-wrap active:scale-95"
+                                            className="flex items-center justify-center  font-semibold text-sm !text-(--white)! bg-(--secondary-color) rounded-xl no-underline transition-all duration-200 hover:bg-transparent hover:text-(--secondary-color)! hover:outline-1 hover:outline-(--secondary-color) text-center flex-2 py-2 px-2 text-wrap active:scale-95"
                                         >
                                             Apply Now
                                         </Link>
                                         <Link
                                             to="/applymentor"
-                                            className="flex items-center justify-center font-medium text-sm !text-(--secondary-color) bg-transparent border rounded-xl no-underline transition-all duration-200 border-(--secondary-color) hover:bg-(--secondary-color) hover:!text-(--white) text-center py-2 px-2 md:flex-1 active:scale-95"
+                                            className="flex items-center justify-center font-medium text-sm text-(--secondary-color)! bg-transparent border rounded-xl no-underline transition-all duration-200 border-(--secondary-color) hover:bg-(--secondary-color) hover:text-(--white)! text-center py-2 px-2 md:flex-1 active:scale-95"
                                         >
                                             Learn More
                                         </Link>

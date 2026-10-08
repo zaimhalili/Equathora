@@ -285,7 +285,7 @@ const Feedback = () => {
                                     <button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        className="flex-1 px-6 py-3 border-2 border-(--accent-color) rounded-xl font-bold text-white bg-(--accent-color) hover:bg-(---dark-accent-color) hover:border-(---dark-accent-color) transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                                        className="flex-1 px-6 py-3 border-2 border-(--accent-color) rounded-xl font-bold text-white bg-(--accent-color) hover:bg-(--dark-accent-color) hover:border-(--dark-accent-color) transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                                     >
                                         {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
                                     </button>

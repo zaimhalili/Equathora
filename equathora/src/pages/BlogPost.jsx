@@ -47,7 +47,7 @@ const BlogPost = () => {
                     <Link
                         key={index}
                         to={contentItem.url}
-                        className='!underline !text-(---dark-accent-color)'
+                        className='!underline !text-(--dark-accent-color)'
                     >
                         {contentItem.text}
                     </Link>

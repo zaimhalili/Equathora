@@ -181,7 +181,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                         </p>
 
                                         {saveError && (
-                                            <div className="bg-(--accent-color)/10 border border-(--accent-color)/30 text-(---dark-accent-color) px-4 py-3 rounded-xl text-sm">
+                                            <div className="bg-(--accent-color)/10 border border-(--accent-color)/30 text-(--dark-accent-color) px-4 py-3 rounded-xl text-sm">
                                                 {saveError}
                                             </div>
                                         )}
@@ -198,7 +198,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 aria-describedby={errors.name ? 'name-error' : undefined}
                                             />
                                             {errors.name && (
-                                                <p id="name-error" className="pt-1.5 text-xs text-(---dark-accent-color) pl-1">
+                                                <p id="name-error" className="pt-1.5 text-xs text-(--dark-accent-color) pl-1">
                                                     {errors.name}
                                                 </p>
                                             )}
@@ -225,7 +225,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                 />
                                             )}
                                             {errors.email && (
-                                                <p id="email-error" className="pt-1.5 text-xs text-(---dark-accent-color) pl-1">
+                                                <p id="email-error" className="pt-1.5 text-xs text-(--dark-accent-color) pl-1">
                                                     {errors.email}
                                                 </p>
                                             )}

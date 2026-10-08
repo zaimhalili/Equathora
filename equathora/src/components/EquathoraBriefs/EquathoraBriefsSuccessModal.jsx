@@ -16,7 +16,7 @@ const EquathoraBriefsSuccessModal = ({ onClose }) => {
             </div>
 
             <div className="p-8 sm:p-10 ">
-                <div className="mx-auto w-14 h-14 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-(--white) flex items-center justify-center shadow-lg shadow-(---dark-accent-color)/30">
+                <div className="mx-auto w-14 h-14 rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-(--white) flex items-center justify-center shadow-lg shadow-(--dark-accent-color)/30">
                     <FaCheckCircle className="text-5xl" />
                 </div>
 

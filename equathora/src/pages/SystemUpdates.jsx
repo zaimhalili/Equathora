@@ -82,7 +82,7 @@ const SystemUpdates = () => {
             date: "April 10-11, 2026",
             type: "feature",
             icon: <FaRocket className="text-xl" />,
-            color: "from-(--accent-color) to-(---dark-accent-color)",
+            color: "from-(--accent-color) to-(--dark-accent-color)",
             title: "New Problems + Clearer Math Display",
             changes: [
                 "Added 50 new Grade 10 Algebra and Trigonometry problems",
@@ -96,7 +96,7 @@ const SystemUpdates = () => {
             date: "April 4, 2026",
             type: "feature",
             icon: <FaStar className="text-xl" />,
-            color: "from-(--accent-color) to-(---dark-accent-color)",
+            color: "from-(--accent-color) to-(--dark-accent-color)",
             title: "Equathora Briefs Is Easier to Join",
             changes: [
                 "Added a smoother newsletter signup flow",
@@ -110,7 +110,7 @@ const SystemUpdates = () => {
             date: "February 12, 2026",
             type: "improvement",
             icon: <FaPalette className="text-xl" />,
-            color: "from-(--accent-color) to-(---dark-accent-color)",
+            color: "from-(--accent-color) to-(--dark-accent-color)",
             title: "Cleaner Look + More Reliable Weekly Progress",
             changes: [
                 "Updated page backgrounds for a cleaner and more consistent look",
@@ -124,7 +124,7 @@ const SystemUpdates = () => {
             date: "January 18-21, 2026",
             type: "improvement",
             icon: <FaCode className="text-xl" />,
-            color: "from-(--accent-color) to-(---dark-accent-color)",
+            color: "from-(--accent-color) to-(--dark-accent-color)",
             title: "Readability and Filter Polish",
             changes: [
                 "Updated text styling to improve readability across the app",

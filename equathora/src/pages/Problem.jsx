@@ -951,7 +951,7 @@ const Problem = () => {
                         <FaCrown className="text-3xl text-amber-500" />
                         <h2 className="text-2xl font-bold">Premium Problem</h2>
                         <p className="text-(---mid-main-secondary)">Upgrade to{' '}
-                            <Link to={'/premium'} className='inline !underline !underline-offset-2 !text-(--accent-color) hover:!text-(---dark-accent-color) /!font-medium'>premium</Link>{' '} to view this problem.</p>
+                            <Link to={'/premium'} className='inline !underline !underline-offset-2 !text-(--accent-color) hover:!text-(--dark-accent-color) /!font-medium'>premium</Link>{' '} to view this problem.</p>
                         <div className="flex gap-3 pt-3">
                             <button
                                 onClick={() => navigate(-1)}
@@ -1465,7 +1465,7 @@ const Problem = () => {
                                                                 to={`/problems/${question.slug || generateProblemSlug(question.title, question.id)}`}
                                                                 className="flex items-center justify-between p-2 md:p-2.5 rounded-xl transition-colors duration-150 hover:bg-(--french-gray)/60 group"
                                                             >
-                                                                <span className="text-xs md:text-sm text-(--secondary-color) group-hover:text-(---dark-accent-color) font-medium">
+                                                                <span className="text-xs md:text-sm text-(--secondary-color) group-hover:text-(--dark-accent-color) font-medium">
                                                                     {question.title}
                                                                 </span>
                                                                 <span
@@ -1532,9 +1532,9 @@ const Problem = () => {
                                     <div>
                                         {/* Inline feedback for incorrect answers only */}
                                         {submissionFeedback && !submissionFeedback.isCorrect && (
-                                            <div className="rounded-xl px-4 py-3 border transition-all duration-300 border-(---dark-accent-color)">
+                                            <div className="rounded-xl px-4 py-3 border transition-all duration-300 border-(--dark-accent-color)">
                                                 <div className="flex items-center gap-2 pb-1.5">
-                                                    <div className="w-5 h-5 rounded-full flex items-center justify-center text-(--white) text-[10px] font-bold flex-shrink-0 bg-(---dark-accent-color)">
+                                                    <div className="w-5 h-5 rounded-full flex items-center justify-center text-(--white) text-[10px] font-bold flex-shrink-0 bg-(--dark-accent-color)">
                                                         <FaTimes className='text-white' />
                                                     </div>
                                                     <span className="text-sm font-bold  text-(--accent-color)">

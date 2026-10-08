@@ -34,7 +34,7 @@ const YourTrack = ({ premium, loading }) => {
                         Your Track
                     </h3>
                     <span className={`text-sm font-medium px-3 py-1 rounded-xl bg-gradient-to-br 
-                        ${premium ? 'from-amber-600 to-amber-400' : 'text-(---dark-accent-color) from-[rgba(237,242,244,0.8)] to-white'}`}>
+                        ${premium ? 'from-amber-600 to-amber-400' : 'text-(--dark-accent-color) from-[rgba(237,242,244,0.8)] to-white'}`}>
                         Level {level}
                     </span>
                 </div>
@@ -46,7 +46,7 @@ const YourTrack = ({ premium, loading }) => {
                         className="flex-1 h-6 bg-gradient-to-br from-[rgba(237,242,244,0.8)] to-white rounded-xl flex items-center relative transition-all duration-300 overflow-hidden group"
                     >
                         <div
-                            className={`h-full rounded-tr-md rounded-br-md bg-gradient-to-r transition-all duration-500 relative ${premium ? 'from-amber-600 to-amber-400' : 'from-(--accent-color) to-(---dark-accent-color)'}`}
+                            className={`h-full rounded-tr-md rounded-br-md bg-gradient-to-r transition-all duration-500 relative ${premium ? 'from-amber-600 to-amber-400' : 'from-(--accent-color) to-(--dark-accent-color)'}`}
                             role="progressbar"
                             aria-label={progressLabel}
                             aria-valuenow={Math.round(percentage)}

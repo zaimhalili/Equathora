@@ -132,7 +132,7 @@ const PrimaryButton = ({ children, onClick, disabled, loading, className = '', t
         title={title}
         onClick={onClick}
         disabled={disabled || loading}
-        className={`cursor-pointer py-2.5 px-5 bg-(--accent-color) text-white font-medium text-sm rounded-xl hover:bg-(---dark-accent-color) transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
+        className={`cursor-pointer py-2.5 px-5 bg-(--accent-color) text-white font-medium text-sm rounded-xl hover:bg-(--dark-accent-color) transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${className}`}
     >
         {loading && <Spinner />}
         {children}
@@ -156,7 +156,7 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
         onClick={onClick}
         disabled={disabled || loading}
         title={title}
-        className="cursor-pointer py-2.5 px-5 bg-(---dark-accent-color) text-white font-medium text-sm rounded-xl hover:bg-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="cursor-pointer py-2.5 px-5 bg-(--dark-accent-color) text-white font-medium text-sm rounded-xl hover:bg-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
     >
         {loading && <Spinner />}
         {children}
@@ -228,7 +228,7 @@ const ConfirmModal = ({
     const canConfirm = !confirmWord || typed.trim() === confirmWord;
     const confirmColor = variant === 'danger'
         ? 'bg-red-600 hover:bg-red-700'
-        : 'bg-(--accent-color) hover:bg-(---dark-accent-color)';
+        : 'bg-(--accent-color) hover:bg-(--dark-accent-color)';
 
     return (
         <AnimatePresence>
@@ -1340,7 +1340,7 @@ const Settings = () => {
                             {profileSummary.deletionRequested ? (
                                 <div className="flex flex-col gap-3 p-5 border-2 border-red-200 rounded-xl bg-red-50">
                                     <h3 className="text-base font-medium text-red-800">Account Deletion Scheduled</h3>
-                                    <p className="text-sm text-(---dark-accent-color)">
+                                    <p className="text-sm text-(--dark-accent-color)">
                                         You requested to delete your account
                                         {profileSummary.deletionRequestedAt
                                             ? ` on ${new Date(profileSummary.deletionRequestedAt).toLocaleDateString()}`

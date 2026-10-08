@@ -107,7 +107,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                             <FaLightbulb className='text-(--accent-color)' /> Pro Tip</h3>
                         <p className=' text-sm text-(--secondary-color) leading-relaxed'>Try to solve the problem on your own before viewing hints or the solution. Use the sketch pad to visualize the problem. Learning mathematics happens best when you work through the challenge!</p>
                     </div>
-                    <button type="button" onClick={onClose} className='flex justify-center px-6 py-3 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-white hover:bg-(---dark-accent-color) hover:border-(---dark-accent-color) shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base cursor-pointer'>Got It!</button>
+                    <button type="button" onClick={onClose} className='flex justify-center px-6 py-3 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-white hover:bg-(--dark-accent-color) hover:border-(--dark-accent-color) shadow-md hover:shadow-lg transition-all duration-300 text-sm md:text-base cursor-pointer'>Got It!</button>
                 </div>
 
 

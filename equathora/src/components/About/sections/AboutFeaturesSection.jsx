@@ -17,7 +17,7 @@ const AboutFeaturesSection = () => {
                     <ScrollReveal direction="left" delay={0} className="w-full md:w-[calc(50%-0.5rem)] min-h-[360px]">
                         <motion.div
                             whileHover={{ scale: 1.02 }}
-                            className="group relative bg-gradient-to-br from-(--accent-color) to-(---dark-accent-color) rounded-2xl overflow-hidden shadow-2xl cursor-pointer flex flex-col justify-between p-8 h-full theme-lock"
+                            className="group relative bg-gradient-to-br from-(--accent-color) to-(--dark-accent-color) rounded-2xl overflow-hidden shadow-2xl cursor-pointer flex flex-col justify-between p-8 h-full theme-lock"
                         >
                             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10"></div>
                             <div className="relative z-10 flex flex-col justify-between h-full">
@@ -46,7 +46,7 @@ const AboutFeaturesSection = () => {
                             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-(--accent-color)/10 to-transparent rounded-bl-full"></div>
                             <motion.div
                                 whileHover={{ scale: 1.1, rotate: 12 }}
-                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-(--accent-color) to-(---dark-accent-color) rounded-2xl relative z-10"
+                                className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-(--accent-color) to-(--dark-accent-color) rounded-2xl relative z-10"
                             >
                                 <FaBrain className="text-white text-3xl" />
                             </motion.div>

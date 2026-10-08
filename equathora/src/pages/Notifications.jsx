@@ -302,7 +302,7 @@ const Notifications = () => {
                                 key={opt.value}
                                 onClick={() => { setFilter(opt.value); setSelectedIds([]); }}
                                 className={`px-4 py-2 rounded-xl text-xs font-semibold (--white)space-nowrap active:scale-95 transition-all shrink-0 cursor-pointer ${filter === opt.value
-                                    ? 'bg-gradient-to-t from-(--accent-color) to-(---dark-accent-color) text-white'
+                                    ? 'bg-gradient-to-t from-(--accent-color) to-(--dark-accent-color) text-white'
                                     : 'bg-(--white) text-(--secondary-color) hover:bg-(--white)/80 '
                                     }`}
                             >
@@ -373,7 +373,7 @@ const Notifications = () => {
                                 <button
                                     onClick={handleMarkAllRead}
                                     disabled={actionLoading}
-                                    className="px-3 py-1.5 bg-(--accent-color) text-white rounded-xl text-xs font-semibold hover:bg-(---dark-accent-color) transition-all cursor-pointer disabled:opacity-50"
+                                    className="px-3 py-1.5 bg-(--accent-color) text-white rounded-xl text-xs font-semibold hover:bg-(--dark-accent-color) transition-all cursor-pointer disabled:opacity-50"
                                 >
                                     Mark all read
                                 </button>

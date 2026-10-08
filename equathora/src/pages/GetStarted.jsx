@@ -339,7 +339,7 @@ const GetStarted = () => {
 
                     <div className='flex-1 h-1.5 bg-(--french-gray) rounded-full overflow-hidden'>
                         <div
-                            className='h-full rounded-full bg-gradient-to-r from-(--accent-color) to-(---dark-accent-color) transition-all duration-500 ease-out'
+                            className='h-full rounded-full bg-gradient-to-r from-(--accent-color) to-(--dark-accent-color) transition-all duration-500 ease-out'
                             style={{ width: `${percentage}%` }}
                         />
                     </div>

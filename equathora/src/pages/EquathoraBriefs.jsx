@@ -102,7 +102,7 @@ const EquathoraBriefs = () => {
                         <section className='w-full flex flex-col items-center gap-4 sm:gap-6'>
                             <img src={CommunityBro} alt="Community" className='w-40 sm:w-52 lg:w-50' />
                             <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-(--secondary-color) pb-2 relative z-10 text-center'>Join the Equathora Discord community
-                                <FaDiscord className='text-(---dark-accent-color) absolute -right-6 sm:-right-12 lg:-right-20 -bottom-3 sm:-bottom-4 lg:-bottom-5 -rotate-30 text-6xl sm:text-8xl lg:text-9xl -z-10' />
+                                <FaDiscord className='text-(--dark-accent-color) absolute -right-6 sm:-right-12 lg:-right-20 -bottom-3 sm:-bottom-4 lg:-bottom-5 -rotate-30 text-6xl sm:text-8xl lg:text-9xl -z-10' />
                             </h2>
                             <p className='text-sm sm:text-xl md:text-2xl max-w-3xl text-center font-light'>We share solutions, announcements, and <strong> friendly discussion</strong>, plus direct feedback channels for new Equathora features. Meet learners, mentors, and challenge creators who keep math <strong>fun and consistent.</strong> </p>
                             <a href='https://discord.gg/s6tNSbyhB7' target='_blank' rel="noopener noreferrer" className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white flex justify-center rounded-xl transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full sm:w-2/3 md:w-1/3 lg:w-1/5'>Join Equathora Discord</a>

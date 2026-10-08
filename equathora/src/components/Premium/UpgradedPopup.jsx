@@ -99,7 +99,7 @@ const UpgradedPopup = ({ onClose }) => {
                                     whileHover={{ scale: 1.03 }}
                                     whileTap={{ scale: 0.97 }}
                                     onClick={handleClose}
-                                    className="w-full bg-gradient-to-r from-(--accent-color) to-(---dark-accent-color) text-(--white) py-3 rounded-xl text-base font-bold shadow-md cursor-pointer"
+                                    className="w-full bg-gradient-to-r from-(--accent-color) to-(--dark-accent-color) text-(--white) py-3 rounded-xl text-base font-bold shadow-md cursor-pointer"
                                 >
                                     Start Solving
                                 </motion.button>

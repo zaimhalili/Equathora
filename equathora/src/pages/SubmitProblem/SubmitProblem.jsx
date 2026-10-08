@@ -423,7 +423,7 @@ const SubmitProblem = () => {
                         <div className="w-full flex justify-end pb-8">
                             <button
                                 type="submit"
-                                className="cursor-pointer px-6 py-3 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-(--white) hover:bg-(---dark-accent-color) hover:border-(---dark-accent-color) shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 text-sm md:text-base"
+                                className="cursor-pointer px-6 py-3 font-bold text-center border-2 border-(--accent-color) rounded-xl bg-(--accent-color) text-(--white) hover:bg-(--dark-accent-color) hover:border-(--dark-accent-color) shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 text-sm md:text-base"
                             >
                                 <span>Submit Problem</span>
                                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

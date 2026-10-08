@@ -35,7 +35,7 @@ const ReputationBadge = ({
 
             <div className="w-full h-2 rounded-full bg-(--secondary-color)/10 overflow-hidden">
                 <div
-                    className="h-full rounded-full bg-gradient-to-r from-(--accent-color) to-(---dark-accent-color) transition-[width] duration-500"
+                    className="h-full rounded-full bg-gradient-to-r from-(--accent-color) to-(--dark-accent-color) transition-[width] duration-500"
                     style={{ width: `${progressPercent}%` }}
                 ></div>
             </div>

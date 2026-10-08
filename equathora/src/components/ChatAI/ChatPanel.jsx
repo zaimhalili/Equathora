@@ -358,7 +358,7 @@ const ChatPanel = forwardRef(({
             <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4 flex flex-col gap-4 bg-[var(--main-color)] p-4">
                 {isLoadingHistory ? (
                     <div className="flex items-center gap-2 self-start rounded-2xl border border-(--french-gray) bg-(--white) px-3.5 py-2.5 text-xs text-(--secondary-color)">
-                        <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-(---dark-accent-color)" />
+                        <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-(--dark-accent-color)" />
                         Loading your chat history...
                     </div>
                 ) : (
@@ -373,7 +373,7 @@ const ChatPanel = forwardRef(({
                                 <div
                                     className={`border rounded-2xl px-4 py-2.5 text-xs md:text-sm leading-relaxed ${msg.sender === 'ai'
                                         ? 'border-(--french-gray) rounded-tl-none bg-(--white) text-(--secondary-color)'
-                                        : 'border-transparent rounded-tr-none bg-(---dark-accent-color) text-white'
+                                        : 'border-transparent rounded-tr-none bg-(--dark-accent-color) text-white'
                                         }`}
                                     style={{ wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }}
                                 >
