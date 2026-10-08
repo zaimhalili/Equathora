@@ -29,13 +29,12 @@ import {
     getCompletedProblems as getCompletedProblemsDb,
     toggleFavorite as toggleFavoriteDb,
     getFavorites as getFavoritesDb,
-    markProblemComplete as markProblemCompleteDb,
     hasViewedSolutionDb,
     markSolutionViewedDb,
     markProblemInProgressDb,
     removeProblemFromInProgressDb,
-    saveSubmission,
     getUserSubmissions,
+    saveUserSubmission,
     updateStreakForCorrectSolve,
     recordProblemStats,
     getUserStats,
@@ -198,6 +197,7 @@ const Problem = () => {
                 // Fail safe rather than fail stale: an errored fetch must not
                 // leave the previous problem's solved state in place.
                 setSubmissions([]);
+                setSubmissionHistoryError('Could not load your submissions. Refresh the page or try again later.');
                 problemSolvedRef.current = false;
             });
 
@@ -281,6 +281,9 @@ const Problem = () => {
     const [canFetchSolution, setCanFetchSolution] = useState(false);
     const [sigmaBusy, setSigmaBusy] = useState(false);
     const [solutionText, setSolutionText] = useState(null);
+    const [solutionLoadError, setSolutionLoadError] = useState(null);
+    const [solutionRetry, setSolutionRetry] = useState(0);
+    const [submissionHistoryError, setSubmissionHistoryError] = useState(null);
 
 
     // Track theme dynamically from data-theme attribute
@@ -533,6 +536,9 @@ const Problem = () => {
         setCanFetchSolution(false);
         setSubmissions([]);
         setSolutionText(null);
+        setSolutionLoadError(null);
+        setSolutionRetry(0);
+        setSubmissionHistoryError(null);
         problemSolvedRef.current = false;
     }, [problem, slug]);
 
@@ -628,33 +634,45 @@ const Problem = () => {
 
         // 2. IF IT'S A PREMIUM PROBLEM AND YOU ARE ON FREE TIER -> STOP HERE.
         // This prevents free users from triggering the 403 network error entirely.
-        if (problem.is_premium && !premium) return;
+        if (problem.is_premium && !premium) {
+            setSolutionLoadError('This solution is available to Premium members.');
+            return;
+        }
 
-        // 3. User must have a DB-CONFIRMED completion or solution-view -
-        // not just the optimistic local isCompleted/solutionViewed flags,
-        // which flip before the corresponding DB write has landed and were
-        // causing this call to fire too early (403 from the edge function).
+        // The validator records a successful solve server-side before returning
+        // a correct result, so this flag is set only after that response arrives.
         if (!canFetchSolution) return;
 
         let isMounted = true;
+        setSolutionLoadError(null);
 
-        supabase.functions.invoke('fetch-problem-solution', {
-            body: { p_problem_id: problem.id }
-        })
-            .then(({ data, error }) => {
-                if (error) {
-                    console.info('Solution request blocked:', error.message);
-                    return;
+        void (async () => {
+            try {
+                const { data, error } = await supabase.functions.invoke('fetch-problem-solution', {
+                    body: { p_problem_id: problem.id }
+                });
+
+                if (error) throw error;
+                if (!data?.solution) {
+                    throw new Error('The solution service returned no solution.');
                 }
-                if (isMounted && data?.solution) {
+                if (isMounted) {
                     setSolutionText(data.solution);
                 }
-            });
+            } catch (error) {
+                console.error('Failed to load problem solution:', error);
+                if (isMounted) {
+                    setSolutionLoadError(
+                        'The solution could not be loaded. Check your access and try again.'
+                    );
+                }
+            }
+        })();
 
         return () => {
             isMounted = false;
         };
-    }, [problem?.id, problem?.is_premium, premium, canFetchSolution]);
+    }, [problem?.id, problem?.is_premium, premium, canFetchSolution, solutionRetry]);
 
     const toggleHint = async (index) => {
         if (openHints[index]) {
@@ -696,9 +714,16 @@ const Problem = () => {
         }
 
         // 1. Validate answer via Supabase edge function FIRST
-        const { data: validationData, error: validationError } = await supabase.functions.invoke('validate-problem-answer', {
-            body: { p_problem_id: problem.id, p_user_answer: finalAnswer }
-        });
+        let validationData;
+        let validationError;
+        const validationStartedAt = new Date().toISOString();
+        try {
+            ({ data: validationData, error: validationError } = await supabase.functions.invoke('validate-problem-answer', {
+                body: { p_problem_id: problem.id, p_user_answer: finalAnswer }
+            }));
+        } catch (error) {
+            validationError = error;
+        }
 
         if (validationError) {
             const isRateLimited = validationError.context?.status === 429;
@@ -707,6 +732,16 @@ const Problem = () => {
                 : 'Could not validate your answer right now. Please try again.';
 
             setSubmissionFeedback({ message: feedback, isCorrect: false });
+            setShowSubmissions(true);
+            setShowDescription(false);
+            return { success: false, message: feedback };
+        }
+
+        if (typeof validationData?.isCorrect !== 'boolean') {
+            const feedback = 'The answer checker returned an invalid response. Please try again.';
+            setSubmissionFeedback({ message: feedback, isCorrect: false });
+            setShowSubmissions(true);
+            setShowDescription(false);
             return { success: false, message: feedback };
         }
 
@@ -719,6 +754,38 @@ const Problem = () => {
         const storedTime = typeof window !== 'undefined' ? window.localStorage.getItem(storageKey) : null;
         const timeSpentSeconds = storedTime ? Math.max(1, parseInt(storedTime, 10)) : Math.max(1, Math.round((Date.now() - sessionStartRef.current) / 1000));
         const attemptNumber = submissions.length + 1;
+        const entry = {
+            id: Date.now(),
+            problemId: problem.id,
+            submittedAnswer: finalAnswer,
+            steps: safeSteps,
+            status: validation.isCorrect ? 'accepted' : 'wrong',
+            is_correct: validation.isCorrect,
+            timestamp: new Date().toISOString(),
+            metadata: {
+                attempts: attemptNumber,
+                hintsUsed: hintsOpened.length,
+                timeSpent: timeSpentSeconds,
+                timeSpentLabel: formatDurationLabel(timeSpentSeconds)
+            }
+        };
+        let historyError = null;
+        try {
+            await saveUserSubmission({
+                problemId: problem.id,
+                submittedAnswer: finalAnswer,
+                isCorrect: validation.isCorrect,
+                timeSpentSeconds,
+                steps: safeSteps,
+                submittedAtOrAfter: validationStartedAt
+            });
+        } catch (error) {
+            console.error('Failed to save problem submission:', error);
+            historyError = 'Your answer was checked, but this submission could not be saved. Please try again.';
+        }
+        setSubmissionHistoryError(historyError);
+        setSubmissions(prev => [entry, ...prev]);
+
         const normalizedFinalAnswer = normalizeAnswer(finalAnswer);
         const knownNormalizedAcceptedAnswers = acceptedAnswers
             .flatMap(answer => {
@@ -771,6 +838,7 @@ const Problem = () => {
             });
 
             setShowSubmissions(true);
+            setShowSolution(false);
             setShowDescription(false);
             setShowTop(false);
             setChatPanel(false);
@@ -790,30 +858,6 @@ const Problem = () => {
         // ================================================================
         // FIRST SOLVE OR INCORRECT SUBMISSION PATH
         // ================================================================
-        await saveSubmission(problem.id, finalAnswer, validation.isCorrect, timeSpentSeconds, {
-            topic: problem.topic,
-            difficulty: problem.difficulty
-        }, safeSteps);
-
-        const entry = {
-            id: Date.now(),
-            problemId: problem.id,
-            submittedAnswer: finalAnswer,
-            steps: safeSteps,
-            status: validation.isCorrect ? 'accepted' : 'wrong',
-            is_correct: validation.isCorrect,
-            timestamp: new Date().toISOString(),
-            metadata: {
-                attempts: attemptNumber,
-                hintsUsed: hintsOpened.length,
-                timeSpent: timeSpentSeconds,
-                timeSpentLabel: formatDurationLabel(timeSpentSeconds)
-            }
-        };
-
-        // Prepend new submission entry locally immediately
-        setSubmissions(prev => [entry, ...prev]);
-
         setSubmissionFeedback({
             message: validation.feedback,
             isCorrect: validation.isCorrect,
@@ -846,6 +890,7 @@ const Problem = () => {
         }
 
         setShowSubmissions(true);
+        setShowSolution(false);
         setShowDescription(false);
         setShowTop(false);
         setShowDrawingPad(false);
@@ -853,72 +898,60 @@ const Problem = () => {
             setDescriptionCollapsed(false);
         }
 
-        let previousStreak = 0;
-        let streakData = null;
-
         if (validation.isCorrect) {
-            try {
-                const streakUpdate = await updateStreakForCorrectSolve();
-                previousStreak = streakUpdate.previous_streak || 0;
-                streakData = {
-                    current: streakUpdate.current_streak || 0,
-                    longest: streakUpdate.longest_streak || 0,
-                    lastDate: streakUpdate.last_activity_date || null
-                };
+            setCanFetchSolution(true);
+            void removeProblemFromInProgressDb(problem.id);
 
-                if (streakUpdate.incremented && streakData.current > previousStreak) {
-                    setCurrentStreakValue(streakData.current);
-                    setShowAchievementPopup(false);
-                    setNewAchievements([]);
-                    setShowStreakPopup(true);
-                }
+            void (async () => {
+                try {
+                    const streakUpdate = await updateStreakForCorrectSolve();
+                    const previousStreak = streakUpdate.previous_streak || 0;
+                    const streakData = {
+                        current: streakUpdate.current_streak || 0,
+                        longest: streakUpdate.longest_streak || 0
+                    };
 
-                if (typeof window !== 'undefined') {
+                    if (streakUpdate.incremented && streakData.current > previousStreak) {
+                        setCurrentStreakValue(streakData.current);
+                        setShowAchievementPopup(false);
+                        setNewAchievements([]);
+                        setShowStreakPopup(true);
+                    }
+
                     window.dispatchEvent(new CustomEvent('equathora:stats-updated', {
                         detail: {
                             currentStreak: streakData.current,
                             longestStreak: streakData.longest
                         }
                     }));
+                } catch (error) {
+                    console.error('Failed to refresh streak after correct solve:', error);
                 }
-            } catch {
-                // ignore background failure
-            }
+            })();
         }
 
-        await recordProblemStats(problem, {
+        void recordProblemStats(problem, {
             isCorrect: validation.isCorrect,
-            timeSpentSeconds,
-            timestamp: entry.timestamp,
-            attemptNumber,
-            streakData: validation.isCorrect ? streakData : null,
-            hintsUsed: hintsOpened.length,
-            solutionViewed
-        });
+            timestamp: entry.timestamp
+        }).catch(error => console.error('Failed to record problem stats:', error));
 
         if (validation.isCorrect) {
-            await markProblemCompleteDb(problem.id, timeSpentSeconds, problem.difficulty, problem.topic || 'General');
-            await removeProblemFromInProgressDb(problem.id);
-            // Only now is completion actually persisted - safe to let the
-            // solution-fetch effect fire.
-            setCanFetchSolution(true);
-        }
+            void (async () => {
+                try {
+                    const seenIds = getSeenAchievements();
+                    const updatedStats = await getUserStats();
+                    const currentAchievements = buildAchievements(updatedStats);
+                    const freshlyUnlocked = checkNewAchievements(seenIds, currentAchievements);
 
-        if (validation.isCorrect) {
-            try {
-                const seenIds = getSeenAchievements();
-                const updatedStats = await getUserStats();
-                const currentAchievements = buildAchievements(updatedStats);
-                const freshlyUnlocked = checkNewAchievements(seenIds, currentAchievements);
-
-                if (freshlyUnlocked.length > 0) {
-                    setNewAchievements(freshlyUnlocked);
-                    setShowStreakPopup(false);
-                    setShowAchievementPopup(true);
+                    if (freshlyUnlocked.length > 0) {
+                        setNewAchievements(freshlyUnlocked);
+                        setShowStreakPopup(false);
+                        setShowAchievementPopup(true);
+                    }
+                } catch (error) {
+                    console.error('Failed to calculate newly unlocked achievements:', error);
                 }
-            } catch {
-                // ignore achievement calculation error
-            }
+            })();
         }
 
         return {
@@ -1107,14 +1140,27 @@ const Problem = () => {
                         setShowMentorChat(false);
                     }}
                     onConfirm={async () => {
-                        setShowSolution(true);
-                        setShowSolutionPopup(false);
-                        if (problem?.id) {
+                        try {
+                            if (!problem?.id) {
+                                throw new Error('Cannot unlock a solution without a problem ID.');
+                            }
                             await markSolutionViewedDb(problem.id);
+                            setShowSolution(true);
+                            setShowDescription(false);
+                            setShowSubmissions(false);
+                            setShowSolutionPopup(false);
+                            setSolutionText(null);
+                            setSolutionLoadError(null);
+                            setSolutionViewed(true);
+                            setCanFetchSolution(true);
+                            setShowMentorChat(false);
+                        } catch (error) {
+                            console.error('Failed to unlock problem solution:', error);
+                            setShowSolutionPopup(false);
+                            setShowSolution(true);
+                            setShowDescription(false);
+                            setSolutionLoadError('The solution could not be unlocked. Check your connection and try again.');
                         }
-                        setSolutionViewed(true);
-                        setCanFetchSolution(true);
-                        setShowMentorChat(false);
                     }}
                 />
 
@@ -1525,11 +1571,21 @@ const Problem = () => {
                                 {/* Show Solution State Check */}
                                 {showSolution && <SolutionStepsDisplay
                                     solution={solutionText}
+                                    error={solutionLoadError}
+                                    onRetry={() => {
+                                        setSolutionText(null);
+                                        setSolutionRetry((retry) => retry + 1);
+                                    }}
                                 />}
 
                                 {/* Show Submissions State Check */}
                                 {showSubmissions &&
                                     <div>
+                                        {submissionHistoryError && (
+                                            <div className="rounded-xl px-4 py-3 border border-(--dark-accent-color) mb-3 text-sm text-(--secondary-color)">
+                                                {submissionHistoryError}
+                                            </div>
+                                        )}
                                         {/* Inline feedback for incorrect answers only */}
                                         {submissionFeedback && !submissionFeedback.isCorrect && (
                                             <div className="rounded-xl px-4 py-3 border transition-all duration-300 border-(--dark-accent-color)">

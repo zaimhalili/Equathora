@@ -206,6 +206,7 @@ export default function App() {
     // PASSWORD_RECOVERY and skips the auto-redirect while on the
     // reset-password/forgot-password flow.
     useEffect(() => {
+        const pendingAuthTasks = new Set();
         const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'PASSWORD_RECOVERY') {
                 navigate('/reset-password');
@@ -213,34 +214,38 @@ export default function App() {
             }
 
             if (event === 'SIGNED_IN' && session) {
-                void (async () => {
-                    try {
-                        const userSettings = await getUserSettings();
-                        const normalizedTheme = normalizeThemePreference(userSettings?.theme);
-                        setThemePreference(normalizedTheme, { persist: true });
-                    } catch (error) {
-                        console.error('Error syncing signed-in theme preference:', error);
-                    }
-                })();
-
-                identifyPostHogUser(session.user);
-
-                void capturePostHogEvent('user_signed_in', {
-                    email: session.user?.email || null
-                });
-                void trackActivityEvent('session_start', new Date(), {
-                    route: window.location.pathname
-                });
-
-                const currentPath = window.location.pathname;
-                const isResetFlow = currentPath.includes('/reset-password') || currentPath.includes('/forgotpassword');
-
-                if (!isResetFlow && (currentPath === '/' || currentPath === '/login' || currentPath === '/signup')) {
+                const timeoutId = window.setTimeout(() => {
+                    pendingAuthTasks.delete(timeoutId);
                     void (async () => {
-                        const { onboardingCompleted } = await getOnboardingStatus(session.user.id);
-                        navigate(onboardingCompleted ? '/dashboard' : '/getStarted', { replace: true });
+                        try {
+                            const userSettings = await getUserSettings();
+                            const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+                            setThemePreference(normalizedTheme, { persist: true });
+                        } catch (error) {
+                            console.error('Error syncing signed-in theme preference:', error);
+                        }
                     })();
-                }
+
+                    identifyPostHogUser(session.user);
+
+                    void capturePostHogEvent('user_signed_in', {
+                        email: session.user?.email || null
+                    });
+                    void trackActivityEvent('session_start', new Date(), {
+                        route: window.location.pathname
+                    });
+
+                    const currentPath = window.location.pathname;
+                    const isResetFlow = currentPath.includes('/reset-password') || currentPath.includes('/forgotpassword');
+
+                    if (!isResetFlow && (currentPath === '/' || currentPath === '/login' || currentPath === '/signup')) {
+                        void (async () => {
+                            const { onboardingCompleted } = await getOnboardingStatus(session.user.id);
+                            navigate(onboardingCompleted ? '/dashboard' : '/getStarted', { replace: true });
+                        })();
+                    }
+                }, 0);
+                pendingAuthTasks.add(timeoutId);
             }
 
             if (event === 'SIGNED_OUT') {
@@ -249,7 +254,10 @@ export default function App() {
             }
         });
 
-        return () => subscription.unsubscribe();
+        return () => {
+            pendingAuthTasks.forEach((timeoutId) => window.clearTimeout(timeoutId));
+            subscription.unsubscribe();
+        };
     }, [navigate]);
 
     useEffect(() => {

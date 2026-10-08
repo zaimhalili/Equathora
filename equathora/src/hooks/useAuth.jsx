@@ -122,13 +122,20 @@ export function AuthProvider({ children }) {
         // to set state, which could leave onboardingCompleted stale
         // right after loading flips to false. One listener, one sync.
         let hasSyncedOnce = false;
+        const pendingSyncs = new Set();
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            void syncAuthAndOnboarding(session, !hasSyncedOnce);
+            const initial = !hasSyncedOnce;
             hasSyncedOnce = true;
+            const timeoutId = window.setTimeout(() => {
+                pendingSyncs.delete(timeoutId);
+                void syncAuthAndOnboarding(session, initial);
+            }, 0);
+            pendingSyncs.add(timeoutId);
         });
 
         return () => {
             isDisposed = true;
+            pendingSyncs.forEach((timeoutId) => window.clearTimeout(timeoutId));
             subscription.unsubscribe();
         };
     }, []);

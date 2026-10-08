@@ -1,11 +1,4 @@
 import { supabase } from './supabaseClient';
-import { calculateProblemXP } from './leaderboardService';
-import { FaArrowAltCircleDown } from 'react-icons/fa';
-
-/**
- * Database service for user progress using Supabase
- * Fully replaces localStorage-based progressStorage - no localStorage calls anywhere in this file.
- */
 
 // ============================================================================
 // USER PROGRESS
@@ -121,7 +114,7 @@ export async function getCompletedProblems() {
 export async function markProblemComplete(problemId, timeSpentSeconds, difficulty, topic) {
     try {
         const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return;
+        if (!session) return false;
 
         const { error } = await supabase
             .from('user_completed_problems')
@@ -135,8 +128,10 @@ export async function markProblemComplete(problemId, timeSpentSeconds, difficult
             }, { onConflict: 'user_id,problem_id' });
 
         if (error) throw error;
+        return true;
     } catch (error) {
         console.error('Error marking problem complete:', error);
+        return false;
     }
 }
 
@@ -386,47 +381,71 @@ function createDefaultStreak() {
 // SUBMISSIONS
 // ============================================================================
 
-export async function saveSubmission(problemId, submittedAnswer, isCorrect, timeSpentSeconds, metadata = {}, steps = []) {
-    try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return;
+export async function getUserSubmissions(problemId = null) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return [];
 
-        // Use RPC to write submission safely
-        const { error } = await supabase.rpc('submit_answer_write', {
-            p_user_id: session.user.id,
-            p_problem_id: problemId,
-            p_is_correct: isCorrect,
-            p_solution_viewed: metadata?.solutionViewed || false
-        });
+    let query = supabase
+        .from('user_submissions')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .order('submitted_at', { ascending: false });
 
-        if (error) throw error;
-    } catch (error) {
-        console.error('Error saving submission via RPC:', error);
+    if (problemId) {
+        query = query.eq('problem_id', String(problemId));
     }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return data || [];
 }
 
-export async function getUserSubmissions(problemId = null) {
-    try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return [];
+export async function saveUserSubmission({
+    problemId,
+    submittedAnswer,
+    isCorrect,
+    timeSpentSeconds,
+    steps,
+    submittedAtOrAfter
+}) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) throw new Error('You must be signed in to save a submission.');
 
-        let query = supabase
+    const submission = {
+        user_id: session.user.id,
+        problem_id: String(problemId),
+        submitted_answer: submittedAnswer,
+        is_correct: isCorrect,
+        time_spent_seconds: timeSpentSeconds,
+        steps
+    };
+
+    const { data: existing, error: lookupError } = await supabase
+        .from('user_submissions')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .eq('problem_id', String(problemId))
+        .eq('submitted_answer', submittedAnswer)
+        .gte('submitted_at', submittedAtOrAfter)
+        .order('submitted_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+    if (lookupError) throw lookupError;
+
+    if (existing) {
+        const { error } = await supabase
             .from('user_submissions')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .order('submitted_at', { ascending: false });
-
-        if (problemId) {
-            query = query.eq('problem_id', problemId);
-        }
-
-        const { data, error } = await query;
+            .update(submission)
+            .eq('id', existing.id);
         if (error) throw error;
-        return data || [];
-    } catch (error) {
-        console.error('Error getting submissions:', error);
-        return [];
+        return;
     }
+
+    const { error } = await supabase
+        .from('user_submissions')
+        .insert(submission);
+    if (error) throw error;
 }
 
 // ============================================================================
@@ -653,10 +672,11 @@ export async function hasViewedSolutionDb(problemId) {
 
 export async function markSolutionViewedDb(problemId) {
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
-    await supabase
+    if (!session) throw new Error('You must be signed in to unlock the solution.');
+    const { error } = await supabase
         .from('user_solution_views')
         .upsert({ user_id: session.user.id, problem_id: String(problemId) }, { onConflict: 'user_id,problem_id' });
+    if (error) throw error;
 }
 
 export async function markProblemInProgressDb(problemId) {
@@ -732,12 +752,7 @@ export async function recordProblemStats(
     problem,
     {
         isCorrect = false,
-        timeSpentSeconds = 0,
         timestamp = new Date().toISOString(),
-        attemptNumber = 1,
-        streakData = null,
-        hintsUsed = 0,
-        solutionViewed = false
     } = {}
 ) {
     if (!problem) return null;
@@ -746,40 +761,16 @@ export async function recordProblemStats(
     if (!session) return null;
     const userId = session.user.id;
 
-    const completedIds = await getCompletedProblems();
-    const alreadySolved = completedIds.includes(String(problem.id));
-    if (alreadySolved && isCorrect) {
-        console.log('Practice mode submission, skipping stats update for problem', problem.id);
-        return null;
-    }
-
-    // 1. Submit answer via secure RPC (handles user_submissions, user_completed_problems & streak)
-    try {
-        const { error: submitError } = await supabase.rpc('submit_answer_write', {
-            p_user_id: userId,
-            p_problem_id: String(problem.id),
-            p_is_correct: isCorrect,
-            p_user_answer: submittedAnswer || '',
-            p_xp_reward: problemXP || 0
-        });
-
-        if (submitError) {
-            console.error('Error recording submission via RPC:', submitError);
-        }
-    } catch (e) {
-        console.error('RPC submit_answer_write failed:', e);
-    }
-
-    // 2. Trigger server-side XP recalculation
+    // The answer-validation function records each attempt before returning.
     try {
         await supabase.rpc('recalculate_user_xp', { p_user_id: userId });
     } catch (e) {
         console.error('RPC recalculate_user_xp failed:', e);
     }
 
-    // 3. Increment metadata stats (weekly, topic, difficulty) if first time correct
+    // Increment metadata stats (weekly, topic, difficulty) if first time correct.
     const weekdayIndex = getWeekdayIndex(timestamp);
-    if (isCorrect && !alreadySolved) {
+    if (isCorrect) {
         try { await incrementWeeklyProgress(weekdayIndex); }
         catch (e) { console.error('Failed to increment weekly progress:', e); }
 
@@ -889,4 +880,3 @@ export async function getStudentTopics() {
         return [];
     }
 }
-

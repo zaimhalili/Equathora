@@ -368,7 +368,7 @@ export default function MathLiveEditor({
                                                 }}
                                             ></math-field>
 
-                                            <button className="ml-delete-btn" onClick={() => deleteField(field.id)} title="Delete this step">
+                                            <button type="button" className="ml-delete-btn" onClick={() => deleteField(field.id)} title="Delete this step">
                                                 <FaTrash />
                                             </button>
                                         </div>

@@ -70,6 +70,8 @@ backend/**/connection-strings.json
 
 # SQL files (schema scripts, migrations)
 *.sql
+!backend/EquathoraBackend/SQL/Fixes/fix_user_progress_write_permissions.sql
+!backend/EquathoraBackend/SQL/Fixes/fix_submit_answer_write_schema.sql
 
 # Secrets and API keys
 **/*secrets*.json

@@ -30,9 +30,9 @@ const parseSolutionIntoSteps = (solution) => {
     if (!solution) return [];
 
     // 1. "Step N:" / "Step N." explicit markers
-    if (/(?:^|\n)\s*Step\s*\d+[\s.:)\-]+/i.test(solution)) {
+    if (/(?:^|\n)\s*Step\s*\d+[\s.:)-]+/i.test(solution)) {
         return solution
-            .split(/\n?\s*Step\s*\d+[\s.:)\-]+/i)
+            .split(/\n?\s*Step\s*\d+[\s.:)-]+/i)
             .map((s) => s.trim())
             .filter(Boolean);
     }
@@ -88,7 +88,7 @@ const separateTextAndMath = (step) => {
 
 /* ─── component ────────────────────────────────────────────── */
 
-const SolutionStepsDisplay = ({ solution }) => {
+const SolutionStepsDisplay = ({ solution, error, onRetry }) => {
     const containerRef = useRef(null);
     const steps = parseSolutionIntoSteps(solution);
 
@@ -108,6 +108,23 @@ const SolutionStepsDisplay = ({ solution }) => {
         const id = setTimeout(typesetMath, 60);
         return () => clearTimeout(id);
     }, [solution]);
+
+    if (error) {
+        return (
+            <div className="w-full rounded-xl border border-(--accent-color)/30 p-4 text-sm text-(--secondary-color)">
+                <p className="m-0">{error}</p>
+                {onRetry && (
+                    <button
+                        type="button"
+                        onClick={onRetry}
+                        className="mt-3 rounded-lg bg-(--accent-color) px-3 py-2 font-semibold text-white"
+                    >
+                        Try again
+                    </button>
+                )}
+            </div>
+        );
+    }
 
     if (!solution) {
         return (
