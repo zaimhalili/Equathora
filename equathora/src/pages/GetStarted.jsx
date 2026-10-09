@@ -318,12 +318,12 @@ const GetStarted = () => {
     const imageSrc = typeof WelcomeTeacher === 'string' ? WelcomeTeacher : WelcomeTeacher?.default || WelcomeTeacher;
 
     return (
-        <main className='relative flex flex-col w-full bg-[var(--main-color)] min-h-screen h-full overflow-y-auto items-center px-4 sm:px-6 '>
+        <main className='relative flex flex-col w-full bg-(--main-color) min-h-screen h-full overflow-y-auto items-center px-4 sm:px-6 '>
 
             {/* Progress bar - sticky instead of absolute, so it always stays
                 pinned above the content instead of overlapping it when the
                 viewport is short. */}
-            <header className='sticky top-0 z-20 w-full max-w-xl px-4 pt-4 pb-2 flex flex-col gap-2 bg-[var(--main-color)]'>
+            <header className='sticky top-0 z-20 w-full max-w-xl px-4 pt-4 pb-2 flex flex-col gap-2 bg-(--main-color)'>
                 <div className='flex items-center gap-3 w-full'>
                     <div className='w-8 flex justify-start shrink-0'>
                         {currentStep > 0 && (

@@ -17,7 +17,7 @@ const DeleteAllModal = ({ isOpen, onClose, onConfirm }) => {
     useBodyScrollLock(isOpen);
     if (!isOpen) return null;
     return (
-        <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-[2px]' onClick={onClose}>
             <div className='bg-(--white) w-11/12 max-w-md rounded-xl px-6 py-7 flex flex-col shadow-2xl' onClick={(e) => e.stopPropagation()}>
                 <div className='flex flex-col gap-3'>
                     <h2 className=' text-left font-bold text-2xl md:text-3xl text-(--secondary-color) leading-tight'>Clear All Steps?</h2>
@@ -78,19 +78,20 @@ export default function MathLiveEditor({
     const navigate = useNavigate();
     const fieldRefs = useRef({});
     const pendingFocusIdRef = useRef(null);
-    const initialFocusPendingRef = useRef(true);
 
     const focusField = (id, command = null) => {
         requestAnimationFrame(() => {
-            const el = fieldRefs.current[id];
-            if (el) {
-                el.focus();
-                if (command) {
-                    el.executeCommand(command);
+            requestAnimationFrame(() => {
+                const el = fieldRefs.current[id];
+                if (el?.isConnected) {
+                    el.focus();
+                    if (command) {
+                        el.executeCommand(command);
+                    }
+                    const wrapper = el.closest('.ml-step-wrapper') || el;
+                    wrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
-                const wrapper = el.closest('.ml-step-wrapper') || el;
-                wrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
+            });
         });
     };
 
@@ -111,7 +112,6 @@ export default function MathLiveEditor({
 
     useEffect(() => {
         const storedFields = loadStoredFields(storageKey);
-        pendingFocusIdRef.current = storedFields[0]?.id ?? null;
         setFields(storedFields);
         setArithmeticResults({});
         onFieldsChange?.(storedFields);
@@ -127,12 +127,8 @@ export default function MathLiveEditor({
             const focusId = pendingFocusIdRef.current;
             if (fieldRefs.current[focusId]) {
                 pendingFocusIdRef.current = null;
-                initialFocusPendingRef.current = false;
                 focusField(focusId);
             }
-        } else if (initialFocusPendingRef.current && fields.length > 0) {
-            initialFocusPendingRef.current = false;
-            focusField(fields[0].id);
         }
 
         const results = {};
@@ -195,6 +191,11 @@ export default function MathLiveEditor({
     };
 
     const deleteField = (id) => {
+        const fieldToDelete = fieldRefs.current[id];
+        if (fieldToDelete?.isConnected && fieldToDelete.matches(':focus')) {
+            fieldToDelete.blur();
+        }
+
         if (fields.length === 1) {
             const newField = { id: Date.now(), latex: "" };
             pendingFocusIdRef.current = newField.id;
@@ -369,7 +370,7 @@ export default function MathLiveEditor({
                                                 className="ml-field"
                                                 virtualkeyboardmode="off"
                                                 smartfence="true"
-                                                placeholder="Solve"
+                                                // placeholder="Solve"
                                                 value={field.latex}
                                                 onInput={(evt) => updateLatex(
                                                     field.id,
@@ -424,7 +425,6 @@ export default function MathLiveEditor({
                                             <button
                                                 type="button"
                                                 className="ml-delete-btn"
-                                                onMouseDown={(event) => event.preventDefault()}
                                                 onClick={() => deleteField(field.id)}
                                                 title="Delete this step"
                                             >

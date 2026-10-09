@@ -36,7 +36,7 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
     if (!isOpen || !submission) return null;
 
     return (
-        <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30' onClick={onClose}>
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30' onClick={onClose}>
             <div className='bg-(--white) w-11/12 max-w-2xl rounded-xl px-6 py-6 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-start pb-4'>
                     <div className='flex-1'>
@@ -45,8 +45,8 @@ const SubmissionDetailModal = ({ isOpen, onClose, submission, premium, problem, 
                                 Submission Details
                             </h2>
                             <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 text-center ${submission.status === 'accepted' ? 'bg-(--french-gray) text-(--secondary-color)' :
-                                submission.status === 'wrong' ? 'bg-[var(--main-color)] text-(--dark-accent-color)' :
-                                    'bg-[var(--main-color)] text-(--secondary-color)'
+                                submission.status === 'wrong' ? 'bg-(--main-color) text-(--dark-accent-color)' :
+                                    'bg-(--main-color) text-(--secondary-color)'
                                 }`}>
                                 {submission.status === 'accepted' && <FaCheck />}
                                 {submission.status === 'wrong' && <FaTimes />}

@@ -11,7 +11,7 @@ const NavigationBar = () => {
     return (
         <>
             <motion.header
-                className='w-full bg-[var(--main-color)] py-2 fixed top-0 z-[1000] overflow-visible box-border border-b-2 border-(--french-gray)/70 flex justify-center'
+                className='w-full bg-(--main-color) py-2 fixed top-0 z-[1000] overflow-visible box-border border-b-2 border-(--french-gray)/70 flex justify-center'
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}

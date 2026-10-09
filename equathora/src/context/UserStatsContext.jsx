@@ -4,6 +4,7 @@ import { getAllProblems } from '../lib/problemService';
 import { getAchievementProgress, getUserSubmissions } from '../lib/databaseService';
 import { computeAccuracyFromSources } from '../lib/accuracyService';
 import { difficultyDisplayRank, formatDifficultyLabel, getDifficultyColor, normalizeDifficultyKey } from '../hooks/useStatisticsColors';
+import { getSolvedTopics } from '../lib/profileExportData';
 
 const CACHE_KEY = 'eq_user_stats_cache';
 
@@ -24,6 +25,7 @@ const defaultStats = {
     totalTimeSeconds: 0,
     perfectStreak: 0,
     favoriteTopics: [],
+    solvedTopics: [],
     topicFrequency: [],
     difficultyBreakdown: [],
     weeklyProgress: Array(7).fill(0),
@@ -175,6 +177,7 @@ async function aggregateStats() {
             completedProblemIds: filteredCompletedIds,
             attemptedProblemIds: uniqueAttemptedProblemIds,
             favoriteTopics,
+            solvedTopics: getSolvedTopics(allProblems, filteredCompletedIds),
             topicFrequency: Array.isArray(achievementProgress?.topicFrequency) ? achievementProgress.topicFrequency : [],
             difficultyBreakdown,
             weeklyProgress,

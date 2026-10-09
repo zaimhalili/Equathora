@@ -92,7 +92,7 @@ const HelpCenter = () => {
     return (
         <>
             <FeedbackBanner />
-            <div className="w-full min-h-screen bg-[var(--main-color)]  text-(--secondary-color)">
+            <div className="w-full min-h-screen bg-(--main-color)  text-(--secondary-color)">
                 <header>
                     {user ? <Navbar /> : <NavigationBar />}
                 </header>
@@ -253,7 +253,7 @@ const HelpCenter = () => {
                                     </p>
                                     <a
                                         href="mailto:equathora@gmail.com"
-                                        className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--main-color)] !text-(--accent-color) rounded-xl font-bold text-base no-underline w-fit hover:bg-gray-200 transition-colors"
+                                        className="inline-flex items-center gap-2 px-6 py-3 bg-(--main-color) !text-(--accent-color) rounded-xl font-bold text-base no-underline w-fit hover:bg-gray-200 transition-colors"
                                     >
                                         <span>Contact Support</span>
                                         <FaArrowRight className="text-sm" />

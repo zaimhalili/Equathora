@@ -575,7 +575,7 @@ const AdminReviewProblems = () => {
                                     <button
                                         type='button'
                                         onClick={() => setStatusForIds([activeProblem.id], 'Approved')}
-                                        className='rounded-xl border px-3 py-1.5 text-xs font-semibold text-[var(--main-color)]'
+                                        className='rounded-xl border px-3 py-1.5 text-xs font-semibold text-(--main-color)'
                                         style={{ borderColor: 'var(--secondary-color)', backgroundColor: 'var(--secondary-color)' }}
                                     >
                                         <span className='inline-flex items-center gap-1'>

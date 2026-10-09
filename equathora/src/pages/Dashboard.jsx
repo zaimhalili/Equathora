@@ -12,8 +12,6 @@ import Leaderboards from '../assets/images/leaderboards.svg'
 import { Link } from 'react-router-dom';
 import CommunityPosts from '../components/Dashboard/CommunityPosts.jsx';
 import Mentor from '../assets/images/mentoring.svg';
-import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem.js';
-import { supabase } from '../lib/supabaseClient';
 import JourneyImg from '../assets/images/journey.svg';
 import { FaCrown } from 'react-icons/fa';
 // Pass premium state
@@ -21,12 +19,17 @@ import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
 // Upgraded to premium popup
 import UpgradedPopup from '@/components/Premium/UpgradedPopup.jsx';
 import { useUser } from '@/hooks/Dashboard/useUser.js';
+import { useRecommendedProblem } from '@/hooks/useRecommendedProblem';
+import { FaSpinner } from 'react-icons/fa';
 
 const Dashboard = () => {
     const { username } = useUser();
     const { premium, loading: subLoading } = useSubscription();
-    const [nextProblem, setNextProblem] = useState(null);
     const [showUpgradedPopup, setShowUpgradedPopup] = useState(false);
+    const {
+        targetPath: dailyChallengeTo,
+        isFetching: dailyProblemLoading
+    } = useRecommendedProblem(premium, subLoading);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -35,24 +38,6 @@ const Dashboard = () => {
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     }, [])
-
-    useEffect(() => {
-        const loadNextProblem = async () => {
-            try {
-                const problem = await getNextRecommendedProblem();
-                setNextProblem(problem || null);
-            } catch (error) {
-                console.error('Failed to load next recommended problem:', error);
-                setNextProblem(null);
-            }
-        };
-        loadNextProblem();
-    }, []);
-
-    // Only link into a problem once we actually have a recommended slug -
-    // otherwise send them to /journey (always valid) instead of a
-    // /problems/undefined dead link / 404.
-    const dailyChallengeTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
 
     return (
         <>
@@ -100,21 +85,37 @@ const Dashboard = () => {
                                     </h3>
 
                                     {/* Blocks - Squares */}
-                                    <div className="w-full pt-2 gap-[1px] flex flex-wrap justify-center sm:justify-start">
+                                    <div className="w-full pt-2 gap-px flex flex-wrap justify-center sm:justify-start">
                                         <motion.div
                                             initial={{ opacity: 0, scale: 0.9 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             className="w-[calc(50%-0.5px)] min-[480px]:w-[calc(25%-0.75px)]"
                                         >
-                                            <Link
-                                                to={dailyChallengeTo}
-                                                className={`w-full aspect-square bg-(--white) transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-lg hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100 ${premium ? '' : ''}`}
-                                            >
-                                                <img src={QuestionMark} alt="Daily challenge" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" width={120} height={120} />
-                                                <h6 className="text-(--secondary-color) text-lg font-normal w-full text-center flex items-center justify-center">
-                                                    Daily challenge
-                                                </h6>
-                                            </Link>
+                                            {dailyProblemLoading ? (
+                                                <div
+                                                    className="w-full aspect-square bg-(--white) rounded-lg flex flex-col items-center justify-center gap-3 p-4 text-(--secondary-color)"
+                                                    role="status"
+                                                    aria-busy="true"
+                                                >
+                                                    <FaSpinner className='h-7 w-7 animate-spin' aria-hidden="true" />
+                                                    <span className="text-center text-sm">Loading daily challenge...</span>
+                                                </div>
+                                            ) : dailyChallengeTo ? (
+                                                <Link
+                                                    to={dailyChallengeTo}
+                                                    className="w-full aspect-square bg-(--white) transition-all duration-150 ease-out flex justify-center items-center flex-col p-4 gap-3 cursor-pointer overflow-hidden rounded-lg hover:rounded-lg hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] hover:scale-105 active:scale-100"
+                                                >
+                                                    <img src={QuestionMark} alt="Daily challenge" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" width={120} height={120} />
+                                                    <h6 className="text-(--secondary-color) text-lg font-normal w-full text-center flex items-center justify-center">
+                                                        Daily challenge
+                                                    </h6>
+                                                </Link>
+                                            ) : (
+                                                <div className="w-full aspect-square bg-(--white) rounded-lg flex flex-col items-center justify-center gap-3 p-4 text-(--secondary-color) opacity-75">
+                                                    <img src={QuestionMark} alt="" className="h-[50%] lg:h-[60%] w-[60%] lg:w-[60%]" width={120} height={120} />
+                                                    <h6 className="text-center text-sm">No daily challenge available right now.</h6>
+                                                </div>
+                                            )}
                                         </motion.div>
 
                                         <motion.div
@@ -234,7 +235,7 @@ const Dashboard = () => {
                                     <div className="flex gap-3 max-w-100">
                                         <Link
                                             to="/applymentor"
-                                            className="flex items-center justify-center  font-semibold text-sm !text-(--white)! bg-(--secondary-color) rounded-xl no-underline transition-all duration-200 hover:bg-transparent hover:text-(--secondary-color)! hover:outline-1 hover:outline-(--secondary-color) text-center flex-2 py-2 px-2 text-wrap active:scale-95"
+                                            className="flex items-center justify-center  font-semibold text-sm text-(--white)! bg-(--secondary-color) rounded-xl no-underline transition-all duration-200 hover:bg-transparent hover:text-(--secondary-color)! hover:outline-1 hover:outline-(--secondary-color) text-center flex-2 py-2 px-2 text-wrap active:scale-95"
                                         >
                                             Apply Now
                                         </Link>

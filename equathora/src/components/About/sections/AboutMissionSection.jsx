@@ -6,7 +6,7 @@ import ScrollReveal from '../ScrollReveal';
 
 const AboutMissionSection = () => {
     return (
-        <section className="w-full flex justify-center bg-gradient-to-b from-(--white) to-[var(--main-color)] py-20">
+        <section className="w-full flex justify-center bg-gradient-to-b from-(--white) to-(--main-color) py-20">
             <div className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw]">
                 <div className="flex flex-col lg:flex-row items-center gap-12">
                     <ScrollReveal direction="left" className="lg:w-1/2">

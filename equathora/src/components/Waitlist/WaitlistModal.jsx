@@ -67,7 +67,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={onClose}
-                    className="absolute inset-0 bg-[var(--raisin-black)]/50"
+                    className="absolute inset-0 bg-black/30"
                 />
 
                 <motion.div
@@ -85,7 +85,7 @@ const WaitlistModal = ({ onClose, isOpen, onSave, userData }) => {
                                 <button
                                     type="button"
                                     onClick={onClose}
-                                    className="text-(--mid-main-secondary) hover:text-(--secondary-color) transition-colors p-2 hover:bg-[var(--main-color)] rounded-xl cursor-pointer active:scale-95"
+                                    className="text-(--mid-main-secondary) hover:text-(--secondary-color) transition-colors p-2 hover:bg-(--main-color) rounded-xl cursor-pointer active:scale-95"
                                     aria-label="Close modal"
                                 >
                                     <FaTimes size={20} />

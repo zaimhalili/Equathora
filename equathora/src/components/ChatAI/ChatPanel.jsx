@@ -322,7 +322,7 @@ const ChatPanel = forwardRef(({
 
     if (statusLoading) {
         return (
-            <div className="w-full h-full flex items-center justify-center bg-[var(--main-color)] rounded-xl text-xs text-(--mid-main-secondary)">
+            <div className="w-full h-full flex items-center justify-center bg-(--main-color) rounded-xl text-xs text-(--mid-main-secondary)">
                 Loading AI Mentor...
             </div>
         );
@@ -333,7 +333,7 @@ const ChatPanel = forwardRef(({
             {/* Backdrop Lock Overlay */}
             {trialExhausted && (
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-black/60 backdrop-blur-sm transition-all duration-300">
-                    <div className="bg-[var(--main-color)] border border-amber-500/30 rounded-xl p-6 shadow-2xl max-w-sm w-full text-center flex flex-col items-center gap-3 animate-fadeIn">
+                    <div className="bg-(--main-color) border border-amber-500/30 rounded-xl p-6 shadow-2xl max-w-sm w-full text-center flex flex-col items-center gap-3 animate-fadeIn">
                         <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 text-xl shadow-inner">
                             <FaLock />
                         </div>
@@ -355,7 +355,7 @@ const ChatPanel = forwardRef(({
             )}
 
             {/* Chat Container */}
-            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4 flex flex-col gap-4 bg-[var(--main-color)] p-4">
+            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4 flex flex-col gap-4 bg-(--main-color) p-4">
                 {isLoadingHistory ? (
                     <div className="flex items-center gap-2 self-start rounded-2xl border border-(--french-gray) bg-(--white) px-3.5 py-2.5 text-xs text-(--secondary-color)">
                         <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-(--dark-accent-color)" />
@@ -386,7 +386,7 @@ const ChatPanel = forwardRef(({
 
                 {isAiThinking && (
                     <div className="flex flex-col gap-1 max-w-[85%] self-start opacity-75 shrink-0">
-                        <div className="border border-(--secondary-color) rounded-2xl rounded-tl-none px-3.5 py-2.5 text-xs bg-[var(--main-color)] text-(--secondary-color) italic">
+                        <div className="border border-(--secondary-color) rounded-2xl rounded-tl-none px-3.5 py-2.5 text-xs bg-(--main-color) text-(--secondary-color) italic">
                             Sigma is thinking…
                         </div>
                     </div>
@@ -394,7 +394,7 @@ const ChatPanel = forwardRef(({
             </div>
 
             {/* Input Form Area */}
-            <form onSubmit={handleSendMessage} className="shrink-0 p-3 flex flex-col gap-1.5 border-t border-(--french-gray) bg-[var(--main-color)] rounded-b-md">
+            <form onSubmit={handleSendMessage} className="shrink-0 p-3 flex flex-col gap-1.5 border-t border-(--french-gray) bg-(--main-color) rounded-b-md">
                 {tier === 'free' && (
                     <div className="flex items-center justify-between px-1 text-[10px] text-(--mid-main-secondary)">
                         <span>
@@ -437,7 +437,7 @@ const ChatPanel = forwardRef(({
                             }
                             maxLength={MAX_INPUT_CHARS}
                             aria-label="Chat message input"
-                            className="w-full rounded-xl px-4 py-2 text-sm md:text-base border bg-[var(--main-color)] border-(--french-gray) text-(--secondary-color) focus:!outline-none disabled:opacity-50 !h-full"
+                            className="w-full rounded-xl px-4 py-2 text-sm md:text-base border bg-(--main-color) border-(--french-gray) text-(--secondary-color) focus:!outline-none disabled:opacity-50 !h-full"
                         />
                         {typedMessage.length > MAX_INPUT_CHARS * 0.8 && (
                             <span

@@ -312,7 +312,7 @@ const Profile = () => {
               transition={{ duration: 0.5 }}
             >
               {/* Combined Card */}
-              <div className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col gap-6'>
+              <div className='bg-(--main-color) rounded-xl shadow-lg p-6 flex flex-col gap-6'>
                 {/* Profile Header Section */}
                 <div className='flex flex-col gap-5'>
                   <div className='flex gap-4 items-center pb-4'>
@@ -435,7 +435,7 @@ const Profile = () => {
             <div className='lg:col-span-2 flex flex-col gap-4'>
               {/* Statistics Card */}
               <motion.div
-                className='bg-[var(--main-color)] rounded-xl shadow-lg p-6'
+                className='bg-(--main-color) rounded-xl shadow-lg p-6'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -529,7 +529,7 @@ const Profile = () => {
 
               {/* Solved Problems Card */}
               <motion.div
-                className='bg-[var(--main-color)] rounded-xl shadow-lg p-6 flex flex-col'
+                className='bg-(--main-color) rounded-xl shadow-lg p-6 flex flex-col'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -544,7 +544,7 @@ const Profile = () => {
                     >
                       <Link
                         to={`/problems/${problem.slug || generateProblemSlug(problem.title, problem.id)}`}
-                        className={`w-full px-5 py-4 transition-all hover:-translate-x-1 text-(--secondary-color) duration-150 rounded-xl text-md block ${i % 2 === 0 ? 'bg-(--french-gray)' : 'bg-[var(--main-color)]'}`}>{problem.title}</Link>
+                        className={`w-full px-5 py-4 transition-all hover:-translate-x-1 text-(--secondary-color) duration-150 rounded-xl text-md block ${i % 2 === 0 ? 'bg-(--french-gray)' : 'bg-(--main-color)'}`}>{problem.title}</Link>
                     </motion.div>
                   ))}
                 </div>

@@ -144,7 +144,7 @@ const OutlineButton = ({ children, onClick, disabled, className = '' }) => (
         type="button"
         onClick={onClick}
         disabled={disabled}
-        className={`cursor-pointer py-2.5 px-5 border border-(--mid-main-secondary) text-(--secondary-color) font-semibold text-sm rounded-xl hover:bg-[var(--main-color)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+        className={`cursor-pointer py-2.5 px-5 border border-(--mid-main-secondary) text-(--secondary-color) font-semibold text-sm rounded-xl hover:bg-(--main-color) transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
     >
         {children}
     </button>
@@ -164,7 +164,7 @@ const DangerButton = ({ children, onClick, disabled, loading, title = '' }) => (
 );
 
 const Chip = ({ children }) => (
-    <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[var(--main-color)] text-(--secondary-color) border border-(--mid-main-secondary)">
+    <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-(--main-color) text-(--secondary-color) border border-(--mid-main-secondary)">
         {children}
     </span>
 );
@@ -888,7 +888,7 @@ const Settings = () => {
                                 title={section.label}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all text-left cursor-pointer ${activeSection === section.id
                                     ? 'bg-(--accent-color) text-white'
-                                    : 'bg-(--white) text-(--secondary-color) hover:bg-(--secondary-color) hover:text-[var(--main-color)]'
+                                    : 'bg-(--white) text-(--secondary-color) hover:bg-(--secondary-color) hover:text-(--main-color)'
                                     }`}
                             >
                                 {section.icon}
@@ -906,7 +906,7 @@ const Settings = () => {
                                 title={section.label}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all shrink-0 cursor-pointer ${activeSection === section.id
                                     ? 'bg-(--accent-color) text-white'
-                                    : 'bg-[var(--surface-card)] text-(--secondary-color) border border-(--mid-main-secondary) hover:bg-(--secondary-color) hover:text-[var(--main-color)]'
+                                    : 'bg-[var(--surface-card)] text-(--secondary-color) border border-(--mid-main-secondary) hover:bg-(--secondary-color) hover:text-(--main-color)'
                                     }`}
                             >
                                 {section.icon}
@@ -925,7 +925,7 @@ const Settings = () => {
                         <SectionCard id="profile">
                             <SectionTitle sub="Your public identity on Equathora">Profile</SectionTitle>
 
-                            <div className="flex items-center justify-between gap-4 flex-wrap bg-[var(--main-color)] rounded-xl px-4 py-4">
+                            <div className="flex items-center justify-between gap-4 flex-wrap bg-(--main-color) rounded-xl px-4 py-4">
                                 <div className="flex flex-col gap-1 min-w-0">
                                     <div className="flex items-center gap-2 flex-wrap">
                                         <span className="text-lg font-medium truncate">{profileSummary.full_name || 'Unnamed'}</span>
@@ -950,7 +950,7 @@ const Settings = () => {
                         <SectionCard id="account">
                             <SectionTitle sub="Manage your email, password, and security settings">Account & Security</SectionTitle>
 
-                            <div className="flex flex-col gap-1 bg-[var(--main-color)] rounded-xl px-4 py-3">
+                            <div className="flex flex-col gap-1 bg-(--main-color) rounded-xl px-4 py-3">
                                 <span className="text-xs font-semibold text-(--mid-main-secondary)">Current email</span>
                                 <span className="text-sm font-medium">{currentEmail}</span>
                                 {authProvider !== 'email' && (
@@ -1241,7 +1241,7 @@ const Settings = () => {
                         <SectionCard id="subscription">
                             <SectionTitle sub="Manage your Equathora plan">Subscription</SectionTitle>
 
-                            <div className="flex items-center justify-between gap-4 flex-wrap bg-[var(--main-color)] rounded-xl px-4 py-4">
+                            <div className="flex items-center justify-between gap-4 flex-wrap bg-(--main-color) rounded-xl px-4 py-4">
                                 <div className="flex flex-col gap-1">
                                     <span className="text-xs font-semibold text-(--mid-main-secondary) uppercase tracking-wide">Current plan</span>
                                     <div className="flex items-center gap-2">
@@ -1273,7 +1273,7 @@ const Settings = () => {
 
                             {currentSession ? (
                                 <div className="flex flex-col gap-3">
-                                    <div className="flex items-start gap-4 bg-[var(--main-color)] rounded-xl px-4 py-4">
+                                    <div className="flex items-start gap-4 bg-(--main-color) rounded-xl px-4 py-4">
                                         <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-full shrink-0">
                                             <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />

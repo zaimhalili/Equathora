@@ -12,7 +12,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_NAME_LENGTH = 2;
 
 const INPUT_BASE_CLASSES =
-    'text-sm text-(--secondary-color) w-full px-5 py-3.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color)/20 focus:border-(--accent-color) transition-all bg-[var(--main-color)]';
+    'text-sm text-(--secondary-color) w-full px-5 py-3.5 border rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color)/20 focus:border-(--accent-color) transition-all bg-(--main-color)';
 
 const INPUT_ERROR_CLASSES = 'border-(--accent-color) bg-(--accent-color)/5';
 const INPUT_NORMAL_CLASSES =
@@ -131,7 +131,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-[var(--raisin-black)]/50"
+                        className="absolute inset-0 bg-black/30"
                     />
 
                     {/* Modal Container */}
@@ -208,7 +208,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                                     <p className="text-xs text-(--mid-main-secondary) pl-1 pt-1">
                                                         This is the email you'll use to subscribe
                                                     </p>
-                                                    <div className={`${INPUT_BASE_CLASSES} border-(--mid-main-secondary) bg-[var(--main-color)] cursor-default`}>
+                                                    <div className={`${INPUT_BASE_CLASSES} border-(--mid-main-secondary) bg-(--main-color) cursor-default`}>
                                                         {session.user.email}
                                                     </div>
                                                 </>

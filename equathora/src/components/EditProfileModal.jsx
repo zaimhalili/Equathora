@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import * as Sentry from '@sentry/react';
 import { FaTimes, FaCamera, FaUser, FaGlobeAmericas } from 'react-icons/fa';
 import { supabase } from '../lib/supabaseClient';
 import imageCompression from 'browser-image-compression';
 import useBodyScrollLock from '../hooks/useBodyScrollLock';
+import { motion } from 'framer-motion';
 
 const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
     useBodyScrollLock(isOpen);
@@ -78,6 +80,12 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                 reader.readAsDataURL(compressedFile);
             } catch (error) {
                 console.error('Error compressing image:', error);
+                Sentry.captureException(error, {
+                    tags: {
+                        feature: 'profile-edit',
+                        operation: 'avatar-compression'
+                    }
+                });
                 setError('Failed to process image. Please try another one.');
             }
         }
@@ -86,29 +94,24 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
     const uploadAvatar = async (userId) => {
         if (!avatarFile) return formData.avatar_url;
 
-        try {
-            const fileExt = avatarFile.name.split('.').pop();
-            const fileName = `${userId}_${Date.now()}.${fileExt}`;
-            const filePath = `avatars/${fileName}`;
+        const fileExt = avatarFile.name.split('.').pop();
+        const fileName = `${userId}_${Date.now()}.${fileExt}`;
+        const filePath = `avatars/${fileName}`;
 
-            const { data, error: uploadError } = await supabase.storage
-                .from('user-avatars')
-                .upload(filePath, avatarFile, {
-                    cacheControl: '3600',
-                    upsert: true
-                });
+        const { error: uploadError } = await supabase.storage
+            .from('user-avatars')
+            .upload(filePath, avatarFile, {
+                cacheControl: '3600',
+                upsert: true
+            });
 
-            if (uploadError) throw uploadError;
+        if (uploadError) throw uploadError;
 
-            const { data: { publicUrl } } = supabase.storage
-                .from('user-avatars')
-                .getPublicUrl(filePath);
+        const { data: { publicUrl } } = supabase.storage
+            .from('user-avatars')
+            .getPublicUrl(filePath);
 
-            return publicUrl;
-        } catch (error) {
-            console.error('Error uploading avatar:', error);
-            throw new Error('Failed to upload avatar');
-        }
+        return publicUrl;
     };
 
     const handleSubmit = async (e) => {
@@ -145,19 +148,24 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
             if (updateError) throw updateError;
 
             // Persist profile data in profiles table so leaderboards and public views have latest info
-            const { error: profileError } = await supabase
+            const { data: updatedProfile, error: profileError } = await supabase
                 .from('profiles')
-                .upsert({
-                    id: userId,
+                .update({
                     full_name: formData.full_name,
                     username: formData.username,
                     avatar_url: avatarUrl,
                     bio: formData.bio,
                     location: formData.location,
                     updated_at: new Date().toISOString()
-                }, { onConflict: 'id' });
+                })
+                .eq('id', userId)
+                .select('id')
+                .maybeSingle();
 
             if (profileError) throw profileError;
+            if (!updatedProfile) {
+                throw new Error('Profile record was not found.');
+            }
 
             // Call onSave callback with updated data
             onSave({
@@ -171,7 +179,13 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
             onClose();
         } catch (error) {
             console.error('Error updating profile:', error);
-            setError(error.message || 'Failed to update profile. Please try again.');
+            Sentry.captureException(error, {
+                tags: {
+                    feature: 'profile-edit',
+                    operation: 'save-profile'
+                }
+            });
+            setError('Could not save your profile right now. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -188,7 +202,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={onClose}
-                    className="absolute inset-0 bg-[var(--raisin-black)]/50"
+                    className="absolute inset-0 bg-black/50"
                 />
 
                 {/* Modal */}
@@ -203,7 +217,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                         <h2 className="text-2xl font-bold text-(--secondary-color) ">Edit Profile</h2>
                         <button
                             onClick={onClose}
-                            className="text-(--mid-main-secondary) hover:text-(--secondary-color) transition-colors p-2 hover:bg-[var(--main-color)] rounded-xl cursor-pointer active:scale-95"
+                            className="text-(--mid-main-secondary) hover:text-(--secondary-color) transition-colors p-2 hover:bg-(--main-color) rounded-xl cursor-pointer active:scale-95"
                             aria-label="Close modal"
                         >
                             <FaTimes size={20} />
@@ -229,7 +243,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                 <button
                                     type="button"
                                     onClick={handleAvatarClick}
-                                    className="absolute inset-0 bg-[var(--raisin-black)]/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer active:scale-95"
+                                    className="absolute inset-0 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer active:scale-95"
                                 >
                                     <FaCamera className="text-white text-2xl" />
                                 </button>

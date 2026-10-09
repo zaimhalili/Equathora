@@ -305,13 +305,13 @@ const Journey = () => {
                         {/* Dynamic Progress & Streak Motivation Banner */}
                         {currentStreak > 0 && (
                             <motion.div
-                                className="w-full bg-gradient-to-r from-amber-500/10 via-orange-500/20 to-red-500/20 border border-amber-500/30 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg backdrop-blur-md"
+                                className="w-full bg-linear-to-r from-amber-500/10 via-orange-500/20 to-red-500/20 border border-amber-500/30 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg backdrop-blur-md"
                                 initial={{ opacity: 0, scale: 0.97 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.5 }}
                             >
                                 <div className="flex items-center gap-4 text-center sm:text-left">
-                                    <div className="text-4xl md:text-5xl animate-bounce">
+                                    <div className="text-4xl md:text-5xl">
                                         <svg className="h-10" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                             <defs>
                                                 <linearGradient id="icon-gradient-fire-sidebar" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -324,8 +324,8 @@ const Journey = () => {
                                     </div>
                                     <div>
                                         <h3 className="text-lg md:text-xl font-extrabold text-amber-600">
-                                            {currentStreak >= 15
-                                                ? `You've achieved a ${currentStreak}-day streak. You're on fire! 💥`
+                                            {currentStreak >= 5
+                                                ? `You've achieved a ${currentStreak}-day streak. You're on fire!`
                                                 : `You're on a ${currentStreak}-day streak! Keep the momentum going!`}
                                         </h3>
                                         <p className="text-sm text-(--secondary-color)">

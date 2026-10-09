@@ -146,7 +146,7 @@ const Feedback = () => {
                 <Navbar />
             </header>
 
-            <main className="min-h-screen bg-gradient-to-b from-(--mid-main-secondary) to-[var(--main-color)] py-8 px-4 sm:px-6 md:px-8 w-full flex justify-center">
+            <main className="min-h-screen bg-gradient-to-b from-(--mid-main-secondary) to-(--main-color) py-8 px-4 sm:px-6 md:px-8 w-full flex justify-center">
                 <div className="max-w-3xl">
                     <div className="bg-(--white) rounded-xl shadow-xl p-6 sm:p-8 md:p-10">
                         <h1 className="text-3xl sm:text-4xl font-bold text-(--secondary-color)  pb-4">
@@ -296,7 +296,7 @@ const Feedback = () => {
 
                     {/* Information Boxes */}
                     <div className="pt-6 flex flex-col gap-5">
-                        <div className="bg-[var(--main-color)] border-l-4 border-blue-500 rounded-xl p-4">
+                        <div className="bg-(--main-color) border-l-4 border-blue-500 rounded-xl p-4">
                             <h3 className="font-bold text-(--secondary-color) pb-2 ">Privacy Notice</h3>
                             <p className="text-sm text-(--secondary-color) ">
                                 Your feedback is important to us. We collect this information solely to improve Equathora.
@@ -304,7 +304,7 @@ const Feedback = () => {
                             </p>
                         </div>
 
-                        <div className="bg-[var(--main-color)] border-l-4 border-green-500 rounded-xl p-4">
+                        <div className="bg-(--main-color) border-l-4 border-green-500 rounded-xl p-4">
                             <h3 className="font-bold text-(--secondary-color) pb-2 ">Instant Delivery</h3>
                             <p className="text-sm text-(--secondary-color) ">
                                 Your feedback will be sent directly to our team via email. We read every submission and typically respond within 24-48 hours.

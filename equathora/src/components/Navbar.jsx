@@ -9,7 +9,7 @@ import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { useUserStats } from '../context/UserStatsContext';
-import { useSubscriptionStatus } from '@/hooks/useSubscription';
+import { useSubscription } from '@/hooks/SubscriptionContext';
 
 import { useNotifications } from '../hooks/useNotifications';
 import { useRecommendedProblem } from '../hooks/useRecommendedProblem';
@@ -34,16 +34,17 @@ import Books from '../assets/images/learningBooks.svg';
 import Sigma from '../assets/logo/TransparentSymbol.png';
 import Mail from '../assets/images/mail1.svg';
 import PremiumButton from './Premium/PremiumButton';
+import { FaSpinner } from 'react-icons/fa';
 
 const Navbar = () => {
   const { profile } = useUserProfile();
-  const { premium, loading: onloading } = useSubscriptionStatus();
+  const { premium, loading: onloading } = useSubscription();
   const { stats, refreshStats } = useUserStats();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { unreadCount } = useNotifications();
-  const { dailyProblemTo } = useRecommendedProblem(premium, onloading);
+  const { nextProblem, targetPath: dailyProblemTo, isFetching: dailyProblemLoading } = useRecommendedProblem(premium, onloading);
   const { profileAvatarSrc } = useProfileAvatar();
 
   // Sync user stats on window focus or custom events
@@ -64,9 +65,19 @@ const Navbar = () => {
   const learnItems = [
     {
       to: dailyProblemTo,
-      text: "Daily Problem",
-      description: "Solve a fresh daily challenge.",
-      image: Daily
+      text: dailyProblemLoading
+        ? "Loading Daily Problem..."
+        : nextProblem
+          ? "Daily Problem"
+          : "No Daily Problem Available",
+      description: dailyProblemLoading
+        ? "Finding your next recommended challenge."
+        : nextProblem
+          ? "Solve a fresh daily challenge."
+          : "There are no available challenges right now.",
+      image: Daily,
+      disabled: dailyProblemLoading || !dailyProblemTo,
+      loading: dailyProblemLoading
     },
     {
       to: '/journey',
@@ -209,7 +220,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className='w-full bg-[var(--main-color)] h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-[1000] overflow-visible box-border'>
+      <header className='w-full bg-(--main-color) h-[7.5vh] shadow-[0_10px_25px_rgba(0,0,0,0.18)] sticky top-0 z-1000 overflow-visible box-border'>
         <nav aria-label="Primary" className='w-full h-full flex justify-center'>
           <div className='w-full h-full mx-auto flex items-center justify-between px-[4vw] xl:px-[6vw] max-w-[1500px]'>
             <ul className='flex justify-start items-center list-none flex-1 min-w-0 overflow-visible'>
@@ -304,7 +315,12 @@ const Navbar = () => {
         </nav>
       </header>
 
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        dailyProblemTo={dailyProblemTo}
+        dailyProblemLoading={dailyProblemLoading}
+      />
     </>
   );
 };

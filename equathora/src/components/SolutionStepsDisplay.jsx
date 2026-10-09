@@ -140,7 +140,7 @@ const SolutionStepsDisplay = ({ solution, error, onRetry }) => {
     return (
         <div
             ref={containerRef}
-            className="mathjax-renderer flex w-full flex-col overflow-hidden rounded-xl bg-[var(--main-color)] "
+            className="mathjax-renderer flex w-full flex-col overflow-hidden rounded-xl bg-(--main-color) "
         >
             <div className="flex flex-1 flex-col overflow-hidden py-2">
                 <div className="flex-1 overflow-y-auto overflow-x-hidden">

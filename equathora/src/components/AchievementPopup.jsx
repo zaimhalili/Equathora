@@ -79,7 +79,7 @@ const AchievementPopup = ({ achievements = [], onClose, onDismissOne }) => {
                         transition={{ type: 'spring', damping: 18, stiffness: 300 }}
                         className="fixed left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-(--white) rounded-xl shadow-2xl max-w-sm w-[90vw] overflow-hidden border-[var(--main-color)] border-2">
+                        <div className="bg-(--white) rounded-xl shadow-2xl max-w-sm w-[90vw] overflow-hidden border-(--main-color) border-2">
                             {/* Content */}
                             <div className="flex items-center gap-4 p-3 bg-(--white) shadow-xs">
                                 {/* Icon */}

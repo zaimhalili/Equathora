@@ -94,7 +94,7 @@ const HeroSection = () => {
 
     return (
         <section
-            className=" w-full bg-[var(--main-color)] relative overflow-hidden flex items-center justify-center"
+            className=" w-full bg-(--main-color) relative overflow-hidden flex items-center justify-center"
         >
 
             <div className="relative z-10 w-full flex justify-center">
@@ -230,7 +230,7 @@ const HeroSection = () => {
                                             relative w-[320px] sm:w-[380px] md:w-[460px] lg:w-[560px] aspect-square rounded-full overflow-hidden z- bg-gradient-to-b from-(--french-gray)/5 to-(--french-gray)/60 backdrop-blur-sm"
                                 >
                                     {/* Inner subtle circle */}
-                                    <div className="absolute inset-[18%] rounded-full bg-[var(--main-color)]/80 z-0" />
+                                    <div className="absolute inset-[18%] rounded-full bg-(--main-color)/80 z-0" />
 
                                     {/* Student image - clipped by the circle */}
                                     <img

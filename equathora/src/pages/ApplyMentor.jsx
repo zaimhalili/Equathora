@@ -249,7 +249,7 @@ const ApplyMentor = () => {
                                 <button
                                     type='button'
                                     onClick={() => setIsBriefsModalOpen(true)}
-                                    className='bg-[var(--main-color)] hover:bg-gray-300 !text-(--accent-color) px-8 py-4 rounded-xl !font-bold text-base flex items-center justify-center gap-2 no-underline shadow-lg transition-colors duration-200 w-full sm:w-auto cursor-pointer'
+                                    className='bg-(--main-color) hover:bg-gray-300 !text-(--accent-color) px-8 py-4 rounded-xl !font-bold text-base flex items-center justify-center gap-2 no-underline shadow-lg transition-colors duration-200 w-full sm:w-auto cursor-pointer'
                                 >
                                     <FaUsers />
                                     <span>Join Equathora Briefs</span>

@@ -1,30 +1,39 @@
 import { useState, useEffect } from 'react';
 import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
 
+const inFlightRecommendations = new Map();
+
+function loadRecommendedProblem(premium) {
+    const key = Boolean(premium);
+    if (!inFlightRecommendations.has(key)) {
+        const request = getNextRecommendedProblem(key).finally(() => {
+            inFlightRecommendations.delete(key);
+        });
+        inFlightRecommendations.set(key, request);
+    }
+    return inFlightRecommendations.get(key);
+}
+
 export const useRecommendedProblem = (premium, isLoading) => {
-    const [nextProblem, setNextProblem] = useState(null);
-    const [isFetching, setIsFetching] = useState(true);
+    const [result, setResult] = useState(null);
+    const requestKey = `${Boolean(premium)}:${Boolean(isLoading)}`;
 
     useEffect(() => {
-        let isCancelled = false; // Fixed: Must be initialized to false
-        setIsFetching(true);
+        let isCancelled = false;
+        if (isLoading) return () => {
+            isCancelled = true;
+        };
 
         async function loadProblem() {
-            if (isLoading) return;
-
             try {
-                const problem = await getNextRecommendedProblem(premium);
+                const problem = await loadRecommendedProblem(premium);
                 if (!isCancelled) {
-                    setNextProblem(problem || null);
+                    setResult({ key: requestKey, problem: problem || null });
                 }
             } catch (err) {
                 if (!isCancelled) {
                     console.error("Failed to load recommended problem", err);
-                    setNextProblem(null);
-                }
-            } finally {
-                if (!isCancelled) {
-                    setIsFetching(false);
+                    setResult({ key: requestKey, problem: null });
                 }
             }
         }
@@ -34,11 +43,11 @@ export const useRecommendedProblem = (premium, isLoading) => {
         return () => {
             isCancelled = true;
         };
-    }, [premium, isLoading]);
+    }, [premium, isLoading, requestKey]);
 
-    const targetPath = nextProblem?.slug
-        ? `/problems/${nextProblem.slug}`
-        : "/journey";
+    const isFetching = isLoading || result?.key !== requestKey;
+    const nextProblem = isFetching ? null : result.problem;
+    const targetPath = nextProblem?.slug ? `/problems/${nextProblem.slug}` : null;
 
     return { nextProblem, targetPath, isFetching };
 };

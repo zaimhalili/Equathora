@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FaTimes, FaDiscord, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import GuestAvatar from '../assets/images/guestAvatar.png';
 import Daily from '../assets/images/questionMark1.svg';
@@ -23,8 +23,7 @@ import { supabase } from '../lib/supabaseClient';
 import { clearUserData } from '../lib/userStorage';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { useUserStats } from '../context/UserStatsContext';
-import { useSubscriptionStatus } from '@/hooks/useSubscription';
-import { getNextRecommendedProblem } from '@/lib/Dashboard/nextRecommendedProblem';
+import { useSubscription } from '@/hooks/SubscriptionContext';
 import Mail from '../assets/images/mail1.svg';
 
 const getLowResAvatarUrl = (avatarUrl) => {
@@ -43,13 +42,11 @@ const getLowResAvatarUrl = (avatarUrl) => {
     }
 };
 
-const Sidebar = ({ isOpen, onClose }) => {
-    const navigate = useNavigate();
+const Sidebar = ({ isOpen, onClose, dailyProblemTo, dailyProblemLoading }) => {
     const { profile } = useUserProfile();
-    const { premium, loading: onloading } = useSubscriptionStatus();
+    const { premium } = useSubscription();
     const { stats } = useUserStats();
 
-    const [nextProblem, setNextProblem] = useState(null);
     const [profileAvatarSrc, setProfileAvatarSrc] = useState(GuestAvatar);
 
     // Accordion section states
@@ -82,21 +79,6 @@ const Sidebar = ({ isOpen, onClose }) => {
     };
 
     useEffect(() => {
-        if (onloading) return;
-
-        const loadNextProblem = async () => {
-            try {
-                const problem = await getNextRecommendedProblem(premium);
-                setNextProblem(problem || null);
-            } catch (error) {
-                console.error('Failed to load next recommended problem:', error);
-                setNextProblem(null);
-            }
-        };
-        loadNextProblem();
-    }, [premium, onloading]);
-
-    useEffect(() => {
         const fetchAvatar = async () => {
             try {
                 const { data: { session } } = await supabase.auth.getSession();
@@ -116,8 +98,6 @@ const Sidebar = ({ isOpen, onClose }) => {
 
     // Fallback safe streak calculation identical to Navbar
     const currentStreak = stats?.currentStreak ?? stats?.streak ?? 0;
-
-    const dailyProblemTo = nextProblem?.slug ? `/problems/${nextProblem.slug}` : '/journey';
 
     const handleSignOut = async () => {
         await clearUserData();
@@ -140,7 +120,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             {/* Sidebar Content Panel */}
             <div
                 id="mobile-navigation"
-                className="relative w-full max-w-xs sm:max-w-sm bg-[var(--main-color)] h-full shadow-2xl overflow-y-auto flex flex-col z-[1110] text-(--secondary-color) overscroll-contain"
+                className="relative w-full max-w-xs sm:max-w-sm bg-(--main-color) h-full shadow-2xl overflow-y-auto flex flex-col z-[1110] text-(--secondary-color) overscroll-contain"
             >
                 {/* Top Header */}
                 <div className="flex items-center justify-between p-5 border-b border-gray-700/30">
@@ -187,7 +167,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                         <Link
                             to="/achievements/stats"
                             onClick={onClose}
-                            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[var(--main-color)] border border-gray-700/30 hover:border-(--accent-color) hover:bg-white/5 transition-all active:scale-[0.96]"
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-(--main-color) border border-gray-700/30 hover:border-(--accent-color) hover:bg-white/5 transition-all active:scale-[0.96]"
                         >
                             <svg className="w-6 h-6" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
@@ -216,14 +196,31 @@ const Sidebar = ({ isOpen, onClose }) => {
                         </button>
                         {openSections.learn && (
                             <div className="pl-7 pr-5 pb-4 space-y-2">
-                                <Link
-                                    to={dailyProblemTo}
-                                    onClick={onClose}
-                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
-                                >
-                                    <img src={Daily} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
-                                    <span>Daily Problem</span>
-                                </Link>
+                                {dailyProblemTo ? (
+                                    <Link
+                                        to={dailyProblemTo}
+                                        onClick={onClose}
+                                        className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                    >
+                                        <img src={Daily} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                        <span>Daily Problem</span>
+                                    </Link>
+                                ) : (
+                                    <div
+                                        className="flex items-center gap-4 py-3 text-lg opacity-65"
+                                        role={dailyProblemLoading ? "status" : undefined}
+                                        aria-busy={dailyProblemLoading || undefined}
+                                    >
+                                        <img src={Daily} alt="" className="w-7 h-7 object-contain" />
+                                        <span>{dailyProblemLoading ? "Loading Daily Problem..." : "No Daily Problem Available"}</span>
+                                        {dailyProblemLoading && (
+                                            <span
+                                                className="ml-auto h-4 w-4 rounded-full border-2 border-current border-t-transparent animate-spin"
+                                                aria-hidden="true"
+                                            />
+                                        )}
+                                    </div>
+                                )}
                                 <Link
                                     to="/journey"
                                     onClick={onClose}

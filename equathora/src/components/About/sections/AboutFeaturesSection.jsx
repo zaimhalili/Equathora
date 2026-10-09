@@ -5,7 +5,7 @@ import ScrollReveal from '../ScrollReveal';
 
 const AboutFeaturesSection = () => {
     return (
-        <section className="w-full flex justify-center bg-gradient-to-b from-[var(--main-color)] via-(--white) to-[var(--main-color)] py-20 overflow-hidden">
+        <section className="w-full flex justify-center bg-gradient-to-b from-(--main-color) via-(--white) to-(--main-color) py-20 overflow-hidden">
             <div className="w-full max-w-[1500px] px-[4vw] xl:px-[6vw] flex flex-col justify-center items-center">
                 <ScrollReveal direction="up">
                     <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-(--secondary-color) pb-16 text-center">

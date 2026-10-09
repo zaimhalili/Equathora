@@ -122,7 +122,7 @@ const BlogPost = () => {
                 </section>
 
                 {/* Blog Content Section */}
-                <section className='flex flex-col md:flex-row justify-center bg-[var(--main-color)] w-full'>
+                <section className='flex flex-col md:flex-row justify-center bg-(--main-color) w-full'>
                     <article className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pb-6 gap-1 text-(--secondary-color) flex flex-col'>
                         <div className='flex w-full sm:max-w-3/4 bg-(--white) flex-col px-4 sm:px-8 pt-6 pb-10 gap-2 rounded-b-2xl'>
                             {/* Render dynamic content */}
@@ -142,7 +142,7 @@ const BlogPost = () => {
                 </section>
 
                 {/* Other Community Posts */}
-                <section className='w-full flex flex-col bg-[var(--main-color)] items-center py-4'>
+                <section className='w-full flex flex-col bg-(--main-color) items-center py-4'>
                     <article className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] pb-6 text-(--secondary-color) flex flex-col gap-4'>
                         <h1 className='text-xl sm:text-2xl font-medium  text-(--secondary-color)'>Other Posts You Might Like</h1>
                         <div className='flex w-full gap-4 flex-wrap'>

@@ -1039,7 +1039,7 @@ const Problem = () => {
         <>
             <main className="flex flex-col text-(--secondary-color) bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed items-center lg:h-svh lg:overflow-hidden">
                 {/* Navigation Header */}
-                <header className="flex items-center justify-between gap-2 md:gap-3  bg-[var(--main-color)] w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0 max-w-600">
+                <header className="flex items-center justify-between gap-2 md:gap-3  bg-(--main-color) w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0 max-w-600">
                     {/* Left side - Back button and Navigation */}
                     <div className="flex items-center gap-2">
                         <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-xs md:text-sm text-(--secondary-color) font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-xl hover:bg-(--french-gray) h-9 md:h-10">
@@ -1206,7 +1206,7 @@ const Problem = () => {
                 {/* Main Content */}
                 <section className="flex flex-col lg:flex-row flex-1 min-h-0 w-full gap-1 md:gap-3 bg-transparent max-w-600 py-3 md:py-5 px-3 md:px-6 lg:overflow-hidden">
                     {/* Description Side Left Side */}
-                    <aside className={`flex flex-col w-full rounded-xl bg-[var(--main-color)] text-(--secondary-color) overflow-hidden border border-(--white) h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
+                    <aside className={`flex flex-col w-full rounded-xl bg-(--main-color) text-(--secondary-color) overflow-hidden border border-(--white) h-full transition-all duration-300 ${descriptionCollapsed ? 'lg:w-12 lg:min-w-12' : 'lg:w-1/2 '}`}>
                         <div className={`w-full py-1.5 md:py-2 flex bg-(--french-gray) px-2 rounded-t-lg ${descriptionCollapsed ? 'lg:flex-col lg:h-full lg:py-4 lg:px-1' : 'justify-between'}`}>
                             <div className={`flex gap-1 flex-wrap ${descriptionCollapsed && 'lg:flex-col lg:gap-3 lg:flex-1 lg:justify-center lg:w-full'}`}>
                                 {/* Description Button */}
@@ -1219,7 +1219,7 @@ const Problem = () => {
                                     setShowMentorChat(false);
                                     setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-(--main-color) rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 ${showDescription && !showSubmissions ? 'bg-(--main-color)' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Description" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Description</span>
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Description</span>}
                                     <FaFileAlt className={`text-[10px] md:text-xs text-(--secondary-color) ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
@@ -1239,7 +1239,7 @@ const Problem = () => {
                                         setShowSolution(true);
                                     }
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription && showSolution && !showSubmissions ? 'bg-[var(--main-color)]' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-(--main-color) rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 ${!showDescription && showSolution && !showSubmissions ? 'bg-(--main-color)' : ''} ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`} style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Solution" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>Solution</span>
                                     {descriptionCollapsed && <span className="hidden lg:inline text-xs font-semibold tracking-wider">Solution</span>}
                                     <FaCalculator className={`text-[10px] md:text-xs text-(--secondary-color) ${descriptionCollapsed ? 'lg:hidden' : ''}`} />
@@ -1254,8 +1254,8 @@ const Problem = () => {
                                     setShowMentorChat(false);
                                     setChatPanel(false);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 
-                                ${showSubmissions && !showDescription ? 'bg-[var(--main-color)]' : ''} 
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-(--main-color) rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 
+                                ${showSubmissions && !showDescription ? 'bg-(--main-color)' : ''} 
                                 ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
                                     style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Submissions" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>
@@ -1275,8 +1275,8 @@ const Problem = () => {
                                     setChatPanel(true);
                                     setChatPanelMounted(true);
                                     if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }} className={`cursor-pointer px-2 py-1 hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 min-w-fit
-                                ${chatPanel && !showDescription ? 'bg-[var(--main-color)]' : ''} 
+                                }} className={`cursor-pointer px-2 py-1 hover:bg-(--main-color) rounded-xl text-xs md:text-sm  flex items-center gap-1.5 font-medium transition-all duration-200 min-w-fit
+                                ${chatPanel && !showDescription ? 'bg-(--main-color)' : ''} 
                                 ${descriptionCollapsed ? 'lg:w-full lg:py-4 lg:px-3 lg:justify-center' : ''}`}
                                     style={descriptionCollapsed ? { writingMode: 'vertical-lr', textOrientation: 'mixed' } : {}} title={descriptionCollapsed ? "Ask Sigma" : ""}>
                                     <span className={descriptionCollapsed ? 'lg:hidden' : ''}>
@@ -1305,19 +1305,19 @@ const Problem = () => {
                             {/* Mobile Only - Toggle Collapse/Expand */}
                             <button type="button" onClick={() => {
                                 setShowTop(!showTop);
-                            }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  flex items-center gap-2 font-medium transition-colors duration-200`}>
+                            }} className={`lg:hidden cursor-pointer px-3 py-1.5 hover:bg-(--main-color) rounded-xl text-xs md:text-sm  flex items-center gap-2 font-medium transition-colors duration-200`}>
                                 {showTop ? <FaChevronDown className="text-sm" /> : <FaChevronUp className="text-sm" />}
                             </button>
 
                             {/* Desktop Only - Horizontal Collapse Toggle */}
                             <button type="button" onClick={() => {
                                 setDescriptionCollapsed(!descriptionCollapsed);
-                            }} className={`hidden lg:flex cursor-pointer hover:bg-[var(--main-color)] rounded-xl text-xs md:text-sm  items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
+                            }} className={`hidden lg:flex cursor-pointer hover:bg-(--main-color) rounded-xl text-xs md:text-sm  items-center justify-center font-medium transition-all duration-200 ${descriptionCollapsed ? 'order-first px-2 py-2 pb-3' : 'px-3 py-1.5 gap-2'}`} title={descriptionCollapsed ? "Expand" : "Collapse"}>
                                 <FaChevronRight className={`text-sm transition-transform duration-200 ${descriptionCollapsed ? 'rotate-0' : 'rotate-180'}`} />
                             </button>
                         </div>
 
-                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-[var(--main-color)] flex flex-col  text-(--secondary-color) lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-100px)] lg:h-[calc(100vh-72px-74px)] overflow-y-auto opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
+                        <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-(--main-color) flex flex-col  text-(--secondary-color) lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-100px)] lg:h-[calc(100vh-72px-74px)] overflow-y-auto opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
 
                             <div className={`w-full p-4 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll h-full`}>
                                 {/* Problem Title & Badges */}
@@ -1369,14 +1369,14 @@ const Problem = () => {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('var(--secondary-color)')}
-                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'bg-(--secondary-color) text-[var(--main-color)] border-(--secondary-color)' : 'text-(--secondary-color) border-(--mid-main-secondary) hover:border-(--secondary-color) active:scale-95'}`}
+                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'bg-(--secondary-color) text-(--main-color) border-(--secondary-color)' : 'text-(--secondary-color) border-(--mid-main-secondary) hover:border-(--secondary-color) active:scale-95'}`}
                                                             >
                                                                 {currentTheme === 'dark' ? 'White' : 'Black'}
                                                             </button>
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setDrawingColor('red')}
-                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-(--accent-color) text-[var(--main-color)] border-(--accent-color)' : 'text-(--secondary-color) border-(--mid-main-secondary) hover:border-(--accent-color) active:scale-95'}`}
+                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-(--accent-color) text-(--main-color) border-(--accent-color)' : 'text-(--secondary-color) border-(--mid-main-secondary) hover:border-(--accent-color) active:scale-95'}`}
                                                             >
                                                                 Red
                                                             </button>
@@ -1387,7 +1387,7 @@ const Problem = () => {
                                                             type="button"
                                                             onClick={undoStroke}
                                                             disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-(--mid-main-secondary) text-(--french-gray)' : 'text-(--secondary-color) border-(--secondary-color) hover:bg-(--secondary-color) hover:text-[var(--main-color)] active:scale-95'}`}
+                                                            className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-(--mid-main-secondary) text-(--french-gray)' : 'text-(--secondary-color) border-(--secondary-color) hover:bg-(--secondary-color) hover:text-(--main-color) active:scale-95'}`}
                                                         >
                                                             Undo
                                                         </button>
@@ -1402,10 +1402,10 @@ const Problem = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className="rounded-xl border border-(--mid-main-secondary) bg-[var(--main-color)] overflow-hidden shadow-sm">
+                                                <div className="rounded-xl border border-(--mid-main-secondary) bg-(--main-color) overflow-hidden shadow-sm">
                                                     <canvas
                                                         ref={canvasRef}
-                                                        className="w-full h-48 md:h-56 bg-[var(--main-color)] cursor-crosshair"
+                                                        className="w-full h-48 md:h-56 bg-(--main-color) cursor-crosshair"
                                                         style={{ touchAction: 'none' }}
                                                         onPointerDown={(e) => { e.preventDefault(); startDrawing(e); }}
                                                         onPointerMove={(e) => { e.preventDefault(); drawStroke(e); }}
@@ -1433,11 +1433,11 @@ const Problem = () => {
                                                         <div className="flex flex-col gap-1.5 md:gap-2">
                                                             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm ">
                                                                 <span className="font-semibold text-(--secondary-color) sm:min-w-[50px]">Input:</span>
-                                                                <code className="bg-(--secondary-color) text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.input}</code>
+                                                                <code className="bg-(--secondary-color) text-(--main-color) px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.input}</code>
                                                             </div>
                                                             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs md:text-sm ">
                                                                 <span className="font-semibold text-(--secondary-color) sm:min-w-[50px]">Output:</span>
-                                                                <code className="bg-(--secondary-color) text-[var(--main-color)] px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.output}</code>
+                                                                <code className="bg-(--secondary-color) text-(--main-color) px-2 py-1 rounded font-[Courier_New,monospace] text-[0.75rem] md:text-[0.85rem] font-semibold break-all">{example.output}</code>
                                                             </div>
                                                         </div>
                                                         {example.explanation && (

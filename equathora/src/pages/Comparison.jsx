@@ -106,7 +106,7 @@ function Comparison() {
                                 <h2 id="feature-comparison-title">Choose the learning loop that fits you</h2>
                                 <p>Each platform does something useful. The difference is how much of your time is spent watching, exploring, or solving.</p>
                             </div>
-                            <div className="bg-[var(--main-color)] p-6">
+                            <div className="bg-(--main-color) p-6">
                                 <div className="bg-(--white) rounded-2xl" role="table" aria-label={`Equathora compared with ${comparison.name}`}>
                                     <div className="flex justify-around text-xl" role="row">
                                         <div role="py-3">What matters</div>
@@ -115,7 +115,7 @@ function Comparison() {
                                     </div>
                                     {features.map(([feature, equathora, khan, brilliant, ixl]) => {
                                         const competitorText = comparison.name === 'Khan Academy' ? khan : comparison.name === 'Brilliant' ? brilliant : ixl;
-                                        return <div className="border border-[var(--main-color)] flex justify-around" role="row" key={feature}>
+                                        return <div className="border border-(--main-color) flex justify-around" role="row" key={feature}>
                                             <div role="p-6 max-w-1/3 flex-1" className="feature-name">{feature}</div>
                                             <div role="p-6 max-w-1/3 flex-1">{competitorText}</div>
                                             <div role="p-6 max-w-1/3 flex-1"><FaCheck aria-hidden="true" />{equathora}</div>

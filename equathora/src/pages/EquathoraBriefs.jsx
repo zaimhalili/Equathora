@@ -64,7 +64,7 @@ const EquathoraBriefs = () => {
                             <button type='button' className='py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold text-white rounded-xl transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full sm:w-2/3 md:w-1/3 lg:w-1/5' onClick={() => setIsBriefsModalOpen(true)}>Get weekly updates</button>
                         </section>
 
-                        <section className='bg-[var(--main-color)] w-full flex flex-col lg:flex-row gap-6 lg:gap-10 p-6 sm:p-8 lg:p-10 rounded-xl shadow-[0_0_25px_rgba(141,153,174,0.7)]'>
+                        <section className='bg-(--main-color) w-full flex flex-col lg:flex-row gap-6 lg:gap-10 p-6 sm:p-8 lg:p-10 rounded-xl shadow-[0_0_25px_rgba(141,153,174,0.7)]'>
                             <div className='flex flex-col lg:w-2/3 gap-2'>
                                 <FaBookmark className='text-2xl sm:text-3xl' />
                                 <h2 className='text-3xl sm:text-3xl md:text-4xl lg:text-4xl font-extrabold text-(--secondary-color) py-2 text-center lg:text-left'>Get Equathora Briefs for {' '}

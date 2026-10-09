@@ -30,7 +30,7 @@ const ProblemMobileMenu = ({
 
             {/* Mobile dropdown menu */}
             {showMobileMenu && (
-                <div className="absolute right-0 top-full w-48 bg-[var(--main-color)] border border-(--mid-main-secondary) rounded-xl shadow-lg z-50 overflow-hidden">
+                <div className="absolute right-0 top-full w-48 bg-(--main-color) border border-(--mid-main-secondary) rounded-xl shadow-lg z-50 overflow-hidden">
                     <button
                         onClick={() => {
                             setShowDrawingPad((prev) => !prev);

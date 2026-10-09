@@ -8,7 +8,7 @@ const ReportModal = ({ isOpen, onClose, reportReason, setReportReason, reportDet
     if (!isOpen) return null;
 
     return (
-        <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 backdrop-blur-[2px]' onClick={onClose}>
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-[2px]' onClick={onClose}>
             <div className='bg-(--white) w-11/12 max-w-md rounded-xl px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] overflow-y-auto' onClick={(e) => e.stopPropagation()}>
                 <div className='flex justify-between items-start pb-4'>
                     <div>

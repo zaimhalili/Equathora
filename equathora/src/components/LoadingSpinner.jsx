@@ -150,7 +150,7 @@ const LoadingSpinner = () => {
     // }, []);
 
     return (
-        <div className="min-h-screen bg-[var(--main-color)] flex items-center justify-center px-6">
+        <div className="min-h-screen bg-(--main-color) flex items-center justify-center px-6">
             <div className="w-full max-w-xl">
                 <div className="relative h-5 w-full overflow-hidden rounded-full bg-[rgba(163,20,44,0.12)]">
                     <div

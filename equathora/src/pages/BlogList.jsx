@@ -12,7 +12,7 @@ const BlogList = () => {
         <div>
             <FeebackBanner />
             <Navbar />
-            <main className='flex bg-[var(--main-color)]  flex-col min-h-screen w-full items-center py-12'>
+            <main className='flex bg-(--main-color)  flex-col min-h-screen w-full items-center py-12'>
                 <section className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px]'>
                     <h1 className='text-4xl font-medium  text-(--secondary-color) pb-8'>
                         Equathora Blog

@@ -57,7 +57,7 @@ const DailyTrack = ({
 
     return (
         <motion.section
-            className="w-full rounded-2xl bg-[var(--main-color)] border border-white/10 p-5 shadow-xl"
+            className="w-full rounded-2xl bg-(--main-color) border border-white/10 p-5 shadow-xl"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}

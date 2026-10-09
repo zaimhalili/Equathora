@@ -13,7 +13,7 @@ const Blog = () => {
         <div>
             <FeebackBanner />
             <Navbar />
-            <main className='flex bg-[var(--main-color)]  flex-col w-full items-center'>
+            <main className='flex bg-(--main-color)  flex-col w-full items-center'>
                 {/* Header Section */}
                 <section className='w-full flex flex-col items-center bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)110%)] shadow-2xl shadow-black/20 py-12 md:py-16 theme-lock'>
                     <div className='px-[4vw] xl:px-[6vw] w-full max-w-[1500px] flex flex-col items-center'>

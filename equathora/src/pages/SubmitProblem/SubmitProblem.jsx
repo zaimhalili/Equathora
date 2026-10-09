@@ -49,7 +49,7 @@ const SubmitProblem = () => {
         alert('Thank you! Your problem has been submitted and will be reviewed.');
     };
 
-    const inputClasses = 'w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-4 py-2.5 text-(--secondary-color) focus:outline-none focus:border-(--accent-color) transition-colors placeholder-(--mid-main-secondary)';
+    const inputClasses = 'w-full bg-(--main-color) border border-[rgba(43,45,66,0.2)] rounded-xl px-4 py-2.5 text-(--secondary-color) focus:outline-none focus:border-(--accent-color) transition-colors placeholder-(--mid-main-secondary)';
     const labelClasses = 'block text-sm font-semibold text-(--secondary-color) opacity-90';
     const cardClasses = 'bg-(--white) rounded-xl border border-[rgba(43,45,66,0.12)] p-6 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col gap-6';
     const fieldGroupClasses = 'flex flex-col gap-2';
@@ -165,7 +165,7 @@ const SubmitProblem = () => {
                                     />
                                 </div>
 
-                                <div className="md:col-span-2 flex flex-col gap-3 rounded-xl border border-[rgba(43,45,66,0.14)] bg-[var(--main-color)] p-4">
+                                <div className="md:col-span-2 flex flex-col gap-3 rounded-xl border border-[rgba(43,45,66,0.14)] bg-(--main-color) p-4">
                                     <label htmlFor="share-author-name" className="flex items-center gap-3 cursor-pointer">
                                         <input
                                             id="share-author-name"
@@ -200,7 +200,7 @@ const SubmitProblem = () => {
                                     )}
                                 </div>
 
-                                <div className="md:col-span-2 flex flex-col gap-4 rounded-xl border border-[rgba(43,45,66,0.14)] bg-[var(--main-color)] p-4">
+                                <div className="md:col-span-2 flex flex-col gap-4 rounded-xl border border-[rgba(43,45,66,0.14)] bg-(--main-color) p-4">
                                     <h3 className="text-lg font-semibold text-(--secondary-color)">Additional Characteristics</h3>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -315,7 +315,7 @@ const SubmitProblem = () => {
                                                         value={ans}
                                                         onChange={(e) => handleArrayChange(index, 'accepted_answers', e.target.value)}
                                                         placeholder="e.g. -24.0"
-                                                        className="w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-3 py-2 text-(--secondary-color) focus:outline-none focus:border-(--accent-color)"
+                                                        className="w-full bg-(--main-color) border border-[rgba(43,45,66,0.2)] rounded-xl px-3 py-2 text-(--secondary-color) focus:outline-none focus:border-(--accent-color)"
                                                         autoComplete="off"
                                                     />
                                                     {formData.accepted_answers.length > 1 && (
@@ -371,7 +371,7 @@ const SubmitProblem = () => {
                                                     onChange={(e) => handleArrayChange(index, 'hints', e.target.value)}
                                                     rows="2"
                                                     placeholder="e.g. Substitute x = 2 first."
-                                                    className="w-full bg-[var(--main-color)] border border-[rgba(43,45,66,0.2)] rounded-xl px-3 py-2 text-(--secondary-color) focus:outline-none focus:border-(--accent-color) resize-y"
+                                                    className="w-full bg-(--main-color) border border-[rgba(43,45,66,0.2)] rounded-xl px-3 py-2 text-(--secondary-color) focus:outline-none focus:border-(--accent-color) resize-y"
                                                 />
                                                 {formData.hints.length > 1 && (
                                                     <button

@@ -8,7 +8,7 @@ const HelpModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     return (
-        <div className='fixed inset-0 flex items-center justify-center z-50 bg-[var(--raisin-black)]/30 ' onClick={onClose}>
+        <div className='fixed inset-0 flex items-center justify-center z-50 bg-black/30 ' onClick={onClose}>
             <div className='bg-(--white) w-11/12 max-w-2xl rounded-xl px-6 py-7 flex flex-col shadow-2xl max-h-[85vh] ' onClick={(e) => e.stopPropagation()}
                 style={{
                     scrollbarWidth: 'thin',
@@ -102,7 +102,7 @@ const HelpModal = ({ isOpen, onClose }) => {
                         </ul>
                     </div>
 
-                    <div className='bg-[var(--main-color)] border-2 border-(--mid-main-secondary) p-4 rounded-xl flex flex-col'>
+                    <div className='bg-(--main-color) border-2 border-(--mid-main-secondary) p-4 rounded-xl flex flex-col'>
                         <h3 className=' font-bold text-lg text-(--secondary-color) pb-2 flex items-center gap-2'>
                             <FaLightbulb className='text-(--accent-color)' /> Pro Tip</h3>
                         <p className=' text-sm text-(--secondary-color) leading-relaxed'>Try to solve the problem on your own before viewing hints or the solution. Use the sketch pad to visualize the problem. Learning mathematics happens best when you work through the challenge!</p>

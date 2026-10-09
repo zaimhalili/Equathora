@@ -29,7 +29,7 @@ const StreakPopup = ({ streak, onClose }) => {
                         transition={{ type: 'spring', damping: 18, stiffness: 300 }}
                         className="fixed left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999]"
                     >
-                        <div className="bg-(--white) rounded-xl shadow-xs max-w-sm w-[90vw] overflow-hidden border-[var(--main-color)] border-2 p-3 flex gap-4 items-center">
+                        <div className="bg-(--white) rounded-xl shadow-xs max-w-sm w-[90vw] overflow-hidden border-(--main-color) border-2 p-3 flex gap-4 items-center">
                             {/* Fire icon with animation */}
                             <motion.div
                                 initial={{ scale: 0, rotate: -180 }}

@@ -65,9 +65,8 @@ function getSelectedSubjects(studentTopics) {
  * Problem" link (Navbar, Sidebar) never sends a free user into a
  * paywalled problem.
  *
- * IMPORTANT: callers must treat null as "not ready" and must NOT build
- * a /problems/:slug link from it - fall back to /journey instead, so
- * nobody ever lands on a dead or not-found problem page.
+ * IMPORTANT: callers must treat null as unavailable and must not build a
+ * /problems/:slug link from it or navigate to an unrelated fallback.
  */
 export async function getNextRecommendedProblem(isPremiumUser = false) {
     try {

@@ -493,7 +493,7 @@ const AdminSolutionGenerator = () => {
                         type='button'
                         onClick={copyRunCommand}
                         disabled={hasInvalidRange || isCharLimitTooLow}
-                        className='inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[var(--main-color)] disabled:opacity-70'
+                        className='inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-(--main-color) disabled:opacity-70'
                         style={{ background: 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' }}
                     >
                         <FiPlay />
@@ -544,7 +544,7 @@ const AdminSolutionGenerator = () => {
                         <button
                             type='button'
                             onClick={onLoadFromPastedOutput}
-                            className='inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[var(--main-color)]'
+                            className='inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-(--main-color)'
                             style={{ background: 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' }}
                         >
                             <FiUpload />
@@ -602,7 +602,7 @@ const AdminSolutionGenerator = () => {
                             <button
                                 type='button'
                                 onClick={copyAndNext}
-                                className='inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-[var(--main-color)]'
+                                className='inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-(--main-color)'
                                 style={{ background: 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' }}
                             >
                                 <FiSkipForward />

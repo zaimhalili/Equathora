@@ -175,7 +175,7 @@ const Premium = () => {
 
   return (
     <div>
-      <main className="w-full bg-[var(--main-color)] bg-fixed min-h-screen ">
+      <main className="w-full bg-(--main-color) bg-fixed min-h-screen ">
         {user ? <Navbar /> :
           (<>
             <NavigationBar />
@@ -206,7 +206,7 @@ const Premium = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex flex-col gap-4 bg-[var(--main-color)]/90 p-4 rounded-2xl">
+                <div className="flex flex-col gap-4 bg-(--main-color)/90 p-4 rounded-2xl">
                   <div className="flex gap-2 flex-col">
                     <h3 className="text-2xl md:text-3xl text-(--secondary-color) font-bold flex items-end">€0
                       <span className='text-sm text-(--secondary-color)/50 font-normal'>/month</span>
@@ -228,7 +228,7 @@ const Premium = () => {
                       );
                     })}
                   </ul>
-                  <Link to={'/login'} className='!text-(--secondary-color)/70 hover:!text-(--secondary-color) bg-[var(--main-color)] brightness-95 hover:brightness-90 py-2 rounded-xl text-xl active:scale-95 transition-all duration-200 text-center !font-normal border-(--white) border-2'>
+                  <Link to={'/login'} className='!text-(--secondary-color)/70 hover:!text-(--secondary-color) bg-(--main-color) brightness-95 hover:brightness-90 py-2 rounded-xl text-xl active:scale-95 transition-all duration-200 text-center !font-normal border-(--white) border-2'>
                     Get started for free
                   </Link>
                 </div>
@@ -243,7 +243,7 @@ const Premium = () => {
                 </div>
                 <div className="flex flex-col gap-5 p-4">
                   <div className="flex justify-between items-center sm:flex-row flex-col-reverse gap-1.5">
-                    <h3 className="text-2xl font-bold text-[var(--main-color)]">Premium
+                    <h3 className="text-2xl font-bold text-(--main-color)">Premium
                     </h3>
                     {premium && (
                       <h3 className='bg-black/10 px-3 py-1 rounded-xl text-(--secondary-color) font-medium items-center flex gap-1.5 text-sm'>
@@ -271,7 +271,7 @@ const Premium = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex flex-col gap-5 bg-[var(--main-color)]/90 rounded-2xl p-4">
+                <div className="flex flex-col gap-5 bg-(--main-color)/90 rounded-2xl p-4">
                   <div className="flex flex-col gap-2">
                     <div className="flex gap-2 items-end">
                       <h3 className="text-xl font-medium line-through text-(--secondary-color)/50">€24.99</h3>
@@ -339,7 +339,7 @@ const Premium = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex flex-col gap-5 bg-[var(--main-color)]/90 rounded-2xl p-4">
+                <div className="flex flex-col gap-5 bg-(--main-color)/90 rounded-2xl p-4">
                   <div className="flex flex-col gap-2">
                     <div className="flex gap-2 items-end">
                       <h3 className="text-2xl md:text-3xl text-(--secondary-color) font-bold">€X

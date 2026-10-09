@@ -3,6 +3,7 @@ import { FaFileDownload, FaFilePdf, FaFileCsv, FaChevronDown } from 'react-icons
 import { jsPDF } from 'jspdf';
 import Logo from '../assets/logo/EquathoraSymbolIcon.png';
 import { useUserStats } from '../context/UserStatsContext';
+import { buildDifficultyExportItems, normalizeDifficultySummary } from '../lib/profileExportData';
 
 const formatDuration = (totalSeconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(totalSeconds));
@@ -22,24 +23,6 @@ const formatDate = (iso, includeTime = false) => {
         });
     }
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-};
-
-const normalizeDifficultySummary = (difficultyBreakdown) => {
-    const array = Array.isArray(difficultyBreakdown) ? difficultyBreakdown : [];
-    return array.reduce((acc, entry) => {
-        const key = String(entry?.key || '').toLowerCase();
-        if (!key) return acc;
-        acc[key] = {
-            solved: Number(entry.solved || 0),
-            total: Number(entry.total || 0),
-            percentage: entry.total > 0 ? Math.round((Number(entry.solved || 0) / Number(entry.total || 0)) * 100) : 0
-        };
-        return acc;
-    }, {
-        easy: { solved: 0, total: 0, percentage: 0 },
-        medium: { solved: 0, total: 0, percentage: 0 },
-        hard: { solved: 0, total: 0, percentage: 0 }
-    });
 };
 
 const buildDataSnapshot = (stats = {}) => {
@@ -70,6 +53,7 @@ const buildDataSnapshot = (stats = {}) => {
             reputation: Number(stats.reputation || 0),
             weeklyProgress,
             favoriteTopics: Array.isArray(stats.favoriteTopics) ? stats.favoriteTopics : [],
+            solvedTopics: Array.isArray(stats.solvedTopics) ? stats.solvedTopics : [],
             totalProblems: Number(stats.totalProblems || 0)
         },
         totalSubmissions,
@@ -78,13 +62,11 @@ const buildDataSnapshot = (stats = {}) => {
         firstCompletion: stats.firstSubmissionAt || stats.joinDate || null,
         difficulty: normalizedDifficulty,
         favoriteTopics: Array.isArray(stats.favoriteTopics) ? stats.favoriteTopics : [],
+        solvedTopics: Array.isArray(stats.solvedTopics) ? stats.solvedTopics : [],
         avgTimePerProblem,
         totalSessions,
         avgProblemsPerSession,
         totalProblems: Number(stats.totalProblems || 0),
-        easyTotal: normalizedDifficulty.easy.total,
-        mediumTotal: normalizedDifficulty.medium.total,
-        hardTotal: normalizedDifficulty.hard.total
     };
 };
 
@@ -115,14 +97,12 @@ const ProfileExportButtons = () => {
         firstCompletion,
         difficulty,
         favoriteTopics,
+        solvedTopics,
         avgTimePerProblem,
         totalSessions,
         avgProblemsPerSession,
         totalSubmissions,
         totalProblems,
-        easyTotal,
-        mediumTotal,
-        hardTotal
     } = snapshot;
 
     const statsUsername = exportStats.username || 'Student';
@@ -152,14 +132,8 @@ const ProfileExportButtons = () => {
             ]
         },
         {
-            section: 'Difficulty Breakdown', items: [
-                ['Easy Problems Solved', `${difficulty.easy.solved || 0} / ${easyTotal}`],
-                ['Medium Problems Solved', `${difficulty.medium.solved || 0} / ${mediumTotal}`],
-                ['Hard Problems Solved', `${difficulty.hard.solved || 0} / ${hardTotal}`],
-                ['Easy Completion Rate', `${easyTotal > 0 ? difficulty.easy.percentage : 0}%`],
-                ['Medium Completion Rate', `${mediumTotal > 0 ? difficulty.medium.percentage : 0}%`],
-                ['Hard Completion Rate', `${hardTotal > 0 ? difficulty.hard.percentage : 0}%`]
-            ]
+            section: 'Difficulty Breakdown',
+            items: buildDifficultyExportItems(exportStats.difficultyBreakdown)
         },
         {
             section: 'Engagement Statistics', items: [
@@ -180,9 +154,14 @@ const ProfileExportButtons = () => {
         },
         {
             section: 'Learning Focus', items: [
-                ['Favorite Topics', favoriteTopics.length > 0 ? favoriteTopics.join(', ') : 'Diverse Learning'],
-                ['Total Topics Explored', favoriteTopics.length],
-                ['Primary Skill Level', difficulty.hard.solved > 5 ? 'Advanced' : difficulty.medium.solved > 10 ? 'Intermediate' : 'Beginner']
+                ['Top Favorite Topics', favoriteTopics.length > 0 ? favoriteTopics.join(', ') : 'Diverse Learning'],
+                ['Topics Solved', solvedTopics.length > 0 ? solvedTopics.join(', ') : 'None yet'],
+                ['Total Topics Explored', solvedTopics.length],
+                ['Primary Skill Level', (difficulty.find(({ key }) => key === 'hard')?.solved ?? 0) > 5
+                    ? 'Advanced'
+                    : (difficulty.find(({ key }) => key === 'medium')?.solved ?? 0) > 10
+                        ? 'Intermediate'
+                        : 'Beginner']
             ]
         }
     ];
@@ -290,14 +269,11 @@ const ProfileExportButtons = () => {
         doc.text('Comprehensive Learning Analytics', margin + 5, 68);
 
         let yPos = 80;
-        let currentPage = 1;
-
         // Render sections with pagination
-        comprehensiveData.forEach(({ section, items }, sectionIndex) => {
+        comprehensiveData.forEach(({ section, items }) => {
             // Check if we need a new page for section header
             if (yPos > maxContentHeight - 30) {
                 doc.addPage();
-                currentPage++;
                 yPos = margin;
             }
 
@@ -317,7 +293,6 @@ const ProfileExportButtons = () => {
                 // Check if we need a new page
                 if (yPos > maxContentHeight - 15) {
                     doc.addPage();
-                    currentPage++;
                     yPos = margin;
                 }
 
@@ -338,7 +313,6 @@ const ProfileExportButtons = () => {
         // Add new page for footer if needed
         if (yPos > maxContentHeight - 35) {
             doc.addPage();
-            currentPage++;
             yPos = margin;
         }
 
@@ -369,7 +343,7 @@ const ProfileExportButtons = () => {
         doc.text('VERIFIED BY EQUATHORA', margin + 8, yPos + 25.5);
 
         // Add page numbers to all pages
-        const totalPages = doc.FiraSansnal.pages.length - 1;
+        const totalPages = doc.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
             doc.setPage(i);
             doc.setFontSize(8);

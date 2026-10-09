@@ -156,7 +156,7 @@ const AdminEmailBriefs = () => {
                         type='button'
                         onClick={copyBcc}
                         disabled={!uniqueEmails.length}
-                        className='inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-[var(--main-color)] transition disabled:opacity-70'
+                        className='inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-(--main-color) transition disabled:opacity-70'
                         style={{ background: 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' }}
                     >
                         <FiCopy />
