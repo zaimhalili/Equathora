@@ -221,7 +221,229 @@ progress.progress-bar::-moz-progress-bar {
 
 .activity-chart-container {
     width: 100%;
-    height: 250px;
+    height: 300px;
+    position: relative;
+}
+
+.learning-insights {
+    padding: clamp(1rem, 2vw, 1.5rem);
+}
+
+.learning-insights-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+}
+
+.learning-insights-header p,
+.insight-card-heading p {
+    color: var(--mid-main-secondary);
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.learning-insights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin-top: 1rem;
+    padding-top: clamp(1rem, 2vw, 1.5rem);
+}
+
+.insight-card {
+    min-width: 0;
+    padding: clamp(1rem, 2vw, 1.25rem);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.insight-card-heading {
+    margin-bottom: 1rem;
+}
+
+.insight-card-heading h4 {
+    color: var(--main-color);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.topic-performance-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.topic-performance-item {
+    min-width: 0;
+}
+
+.topic-performance-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.55rem;
+}
+
+.topic-performance-heading > div {
+    min-width: 0;
+}
+
+.topic-performance-heading h5 {
+    overflow: hidden;
+    color: var(--main-color);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.topic-performance-heading span,
+.topic-performance-heading strong {
+    color: var(--mid-main-secondary);
+    font-size: 0.8rem;
+}
+
+.topic-performance-heading strong {
+    flex: 0 0 auto;
+    color: var(--main-color);
+    font-size: 0.95rem;
+}
+
+.topic-performance-track {
+    width: 100%;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.topic-performance-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--dark-accent-color), var(--medium), var(--easy));
+    transition: width 0.35s ease;
+}
+
+.difficulty-time-summary {
+    display: grid;
+    grid-template-columns: minmax(110px, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.difficulty-donut {
+    position: relative;
+    width: min(100%, 180px);
+    aspect-ratio: 1;
+    justify-self: center;
+}
+
+.difficulty-donut-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.difficulty-donut-center strong {
+    color: var(--main-color);
+    font-size: clamp(0.85rem, 2vw, 1.1rem);
+    font-weight: 600;
+}
+
+.difficulty-donut-center span,
+.difficulty-donut-empty span {
+    color: var(--mid-main-secondary);
+    font-size: 0.78rem;
+}
+
+.difficulty-donut-empty {
+    width: 76%;
+    height: 76%;
+    margin: 12%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 12px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+}
+
+.difficulty-time-legend {
+    display: grid;
+    gap: 0.8rem;
+}
+
+.difficulty-time-row,
+.difficulty-time-name,
+.difficulty-time-values {
+    display: flex;
+    align-items: center;
+}
+
+.difficulty-time-row {
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.difficulty-time-name {
+    gap: 0.45rem;
+    color: var(--main-color);
+    font-size: 0.88rem;
+}
+
+.difficulty-time-name i {
+    width: 9px;
+    height: 9px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+}
+
+.difficulty-time-values {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.1rem;
+    white-space: nowrap;
+}
+
+.difficulty-time-values strong {
+    color: var(--main-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.difficulty-time-values small {
+    color: var(--mid-main-secondary);
+    font-size: 0.72rem;
+}
+
+.chart-empty-state,
+.insight-empty-state {
+    color: var(--mid-main-secondary);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.chart-empty-state {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: rgba(32, 34, 49, 0.45);
+    pointer-events: none;
+}
+
+.insight-empty-state {
+    padding: 2rem 0.5rem;
 }
 
 
@@ -261,12 +483,16 @@ progress.progress-bar::-moz-progress-bar {
 
 @media (max-width: 640px) {
     .activity-chart-container {
-        height: 220px;
+        height: 250px;
     }
 
     .stats-overview {
         grid-template-columns: repeat(2, 1fr);
         gap: 0.75rem;
+    }
+
+    .learning-insights-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -284,6 +510,15 @@ progress.progress-bar::-moz-progress-bar {
     .topic-tag {
         font-size: 0.75rem;
         padding: 0.4rem 0.8rem;
+    }
+
+    .difficulty-time-summary {
+        grid-template-columns: minmax(100px, 0.8fr) minmax(0, 1.2fr);
+        gap: 0.5rem;
+    }
+
+    .difficulty-donut {
+        width: min(100%, 140px);
     }
 }
 

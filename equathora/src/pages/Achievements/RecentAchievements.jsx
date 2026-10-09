@@ -30,12 +30,8 @@ const toAchievementStats = (stats = {}) => {
 };
 
 const RecentAchievements = () => {
-    const { stats, loading, refreshStats } = useUserStats();
+    const { stats, loading } = useUserStats();
     const [isAnimated, setIsAnimated] = useState(false);
-
-    useEffect(() => {
-        void refreshStats();
-    }, [refreshStats]);
 
     useEffect(() => {
         setIsAnimated(true);

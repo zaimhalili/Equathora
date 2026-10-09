@@ -40,6 +40,7 @@ const AchievementsLayout = () => {
           >
             <NavLink
               to="recent"
+              state={{ preserveScrollPosition: true }}
               className={({ isActive }) =>
                 isActive ? 'achievements-link active  active:scale-95' : 'achievements-link active:scale-95'
               }
@@ -50,6 +51,7 @@ const AchievementsLayout = () => {
 
             <NavLink
               to="stats"
+              state={{ preserveScrollPosition: true }}
               className={({ isActive }) =>
                 isActive ? 'achievements-link active  active:scale-95' : 'achievements-link active:scale-95'
               }
@@ -60,6 +62,7 @@ const AchievementsLayout = () => {
 
             <NavLink
               to="events"
+              state={{ preserveScrollPosition: true }}
               className={({ isActive }) =>
                 isActive ? 'achievements-link active active:scale-95' : 'achievements-link active:scale-95'
               }

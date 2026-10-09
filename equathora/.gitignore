@@ -72,6 +72,7 @@ backend/**/connection-strings.json
 *.sql
 !backend/EquathoraBackend/SQL/Fixes/fix_user_progress_write_permissions.sql
 !backend/EquathoraBackend/SQL/Fixes/fix_submit_answer_write_schema.sql
+!backend/EquathoraBackend/SQL/Schema/leaderboard_privacy_settings.sql
 
 # Secrets and API keys
 **/*secrets*.json

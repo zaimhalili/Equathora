@@ -1,5 +1,6 @@
 import { supabase } from './supabaseClient';
 import { computeAccuracyFromSources } from './accuracyService';
+import { notifyLeaderboardChange } from './notificationService';
 
 /**
  * Leaderboard Service for Equathora
@@ -241,25 +242,25 @@ export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt,
 // ============================================================================
 
 /**
- * Build a lookup of user metadata from the `profiles` table when available.    
- * Falls back to empty map if the table is missing or returns an error.
+ * Build a lookup of user metadata and public leaderboard visibility.
  */
 async function getProfileMap(userIds = []) {
     if (!userIds.length) return {};
 
     const { data, error } = await supabase
         .from('profiles')
-        .select('id, username, full_name, avatar_url')
+        .select('id, username, full_name, avatar_url, privacy_show_leaderboard')
         .in('id', userIds);
 
     if (error) {
-        console.warn('profiles lookup failed, falling back to auth metadata only:', error.message);
+        throw error;
     }
 
     const profileMap = (data || []).reduce((acc, profile) => {
         acc[profile.id] = {
             name: profile.full_name || profile.username || 'Student',
-            avatarUrl: profile.avatar_url || ''
+            avatarUrl: profile.avatar_url || '',
+            privacyShowLeaderboard: profile.privacy_show_leaderboard === true
         };
         return acc;
     }, {});
@@ -280,7 +281,8 @@ async function getProfileMap(userIds = []) {
                 name: profileMap[sessionUser.id]?.name || displayName,
                 avatarUrl: profileMap[sessionUser.id]?.avatarUrl
                     || sessionUser.user_metadata?.avatar_url
-                    || ''
+                    || '',
+                privacyShowLeaderboard: profileMap[sessionUser.id]?.privacyShowLeaderboard === true
             };
         }
     } catch (sessionError) {
@@ -331,8 +333,11 @@ async function computeLeaderboardFromTables(limit = 100) {
         const profileMap = await getProfileMap(allUserIds);
         const solvedCountMap = await getSolvedCountMapFromCompletedProblems(allUserIds);
 
-        // Build leaderboard entry for EVERY user
-        const leaderboardData = allUserIds.map((userId) => {
+        // Exclude accounts that opted out before calculating public ranks.
+        const leaderboardData = allUserIds.filter((userId) => {
+            const profile = profileMap[userId] || {};
+            return profile.privacyShowLeaderboard === true;
+        }).map((userId) => {
             const progress = progressMap[userId] || {
                 solved_problems: [],
                 correct_answers: 0,
@@ -409,7 +414,10 @@ async function computeLeaderboardFromProgressOnly(limit = 100) {
         const profileMap = await getProfileMap(userIds);
         const solvedCountMap = await getSolvedCountMapFromCompletedProblems(userIds);
 
-        const leaderboardData = progressData.map((progress) => {
+        const leaderboardData = progressData.filter((progress) => {
+            const profile = profileMap[progress.user_id] || {};
+            return profile.privacyShowLeaderboard === true;
+        }).map((progress) => {
             const xpData = calculateUserXP(progress, { current_streak: streakMap[progress.user_id]?.currentStreak || 0 });
             const profile = profileMap[progress.user_id] || {};
             const solvedCount = solvedCountMap[progress.user_id] ?? 0;
@@ -505,7 +513,10 @@ export async function getGlobalLeaderboard(limit = 100) {
         const solvedCountMap = await getSolvedCountMapFromCompletedProblems(allIds);
 
         // Build combined entries, preferring view data but filling gaps with progress or completed counts
-        const combined = allIds.map((userId) => {
+        const combined = allIds.filter((userId) => {
+            const profile = profileMap[userId] || {};
+            return profile.privacyShowLeaderboard === true;
+        }).map((userId) => {
             const viewRow = rows.find(r => r.user_id === userId);
             const progress = progressMap[userId];
             const profile = profileMap[userId] || {};
@@ -599,6 +610,30 @@ export async function getCurrentUserRank() {
 
         const profileMap = await getProfileMap([session.user.id]);
         const profile = profileMap[session.user.id] || {};
+        if (!profile.privacyShowLeaderboard) {
+            try {
+                window.localStorage.removeItem(`equathora_last_leaderboard_rank_${session.user.id}`);
+            } catch (storageError) {
+                console.warn('Could not clear private leaderboard rank:', storageError);
+            }
+            return null;
+        }
+
+        const { data: visibleRank, error: rankError } = await supabase.rpc('get_public_leaderboard_rank');
+        if (rankError) throw rankError;
+        if (!Number.isInteger(visibleRank) || visibleRank <= 0) return null;
+
+        const rankStorageKey = `equathora_last_leaderboard_rank_${session.user.id}`;
+        try {
+            const previousRank = Number(window.localStorage.getItem(rankStorageKey));
+            if (Number.isInteger(previousRank) && previousRank > 0 && previousRank !== visibleRank) {
+                void notifyLeaderboardChange(visibleRank, previousRank);
+            }
+            window.localStorage.setItem(rankStorageKey, String(visibleRank));
+        } catch (storageError) {
+            console.warn('Could not persist leaderboard rank for change notifications:', storageError);
+        }
+
         const solvedCountMap = await getSolvedCountMapFromCompletedProblems([session.user.id]);
         const canonicalSolvedCount = solvedCountMap[session.user.id];
 
@@ -645,7 +680,7 @@ export async function getCurrentUserRank() {
             accuracy,
             reputation: data.reputation || 0,
             currentStreak,
-            rank: data.rank || 0
+            rank: visibleRank
         };
     } catch (error) {
         console.error('Error getting current user rank:', error);
@@ -700,7 +735,10 @@ export async function getFriendsLeaderboard() {
             return acc;
         }, {});
 
-        return (data || []).map((row, index) => {
+        const visibleRows = (data || []).filter((row) =>
+            profileMap[row.user_id]?.privacyShowLeaderboard === true
+        );
+        return visibleRows.map((row, index) => {
             const solvedForUser = typeof solvedCountMap[row.user_id] === 'number'
                 ? solvedCountMap[row.user_id]
                 : 0;
@@ -716,7 +754,7 @@ export async function getFriendsLeaderboard() {
                     : (row.accuracy_percentage ?? calculateAccuracy(0, 0, solvedForUser)),
                 reputation: row.reputation || 0,
                 currentStreak: streakMap[row.user_id] ?? 0,
-                rank: row.rank || index + 1
+                rank: index + 1
             };
         });
     } catch (error) {
@@ -871,4 +909,8 @@ export async function getCachedGlobalLeaderboard(forceRefresh = false) {
 export function clearLeaderboardCache() {
     leaderboardCache = null;
     cacheTimestamp = null;
+}
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('equathora:leaderboard-privacy-updated', clearLeaderboardCache);
 }

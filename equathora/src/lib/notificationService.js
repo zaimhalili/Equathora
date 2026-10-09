@@ -105,6 +105,29 @@ export async function createNotification({ type, title, message, link = null, me
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return null;
 
+        const { data: settingsRow, error: settingsError } = await supabase
+            .from('user_settings')
+            .select('settings')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+        if (settingsError) throw settingsError;
+
+        const preferences = { ...DEFAULT_SETTINGS, ...(settingsRow?.settings || {}) };
+        const preferenceKey = {
+            achievement: 'achievement_notifications',
+            streak: 'streak_reminders',
+            system: 'system_updates',
+            friend: 'friend_notifications',
+            problem: 'problem_notifications',
+            leaderboard: 'leaderboard_notifications',
+        }[type];
+        if (
+            !preferences.notifications_enabled
+            || (preferenceKey && preferences[preferenceKey] === false)
+        ) {
+            return null;
+        }
+
         const notification = {
             user_id: session.user.id,
             type,
@@ -197,13 +220,13 @@ export async function notifyFriendRequest(friendName) {
     });
 }
 
-export async function notifyLeaderboardChange(newRank) {
+export async function notifyLeaderboardChange(newRank, previousRank) {
     return createNotification({
         type: NOTIFICATION_TYPES.LEADERBOARD,
         title: 'Leaderboard Update',
-        message: `You climbed to rank #${newRank} on the global leaderboard!`,
+        message: `Your global leaderboard rank changed from #${previousRank} to #${newRank}.`,
         link: '/leaderboards/global',
-        metadata: { newRank },
+        metadata: { newRank, previousRank },
     });
 }
 
@@ -374,10 +397,23 @@ export async function getUserSettings() {
     }
 }
 
-export async function saveUserSettings(settings) {
+export async function saveUserSettings(settings, { syncLeaderboardPrivacy = false } = {}) {
     try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) return false;
+
+        if (syncLeaderboardPrivacy) {
+            const { error } = await supabase.rpc('save_leaderboard_privacy', {
+                p_enabled: settings.privacy_show_leaderboard,
+                p_settings: { ...settings },
+            });
+            if (error) throw error;
+
+            if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('equathora:leaderboard-privacy-updated'));
+            }
+            return true;
+        }
 
         const { error } = await supabase
             .from('user_settings')

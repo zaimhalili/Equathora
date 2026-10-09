@@ -669,7 +669,9 @@ const Settings = () => {
         setSettingsSaving(true);
 
         try {
-            const success = await saveUserSettings(nextSettings);
+            const success = await saveUserSettings(nextSettings, {
+                syncLeaderboardPrivacy: key === 'privacy_show_leaderboard',
+            });
             if (!success) throw new Error('Failed to save preference.');
             showToast('Preferences updated.', 'success');
         } catch (error) {
@@ -1094,7 +1096,7 @@ const Settings = () => {
                                         />
                                         <ToggleSwitch
                                             label="Leaderboard Updates"
-                                            description="Rank changes on leaderboards"
+                                            description="Get notified when your global rank changes"
                                             checked={settings.leaderboard_notifications}
                                             onChange={v => handleSettingChange('leaderboard_notifications', v)}
                                             disabled={!settings.notifications_enabled}
@@ -1183,7 +1185,7 @@ const Settings = () => {
                                 />
                                 <ToggleSwitch
                                     label="Show Leaderboard Rank"
-                                    description="Show your rank on public leaderboards"
+                                    description="Include your profile in global and friends leaderboards"
                                     checked={settings.privacy_show_leaderboard}
                                     onChange={v => handleSettingChange('privacy_show_leaderboard', v)}
                                 />

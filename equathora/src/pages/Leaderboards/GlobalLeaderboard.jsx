@@ -47,7 +47,11 @@ const GlobalLeaderboard = () => {
                         currentStreak: userRankData.currentStreak,
                         avatarUrl: userRankData.avatarUrl
                     });
+                } else {
+                    setCurrentUser(null);
                 }
+            } else {
+                setCurrentUser(null);
             }
         } catch (err) {
             console.error('Error fetching leaderboard:', err);

@@ -140,7 +140,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative bg-(--white) rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-(--mid-main-secondary)"
+                        className="relative bg-(--white) rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-(--mid-main-secondary)"
                     >
                         {isSubscribed ? (
                             <div>
@@ -159,7 +159,7 @@ const EquathoraBriefsModal = ({ onClose, isOpen, onSave, userData }) => {
                                 </button>
 
                                 {/* Main Form */}
-                                <form onSubmit={handleSubmit} noValidate className="grid grid-cols-1 md:grid-cols-2 items-center p-5">
+                                <form onSubmit={handleSubmit} noValidate className="grid grid-cols-1 md:grid-cols-2 items-center p-5 rounded-2xl">
                                     {/* Left Column - Illustration */}
                                     <div className="hidden md:flex flex-col items-center justify-end bg-(--white) pr-6">
                                         <img
