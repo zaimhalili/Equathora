@@ -61,15 +61,19 @@ const Profile = () => {
   const fetchRequestIdRef = useRef(0);
 
   const handleProfileSave = useCallback((updatedData) => {
-    setUserData(prevData => ({
-      ...prevData,
-      name: updatedData.name ?? prevData.name,
-      username: updatedData.username ?? prevData.username,
-      bio: updatedData.bio ?? prevData.bio,
-      location: updatedData.location ?? prevData.location,
-      website: updatedData.website ?? prevData.website,
-      avatar_url: updatedData.avatar_url ?? prevData.avatar_url
-    }));
+    setUserData(prevData => {
+      if (!prevData) return prevData;
+
+      return {
+        ...prevData,
+        name: updatedData.full_name ?? updatedData.name ?? prevData.name,
+        username: updatedData.username ?? prevData.username,
+        bio: updatedData.bio ?? prevData.bio,
+        location: updatedData.location ?? prevData.location,
+        website: updatedData.website ?? prevData.website,
+        avatar_url: updatedData.avatar_url ?? prevData.avatar_url
+      };
+    });
   }, []);
 
   useEffect(() => {

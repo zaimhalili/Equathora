@@ -253,10 +253,10 @@ const Premium = () => {
                             <span>Cancels on {formattedCancelDate}</span>
                           </>
                         ) : (
-                          <div className='rounded-xl px-1 flex items-center gap-1'>
-                            <FaCrown className='inline-block' />
-                            <span>Active</span>
-                          </div>
+                            <>
+                              <FaExclamationTriangle className='text-amber-900' />
+                              <span>Cancels on {formattedCancelDate}</span>
+                            </>
                         )}
                       </h3>
                     )}

@@ -290,22 +290,27 @@ const ProfileExportButtons = () => {
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(9);
             items.forEach(([label, value], idx) => {
-                // Check if we need a new page
-                if (yPos > maxContentHeight - 15) {
+                const labelLines = doc.splitTextToSize(String(label), 86);
+                const valueLines = doc.splitTextToSize(String(value), contentWidth - 100);
+                const lineCount = Math.max(labelLines.length, valueLines.length);
+                const lineHeight = 4;
+                const rowHeight = Math.max(7, lineCount * lineHeight + 2);
+
+                if (yPos + rowHeight > maxContentHeight - 15) {
                     doc.addPage();
                     yPos = margin;
                 }
 
                 const bgColor = idx % 2 === 0 ? [255, 255, 255] : [250, 250, 252];
                 doc.setFillColor(...bgColor);
-                doc.rect(margin, yPos, contentWidth, 7, 'F');
+                doc.rect(margin, yPos, contentWidth, rowHeight, 'F');
 
                 doc.setFont('helvetica', 'bold');
                 doc.setTextColor(0, 0, 0);
-                doc.text(label, margin + 3, yPos + 4.5);
+                doc.text(labelLines, margin + 3, yPos + 4.5, { lineHeightFactor: 1.15 });
                 doc.setFont('helvetica', 'normal');
-                doc.text(String(value), margin + 95, yPos + 4.5);
-                yPos += 7;
+                doc.text(valueLines, margin + 95, yPos + 4.5, { lineHeightFactor: 1.15 });
+                yPos += rowHeight;
             });
             yPos += 3;
         });
