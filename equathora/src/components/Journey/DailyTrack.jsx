@@ -10,7 +10,7 @@ import {
 } from 'react-icons/fa';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { generateProblemSlug } from '@/lib/slugify';
-import { getEstimatedTime } from '@/lib/problemProgress';
+import { getEstimatedTime, getEstimatedXp } from '@/lib/problemProgress';
 import { motion } from 'framer-motion';
 
 // Daily minutes goal per weekly commitment tier. Mirrors the pool-size
@@ -129,7 +129,7 @@ const DailyTrack = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {queue.map((problem, idx) => {
                             const slug = getProblemSlug(problem);
-                            const xp = getProblemXp(problem);
+                            const xp = problem.xp ?? getEstimatedXp(problem.difficulty);
                             const isPremiumPick = Boolean(problem.is_premium) && isPremiumUser;
 
                             return (

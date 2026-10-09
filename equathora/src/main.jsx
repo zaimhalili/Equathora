@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop.jsx";
 import { AppProviders } from "./providers/AppProviders";
 import { initializeTheme } from "./lib/theme";
+import ErrorFallback from "./components/ErrorFallback";
 import "./index.css";
 import * as Sentry from "@sentry/react";
 
@@ -25,7 +26,7 @@ initializeTheme();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Sentry.ErrorBoundary fallback={<div>Something went wrong.</div>}>
+    <Sentry.ErrorBoundary fallback={<ErrorFallback />}>
       <BrowserRouter>
         <AppProviders>
           <ScrollToTop>

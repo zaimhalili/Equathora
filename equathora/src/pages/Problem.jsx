@@ -235,6 +235,8 @@ const Problem = () => {
     const [isFavorite, setIsFavorite] = useState(false);
     const [showDescription, setShowDescription] = useState(true);
     const [showSolutionPopup, setShowSolutionPopup] = useState(false);
+    const [solutionUnlockError, setSolutionUnlockError] = useState(null);
+    const [isUnlockingSolution, setIsUnlockingSolution] = useState(false);
     const [showSolution, setShowSolution] = useState(false);
     const [showTop, setShowTop] = useState(false);
     const [descriptionCollapsed, setDescriptionCollapsed] = useState(false);
@@ -512,6 +514,7 @@ const Problem = () => {
     useEffect(() => {
         setShowSolution(false);
         setShowSolutionPopup(false);
+        setSolutionUnlockError(null);
         setShowDescription(true);
         setShowSubmissions(false);
         setShowMentorChat(false);
@@ -883,7 +886,6 @@ const Problem = () => {
             setTimerRunning(false);
             setShowSolution(true);
             setShowSolutionPopup(false);
-            setSolutionViewed(true);
 
             // Instantly mark as completed locally FIRST before DB calls finish
             setIsCompleted(true);
@@ -1134,12 +1136,18 @@ const Problem = () => {
                 {/* Modals */}
                 <ViewSolutionModal
                     isOpen={showSolutionPopup}
+                    error={solutionUnlockError}
+                    isLoading={isUnlockingSolution}
                     onClose={() => {
                         setShowSolutionPopup(false);
+                        setSolutionUnlockError(null);
                         setShowDescription(true);
                         setShowMentorChat(false);
                     }}
                     onConfirm={async () => {
+                        if (isUnlockingSolution) return;
+                        setIsUnlockingSolution(true);
+                        setSolutionUnlockError(null);
                         try {
                             if (!problem?.id) {
                                 throw new Error('Cannot unlock a solution without a problem ID.');
@@ -1156,10 +1164,9 @@ const Problem = () => {
                             setShowMentorChat(false);
                         } catch (error) {
                             console.error('Failed to unlock problem solution:', error);
-                            setShowSolutionPopup(false);
-                            setShowSolution(true);
-                            setShowDescription(false);
-                            setSolutionLoadError('The solution could not be unlocked. Check your connection and try again.');
+                            setSolutionUnlockError('The solution could not be unlocked. Check your connection and try again.');
+                        } finally {
+                            setIsUnlockingSolution(false);
                         }
                     }}
                 />
@@ -1226,6 +1233,7 @@ const Problem = () => {
                                     setShowMentorChat(false);
                                     setChatPanel(false);
                                     if (!solutionViewed && !isCompleted) {
+                                        setSolutionUnlockError(null);
                                         setShowSolutionPopup(true);
                                     } else {
                                         setShowSolution(true);

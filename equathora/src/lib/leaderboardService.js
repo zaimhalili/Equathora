@@ -171,9 +171,8 @@ export function calculateUserXP(userProgress, streakData) {
  * @param {number} timeSpentSeconds - Time spent solving the problem
  * @param {boolean} isFirstAttempt - Whether this is the first attempt
  * @param {number} hintsUsed - Number of hints opened (0-3 typically)
- * @param {boolean} solutionViewed - Whether the solution was viewed before solving
  */
-export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt, hintsUsed = 0, solutionViewed = false) {
+export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt, hintsUsed = 0) {
     let baseXP = 50; // Fallback default
 
     // Base XP matched to Equathora's 6 difficulty tiers
@@ -224,10 +223,7 @@ export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt,
 
     // Calculate total, ensuring minimum of 10 XP for correct answer
     const rawTotal = baseXP + firstAttemptBonus + speedBonus - hintPenalty;
-    let totalXP = Math.max(10, rawTotal);
-    if (solutionViewed) {
-        totalXP = Math.max(10, Math.round(totalXP * 0.7));
-    }
+    const totalXP = Math.max(10, rawTotal);
 
     return {
         totalXP,
@@ -235,8 +231,7 @@ export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt,
             baseXP,
             firstAttemptBonus,
             speedBonus,
-            hintPenalty: -hintPenalty,
-            ...(solutionViewed ? { note: 'Solution viewed - 70% XP' } : {})
+            hintPenalty: -hintPenalty
         }
     };
 }

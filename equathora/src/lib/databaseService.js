@@ -661,12 +661,13 @@ export async function incrementDifficultyBreakdown(difficulty) {
 export async function hasViewedSolutionDb(problemId) {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) return false;
-    const { data } = await supabase
+    const { data, error } = await supabase
         .from('user_solution_views')
         .select('id')
         .eq('user_id', session.user.id)
         .eq('problem_id', String(problemId))
         .maybeSingle();
+    if (error) throw error;
     return !!data;
 }
 

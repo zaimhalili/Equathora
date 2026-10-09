@@ -5,6 +5,8 @@ import { FaChevronDown, FaChevronUp, FaTrash, FaLightbulb, FaCheckCircle, FaPlus
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
 import { testGemini } from "@/lib/geminiTest";
 import { useSubscription } from "@/hooks/SubscriptionContext";
+import MathLiveCalculator from "./MathLiveCalculator";
+import { getArithmeticResult } from "../lib/arithmeticPreview";
 
 const MAX_STEP_CHARS = 150;
 const MAX_STEPS = 40;
@@ -70,9 +72,13 @@ export default function MathLiveEditor({
     const [wrongStepNumber, setWrongStepNumber] = useState(null);
     const [stepLimitWarning, setStepLimitWarning] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [arithmeticResults, setArithmeticResults] = useState({});
+    const [mathLiveReady, setMathLiveReady] = useState(false);
 
     const navigate = useNavigate();
     const fieldRefs = useRef({});
+    const pendingFocusIdRef = useRef(null);
+    const initialFocusPendingRef = useRef(true);
 
     const focusField = (id, command = null) => {
         requestAnimationFrame(() => {
@@ -89,18 +95,25 @@ export default function MathLiveEditor({
     };
 
     useEffect(() => {
+        let isMounted = true;
         (async () => {
             try {
                 await import("mathlive");
+                if (isMounted) setMathLiveReady(true);
             } catch (e) {
                 console.error("Failed to load MathLive.", e);
             }
         })();
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
     useEffect(() => {
         const storedFields = loadStoredFields(storageKey);
+        pendingFocusIdRef.current = storedFields[0]?.id ?? null;
         setFields(storedFields);
+        setArithmeticResults({});
         onFieldsChange?.(storedFields);
         setWrongStepNumber(null);
         setSubmissionFeedback(null);
@@ -108,13 +121,42 @@ export default function MathLiveEditor({
     }, [storageKey]);
 
     useEffect(() => {
+        if (!mathLiveReady) return;
+
+        if (pendingFocusIdRef.current != null) {
+            const focusId = pendingFocusIdRef.current;
+            if (fieldRefs.current[focusId]) {
+                pendingFocusIdRef.current = null;
+                initialFocusPendingRef.current = false;
+                focusField(focusId);
+            }
+        } else if (initialFocusPendingRef.current && fields.length > 0) {
+            initialFocusPendingRef.current = false;
+            focusField(fields[0].id);
+        }
+
+        const results = {};
+        fields.forEach((field) => {
+            const mathField = fieldRefs.current[field.id];
+            if (mathField) {
+                results[field.id] = getArithmeticResult(mathField.getValue("ascii-math"));
+            }
+        });
+        setArithmeticResults(results);
+    }, [fields, mathLiveReady]);
+
+    useEffect(() => {
         if (typeof window === 'undefined' || !storageKey) return;
         window.localStorage.setItem(storageKey, JSON.stringify(fields));
     }, [fields, storageKey]);
 
-    const updateLatex = (id, latex) => {
+    const updateLatex = (id, latex, expression) => {
         if (latex.length > MAX_STEP_CHARS) return;
         setWrongStepNumber(null);
+        setArithmeticResults((previous) => ({
+            ...previous,
+            [id]: getArithmeticResult(expression)
+        }));
         setFields((prev) => {
             const updated = prev.map((f) => (f.id === id ? { ...f, latex } : f));
             onFieldsChange?.(updated);
@@ -129,6 +171,7 @@ export default function MathLiveEditor({
             return null;
         }
         const newField = { id: Date.now(), latex: "" };
+        pendingFocusIdRef.current = newField.id;
         setFields((prev) => {
             const afterIndex = afterFieldId == null
                 ? prev.length - 1
@@ -139,30 +182,38 @@ export default function MathLiveEditor({
             return updated;
         });
 
-        focusField(newField.id);
         return newField.id;
     };
 
     const clearAll = () => {
         const newField = { id: Date.now(), latex: "" };
+        pendingFocusIdRef.current = newField.id;
         setFields([newField]);
+        setArithmeticResults({});
         onFieldsChange?.([newField]);
         setStepLimitWarning(false);
-        focusField(newField.id);
     };
 
     const deleteField = (id) => {
         if (fields.length === 1) {
             const newField = { id: Date.now(), latex: "" };
+            pendingFocusIdRef.current = newField.id;
             setFields([newField]);
+            setArithmeticResults({});
             onFieldsChange?.([newField]);
-            focusField(newField.id);
             return;
         }
+        const fieldIndex = fields.findIndex((field) => field.id === id);
+        const focusTarget = fields[fieldIndex - 1] ?? fields[fieldIndex + 1];
+        pendingFocusIdRef.current = focusTarget?.id ?? null;
         setFields((prev) => {
             const updated = prev.filter((f) => f.id !== id);
             onFieldsChange?.(updated);
             return updated;
+        });
+        setArithmeticResults((previous) => {
+            const { [id]: _deletedResult, ...remainingResults } = previous;
+            return remainingResults;
         });
     };
 
@@ -311,6 +362,8 @@ export default function MathLiveEditor({
                                                 {stepNumber}
                                             </div>
 
+                                            <MathLiveCalculator result={arithmeticResults[field.id]} />
+
                                             <math-field
                                                 ref={(el) => (fieldRefs.current[field.id] = el)}
                                                 className="ml-field"
@@ -318,7 +371,11 @@ export default function MathLiveEditor({
                                                 smartfence="true"
                                                 placeholder="Solve"
                                                 value={field.latex}
-                                                onInput={(evt) => updateLatex(field.id, evt.target.getValue("latex"))}
+                                                onInput={(evt) => updateLatex(
+                                                    field.id,
+                                                    evt.target.getValue("latex"),
+                                                    evt.target.getValue("ascii-math")
+                                                )}
                                                 onKeyDown={(e) => {
                                                     const target = e.target;
                                                     const selection = target.selection;
@@ -359,16 +416,18 @@ export default function MathLiveEditor({
                                                         e.preventDefault();
                                                         if (fields.length > 1) {
                                                             deleteField(field.id);
-                                                            const prevField = fields[index - 1];
-                                                            if (prevField) {
-                                                                focusField(prevField.id);
-                                                            }
                                                         }
                                                     }
                                                 }}
                                             ></math-field>
 
-                                            <button type="button" className="ml-delete-btn" onClick={() => deleteField(field.id)} title="Delete this step">
+                                            <button
+                                                type="button"
+                                                className="ml-delete-btn"
+                                                onMouseDown={(event) => event.preventDefault()}
+                                                onClick={() => deleteField(field.id)}
+                                                title="Delete this step"
+                                            >
                                                 <FaTrash />
                                             </button>
                                         </div>
