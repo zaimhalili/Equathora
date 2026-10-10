@@ -584,7 +584,7 @@ function getWeekStartDate() {
 // DIFFICULTY BREAKDOWN
 // ============================================================================
 
-export const normalizeDifficultyBucket = (difficulty) => {
+const normalizeDifficultyBucket = (difficulty) => {
     const normalized = String(difficulty || '').trim().toLowerCase();
 
     if (normalized === 'beginner' || normalized === 'easy') return 'easy';

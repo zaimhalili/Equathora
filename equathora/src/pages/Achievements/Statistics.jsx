@@ -3,22 +3,35 @@ import React, { useEffect, useState } from 'react';
 import './Statistics.css';
 import { useUserStats } from '../../context/UserStatsContext';
 import { formatTopicLabel } from '../../lib/utils';
-import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { FaSpinner } from 'react-icons/fa';
-import { withAlpha } from '@/hooks/useStatisticsColors';
+import { difficultyDisplayRank, formatDifficultyLabel, getDifficultyColor, normalizeDifficultyKey, withAlpha } from '@/hooks/useStatisticsColors';
 
-const difficultyChartColors = {
-  easy: 'var(--easy)',
-  medium: 'var(--medium)',
-  hard: 'var(--dark-accent-color)'
-};
+const ChartTooltip = ({ active, payload, label, formatValue }) => {
+  const visibleItems = (payload || []).filter((item) => Number(item.value) > 0);
+  if (!active || visibleItems.length === 0) return null;
 
-const formatDuration = (seconds) => {
-  const safeSeconds = Math.max(0, Number(seconds) || 0);
-  const hours = Math.floor(safeSeconds / 3600);
-  const minutes = Math.floor((safeSeconds % 3600) / 60);
-  if (hours > 0) return `${hours}h ${minutes}m`;
-  return `${minutes}m ${Math.floor(safeSeconds % 60)}s`;
+  return (
+    <div className="pointer-events-none z-50 min-w-36 rounded-2xl border border-[var(--chart-tooltip-border)] bg-[var(--secondary-color)] px-4 py-3 text-[var(--main-color)] shadow-2xl backdrop-blur-xl">
+      <p className="mb-2 text-xs font-medium text-[var(--mid-main-secondary)]">{label}</p>
+      <div className="grid gap-1.5">
+        {visibleItems.map((item) => (
+          <div className="flex items-center justify-between gap-5 text-sm" key={item.dataKey || item.name}>
+            <span className="flex items-center gap-2 font-medium">
+              <i
+                className="size-2.5 shrink-0 rounded-full"
+                style={{ backgroundColor: item.color || item.payload?.fill }}
+              />
+              {item.name}
+            </span>
+            <strong className="font-semibold">
+              {formatValue ? formatValue(item.value, item.name) : item.value}
+            </strong>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 const Statistics = () => {
@@ -46,10 +59,14 @@ const Statistics = () => {
     : [];
   const topicPerformance = Array.isArray(stats.topicPerformance) ? stats.topicPerformance : [];
   const difficultyPerformance = Array.isArray(stats.difficultyPerformance) ? stats.difficultyPerformance : [];
-  const timeByDifficulty = difficultyPerformance.filter((difficulty) => difficulty.timeSeconds > 0);
-  const trackedTimeSeconds = difficultyPerformance.reduce((total, difficulty) => total + difficulty.timeSeconds, 0);
+  const activeDifficultyPerformance = difficultyPerformance.filter((difficulty) => difficulty.solved > 0);
+  const totalSolvedFromHistory = activeDifficultyPerformance.reduce((total, difficulty) => total + difficulty.solved, 0);
+  const difficultyKeys = Object.keys(difficultyDisplayRank).sort(
+    (a, b) => difficultyDisplayRank[a] - difficultyDisplayRank[b]
+  );
+  const getDifficultyColorForKey = (key) => getDifficultyColor(normalizeDifficultyKey(key));
   const hasWeeklyActivity = weeklyDifficultyProgress.some((week) => week.total > 0);
-  const hasDifficultyTime = timeByDifficulty.length > 0;
+  const hasDifficultyData = activeDifficultyPerformance.length > 0;
 
   const displayStats = {
     totalProblems,
@@ -116,11 +133,184 @@ const Statistics = () => {
         </div>
       </div>
 
+      {/* Weekly activity */}
+      <section className="activity-section learning-activity">
+        <div className="learning-insights-header">
+          <div>
+            <h3>Learning Activity</h3>
+            <p>Your weekly attempts, grouped by difficulty</p>
+          </div>
+        </div>
+
+        <div className="activity-chart-container">
+          <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+            <BarChart data={weeklyDifficultyProgress} margin={{ top: 16, right: 12, left: -18, bottom: 4 }}>
+              <CartesianGrid vertical={false} stroke="var(--chart-grid-color)" strokeDasharray="4 6" />
+              <XAxis
+                dataKey="label"
+                tick={{ fill: 'var(--mid-main-secondary)', fontSize: 12, fontWeight: 500 }}
+                axisLine={{ stroke: 'var(--chart-axis-color)' }}
+                tickLine={false}
+                interval="preserveStartEnd"
+              />
+              <YAxis
+                allowDecimals={false}
+                tick={{ fill: 'var(--mid-main-secondary)', fontSize: 12, fontWeight: 500 }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <Tooltip
+                cursor={{ fill: 'var(--chart-hover-color)', radius: 8 }}
+                content={
+                  <ChartTooltip
+                    formatValue={(value) => `${value} attempt${value !== 1 ? 's' : ''}`}
+                  />
+                }
+              />
+              {difficultyKeys.map((key) => (
+                <Bar
+                  key={key}
+                  dataKey={key}
+                  name={formatDifficultyLabel(key)}
+                  stackId="difficulty"
+                  fill={getDifficultyColorForKey(key)}
+                  radius={[6, 6, 6, 6]}
+                />
+              ))}
+            </BarChart>
+          </ResponsiveContainer>
+          {!hasWeeklyActivity && <p className="chart-empty-state">Weekly activity will appear here after your first attempt.</p>}
+        </div>
+
+        <div className="difficulty-chart-legend" aria-label="Difficulty chart legend">
+          {difficultyKeys.map((key) => (
+            <span className="difficulty-legend-item" key={key}>
+              <i style={{ '--difficulty-color': getDifficultyColorForKey(key) }} />
+              {formatDifficultyLabel(key)}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* Difficulty distribution and topic insights */}
+      <section className="learning-insights-grid">
+        <section className="insight-card difficulty-insight-card">
+          <div className="insight-card-heading">
+            <div>
+              <h4>Solved by difficulty</h4>
+              <p>Your completed problems across every level</p>
+            </div>
+          </div>
+          <div className="difficulty-donut-layout">
+            <div className="difficulty-donut">
+              {hasDifficultyData ? (
+                <>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+                    <PieChart>
+                      <Pie
+                        data={activeDifficultyPerformance}
+                        dataKey="solved"
+                        nameKey="label"
+                        innerRadius="70%"
+                        outerRadius="94%"
+                        paddingAngle={2}
+                        cornerRadius={7}
+                        stroke="var(--chart-pie-stroke)"
+                        strokeWidth={3}
+                        isAnimationActive={false}
+                      >
+                        {activeDifficultyPerformance.map((difficulty) => (
+                          <Cell
+                            key={difficulty.key}
+                            fill={getDifficultyColorForKey(difficulty.key)}
+                            stroke="var(--chart-pie-stroke)"
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        content={<ChartTooltip formatValue={(value) => `${value} solved`} />}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="difficulty-donut-center">
+                    <strong>{totalSolvedFromHistory}</strong>
+                    <span>solved</span>
+                  </div>
+                </>
+              ) : (
+                <div className="difficulty-donut-empty">
+                  <strong>0</strong>
+                  <span>solved</span>
+                </div>
+              )}
+            </div>
+            {hasDifficultyData ? (
+              <div className="difficulty-solved-legend">
+                {activeDifficultyPerformance.map((difficulty) => (
+                  <div
+                    className="difficulty-time-row"
+                    key={difficulty.key}
+                    style={{ '--difficulty-color': getDifficultyColorForKey(difficulty.key) }}
+                  >
+                    <span className="difficulty-time-name">
+                      <i style={{ '--difficulty-color': getDifficultyColorForKey(difficulty.key) }} />
+                      {difficulty.label}
+                    </span>
+                    <span className="difficulty-time-values">
+                      <strong>{difficulty.solved}</strong>
+                      <small>{difficulty.attempts} attempts</small>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="insight-empty-state">Your completed levels will appear here.</p>
+            )}
+          </div>
+        </section>
+
+        <section className="insight-card topic-insight-card">
+          <div className="insight-card-heading">
+            <div>
+              <h4>Topic performance</h4>
+              <p>Your most-practiced topics</p>
+            </div>
+          </div>
+          {topicPerformance.length > 0 ? (
+            <div className="topic-performance-list">
+              {topicPerformance.map((topic) => (
+                <article className="topic-performance-item" key={topic.topic}>
+                  <div className="topic-performance-heading">
+                    <div>
+                      <h5 title={formatTopicLabel(topic.topic)}>{formatTopicLabel(topic.topic)}</h5>
+                      <span>{topic.attempts} attempts</span>
+                    </div>
+                    <strong>{topic.accuracy}%</strong>
+                  </div>
+                  <div
+                    className="topic-performance-track"
+                    role="meter"
+                    aria-label={`${formatTopicLabel(topic.topic)} accuracy`}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow={topic.accuracy}
+                  >
+                    <span style={{ width: `${topic.accuracy}%` }} />
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <p className="insight-empty-state">Topic performance will appear after your first attempt.</p>
+          )}
+        </section>
+      </section>
+
       {/* Progress Bars */}
       <div className="progress-section">
         <div className="progress-item">
           <div className="progress-header">
-            <span>Overall Completion </span>
+            <span>Overall Completion</span>
             <span>{completionRate}%</span>
           </div>
           <progress className="progress-bar" value={completionRate} max="100"></progress>
@@ -128,14 +318,14 @@ const Statistics = () => {
 
         <div className="progress-item">
           <div className="progress-header">
-            <span>Accuracy Rate </span>
+            <span>Accuracy Rate</span>
             <span>{accuracyRate === null ? 'N/A' : `${accuracyRate}%`}</span>
           </div>
           <progress className="progress-bar" value={accuracyRate === null ? 0 : accuracyRate} max="100"></progress>
         </div>
       </div>
 
-      {/* Difficulty Breakdown */}
+      {/* Problems by difficulty */}
       <div className="difficulty-section">
         <h3>Problems by Difficulty</h3>
         <div className="difficulty-grid">
@@ -145,9 +335,10 @@ const Statistics = () => {
                 key={difficulty.key || difficulty.label}
                 className="difficulty-item"
                 style={{
-                  '--difficulty-border': withAlpha(difficulty.color, 0.3),
-                  '--difficulty-hover-border': withAlpha(difficulty.color, 0.6),
-                  '--difficulty-hover-bg': withAlpha(difficulty.color, 0.12),
+                  '--difficulty-border': withAlpha(difficulty.color, 0.32),
+                  '--difficulty-hover-border': withAlpha(difficulty.color, 0.78),
+                  '--difficulty-hover-bg': withAlpha(difficulty.color, 0.2),
+                  '--difficulty-color': difficulty.color,
                 }}
               >
                 <div className="difficulty-count">{difficulty.solved}</div>
@@ -162,156 +353,6 @@ const Statistics = () => {
           )}
         </div>
       </div>
-
-      {/* Learning activity and performance */}
-      <section className="activity-section learning-insights">
-        <div className="learning-insights-header">
-          <div>
-            <h3>Learning Activity</h3>
-            <p>Attempts by difficulty over the last 10 weeks</p>
-          </div>
-        </div>
-
-        <div className="activity-chart-container">
-          <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-            <BarChart data={weeklyDifficultyProgress} margin={{ top: 12, right: 8, left: -18, bottom: 0 }}>
-              <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.1)" />
-              <XAxis
-                dataKey="label"
-                tick={{ fill: 'var(--mid-main-secondary)', fontSize: 12 }}
-                axisLine={{ stroke: 'rgba(255,255,255,0.15)' }}
-                tickLine={false}
-                interval="preserveStartEnd"
-              />
-              <YAxis
-                allowDecimals={false}
-                tick={{ fill: 'var(--mid-main-secondary)', fontSize: 12 }}
-                axisLine={false}
-                tickLine={false}
-              />
-              <Tooltip
-                contentStyle={{
-                  background: 'var(--secondary-color)',
-                  border: '1px solid var(--dark-accent-color)',
-                  borderRadius: '10px',
-                  color: 'var(--main-color)',
-                }}
-                labelStyle={{ color: 'var(--mid-main-secondary)' }}
-                formatter={(value, name) => [`${value} attempt${value !== 1 ? 's' : ''}`, name]}
-              />
-              <Legend wrapperStyle={{ color: 'var(--mid-main-secondary)', fontSize: '0.85rem' }} />
-              <Bar dataKey="easy" name="Easy" stackId="difficulty" fill={difficultyChartColors.easy} />
-              <Bar dataKey="medium" name="Medium" stackId="difficulty" fill={difficultyChartColors.medium} />
-              <Bar dataKey="hard" name="Hard" stackId="difficulty" fill={difficultyChartColors.hard} radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-          {!hasWeeklyActivity && <p className="chart-empty-state">Weekly activity will appear here after your first attempt.</p>}
-        </div>
-
-        <div className="learning-insights-grid">
-          <section className="insight-card topic-insight-card">
-            <div className="insight-card-heading">
-              <div>
-                <h4>Topic performance</h4>
-                <p>Your most-practiced topics</p>
-              </div>
-            </div>
-            {topicPerformance.length > 0 ? (
-              <div className="topic-performance-list">
-                {topicPerformance.map((topic) => (
-                  <article className="topic-performance-item" key={topic.topic}>
-                    <div className="topic-performance-heading">
-                      <div>
-                        <h5 title={formatTopicLabel(topic.topic)}>{formatTopicLabel(topic.topic)}</h5>
-                        <span>{topic.attempts} attempts</span>
-                      </div>
-                      <strong>{topic.accuracy}%</strong>
-                    </div>
-                    <div
-                      className="topic-performance-track"
-                      role="meter"
-                      aria-label={`${formatTopicLabel(topic.topic)} accuracy`}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      aria-valuenow={topic.accuracy}
-                    >
-                      <span style={{ width: `${topic.accuracy}%` }} />
-                    </div>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <p className="insight-empty-state">Topic performance will appear after your first attempt.</p>
-            )}
-          </section>
-
-          <section className="insight-card difficulty-insight-card">
-            <div className="insight-card-heading">
-              <div>
-                <h4>Time by difficulty</h4>
-                <p>Practice time from your submissions</p>
-              </div>
-            </div>
-            <div className="difficulty-time-summary">
-              <div className="difficulty-donut">
-                {hasDifficultyTime ? (
-                  <>
-                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-                      <PieChart>
-                        <Pie
-                          data={timeByDifficulty}
-                          dataKey="timeSeconds"
-                          nameKey="label"
-                          innerRadius="68%"
-                          outerRadius="94%"
-                          paddingAngle={3}
-                          stroke="none"
-                        >
-                          {timeByDifficulty.map((difficulty) => (
-                            <Cell key={difficulty.key} fill={difficultyChartColors[difficulty.key]} />
-                          ))}
-                        </Pie>
-                        <Tooltip
-                          contentStyle={{
-                            background: 'var(--secondary-color)',
-                            border: '1px solid var(--dark-accent-color)',
-                            borderRadius: '10px',
-                            color: 'var(--main-color)',
-                          }}
-                          formatter={(value) => [formatDuration(value), 'Practice time']}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <div className="difficulty-donut-center">
-                      <strong>{formatDuration(trackedTimeSeconds)}</strong>
-                      <span>total</span>
-                    </div>
-                  </>
-                ) : (
-                  <div className="difficulty-donut-empty">
-                    <span>No time</span>
-                    <span>tracked yet</span>
-                  </div>
-                )}
-              </div>
-              <div className="difficulty-time-legend">
-                {difficultyPerformance.map((difficulty) => (
-                  <div className="difficulty-time-row" key={difficulty.key}>
-                    <span className="difficulty-time-name">
-                      <i style={{ backgroundColor: difficultyChartColors[difficulty.key] }} />
-                      {difficulty.label}
-                    </span>
-                    <span className="difficulty-time-values">
-                      <strong>{formatDuration(difficulty.timeSeconds)}</strong>
-                      <small>{difficulty.attempts} attempts</small>
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        </div>
-      </section>
 
       {/* Favorite Topics */}
       <div className="topics-section">

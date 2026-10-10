@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { getAllProblems } from '../lib/problemService';
-import { getAchievementProgress, getUserSubmissions, normalizeDifficultyBucket } from '../lib/databaseService';
+import { getAchievementProgress, getUserSubmissions } from '../lib/databaseService';
 import { computeAccuracyFromSources } from '../lib/accuracyService';
 import { difficultyDisplayRank, formatDifficultyLabel, getDifficultyColor, normalizeDifficultyKey } from '../hooks/useStatisticsColors';
 import { getSolvedTopics } from '../lib/profileExportData';
@@ -44,7 +44,6 @@ const defaultStats = {
     lastUpdated: null
 };
 
-const difficultyBuckets = ['easy', 'medium', 'hard'];
 const weekMilliseconds = 7 * 24 * 60 * 60 * 1000;
 
 function getWeekStart(date) {
@@ -61,7 +60,7 @@ function getLocalDateKey(date) {
     return `${year}-${month}-${day}`;
 }
 
-function buildLearningTrends(submissions, problems) {
+function buildLearningTrends(submissions, problems, completedProblemIds) {
     const problemById = new Map((problems || []).map((problem) => [String(problem.id), problem]));
     const currentWeekStart = getWeekStart(new Date());
     const firstWeekStart = new Date(currentWeekStart);
@@ -69,20 +68,40 @@ function buildLearningTrends(submissions, problems) {
     const weeklyDifficultyProgress = Array.from({ length: 10 }, (_, index) => {
         const weekStart = new Date(firstWeekStart);
         weekStart.setDate(weekStart.getDate() + (index * 7));
-        return {
+        const week = {
             weekStart: getLocalDateKey(weekStart),
             label: weekStart.toLocaleDateString('en', { month: 'short', day: 'numeric' }),
-            easy: 0,
-            medium: 0,
-            hard: 0,
             total: 0
         };
+        Object.keys(difficultyDisplayRank).forEach((key) => {
+            week[key] = 0;
+        });
+        return week;
     });
     const topicStats = new Map();
-    const difficultyStats = new Map(difficultyBuckets.map((key) => [
+    const difficultyStats = new Map(Object.keys(difficultyDisplayRank).map((key) => [
         key,
-        { key, label: key.charAt(0).toUpperCase() + key.slice(1), attempts: 0, correct: 0, timeSeconds: 0 }
+        {
+            key,
+            label: formatDifficultyLabel(key),
+            attempts: 0,
+            correct: 0,
+            solved: 0,
+            timeSeconds: 0
+        }
     ]));
+    const completedIds = new Set((completedProblemIds || []).map(String));
+    const countedSolvedIds = new Set();
+
+    (problems || []).forEach((problem) => {
+        const problemId = String(problem.id);
+        if (!completedIds.has(problemId) || countedSolvedIds.has(problemId)) return;
+
+        const normalizedKey = normalizeDifficultyKey(problem?.difficulty);
+        const difficultyKey = difficultyStats.has(normalizedKey) ? normalizedKey : 'medium';
+        difficultyStats.get(difficultyKey).solved += 1;
+        countedSolvedIds.add(problemId);
+    });
 
     (submissions || []).forEach((submission) => {
         const submittedAt = new Date(submission?.submitted_at);
@@ -91,7 +110,8 @@ function buildLearningTrends(submissions, problems) {
         const problem = problemById.get(String(submission.problem_id));
         if (!problem) return;
 
-        const difficulty = normalizeDifficultyBucket(problem?.difficulty);
+        const normalizedKey = normalizeDifficultyKey(problem?.difficulty);
+        const difficulty = difficultyStats.has(normalizedKey) ? normalizedKey : 'medium';
         const isCorrect = submission.is_correct === true;
         const timeSeconds = Number(submission.time_spent_seconds);
         const safeTimeSeconds = Number.isFinite(timeSeconds) ? Math.max(timeSeconds, 0) : 0;
@@ -229,7 +249,7 @@ async function aggregateStats() {
         const weeklyProgress = Array.isArray(achievementProgress?.weeklyProgress)
             ? achievementProgress.weeklyProgress
             : Array(7).fill(0);
-        const learningTrends = buildLearningTrends(userSubmissions, allProblems);
+        const learningTrends = buildLearningTrends(userSubmissions, allProblems, filteredCompletedIds);
 
         const latestSubmissionAt = (userSubmissions || [])
             .map((submission) => submission?.submitted_at)

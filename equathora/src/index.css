@@ -21,6 +21,8 @@
         /* Difficulty colors */
         --beginner: #229cb7;
         --easy: #16a34a;
+        --standard: #65a30d;
+        --intermediate: #7c3aed;
         --medium: #efb801;
         --challenging: #f95616;
         --hard: #a3142c;
