@@ -26,6 +26,7 @@ import {
 } from '../lib/equathoraBriefsService';
 import { useSubscription } from '@/hooks/SubscriptionContext';
 import { useResetDiagnostic } from '@/hooks/useResetDiagnostic';
+import ProfileComponent from '@/components/Settings/ProfileComponent';
 
 // ============================================================================
 // LABEL MAPS (mirrors the option ids used on /getStarted)
@@ -57,12 +58,6 @@ const CHALLENGE_LABELS = {
     balanced: 'Balanced',
     challenging: 'Challenge Me',
     extreme: 'Push My Limits',
-};
-
-const PLAN_LABELS = {
-    free: 'Free',
-    scholar: 'Scholar',
-    olympiad: 'Olympiad',
 };
 
 // ============================================================================
@@ -200,10 +195,6 @@ const Toast = ({ toast }) => {
         </div>
     );
 };
-
-// ============================================================================
-// CONFIRM MODAL - replaces window.confirm()/alert() everywhere in this page.
-// ============================================================================
 
 const ConfirmModal = ({
     isOpen,
@@ -919,6 +910,8 @@ const Settings = () => {
 
                     {/* Main sections */}
                     <div className="flex flex-col gap-6 flex-1 min-w-0 rounded-xl">
+                        <ProfileComponent></ProfileComponent>
+
 
                         {/* ============================================================ */}
                         {/* PROFILE (read-only summary - editing happens on the public   */}

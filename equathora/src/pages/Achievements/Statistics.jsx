@@ -12,8 +12,8 @@ const ChartTooltip = ({ active, payload, label, formatValue }) => {
   if (!active || visibleItems.length === 0) return null;
 
   return (
-    <div className="pointer-events-none z-50 min-w-36 rounded-2xl border border-[var(--chart-tooltip-border)] bg-[var(--secondary-color)] px-4 py-3 text-[var(--main-color)] shadow-2xl backdrop-blur-xl">
-      <p className="mb-2 text-xs font-medium text-[var(--mid-main-secondary)]">{label}</p>
+    <div className="pointer-events-none z-50 min-w-36 rounded-2xl border bg-(--secondary-color) px-4 py-3 text-(--main-color) shadow-2xl backdrop-blur-xl">
+      <p className="mb-2 text-xs font-medium text-(--mid-main-secondary)">{label}</p>
       <div className="grid gap-1.5">
         {visibleItems.map((item) => (
           <div className="flex items-center justify-between gap-5 text-sm" key={item.dataKey || item.name}>
