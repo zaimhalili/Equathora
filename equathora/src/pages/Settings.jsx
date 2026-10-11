@@ -863,15 +863,10 @@ const Settings = () => {
     return (
         <>
             <Navbar />
-            <main className="min-h-screen flex flex-col bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed text-(--secondary-color) ">
-                {/* Header */}
-                <div className="flex flex-col items-center w-full gap-2 px-4 pt-8 pb-4">
-                    <h1 className="text-4xl font-medium">Settings</h1>
-                    <p className="text-md text-(--secondary-color) text-center md:text-left">Manage your account, security, and preferences</p>
-                </div>
+            <main className="min-h-screen flex flex-col bg-(--white) bg-fixed text-(--secondary-color) ">
 
                 {/* Content wrapper */}
-                <div className="w-full flex flex-col lg:flex-row gap-6 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-[1500px] self-center flex-1">
+                <div className="w-full flex flex-col lg:flex-row gap-6 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-375 self-center flex-1 pt-8">
                     {/* Sidebar (desktop) */}
                     <nav className="hidden lg:flex flex-col w-56 shrink-0 sticky top-24 self-start bg-(--white) rounded-xl">
                         {sidebarSections.map(section => (

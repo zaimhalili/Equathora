@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
@@ -7,284 +7,26 @@ import ReputationBadge from '../components/ReputationBadge';
 import EditProfileModal from '../components/EditProfileModal';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { FaCheckCircle, FaChartLine } from 'react-icons/fa';
-import { getAllProblems } from '../lib/problemService';
-import { supabase } from '../lib/supabaseClient';
 import ProfileExportButtons from '../components/ProfileExportButtons';
 import { generateProblemSlug } from '../lib/slugify';
-import { getCachedGlobalLeaderboard } from '../lib/leaderboardService';
 import { formatTopicLabel } from '../lib/utils';
-import { computeAccuracyFromSubmissions } from '../lib/accuracyService';
 import { FaLandmark } from 'react-icons/fa';
-import { difficultyDisplayRank, formatDifficultyLabel, getDifficultyColor, normalizeDifficultyKey } from '@/hooks/useStatisticsColors';
-
-const getEffectiveStreak = (currentStreak = 0, lastActivityDate = null) => {
-  if (!currentStreak || currentStreak <= 0) return 0;
-  if (!lastActivityDate) return currentStreak;
-
-  const todayUtc = new Date();
-  todayUtc.setUTCHours(0, 0, 0, 0);
-
-  const lastUtc = new Date(lastActivityDate);
-  if (Number.isNaN(lastUtc.getTime())) return currentStreak;
-  lastUtc.setUTCHours(0, 0, 0, 0);
-
-  const diffDays = Math.floor((todayUtc.getTime() - lastUtc.getTime()) / (1000 * 60 * 60 * 24));
-  return diffDays <= 1 ? currentStreak : 0;
-};
-
-const normalizeCompletedProblemId = (rawValue) => {
-  if (rawValue === null || rawValue === undefined) return '';
-
-  if (typeof rawValue === 'string' && rawValue.startsWith('{')) {
-    try {
-      const parsed = JSON.parse(rawValue);
-      return String(parsed?.problemId ?? parsed?.id ?? '').trim();
-    } catch {
-      return '';
-    }
-  }
-
-  return String(rawValue).trim();
-};
-
-const getDifficultyChipBackground = (difficultyKey) => {
-  return 'var(--white)';
-};
+import { useProfileData } from '../hooks/useProfileData';
 
 const Profile = () => {
+  const Motion = motion;
   const { profile } = useParams();
   const [showAccuracy, setShowAccuracy] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [viewingOwnProfile, setViewingOwnProfile] = useState(false);
-  const fetchRequestIdRef = useRef(0);
-
-  const handleProfileSave = useCallback((updatedData) => {
-    setUserData(prevData => {
-      if (!prevData) return prevData;
-
-      return {
-        ...prevData,
-        name: updatedData.full_name ?? updatedData.name ?? prevData.name,
-        username: updatedData.username ?? prevData.username,
-        bio: updatedData.bio ?? prevData.bio,
-        location: updatedData.location ?? prevData.location,
-        website: updatedData.website ?? prevData.website,
-        avatar_url: updatedData.avatar_url ?? prevData.avatar_url
-      };
-    });
-  }, []);
+  const { userData, loading, viewingOwnProfile, handleProfileSave } = useProfileData(profile);
 
   useEffect(() => {
-    const requestId = ++fetchRequestIdRef.current;
-    let isActive = true;
-
-    const fetchUserData = async () => {
-      setLoading(true);
-      setUserData(null);
-      setViewingOwnProfile(false);
-      setIsEditModalOpen(false);
-
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) {
-          console.log('No session found');
-          return;
-        }
-
-        const isMyProfileAlias = profile === 'myprofile' || profile === 'me';
-        const targetUserId = isMyProfileAlias || !profile ? session.user.id : profile;
-        const isSelf = targetUserId === session.user.id;
-        if (!isActive || fetchRequestIdRef.current !== requestId) return;
-        setViewingOwnProfile(isSelf);
-
-        // Pull profile, progress, streak, and leaderboard data for the target user
-        const [
-          { data: profileRow },
-          { data: progressRow },
-          { data: streakRow },
-          { data: leaderboardRow },
-          { data: submissionsRow, error: submissionsError }
-        ] = await Promise.all([
-          supabase.from('profiles').select('*').eq('id', targetUserId).maybeSingle(),
-          supabase.from('user_progress').select('*').eq('user_id', targetUserId).maybeSingle(),
-          supabase.from('user_streak_data').select('*').eq('user_id', targetUserId).maybeSingle(),
-          supabase.from('leaderboard_view').select('*').eq('user_id', targetUserId).maybeSingle(),
-          isSelf
-            ? supabase.from('user_submissions').select('problem_id, is_correct').eq('user_id', targetUserId)
-            : Promise.resolve({ data: [], error: null })
-        ]);
-
-        const { data: completedRows } = await supabase
-          .from('user_completed_problems')
-          .select('problem_id')
-          .eq('user_id', targetUserId);
-
-        const completedIds = Array.from(
-          new Set(
-            (completedRows || [])
-              .map((row) => normalizeCompletedProblemId(row.problem_id))
-              .filter(Boolean)
-          )
-        );
-
-        const allProblems = await getAllProblems().catch(err => {
-          console.error('Error fetching all problems:', err);
-          return [];
-        });
-
-        // Use problems from database only (no local fallback)
-        const problemList = allProblems;
-
-        const meta = isSelf ? session.user.user_metadata : {};
-
-        const displayName = profileRow?.full_name ?? profileRow?.username ?? meta.full_name ?? meta.name ?? session.user.email?.split('@')[0] ?? 'Student';
-        const username = profileRow?.username ?? meta.preferred_username ?? session.user.email?.split('@')[0] ?? 'student';
-        const avatarUrl = profileRow?.avatar_url ?? meta.avatar_url ?? meta.picture ?? meta.image ?? meta.photo_url ?? '';
-        const bio = profileRow?.bio ?? meta.bio ?? '';
-        const location = profileRow?.location ?? meta.location ?? '';
-        const website = profileRow?.website ?? meta.website ?? '';
-
-        // Filter completed problems by valid problem IDs (consistent with Statistics and YourTrack)
-        const validProblemIds = new Set((problemList || []).map(p => String(p.id)));
-        const validCompletedIds = completedIds.filter(id => validProblemIds.has(String(id)));
-        const completedProblems = problemList.filter(p => validCompletedIds.includes(String(p.id)));
-
-        // Calculate stats (scope solved to current problems list)
-        const solved = completedProblems.length;
-        let accuracyStats = { accuracy: 0, correct: 0, wrong: 0, total: 0 };
-        if (isSelf && !submissionsError) {
-          const validProblemIdSet = new Set((problemList || []).map((problem) => String(problem.id)));
-          accuracyStats = computeAccuracyFromSubmissions({
-            submissions: submissionsRow || [],
-            validProblemIds: validProblemIdSet,
-            solvedCount: solved
-          });
-        } else {
-          const wrongSubmissionsRaw = Number(progressRow?.wrong_submissions ?? 0);
-          const totalAttemptsRaw = Number(progressRow?.total_attempts ?? 0);
-          const wrongSubmissions = Number.isFinite(wrongSubmissionsRaw) ? wrongSubmissionsRaw : 0;
-          const totalAttempts = Number.isFinite(totalAttemptsRaw) ? totalAttemptsRaw : 0;
-          const correctSubmissions = Math.max(totalAttempts - wrongSubmissions, 0);
-
-          if (totalAttempts > 0) {
-            accuracyStats = {
-              accuracy: Math.max(0, Math.min(100, Math.round((correctSubmissions / totalAttempts) * 100))),
-              correct: correctSubmissions,
-              wrong: wrongSubmissions,
-              total: totalAttempts
-            };
-          } else if (solved > 0) {
-            accuracyStats = { accuracy: null, correct: 0, wrong: 0, total: 0 };
-          }
-        }
-
-        // Use solved count from completedProblems filtered by valid IDs (consistent with YourTrack and Statistics)
-        const finalSolved = solved;
-
-        const difficultyMap = new Map();
-
-        for (const problem of problemList) {
-          const key = normalizeDifficultyKey(problem?.difficulty);
-          const label = formatDifficultyLabel(problem?.difficulty);
-          const existing = difficultyMap.get(key) || { key, label, solved: 0, total: 0 };
-          existing.total += 1;
-          if (existing.label === 'Unspecified' && label !== 'Unspecified') {
-            existing.label = label;
-          }
-          difficultyMap.set(key, existing);
-        }
-
-        for (const problem of completedProblems) {
-          const key = normalizeDifficultyKey(problem?.difficulty);
-          const label = formatDifficultyLabel(problem?.difficulty);
-          const existing = difficultyMap.get(key) || { key, label, solved: 0, total: 0 };
-          existing.solved += 1;
-          difficultyMap.set(key, existing);
-        }
-
-        const difficultyBreakdown = Array.from(difficultyMap.values())
-          .sort((a, b) => {
-            const rankDiff = (difficultyDisplayRank[a.key] ?? 99) - (difficultyDisplayRank[b.key] ?? 99);
-            if (rankDiff !== 0) return rankDiff;
-            return a.label.localeCompare(b.label);
-          })
-          .map((difficulty, index) => ({
-            ...difficulty,
-            percentage: difficulty.total > 0
-              ? Math.round((difficulty.solved / difficulty.total) * 100)
-              : 0,
-            color: getDifficultyColor(difficulty.key, index)
-          }));
-
-        const totalProblemsCount = problemList.length;
-        const effectiveCurrentStreak = getEffectiveStreak(streakRow?.current_streak || 0, streakRow?.last_activity_date || null);
-        const rawReputation = Number(progressRow?.reputation ?? 0);
-        const reputationValue = Number.isFinite(rawReputation) ? Math.max(rawReputation, 0) : 0;
-
-        let resolvedGlobalRank = leaderboardRow?.rank || 0;
-        if (!resolvedGlobalRank) {
-          try {
-            const globalLeaderboard = await getCachedGlobalLeaderboard();
-            const leaderboardEntry = (globalLeaderboard || []).find(entry => entry.userId === targetUserId);
-            resolvedGlobalRank = leaderboardEntry?.rank || 0;
-          } catch (rankError) {
-            console.warn('Could not resolve rank from global leaderboard fallback:', rankError);
-          }
-        }
-
-        const newUserData = {
-          name: displayName,
-          username: username,
-          bio,
-          location,
-          website,
-          avatar_url: avatarUrl,
-          title: 'Problem Solver',
-          status: isSelf ? 'Online' : 'Viewing',
-          stats: {
-            problemsSolved: finalSolved,
-            accuracy: accuracyStats.accuracy,
-            accuracyDetail: {
-              correct: accuracyStats.correct,
-              wrong: accuracyStats.wrong,
-              total: accuracyStats.total
-            },
-            currentStreak: effectiveCurrentStreak,
-            longestStreak: streakRow?.longest_streak || 0,
-            reputation: reputationValue,
-            globalRank: resolvedGlobalRank,
-            totalProblems: totalProblemsCount,
-            difficulties: difficultyBreakdown
-          },
-          mathTopics: [...new Set(completedProblems.map(p => p.topic).filter(Boolean))],
-          problemsSolved: completedProblems.slice(-10).reverse()
-        };
-
-        if (!isActive || fetchRequestIdRef.current !== requestId) return;
-        setUserData(newUserData);
-
-      } catch (error) {
-        console.error('Failed to fetch user data:', error);
-      } finally {
-        if (isActive && fetchRequestIdRef.current === requestId) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchUserData();
-
-    return () => {
-      isActive = false;
-    };
+    setIsEditModalOpen(false);
   }, [profile]);
 
   if (loading || !userData) {
     return <LoadingSpinner message="Loading profile..." />;
   }
-
   const difficultyStats = Array.isArray(userData.stats.difficulties) ? userData.stats.difficulties : [];
   const totalProblems = Number.isFinite(userData.stats.totalProblems)
     ? userData.stats.totalProblems
@@ -309,7 +51,7 @@ const Profile = () => {
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
 
             {/* Left Column - Combined Profile, Stats, and Topics */}
-            <motion.div
+            <Motion.div
               className='lg:col-span-1 flex flex-col gap-4'
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -353,7 +95,7 @@ const Profile = () => {
                       rel="noopener noreferrer"
                       className='text-xs text-(--accent-color) hover:underline'
                     >
-                      🔗 {userData.website}
+                      Ã°Å¸â€â€” {userData.website}
                     </a>
                   )}
                   {viewingOwnProfile && (
@@ -399,7 +141,7 @@ const Profile = () => {
                         <p className='text-sm md:text-base text-(--secondary-color)'>Accuracy <span className='font-bold'>{userData.stats.accuracy === null ? 'N/A' : `${userData.stats.accuracy}%`}</span></p>
                         <span className='text-xs text-(--mid-main-secondary)'>
                           {userData.stats.accuracyDetail.total > 0
-                            ? `${userData.stats.accuracyDetail.correct} correct · ${userData.stats.accuracyDetail.wrong} wrong`
+                            ? `${userData.stats.accuracyDetail.correct} correct Ã‚Â· ${userData.stats.accuracyDetail.wrong} wrong`
                             : 'No attempts tracked'}
                         </span>
                       </div>
@@ -433,12 +175,12 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </Motion.div>
 
             {/* Right Column - Stacked cards */}
             <div className='lg:col-span-2 flex flex-col gap-4'>
               {/* Statistics Card */}
-              <motion.div
+              <Motion.div
                 className='bg-(--main-color) rounded-xl shadow-lg p-6'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -529,10 +271,10 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </Motion.div>
 
               {/* Solved Problems Card */}
-              <motion.div
+              <Motion.div
                 className='bg-(--main-color) rounded-xl shadow-lg p-6 flex flex-col'
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -541,7 +283,7 @@ const Profile = () => {
                 <h5 className='font-bold text-xl md:text-2xl text-(--secondary-color) pb-4'>Solved Problems</h5>
                 <div className='flex flex-col gap-1 text-(--secondary-color) hover:text-[var(--raisin-black)]'>
                   {userData.problemsSolved.map((problem, i) => (
-                    <motion.div
+                    <Motion.div
                       key={i}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -549,10 +291,10 @@ const Profile = () => {
                       <Link
                         to={`/problems/${problem.slug || generateProblemSlug(problem.title, problem.id)}`}
                         className={`w-full px-5 py-4 transition-all hover:-translate-x-1 text-(--secondary-color) duration-150 rounded-xl text-md block ${i % 2 === 0 ? 'bg-(--french-gray)' : 'bg-(--main-color)'}`}>{problem.title}</Link>
-                    </motion.div>
+                    </Motion.div>
                   ))}
                 </div>
-              </motion.div>
+              </Motion.div>
             </div>
           </div>
         </div>
