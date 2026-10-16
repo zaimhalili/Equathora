@@ -24,8 +24,8 @@ const ProfileComponent = () => {
         return (
             <section className="gap-10 flex flex-col bg-(--white)">
                 <div className="flex flex-col gap-2 font-medium text-(--secondary-color)">
-                    <h2 className="text-2xl">Profile</h2>
-                    <h3 className="text-sm text-(--secondary-color)/70">Manage your profile details, cookie preferences, and account access.</h3>
+                    <h2 className="text-2xl">Account</h2>
+                    <h3 className="text-sm text-(--secondary-color)/70">Manage your account details, cookie preferences, and account access.</h3>
                 </div>
                 <article className="rounded-2xl border-(--main-color) flex flex-col gap-5 shadow-[0_4px_24px_rgba(0,0,0,0.06)]" aria-label="Loading profile" aria-busy="true">
                     <div className="bg-(--main-color) w-full h-25 rounded-t-2xl animate-pulse" />
@@ -79,7 +79,7 @@ const ProfileComponent = () => {
                         <img
                             src={userData.avatar_url?.trim() || GuestAvatar}
                             alt="Profile Picture"
-                            className='h-full w-full rounded-full border-3 border-(--white) object-cover'
+                            className='h-full w-full rounded-full border-3 border-(--white) object-cover bg-(--main-color)'
                             onError={(event) => {
                                 event.currentTarget.onerror = null;
                                 event.currentTarget.src = GuestAvatar;
