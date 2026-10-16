@@ -27,7 +27,7 @@ const AccountOverview = ({
                             {subscriptionLoading ? 'Loading plan…' : premium ? 'Premium plan' : 'Free plan'}
                         </h3>
                         {!subscriptionLoading && (
-                            <span className="rounded-full bg-[#eef2ff] px-2 py-0.5 text-[10px] font-medium text-[#263f99]">
+                            <span className="rounded-full bg-(--main-color) px-2 py-0.5 text-[10px] font-medium text-(--secondary-color)">
                                 Current plan
                             </span>
                         )}
@@ -60,7 +60,7 @@ const AccountOverview = ({
             <button
                 type="button"
                 onClick={onManageCookies}
-                className="w-fit rounded-xl border border-(--main-color) px-4 py-2 text-sm text-(--secondary-color)/70 transition hover:bg-(--main-color) hover:text-(--secondary-color)"
+                className="w-fit rounded-xl border-2 border-(--main-color) px-4 py-2 text-sm text-(--secondary-color)/70 transition hover:bg-(--main-color) hover:text-(--secondary-color)"
             >
                 Manage cookie preferences
             </button>

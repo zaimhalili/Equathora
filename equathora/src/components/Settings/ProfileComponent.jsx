@@ -27,7 +27,7 @@ const ProfileComponent = () => {
                     <h2 className="text-2xl">Account</h2>
                     <h3 className="text-sm text-(--secondary-color)/70">Manage your account details, cookie preferences, and account access.</h3>
                 </div>
-                <article className="rounded-2xl border-(--main-color) flex flex-col gap-5 shadow-[0_4px_24px_rgba(0,0,0,0.06)]" aria-label="Loading profile" aria-busy="true">
+                <article className="rounded-2xl border-(--main-color) bg-(--white) flex flex-col gap-5 border" aria-label="Loading profile" aria-busy="true">
                     <div className="bg-(--main-color) w-full h-25 rounded-t-2xl animate-pulse" />
                     <div className="flex flex-col gap-10 px-7 py-5 sm:flex-row">
                         <div className="flex flex-1 flex-col gap-3">
@@ -64,14 +64,14 @@ const ProfileComponent = () => {
     const { stats } = userData;
 
     return (
-        <section className='gap-10 flex flex-col bg-(--white)'>
+        <section className='gap-10 flex flex-col '>
             <div className="flex flex-col gap-2 font-medium text-(--secondary-color)">
                 <h2 className='text-2xl'>Profile</h2>
                 <h3 className='text-sm text-(--secondary-color)/70'>Manage your profile details, cookie preferences, and account access.</h3>
             </div>
 
             {/* Profile */}
-            <article className='rounded-2xl border-(--main-color) flex flex-col gap-5 shadow-[0_4px_24px_rgba(0,0,0,0.06)]'>
+            <article className='rounded-2xl border-(--main-color) flex flex-col gap-5 border-2'>
                 {/* Top Part */}
                 <div className="bg-linear-to-tr from-(--accent-color) to-(--dark-accent-color) w-full h-full min-h-25 max-h-25 relative rounded-t-2xl">
                     {/* Profile Image Circle */}
@@ -101,7 +101,7 @@ const ProfileComponent = () => {
                     </Link>
                 </div>
                 {/* Bottom */}
-                <div className="flex sm:flex-row flex-col gap-10 bg-(--white) w-full px-7 py-5">
+                <div className="flex sm:flex-row flex-col gap-10 w-full px-7 py-5">
                     {/* Left Side Data */}
                     <div className="flex flex-col text-(--secondary-color)/70 flex-1 sm:max-w-2/5 gap-2">
                         <div className="group flex w-fit max-w-full items-center gap-2 pb-2">
