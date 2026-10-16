@@ -1,5 +1,6 @@
 import { createElement, useState } from 'react';
 import { SETTINGS_SECTIONS } from './settingsSections';
+import { FaSearch } from 'react-icons/fa';
 
 const SettingsSidebar = ({ activeSection, onSectionChange }) => {
     const [search, setSearch] = useState('');
@@ -30,26 +31,23 @@ const SettingsSidebar = ({ activeSection, onSectionChange }) => {
 
     return (
         <nav aria-label="Settings sections" className="w-full shrink-0 lg:sticky lg:top-24 lg:w-44">
-            <h1 className="pb-4 px-1 text-2xl font-medium text-(--secondary-color)">Settings</h1>
-            <label className=" flex items-center gap-2 rounded-xl bg-[#f5f5f5] px-3 py-2 text-sm text-(--secondary-color)/55 focus-within:ring-2">
-                <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.7">
-                    <circle cx="10.8" cy="10.8" r="6.3" />
-                    <path d="m15.5 15.5 4.2 4.2" strokeLinecap="round" />
-                </svg>
+            <h1 className="pb-4 px-1 text-3xl text-(--secondary-color)">Settings</h1>
+            <label className="flex items-center gap-2 rounded-xl bg-(--main-color) px-3 py-2 text-sm text-(--secondary-color)/70! focus-within:ring-2 focus-within:ring-(--black) transition-all">
+                <FaSearch />
                 <input
                     type="search"
-                    // aria-label="Search settings"
+                    aria-label="Search settings"
                     placeholder="Search settings"
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
-                    className="min-w-0 w-full bg-transparent text-sm text-(--secondary-color) outline-none placeholder:text-(--secondary-color) focus:outline-none"
+                    className="min-w-0 w-full bg-transparent text-sm text-(--secondary-color)/70! outline-none placeholder:text-(--secondary-color)/70! focus:outline-none! focus-within:outline-none"
                 />
             </label>
 
-            <div className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible">
+            <div className="flex gap-1 overflow-x-auto pt-3 lg:flex-col lg:overflow-visible">
                 {filteredSections.map(renderSectionButton)}
                 {filteredSections.length === 0 && (
-                    <p className="px-3 py-2 text-xs text-(--secondary-color)/60">No matching settings.</p>
+                    <p className="px-3 py-2 text-xs text-(--secondary-color)/70">No matching settings.</p>
                 )}
             </div>
         </nav>

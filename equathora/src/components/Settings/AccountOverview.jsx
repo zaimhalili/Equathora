@@ -18,7 +18,7 @@ const AccountOverview = ({
         <section aria-labelledby="settings-plan-title" className="flex flex-col gap-3">
             <div>
                 <h2 id="settings-plan-title" className="text-xl font-medium text-(--secondary-color)">Subscription</h2>
-                <p className="pt-1 text-sm text-(--secondary-color)/65">Review your current plan and manage your subscription.</p>
+                <p className="pt-1 text-sm text-(--secondary-color)/70">Review your current plan and manage your subscription.</p>
             </div>
             <article className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-(--main-color) bg-(--white) p-5">
                 <div className="min-w-0">
@@ -32,7 +32,7 @@ const AccountOverview = ({
                             </span>
                         )}
                     </div>
-                    <p className="pt-1 text-sm text-(--secondary-color)/65">
+                    <p className="pt-1 text-sm text-(--secondary-color)/70">
                         {subscriptionLoading
                             ? 'Checking your subscription status.'
                             : premium
@@ -53,7 +53,7 @@ const AccountOverview = ({
         <section aria-labelledby="settings-cookies-title" className="flex flex-col gap-3">
             <div>
                 <h2 id="settings-cookies-title" className="text-xl font-medium text-(--secondary-color)">Cookie preferences</h2>
-                <p className="pt-1 text-sm text-(--secondary-color)/65">
+                <p className="pt-1 text-sm text-(--secondary-color)/70">
                     Choose which optional cookies Equathora can use in your browser.
                 </p>
             </div>
@@ -69,7 +69,7 @@ const AccountOverview = ({
         <section aria-labelledby="settings-account-actions-title" className="flex flex-col gap-3">
             <div>
                 <h2 id="settings-account-actions-title" className="text-xl font-medium text-(--secondary-color)">Account actions</h2>
-                <p className="pt-1 text-sm text-(--secondary-color)/65">Sign out of this device or permanently delete your account.</p>
+                <p className="pt-1 text-sm text-(--secondary-color)/70">Sign out of this device or permanently delete your account.</p>
             </div>
             {deletionRequested && (
                 <div className="rounded-xl bg-amber-50 p-3 text-sm text-amber-800">

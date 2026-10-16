@@ -23,9 +23,9 @@ const ProfileComponent = () => {
     if (loading) {
         return (
             <section className="gap-10 flex flex-col bg-(--white)">
-                <div className="flex flex-col gap-2 font-medium text-(--secondary-color)">
-                    <h2 className="text-2xl">Account</h2>
-                    <h3 className="text-sm text-(--secondary-color)/70">Manage your account details, cookie preferences, and account access.</h3>
+                <div className="flex flex-col gap-2 text-(--secondary-color)">
+                    <h2 className="text-2xl">Profile</h2>
+                    <h3 className="text-sm text-(--secondary-color)/70">Manage your profile details, cookie preferences, and account access.</h3>
                 </div>
                 <article className="rounded-2xl border-(--main-color) bg-(--white) flex flex-col gap-5 border" aria-label="Loading profile" aria-busy="true">
                     <div className="bg-(--main-color) w-full h-25 rounded-t-2xl animate-pulse" />
@@ -65,7 +65,7 @@ const ProfileComponent = () => {
 
     return (
         <section className='gap-10 flex flex-col '>
-            <div className="flex flex-col gap-2 font-medium text-(--secondary-color)">
+            <div className="flex flex-col gap-2 text-(--secondary-color)">
                 <h2 className='text-2xl'>Profile</h2>
                 <h3 className='text-sm text-(--secondary-color)/70'>Manage your profile details, cookie preferences, and account access.</h3>
             </div>
@@ -73,7 +73,7 @@ const ProfileComponent = () => {
             {/* Profile */}
             <article className='rounded-2xl border-(--main-color) flex flex-col gap-5 border-2'>
                 {/* Top Part */}
-                <div className="bg-linear-to-tr from-(--accent-color) to-(--dark-accent-color) w-full h-full min-h-25 max-h-25 relative rounded-t-2xl">
+                <div className="bg-linear-to-tr from-(--accent-color) to-(--dark-accent-color) w-full h-full min-h-35 max-h-35 relative rounded-t-2xl">
                     {/* Profile Image Circle */}
                     <div className="group absolute left-6 -bottom-9 h-20 w-20 rounded-full md:h-23 md:w-23">
                         <img
@@ -85,7 +85,7 @@ const ProfileComponent = () => {
                                 event.currentTarget.src = GuestAvatar;
                             }}
                         />
-                        <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-full bg-black/35 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100" />
+                        <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-full bg-(--white)/45 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100" />
                         <ProfileEditButton
                             onClick={() => setIsProfileEditorOpen(true)}
                             label="Change profile picture"
@@ -93,7 +93,7 @@ const ProfileComponent = () => {
                         />
                     </div>
                     {/* Achievements Circle */}
-                    <Link to="/achievements/recent" className="flex justify-center items-center rounded-full text-(--secondary-color)/70 p-4 text-xl absolute right-6 -bottom-6 bg-(--main-color) hover:text-(--secondary-color) hover:brightness-95 group outline outline-dashed border-(--french-gray)">
+                    <Link to="/achievements/recent" className="flex justify-center items-center rounded-full text-(--secondary-color)/70! p-4 text-xl absolute right-6 -bottom-6 bg-(--main-color) hover:text-(--secondary-color)! hover:brightness-95 group outline outline-dashed border-(--secondary-color)/70 hover:border-(--secondary-color)">
                         <FaTrophy />
                         <HoverLabel
                             className={'group-hover:flex hidden'}

@@ -669,7 +669,7 @@ const Settings = () => {
             <main aria-busy={isLoading || settingsSaving} className="min-h-screen flex flex-col bg-(--white) bg-fixed text-(--secondary-color) ">
 
                 {/* Content wrapper */}
-                <div className="w-full flex flex-col lg:flex-row gap-6 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-375 self-center flex-1 pt-8">
+                <div className="w-full flex flex-col lg:flex-row gap-8 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-375 self-center flex-1 pt-8">
                     <SettingsSidebar activeSection={activeSection} onSectionChange={selectSection} />
 
                     {/* Only the selected panel is rendered; each panel is code-split. */}
