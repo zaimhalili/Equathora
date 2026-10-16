@@ -123,7 +123,7 @@ const Statistics = () => {
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
           <div className="stat-number">{displayStats.streakDays}</div>
           <div className="stat-label">Day Streak</div>
-          <div className="stat-sublabel">Keep it up!</div>
+          <div className="stat-sublabel">{displayStats.streakDays > 0 ? "Keep it up!" : "Time to work!"}</div>
         </div>
 
         <div className={`stat-card ${isAnimated ? 'animate-in' : ''}`}>
