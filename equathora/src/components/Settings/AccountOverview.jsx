@@ -15,7 +15,7 @@ const AccountOverview = ({
     <section className="flex flex-col gap-8">
         <ProfileComponent />
 
-        <section aria-labelledby="settings-plan-title" className="flex flex-col gap-3">
+        <section id="account-subscription" aria-labelledby="settings-plan-title" className="flex flex-col gap-3">
             <div>
                 <h2 id="settings-plan-title" className="text-xl font-medium text-(--secondary-color)">Subscription</h2>
                 <p className="pt-1 text-sm text-(--secondary-color)/70">Review your current plan and manage your subscription.</p>
@@ -43,7 +43,7 @@ const AccountOverview = ({
                 <button
                     type="button"
                     onClick={onManagePlan}
-                    className="bg-(--main-color) rounded-xl px-4 py-1 text-center text-(--secondary-color)/70 hover:brightness-95 hover:text-(--secondary-color) transition-all text-md font-medium"
+                    className="rounded-xl px-4 py-2 text-center text-(--secondary-color)/70 hover:bg-(--main-color) hover:text-(--secondary-color) transition-all text-sm border-2 border-(--main-color)"
                 >
                     {premium ? 'Manage plan' : 'View plans'}
                 </button>
@@ -66,7 +66,7 @@ const AccountOverview = ({
             </button>
         </section>
 
-        <section aria-labelledby="settings-account-actions-title" className="flex flex-col gap-3">
+        <section id="account-actions" aria-labelledby="settings-account-actions-title" className="flex flex-col gap-3">
             <div>
                 <h2 id="settings-account-actions-title" className="text-xl font-medium text-(--secondary-color)">Account actions</h2>
                 <p className="pt-1 text-sm text-(--secondary-color)/70">Sign out of this device or permanently delete your account.</p>
@@ -81,10 +81,12 @@ const AccountOverview = ({
                 <button
                     type="button"
                     onClick={onLogout}
-                    className="rounded-xl bg-red-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-600"
+                    className="rounded-xl bg-(--light-accent-color) px-4 py-2 text-sm font-medium text-white transition hover:bg-(--accent-color)"
                 >
                     Log out
                 </button>
+
+                
                 {/* {deletionRequested ? (
                     <button
                         type="button"

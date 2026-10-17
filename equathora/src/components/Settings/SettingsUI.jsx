@@ -1,16 +1,15 @@
 const SectionCard = ({ children, id }) => (
     <section
         id={id}
-        className="bg-(--white) flex w-full flex-col gap-6 rounded-xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] lg:p-8"
-    >
+        className={`bg-(--white) flex w-full flex-col gap-6 rounded-xl `}>
         {children}
     </section>
 );
 
 const SectionTitle = ({ children, sub }) => (
-    <div className="flex flex-col gap-1">
-        <h2 className="text-xl font-medium text-(--secondary-color) lg:text-2xl">{children}</h2>
-        {sub && <p className="text-sm text-(--mid-main-secondary)">{sub}</p>}
+    <div className="flex flex-col gap-2">
+        <h2 className="text-(--secondary-color) text-2xl font-medium">{children}</h2>
+        {sub && <p className="text-sm text-(--secondary-color)/70">{sub}</p>}
     </div>
 );
 
@@ -20,7 +19,7 @@ const InputField = ({ label, description, ...props }) => (
         {description && <p className="text-xs text-(--mid-main-secondary)">{description}</p>}
         <input
             {...props}
-            className="w-full rounded-xl border border-(--mid-main-secondary) bg-[var(--surface-card)] px-4 py-3 text-lg font-black text-(--secondary-color) transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-(--accent-color)"
+            className="w-full rounded-xl border border-(--mid-main-secondary) px-4 py-3 text-lg font-black text-(--secondary-color) transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-(--accent-color)"
         />
     </div>
 );
@@ -34,6 +33,7 @@ const ToggleSwitch = ({ label, description, checked, onChange, disabled = false 
         <button
             type="button"
             role="switch"
+            aria-label={label}
             aria-checked={checked}
             disabled={disabled}
             onClick={() => onChange(!checked)}
@@ -57,7 +57,7 @@ const PrimaryButton = ({ children, onClick, disabled, loading, className = '', t
         title={title}
         onClick={onClick}
         disabled={disabled || loading}
-        className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-(--accent-color) px-5 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-(--dark-accent-color) disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+        className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-(--accent-color) px-4 py-2 text-sm text-white transition-all duration-200 hover:bg-(--dark-accent-color) disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     >
         {loading && <Spinner />}
         {children}
@@ -76,7 +76,7 @@ const OutlineButton = ({ children, onClick, disabled, className = '' }) => (
 );
 
 const Chip = ({ children }) => (
-    <span className="rounded-full border border-(--mid-main-secondary) bg-(--main-color) px-3 py-1.5 text-xs font-semibold text-(--secondary-color)">
+    <span className="rounded-full bg-(--main-color) px-3 py-1.5 text-xs font-medium text-(--secondary-color)">
         {children}
     </span>
 );

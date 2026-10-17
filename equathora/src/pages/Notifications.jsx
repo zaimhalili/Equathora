@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion as Motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { FiCheck } from "react-icons/fi";
@@ -410,7 +410,7 @@ const Notifications = () => {
                                 {filtered.map(notification => {
                                     const config = typeConfig[notification.type] || typeConfig.system;
                                     return (
-                                        <motion.div
+                                        <Motion.div
                                             key={notification.id}
                                             initial={{ opacity: 0, y: 8 }}
                                             animate={{ opacity: 1, y: 0 }}
@@ -476,22 +476,13 @@ const Notifications = () => {
                                             <div className={`flex items-center justify-center w-15 h-15 rounded-xl shrink-0 ${config.bgColor}`}>
                                                 {config.icon}
                                             </div>
-                                        </motion.div>
+                                        </Motion.div>
                                     );
                                 })}
                             </AnimatePresence>
                         </div>
                     )}
 
-                    {/* Link to settings */}
-                    <div className="flex justify-center self-center-safe">
-                        <Link
-                            to="/settings/#notifications"
-                            className="text-sm text-(--accent-color) !underline font-semibold"
-                        >
-                            Manage notification preferences
-                        </Link>
-                    </div>
                 </div>
             </main>
             <Footer />

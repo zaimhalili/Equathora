@@ -22,7 +22,7 @@ const SecuritySettings = ({ data }) => {
         <SectionCard id="security">
             <SectionTitle sub="Manage your email, password, and security settings">Account & Security</SectionTitle>
 
-            <div className="flex flex-col gap-1 rounded-xl bg-(--main-color) px-4 py-3">
+            <div id="current-email" className="flex flex-col gap-1 rounded-xl bg-(--main-color) px-4 py-3">
                 <span className="text-xs font-semibold text-(--mid-main-secondary)">Current email</span>
                 <span className="text-sm font-medium">{currentEmail}</span>
                 {authProvider !== 'email' && (
@@ -34,7 +34,7 @@ const SecuritySettings = ({ data }) => {
 
             {authProvider === 'email' ? (
                 <>
-                    <div className="flex flex-col gap-3 border-t border-(--mid-main-secondary) pt-4">
+                    <div id="change-email" className="flex flex-col gap-3 border-t border-(--mid-main-secondary) pt-4">
                         <h3 className="text-base font-medium">Change Email</h3>
                         <InputField
                             label="New Email Address"
@@ -48,7 +48,7 @@ const SecuritySettings = ({ data }) => {
                         </PrimaryButton>
                     </div>
 
-                    <div className="flex flex-col gap-3 border-t border-(--mid-main-secondary) pt-4">
+                    <div id="change-password" className="flex flex-col gap-3 border-t border-(--mid-main-secondary) pt-4">
                         <h3 className="text-base font-medium">Change Password</h3>
                         <p className="text-xs text-(--mid-main-secondary)">
                             Minimum 8 characters with uppercase, lowercase, and a number.
@@ -69,7 +69,7 @@ const SecuritySettings = ({ data }) => {
                             placeholder="••••••••"
                             autoComplete="new-password"
                         />
-                        <label className="flex cursor-pointer items-center gap-2 text-xs text-(--mid-main-secondary)">
+                        <label id="show-passwords" className="flex cursor-pointer items-center gap-2 text-xs text-(--mid-main-secondary)">
                             <input
                                 type="checkbox"
                                 checked={showPassword}

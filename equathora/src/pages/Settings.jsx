@@ -32,7 +32,6 @@ import { OutlineButton, Spinner } from '@/components/Settings/SettingsUI';
 const AccountOverview = lazy(() => import('@/components/Settings/AccountOverview'));
 const SecuritySettings = lazy(() => import('@/components/Settings/SecuritySettings'));
 const LearningSettings = lazy(() => import('@/components/Settings/LearningSettings'));
-const NotificationsSettings = lazy(() => import('@/components/Settings/NotificationsSettings'));
 const AppearanceSettings = lazy(() => import('@/components/Settings/AppearanceSettings'));
 const PrivacySettings = lazy(() => import('@/components/Settings/PrivacySettings'));
 const SubscriptionSettings = lazy(() => import('@/components/Settings/SubscriptionSettings'));
@@ -41,7 +40,6 @@ const SessionsSettings = lazy(() => import('@/components/Settings/SessionsSettin
 const SETTINGS_PANELS = {
     security: SecuritySettings,
     learning: LearningSettings,
-    notifications: NotificationsSettings,
     appearance: AppearanceSettings,
     privacy: PrivacySettings,
     subscription: SubscriptionSettings,
@@ -212,8 +210,45 @@ const Settings = () => {
     const { premium, loading: subLoading } = useSubscription();
     const navigate = useNavigate();
     const { activeSection, selectSection } = useSettingsNavigation();
+    const [pendingSettingTarget, setPendingSettingTarget] = useState(null);
     const { logout } = useLogout();
     const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (!pendingSettingTarget || pendingSettingTarget.sectionId !== activeSection) return undefined;
+
+        let attempts = 0;
+        let animationFrame;
+        const scrollToTarget = () => {
+            const target = document.getElementById(pendingSettingTarget.targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setPendingSettingTarget(null);
+                return;
+            }
+
+            if (attempts < 120) {
+                attempts += 1;
+                animationFrame = requestAnimationFrame(scrollToTarget);
+            } else {
+                setPendingSettingTarget(null);
+            }
+        };
+
+        animationFrame = requestAnimationFrame(scrollToTarget);
+        return () => cancelAnimationFrame(animationFrame);
+    }, [activeSection, pendingSettingTarget]);
+
+    const handleSettingSelect = (sectionId, targetId) => {
+        window.history.pushState(null, '', `${window.location.pathname}${window.location.search}#${targetId}`);
+        setPendingSettingTarget({ sectionId, targetId });
+        selectSection(sectionId);
+    };
+
+    const handleSectionChange = (sectionId) => {
+        setPendingSettingTarget(null);
+        selectSection(sectionId);
+    };
 
     // Global toast (single message at a time - replaces the old per-section
     // banners that could all show the same text simultaneously)
@@ -633,10 +668,6 @@ const Settings = () => {
             diagnosticResetting,
             onRetakeAssessment: handleRetakeAssessment,
         },
-        notifications: {
-            settings,
-            onSettingChange: handleSettingChange,
-        },
         appearance: {
             settings,
             onSettingChange: handleSettingChange,
@@ -670,7 +701,11 @@ const Settings = () => {
 
                 {/* Content wrapper */}
                 <div className="w-full flex flex-col lg:flex-row gap-8 px-4 sm:px-8 lg:px-16 xl:px-24 pb-12 max-w-375 self-center flex-1 pt-8">
-                    <SettingsSidebar activeSection={activeSection} onSectionChange={selectSection} />
+                    <SettingsSidebar
+                        activeSection={activeSection}
+                        onSectionChange={handleSectionChange}
+                        onSettingSelect={handleSettingSelect}
+                    />
 
                     {/* Only the selected panel is rendered; each panel is code-split. */}
                     <div className="flex min-w-0 flex-1 flex-col rounded-xl" aria-busy={isLoading || settingsSaving}>

@@ -9,30 +9,38 @@ const PrivacySettings = ({ data }) => {
             <SectionTitle sub="Control what others can see about you">Privacy Controls</SectionTitle>
 
             <div className="flex flex-col gap-1">
-                <ToggleSwitch
-                    label="Public Profile"
-                    description="Allow others to view your profile page"
-                    checked={settings.privacy_profile_public}
-                    onChange={(value) => onSettingChange('privacy_profile_public', value)}
-                />
-                <ToggleSwitch
-                    label="Show Streak"
-                    description="Display your current streak on your public profile"
-                    checked={settings.privacy_show_streak}
-                    onChange={(value) => onSettingChange('privacy_show_streak', value)}
-                />
-                <ToggleSwitch
-                    label="Show Leaderboard Rank"
-                    description="Include your profile in global and friends leaderboards"
-                    checked={settings.privacy_show_leaderboard}
-                    onChange={(value) => onSettingChange('privacy_show_leaderboard', value)}
-                />
-                <ToggleSwitch
-                    label="Show Achievements"
-                    description="Let others see your earned badges and achievements"
-                    checked={settings.privacy_show_achievements}
-                    onChange={(value) => onSettingChange('privacy_show_achievements', value)}
-                />
+                <div id="privacy-public-profile">
+                    <ToggleSwitch
+                        label="Public Profile"
+                        description="Allow others to view your profile page"
+                        checked={settings.privacy_profile_public}
+                        onChange={(value) => onSettingChange('privacy_profile_public', value)}
+                    />
+                </div>
+                <div id="privacy-show-streak">
+                    <ToggleSwitch
+                        label="Show Streak"
+                        description="Display your current streak on your public profile"
+                        checked={settings.privacy_show_streak}
+                        onChange={(value) => onSettingChange('privacy_show_streak', value)}
+                    />
+                </div>
+                <div id="privacy-leaderboard-rank">
+                    <ToggleSwitch
+                        label="Show Leaderboard Rank"
+                        description="Include your profile in global and friends leaderboards"
+                        checked={settings.privacy_show_leaderboard}
+                        onChange={(value) => onSettingChange('privacy_show_leaderboard', value)}
+                    />
+                </div>
+                <div id="privacy-show-achievements">
+                    <ToggleSwitch
+                        label="Show Achievements"
+                        description="Let others see your earned badges and achievements"
+                        checked={settings.privacy_show_achievements}
+                        onChange={(value) => onSettingChange('privacy_show_achievements', value)}
+                    />
+                </div>
             </div>
 
             <div className="flex flex-col gap-3 border-t border-(--mid-main-secondary) pt-4">
@@ -45,14 +53,16 @@ const PrivacySettings = ({ data }) => {
                     <Link to="/cookie-policy" className="text-(--accent-color) hover:underline">Cookie Policy</Link>.
                 </p>
 
-                <ToggleSwitch
-                    label="Allow Analytics & Personalization Cookies"
-                    description={cookieConsent === 'accepted'
-                        ? 'All cookies are enabled - analytics and personalization data is collected'
-                        : 'Only essential cookies are active - no analytics or personalization data is collected'}
-                    checked={cookieConsent === 'accepted'}
-                    onChange={onCookieConsentChange}
-                />
+                <div id="cookie-preference">
+                    <ToggleSwitch
+                        label="Allow Analytics & Personalization Cookies"
+                        description={cookieConsent === 'accepted'
+                            ? 'All cookies are enabled - analytics and personalization data is collected'
+                            : 'Only essential cookies are active - no analytics or personalization data is collected'}
+                        checked={cookieConsent === 'accepted'}
+                        onChange={onCookieConsentChange}
+                    />
+                </div>
 
                 <div className="flex items-center gap-2 pt-1">
                     <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${cookieConsent === 'accepted'

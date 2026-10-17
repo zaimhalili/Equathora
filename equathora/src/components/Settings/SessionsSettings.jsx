@@ -8,7 +8,7 @@ const SessionsSettings = ({ data }) => {
             <SectionTitle sub="View and manage your active sessions">Active Sessions</SectionTitle>
 
             {currentSession ? (
-                <div className="flex flex-col gap-3">
+                <div id="current-session" className="flex flex-col gap-3">
                     <div className="flex items-start gap-4 rounded-xl bg-(--main-color) px-4 py-4">
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100">
                             <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,13 +33,13 @@ const SessionsSettings = ({ data }) => {
                 <p className="text-sm text-(--mid-main-secondary)">Unable to load session information.</p>
             )}
 
-            <div className="flex items-center gap-3 rounded">
+            <div id="sign-out-sessions" className="flex items-center gap-3 rounded">
                 <PrimaryButton onClick={onSignOutOtherSessions} loading={sessionLoading}>
                     Sign out of all sessions
                 </PrimaryButton>
             </div>
 
-            <div className="flex flex-col gap-2 border-t border-gray-100 pt-4">
+            <div id="security-tips" className="flex flex-col gap-2 border-t border-gray-100 pt-4">
                 <h3 className="text-base font-medium">Security Tips</h3>
                 <ul className="flex flex-col gap-1.5 text-xs text-(--mid-main-secondary)">
                     <li className="flex items-start gap-2"><span className="shrink-0 font-medium text-(--accent-color)">•</span>Use a strong, unique password for your Equathora account</li>

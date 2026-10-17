@@ -8,20 +8,21 @@ const LearningSettings = ({ data }) => {
             <SectionTitle sub="Retake the onboarding quiz any time your goals or level change">Learning Preferences</SectionTitle>
 
             {learningChips.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
+                <div id="learning-preferences" className="flex flex-wrap gap-2">
                     {learningChips.map((chip) => <Chip key={chip}>{chip}</Chip>)}
                 </div>
             ) : (
-                <p className="text-sm text-(--mid-main-secondary)">You haven't completed the onboarding quiz yet.</p>
+                <p id="learning-preferences" className="text-sm text-(--mid-main-secondary)">You haven't completed the onboarding quiz yet.</p>
             )}
 
             <button
+                id="skill-assessment"
                 type="button"
                 disabled={diagnosticResetting}
                 onClick={onRetakeAssessment}
-                className="w-fit cursor-pointer rounded-xl bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] px-6 py-3 text-center font-medium text-white transition-all duration-300 hover:brightness-95 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-fit cursor-pointer rounded-xl bg-(--light-accent-color) px-4 py-2 text-center text-white transition-all duration-300 hover:bg-(--accent-color) active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 text-sm"
             >
-                {diagnosticResetting ? 'Resetting...' : 'Retake Skill Assessment'}
+                {diagnosticResetting ? 'Redirecting...' : 'Retake Skill Assessment'}
             </button>
         </SectionCard>
     );

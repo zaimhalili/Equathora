@@ -7,6 +7,7 @@ import HoverLabel from '../ui/HoverLabel';
 import ProfileEditButton from '../ui/ProfileEditButton';
 import EditProfileModal from '../EditProfileModal';
 import EditProfileNameDialog from './EditProfileNameDialog';
+import StackBooks from '../../assets/images/stackBooks.jpeg';
 
 const formatDate = (date) => {
     if (!date) return 'Not available';
@@ -22,16 +23,16 @@ const ProfileComponent = () => {
 
     if (loading) {
         return (
-            <section className="gap-10 flex flex-col bg-(--white)">
+            <section id="profile-settings" className="gap-10 flex flex-col bg-(--white)">
                 <div className="flex flex-col gap-2 text-(--secondary-color)">
-                    <h2 className="text-2xl">Profile</h2>
+                    <h2 className="text-2xl text-medium">Profile</h2>
                     <h3 className="text-sm text-(--secondary-color)/70">Manage your profile details, cookie preferences, and account access.</h3>
                 </div>
-                <article className="rounded-2xl border-(--main-color) bg-(--white) flex flex-col gap-5 border" aria-label="Loading profile" aria-busy="true">
-                    <div className="bg-(--main-color) w-full h-25 rounded-t-2xl animate-pulse" />
+                <article id="profile-picture" className="rounded-2xl border-(--main-color) bg-(--white) flex flex-col gap-5 border" aria-label="Loading profile" aria-busy="true">
+                    <div className="bg-(--main-color) w-full h-35 rounded-t-2xl animate-pulse" />
                     <div className="flex flex-col gap-10 px-7 py-5 sm:flex-row">
                         <div className="flex flex-1 flex-col gap-3">
-                            <div className="h-7 w-40 animate-pulse rounded bg-(--main-color)" />
+                            <div id="profile-name" className="h-7 w-40 animate-pulse rounded bg-(--main-color)" />
                             <div className="h-5 w-52 animate-pulse rounded bg-(--main-color)" />
                             <div className="h-5 w-44 animate-pulse rounded bg-(--main-color)" />
                             <div className="h-5 w-36 animate-pulse rounded bg-(--main-color)" />
@@ -49,9 +50,9 @@ const ProfileComponent = () => {
 
     if (error || !userData) {
         return (
-            <section className="gap-10 flex flex-col bg-(--white)">
+            <section id="profile-settings" className="gap-10 flex flex-col bg-(--white)">
                 <div className="flex flex-col gap-2 font-medium text-(--secondary-color)">
-                    <h2 className="text-2xl">Profile</h2>
+                    <h2 className="text-2xl font-medium">Profile</h2>
                     <h3 className="text-sm text-(--secondary-color)/70">Manage your profile details, cookie preferences, and account access.</h3>
                 </div>
                 <p role="alert" className="rounded-2xl bg-(--main-color) p-5 text-sm text-(--secondary-color)">
@@ -64,22 +65,23 @@ const ProfileComponent = () => {
     const { stats } = userData;
 
     return (
-        <section className='gap-10 flex flex-col '>
+        <section id="profile-settings" className='gap-10 flex flex-col '>
             <div className="flex flex-col gap-2 text-(--secondary-color)">
-                <h2 className='text-2xl'>Profile</h2>
+                <h2 className='text-2xl font-medium'>Profile</h2>
                 <h3 className='text-sm text-(--secondary-color)/70'>Manage your profile details, cookie preferences, and account access.</h3>
             </div>
 
             {/* Profile */}
             <article className='rounded-2xl border-(--main-color) flex flex-col gap-5 border-2'>
                 {/* Top Part */}
-                <div className="bg-linear-to-tr from-(--accent-color) to-(--dark-accent-color) w-full h-full min-h-35 max-h-35 relative rounded-t-2xl">
+                <div className="bg-(--white) w-full h-full min-h-35 max-h-35 relative rounded-t-2xl">
                     {/* Profile Image Circle */}
-                    <div className="group absolute left-6 -bottom-9 h-20 w-20 rounded-full md:h-23 md:w-23">
+                    <img src={StackBooks} alt="stack of books image" className='min-h-35 max-h-35 object-cover w-full object-bottom rounded-t-2xl pointer-events-none' loading='lazy'/>
+                    <div id="profile-picture" className="group absolute left-6 -bottom-9 h-20 w-20 rounded-full md:h-23 md:w-23">
                         <img
                             src={userData.avatar_url?.trim() || GuestAvatar}
                             alt="Profile Picture"
-                            className='h-full w-full rounded-full border-3 border-(--white) object-cover bg-(--main-color)'
+                            className='h-full w-full rounded-full border-3 border-(--white) object-cover bg-(--main-color) pointer-events-none'
                             onError={(event) => {
                                 event.currentTarget.onerror = null;
                                 event.currentTarget.src = GuestAvatar;
@@ -104,7 +106,7 @@ const ProfileComponent = () => {
                 <div className="flex sm:flex-row flex-col gap-10 w-full px-7 py-5">
                     {/* Left Side Data */}
                     <div className="flex flex-col text-(--secondary-color)/70 flex-1 sm:max-w-2/5 gap-2">
-                        <div className="group flex w-fit max-w-full items-center gap-2 pb-2">
+                        <div id="profile-name" className="group flex w-fit max-w-full items-center gap-2 pb-2">
                             <h4 className='truncate text-(--secondary-color) text-2xl font-medium'>{userData.name}</h4>
                             <ProfileEditButton
                                 onClick={() => setIsNameDialogOpen(true)}
