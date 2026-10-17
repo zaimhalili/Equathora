@@ -13,7 +13,7 @@ const AccountOverview = ({
     cancelingDeletion,
 }) => (
     <section className="flex flex-col gap-8">
-        <ProfileComponent />
+        <ProfileComponent premium={premium} />
 
         <section id="account-subscription" aria-labelledby="settings-plan-title" className="flex flex-col gap-3">
             <div>
@@ -86,7 +86,7 @@ const AccountOverview = ({
                     Log out
                 </button>
 
-                
+
                 {/* {deletionRequested ? (
                     <button
                         type="button"

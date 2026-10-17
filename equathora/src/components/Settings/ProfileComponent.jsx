@@ -8,6 +8,7 @@ import ProfileEditButton from '../ui/ProfileEditButton';
 import EditProfileModal from '../EditProfileModal';
 import EditProfileNameDialog from './EditProfileNameDialog';
 import StackBooks from '../../assets/images/stackBooks.jpeg';
+import { FaCrown } from 'react-icons/fa';
 
 const formatDate = (date) => {
     if (!date) return 'Not available';
@@ -16,7 +17,7 @@ const formatDate = (date) => {
     return new Intl.DateTimeFormat(undefined, { dateStyle: 'long' }).format(parsedDate);
 };
 
-const ProfileComponent = () => {
+const ProfileComponent = ({ premium }) => {
     const { userData, loading, error, handleProfileSave } = useProfileData();
     const [isProfileEditorOpen, setIsProfileEditorOpen] = useState(false);
     const [isNameDialogOpen, setIsNameDialogOpen] = useState(false);
@@ -76,7 +77,7 @@ const ProfileComponent = () => {
                 {/* Top Part */}
                 <div className="bg-(--white) w-full h-full min-h-35 max-h-35 relative rounded-t-2xl">
                     {/* Profile Image Circle */}
-                    <img src={StackBooks} alt="stack of books image" className='min-h-35 max-h-35 object-cover w-full object-bottom rounded-t-2xl pointer-events-none' loading='lazy'/>
+                    <img src={StackBooks} alt="stack of books image" className='min-h-35 max-h-35 object-cover w-full object-bottom rounded-t-2xl pointer-events-none' loading='lazy' />
                     <div id="profile-picture" className="group absolute left-6 -bottom-9 h-20 w-20 rounded-full md:h-23 md:w-23">
                         <img
                             src={userData.avatar_url?.trim() || GuestAvatar}
@@ -107,7 +108,7 @@ const ProfileComponent = () => {
                     {/* Left Side Data */}
                     <div className="flex flex-col text-(--secondary-color)/70 flex-1 sm:max-w-2/5 gap-2">
                         <div id="profile-name" className="group flex w-fit max-w-full items-center gap-2 pb-2">
-                            <h4 className='truncate text-(--secondary-color) text-2xl font-medium'>{userData.name}</h4>
+                            <h4 className='truncate text-(--secondary-color) text-2xl font-medium'>{premium && <FaCrown className='text-amber-500 pr-2' />}{userData.name}</h4>
                             <ProfileEditButton
                                 onClick={() => setIsNameDialogOpen(true)}
                                 label="Edit profile name"
