@@ -1,16 +1,33 @@
 .stopwatch {
     padding: 0 0.75rem;
-    color: var(--mid-main-secondary);
+    color: var(--secondary-color);
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     font-size: 0.875rem;
     border: 1px solid var(--mid-main-secondary);
     font-weight: 500;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     height: 2.25rem;
     white-space: nowrap;
-    /* animation: changeColor 300s ease-in-out forwards; */
+    transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
+}
+
+.stopwatch:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    background-color: color-mix(in srgb, var(--accent-color) 5%, transparent);
+}
+
+.stopwatch-icon {
+    color: var(--mid-main-secondary);
+    font-size: 0.75rem;
+}
+
+.stopwatch .timer {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
 }
 
 @media only screen and (min-width: 768px) {
@@ -18,37 +35,5 @@
         height: 2.5rem;
         font-size: 0.9rem;
         padding: 0 1rem;
-    }
-}
-
-@keyframes changeColor {
-    0% {
-        background-color: black;
-        color: white;
-    }
-
-    20% {
-        background-color: rgb(56, 4, 13);
-        color: white;
-    }
-
-    40% {
-        background-color: rgb(83, 6, 18);
-        color: white;
-    }
-
-    60% {
-        background-color: rgb(159, 9, 34);
-        color: white;
-    }
-
-    80% {
-        background-color: rgb(217, 4, 41);
-        color: white;
-    }
-
-    100% {
-        background-color: white;
-        color: var(--secondary-color);
     }
 }

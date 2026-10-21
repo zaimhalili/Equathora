@@ -24,7 +24,7 @@
 	inset: 0;
 	background: linear-gradient(to bottom,
 			rgba(0, 0, 0, 0.05),
-			var(--raisin-black));
+			#202231);
 	/* Adjust opacity for darkness */
 	z-index: 1;
 	pointer-events: none;
@@ -131,7 +131,7 @@
 
 .achievements-link.active {
 	background-color: var(--dark-accent-color);
-	color: var(--main-color);
+	color: white;
 }
 
 .achievements-link.active img {
@@ -150,7 +150,7 @@
 	align-items: center;
 	justify-content: center;
 	text-align: center;
-	color: var(--french-gray);
+	color: white;
 	height: 50px;
 	width: auto;
 	font-size: 1.4rem;
@@ -166,13 +166,13 @@
 .achievements-link:hover {
 	transition: 0.2s ease-out;
 	background-color: var(--dark-accent-color);
-	color: var(--main-color);
+	color: white;
 	filter: saturate(1);
 }
 
 .achievements-content {
 	width: 100%;
-	background-color: var(--raisin-black);
+	background-color: #202231;
 	padding: 3rem 20vw;
 	height: auto;
 	min-height: 20vh;

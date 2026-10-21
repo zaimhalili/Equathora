@@ -5,21 +5,19 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import MathLiveExample from '../components/MathLiveExample';
 import MathJaxRenderer from '../components/MathJaxRenderer';
 import SolutionStepsDisplay from '../components/SolutionStepsDisplay';
-import Timer from '../components/Timer.jsx';
-import ProblemMobileMenu from '../components/ProblemMobileMenu.jsx';
+import ProblemToolbar from '../components/Problem/ProblemToolbar.jsx';
+import SketchPadToggle from '../components/Problem/SketchPadToggle.jsx';
 import StreakPopup from '../components/StreakPopup.jsx';
 import AchievementPopup from '../components/AchievementPopup.jsx';
 import MentorChat from '../components/ProblemModals/MentorChat.jsx';
 import ChatPanel from '@/components/ChatAI/ChatPanel';
-import PremiumButton from '@/components/Premium/PremiumButton';
 import {
-    ReportModal,
     HelpModal,
     ViewSolutionModal,
     SubmissionDetailModal
 } from '../components/ProblemModals';
 import {
-    FaLink, FaCalculator, FaChevronUp, FaFlag, FaQuestionCircle, FaRegStar, FaPencilAlt, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaTimes, FaStar, FaChevronDown, FaChevronRight, FaChevronLeft, FaLightbulb, FaFileAlt, FaArrowLeft, FaGraduationCap, FaCrown, FaCode
+    FaLink, FaCalculator, FaChevronUp, FaList, FaClock, FaCheckCircle, FaTimesCircle, FaTimes, FaChevronDown, FaChevronRight, FaLightbulb, FaFileAlt, FaGraduationCap, FaCrown, FaCode
 } from 'react-icons/fa';
 import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
@@ -53,6 +51,7 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import OverflowChecker from './OverflowChecker.jsx';
 import { useSubscription } from '@/hooks/SubscriptionContext.jsx';
 import { supabase } from '@/lib/supabaseClient';
+import { setThemePreference } from '@/lib/theme';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageNotFound from './PageNotFound';
@@ -228,9 +227,6 @@ const Problem = () => {
     const prevProblemSlug = prevProblem ? (prevProblem.slug || generateProblemSlug(prevProblem.title, prevProblem.id)) : null;
     const nextProblemSlug = nextProblem ? (nextProblem.slug || generateProblemSlug(nextProblem.title, nextProblem.id)) : null;
 
-    const [reportReason, setReportReason] = useState('');
-    const [reportDetails, setReportDetails] = useState('');
-    const [showReportModal, setShowReportModal] = useState(false);
     const [openHints, setOpenHints] = useState({});
     const [isFavorite, setIsFavorite] = useState(false);
     const [showDescription, setShowDescription] = useState(true);
@@ -259,7 +255,6 @@ const Problem = () => {
     const [drawingColor, setDrawingColor] = useState('var(--secondary-color)');
     const [strokes, setStrokes] = useState([]);
     const [timerResetSeq, setTimerResetSeq] = useState(0);
-    const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [showStreakPopup, setShowStreakPopup] = useState(false);
     const [currentStreakValue, setCurrentStreakValue] = useState(0);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
@@ -526,13 +521,9 @@ const Problem = () => {
         setHintsOpened([]);
         setSelectedSubmission(null);
         setShowSubmissionDetail(false);
-        setReportReason('');
-        setReportDetails('');
-        setShowReportModal(false);
         setShowHelpModal(false);
         setShowDrawingPad(false);
         setDrawingColor('var(--secondary-color)');
-        setShowMobileMenu(false);
         setPendingSigmaPrompt('');
         setIsCompleted(false);
         setAlreadyCompletedOnLoad(false);
@@ -567,20 +558,6 @@ const Problem = () => {
             setIsFavorite(false);
         }
     }, [problem]);
-
-    // Close mobile menu when clicking outside
-    useEffect(() => {
-        if (!showMobileMenu) return;
-
-        const handleClickOutside = (e) => {
-            if (!e.target.closest('.mobile-menu-container')) {
-                setShowMobileMenu(false);
-            }
-        };
-
-        document.addEventListener('click', handleClickOutside);
-        return () => document.removeEventListener('click', handleClickOutside);
-    }, [showMobileMenu]);
 
     useEffect(() => {
         if (!showDrawingPad) return;
@@ -986,11 +963,11 @@ const Problem = () => {
                         <FaCrown className="text-3xl text-amber-500" />
                         <h2 className="text-2xl font-bold">Premium Problem</h2>
                         <p className="text-(--mid-main-secondary)">Upgrade to{' '}
-                            <Link to={'/premium'} className='inline !underline !underline-offset-2 !text-(--accent-color) hover:!text-(--dark-accent-color) /!font-medium'>premium</Link>{' '} to view this problem.</p>
+                            <Link to={'/premium'} className='inline underline! underline-offset-2! text-(--accent-color)! hover:text-(--dark-accent-color)! font-medium!'>premium</Link>{' '} to view this problem.</p>
                         <div className="flex gap-3 pt-3">
                             <button
                                 onClick={() => navigate(-1)}
-                                className="text-white font-medium bg-gradient-to-b from-amber-600 to-amber-500 px-4 py-2 rounded-xl hover:to-amber-600 transition-all active:scale-95 cursor-pointer"
+                                className="text-white font-medium bg-linear-to-b from-amber-600 to-amber-500 px-4 py-2 rounded-xl hover:to-amber-600 transition-all active:scale-95 cursor-pointer"
                             >
                                 Go back
                             </button>
@@ -1035,104 +1012,39 @@ const Problem = () => {
         setIsFavorite(newState);
     };
 
+    const handleSketchPadToggle = () => {
+        setShowDrawingPad((prev) => !prev);
+        setShowDescription(true);
+        setShowSolutionPopup(false);
+        setShowSolution(false);
+        setShowTop(false);
+        setShowSubmissions(false);
+        setChatPanel(false);
+        if (descriptionCollapsed) setDescriptionCollapsed(false);
+    };
+
+    const handleThemeToggle = () => {
+        setThemePreference(currentTheme === 'dark' ? 'light' : 'dark');
+    };
+
     return (
         <>
             <main className="flex flex-col text-(--secondary-color) bg-[linear-gradient(360deg,var(--mid-main-secondary)15%,var(--main-color))] bg-fixed items-center lg:h-svh lg:overflow-hidden">
-                {/* Navigation Header */}
-                <header className="flex items-center justify-between gap-2 md:gap-3  bg-(--main-color) w-full px-3 md:px-6 py-3 md:py-4 flex-shrink-0 max-w-600">
-                    {/* Left side - Back button and Navigation */}
-                    <div className="flex items-center gap-2">
-                        <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-xs md:text-sm text-(--secondary-color) font-semibold no-underline transition-all duration-200 px-3 md:px-4 py-2 md:py-2.5 rounded-xl hover:bg-(--french-gray) h-9 md:h-10">
-                            <FaArrowLeft />
-                            <span className="hidden md:inline">Back to Exercises</span>
-                            <span className="md:hidden">Back</span>
-                        </button>
-                        <div className="flex items-center gap-1.5">
-                            <button
-                                onClick={() => prevProblemSlug && navigate(`/problems/${prevProblemSlug}`)}
-                                className="flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-xl transition-all duration-200 bg-transparent border border-(--mid-main-secondary) text-(--secondary-color) hover:bg-(--french-gray) cursor-pointer"
-                                title={prevProblem ? `Previous: ${prevProblem.title}` : ''}
-                            >
-                                <FaChevronLeft className="text-sm" />
-                            </button>
-                            <button
-                                onClick={() => nextProblemSlug && navigate(`/problems/${nextProblemSlug}`)}
-                                className="flex items-center justify-center h-9 md:h-10 gap-2 px-3 rounded-xl transition-all duration-200 bg-transparent border border-(--mid-main-secondary) text-(--secondary-color) hover:bg-(--french-gray) cursor-pointer"
-                                title={nextProblem ? `Next: ${nextProblem.title}` : ''}
-                            >
-                                <span className="hidden sm:inline text-xs md:text-sm font-medium">Next</span>
-                                <FaChevronRight className="text-sm" />
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Right side - Premium Button, Timer and Actions */}
-                    <div className="flex items-center gap-2">
-                        <PremiumButton premium={problem?.is_premium} />
-                        <Timer key={`${problem?.id}-${timerResetSeq}`} problemId={problem?.id} isRunning={timerRunning} />
-
-                        {/* Desktop buttons - hidden on mobile */}
-                        <div className="hidden lg:flex items-center gap-2">
-                            <button
-                                onClick={() => {
-                                    setShowDrawingPad((prev) => !prev);
-                                    setShowDescription(true);
-                                    setShowSolutionPopup(false);
-                                    setShowSolution(false);
-                                    setShowTop(false);
-                                    setShowSubmissions(false);
-                                    setChatPanel(false);
-                                    if (descriptionCollapsed) setDescriptionCollapsed(false);
-                                }}
-                                className={`bg-transparent border-1 px-3 lg:px-4 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 flex items-center gap-1.5 h-9 md:h-10 ${showDrawingPad ? 'text-(--accent-color) border-(--accent-color) bg-[rgba(217,4,41,0.05)]' : 'text-(--mid-main-secondary) border-(--mid-main-secondary) hover:text-(--accent-color)'}`}
-                                title={showDrawingPad ? "Hide sketch pad" : "Show sketch pad"}
-                            >
-                                <FaPencilAlt className="text-sm md:text-base" />
-                                <span className="text-xs sm:text-sm font-medium">Sketch</span>
-                            </button>
-                            <button
-                                onClick={() => setShowHelpModal(true)}
-                                className="bg-transparent border-1 border-(--mid-main-secondary) px-3 md:px-4 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 hover:text-(--accent-color) text-(--mid-main-secondary) flex items-center gap-1.5 h-9 md:h-10"
-                                title="Help & Guide"
-                            >
-                                <FaQuestionCircle className="text-sm md:text-base" />
-                                <span className="text-xs sm:text-sm font-medium">Help</span>
-                            </button>
-                            <Link
-                                to="/feedback"
-                                className="bg-transparent border-1 border-(--mid-main-secondary) px-3 rounded-xl cursor-pointer text-xs md:text-sm transition-all duration-200 hover:!text-(--accent-color) !text-(--mid-main-secondary) flex items-center justify-center w-9 h-9 md:w-10 md:h-10"
-                                title="Report Problem"
-                            >
-                                <FaFlag className="text-sm md:text-base" />
-                            </Link>
-                            <button
-                                className={`bg-transparent border-1 text-xs md:text-sm px-3 rounded-xl cursor-pointer transition-all duration-200 hover:text-(--accent-color) flex items-center justify-center w-9 h-9 md:w-10 md:h-10 ${isFavorite ? 'text-(--accent-color) bg-[rgba(217,4,41,0.05)]' : 'text-(--mid-main-secondary) border-(--mid-main-secondary)'}`}
-                                onClick={handleFavoriteToggle}
-                                title={isFavorite ? "Remove from favorites" : "Add to favorites"}
-                            >
-                                {isFavorite ? <FaStar className="text-sm md:text-base" /> : <FaRegStar className="text-sm md:text-base" />}
-                            </button>
-                        </div>
-
-                        {/* Mobile menu button */}
-                        <ProblemMobileMenu
-                            showMobileMenu={showMobileMenu}
-                            setShowMobileMenu={setShowMobileMenu}
-                            showDrawingPad={showDrawingPad}
-                            setShowDrawingPad={setShowDrawingPad}
-                            setShowDescription={setShowDescription}
-                            setShowSolutionPopup={setShowSolutionPopup}
-                            setShowSolution={setShowSolution}
-                            setShowTop={setShowTop}
-                            setShowSubmissions={setShowSubmissions}
-                            descriptionCollapsed={descriptionCollapsed}
-                            setDescriptionCollapsed={setDescriptionCollapsed}
-                            setShowHelpModal={setShowHelpModal}
-                            isFavorite={isFavorite}
-                            handleFavoriteToggle={handleFavoriteToggle}
-                        />
-                    </div>
-                </header>
+                <ProblemToolbar
+                    prevProblem={prevProblem}
+                    prevProblemSlug={prevProblemSlug}
+                    nextProblem={nextProblem}
+                    nextProblemSlug={nextProblemSlug}
+                    problemId={problem?.id}
+                    timerResetSeq={timerResetSeq}
+                    timerRunning={timerRunning}
+                    premium={problem?.is_premium}
+                    currentTheme={currentTheme}
+                    onToggleTheme={handleThemeToggle}
+                    onOpenHelp={() => setShowHelpModal(true)}
+                    isFavorite={isFavorite}
+                    onToggleFavorite={handleFavoriteToggle}
+                />
                 {/* Modals */}
                 <ViewSolutionModal
                     isOpen={showSolutionPopup}
@@ -1319,7 +1231,7 @@ const Problem = () => {
 
                         <article className={`transition-all duration-300 ease-in-out w-full rounded-b-lg bg-(--main-color) flex flex-col  text-(--secondary-color) lg:flex ${showTop ? 'max-h-0 opacity-0 overflow-hidden' : 'h-[calc(100vh-100px)] lg:h-[calc(100vh-72px-74px)] overflow-y-auto opacity-100 flex'} ${descriptionCollapsed ? 'lg:hidden' : ''}`}>
 
-                            <div className={`w-full p-4 flex flex-col gap-4 md:gap-5 flex-1 problem-description-scroll h-full`}>
+                            <div className={`w-full p-4 flex flex-col gap-3 flex-1 problem-description-scroll h-full`}>
                                 {/* Problem Title & Badges */}
                                 {!chatPanel ? (
                                     <div className="flex flex-col gap-3">
@@ -1344,7 +1256,7 @@ const Problem = () => {
                                                 <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium bg-(--mid-main-secondary) text-white">{formatTopicLabel(problem.topic)}</span>
                                             )}
                                             {isCompleted && (
-                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">✓ Solved</span>
+                                                <span className="px-2 md:px-3 py-0.5 md:py-1 rounded-xl text-[10px] md:text-xs font-medium bg-green-500/10 text-green-600">Solved</span>
                                             )}
                                         </div>
                                     </div>
@@ -1356,72 +1268,9 @@ const Problem = () => {
                                         {/* Problem Description */}
                                         <MathJaxRenderer
                                             content={problem.description}
-                                            className="text-sm md:text-[0.95rem] leading-relaxed text-(--secondary-color)  m-0"
+                                            className="text-sm md:text-[0.95rem] leading-relaxed text-(--secondary-color) m-0"
                                             as="p"
                                         />
-
-                                        {showDrawingPad && (
-                                            <div className="rounded-xl border border-(--mid-main-secondary) bg-(--french-gray)/20 p-3 md:p-4 flex flex-col gap-3">
-                                                <div className="flex flex-wrap items-center justify-between gap-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-[10px] md:text-xs font-semibold text-(--secondary-color) uppercase tracking-[0.05em]">Sketch</span>
-                                                        <div className="flex items-center gap-1.5">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => setDrawingColor('var(--secondary-color)')}
-                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'bg-(--secondary-color) text-(--main-color) border-(--secondary-color)' : 'text-(--secondary-color) border-(--mid-main-secondary) hover:border-(--secondary-color) active:scale-95'}`}
-                                                            >
-                                                                {currentTheme === 'dark' ? 'White' : 'Black'}
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => setDrawingColor('red')}
-                                                                className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${drawingColor === 'red' ? 'bg-(--accent-color) text-(--main-color) border-(--accent-color)' : 'text-(--secondary-color) border-(--mid-main-secondary) hover:border-(--accent-color) active:scale-95'}`}
-                                                            >
-                                                                Red
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <button
-                                                            type="button"
-                                                            onClick={undoStroke}
-                                                            disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-(--mid-main-secondary) text-(--french-gray)' : 'text-(--secondary-color) border-(--secondary-color) hover:bg-(--secondary-color) hover:text-(--main-color) active:scale-95'}`}
-                                                        >
-                                                            Undo
-                                                        </button>
-                                                        <button
-                                                            type="button"
-                                                            onClick={clearCanvas}
-                                                            disabled={strokes.length === 0}
-                                                            className={`px-2 py-1 rounded-xl text-[10px] md:text-xs font-medium border transition-all duration-200 ${strokes.length === 0 ? 'opacity-50 cursor-not-allowed border-(--mid-main-secondary) text-(--french-gray)' : 'text-(--accent-color) border-(--accent-color) hover:bg-(--accent-color) hover:text-white active:scale-95'}`}
-                                                        >
-                                                            Clear
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <div className="rounded-xl border border-(--mid-main-secondary) bg-(--main-color) overflow-hidden shadow-sm">
-                                                    <canvas
-                                                        ref={canvasRef}
-                                                        className="w-full h-48 md:h-56 bg-(--main-color) cursor-crosshair"
-                                                        style={{ touchAction: 'none' }}
-                                                        onPointerDown={(e) => { e.preventDefault(); startDrawing(e); }}
-                                                        onPointerMove={(e) => { e.preventDefault(); drawStroke(e); }}
-                                                        onPointerUp={(e) => { e.preventDefault(); endDrawing(); }}
-                                                        onPointerLeave={(e) => { e.preventDefault(); endDrawing(); }}
-                                                        onMouseDown={(e) => { e.preventDefault(); startDrawing(e); }}
-                                                        onMouseMove={(e) => { e.preventDefault(); drawStroke(e); }}
-                                                        onMouseUp={(e) => { e.preventDefault(); endDrawing(); }}
-                                                        onMouseLeave={(e) => { e.preventDefault(); endDrawing(); }}
-                                                        onTouchStart={(e) => { e.preventDefault(); startDrawing(e); }}
-                                                        onTouchMove={(e) => { e.preventDefault(); drawStroke(e); }}
-                                                        onTouchEnd={(e) => { e.preventDefault(); endDrawing(); }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        )}
 
                                         {/* Examples */}
                                         {examples.length > 0 && (
@@ -1451,44 +1300,108 @@ const Problem = () => {
                                         )}
 
                                         {/* Hints & Accordion Section */}
-                                        {hintCount > 0 && (
-                                            <div className="flex flex-col gap-3">
-                                                {Array.from({ length: hintCount }).map((_, index) => {
-                                                    const isOpen = !!openHints[index];
-                                                    return (
-                                                        <div key={index} className="w-full bg-(--french-gray)/40 rounded-2xl px-3 md:px-4">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => toggleHint(index)}
-                                                                className="w-full flex items-center justify-between py-3 text-left cursor-pointer gap-3"
-                                                            >
-                                                                <div className="font-semibold text-xs md:text-sm text-(--secondary-color) flex items-center gap-2">
-                                                                    <FaLightbulb className="text-(--secondary-color) text-[10px] md:text-xs" />
-                                                                    Hint {index + 1}
-                                                                </div>
-                                                                <FaChevronDown
-                                                                    className={`text-(--secondary-color) text-[10px] md:text-xs transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180' : ''
-                                                                        }`}
-                                                                />
-                                                            </button>
-
-                                                            <div
-                                                                className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 pb-3' : 'max-h-0'
-                                                                    }`}
-                                                            >
-                                                                <div className="pt-2 border-t border-(--secondary-color)/10">
-                                                                    <MathJaxRenderer
-                                                                        content={loadedHints[index] ?? 'Loading hint...'}
-                                                                        className="text-xs md:text-sm text-(--secondary-color) leading-relaxed m-0"
-                                                                        as="p"
-                                                                    />
-                                                                </div>
+                                        <div className="flex flex-col gap-3 pt-3">
+                                            <SketchPadToggle isOpen={showDrawingPad} onClick={handleSketchPadToggle}>
+                                                <div className="flex flex-col gap-3">
+                                                    <div className="flex flex-wrap items-center justify-between gap-2">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-[10px] font-semibold uppercase tracking-[0.05em] text-(--secondary-color) md:text-xs">Sketch</span>
+                                                            <div className="flex items-center gap-1.5">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => setDrawingColor('var(--secondary-color)')}
+                                                                    className={`rounded-xl border px-2 py-1 text-[10px] font-medium transition-all duration-200 md:text-xs ${drawingColor === 'var(--secondary-color)' || drawingColor === 'black' ? 'border-(--secondary-color) bg-(--secondary-color) text-(--main-color)' : 'border-(--mid-main-secondary) text-(--secondary-color) hover:border-(--secondary-color) active:scale-95'}`}
+                                                                >
+                                                                    {currentTheme === 'dark' ? 'White' : 'Black'}
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => setDrawingColor('red')}
+                                                                    className={`rounded-xl border px-2 py-1 text-[10px] font-medium transition-all duration-200 md:text-xs ${drawingColor === 'red' ? 'border-(--accent-color) bg-(--accent-color) text-(--main-color)' : 'border-(--mid-main-secondary) text-(--secondary-color) hover:border-(--accent-color) active:scale-95'}`}
+                                                                >
+                                                                    Red
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        )}
+                                                        <div className="flex items-center gap-1.5">
+                                                            <button
+                                                                type="button"
+                                                                onClick={undoStroke}
+                                                                disabled={strokes.length === 0}
+                                                                className={`rounded-xl border px-2 py-1 text-[10px] font-medium transition-all duration-200 md:text-xs ${strokes.length === 0 ? 'cursor-not-allowed border-(--mid-main-secondary) text-(--french-gray) opacity-50' : 'border-(--secondary-color) text-(--secondary-color) hover:bg-(--secondary-color) hover:text-(--main-color) active:scale-95'}`}
+                                                            >
+                                                                Undo
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={clearCanvas}
+                                                                disabled={strokes.length === 0}
+                                                                className={`rounded-xl border px-2 py-1 text-[10px] font-medium transition-all duration-200 md:text-xs ${strokes.length === 0 ? 'cursor-not-allowed border-(--mid-main-secondary) text-(--french-gray) opacity-50' : 'border-(--accent-color) text-(--accent-color) hover:bg-(--accent-color) hover:text-white active:scale-95'}`}
+                                                            >
+                                                                Clear
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="overflow-hidden rounded-xl border border-(--mid-main-secondary) bg-(--main-color) shadow-sm">
+                                                        <canvas
+                                                            ref={canvasRef}
+                                                            className="h-48 w-full cursor-crosshair bg-(--main-color) md:h-56"
+                                                            style={{ touchAction: 'none' }}
+                                                            onPointerDown={(e) => { e.preventDefault(); startDrawing(e); }}
+                                                            onPointerMove={(e) => { e.preventDefault(); drawStroke(e); }}
+                                                            onPointerUp={(e) => { e.preventDefault(); endDrawing(); }}
+                                                            onPointerLeave={(e) => { e.preventDefault(); endDrawing(); }}
+                                                            onMouseDown={(e) => { e.preventDefault(); startDrawing(e); }}
+                                                            onMouseMove={(e) => { e.preventDefault(); drawStroke(e); }}
+                                                            onMouseUp={(e) => { e.preventDefault(); endDrawing(); }}
+                                                            onMouseLeave={(e) => { e.preventDefault(); endDrawing(); }}
+                                                            onTouchStart={(e) => { e.preventDefault(); startDrawing(e); }}
+                                                            onTouchMove={(e) => { e.preventDefault(); drawStroke(e); }}
+                                                            onTouchEnd={(e) => { e.preventDefault(); endDrawing(); }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </SketchPadToggle>
+                                            {hintCount > 0 && (
+                                                <div className="flex flex-col gap-3">
+                                                    {Array.from({ length: hintCount }).map((_, index) => {
+                                                        const isOpen = !!openHints[index];
+                                                        return (
+                                                            <div key={index} className="w-full bg-(--french-gray)/40 rounded-2xl px-3 md:px-4">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => toggleHint(index)}
+                                                                    className="w-full flex items-center justify-between py-3 text-left cursor-pointer gap-3"
+                                                                >
+                                                                    <div className="font-semibold text-xs md:text-sm text-(--secondary-color) flex items-center gap-2">
+                                                                        <FaLightbulb className="text-(--secondary-color) text-[10px] md:text-xs" />
+                                                                        Hint {index + 1}
+                                                                    </div>
+                                                                    <FaChevronDown
+                                                                        className={`text-(--secondary-color) text-[10px] md:text-xs transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180' : ''
+                                                                            }`}
+                                                                    />
+                                                                </button>
+
+                                                                <div
+                                                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 pb-3' : 'max-h-0'
+                                                                        }`}
+                                                                >
+                                                                    <div className="pt-2 border-t border-(--secondary-color)/10">
+                                                                        <MathJaxRenderer
+                                                                            content={loadedHints[index] ?? 'Loading hint...'}
+                                                                            className="text-xs md:text-sm text-(--secondary-color) leading-relaxed m-0"
+                                                                            as="p"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            )}
+                                        </div>
 
                                         {/* Similar Questions Section */}
                                         {similarQuestions && similarQuestions.length > 0 && (

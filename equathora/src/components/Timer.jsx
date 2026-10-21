@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { FaClock } from 'react-icons/fa';
 import './Timer.css';
 
 const getStoredTime = (storageKey) => {
@@ -43,9 +44,9 @@ const Timer = ({ problemId, isRunning = true }) => {
     }, [time, storageKey]);
 
     return (
-        <div className='stopwatch'>
-            <p className="timer flex">{format(time)}</p>
-            <div className="actions" />
+        <div className="stopwatch" aria-label={`Time spent: ${format(time)}`}>
+            <FaClock className="stopwatch-icon" aria-hidden="true" />
+            <p className="timer">{format(time)}</p>
         </div>
     );
 };

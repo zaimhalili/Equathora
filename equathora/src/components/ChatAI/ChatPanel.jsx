@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react';
-import { FaCrown, FaPaperPlane, FaLock } from 'react-icons/fa';
+import { FaCrown, FaLock, FaArrowUp } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { convertLatexToMarkup } from 'mathlive';
 import 'mathlive/static.css';
@@ -26,7 +26,7 @@ const DEFAULT_MESSAGES = [
     {
         id: 1,
         sender: 'ai',
-        text: "Hi! Submit your steps on the LaTeX workspace, and I will scan them line-by-line to point out exactly where your algebraic formulas go wrong.",
+        text: "Hi there, I'm Sigma your AI tutor. Please submit your steps on the LaTeX workspace, and I will scan them line-by-line to point out exactly where your algebraic formulas go wrong.",
     },
 ];
 
@@ -112,6 +112,7 @@ const ChatPanel = forwardRef(({
     const trialExhausted = tier === 'free' && remainingMessages <= 0;
 
     const scrollContainerRef = useRef(null);
+    const messageInputRef = useRef(null);
     const lastSentAt = useRef(0);
     const [isHydrated, setIsHydrated] = useState(false);
     const hydrationPromiseRef = useRef(Promise.resolve());
@@ -189,6 +190,16 @@ const ChatPanel = forwardRef(({
         }, 250);
         return () => window.clearTimeout(timer);
     }, [storageKey, chatMessages, typedMessage, isHydrated]);
+
+    useEffect(() => {
+        const textarea = messageInputRef.current;
+        if (!textarea) return;
+
+        const maxHeight = 160;
+        textarea.style.height = 'auto';
+        textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
+        textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+    }, [typedMessage]);
 
     const handleInputChange = useCallback((e) => {
         const raw = e.target.value;
@@ -416,46 +427,50 @@ const ChatPanel = forwardRef(({
                     </p>
                 )}
 
-                <div className="flex items-center gap-2">
-                    <div className="relative flex-1">
-                        <input
-                            type="text"
-                            value={typedMessage}
-                            onChange={handleInputChange}
-                            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) handleSendMessage(e); }}
-                            disabled={isLoadingHistory || isAiThinking || rateLimited || trialExhausted}
-                            placeholder={
-                                trialExhausted
-                                    ? 'Trial exhausted. Upgrade to keep chatting.'
-                                    : isLoadingHistory
-                                        ? 'Loading chat history…'
-                                        : isAiThinking
-                                            ? 'Sigma is thinking…'
-                                            : rateLimited
-                                                ? 'Please wait…'
-                                                : 'Ask a follow-up question…'
+                <div className="flex flex-col rounded-2xl border border-(--french-gray) bg-(--white) px-3 py-2 focus-within:border-(--mid-main-secondary)">
+                    <textarea
+                        ref={messageInputRef}
+                        rows={1}
+                        value={typedMessage}
+                        onChange={handleInputChange}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+                                e.preventDefault();
+                                handleSendMessage(e);
                             }
-                            maxLength={MAX_INPUT_CHARS}
-                            aria-label="Chat message input"
-                            className="w-full rounded-xl px-4 py-2 text-sm md:text-base border bg-(--main-color) border-(--french-gray) text-(--secondary-color) focus:!outline-none disabled:opacity-50 !h-full"
-                        />
+                        }}
+                        disabled={isLoadingHistory || isAiThinking || rateLimited || trialExhausted}
+                        placeholder={
+                            trialExhausted
+                                ? 'Trial exhausted. Upgrade to keep chatting.'
+                                : isLoadingHistory
+                                    ? 'Loading chat history…'
+                                    : isAiThinking
+                                        ? 'Sigma is thinking…'
+                                        : rateLimited
+                                            ? 'Please wait…'
+                                            : 'Ask a question…'
+                        }
+                        maxLength={MAX_INPUT_CHARS}
+                        aria-label="Chat message input"
+                        className="block max-h-40 w-full resize-none overflow-y-hidden border-0 bg-transparent px-1 py-2 text-sm text-(--secondary-color) focus:outline-none! focus:ring-0 disabled:opacity-50"
+                    />
+                    <div className="flex items-center justify-between pt-1">
                         {typedMessage.length > MAX_INPUT_CHARS * 0.8 && (
-                            <span
-                                className="absolute right-2 bottom-0 text-[10px] pointer-events-none font-bold"
-                                style={{ color: typedMessage.length >= MAX_INPUT_CHARS ? '#d70427' : 'var(--mid-main-secondary)' }}
-                            >
+                            <span className="pointer-events-none text-[10px] font-bold" style={{ color: typedMessage.length >= MAX_INPUT_CHARS ? '#d70427' : 'var(--mid-main-secondary)' }}>
                                 {typedMessage.length}/{MAX_INPUT_CHARS}
                             </span>
                         )}
+                        <div className='flex text-transparent pointer-events-none selection:bg-transparent selection:text-transparent'>-</div>
+                        <button
+                            type="submit"
+                            disabled={isSendDisabled}
+                            aria-label="Send message"
+                            className="flex h-10 w-10 items-center justify-center rounded-full bg-(--black) text-(--white) transition-opacity hover:opacity-80 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100"
+                        >
+                            <FaArrowUp />
+                        </button>
                     </div>
-                    <button
-                        type="submit"
-                        disabled={isSendDisabled}
-                        aria-label="Send message"
-                        className="font-bold text-xs py-2 px-4 rounded-xl transition-all active:scale-95 cursor-pointer text-(--secondary-color) hover:text-(--white) border hover:bg-(--secondary-color) border-(--secondary-color) hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full disabled:active:scale-100"
-                    >
-                        <FaPaperPlane />
-                    </button>
                 </div>
             </form>
         </div>
