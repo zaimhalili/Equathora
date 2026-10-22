@@ -19,19 +19,19 @@ const AboutMainSection = () => {
     return (
         <section className="w-full relative bg-(--white) overflow-hidden flex justify-center">
             <div className="relative z-10 w-full flex justify-center">
-                <div className="w-full max-w-375 px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 pt-20 sm:pt-24 md:pt-30 lg:pt-20 xl:pt-20 pb-14 sm:pb-16 md:pb-18 lg:pb-20 flex justify-center gap-5 sm:gap-3">
+                <div className="w-full max-w-375 px-8 sm:px-12 md:px-16 lg:px-24 xl:px-32 pt-10 sm:pt-15 md:pt-15 lg:pt-20 xl:pt-20 pb-14 sm:pb-16 md:pb-18 lg:pb-20 flex justify-center lg:flex-row flex-col gap-5 sm:gap-3">
                     {/* Left side (main heading etc) */}
-                    <div className="flex flex-col max-w-3/5 flex-1">
+                    <div className="flex flex-col lg:max-w-3/5 flex-1 items-center lg:items-start">
                     
-                        <h1 className='text-(--secondary-color) text-7xl font-semibold text-left pb-5 leading-normal'>One <span className='relative z-10'>Problem <img src={Underline} className='absolute -bottom-5 w-55 right-0 left-3 select-none' draggable="false" loading='lazy' /></span><br /> at a Time</h1>
+                        <h1 className='text-(--secondary-color) text-4xl sm:text-5xl lg:text-7xl font-semibold text-center pb-5 leading-normal lg:text-left'>One <span className='relative z-100'>Problem <img src={Underline} className='absolute -bottom-3 lg:-bottom-5 w-55 right-0 lg:left-3 select-none z-10!' draggable="false" loading='lazy' /></span><br /> at a Time</h1>
 
-                        <p className='max-w-md text-(--secondary-color)/70 text-left relative leading-relaxed pb-5'>We help students learn math online with a step-by-step workspace, structured practice, and Sigma AI guidance that turns confusion into confidence.
-                            <img src={Arrow} draggable="false" className='absolute -right-45 top-10 h-15 rotate-x-180 -rotate-45 select-none' loading='lazy' />
+                        <p className='lg:text-left text-center max-w-md text-(--secondary-color)/70 relative leading-relaxed pb-5'>We help students learn math online with a step-by-step workspace, structured practice, and Sigma AI guidance that turns confusion into confidence.
+                            <img src={Arrow} draggable="false" className='hidden md:block absolute -right-45 top-10 h-15 rotate-x-180 -rotate-45 select-none' loading='lazy' />
                         </p>
 
-                        <div className="flex gap-3">
-                            <Link to={'/dashboard'} className='bg-(--light-accent-color) text-white! font-medium! px-10 py-3 w-fit rounded-t-xl rounded-bl-xl text-sm transition-all hover:bg-(--accent-color)'>Get Started</Link>
-                            <Link to={'/equathora-briefs'} className='text-(--secondary-color)/70! hover:text-(--secondary-color)! font-medium! px-10 py-3 w-fit rounded-b-xl rounded-tr-xl text-sm transition-all hover:bg-(--main-color)'>Join Equathora Briefs</Link>
+                        <div className="flex gap-3 justify-center">
+                            <Link to={'/dashboard'} className='bg-(--light-accent-color) text-white! font-medium! px-5 lg:px-10 py-3 w-fit rounded-t-xl rounded-bl-xl text-sm transition-all hover:bg-(--accent-color)'>Get Started</Link>
+                            <Link to={'/equathora-briefs'} className='text-(--secondary-color)/70! hover:text-(--secondary-color)! font-medium! px-5 lg:px-10 py-3 w-fit rounded-b-xl rounded-tr-xl text-sm transition-all hover:bg-(--main-color)'>Join Equathora Briefs</Link>
                         </div>
 
                         
@@ -64,11 +64,11 @@ const AboutMainSection = () => {
                         </div>
                     </div>
                     {/* Right side (student image) */}
-                    <div className="flex flex-col max-w-2/5 flex-1 gap-3 pt-20">
-                        <div style={chalkBackground('top')} className="flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-50 max-w-1/2 w-1/2 self-end"></div>
-                        <div style={chalkBackground('center')} className="flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-50"></div>
-                        <div style={chalkBackground('bottom')} className="relative flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-50">
-                            <img src={Student} alt="Student" className='absolute z-10 bottom-0 h-185 object-cover -right-12 pointer-events-none select-none' draggable="false" loading='lazy' />
+                    <div className="flex flex-col lg:max-w-2/5 flex-1 gap-3 pt-20">
+                        <div style={chalkBackground('top')} className="flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-30 lg:min-h-50 max-w-1/2 w-1/2 self-end"></div>
+                        <div style={chalkBackground('center')} className="flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-30 lg:min-h-50"></div>
+                        <div style={chalkBackground('bottom')} className="relative flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-30 lg:min-h-50">
+                            <img src={Student} alt="Student" className='absolute z-10 bottom-0 h-110 sm:h-120 lg:h-185 sm:left-5 object-cover lg:-right-12 pointer-events-none select-none' draggable="false" loading='lazy' />
                         </div>
                     </div>
                 </div>
