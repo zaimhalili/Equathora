@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
-
+  
 const AboutHeroSection = () => {
     return (
         <section className="w-full relative bg-(--white) overflow-hidden flex justify-center">

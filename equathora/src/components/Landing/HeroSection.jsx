@@ -94,7 +94,7 @@ const HeroSection = () => {
 
     return (
         <section
-            className=" w-full bg-(--main-color) relative overflow-hidden flex items-center justify-center"
+            className=" w-full bg-(--white) relative overflow-hidden flex items-center justify-center"
         >
 
             <div className="relative z-10 w-full flex justify-center">

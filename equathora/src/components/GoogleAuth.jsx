@@ -11,6 +11,7 @@ const GoogleAuth = ({ onClick }) => {
                         src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
                         alt="Google logo"
                         id="google-icon"
+                        loading='lazy'
                     />
                     <p id='google-btn-text'>Log in with Google</p>
                 </button>

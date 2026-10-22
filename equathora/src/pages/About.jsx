@@ -9,6 +9,7 @@ import AboutMissionSection from '../components/About/sections/AboutMissionSectio
 import AboutFeaturesSection from '../components/About/sections/AboutFeaturesSection';
 import AboutCtaSection from '../components/About/sections/AboutCtaSection';
 import { useAuth } from '@/hooks/useAuth';
+import AboutMainSection from '@/components/About/sections/AboutMainSection';
 
 const About = () => {
     const { user } = useAuth();
@@ -32,6 +33,7 @@ const About = () => {
             {user ? <Navbar /> : <NavigationBar />}
 
             <main className="relative z-10 w-full flex flex-col items-center">
+                <AboutMainSection />
                 <AboutHeroSection />
                 <AboutIdentitySection />
                 {/* <AboutPlatformStrengthsSection /> */}
