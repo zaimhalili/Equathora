@@ -1,11 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Student from '../../../assets/images/yng_student.png';
+import ChalkDoodle from '../../../assets/doodles/ChalkDoodle.png';
 import Arrow from '../../../assets/doodles/curvyArrow.svg';
 import Underline from '../../../assets/doodles/twoUnder.svg';
 import BookStack from '../../../assets/images/stackBooks.jpeg';
 import { FaBookOpen } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+
+const chalkBackground = (position) => ({
+    backgroundImage: `url(${ChalkDoodle})`,
+    backgroundPosition: `right ${position}`,
+    backgroundRepeat: 'repeat',
+    backgroundSize: 'auto calc(305% + 0.5rem)',
+});
 
 const AboutMainSection = () => {
     return (
@@ -57,10 +65,10 @@ const AboutMainSection = () => {
                     </div>
                     {/* Right side (student image) */}
                     <div className="flex flex-col max-w-2/5 flex-1 gap-3 pt-20">
-                        <div className="flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-50 max-w-1/2 w-1/2 self-end"></div>
-                        <div className="flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-50"></div>
-                        <div className="flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-50 relative">
-                            <img src={Student} alt="Student" className='absolute bottom-0 h-185 object-cover -right-10 pointer-events-none select-none' draggable="false" loading='lazy' />
+                        <div style={chalkBackground('top')} className="flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-50 max-w-1/2 w-1/2 self-end"></div>
+                        <div style={chalkBackground('center')} className="flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-50"></div>
+                        <div style={chalkBackground('bottom')} className="relative flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-50">
+                            <img src={Student} alt="Student" className='absolute z-10 bottom-0 h-185 object-cover -right-12 pointer-events-none select-none' draggable="false" loading='lazy' />
                         </div>
                     </div>
                 </div>
