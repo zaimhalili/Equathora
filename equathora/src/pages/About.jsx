@@ -34,7 +34,7 @@ const About = () => {
 
             <main className="relative z-10 w-full flex flex-col items-center">
                 <AboutMainSection />
-                <AboutHeroSection />
+                {/* <AboutHeroSection /> */}
                 <AboutIdentitySection />
                 {/* <AboutPlatformStrengthsSection /> */}
                 <AboutMissionSection />
@@ -46,6 +46,7 @@ const About = () => {
                 <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
                     Education illustrations by Storyset
                 </a>
+                <a href="https://www.vecteezy.com/free-png/male-teacher" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>Male Teacher PNGs by Vecteezy</a>
             </div>
         </div>
     );

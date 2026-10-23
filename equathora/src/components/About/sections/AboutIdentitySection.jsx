@@ -27,7 +27,7 @@ const AboutIdentitySection = () => {
                     {/* Block 1 */}
                     <div className="flex flex-col bg-(--main-color) rounded-2xl flex-1 pl-6 sm:pl-10 pt-8">
                         <h3 className='text-2xl lg:text-3xl xl:text-4xl font-bold pr-6 sm:pr-10 pb-3'>Math needs to be <span className='text-(--accent-color)'>engaging</span> and fun</h3>
-                        <p className='text-base xl:text-lg pr-6 sm:pr-10'>Changing your view of math from 'boring' to 'beautiful'</p>
+                        <p className='text-base xl:text-lg pr-6 sm:pr-10'>Change your view of math from 'boring' to 'beautiful'</p>
                         <div className="flex justify-between items-center pt-3">
                             <FaMehRollingEyes className='text-5xl text-(--secondary-color) -rotate-15' />
                             <div className='flex items-center justify-center p-4 rounded-tl-2xl bg-(--white) relative'>
