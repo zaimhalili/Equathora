@@ -7,7 +7,7 @@ import HoverLabel from '../ui/HoverLabel';
 import ProfileEditButton from '../ui/ProfileEditButton';
 import EditProfileModal from '../EditProfileModal';
 import EditProfileNameDialog from './EditProfileNameDialog';
-import StackBooks from '../../assets/images/stackBooks.jpeg';
+import StackBooks from '../../assets/images/stackBooks.webp';
 import { FaCrown } from 'react-icons/fa';
 
 const formatDate = (date) => {

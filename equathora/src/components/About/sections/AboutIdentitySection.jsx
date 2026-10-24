@@ -73,7 +73,7 @@ const AboutIdentitySection = () => {
                                 <div className="absolute -left-10 bottom-0 bg-(--white) h-10 w-10 z-10">
                                     <div className="h-full bg-(--main-color) rounded-br-2xl"></div>
                                 </div>
-                                <Link to="/learn" className='p-5 bg-(--main-color) rounded-full !text-(--accent-color) hover:bg-(--accent-color) hover:!text-white transition-all duration-150 hover:scale-110 overflow-visible shadow-xl'>
+                                <Link to="/journey" className='p-5 bg-(--main-color) rounded-full !text-(--accent-color) hover:bg-(--accent-color) hover:!text-white transition-all duration-150 hover:scale-110 overflow-visible shadow-xl'>
                                     <FaArrowRight className=' text-2xl text-center -rotate-45' />
                                 </Link>
                                 <div className="absolute right-0 -top-10 bg-(--white) h-10 w-10 z-10">
