@@ -9,6 +9,7 @@ import ProblemToolbar from '../components/Problem/ProblemToolbar.jsx';
 import SketchPadToggle from '../components/Problem/SketchPadToggle.jsx';
 import StreakPopup from '../components/StreakPopup.jsx';
 import AchievementPopup from '../components/AchievementPopup.jsx';
+import ProblemSolvedPopup from '../components/ProblemSolvedPopup.jsx';
 import MentorChat from '../components/ProblemModals/MentorChat.jsx';
 import ChatPanel from '@/components/ChatAI/ChatPanel';
 import {
@@ -22,6 +23,7 @@ import {
 import { getProblemBySlug, getAllProblems } from '../lib/problemService';
 import { generateProblemSlug, extractIdFromSlug } from '../lib/slugify';
 import { formatTopicLabel } from '../lib/utils';
+import { BASE_PROBLEM_SOLVE_XP } from '../lib/problemProgress';
 import { normalizeAnswer } from '../lib/answerValidation';
 import {
     getCompletedProblems as getCompletedProblemsDb,
@@ -259,6 +261,7 @@ const Problem = () => {
     const [currentStreakValue, setCurrentStreakValue] = useState(0);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
     const [newAchievements, setNewAchievements] = useState([]);
+    const [earnedXp, setEarnedXp] = useState(null);
     const [fields, setFields] = useState([]);
     const [latexOpen, setLatexOpen] = useState(false);
     const [chatSeed, setChatSeed] = useState(null);
@@ -526,6 +529,7 @@ const Problem = () => {
         setDrawingColor('var(--secondary-color)');
         setPendingSigmaPrompt('');
         setIsCompleted(false);
+        setEarnedXp(null);
         setAlreadyCompletedOnLoad(false);
         setCanFetchSolution(false);
         setSubmissions([]);
@@ -866,6 +870,11 @@ const Problem = () => {
 
             // Instantly mark as completed locally FIRST before DB calls finish
             setIsCompleted(true);
+            const reportedXp = Number(validationData?.xp_gained);
+            const solveXp = Number.isFinite(reportedXp) && reportedXp > 0
+                ? Math.max(1, Math.round(reportedXp))
+                : BASE_PROBLEM_SOLVE_XP;
+            setEarnedXp({ amount: solveXp });
         }
 
         setShowSubmissions(true);
@@ -1112,6 +1121,13 @@ const Problem = () => {
                             setNewAchievements([]);
                         }}
                         onDismissOne={(id) => markAchievementSeen(id)}
+                    />
+                )}
+
+                {earnedXp !== null && (
+                    <ProblemSolvedPopup
+                        xp={earnedXp.amount}
+                        onClose={() => setEarnedXp(null)}
                     />
                 )}
 

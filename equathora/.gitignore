@@ -111,6 +111,7 @@ Program.cs
 *.txt
 !public/robots.txt
 *.md
+!private/README.md
 *.drawio
 *.excalibur
 

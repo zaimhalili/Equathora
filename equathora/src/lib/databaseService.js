@@ -764,9 +764,10 @@ export async function recordProblemStats(
 
     // The answer-validation function records each attempt before returning.
     try {
-        await supabase.rpc('recalculate_user_xp', { p_user_id: userId });
-    } catch (e) {
-        console.error('RPC recalculate_user_xp failed:', e);
+        const { error } = await supabase.rpc('recalculate_user_xp', { p_user_id: userId });
+        if (error) throw error;
+    } catch (error) {
+        console.error('RPC recalculate_user_xp failed:', error);
     }
 
     // Increment metadata stats (weekly, topic, difficulty) if first time correct.
@@ -784,11 +785,13 @@ export async function recordProblemStats(
     }
 
     // 4. Fetch updated progress to return immediate UI state
-    const { data: dbProgress } = await supabase
+    const { data: dbProgress, error: progressError } = await supabase
         .from('user_progress')
         .select('*')
         .eq('user_id', userId)
         .maybeSingle();
+
+    if (progressError) throw progressError;
 
     const totalAttempts = Number(dbProgress?.total_attempts ?? 0);
     const correctAnswers = Number(dbProgress?.correct_answers ?? 0);

@@ -61,6 +61,8 @@ export function getEstimatedTime(difficulty) {
     return DIFFICULTY_TIME_ESTIMATES[difficulty] ?? "10-15 min";
 }
 
+export const BASE_PROBLEM_SOLVE_XP = 50;
+
 /**
  * Fallback XP reward by difficulty, used only when a problem doesn't carry
  * its own `xp` from the backend. A flat "25 XP" for every difficulty made

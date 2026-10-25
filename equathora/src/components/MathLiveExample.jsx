@@ -455,7 +455,7 @@ export default function MathLiveEditor({
                                                 <button
                                                     onClick={handleExplainMoreClick}
                                                     disabled={isAiBusy}
-                                                    className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-xl cursor-pointer text-(--secondary-color) hover:to-amber-500 active:!scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    className="bg-gradient-to-b from-amber-600 to-amber-400 px-3 md:px-4 py-1 text-[11px] font-semibold rounded-md cursor-pointer text-(--secondary-color) hover:to-amber-500 active:!scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                                                 >
                                                     {isAiBusy ? "Sigma is thinking…" : "Explain more"}
                                                 </button>

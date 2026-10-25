@@ -6,7 +6,7 @@
     justify-content: center;
     gap: 0.5rem;
     font-size: 0.875rem;
-    border: 1px solid var(--mid-main-secondary);
+    border: 1px solid var(--french-gray);
     font-weight: 500;
     border-radius: 0.75rem;
     height: 2.25rem;
@@ -14,14 +14,8 @@
     transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
 }
 
-.stopwatch:hover {
-    color: var(--accent-color);
-    border-color: var(--accent-color);
-    background-color: color-mix(in srgb, var(--accent-color) 5%, transparent);
-}
-
 .stopwatch-icon {
-    color: var(--mid-main-secondary);
+    color: var(--secondary-color);
     font-size: 0.75rem;
 }
 

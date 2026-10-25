@@ -16,7 +16,7 @@ import {
 import PremiumButton from '@/components/Premium/PremiumButton';
 import Timer from '@/components/Timer';
 
-const toolbarButtonClass = 'inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-(--mid-main-secondary) px-2.5 text-xs font-medium text-(--secondary-color) transition-colors hover:border-(--accent-color) hover:bg-(--accent-color)/5 hover:text-(--accent-color) md:h-10 md:gap-2 md:px-3 md:text-sm';
+const toolbarButtonClass = 'inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-(--mid-main-secondary) px-2.5 text-xs font-medium text-(--secondary-color) transition-colors  hover:bg-(--french-gray)/70  md:h-10 md:gap-2 md:px-3 md:text-sm';
 const menuItemClass = 'flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-(--secondary-color) transition-colors hover:bg-(--french-gray)';
 
 const ProblemToolbar = ({
