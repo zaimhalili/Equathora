@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import ReputationBadge from '../components/ReputationBadge';
 import EditProfileModal from '../components/EditProfileModal';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { FaCheckCircle, FaChartLine } from 'react-icons/fa';
+import { FaCheckCircle, FaChartLine, FaLink } from 'react-icons/fa';
 import ProfileExportButtons from '../components/ProfileExportButtons';
 import { generateProblemSlug } from '../lib/slugify';
 import { formatTopicLabel } from '../lib/utils';
@@ -95,7 +95,7 @@ const Profile = () => {
                       rel="noopener noreferrer"
                       className='text-xs text-(--accent-color) hover:underline'
                     >
-                      Ã°Å¸â€â€” {userData.website}
+                      <FaLink className="inline mr-1" aria-hidden="true" />{userData.website}
                     </a>
                   )}
                   {viewingOwnProfile && (
@@ -141,7 +141,7 @@ const Profile = () => {
                         <p className='text-sm md:text-base text-(--secondary-color)'>Accuracy <span className='font-bold'>{userData.stats.accuracy === null ? 'N/A' : `${userData.stats.accuracy}%`}</span></p>
                         <span className='text-xs text-(--mid-main-secondary)'>
                           {userData.stats.accuracyDetail.total > 0
-                            ? `${userData.stats.accuracyDetail.correct} correct Ã‚Â· ${userData.stats.accuracyDetail.wrong} wrong`
+                            ? `${userData.stats.accuracyDetail.correct} correct \u00B7 ${userData.stats.accuracyDetail.wrong} wrong`
                             : 'No attempts tracked'}
                         </span>
                       </div>

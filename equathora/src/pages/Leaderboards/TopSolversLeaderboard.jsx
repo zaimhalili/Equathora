@@ -29,7 +29,7 @@ const TopSolversLeaderboard = () => {
             // Fetch top solvers data
             const topSolversData = viewMode === 'weekly'
                 ? await getRecentTopSolvers(7)
-                : await getTopSolvers(viewMode);
+                : await getTopSolvers(metric === 'accuracy' || metric === 'streak' ? metric : 'overall');
             setPlayers(topSolversData);
 
             // Get current user's rank if logged in
@@ -54,7 +54,7 @@ const TopSolversLeaderboard = () => {
         } finally {
             setLoading(false);
         }
-    }, [viewMode]);
+    }, [viewMode, metric]);
 
     useEffect(() => {
         fetchTopSolvers();
@@ -102,12 +102,6 @@ const TopSolversLeaderboard = () => {
         }));
     }, [players, searchTerm, metric, minSolved, minAccuracy, minStreak, viewMode]);
 
-    const currentUserDisplayRank = useMemo(() => {
-        if (!currentUser?.id) return 0;
-        const index = filteredPlayers.findIndex(player => player.userId === currentUser.id);
-        return index >= 0 ? index + 1 : 0;
-    }, [filteredPlayers, currentUser]);
-
     const getRankBadge = (rank) => {
         if (rank === 1) return <FaCrown className="rank-badge-icon" />;
         if (rank === 2 || rank === 3) return <FaMedal className="rank-badge-icon" />;
@@ -133,14 +127,14 @@ const TopSolversLeaderboard = () => {
             };
         }
 
-        if (metric === 'accuracy' || viewMode === 'accuracy') {
+        if (metric === 'accuracy') {
             return {
                 value: player.accuracy === null || player.accuracy === undefined ? 'N/A' : `${player.accuracy}%`,
                 label: 'Accuracy'
             };
         }
 
-        if (metric === 'streak' || viewMode === 'streak') {
+        if (metric === 'streak') {
             return {
                 value: `${player.currentStreak || 0}d`,
                 label: 'Streak'
@@ -193,26 +187,23 @@ const TopSolversLeaderboard = () => {
                 <h2>Performance Board</h2>
                 <p className="leaderboard-subtitle">Rank by weekly momentum, solved count, accuracy, streak, or XP</p>
 
-                <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                    {['overall', 'weekly', 'accuracy', 'streak'].map(cat => (
-                        <button
-                            key={cat}
-                            onClick={() => setViewMode(cat)}
-                            style={{
-                                padding: '0.5rem 1rem',
-                                background: viewMode === cat ? 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' : 'var(--main-color)',
-                                color: viewMode === cat ? 'white' : 'var(--secondary-color)',
-                                border: viewMode === cat ? 'none' : '1px solid var(--french-gray)',
-                                borderRadius: '0.5rem',
-                                cursor: 'pointer',
-                                textTransform: 'capitalize',
-                                fontSize: '0.9rem'
-                            }}
-                            className='active:scale-95 hover:bg-black/15'
-                        >
-                            {cat === 'overall' ? 'Overall' : cat === 'weekly' ? 'Weekly Momentum' : cat === 'accuracy' ? 'Accuracy Focus' : 'Streak Focus'}
-                        </button>
-                    ))}
+                <div className="leaderboard-mode-switch" role="group" aria-label="Leaderboard period">
+                    <button
+                        type="button"
+                        onClick={() => setViewMode('overall')}
+                        className={viewMode === 'overall' ? 'active' : ''}
+                        aria-pressed={viewMode === 'overall'}
+                    >
+                        Overall
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setViewMode('weekly')}
+                        className={viewMode === 'weekly' ? 'active' : ''}
+                        aria-pressed={viewMode === 'weekly'}
+                    >
+                        Last 7 days
+                    </button>
                 </div>
 
                 <div className="leaderboard-filters">
@@ -230,10 +221,10 @@ const TopSolversLeaderboard = () => {
                     <label className="leaderboard-filter">
                         <FaSortAmountDown className="filter-icon" />
                         <select value={metric} onChange={(e) => setMetric(e.target.value)} className="leaderboard-filter-select">
-                            <option value="solved">Sort by Solved</option>
-                            <option value="xp">Sort by XP</option>
-                            <option value="accuracy">Sort by Accuracy</option>
-                            <option value="streak">Sort by Streak</option>
+                            <option value="solved">Rank by solved</option>
+                            <option value="xp">Rank by XP</option>
+                            <option value="accuracy">Rank by accuracy</option>
+                            <option value="streak">Rank by streak</option>
                         </select>
                     </label>
 
@@ -281,6 +272,7 @@ const TopSolversLeaderboard = () => {
                                 key={player.userId}
                                 to={`/profile/${player.userId}`}
                                 className={`leaderboard-card ${getRankClass(player.displayRank)} ${currentUser && player.userId === currentUser.id ? 'current-user' : ''}`}
+                                aria-current={currentUser && player.userId === currentUser.id ? 'true' : undefined}
                             >
                                 <div className="rank-badge">
                                     {getRankBadge(player.displayRank)}
@@ -294,19 +286,24 @@ const TopSolversLeaderboard = () => {
                                     />
                                 </div>
                                 <div className="player-info">
-                                    <div className="player-name">{player.name}</div>
+                                    <div className="player-name">
+                                        {player.name}
+                                        {currentUser && player.userId === currentUser.id && (
+                                            <span className="you-badge">You</span>
+                                        )}
+                                    </div>
                                     <div className="player-stats">
                                         <span className="stat-item">
                                             <FaChartLine className="stat-icon" />
                                             {viewMode === 'weekly' ? player.recentSolved || player.problemsSolved : player.problemsSolved} solved
                                         </span>
-                                        {(viewMode === 'accuracy' || metric === 'accuracy') && player.accuracy !== null && player.accuracy !== undefined && (
+                                        {metric === 'accuracy' && player.accuracy !== null && player.accuracy !== undefined && (
                                             <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
                                                 <FaBullseye className="stat-icon" />
                                                 {player.accuracy}%
                                             </span>
                                         )}
-                                        {(viewMode === 'streak' || metric === 'streak') && (
+                                        {metric === 'streak' && (
                                             <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
                                                 <FaFire className="stat-icon" />
                                                 {player.currentStreak} days
@@ -332,18 +329,18 @@ const TopSolversLeaderboard = () => {
 
             {currentUser && (
                 <div className="user-rank-card">
-                    <div className="your-rank-label">Your Rank</div>
+                    <div className="your-rank-label">Your global rank</div>
                     <Link
                         to={`/profile/${currentUser.id}`}
-                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUserDisplayRank || currentUser.rank)}`}
+                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUser.rank)}`}
                     >
                         {(() => {
                             const primaryMetric = getPrimaryMetric(currentUser);
                             return (
                                 <>
                                     <div className="rank-badge">
-                                        {getRankBadge(currentUserDisplayRank || currentUser.rank)}
-                                        <span className="rank-badge-number">{currentUserDisplayRank || currentUser.rank}</span>
+                                        {getRankBadge(currentUser.rank)}
+                                        <span className="rank-badge-number">{currentUser.rank}</span>
                                     </div>
                                     <div className="player-avatar-wrapper">
                                         <img
@@ -353,19 +350,22 @@ const TopSolversLeaderboard = () => {
                                         />
                                     </div>
                                     <div className="player-info">
-                                        <div className="player-name">{currentUser.name}</div>
+                                        <div className="player-name">
+                                            {currentUser.name}
+                                            <span className="you-badge">You</span>
+                                        </div>
                                         <div className="player-stats">
                                             <span className="stat-item">
                                                 <FaChartLine className="stat-icon" />
                                                 {currentUser.problemsSolved} solved
                                             </span>
-                                            {(viewMode === 'accuracy' || metric === 'accuracy') && currentUser.accuracy !== null && currentUser.accuracy !== undefined && (
+                                            {metric === 'accuracy' && currentUser.accuracy !== null && currentUser.accuracy !== undefined && (
                                                 <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
                                                     <FaBullseye className="stat-icon" />
                                                     {currentUser.accuracy}%
                                                 </span>
                                             )}
-                                            {(viewMode === 'streak' || metric === 'streak') && (
+                                            {metric === 'streak' && (
                                                 <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
                                                     <FaFire className="stat-icon" />
                                                     {currentUser.currentStreak} days

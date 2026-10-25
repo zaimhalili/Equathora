@@ -303,9 +303,9 @@ const Journey = () => {
                         </motion.div>
 
                         {/* Dynamic Progress & Streak Motivation Banner */}
-                        {currentStreak > 0 && (
+                        {/* {currentStreak > 0 && (
                             <motion.div
-                                className="w-full bg-linear-to-r from-amber-500/10 via-orange-500/20 to-red-500/20 border border-amber-500/30 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg backdrop-blur-md"
+                                className="w-full bg-linear-to-r from-amber-500/30 via-orange-500/30 to-red-500/30 border border-amber-500/30 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg backdrop-blur-md"
                                 initial={{ opacity: 0, scale: 0.97 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.5 }}
@@ -323,18 +323,18 @@ const Journey = () => {
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 className="text-lg md:text-xl font-extrabold text-amber-600">
+                                        <h3 className="text-lg md:text-xl font-extrabold text-white">
                                             {currentStreak >= 5
                                                 ? `You've achieved a ${currentStreak}-day streak. You're on fire!`
                                                 : `You're on a ${currentStreak}-day streak! Keep the momentum going!`}
                                         </h3>
-                                        <p className="text-sm text-(--secondary-color)">
+                                        <p className="text-sm text-white">
                                             Consistency is the key to mastering high-level math. Solve today's suggested targets to extend your streak!
                                         </p>
                                     </div>
                                 </div>
                             </motion.div>
-                        )}
+                        )} */}
 
                         {/* Daily Mission Component */}
                         <DailyTrack

@@ -1,6 +1,7 @@
 import { supabase } from './supabaseClient';
 import { computeAccuracyFromSources } from './accuracyService';
 import { notifyLeaderboardChange } from './notificationService';
+import { getProblemBaseXp } from './problemProgress.js';
 
 /**
  * Leaderboard Service for Equathora
@@ -174,31 +175,7 @@ export function calculateUserXP(userProgress, streakData) {
  * @param {number} hintsUsed - Number of hints opened (0-3 typically)
  */
 export function calculateProblemXP(difficulty, timeSpentSeconds, isFirstAttempt, hintsUsed = 0) {
-    let baseXP = 50; // Fallback default
-
-    // Base XP matched to Equathora's 6 difficulty tiers
-    switch (difficulty?.toLowerCase()?.trim()) {
-        case 'beginner':
-            baseXP = 25;
-            break;
-        case 'easy':
-            baseXP = 50;
-            break;
-        case 'medium':
-            baseXP = 100;
-            break;
-        case 'challenging':
-            baseXP = 175;
-            break;
-        case 'hard':
-            baseXP = 250;
-            break;
-        case 'advanced':
-            baseXP = 400;
-            break;
-        default:
-            baseXP = 50;
-    }
+    const baseXP = getProblemBaseXp(difficulty);
 
     // First attempt bonus (50% extra)
     const firstAttemptBonus = isFirstAttempt ? Math.round(baseXP * 0.5) : 0;

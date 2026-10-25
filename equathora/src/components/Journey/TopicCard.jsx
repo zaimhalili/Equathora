@@ -11,7 +11,7 @@ import {
 } from 'react-icons/fa';
 import { formatTopicLabel } from '@/lib/utils';
 import { generateProblemSlug } from '@/lib/slugify';
-import { annotateProblemStates, getEstimatedTime, getEstimatedXp } from '@/lib/problemProgress';
+import { annotateProblemStates, getEstimatedTime, getProblemBaseXp } from '@/lib/problemProgress';
 
 const TopicCard = ({
     topic,
@@ -321,7 +321,7 @@ const TopicCard = ({
                                         </span>
 
                                         <span>
-                                            {selected?.xp ?? getEstimatedXp(selected?.difficulty)} XP
+                                            {getProblemBaseXp(selected?.difficulty)} base XP
                                         </span>
                                     </div>
 

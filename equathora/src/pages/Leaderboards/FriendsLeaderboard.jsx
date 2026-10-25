@@ -46,6 +46,10 @@ const FriendsLeaderboard = () => {
         return 'rank-default';
     };
 
+    const currentUserFriendsRank = players.find(
+        (player) => player.userId === currentUser?.userId
+    )?.rank ?? currentUser?.rank;
+
     if (loading) {
         return (
             <article className="global-leaderboard">
@@ -108,6 +112,7 @@ const FriendsLeaderboard = () => {
                         key={player.userId}
                         to={`/profile/${player.userId}`}
                         className={`leaderboard-card ${getRankClass(player.rank)} ${currentUser && player.userId === currentUser.userId ? 'current-user' : ''}`}
+                        aria-current={currentUser && player.userId === currentUser.userId ? 'true' : undefined}
                     >
                         <div className="rank-badge">
                             {getRankBadge(player.rank)}
@@ -121,7 +126,12 @@ const FriendsLeaderboard = () => {
                             />
                         </div>
                         <div className="player-info">
-                            <div className="player-name">{player.name}</div>
+                            <div className="player-name">
+                                {player.name}
+                                {currentUser && player.userId === currentUser.userId && (
+                                    <span className="you-badge">You</span>
+                                )}
+                            </div>
                             <div className="player-stats">
                                 <span className="stat-item">
                                     <FaChartLine className="stat-icon" />
@@ -145,14 +155,14 @@ const FriendsLeaderboard = () => {
 
             {currentUser && (
                 <div className="user-rank-card">
-                    <div className="your-rank-label">Your Rank</div>
+                    <div className="your-rank-label">Your friends rank</div>
                     <Link
                         to={`/profile/${currentUser.userId}`}
-                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUser.rank)}`}
+                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUserFriendsRank)}`}
                     >
                         <div className="rank-badge">
-                            {getRankBadge(currentUser.rank)}
-                            <span className="rank-badge-number">{currentUser.rank}</span>
+                            {getRankBadge(currentUserFriendsRank)}
+                            <span className="rank-badge-number">{currentUserFriendsRank}</span>
                         </div>
                         <div className="player-avatar-wrapper">
                             <img
@@ -162,7 +172,10 @@ const FriendsLeaderboard = () => {
                             />
                         </div>
                         <div className="player-info">
-                            <div className="player-name">{currentUser.name}</div>
+                            <div className="player-name">
+                                {currentUser.name}
+                                <span className="you-badge">You</span>
+                            </div>
                             <div className="player-stats">
                                 <span className="stat-item">
                                     <FaChartLine className="stat-icon" />

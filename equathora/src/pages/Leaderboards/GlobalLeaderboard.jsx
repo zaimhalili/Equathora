@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { getCachedGlobalLeaderboard, getCurrentUserRank } from '../../lib/leaderboardService';
 import { supabase } from '../../lib/supabaseClient';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
-import { FaBullseye, FaChartLine, FaCrown, FaFire, FaHashtag, FaMedal, FaSearch, FaSortAmountDown, FaSpinner } from 'react-icons/fa';
+import { FaBullseye, FaChartLine, FaCrown, FaFire, FaHashtag, FaMedal, FaSearch, FaSpinner } from 'react-icons/fa';
 
 const GlobalLeaderboard = () => {
     const [players, setPlayers] = useState([]);
@@ -110,11 +110,8 @@ const GlobalLeaderboard = () => {
         }));
     }, [players, searchTerm, metric, minSolved, minAccuracy, minStreak]);
 
-    const currentUserDisplayRank = useMemo(() => {
-        if (!currentUser?.id) return 0;
-        const index = filteredPlayers.findIndex(player => player.userId === currentUser.id);
-        return index >= 0 ? index + 1 : 0;
-    }, [filteredPlayers, currentUser]);
+    const activeFilterCount = [solvedFilter, accuracyFilter, streakFilter]
+        .filter((filter) => filter !== 'all').length;
 
     const getRankBadge = (rank) => {
         if (rank === 1) return <FaCrown className="rank-badge-icon" />;
@@ -162,7 +159,7 @@ const GlobalLeaderboard = () => {
             <article className="global-leaderboard">
                 <div className="leaderboard-header">
                     <h2>Global Leaderboard</h2>
-                    <p className="leaderboard-subtitle">Filter by solved count, streak, accuracy, and ranking metric</p>
+                    <p className="leaderboard-subtitle">See how you rank across the Equathora community.</p>
                 </div>
                 <div className="w-full flex justify-center pt-40">
                     <FaSpinner className='animate-spin text-3xl'/>
@@ -176,7 +173,7 @@ const GlobalLeaderboard = () => {
             <article className="global-leaderboard">
                 <div className="leaderboard-header">
                     <h2>Global Leaderboard</h2>
-                    <p className="leaderboard-subtitle">Filter by solved count, streak, accuracy, and ranking metric</p>
+                    <p className="leaderboard-subtitle">See how you rank across the Equathora community.</p>
                 </div>
                 <div className="error-container" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>
                     <p>{error}</p>
@@ -196,7 +193,7 @@ const GlobalLeaderboard = () => {
             <article className="global-leaderboard">
                 <div className="leaderboard-header">
                     <h2>Global Leaderboard</h2>
-                    <p className="leaderboard-subtitle">Filter by solved count, streak, accuracy, and ranking metric</p>
+                    <p className="leaderboard-subtitle">See how you rank across the Equathora community.</p>
                 </div>
                 <div className="empty-container" style={{ textAlign: 'center', padding: '3rem', color: 'var(--secondary-color)' }}>
                     <p>No leaderboard data available yet.</p>
@@ -209,10 +206,12 @@ const GlobalLeaderboard = () => {
     return (
         <article className="global-leaderboard">
             <div className="leaderboard-header">
-                <h2>Global Leaderboard</h2>
-                <p className="leaderboard-subtitle">Filter by solved count, streak, accuracy, and ranking metric</p>
-
-                <div className="leaderboard-filters">
+                <div className="leaderboard-toolbar">
+                    <div className="leaderboard-title">
+                        <h2>Global Leaderboard</h2>
+                        <p className="leaderboard-subtitle">See how you rank across the Equathora community.</p>
+                    </div>
+                    <div className="leaderboard-filters">
                     <label className="leaderboard-filter search-filter">
                         <FaSearch className="filter-icon" />
                         <input
@@ -221,63 +220,76 @@ const GlobalLeaderboard = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Search player"
                             className="leaderboard-filter-input"
+                            aria-label="Search leaderboard by player name"
                         />
                     </label>
 
                     <label className="leaderboard-filter">
-                        <FaSortAmountDown className="filter-icon" />
-                        <select value={metric} onChange={(e) => setMetric(e.target.value)} className="leaderboard-filter-select">
-                            <option value="xp">Sort by XP</option>
-                            <option value="solved">Sort by Solved</option>
-                            <option value="accuracy">Sort by Accuracy</option>
-                            <option value="streak">Sort by Streak</option>
+                        <select value={metric} onChange={(e) => setMetric(e.target.value)} className="leaderboard-filter-select" aria-label="Rank leaderboard by">
+                            <option value="xp">Rank by XP</option>
+                            <option value="solved">Rank by solved</option>
+                            <option value="accuracy">Rank by accuracy</option>
+                            <option value="streak">Rank by streak</option>
                         </select>
                     </label>
 
-                    <label className="leaderboard-filter">
-                        <FaChartLine className="filter-icon" />
-                        <select value={solvedFilter} onChange={(e) => setSolvedFilter(e.target.value)} className="leaderboard-filter-select">
-                            <option value="all">Solved: Any</option>
-                            <option value="10">Solved: 10+</option>
-                            <option value="25">Solved: 25+</option>
-                            <option value="50">Solved: 50+</option>
-                            <option value="100">Solved: 100+</option>
-                        </select>
-                    </label>
+                    <details className="leaderboard-extra-filters">
+                        <summary>
+                            Filters
+                            {activeFilterCount > 0 && <span className="filter-count">{activeFilterCount}</span>}
+                        </summary>
+                        <div className="extra-filter-options">
+                            <label className="leaderboard-filter">
+                                <span>Solved</span>
+                                <select value={solvedFilter} onChange={(e) => setSolvedFilter(e.target.value)} className="leaderboard-filter-select" aria-label="Minimum problems solved">
+                                    <option value="all">Any</option>
+                                    <option value="10">10+</option>
+                                    <option value="25">25+</option>
+                                    <option value="50">50+</option>
+                                    <option value="100">100+</option>
+                                </select>
+                            </label>
 
-                    <label className="leaderboard-filter">
-                        <FaBullseye className="filter-icon" />
-                        <select value={accuracyFilter} onChange={(e) => setAccuracyFilter(e.target.value)} className="leaderboard-filter-select">
-                            <option value="all">Accuracy: Any</option>
-                            <option value="50">Accuracy: 50%+</option>
-                            <option value="70">Accuracy: 70%+</option>
-                            <option value="85">Accuracy: 85%+</option>
-                            <option value="95">Accuracy: 95%+</option>
-                        </select>
-                    </label>
+                            <label className="leaderboard-filter">
+                                <span>Accuracy</span>
+                                <select value={accuracyFilter} onChange={(e) => setAccuracyFilter(e.target.value)} className="leaderboard-filter-select" aria-label="Minimum accuracy">
+                                    <option value="all">Any</option>
+                                    <option value="50">50%+</option>
+                                    <option value="70">70%+</option>
+                                    <option value="85">85%+</option>
+                                    <option value="95">95%+</option>
+                                </select>
+                            </label>
 
-                    <label className="leaderboard-filter">
-                        <FaFire className="filter-icon" />
-                        <select value={streakFilter} onChange={(e) => setStreakFilter(e.target.value)} className="leaderboard-filter-select">
-                            <option value="all">Streak: Any</option>
-                            <option value="3">Streak: 3+ days</option>
-                            <option value="7">Streak: 7+ days</option>
-                            <option value="14">Streak: 14+ days</option>
-                            <option value="30">Streak: 30+ days</option>
-                        </select>
-                    </label>
+                            <label className="leaderboard-filter">
+                                <span>Streak</span>
+                                <select value={streakFilter} onChange={(e) => setStreakFilter(e.target.value)} className="leaderboard-filter-select" aria-label="Minimum streak">
+                                    <option value="all">Any</option>
+                                    <option value="3">3+ days</option>
+                                    <option value="7">7+ days</option>
+                                    <option value="14">14+ days</option>
+                                    <option value="30">30+ days</option>
+                                </select>
+                            </label>
+                        </div>
+                    </details>
+                    </div>
                 </div>
             </div>
 
             <div className="leaderboard-list">
-                {filteredPlayers.map((player) => (
+                {filteredPlayers.length === 0 ? (
+                    <div className="leaderboard-empty-state">No players match these filters.</div>
+                ) : filteredPlayers.map((player) => (
                     (() => {
                         const primaryMetric = getPrimaryMetric(player);
+                        const isCurrentUser = currentUser?.id === player.userId;
                         return (
                             <Link
                                 key={player.userId}
                                 to={`/profile/${player.userId}`}
-                                className={`leaderboard-card ${getRankClass(player.displayRank)} ${currentUser && player.userId === currentUser.id ? 'current-user' : ''}`}
+                                className={`leaderboard-card ${getRankClass(player.displayRank)} ${isCurrentUser ? 'current-user' : ''}`}
+                                aria-current={isCurrentUser ? 'true' : undefined}
                             >
                                 <div className="rank-badge">
                                     {getRankBadge(player.displayRank)}
@@ -291,7 +303,10 @@ const GlobalLeaderboard = () => {
                                     />
                                 </div>
                                 <div className="player-info">
-                                    <div className="player-name">{player.name}</div>
+                                    <div className="player-name">
+                                        {player.name}
+                                        {isCurrentUser && <span className="you-badge">You</span>}
+                                    </div>
                                     <div className="player-stats">
                                         <span className="stat-item">
                                             <FaChartLine className="stat-icon" />
@@ -321,18 +336,18 @@ const GlobalLeaderboard = () => {
 
             {currentUser && (
                 <div className="user-rank-card">
-                    <div className="your-rank-label">Your Rank</div>
+                    <div className="your-rank-label">Your global rank</div>
                     <Link
                         to={`/profile/${currentUser.id}`}
-                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUserDisplayRank || currentUser.rank)}`}
+                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUser.rank)}`}
                     >
                         {(() => {
                             const primaryMetric = getPrimaryMetric(currentUser);
                             return (
                                 <>
                                     <div className="rank-badge">
-                                        {getRankBadge(currentUserDisplayRank || currentUser.rank)}
-                                        <span className="rank-badge-number">{currentUserDisplayRank || currentUser.rank}</span>
+                                        {getRankBadge(currentUser.rank)}
+                                        <span className="rank-badge-number">{currentUser.rank}</span>
                                     </div>
                                     <div className="player-avatar-wrapper">
                                         <img
@@ -342,7 +357,10 @@ const GlobalLeaderboard = () => {
                                         />
                                     </div>
                                     <div className="player-info">
-                                        <div className="player-name">{currentUser.name}</div>
+                                        <div className="player-name">
+                                            {currentUser.name}
+                                            <span className="you-badge">You</span>
+                                        </div>
                                         <div className="player-stats">
                                             <span className="stat-item">
                                                 <FaChartLine className="stat-icon" />

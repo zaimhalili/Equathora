@@ -63,24 +63,18 @@ export function getEstimatedTime(difficulty) {
 
 export const BASE_PROBLEM_SOLVE_XP = 50;
 
-/**
- * Fallback XP reward by difficulty, used only when a problem doesn't carry
- * its own `xp` from the backend. A flat "25 XP" for every difficulty made
- * harder problems feel not worth doing relative to easy ones.
- */
-const DIFFICULTY_XP_ESTIMATES = {
-    Beginner: 10,
-    Easy: 15,
-    Standard: 20,
-    Intermediate: 25,
-    Medium: 35,
-    Challenging: 45,
-    Hard: 60,
-    Advanced: 80
+const DIFFICULTY_BASE_XP = {
+    beginner: 25,
+    easy: 50,
+    medium: 100,
+    challenging: 175,
+    hard: 250,
+    advanced: 400
 };
 
-export function getEstimatedXp(difficulty) {
-    return DIFFICULTY_XP_ESTIMATES[difficulty] ?? 25;
+export function getProblemBaseXp(difficulty) {
+    const normalizedDifficulty = difficulty?.toLowerCase()?.trim();
+    return DIFFICULTY_BASE_XP[normalizedDifficulty] ?? BASE_PROBLEM_SOLVE_XP;
 }
 
 /**
