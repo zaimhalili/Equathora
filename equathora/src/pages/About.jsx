@@ -39,7 +39,7 @@ const About = () => {
                 {/* <AboutPlatformStrengthsSection /> */}
                 <AboutMissionSection />
                 <AboutFeaturesSection />
-                <AboutCtaSec    tion />
+                <AboutCtaSection />
             </main>
             <Footer />
             <div className='w-full bg-(--secondary-color) border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>

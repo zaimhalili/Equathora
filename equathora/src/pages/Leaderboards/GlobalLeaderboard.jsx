@@ -49,6 +49,14 @@ const GlobalLeaderboard = () => {
             const wrongSubmissions = Number(ownProgress?.wrong_submissions ?? 0);
             const ownSolvedCount = ownCompletedProblems.length;
             const metadata = session?.user?.user_metadata ?? {};
+            const listedUser = leaderboardData.find(
+                (player) => String(player.userId) === String(userId)
+            );
+            const metadataAvatar = metadata.avatar_url
+                || metadata.picture
+                || metadata.image
+                || metadata.photo_url
+                || '';
             const userData = session ? {
                 id: userId,
                 userId,
@@ -58,27 +66,34 @@ const GlobalLeaderboard = () => {
                     || metadata.display_name
                     || session.user.email
                     || 'Your account',
-                problemsSolved: userRankData?.problemsSolved ?? ownSolvedCount,
-                xp: userRankData?.xp ?? Number(ownProgress?.total_xp ?? 0),
-                rank: userRankData?.rank ?? null,
-                accuracy: userRankData?.accuracy ?? (
+                problemsSolved: listedUser
+                    ? listedUser.problemsSolved
+                    : userRankData?.problemsSolved ?? ownSolvedCount,
+                xp: listedUser
+                    ? listedUser.xp
+                    : userRankData?.xp ?? Number(ownProgress?.total_xp ?? 0),
+                rank: listedUser ? listedUser.rank : userRankData?.rank ?? null,
+                accuracy: listedUser ? listedUser.accuracy : userRankData?.accuracy ?? (
                     totalAttempts > 0
                         ? Math.max(0, Math.min(100, Math.round(
                             ((totalAttempts - wrongSubmissions) / totalAttempts) * 100
                         )))
                         : ownSolvedCount > 0 ? null : 0
                 ),
-                currentStreak: userRankData?.currentStreak ?? ownStreak?.current_streak ?? 0,
-                avatarUrl: userRankData?.avatarUrl
-                    || metadata.avatar_url
-                    || metadata.picture
-                    || metadata.image
-                    || metadata.photo_url
-                    || '',
-                reputation: userRankData?.reputation ?? Number(ownProgress?.reputation ?? 0),
-                totalTimeMinutes: Number(
-                    userRankData?.totalTimeMinutes ?? ownProgress?.total_time_minutes ?? 0
-                )
+                currentStreak: listedUser
+                    ? listedUser.currentStreak
+                    : userRankData?.currentStreak ?? ownStreak?.current_streak ?? 0,
+                avatarUrl: metadataAvatar || userRankData?.avatarUrl || listedUser?.avatarUrl || '',
+                reputation: listedUser
+                    ? listedUser.reputation
+                    : userRankData?.reputation ?? Number(ownProgress?.reputation ?? 0),
+                totalTimeMinutes: listedUser
+                    ? listedUser.totalTimeMinutes
+                    : Number(
+                        userRankData?.totalTimeMinutes
+                        ?? ownProgress?.total_time_minutes
+                        ?? 0
+                    )
             } : null;
             const visibleLeaderboard = leaderboardData.map((player) => {
                 if (!userData || String(player.userId) !== String(userId)) {
@@ -87,8 +102,8 @@ const GlobalLeaderboard = () => {
 
                 return {
                     ...player,
-                    ...userData,
-                    rank: userData.rank ?? player.rank
+                    name: userData.name,
+                    avatarUrl: userData.avatarUrl
                 };
             });
             if (userData && !visibleLeaderboard.some(
@@ -155,14 +170,15 @@ const GlobalLeaderboard = () => {
     const visibleCurrentUser = players.find(
         (player) => String(player.userId) === String(currentUserId)
     );
-    const pinnedUser = currentUser || (visibleCurrentUser ? {
+    const pinnedUser = visibleCurrentUser ? {
         ...visibleCurrentUser,
         id: visibleCurrentUser.userId
-    } : null);
+    } : currentUser;
+    const currentUserName = currentUser?.name?.trim().toLowerCase();
     const rankedCurrentUser = rankedPlayers.find(
         (player) => String(player.userId) === String(currentUserId)
     );
-    const pinnedRank = currentUser?.rank ?? visibleCurrentUser?.rank ?? rankedCurrentUser?.displayRank;
+    const pinnedRank = rankedCurrentUser?.displayRank ?? currentUser?.rank ?? visibleCurrentUser?.rank;
     const hasPinnedRank = Number.isInteger(pinnedRank) && pinnedRank > 0;
 
     const getRankBadge = (rank) => {
@@ -259,6 +275,10 @@ const GlobalLeaderboard = () => {
                                         <span className="player-name">
                                             {player.name}
                                             {isCurrentUser && <span className="you-badge">You</span>}
+                                            {!isCurrentUser
+                                                && currentUserName
+                                                && player.name?.trim().toLowerCase() === currentUserName
+                                                && <span className="other-profile-badge">Other profile</span>}
                                         </span>
                                         <strong>{(player.xp || 0).toLocaleString()} <small>XP</small></strong>
                                     </span>
@@ -314,6 +334,10 @@ const GlobalLeaderboard = () => {
                                         <span className="leaderboard-player-name">
                                             {player.name}
                                             {isCurrentUser && <span className="you-badge">You</span>}
+                                            {!isCurrentUser
+                                                && currentUserName
+                                                && player.name?.trim().toLowerCase() === currentUserName
+                                                && <span className="other-profile-badge">Other profile</span>}
                                         </span>
                                     </span>
                                     <span className="leaderboard-value-cell">{player.problemsSolved ?? 0}</span>

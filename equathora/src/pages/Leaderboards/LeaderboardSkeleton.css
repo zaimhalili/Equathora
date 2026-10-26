@@ -44,6 +44,7 @@
     display: flex;
     min-height: 90px;
     align-items: center;
+    flex-flow: row nowrap;
     gap: 0.75rem;
     padding: 0.9rem;
 }
@@ -52,10 +53,12 @@
     width: 44px;
     height: 44px;
     flex-shrink: 0;
+    border-radius: 50%;
 }
 
 .leaderboard-skeleton-lines {
     display: grid;
+    min-width: 0;
     flex: 1;
     gap: 0.6rem;
 }
@@ -96,8 +99,11 @@
 
 .leaderboard-skeleton-player {
     display: flex;
+    min-width: 0;
     align-items: center;
+    flex-flow: row nowrap;
     gap: 0.65rem;
+    white-space: nowrap;
 }
 
 .leaderboard-skeleton-player i:first-child {
