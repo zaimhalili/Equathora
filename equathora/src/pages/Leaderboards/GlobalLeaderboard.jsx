@@ -2,20 +2,26 @@ import React, { useState, useEffect, useMemo } from 'react';
 import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 import { getCachedGlobalLeaderboard, getCurrentUserRank } from '../../lib/leaderboardService';
+import { getCompletedProblems, getStreakData, getUserProgress } from '../../lib/databaseService';
 import { supabase } from '../../lib/supabaseClient';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
-import { FaBullseye, FaChartLine, FaCrown, FaFire, FaHashtag, FaMedal, FaSearch, FaSpinner } from 'react-icons/fa';
+import { FaCrown, FaHashtag, FaMedal, FaSearch } from 'react-icons/fa';
+import LeaderboardSkeleton from './LeaderboardSkeleton';
 
 const GlobalLeaderboard = () => {
     const [players, setPlayers] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
+    const [currentUserId, setCurrentUserId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [metric, setMetric] = useState('xp');
-    const [solvedFilter, setSolvedFilter] = useState('all');
-    const [accuracyFilter, setAccuracyFilter] = useState('all');
-    const [streakFilter, setStreakFilter] = useState('all');
+    const formatStudyTime = (minutes) => {
+        const totalMinutes = Math.max(0, Math.round(Number(minutes) || 0));
+        const hours = Math.floor(totalMinutes / 60);
+        const remainingMinutes = totalMinutes % 60;
+        return hours > 0 ? `${hours}h ${remainingMinutes}m` : `${remainingMinutes}m`;
+    };
 
     useEffect(() => {
         fetchLeaderboardData();
@@ -28,31 +34,74 @@ const GlobalLeaderboard = () => {
 
             // Get current user session
             const { data: { session } } = await supabase.auth.getSession();
+            const userId = session?.user?.id ?? null;
+            setCurrentUserId(userId);
 
-            // Fetch leaderboard data
-            const leaderboardData = await getCachedGlobalLeaderboard();
-            setPlayers(leaderboardData);
+            const [leaderboardData, userRankData, ownProgress, ownCompletedProblems, ownStreak] = await Promise.all([
+                getCachedGlobalLeaderboard(),
+                session ? getCurrentUserRank() : Promise.resolve(null),
+                session ? getUserProgress() : Promise.resolve(null),
+                session ? getCompletedProblems() : Promise.resolve([]),
+                session ? getStreakData() : Promise.resolve(null)
+            ]);
 
-            // Get current user's rank if logged in
-            if (session) {
-                const userRankData = await getCurrentUserRank();
-                if (userRankData) {
-                    setCurrentUser({
-                        id: userRankData.userId,
-                        name: userRankData.name,
-                        problemsSolved: userRankData.problemsSolved,
-                        xp: userRankData.xp,
-                        rank: userRankData.rank,
-                        accuracy: userRankData.accuracy,
-                        currentStreak: userRankData.currentStreak,
-                        avatarUrl: userRankData.avatarUrl
-                    });
-                } else {
-                    setCurrentUser(null);
+            const totalAttempts = Number(ownProgress?.total_attempts ?? 0);
+            const wrongSubmissions = Number(ownProgress?.wrong_submissions ?? 0);
+            const ownSolvedCount = ownCompletedProblems.length;
+            const metadata = session?.user?.user_metadata ?? {};
+            const userData = session ? {
+                id: userId,
+                userId,
+                name: userRankData?.name
+                    || metadata.full_name
+                    || metadata.name
+                    || metadata.display_name
+                    || session.user.email
+                    || 'Your account',
+                problemsSolved: userRankData?.problemsSolved ?? ownSolvedCount,
+                xp: userRankData?.xp ?? Number(ownProgress?.total_xp ?? 0),
+                rank: userRankData?.rank ?? null,
+                accuracy: userRankData?.accuracy ?? (
+                    totalAttempts > 0
+                        ? Math.max(0, Math.min(100, Math.round(
+                            ((totalAttempts - wrongSubmissions) / totalAttempts) * 100
+                        )))
+                        : ownSolvedCount > 0 ? null : 0
+                ),
+                currentStreak: userRankData?.currentStreak ?? ownStreak?.current_streak ?? 0,
+                avatarUrl: userRankData?.avatarUrl
+                    || metadata.avatar_url
+                    || metadata.picture
+                    || metadata.image
+                    || metadata.photo_url
+                    || '',
+                reputation: userRankData?.reputation ?? Number(ownProgress?.reputation ?? 0),
+                totalTimeMinutes: Number(
+                    userRankData?.totalTimeMinutes ?? ownProgress?.total_time_minutes ?? 0
+                )
+            } : null;
+            const visibleLeaderboard = leaderboardData.map((player) => {
+                if (!userData || String(player.userId) !== String(userId)) {
+                    return player;
                 }
-            } else {
-                setCurrentUser(null);
+
+                return {
+                    ...player,
+                    ...userData,
+                    rank: userData.rank ?? player.rank
+                };
+            });
+            if (userData && !visibleLeaderboard.some(
+                (player) => String(player.userId) === String(userId)
+            ) && userRankData) {
+                visibleLeaderboard.push({
+                    ...userData,
+                    rank: userData.rank ?? userRankData.rank
+                });
             }
+
+            setPlayers(visibleLeaderboard);
+            setCurrentUser(userData);
         } catch (err) {
             console.error('Error fetching leaderboard:', err);
             setError('Failed to load leaderboard data');
@@ -61,22 +110,8 @@ const GlobalLeaderboard = () => {
         }
     };
 
-    const minSolved = solvedFilter === 'all' ? 0 : Number(solvedFilter);
-    const minAccuracy = accuracyFilter === 'all' ? 0 : Number(accuracyFilter);
-    const minStreak = streakFilter === 'all' ? 0 : Number(streakFilter);
-
-    const filteredPlayers = useMemo(() => {
-        const normalizedSearch = searchTerm.trim().toLowerCase();
-
-        const base = players.filter((player) => {
-            if ((player.problemsSolved || 0) < minSolved) return false;
-            if ((player.accuracy || 0) < minAccuracy) return false;
-            if ((player.currentStreak || 0) < minStreak) return false;
-            if (!normalizedSearch) return true;
-            return (player.name || '').toLowerCase().includes(normalizedSearch);
-        });
-
-        const sorted = [...base].sort((a, b) => {
+    const rankedPlayers = useMemo(() => {
+        const sorted = [...players].sort((a, b) => {
             if (metric === 'solved') {
                 if ((b.problemsSolved || 0) !== (a.problemsSolved || 0)) {
                     return (b.problemsSolved || 0) - (a.problemsSolved || 0);
@@ -106,12 +141,29 @@ const GlobalLeaderboard = () => {
 
         return sorted.map((player, index) => ({
             ...player,
-            displayRank: index + 1
+            displayRank: metric === 'xp' && Number.isInteger(player.rank) && player.rank > 0
+                ? player.rank
+                : index + 1
         }));
-    }, [players, searchTerm, metric, minSolved, minAccuracy, minStreak]);
+    }, [players, metric]);
 
-    const activeFilterCount = [solvedFilter, accuracyFilter, streakFilter]
-        .filter((filter) => filter !== 'all').length;
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    const filteredPlayers = rankedPlayers.filter((player) =>
+        (player.name || '').toLowerCase().includes(normalizedSearch)
+    );
+    const leaders = rankedPlayers.slice(0, 3);
+    const visibleCurrentUser = players.find(
+        (player) => String(player.userId) === String(currentUserId)
+    );
+    const pinnedUser = currentUser || (visibleCurrentUser ? {
+        ...visibleCurrentUser,
+        id: visibleCurrentUser.userId
+    } : null);
+    const rankedCurrentUser = rankedPlayers.find(
+        (player) => String(player.userId) === String(currentUserId)
+    );
+    const pinnedRank = currentUser?.rank ?? visibleCurrentUser?.rank ?? rankedCurrentUser?.displayRank;
+    const hasPinnedRank = Number.isInteger(pinnedRank) && pinnedRank > 0;
 
     const getRankBadge = (rank) => {
         if (rank === 1) return <FaCrown className="rank-badge-icon" />;
@@ -126,46 +178,8 @@ const GlobalLeaderboard = () => {
         return 'rank-default';
     };
 
-    const getPrimaryMetric = (player) => {
-        if (metric === 'solved') {
-            return {
-                value: String(player.problemsSolved ?? 0),
-                label: 'Solved'
-            };
-        }
-
-        if (metric === 'accuracy') {
-            return {
-                value: player.accuracy === null || player.accuracy === undefined ? 'N/A' : `${player.accuracy}%`,
-                label: 'Accuracy'
-            };
-        }
-
-        if (metric === 'streak') {
-            return {
-                value: `${player.currentStreak || 0}d`,
-                label: 'Streak'
-            };
-        }
-
-        return {
-            value: (player.xp || 0).toLocaleString(),
-            label: 'XP'
-        };
-    };
-
     if (loading) {
-        return (
-            <article className="global-leaderboard">
-                <div className="leaderboard-header">
-                    <h2>Global Leaderboard</h2>
-                    <p className="leaderboard-subtitle">See how you rank across the Equathora community.</p>
-                </div>
-                <div className="w-full flex justify-center pt-40">
-                    <FaSpinner className='animate-spin text-3xl'/>
-                </div>
-            </article>
-        );
+        return <LeaderboardSkeleton />;
     }
 
     if (error) {
@@ -188,21 +202,6 @@ const GlobalLeaderboard = () => {
         );
     }
 
-    if (players.length === 0) {
-        return (
-            <article className="global-leaderboard">
-                <div className="leaderboard-header">
-                    <h2>Global Leaderboard</h2>
-                    <p className="leaderboard-subtitle">See how you rank across the Equathora community.</p>
-                </div>
-                <div className="empty-container" style={{ textAlign: 'center', padding: '3rem', color: 'var(--secondary-color)' }}>
-                    <p>No leaderboard data available yet.</p>
-                    <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Start solving problems to appear on the leaderboard!</p>
-                </div>
-            </article>
-        );
-    }
-
     return (
         <article className="global-leaderboard">
             <div className="leaderboard-header">
@@ -212,182 +211,154 @@ const GlobalLeaderboard = () => {
                         <p className="leaderboard-subtitle">See how you rank across the Equathora community.</p>
                     </div>
                     <div className="leaderboard-filters">
-                    <label className="leaderboard-filter search-filter">
-                        <FaSearch className="filter-icon" />
-                        <input
-                            type="text"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="Search player"
-                            className="leaderboard-filter-input"
-                            aria-label="Search leaderboard by player name"
-                        />
-                    </label>
+                        <label className="leaderboard-filter search-filter">
+                            <FaSearch className="filter-icon" />
+                            <input
+                                type="text"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                placeholder="Search player"
+                                className="leaderboard-filter-input"
+                                aria-label="Search leaderboard by player name"
+                            />
+                        </label>
 
-                    <label className="leaderboard-filter">
-                        <select value={metric} onChange={(e) => setMetric(e.target.value)} className="leaderboard-filter-select" aria-label="Rank leaderboard by">
-                            <option value="xp">Rank by XP</option>
-                            <option value="solved">Rank by solved</option>
-                            <option value="accuracy">Rank by accuracy</option>
-                            <option value="streak">Rank by streak</option>
-                        </select>
-                    </label>
-
-                    <details className="leaderboard-extra-filters">
-                        <summary>
-                            Filters
-                            {activeFilterCount > 0 && <span className="filter-count">{activeFilterCount}</span>}
-                        </summary>
-                        <div className="extra-filter-options">
-                            <label className="leaderboard-filter">
-                                <span>Solved</span>
-                                <select value={solvedFilter} onChange={(e) => setSolvedFilter(e.target.value)} className="leaderboard-filter-select" aria-label="Minimum problems solved">
-                                    <option value="all">Any</option>
-                                    <option value="10">10+</option>
-                                    <option value="25">25+</option>
-                                    <option value="50">50+</option>
-                                    <option value="100">100+</option>
-                                </select>
-                            </label>
-
-                            <label className="leaderboard-filter">
-                                <span>Accuracy</span>
-                                <select value={accuracyFilter} onChange={(e) => setAccuracyFilter(e.target.value)} className="leaderboard-filter-select" aria-label="Minimum accuracy">
-                                    <option value="all">Any</option>
-                                    <option value="50">50%+</option>
-                                    <option value="70">70%+</option>
-                                    <option value="85">85%+</option>
-                                    <option value="95">95%+</option>
-                                </select>
-                            </label>
-
-                            <label className="leaderboard-filter">
-                                <span>Streak</span>
-                                <select value={streakFilter} onChange={(e) => setStreakFilter(e.target.value)} className="leaderboard-filter-select" aria-label="Minimum streak">
-                                    <option value="all">Any</option>
-                                    <option value="3">3+ days</option>
-                                    <option value="7">7+ days</option>
-                                    <option value="14">14+ days</option>
-                                    <option value="30">30+ days</option>
-                                </select>
-                            </label>
-                        </div>
-                    </details>
+                        <label className="leaderboard-filter">
+                            <span className="sort-label">Sort by</span>
+                            <select value={metric} onChange={(e) => setMetric(e.target.value)} className="leaderboard-filter-select" aria-label="Sort by">
+                                <option value="xp">Total XP</option>
+                                <option value="solved">Problems solved</option>
+                                <option value="accuracy">Accuracy</option>
+                                <option value="streak">Streak</option>
+                            </select>
+                        </label>
                     </div>
                 </div>
             </div>
 
-            <div className="leaderboard-list">
-                {filteredPlayers.length === 0 ? (
-                    <div className="leaderboard-empty-state">No players match these filters.</div>
-                ) : filteredPlayers.map((player) => (
-                    (() => {
-                        const primaryMetric = getPrimaryMetric(player);
-                        const isCurrentUser = currentUser?.id === player.userId;
+            <section className="leaderboard-leaders" aria-labelledby="leaderboard-leaders-title">
+                <h3 id="leaderboard-leaders-title">Current leaders</h3>
+                <div className="leaderboard-podium">
+                    {leaders.map((player) => {
+                        const isCurrentUser = String(player.userId) === String(currentUserId);
                         return (
                             <Link
                                 key={player.userId}
                                 to={`/profile/${player.userId}`}
-                                className={`leaderboard-card ${getRankClass(player.displayRank)} ${isCurrentUser ? 'current-user' : ''}`}
-                                aria-current={isCurrentUser ? 'true' : undefined}
+                                className={`leader-podium-card ${getRankClass(player.displayRank)} ${isCurrentUser ? 'current-user' : ''}`}
                             >
-                                <div className="rank-badge">
-                                    {getRankBadge(player.displayRank)}
-                                    <span className="rank-badge-number">{player.displayRank}</span>
-                                </div>
-                                <div className="player-avatar-wrapper">
-                                    <img
-                                        src={player.avatarUrl || GuestAvatar}
-                                        alt={`${player.name} avatar`}
-                                        className="player-avatar"
-                                    />
-                                </div>
-                                <div className="player-info">
-                                    <div className="player-name">
-                                        {player.name}
-                                        {isCurrentUser && <span className="you-badge">You</span>}
-                                    </div>
-                                    <div className="player-stats">
-                                        <span className="stat-item">
-                                            <FaChartLine className="stat-icon" />
-                                            {player.problemsSolved} solved
+                                <div className="leader-podium-top">
+                                    <span className="leader-podium-rank">
+                                        {getRankBadge(player.displayRank)}
+                                        {player.displayRank}
+                                    </span>
+                                    <span className="player-avatar-wrapper">
+                                        <img src={player.avatarUrl || GuestAvatar} alt="" className="player-avatar" />
+                                    </span>
+                                    <span className="leader-podium-identity">
+                                        <span className="player-name">
+                                            {player.name}
+                                            {isCurrentUser && <span className="you-badge">You</span>}
                                         </span>
-                                        {player.accuracy !== null && player.accuracy !== undefined && (
-                                            <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                                <FaBullseye className="stat-icon" />
-                                                {player.accuracy}%
-                                            </span>
-                                        )}
-                                        <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                            <FaFire className="stat-icon" />
-                                            {player.currentStreak || 0}d
-                                        </span>
-                                    </div>
+                                        <strong>{(player.xp || 0).toLocaleString()} <small>XP</small></strong>
+                                    </span>
                                 </div>
-                                <div className="player-xp">
-                                    <span className="xp-value">{primaryMetric.value}</span>
-                                    <span className="xp-label">{primaryMetric.label}</span>
+                                <div className="leader-podium-stats">
+                                    <div><span>Solved</span><strong>{player.problemsSolved ?? 0}</strong></div>
+                                    <div><span>Time spent</span><strong>{formatStudyTime(player.totalTimeMinutes)}</strong></div>
+                                    <div><span>Reputation</span><strong>{player.reputation ?? 0}</strong></div>
                                 </div>
                             </Link>
                         );
-                    })()
-                ))}
-            </div>
-
-            {currentUser && (
-                <div className="user-rank-card">
-                    <div className="your-rank-label">Your global rank</div>
-                    <Link
-                        to={`/profile/${currentUser.id}`}
-                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUser.rank)}`}
-                    >
-                        {(() => {
-                            const primaryMetric = getPrimaryMetric(currentUser);
-                            return (
-                                <>
-                                    <div className="rank-badge">
-                                        {getRankBadge(currentUser.rank)}
-                                        <span className="rank-badge-number">{currentUser.rank}</span>
-                                    </div>
-                                    <div className="player-avatar-wrapper">
-                                        <img
-                                            src={currentUser.avatarUrl || GuestAvatar}
-                                            alt={`${currentUser.name} avatar`}
-                                            className="player-avatar"
-                                        />
-                                    </div>
-                                    <div className="player-info">
-                                        <div className="player-name">
-                                            {currentUser.name}
-                                            <span className="you-badge">You</span>
-                                        </div>
-                                        <div className="player-stats">
-                                            <span className="stat-item">
-                                                <FaChartLine className="stat-icon" />
-                                                {currentUser.problemsSolved} solved
-                                            </span>
-                                            {currentUser.accuracy !== null && currentUser.accuracy !== undefined && (
-                                                <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                                    <FaBullseye className="stat-icon" />
-                                                    {currentUser.accuracy}%
-                                                </span>
-                                            )}
-                                            <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                                <FaFire className="stat-icon" />
-                                                {currentUser.currentStreak || 0}d
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="player-xp">
-                                        <span className="xp-value">{primaryMetric.value}</span>
-                                        <span className="xp-label">{primaryMetric.label}</span>
-                                    </div>
-                                </>
-                            );
-                        })()}
-                    </Link>
+                    })}
+                    {leaders.length === 0 && <p className="leaderboard-empty-state">No leaders to show yet.</p>}
                 </div>
-            )}
+            </section>
+
+            <section className="leaderboard-ranking" aria-labelledby="global-ranking-title">
+                <div className="leaderboard-ranking-heading">
+                    <h3 id="global-ranking-title">Global ranking</h3>
+                    <span>{filteredPlayers.length} players</span>
+                </div>
+                <div className="leaderboard-table">
+                    <div className="leaderboard-table-header" aria-hidden="true">
+                        <span>Rank</span>
+                        <span>Player</span>
+                        <span>Problems solved</span>
+                        <span>Time spent</span>
+                        <span>Accuracy</span>
+                        <span>Streak</span>
+                        <span>Reputation</span>
+                        <span>Total XP</span>
+                    </div>
+                    <div className="leaderboard-list">
+                        {filteredPlayers.length === 0 ? (
+                            <div className="leaderboard-empty-state">No players match this search.</div>
+                        ) : filteredPlayers.map((player) => {
+                            const isCurrentUser = String(player.userId) === String(currentUserId);
+                            return (
+                                <Link
+                                    key={player.userId}
+                                    to={`/profile/${player.userId}`}
+                                    className={`leaderboard-card ${getRankClass(player.displayRank)} ${isCurrentUser ? 'current-user' : ''}`}
+                                    aria-current={isCurrentUser ? 'true' : undefined}
+                                >
+                                    <span className="leaderboard-rank-cell">
+                                        {getRankBadge(player.displayRank)}
+                                        {player.displayRank}
+                                    </span>
+                                    <span className="leaderboard-player-cell">
+                                        <span className="player-avatar-wrapper">
+                                            <img src={player.avatarUrl || GuestAvatar} alt="" className="player-avatar" />
+                                        </span>
+                                        <span className="leaderboard-player-name">
+                                            {player.name}
+                                            {isCurrentUser && <span className="you-badge">You</span>}
+                                        </span>
+                                    </span>
+                                    <span className="leaderboard-value-cell">{player.problemsSolved ?? 0}</span>
+                                    <span className="leaderboard-value-cell">{formatStudyTime(player.totalTimeMinutes)}</span>
+                                    <span className="leaderboard-value-cell">
+                                        {player.accuracy === null || player.accuracy === undefined ? '—' : `${player.accuracy}%`}
+                                    </span>
+                                    <span className="leaderboard-value-cell">{player.currentStreak ?? 0}d</span>
+                                    <span className="leaderboard-value-cell">{player.reputation ?? 0}</span>
+                                    <span className="leaderboard-value-cell leaderboard-xp-cell">{(player.xp || 0).toLocaleString()}</span>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                {currentUserId && (
+                    <div className="user-rank-card">
+                        <Link
+                            to={`/profile/${currentUserId}`}
+                            className={`leaderboard-card current-user-highlight ${getRankClass(hasPinnedRank ? pinnedRank : 0)}`}
+                            aria-label={`Your leaderboard position${hasPinnedRank ? `: rank ${pinnedRank}` : ': rank unavailable'}`}
+                        >
+                            <span className="leaderboard-rank-cell">
+                                {hasPinnedRank ? getRankBadge(pinnedRank) : <FaHashtag className="rank-badge-icon" />}
+                                {hasPinnedRank ? pinnedRank : '—'}
+                            </span>
+                            <span className="leaderboard-player-cell">
+                                <span className="player-avatar-wrapper">
+                                    <img src={pinnedUser?.avatarUrl || GuestAvatar} alt="" className="player-avatar" />
+                                </span>
+                                <span className="leaderboard-player-name">
+                                    {pinnedUser?.name || 'Your account'}
+                                    <span className="you-badge">You</span>
+                                </span>
+                            </span>
+                            <span className="leaderboard-value-cell">{pinnedUser?.problemsSolved ?? 0}</span>
+                            <span className="leaderboard-value-cell">{formatStudyTime(pinnedUser?.totalTimeMinutes)}</span>
+                            <span className="leaderboard-value-cell">{pinnedUser?.accuracy ?? '—'}{pinnedUser?.accuracy === null || pinnedUser?.accuracy === undefined ? '' : '%'}</span>
+                            <span className="leaderboard-value-cell">{pinnedUser?.currentStreak ?? 0}d</span>
+                            <span className="leaderboard-value-cell">{pinnedUser?.reputation ?? 0}</span>
+                            <span className="leaderboard-value-cell leaderboard-xp-cell">{(pinnedUser?.xp ?? 0).toLocaleString()}</span>
+                        </Link>
+                    </div>
+                )}
+                </div>
+            </section>
         </article>
     );
 };

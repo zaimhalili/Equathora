@@ -1,0 +1,131 @@
+.leaderboard-skeleton-title,
+.leaderboard-skeleton-subtitle,
+.leaderboard-skeleton-heading,
+.leaderboard-skeleton-avatar,
+.leaderboard-skeleton-lines span,
+.leaderboard-skeleton-stats span,
+.leaderboard-skeleton-row > span,
+.leaderboard-skeleton-player i {
+    display: block;
+    border-radius: 999px;
+    background: linear-gradient(
+        100deg,
+        color-mix(in srgb, var(--secondary-color) 7%, var(--main-color)) 25%,
+        color-mix(in srgb, var(--secondary-color) 14%, var(--main-color)) 45%,
+        color-mix(in srgb, var(--secondary-color) 7%, var(--main-color)) 65%
+    );
+    background-size: 220% 100%;
+    animation: leaderboard-shimmer 1.4s ease-in-out infinite;
+}
+
+.leaderboard-skeleton-title {
+    width: min(300px, 55%);
+    height: 30px;
+    margin-bottom: 0.65rem;
+}
+
+.leaderboard-skeleton-subtitle {
+    width: min(420px, 78%);
+    height: 13px;
+}
+
+.leaderboard-skeleton-heading {
+    width: 170px;
+    height: 20px;
+    margin-bottom: 0.75rem;
+}
+
+.leaderboard-skeleton-card {
+    min-height: 145px;
+    padding: 0;
+}
+
+.leaderboard-skeleton-profile {
+    display: flex;
+    min-height: 90px;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem;
+}
+
+.leaderboard-skeleton-avatar {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.leaderboard-skeleton-lines {
+    display: grid;
+    flex: 1;
+    gap: 0.6rem;
+}
+
+.leaderboard-skeleton-lines span:first-child {
+    width: 72%;
+    height: 14px;
+}
+
+.leaderboard-skeleton-lines span:last-child {
+    width: 45%;
+    height: 18px;
+}
+
+.leaderboard-skeleton-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    border-top: 1px solid color-mix(in srgb, var(--secondary-color) 12%, transparent);
+}
+
+.leaderboard-skeleton-stats span {
+    height: 42px;
+    border-radius: 0;
+    animation-delay: 100ms;
+}
+
+.leaderboard-skeleton-row {
+    pointer-events: none;
+}
+
+.leaderboard-skeleton-row > span {
+    width: 62%;
+    height: 14px;
+    justify-self: center;
+    animation-delay: 80ms;
+}
+
+.leaderboard-skeleton-player {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.leaderboard-skeleton-player i:first-child {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+}
+
+.leaderboard-skeleton-player i:last-child {
+    width: 110px;
+    height: 14px;
+}
+
+@keyframes leaderboard-shimmer {
+    to {
+        background-position-x: -220%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .leaderboard-skeleton-title,
+    .leaderboard-skeleton-subtitle,
+    .leaderboard-skeleton-heading,
+    .leaderboard-skeleton-avatar,
+    .leaderboard-skeleton-lines span,
+    .leaderboard-skeleton-stats span,
+    .leaderboard-skeleton-row > span,
+    .leaderboard-skeleton-player i {
+        animation: none;
+    }
+}

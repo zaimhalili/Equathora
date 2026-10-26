@@ -285,7 +285,7 @@ async function computeLeaderboardFromTables(limit = 100) {
         // Get progress data for all users
         const { data: progressData } = await supabase
             .from('user_progress')
-            .select('user_id, solved_problems, correct_answers, wrong_submissions, total_attempts, reputation, perfect_streak, total_xp')
+            .select('user_id, solved_problems, correct_answers, wrong_submissions, total_attempts, reputation, perfect_streak, total_xp, total_time_minutes')
             .in('user_id', allUserIds);
 
         const { data: streakData } = await supabase
@@ -447,7 +447,7 @@ export async function getGlobalLeaderboard(limit = 100) {
         // Also pull raw progress/streak for a broader set to cover cases where the materialized view is stale or missing rows
         const { data: progressData } = await supabase
             .from('user_progress')
-            .select('user_id, solved_problems, correct_answers, wrong_submissions, total_attempts, reputation, perfect_streak, total_xp')
+            .select('user_id, solved_problems, correct_answers, wrong_submissions, total_attempts, reputation, perfect_streak, total_xp, total_time_minutes')
             .order('total_xp', { ascending: false })
             .limit(limit * 2);
 
@@ -548,6 +548,7 @@ export async function getGlobalLeaderboard(limit = 100) {
                 accuracy: accuracyVal,
                 reputation: viewRow?.reputation || progress?.reputation || 0,
                 currentStreak: streakMap[userId]?.currentStreak ?? 0,
+                totalTimeMinutes: Number(progress?.total_time_minutes ?? viewRow?.total_time_minutes ?? 0),
                 rank: viewRow?.rank || 0
             };
         });
@@ -626,7 +627,7 @@ export async function getCurrentUserRank() {
 
         const { data: progressRow } = await supabase
             .from('user_progress')
-            .select('total_attempts, wrong_submissions')
+            .select('total_attempts, wrong_submissions, total_time_minutes')
             .eq('user_id', session.user.id)
             .maybeSingle();
 
@@ -657,6 +658,7 @@ export async function getCurrentUserRank() {
             accuracy,
             reputation: data.reputation || 0,
             currentStreak,
+            totalTimeMinutes: Number(progressRow?.total_time_minutes ?? 0),
             rank: visibleRank
         };
     } catch (error) {
