@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBell, FaTrophy, FaBars, FaDiscord } from 'react-icons/fa';
 
@@ -39,28 +39,13 @@ import { FaSpinner } from 'react-icons/fa';
 const Navbar = () => {
   const { profile } = useUserProfile();
   const { premium, loading: onloading } = useSubscription();
-  const { stats, refreshStats } = useUserStats();
+  const { stats } = useUserStats();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const { unreadCount } = useNotifications();
   const { nextProblem, targetPath: dailyProblemTo, isFetching: dailyProblemLoading } = useRecommendedProblem(premium, onloading);
   const { profileAvatarSrc } = useProfileAvatar();
-
-  // Sync user stats on window focus or custom events
-  useEffect(() => {
-    const handleStatsSync = () => {
-      void refreshStats();
-    };
-
-    window.addEventListener('focus', handleStatsSync);
-    window.addEventListener('equathora:stats-updated', handleStatsSync);
-
-    return () => {
-      window.removeEventListener('focus', handleStatsSync);
-      window.removeEventListener('equathora:stats-updated', handleStatsSync);
-    };
-  }, [refreshStats]);
 
   const learnItems = [
     {

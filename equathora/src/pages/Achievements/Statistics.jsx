@@ -175,7 +175,7 @@ const Statistics = () => {
                   stackId="difficulty"
                   fill={getDifficultyColorForKey(key)}
                   maxBarSize={40}
-                  radius={0}
+                  radius={[6, 6, 6, 6]}
                 />
               ))}
             </BarChart>
