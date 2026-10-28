@@ -1,4 +1,18 @@
 .statistics-container {
+    --statistics-foreground: #edf2f4;
+    --statistics-difficulty-beginner: #38bdf8;
+    --statistics-difficulty-easy: #4ade80;
+    --statistics-difficulty-standard: #a3e635;
+    --statistics-difficulty-intermediate: #c084fc;
+    --statistics-difficulty-medium: #facc15;
+    --statistics-difficulty-challenging: #fb923c;
+    --statistics-difficulty-hard: #fb7185;
+    --statistics-difficulty-advanced: #818cf8;
+    --statistics-difficulty-expert: #e879f9;
+    --chart-grid-color: rgba(237, 242, 244, 0.14);
+    --chart-axis-color: rgba(237, 242, 244, 0.35);
+    --chart-hover-color: rgba(237, 242, 244, 0.08);
+    --chart-pie-stroke: #202231;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -67,7 +81,7 @@
 .stat-number {
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 800;
-    color: var(--dark-accent-color);
+    color: var(--light-accent-color);
     margin-bottom: 0.5rem;
 }
 
@@ -141,7 +155,7 @@
 .difficulty-label {
     font-size: clamp(0.9rem, 2.5vw, 1.2rem);
     font-weight: 500;
-    color: var(--french-gray);
+    color: var(--mid-main-secondary);
     text-transform: capitalize;
 }
 
@@ -225,6 +239,34 @@ progress.progress-bar::-moz-progress-bar {
     position: relative;
 }
 
+.difficulty-chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem 1.25rem;
+    margin-top: 0.75rem;
+    padding: 0 0.5rem;
+}
+
+.difficulty-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--statistics-foreground);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.difficulty-legend-item i {
+    width: 0.7rem;
+    height: 0.7rem;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background-color: var(--difficulty-color);
+}
+
 .learning-insights {
     padding: clamp(1rem, 2vw, 1.5rem);
 }
@@ -265,7 +307,7 @@ progress.progress-bar::-moz-progress-bar {
 }
 
 .insight-card-heading h4 {
-    color: var(--main-color);
+    color: var(--statistics-foreground);
     font-size: 1rem;
     font-weight: 600;
 }
@@ -293,7 +335,7 @@ progress.progress-bar::-moz-progress-bar {
 
 .topic-performance-heading h5 {
     overflow: hidden;
-    color: var(--main-color);
+    color: var(--statistics-foreground);
     font-size: 0.95rem;
     font-weight: 500;
     text-overflow: ellipsis;
@@ -308,7 +350,7 @@ progress.progress-bar::-moz-progress-bar {
 
 .topic-performance-heading strong {
     flex: 0 0 auto;
-    color: var(--main-color);
+    color: var(--statistics-foreground);
     font-size: 0.95rem;
 }
 
@@ -353,7 +395,7 @@ progress.progress-bar::-moz-progress-bar {
 }
 
 .difficulty-donut-center strong {
-    color: var(--main-color);
+    color: var(--statistics-foreground);
     font-size: clamp(0.85rem, 2vw, 1.1rem);
     font-weight: 600;
 }
@@ -395,7 +437,7 @@ progress.progress-bar::-moz-progress-bar {
 
 .difficulty-time-name {
     gap: 0.45rem;
-    color: var(--main-color);
+    color: var(--statistics-foreground);
     font-size: 0.88rem;
 }
 
@@ -414,7 +456,7 @@ progress.progress-bar::-moz-progress-bar {
 }
 
 .difficulty-time-values strong {
-    color: var(--main-color);
+    color: var(--statistics-foreground);
     font-size: 0.9rem;
     font-weight: 500;
 }

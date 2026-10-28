@@ -1,4 +1,5 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import { getAllProblems } from '../lib/problemService';
 import { getAchievementProgress, getUserSubmissions } from '../lib/databaseService';
@@ -7,6 +8,7 @@ import { difficultyDisplayRank, formatDifficultyLabel, getDifficultyColor, norma
 import { getSolvedTopics } from '../lib/profileExportData';
 
 const CACHE_KEY = 'eq_user_stats_cache';
+const STATS_REFRESH_INTERVAL = 5 * 60 * 1000;
 
 const defaultStats = {
     problemsSolved: 0,
@@ -304,24 +306,70 @@ async function aggregateStats() {
         };
     } catch (error) {
         console.error('Failed to aggregate user stats:', error);
-        return { ...defaultStats, lastUpdated: new Date().toISOString() };
+        throw error;
     }
 }
 
 const UserStatsContext = createContext(null);
 
 export function UserStatsProvider({ children }) {
-    const [stats, setStats] = useState(() => getCachedStats() || defaultStats);
-    const [loading, setLoading] = useState(true);
+    const location = useLocation();
+    const statsRef = useRef(defaultStats);
+    const lastRefreshAtRef = useRef(0);
+    const refreshInFlightRef = useRef(null);
+    const refreshAgainRef = useRef(false);
+    const refreshStatsRef = useRef(null);
+    const previousPathRef = useRef(location.pathname);
+    const [stats, setStats] = useState(() => {
+        const cachedStats = getCachedStats();
+        if (cachedStats) {
+            statsRef.current = cachedStats;
+            const lastUpdated = Date.parse(cachedStats.lastUpdated);
+            lastRefreshAtRef.current = Number.isFinite(lastUpdated) ? lastUpdated : 0;
+        }
+        return cachedStats || defaultStats;
+    });
+    const [loading, setLoading] = useState(() => !statsRef.current.lastUpdated);
 
-    const refreshStats = useCallback(async () => {
-        setLoading(true);
-        const fetchedStats = await aggregateStats();
-        setStats(fetchedStats);
-        setCachedStats(fetchedStats);
-        setLoading(false);
-        return fetchedStats;
+    const refreshStats = useCallback(({ force = false } = {}) => {
+        if (!force && Date.now() - lastRefreshAtRef.current < STATS_REFRESH_INTERVAL) {
+            return Promise.resolve(statsRef.current);
+        }
+        if (refreshInFlightRef.current) {
+            if (force) refreshAgainRef.current = true;
+            return refreshInFlightRef.current;
+        }
+
+        const shouldShowLoading = !statsRef.current.lastUpdated;
+        if (shouldShowLoading) setLoading(true);
+
+        const refreshPromise = aggregateStats()
+            .then((fetchedStats) => {
+                statsRef.current = fetchedStats;
+                lastRefreshAtRef.current = Date.now();
+                setStats(fetchedStats);
+                setCachedStats(fetchedStats);
+                return fetchedStats;
+            })
+            .catch(() => statsRef.current)
+            .finally(() => {
+                refreshInFlightRef.current = null;
+                if (shouldShowLoading) setLoading(false);
+                if (refreshAgainRef.current) {
+                    refreshAgainRef.current = false;
+                    window.setTimeout(() => {
+                        void refreshStatsRef.current?.({ force: true });
+                    }, 0);
+                }
+            });
+
+        refreshInFlightRef.current = refreshPromise;
+        return refreshPromise;
     }, []);
+
+    useEffect(() => {
+        refreshStatsRef.current = refreshStats;
+    }, [refreshStats]);
 
     useEffect(() => {
         void refreshStats();
@@ -329,12 +377,37 @@ export function UserStatsProvider({ children }) {
 
     useEffect(() => {
         const handleStatsUpdated = () => {
-            void refreshStats();
+            void refreshStats({ force: true });
         };
 
         window.addEventListener('equathora:stats-updated', handleStatsUpdated);
         return () => {
             window.removeEventListener('equathora:stats-updated', handleStatsUpdated);
+        };
+    }, [refreshStats]);
+
+    useEffect(() => {
+        if (previousPathRef.current === location.pathname) return;
+        previousPathRef.current = location.pathname;
+
+        const isAchievementsRoute = location.pathname.startsWith('/achievements');
+        if (!isAchievementsRoute) {
+            void refreshStats();
+        }
+    }, [location.pathname, refreshStats]);
+
+    useEffect(() => {
+        const refreshIfStale = () => {
+            if (document.visibilityState === 'visible') {
+                void refreshStats();
+            }
+        };
+        const intervalId = window.setInterval(refreshIfStale, STATS_REFRESH_INTERVAL);
+        document.addEventListener('visibilitychange', refreshIfStale);
+
+        return () => {
+            window.clearInterval(intervalId);
+            document.removeEventListener('visibilitychange', refreshIfStale);
         };
     }, [refreshStats]);
 
