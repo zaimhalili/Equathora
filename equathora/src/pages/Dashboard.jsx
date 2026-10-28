@@ -21,7 +21,6 @@ import UpgradedPopup from '@/components/Premium/UpgradedPopup.jsx';
 import { useUser } from '@/hooks/Dashboard/useUser.js';
 import { useRecommendedProblem } from '@/hooks/useRecommendedProblem';
 import { FaSpinner } from 'react-icons/fa';
-import PrimaryButton from '@/components/ui/Buttons/PrimaryButton.jsx';
 import SecondaryButton from '@/components/ui/Buttons/SecondaryButton.jsx';
 
 const Dashboard = () => {
@@ -236,7 +235,6 @@ const Dashboard = () => {
                                     {/* CTA Buttons */}
                                     <div className="flex gap-3 max-w-100">
                                         <SecondaryButton text={'Apply Now'} link={true} to={'/applymentor'} className={'flex-1'} />
-                                        <PrimaryButton text={'Apply Now'} link={true} to={'/applymentor'} className={'flex-1'} />
                                     </div>
                                 </div>
                             </div>
