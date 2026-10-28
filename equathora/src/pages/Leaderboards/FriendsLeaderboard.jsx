@@ -1,9 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 import { getFriendsLeaderboard, getCurrentUserRank } from '../../lib/leaderboardService';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
 import { FaBullseye, FaChartLine, FaCrown, FaHashtag, FaMedal, FaSpinner } from 'react-icons/fa';
+import {
+    getRankBadgeClass,
+    getRankToneClass,
+    leaderboardAvatarClass,
+    leaderboardAvatarWrapClass,
+    leaderboardEmptyClass,
+    leaderboardFilterIconClass,
+    leaderboardListClass,
+    leaderboardPanelClass,
+    leaderboardPlayerInfoClass,
+    leaderboardPlayerNameClass,
+    leaderboardPlayerStatsClass,
+    leaderboardRowClass,
+    leaderboardStatClass,
+    leaderboardSubtitleClass,
+    leaderboardTitleClass,
+    leaderboardYouBadgeClass,
+    leaderboardXpClass,
+    leaderboardXpLabelClass,
+    leaderboardXpValueClass
+} from './leaderboardStyles';
 
 const FriendsLeaderboard = () => {
     const [players, setPlayers] = useState([]);
@@ -34,16 +54,13 @@ const FriendsLeaderboard = () => {
     };
 
     const getRankBadge = (rank) => {
-        if (rank === 1) return <FaCrown className="rank-badge-icon" />;
-        if (rank === 2 || rank === 3) return <FaMedal className="rank-badge-icon" />;
-        return <FaHashtag className="rank-badge-icon" />;
+        if (rank === 1) return <FaCrown className="text-sm" />;
+        if (rank === 2 || rank === 3) return <FaMedal className="text-sm" />;
+        return <FaHashtag className="text-sm" />;
     };
 
     const getRankClass = (rank) => {
-        if (rank === 1) return 'rank-gold';
-        if (rank === 2) return 'rank-silver';
-        if (rank === 3) return 'rank-bronze';
-        return 'rank-default';
+        return getRankToneClass(rank);
     };
 
     const currentUserFriendsRank = players.find(
@@ -52,10 +69,10 @@ const FriendsLeaderboard = () => {
 
     if (loading) {
         return (
-            <article className="global-leaderboard">
-                <div className="leaderboard-header">
-                    <h2>Friends Leaderboard</h2>
-                    <p className="leaderboard-subtitle">Compete with your friends</p>
+            <article className={leaderboardPanelClass}>
+                <div>
+                    <h2 className={leaderboardTitleClass}>Friends Leaderboard</h2>
+                    <p className={leaderboardSubtitleClass}>Compete with your friends</p>
                 </div>
                 <div className="w-full flex justify-center pt-40">
                     <FaSpinner className='animate-spin text-3xl' />
@@ -66,16 +83,16 @@ const FriendsLeaderboard = () => {
 
     if (error) {
         return (
-            <article className="global-leaderboard">
-                <div className="leaderboard-header">
-                    <h2>Friends Leaderboard</h2>
-                    <p className="leaderboard-subtitle">Compete with your friends</p>
+            <article className={leaderboardPanelClass}>
+                <div>
+                    <h2 className={leaderboardTitleClass}>Friends Leaderboard</h2>
+                    <p className={leaderboardSubtitleClass}>Compete with your friends</p>
                 </div>
-                <div className="error-container" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>
-                    <p>{error}</p>
+                <div className="p-12 text-center text-red-500">
+                    <p role="alert">{error}</p>
                     <button
                         onClick={fetchFriends}
-                        style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}
+                        className="mt-4 cursor-pointer rounded-lg bg-(--accent-color) px-4 py-2 text-white transition hover:opacity-90"
                     >
                         Retry
                     </button>
@@ -86,112 +103,112 @@ const FriendsLeaderboard = () => {
 
     if (!players.length) {
         return (
-            <article className="global-leaderboard">
-                <div className="leaderboard-header">
-                    <h2>Friends Leaderboard</h2>
-                    <p className="leaderboard-subtitle">Compete with your friends</p>
+            <article className={leaderboardPanelClass}>
+                <div>
+                    <h2 className={leaderboardTitleClass}>Friends Leaderboard</h2>
+                    <p className={leaderboardSubtitleClass}>Compete with your friends</p>
                 </div>
-                <div className="empty-container" style={{ textAlign: 'center', padding: '3rem', color: 'var(--secondary-color)' }}>
+                <div className={leaderboardEmptyClass}>
                     <p>No friends data yet.</p>
-                    <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Add friends to see them here.</p>
+                    <p className="mt-2 text-sm">Add friends to see them here.</p>
                 </div>
             </article>
         );
     }
 
     return (
-        <article className="global-leaderboard">
-            <div className="leaderboard-header">
-                <h2>Friends Leaderboard</h2>
-                <p className="leaderboard-subtitle">Compete with your friends</p>
+        <article className={leaderboardPanelClass}>
+            <div>
+                <h2 className={leaderboardTitleClass}>Friends Leaderboard</h2>
+                <p className={leaderboardSubtitleClass}>Compete with your friends</p>
             </div>
 
-            <div className="leaderboard-list">
+            <div className={leaderboardListClass}>
                 {players.map((player) => (
                     <Link
                         key={player.userId}
                         to={`/profile/${player.userId}`}
-                        className={`leaderboard-card ${getRankClass(player.rank)} ${currentUser && player.userId === currentUser.userId ? 'current-user' : ''}`}
+                        className={`${leaderboardRowClass} ${getRankClass(player.rank)} ${currentUser && player.userId === currentUser.userId ? 'bg-[color-mix(in_srgb,var(--accent-color)_7%,var(--main-color))] shadow-[inset_3px_0_0_var(--accent-color)]' : ''}`}
                         aria-current={currentUser && player.userId === currentUser.userId ? 'true' : undefined}
                     >
-                        <div className="rank-badge">
-                            {getRankBadge(player.rank)}
-                            <span className="rank-badge-number">{player.rank}</span>
+                        <div className={`flex h-10 w-[54px] min-w-[54px] items-center justify-center gap-1.5 rounded-[10px] bg-[color-mix(in_srgb,var(--secondary-color)_6%,var(--main-color))] text-base font-bold max-[680px]:h-9 max-[680px]:w-9 max-[680px]:min-w-9 max-[680px]:gap-0.5 ${getRankBadgeClass(player.rank)}`}>
+                            <span className="max-[680px]:hidden">{getRankBadge(player.rank)}</span>
+                            <span className="text-sm font-extrabold">{player.rank}</span>
                         </div>
-                        <div className="player-avatar-wrapper">
+                        <div className={leaderboardAvatarWrapClass}>
                             <img
                                 src={player.avatarUrl || GuestAvatar}
                                 alt={`${player.name} avatar`}
-                                className="player-avatar"
+                                className={leaderboardAvatarClass}
                             />
                         </div>
-                        <div className="player-info">
-                            <div className="player-name">
+                        <div className={leaderboardPlayerInfoClass}>
+                            <div className={leaderboardPlayerNameClass}>
                                 {player.name}
                                 {currentUser && player.userId === currentUser.userId && (
-                                    <span className="you-badge">You</span>
+                                    <span className={leaderboardYouBadgeClass}>You</span>
                                 )}
                             </div>
-                            <div className="player-stats">
-                                <span className="stat-item">
-                                    <FaChartLine className="stat-icon" />
+                            <div className={leaderboardPlayerStatsClass}>
+                                <span className={leaderboardStatClass}>
+                                    <FaChartLine className={leaderboardFilterIconClass} />
                                     {player.problemsSolved} solved
                                 </span>
                                 {player.accuracy !== null && player.accuracy !== undefined && (
-                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                        <FaBullseye className="stat-icon" />
+                                    <span className={leaderboardStatClass}>
+                                        <FaBullseye className={leaderboardFilterIconClass} />
                                         {player.accuracy}%
                                     </span>
                                 )}
                             </div>
                         </div>
-                        <div className="player-xp">
-                            <span className="xp-value">{player.xp.toLocaleString()}</span>
-                            <span className="xp-label">XP</span>
+                        <div className={leaderboardXpClass}>
+                            <span className={leaderboardXpValueClass}>{player.xp.toLocaleString()}</span>
+                            <span className={leaderboardXpLabelClass}>XP</span>
                         </div>
                     </Link>
                 ))}
             </div>
 
             {currentUser && (
-                <div className="user-rank-card">
-                    <div className="your-rank-label">Your friends rank</div>
+                <div className="absolute inset-x-0 bottom-0 z-[3] border-t border-[color-mix(in_srgb,var(--accent-color)_30%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_96%,transparent)] p-2 shadow-[0_-8px_22px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+                    <div className="mb-1 text-left text-xs font-bold uppercase tracking-wider">Your friends rank</div>
                     <Link
                         to={`/profile/${currentUser.userId}`}
-                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUserFriendsRank)}`}
+                        className={`${leaderboardRowClass} rounded-lg bg-[color-mix(in_srgb,var(--accent-color)_7%,var(--main-color))] shadow-[inset_3px_0_0_var(--accent-color)] ${getRankClass(currentUserFriendsRank)}`}
                     >
-                        <div className="rank-badge">
-                            {getRankBadge(currentUserFriendsRank)}
-                            <span className="rank-badge-number">{currentUserFriendsRank}</span>
+                        <div className={`flex h-10 w-[54px] min-w-[54px] items-center justify-center gap-1.5 rounded-[10px] bg-[color-mix(in_srgb,var(--secondary-color)_6%,var(--main-color))] text-base font-bold max-[680px]:h-9 max-[680px]:w-9 max-[680px]:min-w-9 max-[680px]:gap-0.5 ${getRankBadgeClass(currentUserFriendsRank)}`}>
+                            <span className="max-[680px]:hidden">{getRankBadge(currentUserFriendsRank)}</span>
+                            <span className="text-sm font-extrabold">{currentUserFriendsRank}</span>
                         </div>
-                        <div className="player-avatar-wrapper">
+                        <div className={leaderboardAvatarWrapClass}>
                             <img
                                 src={currentUser.avatarUrl || GuestAvatar}
                                 alt={`${currentUser.name} avatar`}
-                                className="player-avatar"
+                                className={leaderboardAvatarClass}
                             />
                         </div>
-                        <div className="player-info">
-                            <div className="player-name">
+                        <div className={leaderboardPlayerInfoClass}>
+                            <div className={leaderboardPlayerNameClass}>
                                 {currentUser.name}
-                                <span className="you-badge">You</span>
+                                <span className={leaderboardYouBadgeClass}>You</span>
                             </div>
-                            <div className="player-stats">
-                                <span className="stat-item">
-                                    <FaChartLine className="stat-icon" />
+                            <div className={leaderboardPlayerStatsClass}>
+                                <span className={leaderboardStatClass}>
+                                    <FaChartLine className={leaderboardFilterIconClass} />
                                     {currentUser.problemsSolved} solved
                                 </span>
                                 {currentUser.accuracy !== null && currentUser.accuracy !== undefined && (
-                                    <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                        <FaBullseye className="stat-icon" />
+                                    <span className={leaderboardStatClass}>
+                                        <FaBullseye className={leaderboardFilterIconClass} />
                                         {currentUser.accuracy}%
                                     </span>
                                 )}
                             </div>
                         </div>
-                        <div className="player-xp">
-                            <span className="xp-value">{currentUser.xp.toLocaleString()}</span>
-                            <span className="xp-label">XP</span>
+                        <div className={leaderboardXpClass}>
+                            <span className={leaderboardXpValueClass}>{currentUser.xp.toLocaleString()}</span>
+                            <span className={leaderboardXpLabelClass}>XP</span>
                         </div>
                     </Link>
                 </div>

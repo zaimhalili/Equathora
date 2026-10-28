@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import './GlobalLeaderboard.css';
 import { Link } from 'react-router-dom';
 import { getCachedGlobalLeaderboard, getCurrentUserRank } from '../../lib/leaderboardService';
 import { getCompletedProblems, getStreakData, getUserProgress } from '../../lib/databaseService';
@@ -7,6 +6,22 @@ import { supabase } from '../../lib/supabaseClient';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
 import { FaCrown, FaHashtag, FaMedal, FaSearch } from 'react-icons/fa';
 import LeaderboardSkeleton from './LeaderboardSkeleton';
+import {
+    getRankBadgeClass,
+    getRankToneClass,
+    leaderboardAvatarClass,
+    leaderboardAvatarWrapClass,
+    leaderboardEmptyClass,
+    leaderboardFilterClass,
+    leaderboardFilterIconClass,
+    leaderboardFilterInputClass,
+    leaderboardFilterSelectClass,
+    leaderboardPanelClass,
+    leaderboardPlayerNameClass,
+    leaderboardSubtitleClass,
+    leaderboardTitleClass,
+    leaderboardYouBadgeClass
+} from './leaderboardStyles';
 
 const GlobalLeaderboard = () => {
     const [players, setPlayers] = useState([]);
@@ -182,16 +197,13 @@ const GlobalLeaderboard = () => {
     const hasPinnedRank = Number.isInteger(pinnedRank) && pinnedRank > 0;
 
     const getRankBadge = (rank) => {
-        if (rank === 1) return <FaCrown className="rank-badge-icon" />;
-        if (rank === 2 || rank === 3) return <FaMedal className="rank-badge-icon" />;
-        return <FaHashtag className="rank-badge-icon" />;
+        if (rank === 1) return <FaCrown className="text-sm" />;
+        if (rank === 2 || rank === 3) return <FaMedal className="text-sm" />;
+        return <FaHashtag className="text-sm" />;
     };
 
     const getRankClass = (rank) => {
-        if (rank === 1) return 'rank-gold';
-        if (rank === 2) return 'rank-silver';
-        if (rank === 3) return 'rank-bronze';
-        return 'rank-default';
+        return getRankToneClass(rank);
     };
 
     if (loading) {
@@ -200,16 +212,16 @@ const GlobalLeaderboard = () => {
 
     if (error) {
         return (
-            <article className="global-leaderboard">
-                <div className="leaderboard-header">
-                    <h2>Global Leaderboard</h2>
-                    <p className="leaderboard-subtitle">See how you rank across the Equathora community.</p>
+            <article className={leaderboardPanelClass}>
+                <div>
+                    <h2 className={leaderboardTitleClass}>Global Leaderboard</h2>
+                    <p className={leaderboardSubtitleClass}>See how you rank across the Equathora community.</p>
                 </div>
-                <div className="error-container" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>
-                    <p>{error}</p>
+                <div className="p-12 text-center text-red-500">
+                    <p role="alert">{error}</p>
                     <button
                         onClick={fetchLeaderboardData}
-                        style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}
+                        className="mt-4 cursor-pointer rounded-lg bg-(--accent-color) px-4 py-2 text-white transition hover:opacity-90"
                     >
                         Retry
                     </button>
@@ -219,29 +231,29 @@ const GlobalLeaderboard = () => {
     }
 
     return (
-        <article className="global-leaderboard">
-            <div className="leaderboard-header">
-                <div className="leaderboard-toolbar">
-                    <div className="leaderboard-title">
-                        <h2>Global Leaderboard</h2>
-                        <p className="leaderboard-subtitle">See how you rank across the Equathora community.</p>
+        <article className={leaderboardPanelClass}>
+            <div>
+                <div className="flex items-center justify-between gap-5 max-[680px]:flex-col max-[680px]:items-stretch max-[680px]:gap-3">
+                    <div className="space-y-1">
+                        <h2 className={leaderboardTitleClass}>Global Leaderboard</h2>
+                        <p className={leaderboardSubtitleClass}>See how you rank across the Equathora community.</p>
                     </div>
-                    <div className="leaderboard-filters">
-                        <label className="leaderboard-filter search-filter">
-                            <FaSearch className="filter-icon" />
+                    <div className="flex items-center justify-end gap-2 max-[680px]:justify-stretch">
+                        <label className={`${leaderboardFilterClass} min-w-[190px] max-[680px]:min-w-0 max-[680px]:flex-1 max-[420px]:basis-full`}>
+                            <FaSearch className={leaderboardFilterIconClass} />
                             <input
                                 type="text"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 placeholder="Search player"
-                                className="leaderboard-filter-input"
+                                className={leaderboardFilterInputClass}
                                 aria-label="Search leaderboard by player name"
                             />
                         </label>
 
-                        <label className="leaderboard-filter">
-                            <span className="sort-label">Sort by</span>
-                            <select value={metric} onChange={(e) => setMetric(e.target.value)} className="leaderboard-filter-select" aria-label="Sort by">
+                        <label className={`${leaderboardFilterClass} max-[420px]:min-h-[38px]`}>
+                            <span className="shrink-0 text-[0.82rem] opacity-70">Sort by</span>
+                            <select value={metric} onChange={(e) => setMetric(e.target.value)} className={leaderboardFilterSelectClass} aria-label="Sort by">
                                 <option value="xp">Total XP</option>
                                 <option value="solved">Problems solved</option>
                                 <option value="accuracy">Accuracy</option>
@@ -252,56 +264,56 @@ const GlobalLeaderboard = () => {
                 </div>
             </div>
 
-            <section className="leaderboard-leaders" aria-labelledby="leaderboard-leaders-title">
-                <h3 id="leaderboard-leaders-title">Current leaders</h3>
-                <div className="leaderboard-podium">
+            <section className="grid gap-3" aria-labelledby="leaderboard-leaders-title">
+                <h3 id="leaderboard-leaders-title" className="m-0 text-xl font-bold">Current leaders</h3>
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                     {leaders.map((player) => {
                         const isCurrentUser = String(player.userId) === String(currentUserId);
                         return (
                             <Link
                                 key={player.userId}
                                 to={`/profile/${player.userId}`}
-                                className={`leader-podium-card ${getRankClass(player.displayRank)} ${isCurrentUser ? 'current-user' : ''}`}
+                                className={`flex min-w-0 flex-col overflow-hidden rounded-xl border border-[color-mix(in_srgb,var(--secondary-color)_14%,transparent)] bg-[color-mix(in_srgb,var(--secondary-color)_3%,var(--main-color))] text-(--secondary-color) no-underline ${getRankClass(player.displayRank)} ${isCurrentUser ? 'shadow-[inset_0_0_0_2px_var(--accent-color)]' : ''}`}
                             >
-                                <div className="leader-podium-top">
-                                    <span className="leader-podium-rank">
-                                        {getRankBadge(player.displayRank)}
-                                        {player.displayRank}
+                                <div className="flex min-h-[84px] items-center gap-3 p-3">
+                                    <span className="inline-flex w-7 shrink-0 flex-col items-center gap-1 text-xs font-bold">
+                                        <span className="text-base">{getRankBadge(player.displayRank)}</span>
+                                        <span>{player.displayRank}</span>
                                     </span>
-                                    <span className="player-avatar-wrapper">
-                                        <img src={player.avatarUrl || GuestAvatar} alt="" className="player-avatar" />
+                                    <span className={leaderboardAvatarWrapClass}>
+                                        <img src={player.avatarUrl || GuestAvatar} alt="" className={leaderboardAvatarClass} />
                                     </span>
-                                    <span className="leader-podium-identity">
-                                        <span className="player-name">
+                                    <span className="grid min-w-0 flex-1 gap-1">
+                                        <span className={`${leaderboardPlayerNameClass} text-[0.95rem]`}>
                                             {player.name}
-                                            {isCurrentUser && <span className="you-badge">You</span>}
+                                            {isCurrentUser && <span className={leaderboardYouBadgeClass}>You</span>}
                                             {!isCurrentUser
                                                 && currentUserName
                                                 && player.name?.trim().toLowerCase() === currentUserName
-                                                && <span className="other-profile-badge">Other profile</span>}
+                                                && <span className="inline-flex shrink-0 items-center rounded-full border border-[color-mix(in_srgb,var(--secondary-color)_16%,transparent)] px-2 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide opacity-70">Other profile</span>}
                                         </span>
-                                        <strong>{(player.xp || 0).toLocaleString()} <small>XP</small></strong>
+                                        <strong className="text-lg">{(player.xp || 0).toLocaleString()} <small className="text-[0.68rem] opacity-70">XP</small></strong>
                                     </span>
                                 </div>
-                                <div className="leader-podium-stats">
-                                    <div><span>Solved</span><strong>{player.problemsSolved ?? 0}</strong></div>
-                                    <div><span>Time spent</span><strong>{formatStudyTime(player.totalTimeMinutes)}</strong></div>
-                                    <div><span>Reputation</span><strong>{player.reputation ?? 0}</strong></div>
+                                <div className="grid grid-cols-3 border-t border-[color-mix(in_srgb,var(--secondary-color)_12%,transparent)] [&>div+div]:border-l [&>div+div]:border-[color-mix(in_srgb,var(--secondary-color)_12%,transparent)]">
+                                    <div className="grid gap-1 p-2.5"><span className="text-[0.68rem] uppercase opacity-70">Solved</span><strong>{player.problemsSolved ?? 0}</strong></div>
+                                    <div className="grid gap-1 p-2.5"><span className="text-[0.68rem] uppercase opacity-70">Time spent</span><strong>{formatStudyTime(player.totalTimeMinutes)}</strong></div>
+                                    <div className="grid gap-1 p-2.5"><span className="text-[0.68rem] uppercase opacity-70">Reputation</span><strong>{player.reputation ?? 0}</strong></div>
                                 </div>
                             </Link>
                         );
                     })}
-                    {leaders.length === 0 && <p className="leaderboard-empty-state">No leaders to show yet.</p>}
+                    {leaders.length === 0 && <p className={leaderboardEmptyClass}>No leaders to show yet.</p>}
                 </div>
             </section>
 
-            <section className="leaderboard-ranking" aria-labelledby="global-ranking-title">
-                <div className="leaderboard-ranking-heading">
-                    <h3 id="global-ranking-title">Global ranking</h3>
-                    <span>{filteredPlayers.length} players</span>
+            <section className="grid gap-3" aria-labelledby="global-ranking-title">
+                <div className="flex items-baseline justify-between gap-3">
+                    <h3 id="global-ranking-title" className="m-0 text-xl font-bold">Global ranking</h3>
+                    <span className="text-xs opacity-70">{filteredPlayers.length} players</span>
                 </div>
-                <div className="leaderboard-table">
-                    <div className="leaderboard-table-header" aria-hidden="true">
+                <div className="relative min-w-0 overflow-x-auto rounded-xl border border-[color-mix(in_srgb,var(--secondary-color)_13%,transparent)] pb-[5.5rem]">
+                    <div className="sticky top-0 z-[2] grid min-w-[930px] grid-cols-[64px_minmax(190px,2.2fr)_repeat(5,minmax(88px,1fr))_minmax(100px,1fr)] items-center gap-3 border-b border-[color-mix(in_srgb,var(--secondary-color)_14%,transparent)] bg-[color-mix(in_srgb,var(--secondary-color)_4%,var(--main-color))] px-4 py-3 text-xs font-bold opacity-80" aria-hidden="true">
                         <span>Rank</span>
                         <span>Player</span>
                         <span>Problems solved</span>
@@ -311,73 +323,73 @@ const GlobalLeaderboard = () => {
                         <span>Reputation</span>
                         <span>Total XP</span>
                     </div>
-                    <div className="leaderboard-list">
+                    <div className="flex max-h-[min(600px,58vh)] min-w-[930px] flex-col overflow-auto">
                         {filteredPlayers.length === 0 ? (
-                            <div className="leaderboard-empty-state">No players match this search.</div>
+                            <div className={`${leaderboardEmptyClass} min-w-[930px]`}>No players match this search.</div>
                         ) : filteredPlayers.map((player) => {
                             const isCurrentUser = String(player.userId) === String(currentUserId);
                             return (
                                 <Link
                                     key={player.userId}
                                     to={`/profile/${player.userId}`}
-                                    className={`leaderboard-card ${getRankClass(player.displayRank)} ${isCurrentUser ? 'current-user' : ''}`}
+                                    className={`grid min-h-[68px] min-w-[930px] grid-cols-[64px_minmax(190px,2.2fr)_repeat(5,minmax(88px,1fr))_minmax(100px,1fr)] items-center gap-3 border-b border-[color-mix(in_srgb,var(--secondary-color)_10%,transparent)] px-4 py-2.5 text-(--secondary-color) no-underline transition-colors hover:bg-[color-mix(in_srgb,var(--secondary-color)_5%,var(--main-color))] ${getRankClass(player.displayRank)} ${isCurrentUser ? 'bg-[color-mix(in_srgb,var(--accent-color)_9%,var(--main-color))] shadow-[inset_4px_0_0_var(--accent-color)]' : ''}`}
                                     aria-current={isCurrentUser ? 'true' : undefined}
                                 >
-                                    <span className="leaderboard-rank-cell">
-                                        {getRankBadge(player.displayRank)}
+                                    <span className="flex items-center gap-2 font-bold">
+                                        <span className={`inline-flex rounded-lg p-1 ${getRankBadgeClass(player.displayRank)}`}>{getRankBadge(player.displayRank)}</span>
                                         {player.displayRank}
                                     </span>
-                                    <span className="leaderboard-player-cell">
-                                        <span className="player-avatar-wrapper">
-                                            <img src={player.avatarUrl || GuestAvatar} alt="" className="player-avatar" />
+                                    <span className="flex min-w-0 items-center gap-2.5">
+                                        <span className={`${leaderboardAvatarWrapClass} h-[38px] w-[38px]`}>
+                                            <img src={player.avatarUrl || GuestAvatar} alt="" className={leaderboardAvatarClass} />
                                         </span>
-                                        <span className="leaderboard-player-name">
+                                        <span className={leaderboardPlayerNameClass}>
                                             {player.name}
-                                            {isCurrentUser && <span className="you-badge">You</span>}
+                                            {isCurrentUser && <span className={leaderboardYouBadgeClass}>You</span>}
                                             {!isCurrentUser
                                                 && currentUserName
                                                 && player.name?.trim().toLowerCase() === currentUserName
-                                                && <span className="other-profile-badge">Other profile</span>}
+                                                && <span className="inline-flex shrink-0 items-center rounded-full border border-[color-mix(in_srgb,var(--secondary-color)_16%,transparent)] px-2 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide opacity-70">Other profile</span>}
                                         </span>
                                     </span>
-                                    <span className="leaderboard-value-cell">{player.problemsSolved ?? 0}</span>
-                                    <span className="leaderboard-value-cell">{formatStudyTime(player.totalTimeMinutes)}</span>
-                                    <span className="leaderboard-value-cell">
+                                    <span className="px-1 text-center tabular-nums">{player.problemsSolved ?? 0}</span>
+                                    <span className="px-1 text-center tabular-nums">{formatStudyTime(player.totalTimeMinutes)}</span>
+                                    <span className="px-1 text-center tabular-nums">
                                         {player.accuracy === null || player.accuracy === undefined ? '—' : `${player.accuracy}%`}
                                     </span>
-                                    <span className="leaderboard-value-cell">{player.currentStreak ?? 0}d</span>
-                                    <span className="leaderboard-value-cell">{player.reputation ?? 0}</span>
-                                    <span className="leaderboard-value-cell leaderboard-xp-cell">{(player.xp || 0).toLocaleString()}</span>
+                                    <span className="px-1 text-center tabular-nums">{player.currentStreak ?? 0}d</span>
+                                    <span className="px-1 text-center tabular-nums">{player.reputation ?? 0}</span>
+                                    <span className="px-1 text-center font-bold tabular-nums">{(player.xp || 0).toLocaleString()}</span>
                                 </Link>
                             );
                         })}
                     </div>
                 {currentUserId && (
-                    <div className="user-rank-card">
+                    <div className="absolute inset-x-0 bottom-0 z-[3] border-t border-[color-mix(in_srgb,var(--accent-color)_30%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_96%,transparent)] p-2 shadow-[0_-8px_22px_rgba(0,0,0,0.12)] backdrop-blur-xl">
                         <Link
                             to={`/profile/${currentUserId}`}
-                            className={`leaderboard-card current-user-highlight ${getRankClass(hasPinnedRank ? pinnedRank : 0)}`}
+                            className={`grid min-h-[68px] min-w-[930px] grid-cols-[64px_minmax(190px,2.2fr)_repeat(5,minmax(88px,1fr))_minmax(100px,1fr)] items-center gap-3 rounded-lg px-4 py-2.5 text-(--secondary-color) no-underline shadow-[inset_4px_0_0_var(--accent-color)] ${getRankClass(hasPinnedRank ? pinnedRank : 0)}`}
                             aria-label={`Your leaderboard position${hasPinnedRank ? `: rank ${pinnedRank}` : ': rank unavailable'}`}
                         >
-                            <span className="leaderboard-rank-cell">
-                                {hasPinnedRank ? getRankBadge(pinnedRank) : <FaHashtag className="rank-badge-icon" />}
+                            <span className="flex items-center gap-2 font-bold">
+                                <span className={`inline-flex rounded-lg p-1 ${getRankBadgeClass(pinnedRank)}`}>{hasPinnedRank ? getRankBadge(pinnedRank) : <FaHashtag />}</span>
                                 {hasPinnedRank ? pinnedRank : '—'}
                             </span>
-                            <span className="leaderboard-player-cell">
-                                <span className="player-avatar-wrapper">
-                                    <img src={pinnedUser?.avatarUrl || GuestAvatar} alt="" className="player-avatar" />
+                            <span className="flex min-w-0 items-center gap-2.5">
+                                <span className={`${leaderboardAvatarWrapClass} h-[38px] w-[38px]`}>
+                                    <img src={pinnedUser?.avatarUrl || GuestAvatar} alt="" className={leaderboardAvatarClass} />
                                 </span>
-                                <span className="leaderboard-player-name">
+                                <span className={leaderboardPlayerNameClass}>
                                     {pinnedUser?.name || 'Your account'}
-                                    <span className="you-badge">You</span>
+                                    <span className={leaderboardYouBadgeClass}>You</span>
                                 </span>
                             </span>
-                            <span className="leaderboard-value-cell">{pinnedUser?.problemsSolved ?? 0}</span>
-                            <span className="leaderboard-value-cell">{formatStudyTime(pinnedUser?.totalTimeMinutes)}</span>
-                            <span className="leaderboard-value-cell">{pinnedUser?.accuracy ?? '—'}{pinnedUser?.accuracy === null || pinnedUser?.accuracy === undefined ? '' : '%'}</span>
-                            <span className="leaderboard-value-cell">{pinnedUser?.currentStreak ?? 0}d</span>
-                            <span className="leaderboard-value-cell">{pinnedUser?.reputation ?? 0}</span>
-                            <span className="leaderboard-value-cell leaderboard-xp-cell">{(pinnedUser?.xp ?? 0).toLocaleString()}</span>
+                            <span className="px-1 text-center tabular-nums">{pinnedUser?.problemsSolved ?? 0}</span>
+                            <span className="px-1 text-center tabular-nums">{formatStudyTime(pinnedUser?.totalTimeMinutes)}</span>
+                            <span className="px-1 text-center tabular-nums">{pinnedUser?.accuracy ?? '—'}{pinnedUser?.accuracy === null || pinnedUser?.accuracy === undefined ? '' : '%'}</span>
+                            <span className="px-1 text-center tabular-nums">{pinnedUser?.currentStreak ?? 0}d</span>
+                            <span className="px-1 text-center tabular-nums">{pinnedUser?.reputation ?? 0}</span>
+                            <span className="px-1 text-center font-bold tabular-nums">{(pinnedUser?.xp ?? 0).toLocaleString()}</span>
                         </Link>
                     </div>
                 )}
