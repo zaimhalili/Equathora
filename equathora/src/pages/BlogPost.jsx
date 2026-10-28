@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import ShareButton from '../components/ui/ShareButton.jsx';
 import Navbar from '../components/Navbar.jsx';
@@ -8,11 +8,90 @@ import FeebackBanner from '../components/FeedbackBanner.jsx';
 import Footer from '../components/Footer.jsx';
 import Journey from '../assets/images/journey.webp';
 import { getBlogPostBySlug, getAllBlogPosts } from '../data/blogPosts.js';
+import { getCanonicalUrl } from '../lib/seoMetadata.js';
 
 const BlogPost = () => {
     const { user } = useAuth();
     const { slug } = useParams();
     const post = getBlogPostBySlug(slug);
+
+    useEffect(() => {
+        if (!post) return undefined;
+
+        const pageUrl = getCanonicalUrl(`/blog/${post.slug}`);
+        const imageUrl = new URL(post.thumbnail, window.location.origin).href;
+        const metadata = [
+            ['meta[name="description"]', 'content', post.description],
+            ['meta[name="keywords"]', 'content', (post.keywords || []).join(', ')],
+            ['meta[property="og:type"]', 'content', 'article'],
+            ['meta[property="og:title"]', 'content', `${post.title} | Equathora`],
+            ['meta[property="og:description"]', 'content', post.description],
+            ['meta[property="og:url"]', 'content', pageUrl],
+            ['meta[property="og:image"]', 'content', imageUrl],
+            ['meta[name="twitter:card"]', 'content', 'summary_large_image'],
+            ['meta[name="twitter:title"]', 'content', `${post.title} | Equathora`],
+            ['meta[name="twitter:description"]', 'content', post.description],
+            ['meta[name="twitter:image"]', 'content', imageUrl],
+        ];
+        const previousValues = metadata.map(([selector, attribute, value]) => {
+            const element = document.querySelector(selector);
+            if (!element) return null;
+            const previousValue = element.getAttribute(attribute);
+            element.setAttribute(attribute, value);
+            return { element, attribute, previousValue };
+        }).filter(Boolean);
+
+        const previousTitle = document.title;
+        document.title = `${post.title} | Equathora`;
+
+        const canonicalLink = document.querySelector('link[rel="canonical"]');
+        const previousCanonical = canonicalLink?.getAttribute('href');
+        canonicalLink?.setAttribute('href', pageUrl);
+
+        const schemaElement = document.createElement('script');
+        schemaElement.type = 'application/ld+json';
+        schemaElement.dataset.blogPostSchema = 'true';
+        const schema = {
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title,
+            description: post.description,
+            image: imageUrl,
+            datePublished: post.publishedAt,
+            author: {
+                '@type': 'Organization',
+                name: post.author.name,
+                url: 'https://equathora.com'
+            },
+            publisher: {
+                '@type': 'Organization',
+                name: 'Equathora',
+                url: 'https://equathora.com'
+            },
+            mainEntityOfPage: pageUrl,
+            keywords: post.keywords?.join(', '),
+            video: post.videoId ? {
+                '@type': 'VideoObject',
+                name: post.videoTitle,
+                description: post.description,
+                thumbnailUrl: imageUrl,
+                embedUrl: `https://www.youtube-nocookie.com/embed/${post.videoId}`
+            } : undefined
+        };
+        schemaElement.textContent = JSON.stringify(schema);
+        document.head.appendChild(schemaElement);
+
+        return () => {
+            document.title = previousTitle;
+            previousValues.forEach(({ element, attribute, previousValue }) => {
+                if (previousValue === null) element.removeAttribute(attribute);
+                else element.setAttribute(attribute, previousValue);
+            });
+            if (previousCanonical === null) canonicalLink?.removeAttribute('href');
+            else if (previousCanonical) canonicalLink?.setAttribute('href', previousCanonical);
+            schemaElement.remove();
+        };
+    }, [post]);
 
     // If post not found, redirect to 404 or blog list
     if (!post) {
@@ -60,6 +139,20 @@ const BlogPost = () => {
                         alt={contentItem.alt || ''}
                         className='rounded-xl w-full py-4'
                     />
+                );
+            case 'video':
+                return (
+                    <div key={index} className="my-4 aspect-video w-full overflow-hidden rounded-xl bg-black shadow-lg">
+                        <iframe
+                            src={`https://www.youtube-nocookie.com/embed/${encodeURIComponent(contentItem.videoId)}`}
+                            title={contentItem.title}
+                            className="h-full w-full border-0"
+                            loading="lazy"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                        />
+                    </div>
                 );
             default:
                 return null;
