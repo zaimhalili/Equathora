@@ -44,6 +44,14 @@
 <priority>0.8</priority>
 </url>
 
+<!-- Blog -->
+<url>
+<loc>https://equathora.com/blog/understand-math-faster-with-equathora</loc>
+<lastmod>2026-10-28</lastmod>
+<changefreq>yearly</changefreq>
+<priority>0.7</priority>
+</url>
+
 <url>
 <loc>https://equathora.com/signup</loc>
 <changefreq>monthly</changefreq>

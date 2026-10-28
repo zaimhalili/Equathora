@@ -5,12 +5,13 @@ import Journey from '../../assets/images/journey.webp';
 import EquathoraBriefsImage from '../../assets/images/email.svg';
 import Shapes from '../../assets/images/redShapes.jpg';
 import LilArrow from '../../assets/images/lilArrow.svg';
+import { FaArrowRight } from 'react-icons/fa';
 import { getAllBlogPosts } from '../../data/blogPosts.js';
 
 const CommunityPosts = () => {
   const blogPosts = getAllBlogPosts();
   const displayedPosts = blogPosts.slice(0, 3);
-  const hasMorePosts = blogPosts.length > 3;
+  const hasMorePosts = blogPosts.length >= 3;
 
   return (
     <div>
@@ -37,19 +38,14 @@ const CommunityPosts = () => {
                   </p>
                 </Link>
               ))}
-
-              {/* Equathora Briefs Card */}
-              <Link to="/equathora-briefs" className='bg-(--white) rounded-xl shadow-[0_10px_10px_rgba(141,153,174,0.3)] w-1/3 py-6 px-6 flex gap-2 flex-col hover:shadow-[0_0_25px_rgba(141,153,174,0.7)] transition-all duration-200 ease-out hover:scale-105 cursor-pointer min-w-50 flex-1 max-w-80 active:scale-100'>
-                <img src={EquathoraBriefsImage} alt="" className='rounded-xl w-full max-h-40 object-cover' />
-                <p className='text-md text-left lg:text-lg cursor-pointer  text-(--secondary-color) font-medium'>Join Equathora Briefs to receive weekly updates</p>
-                <p className='text-(--mid-main-secondary) '>Zaim ⋅ Recently</p>
-              </Link>
             </div>
 
             {/* View All Link - shown only if there are more than 3 posts */}
             {hasMorePosts && (
-              <div className='w-full flex items-center justify-center md:justify-start'>
-                <Link to="/blogs" className='text-lg !text-blue-500 hover:!text-blue-700 !font-medium  pt-2 transition-colors'>View All Posts →</Link>
+              <div className='w-full flex items-center justify-center'>
+                <Link to="/blogs" className='text-md text-(--secondary-color) pt-1 transition-colors flex hover:underline! active:scale-99 items-center gap-2 underline-2'>
+                  View All Posts <FaArrowRight />
+                </Link>
               </div>
             )}
           </article>
