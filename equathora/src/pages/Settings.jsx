@@ -46,29 +46,6 @@ const SETTINGS_PANELS = {
     sessions: SessionsSettings,
 };
 
-const SettingsPanelSkeleton = () => (
-    <section
-        className="flex min-h-[360px] w-full flex-col gap-7 rounded-xl bg-(--white) p-5 sm:p-8"
-        aria-label="Loading settings"
-        aria-busy="true"
-    >
-        <div className="space-y-2">
-            <div className="h-7 w-40 animate-pulse rounded-lg bg-(--mid-main-secondary)/20" />
-            <div className="h-4 w-64 max-w-full animate-pulse rounded-lg bg-(--mid-main-secondary)/15" />
-        </div>
-        <div className="flex gap-3">
-            {[1, 2, 3].map((item) => (
-                <div className="h-[88px] w-[120px] animate-pulse rounded-2xl bg-(--mid-main-secondary)/15" key={item} />
-            ))}
-        </div>
-        <div className="grid gap-3">
-            {[1, 2, 3].map((item) => (
-                <div className="h-12 w-full animate-pulse rounded-xl bg-(--mid-main-secondary)/10" key={item} />
-            ))}
-        </div>
-    </section>
-);
-
 // ============================================================================
 // LABEL MAPS (mirrors the option ids used on /getStarted)
 // ============================================================================
@@ -714,6 +691,22 @@ const Settings = () => {
         },
     };
     const ActiveSettingsPanel = SETTINGS_PANELS[activeSection];
+    const activeSettingsContent = activeSection === 'account' ? (
+        <AccountOverview
+            premium={premium}
+            subscriptionLoading={subLoading}
+            onManagePlan={() => navigate('/premium')}
+            onManageCookies={() => selectSection('privacy')}
+            onLogout={handleLogout}
+            onDeleteAccount={() => setShowDeleteModal(true)}
+            deletionRequested={profileSummary.deletionRequested}
+            deletionRequestedAt={profileSummary.deletionRequestedAt}
+            onCancelDeletion={handleCancelDeletion}
+            cancelingDeletion={isCancelingDeletion}
+        />
+    ) : ActiveSettingsPanel ? (
+        <ActiveSettingsPanel data={panelData[activeSection]} />
+    ) : null;
 
     // ========================================================================
     // RENDER
@@ -733,26 +726,11 @@ const Settings = () => {
 
                     {/* Only the selected panel is rendered; each panel is code-split. */}
                     <div className="flex min-w-0 flex-1 flex-col rounded-xl" aria-busy={isLoading || settingsSaving}>
-                        {isLoading ? <SettingsPanelSkeleton /> : (
-                            <Suspense fallback={<SettingsPanelSkeleton />}>
-                                {activeSection === 'account' ? (
-                                    <AccountOverview
-                                        premium={premium}
-                                        subscriptionLoading={subLoading}
-                                        onManagePlan={() => navigate('/premium')}
-                                        onManageCookies={() => selectSection('privacy')}
-                                        onLogout={handleLogout}
-                                        onDeleteAccount={() => setShowDeleteModal(true)}
-                                        deletionRequested={profileSummary.deletionRequested}
-                                        deletionRequestedAt={profileSummary.deletionRequestedAt}
-                                        onCancelDeletion={handleCancelDeletion}
-                                        cancelingDeletion={isCancelingDeletion}
-                                    />
-                                ) : ActiveSettingsPanel ? (
-                                    <ActiveSettingsPanel data={panelData[activeSection]} />
-                                ) : null}
-                            </Suspense>
-                        )}
+                        <Suspense fallback={<p className="py-8 text-sm text-(--secondary-color)/65">Loading {activeSection} settings...</p>}>
+                            {isLoading && activeSection !== 'account'
+                                ? <p className="py-8 text-sm text-(--secondary-color)/65" role="status">Loading {activeSection} settings...</p>
+                                : activeSettingsContent}
+                        </Suspense>
                     </div>
                 </div>
             </main>
