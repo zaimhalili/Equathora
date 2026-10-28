@@ -22,6 +22,18 @@ export const difficultyPalette = [
     'var(--advanced)',
 ];
 
+const statisticsDifficultyColors = {
+    beginner: 'var(--statistics-difficulty-beginner)',
+    easy: 'var(--statistics-difficulty-easy)',
+    standard: 'var(--statistics-difficulty-standard)',
+    intermediate: 'var(--statistics-difficulty-intermediate)',
+    medium: 'var(--statistics-difficulty-medium)',
+    challenging: 'var(--statistics-difficulty-challenging)',
+    hard: 'var(--statistics-difficulty-hard)',
+    advanced: 'var(--statistics-difficulty-advanced)',
+    expert: 'var(--statistics-difficulty-expert)',
+};
+
 export function normalizeDifficultyKey(difficulty) {
     return String(difficulty ?? '').trim().toLowerCase();
 }
@@ -52,6 +64,11 @@ export function getDifficultyColor(difficulty, index = 0) {
     }
 
     return difficultyPalette[index % difficultyPalette.length];
+}
+
+export function getStatisticsDifficultyColor(difficulty, index = 0) {
+    const normalizedKey = normalizeDifficultyKey(difficulty);
+    return statisticsDifficultyColors[normalizedKey] || getDifficultyColor(normalizedKey, index);
 }
 
 export function withAlpha(color, alpha) {

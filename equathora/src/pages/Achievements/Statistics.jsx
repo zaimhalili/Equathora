@@ -5,7 +5,7 @@ import { useUserStats } from '../../context/UserStatsContext';
 import { formatTopicLabel } from '../../lib/utils';
 import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { FaSpinner } from 'react-icons/fa';
-import { difficultyDisplayRank, formatDifficultyLabel, getDifficultyColor, normalizeDifficultyKey, withAlpha } from '@/hooks/useStatisticsColors';
+import { difficultyDisplayRank, formatDifficultyLabel, getStatisticsDifficultyColor, normalizeDifficultyKey, withAlpha } from '@/hooks/useStatisticsColors';
 
 const ChartTooltip = ({ active, payload, label, formatValue }) => {
   const visibleItems = (payload || []).filter((item) => Number(item.value) > 0);
@@ -64,7 +64,7 @@ const Statistics = () => {
   const difficultyKeys = Object.keys(difficultyDisplayRank).sort(
     (a, b) => difficultyDisplayRank[a] - difficultyDisplayRank[b]
   );
-  const getDifficultyColorForKey = (key) => getDifficultyColor(normalizeDifficultyKey(key));
+  const getDifficultyColorForKey = (key) => getStatisticsDifficultyColor(normalizeDifficultyKey(key));
   const hasWeeklyActivity = weeklyDifficultyProgress.some((week) => week.total > 0);
   const hasDifficultyData = activeDifficultyPerformance.length > 0;
 
@@ -144,7 +144,7 @@ const Statistics = () => {
 
         <div className="activity-chart-container">
           <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-            <BarChart data={weeklyDifficultyProgress} margin={{ top: 16, right: 12, left: -18, bottom: 4 }}>
+            <BarChart data={weeklyDifficultyProgress} margin={{ top: 16, right: 12, left: -18, bottom: 4 }} barCategoryGap="24%">
               <CartesianGrid vertical={false} stroke="var(--chart-grid-color)" strokeDasharray="4 6" />
               <XAxis
                 dataKey="label"
@@ -174,7 +174,8 @@ const Statistics = () => {
                   name={formatDifficultyLabel(key)}
                   stackId="difficulty"
                   fill={getDifficultyColorForKey(key)}
-                  radius={[6, 6, 6, 6]}
+                  maxBarSize={40}
+                  radius={0}
                 />
               ))}
             </BarChart>
@@ -184,8 +185,8 @@ const Statistics = () => {
 
         <div className="difficulty-chart-legend" aria-label="Difficulty chart legend">
           {difficultyKeys.map((key) => (
-            <span className="difficulty-legend-item" key={key}>
-              <i style={{ '--difficulty-color': getDifficultyColorForKey(key) }} />
+            <span className="difficulty-legend-item" key={key} style={{ '--difficulty-color': getDifficultyColorForKey(key) }}>
+              <i />
               {formatDifficultyLabel(key)}
             </span>
           ))}
@@ -335,10 +336,10 @@ const Statistics = () => {
                 key={difficulty.key || difficulty.label}
                 className="difficulty-item"
                 style={{
-                  '--difficulty-border': withAlpha(difficulty.color, 0.32),
-                  '--difficulty-hover-border': withAlpha(difficulty.color, 0.78),
-                  '--difficulty-hover-bg': withAlpha(difficulty.color, 0.2),
-                  '--difficulty-color': difficulty.color,
+                  '--difficulty-border': withAlpha(getDifficultyColorForKey(difficulty.key || difficulty.label), 0.42),
+                  '--difficulty-hover-border': withAlpha(getDifficultyColorForKey(difficulty.key || difficulty.label), 0.9),
+                  '--difficulty-hover-bg': withAlpha(getDifficultyColorForKey(difficulty.key || difficulty.label), 0.2),
+                  '--difficulty-color': getDifficultyColorForKey(difficulty.key || difficulty.label),
                 }}
               >
                 <div className="difficulty-count">{difficulty.solved}</div>
