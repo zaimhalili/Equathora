@@ -21,6 +21,8 @@ import UpgradedPopup from '@/components/Premium/UpgradedPopup.jsx';
 import { useUser } from '@/hooks/Dashboard/useUser.js';
 import { useRecommendedProblem } from '@/hooks/useRecommendedProblem';
 import { FaSpinner } from 'react-icons/fa';
+import PrimaryButton from '@/components/ui/Buttons/PrimaryButton.jsx';
+import SecondaryButton from '@/components/ui/Buttons/SecondaryButton.jsx';
 
 const Dashboard = () => {
     const { username } = useUser();
@@ -233,18 +235,8 @@ const Dashboard = () => {
 
                                     {/* CTA Buttons */}
                                     <div className="flex gap-3 max-w-100">
-                                        <Link
-                                            to="/applymentor"
-                                            className="flex items-center justify-center  font-semibold text-sm text-(--white)! bg-(--secondary-color) rounded-xl no-underline transition-all duration-200 hover:bg-transparent hover:text-(--secondary-color)! hover:outline-1 hover:outline-(--secondary-color) text-center flex-2 py-2 px-2 text-wrap active:scale-95"
-                                        >
-                                            Apply Now
-                                        </Link>
-                                        <Link
-                                            to="/applymentor"
-                                            className="flex items-center justify-center font-medium text-sm text-(--secondary-color)! bg-transparent border rounded-xl no-underline transition-all duration-200 border-(--secondary-color) hover:bg-(--secondary-color) hover:text-(--white)! text-center py-2 px-2 md:flex-1 active:scale-95"
-                                        >
-                                            Learn More
-                                        </Link>
+                                        <SecondaryButton text={'Apply Now'} link={true} to={'/applymentor'} className={'flex-1'} />
+                                        <PrimaryButton text={'Apply Now'} link={true} to={'/applymentor'} className={'flex-1'} />
                                     </div>
                                 </div>
                             </div>
