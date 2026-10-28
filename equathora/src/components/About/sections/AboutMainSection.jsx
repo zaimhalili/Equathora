@@ -109,7 +109,7 @@ const AboutMainSection = () => {
                                         decoding="async"
                                         onLoad={() => setBookImageLoaded(true)}
                                         onError={() => setBookImageLoaded(true)}
-                                        className={`relative h-full w-full select-none rounded-2xl object-contain transition-opacity duration-300 ${bookImageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                                        className={`relative h-full w-full select-none rounded-2xl object-cover transition-opacity duration-300 ${bookImageLoaded ? 'opacity-100' : 'opacity-0'}`}
                                     />
                                 </div>
                                 <img src={Spiral} alt="spiral" loading='lazy' draggable='false' className='absolute bottom-4 right-4 h-10 select-none pointer-events-none' />
@@ -149,7 +149,7 @@ const AboutMainSection = () => {
                         </motion.div>
                         <motion.div variants={slideRightVariants} style={chalkBackground('center')} className="flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-30 lg:min-h-50"></motion.div>
                         <motion.div variants={slideRightVariants} style={chalkBackground('bottom')} className="relative z-20 flex flex-1 bg-(--dark-accent-color) rounded-2xl min-h-30 lg:min-h-50">
-                            <img src={Student} alt="Student" width="1400" height="1400" className='absolute z-10 bottom-0 h-110 sm:h-120 lg:h-185 sm:left-5 min-w-full object-cover lg:-right-12 pointer-events-none select-none' draggable="false" loading="lazy" decoding="async" />
+                            <img src={Student} alt="Student" width="1400" height="1400" className='absolute z-10 bottom-0 h-100 object-cover sm:object-contain md:h-130 lg:h-185 sm:left-5 min-w-full lg:object-cover lg:-right-12 pointer-events-none select-none' draggable="false" loading="lazy" decoding="async" />
                         </motion.div>
                     </motion.div>
                 </div>

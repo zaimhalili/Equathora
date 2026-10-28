@@ -24,9 +24,9 @@ const AboutCtaSection = () => {
                         <h3 className='max-w-2/3 text-white font-medium text-4xl relative z-10 max-md:max-w-full max-md:text-xl'>Learn together</h3>
                         <h5 className='max-w-2/3 text-white font-semibold text-5xl relative z-10 max-md:max-w-full max-md:pr-2 max-md:text-2xl max-md:leading-tight leading-normal'>Help every student reach their potential</h5>
                         <p className='max-w-2/3 text-white text-sm leading-relaxed relative z-10 max-md:max-w-full max-md:pr-2'>Support students with guided practice, while giving teachers a clearer view of progress and the next steps to take.</p>
-                        <img src={Spiral} alt="" aria-hidden="true" className="absolute bottom-4 right-4 z-0 h-28 w-28 brightness-0 invert pointer-events-none select-none max-md:bottom-3 max-md:right-3 max-md:h-24 max-md:w-24" />
+                        <img src={Spiral} alt="" aria-hidden="true" className="absolute bottom-4 right-4 z-0 h-28 w-28 brightness-0 invert pointer-events-none select-none max-md:bottom-3 max-md:right-3 max-md:h-20 max-md:w-20" />
                         {/* White Block Top Right */}
-                        <div className="absolute top-0 right-0 pl-4 pb-4 min-h-0 h-1/3 aspect-square rounded-bl-2xl bg-(--white)">
+                        <div className="absolute top-0 right-0 pl-4 pb-4 min-h-0 h-1/4 sm:h-1/3 aspect-square rounded-bl-2xl bg-(--white)">
                             {/* Left rounded corner */}
                             <div className="absolute -left-full top-0 h-full min-h-0 aspect-square bg-(--white) rounded-b-2xl flex items-center justify-center">
                                 <div className="bg-(--dark-accent-color) rounded-tr-2xl h-full w-full"></div>
@@ -37,7 +37,7 @@ const AboutCtaSection = () => {
                             </div>
                             {/* Inside button */}
                             <Link to='/dashboard' className="rounded-2xl flex items-center justify-center w-full min-h-0 h-full bg-(--dark-accent-color) text-white! hover:text-(--dark-accent-color)! hover:bg-(--main-color) transition-all shadow-xl active:scale-95">
-                                <FaArrowRight className='text-5xl -rotate-45' />
+                                <FaArrowRight className='text-4xl sm:text-5xl -rotate-45' />
                             </Link>
                         </div>
                     </div>
