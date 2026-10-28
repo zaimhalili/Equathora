@@ -38,10 +38,6 @@
     transition: transform 0.3s ease;
 }
 
-#welcome-learn figure img:hover {
-    transform: scale(1.05) rotate(5deg);
-}
-
 #learn-explore {
     color: var(--secondary-color);
     flex: 1;
@@ -51,7 +47,7 @@
 }
 
 #learn-explore h1 {
-    font-family: 'Sansation', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
     font-size: clamp(2rem, 5vw, 2.25rem);
     font-weight: 800;
     line-height: 1.2;
@@ -60,7 +56,7 @@
 }
 
 #learn-explore h4 {
-    font-family: 'Sansation', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
     font-weight: 400;
     font-size: clamp(1rem, 5vw, 1.125rem);
     line-height: 1.2;
@@ -73,7 +69,7 @@
     margin-bottom: 1.5rem;
     background-color: var(--white);
     backdrop-filter: blur(10px);
-    border-radius: 6px;
+    border-radius: 12px;
     padding: 1.25rem;
     box-shadow: 0 0 25px rgba(141, 153, 174, 0.3);
     border: 1px solid rgba(43, 45, 66, 0.12);
@@ -102,8 +98,8 @@
     background-color: var(--main-color);
     color: var(--secondary-color);
     font-size: 0.95rem;
-    font-family: 'Sansation', sans-serif;
-    border-radius: 6px;
+
+    border-radius: 12px;
     padding-left: 2.75rem;
     padding-right: 1rem;
     border: 1.5px solid rgba(43, 45, 66, 0.2);
@@ -177,11 +173,10 @@
     padding: 0 1.25rem;
     background-color: var(--main-color);
     color: var(--secondary-color);
-    font-family: 'Sansation', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 0.875rem;
     font-weight: 600;
     /* border: 1.5px solid rgba(43, 45, 66, 0.15); */
-    border-radius: 6px;
+    border-radius: 12px;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     display: flex;
@@ -248,7 +243,7 @@
     text-decoration: none;
     cursor: pointer;
     padding: 0.65rem 1.1rem;
-    border-radius: 6px;
+    border-radius: 12px;
     box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.15);
     transition: transform 0.2s ease, filter 0.2s ease;
 }
@@ -293,7 +288,7 @@
 
     #search-filtering {
         padding: 1rem 0.875rem;
-        border-radius: 6px;
+        border-radius: 12px;
         flex-direction: column;
         align-items: stretch;
     }
@@ -311,7 +306,7 @@
 
     #problem-searchbar {
         font-size: 0.875rem;
-        border-radius: 6px;
+        border-radius: 12px;
         padding-left: 2.5rem;
     }
 
@@ -334,7 +329,7 @@
         font-size: 0.75rem;
         padding: 0 0.875rem;
         height: 38px;
-        border-radius: 6px;
+        border-radius: 12px;
         flex-shrink: 0;
         font-weight: 500;
     }
@@ -458,7 +453,7 @@ ENHANCED FILTERING SYSTEM
     align-items: center;
     justify-content: center;
     transition: color 0.2s ease;
-    border-radius: 6px;
+    border-radius: 12px;
 }
 
 .clear-search-btn:active {
@@ -520,7 +515,7 @@ ENHANCED FILTERING SYSTEM
     padding: 0.4rem 0.85rem;
     background-color: var(--main-color);
     border: 1.5px solid rgba(43, 45, 66, 0.12);
-    border-radius: 6px;
+    border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--secondary-color);
@@ -543,29 +538,29 @@ ENHANCED FILTERING SYSTEM
 
 /* Difficulty chip colors */
 .filter-chip.easy:not(.active):hover {
-    border-color: #22c55e;
-    background-color: rgba(34, 197, 94, 0.1);
+    border-color: var(--easy);
+    background-color: color-mix(in srgb, var(--easy) 12%, transparent);
 }
 
 .filter-chip.medium:not(.active):hover {
-    border-color: #e59e0b;
-    background-color: rgba(229, 158, 11, 0.1);
+    border-color: var(--medium);
+    background-color: color-mix(in srgb, var(--medium) 12%, transparent);
 }
 
 .filter-chip.hard:not(.active):hover {
-    border-color: #a3142c;
-    background-color: rgba(163, 20, 44, 0.1);
+    border-color: var(--hard);
+    background-color: color-mix(in srgb, var(--hard) 12%, transparent);
 }
 
 /* Topic chip colors */
 .filter-chip.topic:not(.active):hover {
-    border-color: #3b82f6;
-    background-color: rgba(59, 130, 246, 0.1);
+    border-color: var(--beginner);
+    background-color: color-mix(in srgb, var(--beginner) 12%, transparent);
 }
 
 .filter-chip.topic.active {
-    background-color: #3b82f6;
-    border-color: #3b82f6;
+    background-color: var(--beginner);
+    border-color: var(--beginner);
 }
 
 /* Results Summary */
@@ -573,7 +568,6 @@ ENHANCED FILTERING SYSTEM
     font-size: 0.875rem;
     color: var(--secondary-color);
     opacity: 0.7;
-    padding: 0.5rem 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -595,17 +589,6 @@ ENHANCED FILTERING SYSTEM
 .problems-refreshing {
     opacity: 0.66;
     transition: opacity 0.2s ease;
-}
-
-/* Topic chip colors */
-.filter-chip.topic:not(.active):hover {
-    border-color: #3b82f6;
-    background-color: rgba(59, 130, 246, 0.1);
-}
-
-.filter-chip.topic.active {
-    background-color: #3b82f6;
-    border-color: #3b82f6;
 }
 
 /* Results Summary */
@@ -697,7 +680,7 @@ ENHANCED FILTERING SYSTEM
     gap: 0.5rem;
     padding: 0.625rem 0.875rem;
     background-color: var(--main-color);
-    border-radius: 6px;
+    border-radius: 12px;
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--secondary-color);
@@ -707,7 +690,7 @@ ENHANCED FILTERING SYSTEM
 }
 
 .filter-dropdown-trigger.open {
-    border-color: var(--accent-color);
+    outline-color: var(--accent-color);
 }
 
 .filter-dropdown-trigger.has-value {
@@ -741,7 +724,7 @@ ENHANCED FILTERING SYSTEM
     margin-top: 0.25rem;
     background-color: var(--main-color);
     border: 1.5px solid rgba(43, 45, 66, 0.15);
-    border-radius: 6px;
+    border-radius: 12px;
     box-shadow: 0 10px 40px rgba(43, 45, 66, 0.15);
     z-index: 2000;
     max-height: 280px;
@@ -864,7 +847,7 @@ ENHANCED FILTERING SYSTEM
     gap: 0.35rem;
     padding: 0.3rem 0.6rem;
     background-color: rgba(43, 45, 66, 0.08);
-    border-radius: 6px;
+    border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--secondary-color);
@@ -943,7 +926,7 @@ ENHANCED FILTERING SYSTEM
     background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 12px;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
@@ -990,7 +973,8 @@ ENHANCED FILTERING SYSTEM
     color: #fff;
     background: rgba(0, 0, 0, 0.35);
     border-radius: 12px;
-    pointer-events: none; }
+    pointer-events: none;
+}
 
 /* Mobile Responsive for Dropdowns */
 @media only screen and (max-width: 480px) {

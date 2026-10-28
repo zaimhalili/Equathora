@@ -117,18 +117,25 @@ export function AuthProvider({ children }) {
 
         // onAuthStateChange fires immediately on subscribe with an
         // INITIAL_SESSION event carrying the current session, so a
-        // separate getSession().then(...) call is redundant — keeping
+        // separate getSession().then(...) call is redundant - keeping
         // both created two concurrent syncAuthAndOnboarding calls racing
         // to set state, which could leave onboardingCompleted stale
         // right after loading flips to false. One listener, one sync.
         let hasSyncedOnce = false;
+        const pendingSyncs = new Set();
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            void syncAuthAndOnboarding(session, !hasSyncedOnce);
+            const initial = !hasSyncedOnce;
             hasSyncedOnce = true;
+            const timeoutId = window.setTimeout(() => {
+                pendingSyncs.delete(timeoutId);
+                void syncAuthAndOnboarding(session, initial);
+            }, 0);
+            pendingSyncs.add(timeoutId);
         });
 
         return () => {
             isDisposed = true;
+            pendingSyncs.forEach((timeoutId) => window.clearTimeout(timeoutId));
             subscription.unsubscribe();
         };
     }, []);

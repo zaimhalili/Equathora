@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import * as Sentry from '@sentry/react';
 import { FaTimes, FaCamera, FaUser, FaGlobeAmericas } from 'react-icons/fa';
 import { supabase } from '../lib/supabaseClient';
 import imageCompression from 'browser-image-compression';
 import useBodyScrollLock from '../hooks/useBodyScrollLock';
+import { motion } from 'framer-motion';
 
 const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
     useBodyScrollLock(isOpen);
@@ -78,6 +80,12 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                 reader.readAsDataURL(compressedFile);
             } catch (error) {
                 console.error('Error compressing image:', error);
+                Sentry.captureException(error, {
+                    tags: {
+                        feature: 'profile-edit',
+                        operation: 'avatar-compression'
+                    }
+                });
                 setError('Failed to process image. Please try another one.');
             }
         }
@@ -86,29 +94,24 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
     const uploadAvatar = async (userId) => {
         if (!avatarFile) return formData.avatar_url;
 
-        try {
-            const fileExt = avatarFile.name.split('.').pop();
-            const fileName = `${userId}_${Date.now()}.${fileExt}`;
-            const filePath = `avatars/${fileName}`;
+        const fileExt = avatarFile.name.split('.').pop();
+        const fileName = `${userId}_${Date.now()}.${fileExt}`;
+        const filePath = `avatars/${fileName}`;
 
-            const { data, error: uploadError } = await supabase.storage
-                .from('user-avatars')
-                .upload(filePath, avatarFile, {
-                    cacheControl: '3600',
-                    upsert: true
-                });
+        const { error: uploadError } = await supabase.storage
+            .from('user-avatars')
+            .upload(filePath, avatarFile, {
+                cacheControl: '3600',
+                upsert: true
+            });
 
-            if (uploadError) throw uploadError;
+        if (uploadError) throw uploadError;
 
-            const { data: { publicUrl } } = supabase.storage
-                .from('user-avatars')
-                .getPublicUrl(filePath);
+        const { data: { publicUrl } } = supabase.storage
+            .from('user-avatars')
+            .getPublicUrl(filePath);
 
-            return publicUrl;
-        } catch (error) {
-            console.error('Error uploading avatar:', error);
-            throw new Error('Failed to upload avatar');
-        }
+        return publicUrl;
     };
 
     const handleSubmit = async (e) => {
@@ -145,19 +148,24 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
             if (updateError) throw updateError;
 
             // Persist profile data in profiles table so leaderboards and public views have latest info
-            const { error: profileError } = await supabase
+            const { data: updatedProfile, error: profileError } = await supabase
                 .from('profiles')
-                .upsert({
-                    id: userId,
+                .update({
                     full_name: formData.full_name,
                     username: formData.username,
                     avatar_url: avatarUrl,
                     bio: formData.bio,
                     location: formData.location,
                     updated_at: new Date().toISOString()
-                }, { onConflict: 'id' });
+                })
+                .eq('id', userId)
+                .select('id')
+                .maybeSingle();
 
             if (profileError) throw profileError;
+            if (!updatedProfile) {
+                throw new Error('Profile record was not found.');
+            }
 
             // Call onSave callback with updated data
             onSave({
@@ -171,7 +179,13 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
             onClose();
         } catch (error) {
             console.error('Error updating profile:', error);
-            setError(error.message || 'Failed to update profile. Please try again.');
+            Sentry.captureException(error, {
+                tags: {
+                    feature: 'profile-edit',
+                    operation: 'save-profile'
+                }
+            });
+            setError('Could not save your profile right now. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -188,7 +202,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={onClose}
-                    className="absolute inset-0 bg-[var(--raisin-black)]/50 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/50"
                 />
 
                 {/* Modal */}
@@ -196,14 +210,14 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative bg-[var(--white)] rounded-md shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                    className="relative bg-(--white) rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                 >
                     {/* Header */}
-                    <div className="sticky top-0 bg-[var(--white)] border-b border-[var(--mid-main-secondary)] px-6 py-4 flex items-center justify-between z-10">
-                        <h2 className="text-2xl font-bold text-[var(--secondary-color)] font-[Sansation]">Edit Profile</h2>
+                    <div className="sticky top-0 bg-(--white) border-b border-(--mid-main-secondary) px-6 py-4 flex items-center justify-between z-10">
+                        <h2 className="text-2xl font-bold text-(--secondary-color) ">Edit Profile</h2>
                         <button
                             onClick={onClose}
-                            className="text-[var(--mid-main-secondary)] hover:text-[var(--secondary-color)] transition-colors p-2 hover:bg-[var(--main-color)] rounded-md cursor-pointer active:scale-95"
+                            className="text-(--mid-main-secondary) hover:text-(--secondary-color) transition-colors p-2 hover:bg-(--main-color) rounded-xl cursor-pointer active:scale-95"
                             aria-label="Close modal"
                         >
                             <FaTimes size={20} />
@@ -213,7 +227,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="p-6 space-y-6">
                         {error && (
-                            <div className="bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/30 text-[var(--dark-accent-color)] px-4 py-3 rounded-md text-sm">
+                            <div className="bg-(--accent-color)/10 border border-(--accent-color)/30 text-(--dark-accent-color) px-4 py-3 rounded-xl text-sm">
                                 {error}
                             </div>
                         )}
@@ -224,12 +238,12 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                 <img
                                     src={avatarPreview || '/src/assets/images/guestAvatar.png'}
                                     alt="Profile"
-                                    className="w-32 h-32 rounded-full object-cover border-4 border-[var(--mid-main-secondary)]"
+                                    className="w-32 h-32 rounded-full object-cover border-4 border-(--mid-main-secondary)"
                                 />
                                 <button
                                     type="button"
                                     onClick={handleAvatarClick}
-                                    className="absolute inset-0 bg-[var(--raisin-black)]/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer active:scale-95"
+                                    className="absolute inset-0 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer active:scale-95"
                                 >
                                     <FaCamera className="text-white text-2xl" />
                                 </button>
@@ -241,14 +255,14 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     className="hidden"
                                 />
                             </div>
-                            <p className="text-sm text-[var(--mid-main-secondary)]">Click to change your profile picture <strong>(Max 5 MB)</strong></p>
+                            <p className="text-sm text-(--mid-main-secondary)">Click to change your profile picture <strong>(Max 5 MB)</strong></p>
                         </div>
 
                         {/* Form Fields */}
                         <div className="space-y-4">
                             {/* Full Name */}
                             <div>
-                                <label className="flex text-sm font-semibold text-[var(--secondary-color)] pb-2 items-end">
+                                <label className="flex text-sm font-semibold text-(--secondary-color) pb-2 items-end">
                                     <FaUser className="h-5 w-5 pr-2" />
                                     Full Name *
                                 </label>
@@ -258,14 +272,14 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     value={formData.full_name}
                                     onChange={handleInputChange}
                                     required
-                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                                    className="text-(--secondary-color) w-full px-4 py-3 border border-(--mid-main-secondary) rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all"
                                     placeholder="Enter your full name"
                                 />
                             </div>
 
                             {/* Username */}
                             <div>
-                                <label className="flex text-sm font-semibold text-[var(--secondary-color)] py-2 items-end">
+                                <label className="flex text-sm font-semibold text-(--secondary-color) py-2 items-end">
                                     <FaUser className="h-5 w-5 pr-2" />
                                     Username *
                                 </label>
@@ -276,15 +290,15 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     onChange={handleInputChange}
                                     required
                                     pattern="^[a-zA-Z0-9_]{3,20}$"
-                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                                    className="text-(--secondary-color) w-full px-4 py-3 border border-(--mid-main-secondary) rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all"
                                     placeholder="username_123"
                                 />
-                                <p className="text-xs text-[var(--mid-main-secondary)] pt-2">3-20 characters, letters, numbers, and underscores only</p>
+                                <p className="text-xs text-(--mid-main-secondary) pt-2">3-20 characters, letters, numbers, and underscores only</p>
                             </div>
 
                             {/* Bio */}
                             <div>
-                                <label className="block text-sm font-semibold text-[var(--secondary-color)] py-2">
+                                <label className="block text-sm font-semibold text-(--secondary-color) py-2">
                                     Bio
                                 </label>
                                 <textarea
@@ -293,15 +307,15 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     onChange={handleInputChange}
                                     rows={4}
                                     maxLength={200}
-                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all resize-none"
+                                    className="text-(--secondary-color) w-full px-4 py-3 border border-(--mid-main-secondary) rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all resize-none"
                                     placeholder="Tell us about yourself... (max 200 characters)"
                                 />
-                                <p className="text-xs text-[var(--mid-main-secondary)] pt-1 text-right">{formData.bio.length}/200</p>
+                                <p className="text-xs text-(--mid-main-secondary) pt-1 text-right">{formData.bio.length}/200</p>
                             </div>
 
                             {/* Location */}
                             <div>
-                                <label className="flex text-sm font-semibold text-[var(--secondary-color)] pb-2">
+                                <label className="flex text-sm font-semibold text-(--secondary-color) pb-2">
                                     <FaGlobeAmericas className="h-5 w-5 pr-2" />
                                     Location
                                 </label>
@@ -310,7 +324,7 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                     name="location"
                                     value={formData.location}
                                     onChange={handleInputChange}
-                                    className="text-[var(--secondary-color)] w-full px-4 py-3 border border-[var(--mid-main-secondary)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:border-transparent transition-all"
+                                    className="text-(--secondary-color) w-full px-4 py-3 border border-(--mid-main-secondary) rounded-xl focus:outline-none focus:ring-2 focus:ring-(--accent-color) focus:border-transparent transition-all"
                                     placeholder="City, Country"
                                 />
                             </div>
@@ -322,14 +336,14 @@ const EditProfileModal = ({ isOpen, onClose, userData, onSave }) => {
                                 type="button"
                                 onClick={onClose}
                                 disabled={isLoading}
-                                className="flex-1 px-6 py-3 border border-[var(--mid-main-secondary)] text-[var(--secondary-color)] font-semibold rounded-md hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+                                className="flex-1 px-6 py-3 border border-(--mid-main-secondary) text-(--secondary-color) font-semibold rounded-xl hover:bg-[rgba(0,0,0,0.15)] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white font-semibold rounded-md hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                                className="flex-1 px-6 py-3 !bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] text-white font-semibold rounded-xl hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                             >
                                 {isLoading ? (
                                     <>

@@ -5,6 +5,9 @@ import { fileURLToPath, URL } from 'url';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  define: {
+    __BUNDLED_DEV__: false,
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -28,4 +31,7 @@ export default defineConfig({
     sourcemap: true,
   },
   server: {},
+  esbuild: {
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+  },
 });

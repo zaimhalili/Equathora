@@ -99,7 +99,7 @@ const LoadingSpinner = () => {
                 resourceRatio = entries.length ? done / entries.length : resourceRatio;
             });
             observer.observe({ type: 'resource', buffered: true });
-        } catch (_) { /* Safari/older browsers — fall back to time-based */ }
+        } catch (_) { /* Safari/older browsers - fall back to time-based */ }
 
         // -- rAF loop: combines all signals into one smooth number --
         const tick = () => {
@@ -109,7 +109,7 @@ const LoadingSpinner = () => {
             const readyFloor = READY_STATE_FLOORS[document.readyState] ?? 0.05;
             const resourceFloor = resourceRatio; // 0→1
 
-            // Convert to 0–99 scale and take the highest signal
+            // Convert to 0-99 scale and take the highest signal
             const realProgress = Math.max(readyFloor * 100, resourceFloor * 98);
 
             // Time-based curve acts as a floor so it never looks stuck
@@ -150,19 +150,19 @@ const LoadingSpinner = () => {
     // }, []);
 
     return (
-        <div className="min-h-screen bg-[var(--main-color)] flex items-center justify-center px-6">
+        <div className="min-h-screen bg-(--main-color) flex items-center justify-center px-6">
             <div className="w-full max-w-xl">
                 <div className="relative h-5 w-full overflow-hidden rounded-full bg-[rgba(163,20,44,0.12)]">
                     <div
                         className="h-full rounded-full bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))]"
                         style={{
                             width: `${progress}%`,
-                            // Only animate below 100% — let the snap to 100% feel instant-ish
+                            // Only animate below 100% - let the snap to 100% feel instant-ish
                             transition: progress < 100 ? 'width 0.3s ease-out' : 'width 0.4s ease-out',
                         }}
                     />
                 </div>
-                <p className="pt-5 text-center text-base font-bold text-[var(--secondary-color)]">
+                <p className="pt-5 text-center text-base font-medium text-(--secondary-color)">
                     Preparing your workspace...
                 </p>
             </div>

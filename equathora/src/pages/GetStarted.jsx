@@ -118,8 +118,8 @@ const GetStarted = () => {
             subtitle: "We'll build recommendations that fit your schedule",
             options: [
                 { id: 'under-1', label: 'Less than 1 hour', icon: <FaCoffee />, description: 'A few short sessions' },
-                { id: '1-3', label: '1–3 hours', icon: <FaClock />, description: 'Steady weekly progress' },
-                { id: '3-6', label: '3–6 hours', icon: <MdTimeline />, description: 'Consistent practice' },
+                { id: '1-3', label: '1-3 hours', icon: <FaClock />, description: 'Steady weekly progress' },
+                { id: '3-6', label: '3-6 hours', icon: <MdTimeline />, description: 'Consistent practice' },
                 { id: '6+', label: '6+ hours', icon: <FaRocket />, description: 'Serious commitment' }
             ]
         },
@@ -138,7 +138,7 @@ const GetStarted = () => {
             type: 'final',
             title: "You're all set!",
             description: "We'll use your answers as a starting point and continuously adapt recommendations based on your progress.",
-            icon: <FaRocket className="text-5xl text-[var(--accent-color)]" />
+            icon: <FaRocket className="text-5xl text-(--accent-color)" />
         }
     ];
 
@@ -318,18 +318,18 @@ const GetStarted = () => {
     const imageSrc = typeof WelcomeTeacher === 'string' ? WelcomeTeacher : WelcomeTeacher?.default || WelcomeTeacher;
 
     return (
-        <main className='relative flex flex-col w-full bg-[var(--main-color)] min-h-screen h-full overflow-y-auto items-center px-4 sm:px-6 font-[Sansation,sans-serif]'>
+        <main className='relative flex flex-col w-full bg-(--main-color) min-h-screen h-full overflow-y-auto items-center px-4 sm:px-6 '>
 
-            {/* Progress bar — sticky instead of absolute, so it always stays
+            {/* Progress bar - sticky instead of absolute, so it always stays
                 pinned above the content instead of overlapping it when the
                 viewport is short. */}
-            <header className='sticky top-0 z-20 w-full max-w-xl px-4 pt-4 pb-2 flex flex-col gap-2 bg-[var(--main-color)]'>
+            <header className='sticky top-0 z-20 w-full max-w-xl px-4 pt-4 pb-2 flex flex-col gap-2 bg-(--main-color)'>
                 <div className='flex items-center gap-3 w-full'>
                     <div className='w-8 flex justify-start shrink-0'>
                         {currentStep > 0 && (
                             <button
                                 onClick={handleBack}
-                                className='p-2 rounded-md hover:bg-[var(--french-gray)] transition-colors duration-200 text-[var(--secondary-color)] cursor-pointer'
+                                className='p-2 rounded-xl hover:bg-(--french-gray) transition-colors duration-200 text-(--secondary-color) cursor-pointer'
                                 aria-label='Go back'
                             >
                                 <FaArrowLeft className='text-lg' />
@@ -337,19 +337,19 @@ const GetStarted = () => {
                         )}
                     </div>
 
-                    <div className='flex-1 h-1.5 bg-[var(--french-gray)] rounded-full overflow-hidden'>
+                    <div className='flex-1 h-1.5 bg-(--french-gray) rounded-full overflow-hidden'>
                         <div
-                            className='h-full rounded-full bg-gradient-to-r from-[var(--accent-color)] to-[var(--dark-accent-color)] transition-all duration-500 ease-out'
+                            className='h-full rounded-full bg-gradient-to-r from-(--accent-color) to-(--dark-accent-color) transition-all duration-500 ease-out'
                             style={{ width: `${percentage}%` }}
                         />
                     </div>
 
-                    <span className='text-xs font-medium text-[var(--secondary-color)] opacity-50 w-10 text-right shrink-0'>
+                    <span className='text-xs font-medium text-(--secondary-color) opacity-50 w-10 text-right shrink-0'>
                         {currentStep + 1} / {totalSteps}
                     </span>
                 </div>
 
-                <div className="text-center text-[var(--secondary-color)] opacity-70 text-xs sm:text-sm px-2">
+                <div className="text-center text-(--secondary-color) opacity-70 text-xs sm:text-sm px-2">
                     Don't worry - you can change these answers whenever you like.
                 </div>
             </header>
@@ -361,16 +361,16 @@ const GetStarted = () => {
             <div className='w-full max-w-xl flex-1 flex flex-col justify-between items-center py-4 sm:py-6'>
 
                 <div className='flex flex-col items-center justify-center text-center w-full px-2 min-h-[64px] sm:min-h-[80px]'>
-                    <h1 className='text-xl sm:text-2xl md:text-3xl font-bold text-[var(--secondary-color)]'>
+                    <h1 className='text-xl sm:text-2xl md:text-3xl font-bold text-(--secondary-color)'>
                         {currentStepData.title}
                     </h1>
 
-                    <p className='text-xs sm:text-sm md:text-base text-[var(--secondary-color)] pt-1'>
+                    <p className='text-xs sm:text-sm md:text-base text-(--secondary-color) pt-1'>
                         {currentStepData.subtitle}
                     </p>
 
                     {currentStepData.description && (
-                        <p className='text-xs sm:text-sm text-[var(--secondary-color)] opacity-80 pt-1 max-w-md'>
+                        <p className='text-xs sm:text-sm text-(--secondary-color) opacity-80 pt-1 max-w-md'>
                             {currentStepData.description}
                         </p>
                     )}
@@ -383,7 +383,7 @@ const GetStarted = () => {
                             <img
                                 src={imageSrc}
                                 alt="Welcome to Equathora Illustration"
-                                className='max-h-100 w-auto object-contain mx-auto rounded-md'
+                                className='max-h-100 w-auto object-contain mx-auto rounded-xl'
                             />
                         </div>
                     )}
@@ -398,8 +398,8 @@ const GetStarted = () => {
                                             type='button'
                                             onClick={() => handleSelection(option.id)}
                                             className={`group flex items-center gap-3 p-3.5 rounded-lg border-2 transition-all duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
-                                                ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white shadow-sm'
-                                                : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                                ? 'border-(--accent-color) bg-(--accent-color) text-white shadow-sm'
+                                                : 'border-(--mid-main-secondary) bg-(--white) text-(--secondary-color) hover:border-(--accent-color)'
                                                 }`}
                                         >
                                             <div className='md:text-xl flex-shrink-0 text-lg'>
@@ -444,8 +444,8 @@ const GetStarted = () => {
                                                 type='button'
                                                 onClick={() => handleSelection(option.id)}
                                                 className={`flex items-center justify-center gap-2.5 px-3.5 py-3 rounded-lg border-2 transition-all duration-200 cursor-pointer ${isSelected
-                                                    ? 'border-[var(--accent-color)] bg-[var(--accent-color)] text-white shadow-sm'
-                                                    : 'border-[var(--mid-main-secondary)] bg-[var(--white)] text-[var(--secondary-color)] hover:border-[var(--accent-color)]'
+                                                    ? 'border-(--accent-color) bg-(--accent-color) text-white shadow-sm'
+                                                    : 'border-(--mid-main-secondary) bg-(--white) text-(--secondary-color) hover:border-(--accent-color)'
                                                     }`}
                                             >
                                                 <div className='text-lg flex-shrink-0'>
@@ -487,12 +487,12 @@ const GetStarted = () => {
                         onClick={handleContinue}
                         disabled={!canContinue() || saving}
                         className={`w-60 max-w-full px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm transition-all ${canContinue() && !saving
-                            ? 'bg-[var(--secondary-color)] text-[var(--white)] hover:bg-[var(--secondary-color)]/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-pointer'
+                            ? 'bg-(--secondary-color) text-(--white) hover:bg-(--secondary-color)/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-pointer'
                             : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
                             }`}
                     >
                         {saving
-                            ? 'Saving...'
+                            ? 'Paving your journey'
                             : currentStep === totalSteps - 1
                                 ? 'Start Learning'
                                 : 'Continue'}

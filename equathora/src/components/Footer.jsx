@@ -19,7 +19,7 @@ const Footer = () => {
                 <div id="center">
                     <h1>
                         Your contribution helps us keep this learning platform available for
-                        <span className="text-[var(--accent-color)] relative inline-block">
+                        <span className="text-(--accent-color) relative inline-block">
                             students worldwide
                             <motion.svg
                                 className="absolute -bottom-2 left-0 w-full"
@@ -91,6 +91,7 @@ const Footer = () => {
                             <li><Link to="/achievements" className='footer-links'>Achievements</Link></li>
                             <li><Link to="/premium" className='footer-links'>Premium</Link></li>
                             <li><Link to="/equathora-briefs" className='footer-links'>Equathora Briefs</Link></li>
+                            <li><Link to="/khan-academy-alternative" className='footer-links'>Compare Math Platforms</Link></li>
                             <li><Link to="/profile/myprofile" className='footer-links'>My Profile</Link></li>
                         </ul>
                     </div>
@@ -106,15 +107,18 @@ const Footer = () => {
                         </ul>
                     </div>
                 </div>
-
                 <div className="footer-bottom flex flex-col">
                     <p className="footer-copyright footer-attribution">
-                        <span>© 2025 equathora. All rights reserved. Developed by <strong><u>Zaim Halili</u></strong></span>
+                        <span>© 2025 equathora. All rights reserved. Developed by <strong><u>
+                            <a href="mailto:equathora@gmail.com" className='!underline !underline-offset-1 !font-medium hover:!text-white transition-all'>Zaim Halili</a>
+                        </u></strong></span>
                     </p>
 
                     <p className="footer-copyright">
                         Building products around learning, logic, and productivity.
-                        Interested in collaborating?<strong> Let’s connect.</strong>
+                        Interested in collaborating? <strong>
+                            <a href="mailto:equathora@gmail.com" className='!underline !underline-offset-1 !font-medium hover:!text-white transition-all'>Let's connect</a>
+                        </strong>
                     </p>
                     <p className="footer-credit">
                         Page design inspired by <a href="https://exercism.org" target="_blank" rel="noopener noreferrer" aria-label="Exercism">Exercism</a> - code practice & mentorship

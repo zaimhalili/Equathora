@@ -3,6 +3,7 @@ import { FaFileDownload, FaFilePdf, FaFileCsv, FaChevronDown } from 'react-icons
 import { jsPDF } from 'jspdf';
 import Logo from '../assets/logo/EquathoraSymbolIcon.png';
 import { useUserStats } from '../context/UserStatsContext';
+import { buildDifficultyExportItems, normalizeDifficultySummary } from '../lib/profileExportData';
 
 const formatDuration = (totalSeconds = 0) => {
     const safeSeconds = Math.max(0, Math.round(totalSeconds));
@@ -22,24 +23,6 @@ const formatDate = (iso, includeTime = false) => {
         });
     }
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-};
-
-const normalizeDifficultySummary = (difficultyBreakdown) => {
-    const array = Array.isArray(difficultyBreakdown) ? difficultyBreakdown : [];
-    return array.reduce((acc, entry) => {
-        const key = String(entry?.key || '').toLowerCase();
-        if (!key) return acc;
-        acc[key] = {
-            solved: Number(entry.solved || 0),
-            total: Number(entry.total || 0),
-            percentage: entry.total > 0 ? Math.round((Number(entry.solved || 0) / Number(entry.total || 0)) * 100) : 0
-        };
-        return acc;
-    }, {
-        easy: { solved: 0, total: 0, percentage: 0 },
-        medium: { solved: 0, total: 0, percentage: 0 },
-        hard: { solved: 0, total: 0, percentage: 0 }
-    });
 };
 
 const buildDataSnapshot = (stats = {}) => {
@@ -70,6 +53,7 @@ const buildDataSnapshot = (stats = {}) => {
             reputation: Number(stats.reputation || 0),
             weeklyProgress,
             favoriteTopics: Array.isArray(stats.favoriteTopics) ? stats.favoriteTopics : [],
+            solvedTopics: Array.isArray(stats.solvedTopics) ? stats.solvedTopics : [],
             totalProblems: Number(stats.totalProblems || 0)
         },
         totalSubmissions,
@@ -78,13 +62,11 @@ const buildDataSnapshot = (stats = {}) => {
         firstCompletion: stats.firstSubmissionAt || stats.joinDate || null,
         difficulty: normalizedDifficulty,
         favoriteTopics: Array.isArray(stats.favoriteTopics) ? stats.favoriteTopics : [],
+        solvedTopics: Array.isArray(stats.solvedTopics) ? stats.solvedTopics : [],
         avgTimePerProblem,
         totalSessions,
         avgProblemsPerSession,
         totalProblems: Number(stats.totalProblems || 0),
-        easyTotal: normalizedDifficulty.easy.total,
-        mediumTotal: normalizedDifficulty.medium.total,
-        hardTotal: normalizedDifficulty.hard.total
     };
 };
 
@@ -115,14 +97,12 @@ const ProfileExportButtons = () => {
         firstCompletion,
         difficulty,
         favoriteTopics,
+        solvedTopics,
         avgTimePerProblem,
         totalSessions,
         avgProblemsPerSession,
         totalSubmissions,
         totalProblems,
-        easyTotal,
-        mediumTotal,
-        hardTotal
     } = snapshot;
 
     const statsUsername = exportStats.username || 'Student';
@@ -152,14 +132,8 @@ const ProfileExportButtons = () => {
             ]
         },
         {
-            section: 'Difficulty Breakdown', items: [
-                ['Easy Problems Solved', `${difficulty.easy.solved || 0} / ${easyTotal}`],
-                ['Medium Problems Solved', `${difficulty.medium.solved || 0} / ${mediumTotal}`],
-                ['Hard Problems Solved', `${difficulty.hard.solved || 0} / ${hardTotal}`],
-                ['Easy Completion Rate', `${easyTotal > 0 ? difficulty.easy.percentage : 0}%`],
-                ['Medium Completion Rate', `${mediumTotal > 0 ? difficulty.medium.percentage : 0}%`],
-                ['Hard Completion Rate', `${hardTotal > 0 ? difficulty.hard.percentage : 0}%`]
-            ]
+            section: 'Difficulty Breakdown',
+            items: buildDifficultyExportItems(exportStats.difficultyBreakdown)
         },
         {
             section: 'Engagement Statistics', items: [
@@ -180,9 +154,14 @@ const ProfileExportButtons = () => {
         },
         {
             section: 'Learning Focus', items: [
-                ['Favorite Topics', favoriteTopics.length > 0 ? favoriteTopics.join(', ') : 'Diverse Learning'],
-                ['Total Topics Explored', favoriteTopics.length],
-                ['Primary Skill Level', difficulty.hard.solved > 5 ? 'Advanced' : difficulty.medium.solved > 10 ? 'Intermediate' : 'Beginner']
+                ['Top Favorite Topics', favoriteTopics.length > 0 ? favoriteTopics.join(', ') : 'Diverse Learning'],
+                ['Topics Solved', solvedTopics.length > 0 ? solvedTopics.join(', ') : 'None yet'],
+                ['Total Topics Explored', solvedTopics.length],
+                ['Primary Skill Level', (difficulty.find(({ key }) => key === 'hard')?.solved ?? 0) > 5
+                    ? 'Advanced'
+                    : (difficulty.find(({ key }) => key === 'medium')?.solved ?? 0) > 10
+                        ? 'Intermediate'
+                        : 'Beginner']
             ]
         }
     ];
@@ -290,14 +269,11 @@ const ProfileExportButtons = () => {
         doc.text('Comprehensive Learning Analytics', margin + 5, 68);
 
         let yPos = 80;
-        let currentPage = 1;
-
         // Render sections with pagination
-        comprehensiveData.forEach(({ section, items }, sectionIndex) => {
+        comprehensiveData.forEach(({ section, items }) => {
             // Check if we need a new page for section header
             if (yPos > maxContentHeight - 30) {
                 doc.addPage();
-                currentPage++;
                 yPos = margin;
             }
 
@@ -314,23 +290,27 @@ const ProfileExportButtons = () => {
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(9);
             items.forEach(([label, value], idx) => {
-                // Check if we need a new page
-                if (yPos > maxContentHeight - 15) {
+                const labelLines = doc.splitTextToSize(String(label), 86);
+                const valueLines = doc.splitTextToSize(String(value), contentWidth - 100);
+                const lineCount = Math.max(labelLines.length, valueLines.length);
+                const lineHeight = 4;
+                const rowHeight = Math.max(7, lineCount * lineHeight + 2);
+
+                if (yPos + rowHeight > maxContentHeight - 15) {
                     doc.addPage();
-                    currentPage++;
                     yPos = margin;
                 }
 
                 const bgColor = idx % 2 === 0 ? [255, 255, 255] : [250, 250, 252];
                 doc.setFillColor(...bgColor);
-                doc.rect(margin, yPos, contentWidth, 7, 'F');
+                doc.rect(margin, yPos, contentWidth, rowHeight, 'F');
 
                 doc.setFont('helvetica', 'bold');
                 doc.setTextColor(0, 0, 0);
-                doc.text(label, margin + 3, yPos + 4.5);
+                doc.text(labelLines, margin + 3, yPos + 4.5, { lineHeightFactor: 1.15 });
                 doc.setFont('helvetica', 'normal');
-                doc.text(String(value), margin + 95, yPos + 4.5);
-                yPos += 7;
+                doc.text(valueLines, margin + 95, yPos + 4.5, { lineHeightFactor: 1.15 });
+                yPos += rowHeight;
             });
             yPos += 3;
         });
@@ -338,7 +318,6 @@ const ProfileExportButtons = () => {
         // Add new page for footer if needed
         if (yPos > maxContentHeight - 35) {
             doc.addPage();
-            currentPage++;
             yPos = margin;
         }
 
@@ -369,7 +348,7 @@ const ProfileExportButtons = () => {
         doc.text('VERIFIED BY EQUATHORA', margin + 8, yPos + 25.5);
 
         // Add page numbers to all pages
-        const totalPages = doc.Sansationnal.pages.length - 1;
+        const totalPages = doc.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
             doc.setPage(i);
             doc.setFontSize(8);
@@ -388,7 +367,7 @@ const ProfileExportButtons = () => {
             <button
                 type="button"
                 onClick={() => setShowMenu(!showMenu)}
-                className="flex items-center gap-2 px-4 py-2.5 bg-[var(--white)] border border-[var(--mid-main-secondary)] rounded-md text-[var(--secondary-color)] font-semibold text-sm transition-all duration-200 shadow-sm cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2.5 bg-(--white) border border-(--mid-main-secondary) rounded-xl text-(--secondary-color) font-semibold text-sm transition-all duration-200 shadow-sm cursor-pointer"
                 aria-label="Export account data"
             >
                 <FaFileDownload className="text-base" />
@@ -397,9 +376,9 @@ const ProfileExportButtons = () => {
             </button>
 
             {showMenu && (
-                <div className="absolute right-0 top-full pt-2 w-56 bg-[var(--white)] border border-[var(--mid-main-secondary)] rounded-md shadow-xl z-50 overflow-hidden">
-                    {/* <div className="p-2 bg-[var(--french-gray)] border-b border-gray-200">
-                        <p className="text-xs font-semibold text-[var(--secondary-color)] uppercase tracking-wide">Select Format</p>
+                <div className="absolute right-0 top-full pt-2 w-56 bg-(--white) border border-(--mid-main-secondary) rounded-xl shadow-xl z-50 overflow-hidden">
+                    {/* <div className="p-2 bg-(--french-gray) border-b border-gray-200">
+                        <p className="text-xs font-semibold text-(--secondary-color) uppercase tracking-wide">Select Format</p>
                     </div> */}
                     <button
                         type="button"
@@ -408,8 +387,8 @@ const ProfileExportButtons = () => {
                     >
                         <FaFilePdf className="text-red-600 text-lg flex-shrink-0" />
                         <div>
-                            <p className="text-sm font-semibold text-[var(--secondary-color)]">PDF Certificate</p>
-                            <p className="text-xs text-[var(--mid-main-secondary)]">Official A4 document</p>
+                            <p className="text-sm font-semibold text-(--secondary-color)">PDF Certificate</p>
+                            <p className="text-xs text-(--mid-main-secondary)">Official A4 document</p>
                         </div>
                     </button>
                     <button
@@ -419,7 +398,7 @@ const ProfileExportButtons = () => {
                     >
                         <FaFileCsv className="text-green-600 text-lg flex-shrink-0" />
                         <div>
-                            <p className="text-sm font-semibold text-[var(--secondary-color)]">Text Report</p>
+                            <p className="text-sm font-semibold text-(--secondary-color)">Text Report</p>
                             <p className="text-xs text-gray-500">Formatted data file</p>
                         </div>
                     </button>

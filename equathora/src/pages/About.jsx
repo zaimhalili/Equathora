@@ -9,6 +9,7 @@ import AboutMissionSection from '../components/About/sections/AboutMissionSectio
 import AboutFeaturesSection from '../components/About/sections/AboutFeaturesSection';
 import AboutCtaSection from '../components/About/sections/AboutCtaSection';
 import { useAuth } from '@/hooks/useAuth';
+import AboutMainSection from '@/components/About/sections/AboutMainSection';
 
 const About = () => {
     const { user } = useAuth();
@@ -27,23 +28,25 @@ const About = () => {
     }, []);
 
     return (
-        <div className="font-[Sansation] w-full bg-[var(--white)] relative overflow-hidden min-h-screen flex items-center justify-center flex-col">
+        <div className=" w-full bg-(--white) relative overflow-hidden min-h-screen flex items-center justify-center flex-col">
             {/* Conditional Navigation */}
             {user ? <Navbar /> : <NavigationBar />}
 
             <main className="relative z-10 w-full flex flex-col items-center">
-                <AboutHeroSection />
+                <AboutMainSection />
+                {/* <AboutHeroSection /> */}
                 <AboutIdentitySection />
-                <AboutPlatformStrengthsSection />
+                {/* <AboutPlatformStrengthsSection /> */}
                 <AboutMissionSection />
                 <AboutFeaturesSection />
                 <AboutCtaSection />
             </main>
             <Footer />
-            <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
+            <div className='w-full bg-(--secondary-color) border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
                 <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
                     Education illustrations by Storyset
                 </a>
+                <a href="https://www.vecteezy.com/free-png/male-teacher" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>Male Teacher PNGs by Vecteezy</a>
             </div>
         </div>
     );

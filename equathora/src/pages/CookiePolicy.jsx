@@ -10,7 +10,7 @@ const CookiePolicy = () => (
         <main className="legal-page">
             <div className="legal-content">
                 <h1>Cookie Policy</h1>
-                <p>Last updated: August 1, 2026</p>
+                <p>Last updated: September 16, 2026</p>
                 <h2>What Are Cookies?</h2>
                 <p>Cookies are small text files stored on your device when you visit our website. They help us remember your preferences, keep you signed in, and improve your experience.</p>
                 <h2>How We Use Cookies</h2>
@@ -77,6 +77,7 @@ const CookiePolicy = () => (
                     <li>Stripe - Payment processing and subscription billing (<a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>).</li>
                     <li>Google OAuth - Sign in with Google (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>).</li>
                     <li>Vercel Analytics - Website analytics (<a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>).</li>
+                    <li>PostHog Analytics - Website analytics (<a href="https://posthog.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>).</li>
                 </ul>
                 <h2>Additional Tracking and Storage</h2>
                 <p>We may also use browser storage such as localStorage or sessionStorage to store application settings, progress, or temporary workspace data. This is separate from cookie-based tracking.</p>

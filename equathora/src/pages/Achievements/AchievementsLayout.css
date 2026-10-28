@@ -9,7 +9,7 @@
 	background-attachment: fixed;
 	display: flex;
 	flex-direction: column;
-	font-family: 'Sansation', serif;
+
 	z-index: 0;
 	align-items: center;
 	justify-content: flex-end;
@@ -24,7 +24,7 @@
 	inset: 0;
 	background: linear-gradient(to bottom,
 			rgba(0, 0, 0, 0.05),
-			var(--raisin-black));
+			#202231);
 	/* Adjust opacity for darkness */
 	z-index: 1;
 	pointer-events: none;
@@ -73,7 +73,7 @@
 	color: rgba(255, 255, 255, 0.8);
 	font-size: 0.95rem;
 	font-weight: 500;
-	font-family: 'Sansation', sans-serif;
+
 	text-transform: uppercase;
 	letter-spacing: 1.5px;
 }
@@ -131,7 +131,7 @@
 
 .achievements-link.active {
 	background-color: var(--dark-accent-color);
-	color: var(--main-color);
+	color: white;
 }
 
 .achievements-link.active img {
@@ -150,12 +150,12 @@
 	align-items: center;
 	justify-content: center;
 	text-align: center;
-	color: var(--french-gray);
+	color: white;
 	height: 50px;
 	width: auto;
 	font-size: 1.4rem;
 	font-weight: 400;
-	font-family: 'Sansation', sans-serif;
+
 	padding: 0px 20px;
 	border-radius: 50px;
 	margin-top: 1rem;
@@ -166,13 +166,13 @@
 .achievements-link:hover {
 	transition: 0.2s ease-out;
 	background-color: var(--dark-accent-color);
-	color: var(--main-color);
+	color: white;
 	filter: saturate(1);
 }
 
 .achievements-content {
 	width: 100%;
-	background-color: var(--raisin-black);
+	background-color: #202231;
 	padding: 3rem 20vw;
 	height: auto;
 	min-height: 20vh;
@@ -191,7 +191,7 @@
 	padding: 1rem 0;
 	text-decoration: underline;
 	background-color: var(--secondary-color);
-	font-family: 'Sansation', sans-serif;
+
 }
 
 @media (max-width: 768px) {

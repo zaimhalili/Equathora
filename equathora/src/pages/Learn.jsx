@@ -86,7 +86,7 @@ const FilterDropdown = ({ label, value, options, onChange, placeholder = "All", 
       <button
         ref={triggerRef}
         type="button"
-        className={`filter-dropdown-trigger ${isOpen ? 'open' : ''} ${value ? 'has-value' : ''}`}
+        className={`filter-dropdown-trigger hover:brightness-90 ${isOpen ? 'open brightness-90 hover:!brightness-85' : ''} ${value ? 'has-value' : ''}`}
         onClick={handleOpen}
         onBlur={() => setTimeout(() => setIsOpen(false), 200)}
       >
@@ -319,7 +319,7 @@ const Learn = () => {
           grades,
           searchTerm,
           sort,
-          null,       // progress (legacy, unused by Learn page)
+          null, // progress (legacy, unused by Learn page)
           isPremium,
           status
         );
@@ -694,7 +694,7 @@ const Learn = () => {
 
         <footer>
           <Footer />
-          <div className='w-full bg-[var(--secondary-color)] border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
+          <div className='w-full bg-(--secondary-color) border-t border-white/10 flex justify-center py-5 text-white/60 text-xs theme-lock'>
             <a href="https://storyset.com/education" target="_blank" rel="noopener noreferrer" className='hover:text-white/80 transition-colors no-underline'>
               Education illustrations by Storyset
             </a>

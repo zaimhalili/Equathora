@@ -1,12 +1,9 @@
 .ml-wrapper {
     width: 100%;
     background: var(--main-color);
-    border: 1px solid var(--white);
-    font-family: 'Sansation', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border-radius: 6px;
 }
 
 .ml-title {
@@ -25,7 +22,7 @@
     color: var(--secondary-color);
     font-size: 12px;
     padding: 0.5rem 0;
-    font-family: 'Sansation', sans-serif;
+
     line-height: 1.5;
     border-bottom: 1px solid var(--french-gray);
     padding-bottom: 0.75rem;
@@ -34,7 +31,7 @@
 .ml-card {
     width: 100%;
     flex: 1;
-    padding: 1rem;
+    padding: 0 0 1rem 0;
     background: var(--main-color);
     display: flex;
     flex-direction: column;
@@ -57,12 +54,10 @@
 
 .ml-steps-scrollable::-webkit-scrollbar-track {
     background: var(--french-gray);
-    border-radius: 6px;
 }
 
 .ml-steps-scrollable::-webkit-scrollbar-thumb {
     background: var(--mid-main-secondary);
-    border-radius: 6px;
 }
 
 .ml-steps-scrollable::-webkit-scrollbar-thumb:hover {
@@ -77,32 +72,31 @@
 .ml-step-wrapper {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    position: relative;
+    background-color: white;
+    border-top: 2px solid var(--main-color);
+    background-color: var(--white);
 }
 
 .ml-step-label {
     font-size: 0.875rem;
     font-weight: 700;
     color: var(--secondary-color);
-    min-width: 24px;
-    width: 24px;
-    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background: var(--french-gray); */
-    border-radius: 50%;
-    flex-shrink: 0;
+    padding: 0 1rem;
+    background-color: var(--white);
+    max-width: 21px;
+}
+
+math-field:focus .ml-step-label {
+    background: var(--dark-accent-color);
+    color: white;
 }
 
 .ml-delete-btn {
-    background: transparent;
+    color: #4D7CB3;
     border: none;
-    color: var(--mid-main-secondary);
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
     cursor: pointer;
     font-size: 18px;
     font-weight: 400;
@@ -112,10 +106,11 @@
     justify-content: center;
     transition: all 0.150s ease;
     flex-shrink: 0;
+    padding-right: 10px;
 }
 
 .ml-delete-btn:hover {
-    color: var(--secondary-color);
+    color: var(--dark-accent-color);
     /* transform: scale(1.1); */
 }
 
@@ -123,30 +118,42 @@
     transform: scale(0.9);
 }
 
+.ml-calculator-result {
+    min-width: 2.5rem;
+    padding: 0 0.4rem;
+    color: var(--secondary-color);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
 math-field {
     --caret-color: var(--accent-color);
-    --selection-background-color: var(--really-light-accent);
     --placeholder-color: var(--mid-main-secondary);
     --contains-highlight-background-color: var(--french-gray);
-
     font-size: 25px;
     color: var(--black);
     background: var(--white);
-    border: 2px solid var(--french-gray);
     padding: 0;
     display: block;
-    min-height: 3rem;
     flex: 1;
-    transition: all 0.150s ease;
+    overflow-y: visible !important;
     overflow-x: auto;
+    border-left: 4px solid var(--main-color);
+    border-radius: 0px !important;
+}
+
+math-field:focus {
+    border-left: 4px solid var(--dark-accent-color);
+    outline: none;
+    filter: brightness(97%);
 }
 
 math-field::-webkit-scrollbar {
     display: none;
-}
-
-math-field:hover {
-    border-color: var(--mid-main-secondary);
 }
 
 .ml-toolbar-sticky {
@@ -245,7 +252,7 @@ math-field:hover {
     appearance: none;
     background: var(--white);
     padding: 0.5rem 1rem;
-    border-radius: 6px;
+    border-radius: 12px;
     font-weight: 600;
     font-size: 12px;
     cursor: pointer;
@@ -268,9 +275,9 @@ math-field:hover {
 
 .ml-btn.submit {
     background: linear-gradient(360deg, var(--accent-color), var(--dark-accent-color));
-    font-family: 'Sansation', sans-serif;
+
     font-weight: 700;
-    color: white; 
+    color: white;
     min-width: 140px;
 }
 
@@ -294,7 +301,7 @@ math-field:hover {
     background-color: var(--white);
     color: var(--secondary-color);
     font-weight: 500;
-    font-family: 'Sansation', sans-serif;
+
 }
 
 .ml-btn.clear:hover {
@@ -303,16 +310,41 @@ math-field:hover {
     color: var(--accent-color);
 }
 
-.ml-btn.addStep {
-    color: var(--secondary-color);
-    border-color: var(--mid-main-secondary);
-    font-family: 'Sansation', sans-serif;
-    font-weight: 500;
-    background-color: var(--white);
+.ml-add-step {
+    width: 100%;
+    min-height: 42px;
+    padding: 0.75rem 0.75rem 0.75rem 1.25rem;
+    border: 0;
+    background-color: var(--main-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: filter 0.15s ease;
 }
 
-.ml-btn.addStep:hover {
-    background-color: var(--french-gray);
+.ml-add-step:hover {
+    filter: brightness(0.94);
+}
+
+.ml-add-step:active {
+    transform: translateY(2px);
+}
+
+.ml-add-step-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+}
+
+.ml-add-step-enter {
+    flex-shrink: 0;
+    margin-left: auto;
+    font-size: 1rem;
+    rotate: 90deg;
 }
 
 .ml-btn.subtle {
@@ -351,12 +383,12 @@ math-field:hover {
     padding: 0.75rem 1rem;
     background: var(--french-gray);
     border: none;
-    border-radius: 6px;
+    border-radius: 12px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: 'Sansation', sans-serif;
+
     transition: all 0.150s ease;
 }
 
@@ -377,9 +409,9 @@ math-field:hover {
 .ml-output {
     padding: 1rem;
     border: 2px dashed var(--mid-main-secondary);
-    border-radius: 6px;
+    border-radius: 12px;
     background: var(--white);
-    font-family: 'Sansation', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
     font-size: 13px;
     word-break: break-word;
     overflow-y: auto;
@@ -413,7 +445,7 @@ math-field:hover {
 .steps-list li {
     padding: 0.5rem;
     /* background: var(--french-gray); */
-    border-radius: 6px;
+    border-radius: 12px;
     border: 2px solid var(--mid-main-secondary);
     font-family: 'Courier New', monospace;
     font-size: 12px;
@@ -429,26 +461,33 @@ math-field::part(content) {
     line-height: 1.4 !important;
 }
 
-/* Hide virtual keyboard toggle button on mobile */
-@media (max-width: 768px) {
-    math-field {
-        font-size: clamp(24px, 6vw, 28px) !important;
-    }
+.ML__virtual-keyboard-toggle,
+.ML__menu-toggle {
+    box-sizing: border-box;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0px;
+    margin-right: 4px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: background 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
+    color: var(--dark-accent-color) !important;
+    fill: var(--dark-accent-color) !important;
+    background: transparent;
+}
 
-    math-field::part(content) {
-        font-size: inherit !important;
-    }
-
-    math-field::part(virtual-keyboard-toggle) {
-        display: none !important;
-    }
-
-    /* Additional selectors for keyboard toggle */
-    .ML__virtual-keyboard-toggle,
-    [part="virtual-keyboard-toggle"] {
-        display: none !important;
-        visibility: hidden !important;
-    }
+.ML__virtual-keyboard-toggle:hover,
+.ML__menu-toggle:hover {
+    color: var(--dark-accent-color) !important;
+    fill: var(--dark-accent-color) !important;
+    background: var(--french-gray);
 }
 
 /* Global MathLive keyboard improvements */
@@ -480,9 +519,22 @@ math-field::part(content) {
     cursor: pointer !important;
 }
 
-math-field:focus {
-    outline: var(--mid-main-secondary);
-    border-color: var(--mid-main-secondary);
+.MLK__keycap,
+.MLK_tooltip {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer !important;
+    color: var(--secondary-color);
+    background-color: var(--main-color) !important;
+}
+
+.MLK__tooltip:hover {
+    background-color: var(--french-gray) !important;
+}
+
+.ML_edit-toolbar {
+    color: var(--secondary-color) !important;
 }
 
 /* Prevent keyboard from blocking input on mobile */
@@ -594,11 +646,6 @@ math-field:focus-within {
         min-width: 100px;
     }
 
-    .ml-btn.addStep {
-        flex: 1;
-        min-width: 90px;
-    }
-
     .ml-btn.clear {
         min-width: 80px;
     }
@@ -616,6 +663,26 @@ math-field:focus-within {
 
     math-field::part(content) {
         font-size: inherit !important;
+    }
+
+    /* Hide virtual keyboard toggle button on mobile */
+    math-field {
+        font-size: clamp(24px, 6vw, 28px) !important;
+    }
+
+    math-field::part(content) {
+        font-size: inherit !important;
+    }
+
+    math-field::part(virtual-keyboard-toggle) {
+        display: none !important;
+    }
+
+    /* Additional selectors for keyboard toggle */
+    .ML__virtual-keyboard-toggle,
+    [part="virtual-keyboard-toggle"] {
+        display: none !important;
+        visibility: hidden !important;
     }
 }
 
@@ -824,7 +891,7 @@ math-field:focus-within {
     padding: 1rem;
     background: #f0f9ff;
     border: 2px solid #3b82f6;
-    border-radius: 6px;
+    border-radius: 12px;
 }
 
 .ml-answer-preview-title {
@@ -841,7 +908,7 @@ math-field:focus-within {
     color: #1e3a8a;
     padding: 0.5rem;
     background: var(--white);
-    border-radius: 6px;
+    border-radius: 12px;
     min-height: 2.5rem;
     display: flex;
     align-items: center;

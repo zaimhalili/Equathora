@@ -3,6 +3,8 @@ import { supabase } from '../lib/supabaseClient';
 import { getAllProblems } from '../lib/problemService';
 import { getAchievementProgress, getUserSubmissions } from '../lib/databaseService';
 import { computeAccuracyFromSources } from '../lib/accuracyService';
+import { difficultyDisplayRank, formatDifficultyLabel, getDifficultyColor, normalizeDifficultyKey } from '../hooks/useStatisticsColors';
+import { getSolvedTopics } from '../lib/profileExportData';
 
 const CACHE_KEY = 'eq_user_stats_cache';
 
@@ -23,8 +25,12 @@ const defaultStats = {
     totalTimeSeconds: 0,
     perfectStreak: 0,
     favoriteTopics: [],
+    solvedTopics: [],
     topicFrequency: [],
     difficultyBreakdown: [],
+    weeklyDifficultyProgress: [],
+    topicPerformance: [],
+    difficultyPerformance: [],
     weeklyProgress: Array(7).fill(0),
     completedProblemIds: [],
     attemptedProblemIds: [],
@@ -38,33 +44,110 @@ const defaultStats = {
     lastUpdated: null
 };
 
-const difficultyDisplayRank = {
-    beginner: 1,
-    easy: 2,
-    standard: 3,
-    intermediate: 4,
-    medium: 5,
-    challenging: 6,
-    hard: 7,
-    advanced: 8,
-    expert: 9
-};
+const weekMilliseconds = 7 * 24 * 60 * 60 * 1000;
 
-const normalizeDifficultyKey = (difficulty) => String(difficulty || '').trim().toLowerCase();
+function getWeekStart(date) {
+    const weekStart = new Date(date);
+    weekStart.setHours(0, 0, 0, 0);
+    weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
+    return weekStart;
+}
 
-const formatDifficultyLabel = (difficulty) => {
-    const raw = String(difficulty || '').trim();
-    if (!raw) return 'Unspecified';
-    return raw.charAt(0).toUpperCase() + raw.slice(1);
-};
+function getLocalDateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
 
-const getDifficultyColor = (difficultyKey, index) => {
-    if (difficultyKey === 'easy') return '#16a34a';
-    if (difficultyKey === 'medium') return '#d97706';
-    if (difficultyKey === 'hard') return '#a3142c';
-    const palette = ['#2563eb', '#7c3aed', '#0f766e', '#be123c', '#0ea5e9', '#f97316', '#6366f1'];
-    return palette[index % palette.length];
-};
+function buildLearningTrends(submissions, problems, completedProblemIds) {
+    const problemById = new Map((problems || []).map((problem) => [String(problem.id), problem]));
+    const currentWeekStart = getWeekStart(new Date());
+    const firstWeekStart = new Date(currentWeekStart);
+    firstWeekStart.setDate(firstWeekStart.getDate() - (9 * 7));
+    const weeklyDifficultyProgress = Array.from({ length: 10 }, (_, index) => {
+        const weekStart = new Date(firstWeekStart);
+        weekStart.setDate(weekStart.getDate() + (index * 7));
+        const week = {
+            weekStart: getLocalDateKey(weekStart),
+            label: weekStart.toLocaleDateString('en', { month: 'short', day: 'numeric' }),
+            total: 0
+        };
+        Object.keys(difficultyDisplayRank).forEach((key) => {
+            week[key] = 0;
+        });
+        return week;
+    });
+    const topicStats = new Map();
+    const difficultyStats = new Map(Object.keys(difficultyDisplayRank).map((key) => [
+        key,
+        {
+            key,
+            label: formatDifficultyLabel(key),
+            attempts: 0,
+            correct: 0,
+            solved: 0,
+            timeSeconds: 0
+        }
+    ]));
+    const completedIds = new Set((completedProblemIds || []).map(String));
+    const countedSolvedIds = new Set();
+
+    (problems || []).forEach((problem) => {
+        const problemId = String(problem.id);
+        if (!completedIds.has(problemId) || countedSolvedIds.has(problemId)) return;
+
+        const normalizedKey = normalizeDifficultyKey(problem?.difficulty);
+        const difficultyKey = difficultyStats.has(normalizedKey) ? normalizedKey : 'medium';
+        difficultyStats.get(difficultyKey).solved += 1;
+        countedSolvedIds.add(problemId);
+    });
+
+    (submissions || []).forEach((submission) => {
+        const submittedAt = new Date(submission?.submitted_at);
+        if (Number.isNaN(submittedAt.getTime())) return;
+
+        const problem = problemById.get(String(submission.problem_id));
+        if (!problem) return;
+
+        const normalizedKey = normalizeDifficultyKey(problem?.difficulty);
+        const difficulty = difficultyStats.has(normalizedKey) ? normalizedKey : 'medium';
+        const isCorrect = submission.is_correct === true;
+        const timeSeconds = Number(submission.time_spent_seconds);
+        const safeTimeSeconds = Number.isFinite(timeSeconds) ? Math.max(timeSeconds, 0) : 0;
+
+        const weekIndex = Math.round((getWeekStart(submittedAt) - firstWeekStart) / weekMilliseconds);
+        if (weekIndex >= 0 && weekIndex < weeklyDifficultyProgress.length) {
+            weeklyDifficultyProgress[weekIndex][difficulty] += 1;
+            weeklyDifficultyProgress[weekIndex].total += 1;
+        }
+
+        const difficultyStat = difficultyStats.get(difficulty);
+        difficultyStat.attempts += 1;
+        if (isCorrect) difficultyStat.correct += 1;
+        difficultyStat.timeSeconds += safeTimeSeconds;
+
+        const topic = String(problem?.topic || problem?.subject || 'Other').trim() || 'Other';
+        const topicStat = topicStats.get(topic) || { topic, attempts: 0, correct: 0 };
+        topicStat.attempts += 1;
+        if (isCorrect) topicStat.correct += 1;
+        topicStats.set(topic, topicStat);
+    });
+
+    const topicPerformance = Array.from(topicStats.values())
+        .map((topic) => ({
+            ...topic,
+            accuracy: Math.round((topic.correct / topic.attempts) * 100)
+        }))
+        .sort((a, b) => b.attempts - a.attempts || b.accuracy - a.accuracy)
+        .slice(0, 6);
+
+    return {
+        weeklyDifficultyProgress,
+        topicPerformance,
+        difficultyPerformance: Array.from(difficultyStats.values())
+    };
+}
 
 function getCachedStats() {
     if (typeof window === 'undefined') {
@@ -166,6 +249,7 @@ async function aggregateStats() {
         const weeklyProgress = Array.isArray(achievementProgress?.weeklyProgress)
             ? achievementProgress.weeklyProgress
             : Array(7).fill(0);
+        const learningTrends = buildLearningTrends(userSubmissions, allProblems, filteredCompletedIds);
 
         const latestSubmissionAt = (userSubmissions || [])
             .map((submission) => submission?.submitted_at)
@@ -202,8 +286,10 @@ async function aggregateStats() {
             completedProblemIds: filteredCompletedIds,
             attemptedProblemIds: uniqueAttemptedProblemIds,
             favoriteTopics,
+            solvedTopics: getSolvedTopics(allProblems, filteredCompletedIds),
             topicFrequency: Array.isArray(achievementProgress?.topicFrequency) ? achievementProgress.topicFrequency : [],
             difficultyBreakdown,
+            ...learningTrends,
             weeklyProgress,
             latestSubmissionAt,
             firstSubmissionAt,

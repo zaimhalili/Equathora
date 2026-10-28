@@ -3,7 +3,7 @@ import MathJaxRenderer from './MathJaxRenderer';
 import { FaSpinner } from 'react-icons/fa';
 
 /**
- * SolutionStepsDisplay — renders solution text as numbered steps
+ * SolutionStepsDisplay - renders solution text as numbered steps
  * with MathJax for LaTeX and Tailwind CSS styling.
  *
  * For each step:
@@ -30,9 +30,9 @@ const parseSolutionIntoSteps = (solution) => {
     if (!solution) return [];
 
     // 1. "Step N:" / "Step N." explicit markers
-    if (/(?:^|\n)\s*Step\s*\d+[\s.:)\-]+/i.test(solution)) {
+    if (/(?:^|\n)\s*Step\s*\d+[\s.:)-]+/i.test(solution)) {
         return solution
-            .split(/\n?\s*Step\s*\d+[\s.:)\-]+/i)
+            .split(/\n?\s*Step\s*\d+[\s.:)-]+/i)
             .map((s) => s.trim())
             .filter(Boolean);
     }
@@ -77,7 +77,7 @@ const separateTextAndMath = (step) => {
     const textParts = step.split(/\$[^$]+\$/).map((t) => t.trim()).filter(Boolean);
     // Strip trailing/leading punctuation noise from text parts
     const cleanText = textParts
-        .map((t) => t.replace(/^[.:;,\-–—]+\s*/, '').replace(/\s*[.:;,\-–—]+$/, ''))
+        .map((t) => t.replace(/^[.:;,\-–-]+\s*/, '').replace(/\s*[.:;,\-–-]+$/, ''))
         .filter(Boolean);
 
     const explanation = cleanText.length > 0 ? cleanText.join(' … ') : null;
@@ -88,7 +88,7 @@ const separateTextAndMath = (step) => {
 
 /* ─── component ────────────────────────────────────────────── */
 
-const SolutionStepsDisplay = ({ solution }) => {
+const SolutionStepsDisplay = ({ solution, error, onRetry }) => {
     const containerRef = useRef(null);
     const steps = parseSolutionIntoSteps(solution);
 
@@ -109,10 +109,27 @@ const SolutionStepsDisplay = ({ solution }) => {
         return () => clearTimeout(id);
     }, [solution]);
 
+    if (error) {
+        return (
+            <div className="w-full rounded-xl border border-(--accent-color)/30 p-4 text-sm text-(--secondary-color)">
+                <p className="m-0">{error}</p>
+                {onRetry && (
+                    <button
+                        type="button"
+                        onClick={onRetry}
+                        className="mt-3 rounded-lg bg-(--accent-color) px-3 py-2 font-semibold text-white"
+                    >
+                        Try again
+                    </button>
+                )}
+            </div>
+        );
+    }
+
     if (!solution) {
         return (
-            <div className="w-full font-[Sansation,sans-serif] p-4 text-sm text-[var(--secondary-color)] opacity-70 flex gap-1 items-center">
-                <FaSpinner className='animate-spin'/>
+            <div className="w-full  p-4 text-sm text-(--secondary-color) opacity-70 flex gap-1 items-center">
+                <FaSpinner className='animate-spin' />
                 Loading Solution...
             </div>
         );
@@ -123,7 +140,7 @@ const SolutionStepsDisplay = ({ solution }) => {
     return (
         <div
             ref={containerRef}
-            className="mathjax-renderer flex w-full flex-col overflow-hidden rounded-md bg-[var(--main-color)] font-[Sansation,sans-serif]"
+            className="mathjax-renderer flex w-full flex-col overflow-hidden rounded-xl bg-(--main-color) "
         >
             <div className="flex flex-1 flex-col overflow-hidden py-2">
                 <div className="flex-1 overflow-y-auto overflow-x-hidden">
@@ -132,14 +149,14 @@ const SolutionStepsDisplay = ({ solution }) => {
                             <div key={index} className="flex flex-col gap-1">
                                 {/* Explanation label on top */}
                                 {explanation && (
-                                    <span className="text-xs font-semibold text-[var(--mid-main-secondary)] pl-1">
+                                    <span className="text-xs font-semibold text-(--mid-main-secondary) pl-1">
                                         {explanation}
                                     </span>
                                 )}
 
-                                {/* Math content box — rendered by MathJax */}
+                                {/* Math content box - rendered by MathJax */}
                                 {math && (
-                                    <div className="rounded-md border-2 border-[var(--mid-main-secondary)] bg-[var(--white)] px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-[var(--secondary-color)] overflow-x-auto">
+                                    <div className="rounded-xl border-2 border-(--mid-main-secondary) bg-(--white) px-3 py-2 text-[clamp(14px,2vw,18px)] leading-relaxed text-(--secondary-color) overflow-x-auto">
                                         <MathJaxRenderer
                                             content={math}
                                             className="solution-step-math"

@@ -1,8 +1,7 @@
 .legal-page {
     min-height: 100vh;
-    background-color: var(--white);
+    background-color: var(--french-gray);
     color: var(--secondary-color);
-    font-family: 'Sansation', Arial, sans-serif;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -11,8 +10,8 @@
 
 .legal-content {
     background: var(--white);
-    border-radius: 6px;
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    box-shadow: 0 0px 25px rgba(0, 0, 0, 0.2);
     max-width: 700px;
     width: 90%;
     padding: 2.5rem 2rem 2rem 2rem;
@@ -66,7 +65,7 @@
     border-collapse: collapse;
     background: white;
     border: 1px solid #e5e7eb;
-    border-radius: 6px;
+    border-radius: 12px;
     overflow: hidden;
 }
 
@@ -98,7 +97,7 @@
 .cookie-table code {
     background: #f3f4f6;
     padding: 0.25rem 0.5rem;
-    border-radius: 6px;
+    border-radius: 12px;
     font-family: 'Monaco', 'Courier New', monospace;
     font-size: 0.8125rem;
     color: var(--accent-color);

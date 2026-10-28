@@ -9,7 +9,7 @@ import React from 'react';
 
 /**
  * Builds the full achievements list from user stats.
- * This is the single source of truth — used by RecentAchievements and
+ * This is the single source of truth - used by RecentAchievements and
  * anywhere else that needs to evaluate achievement unlock status.
  *
  * @param {object} userStats - Result of getUserStats() from progressStorage

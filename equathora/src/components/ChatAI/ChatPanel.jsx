@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react';
-import { FaCrown, FaPaperPlane, FaLock } from 'react-icons/fa';
+import { FaCrown, FaLock, FaArrowUp } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { convertLatexToMarkup } from 'mathlive';
 import 'mathlive/static.css';
@@ -26,7 +26,7 @@ const DEFAULT_MESSAGES = [
     {
         id: 1,
         sender: 'ai',
-        text: "Hi! Submit your steps on the LaTeX workspace, and I will scan them line-by-line to point out exactly where your algebraic formulas go wrong.",
+        text: "Hi there, I'm Sigma your AI tutor. Please submit your steps on the LaTeX workspace, and I will scan them line-by-line to point out exactly where your algebraic formulas go wrong.",
     },
 ];
 
@@ -112,6 +112,7 @@ const ChatPanel = forwardRef(({
     const trialExhausted = tier === 'free' && remainingMessages <= 0;
 
     const scrollContainerRef = useRef(null);
+    const messageInputRef = useRef(null);
     const lastSentAt = useRef(0);
     const [isHydrated, setIsHydrated] = useState(false);
     const hydrationPromiseRef = useRef(Promise.resolve());
@@ -190,6 +191,16 @@ const ChatPanel = forwardRef(({
         return () => window.clearTimeout(timer);
     }, [storageKey, chatMessages, typedMessage, isHydrated]);
 
+    useEffect(() => {
+        const textarea = messageInputRef.current;
+        if (!textarea) return;
+
+        const maxHeight = 160;
+        textarea.style.height = 'auto';
+        textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
+        textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
+    }, [typedMessage]);
+
     const handleInputChange = useCallback((e) => {
         const raw = e.target.value;
         setInputError('');
@@ -242,7 +253,7 @@ const ChatPanel = forwardRef(({
             // message: either the exact text from our backend for expected
             // cases (trial exhausted, monthly quota reached, at capacity),
             // or a generic friendly fallback for genuine infra failures.
-            // Don't reclassify it a second time here — that's what caused
+            // Don't reclassify it a second time here - that's what caused
             // "quota reached" messages to get overwritten with a generic
             // "high system load" message.
             const friendlyErrorText = sanitizeUnicode(
@@ -322,26 +333,26 @@ const ChatPanel = forwardRef(({
 
     if (statusLoading) {
         return (
-            <div className="w-full h-full flex items-center justify-center bg-[var(--main-color)] rounded-md text-xs text-[var(--mid-main-secondary)]">
+            <div className="w-full h-full flex items-center justify-center bg-(--main-color) rounded-xl text-xs text-(--mid-main-secondary)">
                 Loading AI Mentor...
             </div>
         );
     }
 
     return (
-        <div className="relative w-full flex-1 flex flex-col font-[Sansation,sans-serif] bg-[var(--white)] text-[var(--secondary-color)] rounded-md overflow-hidden min-h-0">
+        <div className="relative w-full flex-1 flex flex-col  bg-(--white) text-(--secondary-color) rounded-xl overflow-hidden min-h-0">
             {/* Backdrop Lock Overlay */}
             {trialExhausted && (
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-6 bg-black/60 backdrop-blur-sm transition-all duration-300">
-                    <div className="bg-[var(--main-color)] border border-amber-500/30 rounded-xl p-6 shadow-2xl max-w-sm w-full text-center flex flex-col items-center gap-3 animate-fadeIn">
+                    <div className="bg-(--main-color) border border-amber-500/30 rounded-xl p-6 shadow-2xl max-w-sm w-full text-center flex flex-col items-center gap-3 animate-fadeIn">
                         <div className="w-12 h-12 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 text-xl shadow-inner">
                             <FaLock />
                         </div>
-                        <h4 className="font-bold text-lg text-[var(--secondary-color)]">
+                        <h4 className="font-bold text-lg text-(--secondary-color)">
                             Free Trial Completed
                         </h4>
-                        <p className="text-xs text-[var(--mid-main-secondary)] leading-relaxed">
-                            You've used all <strong className="text-[var(--secondary-color)]">{FREE_TRIAL_LIMIT} free trial messages</strong>. Upgrade to Premium for unlimited step-by-step mathematical explanations.
+                        <p className="text-xs text-(--mid-main-secondary) leading-relaxed">
+                            You've used all <strong className="text-(--secondary-color)">{FREE_TRIAL_LIMIT} free trial messages</strong>. Upgrade to Premium for unlimited step-by-step mathematical explanations.
                         </p>
                         <Link
                             to="/premium"
@@ -355,16 +366,16 @@ const ChatPanel = forwardRef(({
             )}
 
             {/* Chat Container */}
-            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4 flex flex-col gap-4 bg-[var(--main-color)] p-4">
+            <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-4 flex flex-col gap-4 bg-(--main-color) p-4">
                 {isLoadingHistory ? (
-                    <div className="flex items-center gap-2 self-start rounded-2xl border border-[var(--french-gray)] bg-[var(--white)] px-3.5 py-2.5 text-xs text-[var(--secondary-color)]">
-                        <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[var(--dark-accent-color)]" />
+                    <div className="flex items-center gap-2 self-start rounded-2xl border border-(--french-gray) bg-(--white) px-3.5 py-2.5 text-xs text-(--secondary-color)">
+                        <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-(--dark-accent-color)" />
                         Loading your chat history...
                     </div>
                 ) : (
                     <>
                         {hiddenCount > 0 && (
-                            <p className="text-center text-[10px] text-[var(--mid-main-secondary)] shrink-0">
+                            <p className="text-center text-[10px] text-(--mid-main-secondary) shrink-0">
                                 {hiddenCount} earlier message{hiddenCount !== 1 ? 's' : ''} hidden.
                             </p>
                         )}
@@ -372,8 +383,8 @@ const ChatPanel = forwardRef(({
                             <div key={msg.id} className={`flex flex-col gap-1 max-w-[85%] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
                                 <div
                                     className={`border rounded-2xl px-4 py-2.5 text-xs md:text-sm leading-relaxed ${msg.sender === 'ai'
-                                        ? 'border-[var(--french-gray)] rounded-tl-none bg-[var(--white)] text-[var(--secondary-color)]'
-                                        : 'border-transparent rounded-tr-none bg-[var(--dark-accent-color)] text-white'
+                                        ? 'border-(--french-gray) rounded-tl-none bg-(--white) text-(--secondary-color)'
+                                        : 'border-transparent rounded-tr-none bg-(--dark-accent-color) text-white'
                                         }`}
                                     style={{ wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }}
                                 >
@@ -386,7 +397,7 @@ const ChatPanel = forwardRef(({
 
                 {isAiThinking && (
                     <div className="flex flex-col gap-1 max-w-[85%] self-start opacity-75 shrink-0">
-                        <div className="border border-[var(--secondary-color)] rounded-2xl rounded-tl-none px-3.5 py-2.5 text-xs bg-[var(--main-color)] text-[var(--secondary-color)] italic">
+                        <div className="border border-(--secondary-color) rounded-2xl rounded-tl-none px-3.5 py-2.5 text-xs bg-(--main-color) text-(--secondary-color) italic">
                             Sigma is thinking…
                         </div>
                     </div>
@@ -394,15 +405,15 @@ const ChatPanel = forwardRef(({
             </div>
 
             {/* Input Form Area */}
-            <form onSubmit={handleSendMessage} className="shrink-0 p-3 flex flex-col gap-1.5 border-t border-[var(--french-gray)] bg-[var(--main-color)] rounded-b-md">
+            <form onSubmit={handleSendMessage} className="shrink-0 p-3 flex flex-col gap-1.5 border-t border-(--french-gray) bg-(--main-color) rounded-b-md">
                 {tier === 'free' && (
-                    <div className="flex items-center justify-between px-1 text-[10px] text-[var(--mid-main-secondary)]">
+                    <div className="flex items-center justify-between px-1 text-[10px] text-(--mid-main-secondary)">
                         <span>
                             {remainingMessages} of {FREE_TRIAL_LIMIT} free messages remaining
                         </span>
                         <Link
                             to="/premium"
-                            className="inline-flex items-center gap-1 font-bold text-amber-600 hover:text-amber-500 transition-colors"
+                            className="inline-flex items-center gap-1 font-bold !text-amber-600 hover:!text-amber-400 transition-colors"
                         >
                             <FaCrown />
                             Upgrade
@@ -416,46 +427,50 @@ const ChatPanel = forwardRef(({
                     </p>
                 )}
 
-                <div className="flex items-center gap-2">
-                    <div className="relative flex-1">
-                        <input
-                            type="text"
-                            value={typedMessage}
-                            onChange={handleInputChange}
-                            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) handleSendMessage(e); }}
-                            disabled={isLoadingHistory || isAiThinking || rateLimited || trialExhausted}
-                            placeholder={
-                                trialExhausted
-                                    ? 'Trial exhausted. Upgrade to keep chatting.'
-                                    : isLoadingHistory
-                                        ? 'Loading chat history…'
-                                        : isAiThinking
-                                            ? 'Sigma is thinking…'
-                                            : rateLimited
-                                                ? 'Please wait…'
-                                                : 'Ask a follow-up question…'
+                <div className="flex flex-col rounded-2xl border border-(--french-gray) bg-(--white) px-3 py-2 focus-within:border-(--mid-main-secondary)">
+                    <textarea
+                        ref={messageInputRef}
+                        rows={1}
+                        value={typedMessage}
+                        onChange={handleInputChange}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+                                e.preventDefault();
+                                handleSendMessage(e);
                             }
-                            maxLength={MAX_INPUT_CHARS}
-                            aria-label="Chat message input"
-                            className="w-full rounded-md px-4 py-2 text-sm md:text-base border bg-[var(--main-color)] border-[var(--french-gray)] text-[var(--secondary-color)] focus:!outline-none disabled:opacity-50 !h-full"
-                        />
+                        }}
+                        disabled={isLoadingHistory || isAiThinking || rateLimited || trialExhausted}
+                        placeholder={
+                            trialExhausted
+                                ? 'Trial exhausted. Upgrade to keep chatting.'
+                                : isLoadingHistory
+                                    ? 'Loading chat history…'
+                                    : isAiThinking
+                                        ? 'Sigma is thinking…'
+                                        : rateLimited
+                                            ? 'Please wait…'
+                                            : 'Ask a question…'
+                        }
+                        maxLength={MAX_INPUT_CHARS}
+                        aria-label="Chat message input"
+                        className="block max-h-40 w-full resize-none overflow-y-hidden border-0 bg-transparent px-1 py-2 text-sm text-(--secondary-color) focus:outline-none! focus:ring-0 disabled:opacity-50"
+                    />
+                    <div className="flex items-center justify-between pt-1">
                         {typedMessage.length > MAX_INPUT_CHARS * 0.8 && (
-                            <span
-                                className="absolute right-2 bottom-0 text-[10px] pointer-events-none font-bold"
-                                style={{ color: typedMessage.length >= MAX_INPUT_CHARS ? '#d70427' : 'var(--mid-main-secondary)' }}
-                            >
+                            <span className="pointer-events-none text-[10px] font-bold" style={{ color: typedMessage.length >= MAX_INPUT_CHARS ? '#d70427' : 'var(--mid-main-secondary)' }}>
                                 {typedMessage.length}/{MAX_INPUT_CHARS}
                             </span>
                         )}
+                        <div className='flex text-transparent pointer-events-none selection:bg-transparent selection:text-transparent'>-</div>
+                        <button
+                            type="submit"
+                            disabled={isSendDisabled}
+                            aria-label="Send message"
+                            className="flex h-10 w-10 items-center justify-center rounded-full bg-(--black) text-(--white) transition-opacity hover:opacity-80 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100"
+                        >
+                            <FaArrowUp />
+                        </button>
                     </div>
-                    <button
-                        type="submit"
-                        disabled={isSendDisabled}
-                        aria-label="Send message"
-                        className="font-bold text-xs py-2 px-4 rounded-md transition-all active:scale-95 cursor-pointer text-[var(--secondary-color)] hover:text-[var(--white)] border hover:bg-[var(--secondary-color)] border-[var(--secondary-color)] hover:border-transparent disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
-                    >
-                        <FaPaperPlane />
-                    </button>
                 </div>
             </form>
         </div>

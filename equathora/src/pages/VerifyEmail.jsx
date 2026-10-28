@@ -23,7 +23,7 @@ const VerifyEmail = () => {
     const location = useLocation();
     const [searchParams] = useSearchParams();
 
-    // The email is only ever set from what the signup flow passed in —
+    // The email is only ever set from what the signup flow passed in -
     // never freely typed here, so this page can't be used to fire
     // confirmation emails at an arbitrary address.
     const email = searchParams.get('email') || location.state?.email || '';
@@ -114,7 +114,7 @@ const VerifyEmail = () => {
             <main id='body-verify'>
                 <section id='verify-container'>
                     <div id='signup-logo-name'>
-                        <p className='font-[Sansation,Arial] pl-6 text-3xl font-black relative select-none'>
+                        <p className=' pl-6 text-3xl font-black relative select-none'>
                             <img src={Sigma} alt="Logo" className='w-11 h-11 absolute -left-5 -top-[11px] pointer-events-none' />
                             Equathora
                         </p>
@@ -135,7 +135,7 @@ const VerifyEmail = () => {
                                 marginBottom: '16px',
                                 color: '#c33',
                                 fontSize: '14px',
-                                fontFamily: 'Sansation, sans-serif'
+                                fontFamily: 'FiraSans, sans-serif'
                             }}>
                                 {error}
                             </div>
@@ -150,7 +150,7 @@ const VerifyEmail = () => {
                                 marginBottom: '16px',
                                 color: '#3c3',
                                 fontSize: '14px',
-                                fontFamily: 'Sansation, sans-serif'
+                                fontFamily: 'FiraSans, sans-serif'
                             }}>
                                 {message}
                             </div>

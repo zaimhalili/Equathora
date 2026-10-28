@@ -1,18 +1,17 @@
 // TopicCard.jsx
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from "framer-motion";
 import { FaChevronDown, FaChevronUp, FaStar, FaCrown } from "react-icons/fa";
 import {
     FaCheck,
     FaLock,
     FaPlay,
-    FaClock,
-    FaArrowRight
+    FaClock
 } from 'react-icons/fa';
 import { formatTopicLabel } from '@/lib/utils';
 import { generateProblemSlug } from '@/lib/slugify';
-import { annotateProblemStates, getEstimatedTime, getEstimatedXp } from '@/lib/problemProgress';
+import { annotateProblemStates, getEstimatedTime, getProblemBaseXp } from '@/lib/problemProgress';
 
 const TopicCard = ({
     topic,
@@ -22,6 +21,7 @@ const TopicCard = ({
     recommendedIds = new Set(),
     isPremiumUser = false
 }) => {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
 
     const isAccessible = (problem) => !problem?.is_premium || isPremiumUser;
@@ -47,7 +47,7 @@ const TopicCard = ({
     );
 
     // How many of this topic's problems match the student's current level.
-    // Shown as a hint, not used to hide anything — the full list stays visible.
+    // Shown as a hint, not used to hide anything - the full list stays visible.
     const recommendedCount = useMemo(
         () => statedProblems.filter(p => recommendedIds.has(p.id)).length,
         [statedProblems, recommendedIds]
@@ -65,7 +65,7 @@ const TopicCard = ({
         // recommended-level, ACCESSIBLE problem that's current/unlocked,
         // then any accessible current/in-progress problem, then finally
         // fall back to anything at all (including locked premium) so the
-        // panel is never empty — the CTA below is what actually gates it.
+        // panel is never empty - the CTA below is what actually gates it.
         return (
             statedProblems.find(p => recommendedIds.has(p.id) && p.state === "current" && isAccessible(p)) ??
             statedProblems.find(p => p.state === "current" && isAccessible(p)) ??
@@ -88,7 +88,7 @@ const TopicCard = ({
     const selectedLocked = selected ? !isAccessible(selected) : false;
 
     return (
-        <div className="w-full rounded-2xl bg-[var(--main-color)] backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 font-[Sansation,sans-serif]">
+        <div className="w-full rounded-2xl bg-(--main-color) backdrop-blur-md p-5 shadow-lg flex flex-col gap-3 ">
             {/* Header */}
             <button
                 onClick={() => setOpen(!open)}
@@ -114,7 +114,7 @@ const TopicCard = ({
                     </div>
 
                     <div className="flex items-center justify-between pb-3 flex-wrap gap-2">
-                        <span className="text-xs text-[var(--secondary-color)] opacity-70">
+                        <span className="text-xs text-(--secondary-color) opacity-70">
                             {statedProblems.length} problem{statedProblems.length === 1 ? "" : "s"}
                         </span>
 
@@ -127,9 +127,9 @@ const TopicCard = ({
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="h-4 rounded-md bg-[var(--secondary-color)]/30 overflow-hidden">
+                    <div className="h-4 rounded-xl bg-(--secondary-color)/30 overflow-hidden">
                         <div
-                            className="h-full rounded-md bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))]"
+                            className="h-full rounded-xl bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))]"
                             style={{ width: `${progress}%` }}
                         />
                     </div>
@@ -163,8 +163,7 @@ const TopicCard = ({
                                 {/* Circle Container */}
                                 <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                                     {statedProblems.map(problem => {
-
-                                        let style = "bg-[var(--white)] text-[var(--mid-main-secondary)]";
+                                        let style = "bg-(--white) text-(--mid-main-secondary)";
                                         let Icon = FaLock;
 
                                         if (problem.state === "solved") {
@@ -184,20 +183,31 @@ const TopicCard = ({
 
                                         const isRecommended = recommendedIds.has(problem.id);
                                         const isLockedByPremium = !isAccessible(problem);
+                                        const slug = problem.slug || generateProblemSlug(problem.title, problem.id);
+
+                                        const handleDoubleClick = () => {
+                                            if (isLockedByPremium) {
+                                                navigate("/premium");
+                                            } else if (slug) {
+                                                navigate(`/problems/${slug}`);
+                                            }
+                                        };
 
                                         return (
                                             <button
                                                 key={problem.id}
                                                 onClick={() => setSelectedId(problem.id)}
+                                                onMouseEnter={() => setSelectedId(problem.id)}
+                                                onDoubleClick={handleDoubleClick}
                                                 title={
                                                     isLockedByPremium
-                                                        ? "Premium problem - upgrade to unlock"
+                                                        ? "Premium problem - upgrade to unlock (Double click to navigate)"
                                                         : isRecommended
-                                                            ? "Matched to your level"
-                                                            : undefined
+                                                            ? "Matched to your level (Double click to open)"
+                                                            : "Double click to open"
                                                 }
                                                 className={`relative h-11 w-11 rounded-full flex items-center justify-center transition-all ${style}
-                                                ${selected?.id === problem.id
+            ${selected?.id === problem.id
                                                         ? "scale-110 ring-4 ring-white/80"
                                                         : isRecommended
                                                             ? "outline-4 outline-emerald-600 hover:scale-110"
@@ -222,21 +232,21 @@ const TopicCard = ({
                                 {/* Legend */}
                                 <div className="flex justify-between w-full flex-wrap gap-3">
 
-                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                    <div className="flex gap-2 items-center font-bold text-(--secondary-color)">
                                         <div className="rounded-full flex h-7 w-7 bg-amber-500 text-white justify-center items-center pl-1">
                                             <FaPlay size={12} />
                                         </div>
                                         Next
                                     </div>
 
-                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                    <div className="flex gap-2 items-center font-bold text-(--secondary-color)">
                                         <div className="rounded-full flex h-7 w-7 bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] text-white justify-center items-center">
                                             <FaCheck size={12} />
                                         </div>
                                         Completed <span className="font-normal">{solvedCount}</span>
                                     </div>
 
-                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
+                                    <div className="flex gap-2 items-center font-bold text-(--secondary-color)">
                                         <div className="rounded-full flex h-7 w-7 bg-orange-500 text-white justify-center items-center">
                                             <FaClock size={12} />
                                         </div>
@@ -246,8 +256,8 @@ const TopicCard = ({
                                         </span>
                                     </div>
 
-                                    <div className="flex gap-2 items-center font-bold text-[var(--secondary-color)]">
-                                        <div className="rounded-full flex h-7 w-7 bg-[var(--white)] text-[var(--mid-main-secondary)] justify-center items-center">
+                                    <div className="flex gap-2 items-center font-bold text-(--secondary-color)">
+                                        <div className="rounded-full flex h-7 w-7 bg-(--white) text-(--mid-main-secondary) justify-center items-center">
                                             <FaLock size={12} />
                                         </div>
                                         Not Started{" "}
@@ -260,7 +270,7 @@ const TopicCard = ({
                             </article>
 
                             {/* RIGHT */}
-                            <article className="w-full lg:w-1/2 rounded-md bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-[var(--secondary-color)]">
+                            <article className="w-full lg:w-1/2 rounded-xl bg-white/5 border border-white/50 p-5 flex flex-col gap-2 text-(--secondary-color)">
 
                                 <div className="flex items-center justify-between gap-2 pb-3">
                                     <h4 className="text-xl font-bold">
@@ -311,7 +321,7 @@ const TopicCard = ({
                                         </span>
 
                                         <span>
-                                            {selected?.xp ?? getEstimatedXp(selected?.difficulty)} XP
+                                            {getProblemBaseXp(selected?.difficulty)} base XP
                                         </span>
                                     </div>
 
@@ -330,8 +340,8 @@ const TopicCard = ({
                                         to={selectedSlug ? `/problems/${selectedSlug}` : "#"}
                                         className="mt-5 rounded-xl py-3 flex items-center justify-center gap-2 font-semibold !text-white bg-[linear-gradient(0deg,var(--accent-color),var(--dark-accent-color))] hover:bg-[linear-gradient(0deg,var(--dark-accent-color),var(--dark-accent-color))] transition-all active:scale-95"
                                     >
+                                        <FaPlay />
                                         Start Problem
-                                        <FaArrowRight />
                                     </Link>
                                 )}
 

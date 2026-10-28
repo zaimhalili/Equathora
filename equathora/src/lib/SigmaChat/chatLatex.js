@@ -46,12 +46,12 @@ function isLikelyDollarMath(latex) {
     const hasOperatorOrStructure = /[=+\-*/^_{}<>]/.test(value);
     const isSingleSymbol = /^[A-Za-z]$/.test(value);
     // A single bare number with nothing else ("1", "36", "3.5") is treated as
-    // math — this is the dominant case in a math-tutoring context, e.g.
+    // math - this is the dominant case in a math-tutoring context, e.g.
     // "expressing $1$ as a fraction with a denominator of $36$".
     const isSingleNumericToken = /^-?\d+(?:[.,]\d+)?%?$/.test(value);
 
     // Reject obvious prose spanning two unrelated $ tokens, e.g. "5 and" from
-    // "between $5 and $10" — multiple plain words with no math signal at all.
+    // "between $5 and $10" - multiple plain words with no math signal at all.
     const isMultiWordProseSpan = /^[A-Za-z0-9.,]+(?:\s+[A-Za-z0-9.,]+)+$/.test(value)
         && !hasLatexCommand && !hasOperatorOrStructure;
     if (isMultiWordProseSpan) return false;
@@ -228,7 +228,7 @@ export function hasBalancedLatexBraces(latex) {
 }
 
 // Truncates an AI response to maxChars without ever cutting off in the
-// middle of an open math delimiter or environment — which previously could
+// middle of an open math delimiter or environment - which previously could
 // leave a dangling "\[" or "\begin{bmatrix}" with no closing counterpart,
 // causing the parser to give up and show raw LaTeX source to the student.
 const TRUNCATION_DELIMITER_PAIRS = [

@@ -39,12 +39,12 @@ export const buildSafePromptJson = (payload) => JSON.stringify(sanitizePromptVal
 export const stripModelFormatting = (value) => sanitizePromptText(String(value ?? '').replace(/```json|```/gi, ''), 8000);
 
 // IMPORTANT: this classifier should only ever see genuinely unexpected
-// failures — network errors, Supabase invoke errors, Gemini-side rate
+// failures - network errors, Supabase invoke errors, Gemini-side rate
 // limits/outages. Our own app-level messages (trial exhausted, monthly
 // quota reached, at capacity, etc.) already carry the correct final text
 // from ask-gemini.ts and are short-circuited around this function in
 // askSigmaChat.js. Keep the matching here narrow and specific to actual
-// upstream/infra failure signals — a bare "quota" or "high demand" match
+// upstream/infra failure signals - a bare "quota" or "high demand" match
 // is too broad and will collide with legitimate app messages that happen
 // to share those words.
 export const getFriendlySigmaErrorMessage = (error) => {

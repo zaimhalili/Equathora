@@ -67,6 +67,7 @@ const Journey = lazy(() => import("./pages/Journey"));
 const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const EquathoraBriefs = lazy(() => import("./pages/EquathoraBriefs"));
+const Comparison = lazy(() => import("./pages/Comparison"));
 
 function HomeRoute() {
     const { loading, isAuth, onboardingCompleted } = useAuth();
@@ -115,6 +116,9 @@ function PageMetadataUpdater() {
             '/blogs': 'All Posts - Equathora',
             '/getStarted': 'Choose Your Path - Equathora',
             '/submit-problem': 'Submit a problem - Equathora',
+            '/khan-academy-alternative': 'Equathora vs Khan Academy - Equathora',
+            '/brilliant-alternative': 'Equathora vs Brilliant - Equathora',
+            '/ixl-alternative': 'Equathora vs IXL - Equathora',
         };
 
         const matchedRoute = Object.keys(pageTitles).find(route =>
@@ -196,12 +200,13 @@ export default function App() {
     }, [location.pathname]);
 
     // Single onAuthStateChange listener. There used to be two near-identical
-    // ones here (a leftover from an earlier edit) — that meant every sign-in
+    // ones here (a leftover from an earlier edit) - that meant every sign-in
     // fired theme sync, PostHog events, and the onboarding redirect twice.
     // This is the merged, more complete version: it also handles
     // PASSWORD_RECOVERY and skips the auto-redirect while on the
     // reset-password/forgot-password flow.
     useEffect(() => {
+        const pendingAuthTasks = new Set();
         const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'PASSWORD_RECOVERY') {
                 navigate('/reset-password');
@@ -209,34 +214,38 @@ export default function App() {
             }
 
             if (event === 'SIGNED_IN' && session) {
-                void (async () => {
-                    try {
-                        const userSettings = await getUserSettings();
-                        const normalizedTheme = normalizeThemePreference(userSettings?.theme);
-                        setThemePreference(normalizedTheme, { persist: true });
-                    } catch (error) {
-                        console.error('Error syncing signed-in theme preference:', error);
-                    }
-                })();
-
-                identifyPostHogUser(session.user);
-
-                void capturePostHogEvent('user_signed_in', {
-                    email: session.user?.email || null
-                });
-                void trackActivityEvent('session_start', new Date(), {
-                    route: window.location.pathname
-                });
-
-                const currentPath = window.location.pathname;
-                const isResetFlow = currentPath.includes('/reset-password') || currentPath.includes('/forgotpassword');
-
-                if (!isResetFlow && (currentPath === '/' || currentPath === '/login' || currentPath === '/signup')) {
+                const timeoutId = window.setTimeout(() => {
+                    pendingAuthTasks.delete(timeoutId);
                     void (async () => {
-                        const { onboardingCompleted } = await getOnboardingStatus(session.user.id);
-                        navigate(onboardingCompleted ? '/dashboard' : '/getStarted', { replace: true });
+                        try {
+                            const userSettings = await getUserSettings();
+                            const normalizedTheme = normalizeThemePreference(userSettings?.theme);
+                            setThemePreference(normalizedTheme, { persist: true });
+                        } catch (error) {
+                            console.error('Error syncing signed-in theme preference:', error);
+                        }
                     })();
-                }
+
+                    identifyPostHogUser(session.user);
+
+                    void capturePostHogEvent('user_signed_in', {
+                        email: session.user?.email || null
+                    });
+                    void trackActivityEvent('session_start', new Date(), {
+                        route: window.location.pathname
+                    });
+
+                    const currentPath = window.location.pathname;
+                    const isResetFlow = currentPath.includes('/reset-password') || currentPath.includes('/forgotpassword');
+
+                    if (!isResetFlow && (currentPath === '/' || currentPath === '/login' || currentPath === '/signup')) {
+                        void (async () => {
+                            const { onboardingCompleted } = await getOnboardingStatus(session.user.id);
+                            navigate(onboardingCompleted ? '/dashboard' : '/getStarted', { replace: true });
+                        })();
+                    }
+                }, 0);
+                pendingAuthTasks.add(timeoutId);
             }
 
             if (event === 'SIGNED_OUT') {
@@ -245,7 +254,10 @@ export default function App() {
             }
         });
 
-        return () => subscription.unsubscribe();
+        return () => {
+            pendingAuthTasks.forEach((timeoutId) => window.clearTimeout(timeoutId));
+            subscription.unsubscribe();
+        };
     }, [navigate]);
 
     useEffect(() => {
@@ -280,15 +292,18 @@ export default function App() {
                         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="/terms-of-service" element={<TermsOfService />} />
                         <Route path="/cookie-policy" element={<CookiePolicy />} />
+                        <Route path="/khan-academy-alternative" element={<Comparison />} />
+                        <Route path="/brilliant-alternative" element={<Comparison />} />
+                        <Route path="/ixl-alternative" element={<Comparison />} />
 
-                        {/* Protected Onboarding Flow — guarded by OnboardingRoute, not
+                        {/* Protected Onboarding Flow - guarded by OnboardingRoute, not
                             ProtectedRoute. OnboardingRoute allows a completed user back
                             in only when navigated with state={{ retake: true }} (e.g. a
                             "redo onboarding" link from Settings), and otherwise sends
                             completed users to /dashboard while letting first-time users
                             through. Using ProtectedRoute here caused a redirect loop:
-                            it sends incomplete-onboarding users to /getStarted — while
-                            already ON /getStarted — so the page never actually rendered. */}
+                            it sends incomplete-onboarding users to /getStarted - while
+                            already ON /getStarted - so the page never actually rendered. */}
                         <Route path="/getStarted" element={<OnboardingRoute><GetStarted /></OnboardingRoute>} />
                         <Route path="/premium" element={<Premium />} />
 

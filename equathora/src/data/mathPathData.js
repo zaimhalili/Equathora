@@ -1,5 +1,5 @@
 /**
- * Math Learning Path — Topic Tree Data
+ * Math Learning Path - Topic Tree Data
  *
  * Each node describes a single concept in the learning path.
  * `prerequisites` lists the ids that must all be "completed" before this

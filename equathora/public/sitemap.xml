@@ -27,6 +27,24 @@
 </url>
 
 <url>
+<loc>https://equathora.com/khan-academy-alternative</loc>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://equathora.com/brilliant-alternative</loc>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+
+<url>
+<loc>https://equathora.com/ixl-alternative</loc>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+
+<url>
 <loc>https://equathora.com/signup</loc>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>

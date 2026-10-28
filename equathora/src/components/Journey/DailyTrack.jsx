@@ -10,8 +10,7 @@ import {
 } from 'react-icons/fa';
 import { Link as ReactRouterLink } from 'react-router-dom';
 import { generateProblemSlug } from '@/lib/slugify';
-import { getEstimatedTime } from '@/lib/problemProgress';
-import { calculateProblemXP } from '@/lib/leaderboardService';
+import { getEstimatedTime, getProblemBaseXp } from '@/lib/problemProgress';
 import { motion } from 'framer-motion';
 
 // Daily minutes goal per weekly commitment tier. Mirrors the pool-size
@@ -46,18 +45,6 @@ const DailyTrack = ({
     const queue = Array.isArray(recommendedQueue) ? recommendedQueue : [];
     const remainingInPool = Math.max(totalRecommendedCount - queue.length, 0);
 
-    // Defensive XP calc: never let a missing difficulty crash the render loop.
-    const getProblemXp = (problem) => {
-        if (!problem?.difficulty) return 0;
-        try {
-            const result = calculateProblemXP(problem.difficulty, 0, true, 0, false);
-            return Number.isFinite(result?.totalXP) ? result.totalXP : 0;
-        } catch (err) {
-            console.error("[DailyTrack] calculateProblemXP failed:", err);
-            return 0;
-        }
-    };
-
     const getProblemSlug = (problem) => {
         if (!problem?.id) return null;
         try {
@@ -70,27 +57,27 @@ const DailyTrack = ({
 
     return (
         <motion.section
-            className="w-full rounded-2xl bg-[var(--main-color)] border border-white/10 p-5 shadow-xl"
+            className="w-full rounded-2xl bg-(--main-color) border border-white/10 p-5 shadow-xl"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
         >
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-xl bg-[var(--accent-color)] flex items-center justify-center text-white">
+                    <div className="h-12 w-12 rounded-xl bg-(--accent-color) flex items-center justify-center text-white">
                         <FaBullseye size={20} />
                     </div>
                     <div>
                         <h2 className="text-2xl font-bold">
                             Daily Mission
                         </h2>
-                        <p className="text-sm text-[var(--secondary-color)]">
+                        <p className="text-sm text-(--secondary-color)">
                             Stay consistent and keep your streak alive.
                         </p>
                     </div>
                 </div>
 
-                <div className="hidden md:flex items-center gap-2 text-[var(--secondary-color)] font-bold">
+                <div className="hidden md:flex items-center gap-2 text-(--secondary-color) font-bold">
                     <svg className="w-4 h-4" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <linearGradient id="icon-gradient-fire-sidebar" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -110,13 +97,13 @@ const DailyTrack = ({
                         Today's Goal
                     </span>
 
-                    <span className="text-[var(--secondary-color)]">
+                    <span className="text-(--secondary-color)">
                         {todayMinutes} / {goalMinutes} min
                     </span>
                 </div>
-                <div className="h-4 rounded-md bg-[var(--secondary-color)]/30 overflow-hidden">
+                <div className="h-4 rounded-xl bg-(--secondary-color)/30 overflow-hidden">
                     <div
-                        className="h-full rounded-md bg-[linear-gradient(90deg,var(--accent-color),var(--dark-accent-color))]"
+                        className="h-full rounded-xl bg-[linear-gradient(90deg,var(--accent-color),var(--dark-accent-color))]"
                         style={{ width: `${goalPercent}%` }}
                     />
                 </div>
@@ -126,13 +113,13 @@ const DailyTrack = ({
             {queue.length > 0 ? (
                 <>
                     <div className="flex items-center justify-between flex-wrap gap-2 pb-4">
-                        <p className="text-sm text-[var(--secondary-color)]">
+                        <p className="text-sm text-(--secondary-color)">
                             Picked for you today, based on your level and pace.
                         </p>
                         {remainingInPool > 0 && (
                             <a
                                 href="#learning-paths"
-                                className="text-sm font-semibold text-[var(--accent-color)] hover:underline"
+                                className="text-sm font-semibold text-(--accent-color) hover:underline"
                             >
                                 +{remainingInPool} more waiting in your tracks
                             </a>
@@ -142,13 +129,13 @@ const DailyTrack = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {queue.map((problem, idx) => {
                             const slug = getProblemSlug(problem);
-                            const xp = getProblemXp(problem);
+                            const xp = getProblemBaseXp(problem.difficulty);
                             const isPremiumPick = Boolean(problem.is_premium) && isPremiumUser;
 
                             return (
                                 <div
                                     key={problem.id || idx}
-                                    className="rounded-xl border border-[var(--french-gray)] bg-white/5 p-5 flex flex-col justify-between gap-4"
+                                    className="rounded-xl border border-(--french-gray) bg-white/5 p-5 flex flex-col justify-between gap-4"
                                 >
                                     <div>
                                         <div className="flex items-center justify-between gap-2 pb-2">
@@ -167,7 +154,7 @@ const DailyTrack = ({
                                             {problem.title ?? "Untitled problem"}
                                         </h3>
 
-                                        <div className="pt-3 flex flex-wrap gap-4 text-sm text-[var(--secondary-color)]">
+                                        <div className="pt-3 flex flex-wrap gap-4 text-sm text-(--secondary-color)">
                                             <div className="flex items-center gap-2">
                                                 <FaClock />
                                                 {problem.estimated_time ?? getEstimatedTime(problem.difficulty)}
@@ -175,7 +162,7 @@ const DailyTrack = ({
 
                                             <div className="flex items-center gap-2 text-[var(--rare-blue)]">
                                                 <FaBolt />
-                                                + {xp} XP
+                                                + {xp} base XP
                                             </div>
                                         </div>
                                     </div>
@@ -187,10 +174,9 @@ const DailyTrack = ({
                                         >
                                             <FaPlay size={12} />
                                             Start
-                                            <FaArrowRight size={12} />
                                         </ReactRouterLink>
                                     ) : (
-                                        <span className="px-4 py-2 rounded-xl bg-white/10 text-center text-sm text-[var(--secondary-color)]">
+                                        <span className="px-4 py-2 rounded-xl bg-white/10 text-center text-sm text-(--secondary-color)">
                                             Unavailable right now
                                         </span>
                                     )}
@@ -200,12 +186,12 @@ const DailyTrack = ({
                     </div>
                 </>
             ) : (
-                <div className="rounded-xl border border-[var(--french-gray)] bg-white/5 p-6 flex flex-col items-center text-center gap-3">
-                    <FaCheckCircle className="text-3xl text-[var(--accent-color)]" />
+                <div className="rounded-xl border border-(--french-gray) bg-white/5 p-6 flex flex-col items-center text-center gap-3">
+                    <FaCheckCircle className="text-3xl text-(--accent-color)" />
                     <h3 className="text-xl font-bold">
                         You're all caught up!
                     </h3>
-                    <p className="text-sm text-[var(--secondary-color)] max-w-md">
+                    <p className="text-sm text-(--secondary-color) max-w-md">
                         You've cleared today's picks. Browse the full learning paths below to keep going or get ahead.
                     </p>
 

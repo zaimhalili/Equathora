@@ -35,10 +35,6 @@ const extractJsonObject = (value) => {
 };
 
 export async function testGemini({ problemDescription, userSteps, acceptedAnswer }) {
-    // The backend owns the system instruction and the JSON schema for this
-    // mode (see ask-gemini/index.ts, mode: 'step-analysis'). We only send
-    // the raw fields it expects — there is no client-supplied prompt or
-    // instruction override; the server ignores those by design.
     const problemDescriptionSanitized = sanitizePromptText(problemDescription, 1000);
     const acceptedAnswerSanitized = sanitizePromptText(acceptedAnswer, 500);
     const userStepsSanitized = sanitizePromptText(userSteps, 4000);

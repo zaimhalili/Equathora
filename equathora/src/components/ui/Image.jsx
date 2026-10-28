@@ -7,7 +7,7 @@ const Image = ({ src, alt, className = "" }) => {
         <div className={`relative overflow-hidden ${className}`}>
             {/* skeleton */}
             <div
-                className={`absolute inset-0 bg-[var(--main-color)] animate-pulse transition-opacity duration-300 ${loaded ? "opacity-0" : "opacity-100"
+                className={`absolute inset-0 bg-(--main-color) animate-pulse transition-opacity duration-300 ${loaded ? "opacity-0" : "opacity-100"
                     }`}
             />
             {/* real image */}

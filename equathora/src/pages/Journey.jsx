@@ -49,7 +49,7 @@ const Journey = () => {
     };
 
     // Which difficulties count as "recommended" for a given level. This no
-    // longer FILTERS out other problems — it only tags them, so topics still
+    // longer FILTERS out other problems - it only tags them, so topics still
     // show their full problem list instead of a thin slice.
     const LEVEL_TO_DIFFICULTIES = {
         beginner: ["Beginner", "Easy", "Standard"],
@@ -59,7 +59,7 @@ const Journey = () => {
     };
 
     // How many problems get pulled into TODAY's Daily Mission queue.
-    // This is the only place weekly_commitment now limits anything —
+    // This is the only place weekly_commitment now limits anything -
     // Learning Paths / TopicCards always show the full set per topic.
     const DAILY_TARGET_BY_COMMITMENT = {
         "under-1": 2,
@@ -158,12 +158,12 @@ const Journey = () => {
         load();
     }, []);
 
-    // Full set of problems for the student's selected subjects — NOT sliced.
+    // Full set of problems for the student's selected subjects - NOT sliced.
     // This is what feeds the Learning Paths / TopicCards, so every topic
     // shows its complete list of problems instead of a thin global slice.
     // Premium problems ARE included here on purpose: Learning Paths is a
     // browsing surface, so free users should still see (locked) premium
-    // problems and know they exist — TopicCard handles the locked styling.
+    // problems and know they exist - TopicCard handles the locked styling.
     const journeyProblems = useMemo(() => {
         if (!studentTopics.length || allProblems.length === 0) return [];
 
@@ -176,7 +176,7 @@ const Journey = () => {
     }, [studentProfile]);
 
     // Ids of problems that match the student's current level. Used only to
-    // highlight/prioritize — never to hide problems from a topic.
+    // highlight/prioritize - never to hide problems from a topic.
     const recommendedIds = useMemo(() => {
         const ids = new Set();
         if (!allowedDifficulties.length) return ids;
@@ -203,7 +203,7 @@ const Journey = () => {
     // list (N = dailyTargetCount); totalRecommendedCount is the full
     // candidate pool size, so DailyTrack can show "+N more waiting"
     // accurately. Premium-only problems are excluded here unless the
-    // student actually has premium — the Daily Mission is meant to be a
+    // student actually has premium - the Daily Mission is meant to be a
     // free, frictionless habit loop, not a paywall funnel.
     const completedProblemIds = stats.completedProblemIds || [];
     const attemptedProblemIds = stats.attemptedProblemIds || [];
@@ -289,10 +289,10 @@ const Journey = () => {
                             transition={{ duration: 0.6 }}
                         >
                             <div className="flex flex-col md:w-2/3 justify-center">
-                                <h1 className="text-4xl text-center md:text-left pb-2 cursor-default font-[Sansation] font-extrabold">
+                                <h1 className="text-4xl text-center md:text-left pb-2 cursor-default  font-extrabold">
                                     Your Math Journey
                                 </h1>
-                                <p className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] lg:w-[80%] cursor-default text-[var(--secondary-color)]">
+                                <p className="text-md text-center md:text-left lg:text-lg font-normal leading-[1.2] lg:w-[80%] cursor-default text-(--secondary-color)">
                                     Follow structured learning paths designed to build your mathematical skills progressively. Each track guides you through concepts with increasing complexity.
                                 </p>
                             </div>
@@ -303,15 +303,15 @@ const Journey = () => {
                         </motion.div>
 
                         {/* Dynamic Progress & Streak Motivation Banner */}
-                        {currentStreak > 0 && (
+                        {/* {currentStreak > 0 && (
                             <motion.div
-                                className="w-full bg-gradient-to-r from-amber-500/10 via-orange-500/20 to-red-500/20 border border-amber-500/30 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg backdrop-blur-md"
+                                className="w-full bg-linear-to-r from-amber-500/30 via-orange-500/30 to-red-500/30 border border-amber-500/30 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg backdrop-blur-md"
                                 initial={{ opacity: 0, scale: 0.97 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.5 }}
                             >
                                 <div className="flex items-center gap-4 text-center sm:text-left">
-                                    <div className="text-4xl md:text-5xl animate-bounce">
+                                    <div className="text-4xl md:text-5xl">
                                         <svg className="h-10" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
                                             <defs>
                                                 <linearGradient id="icon-gradient-fire-sidebar" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -323,18 +323,18 @@ const Journey = () => {
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 className="text-lg md:text-xl font-extrabold text-amber-600">
-                                            {currentStreak >= 15
-                                                ? `You've achieved a ${currentStreak}-day streak. You're on fire! 💥`
+                                        <h3 className="text-lg md:text-xl font-extrabold text-white">
+                                            {currentStreak >= 5
+                                                ? `You've achieved a ${currentStreak}-day streak. You're on fire!`
                                                 : `You're on a ${currentStreak}-day streak! Keep the momentum going!`}
                                         </h3>
-                                        <p className="text-sm text-[var(--secondary-color)]">
+                                        <p className="text-sm text-white">
                                             Consistency is the key to mastering high-level math. Solve today's suggested targets to extend your streak!
                                         </p>
                                     </div>
                                 </div>
                             </motion.div>
-                        )}
+                        )} */}
 
                         {/* Daily Mission Component */}
                         <DailyTrack
@@ -353,8 +353,8 @@ const Journey = () => {
                                     <FaSpinner className='text-2xl' />
                                 </div>
                             ) : Object.keys(personalizedJourney).length === 0 ? (
-                                <p className="text-center text-lg text-[var(--secondary-color)] py-8">
-                                    No recommended problems yet — check back soon, or update your goals below.
+                                <p className="text-center text-lg text-(--secondary-color) py-8">
+                                    No recommended problems yet - check back soon, or update your goals below.
                                 </p>
                             ) : (
                                 Object.keys(personalizedJourney)
@@ -372,7 +372,7 @@ const Journey = () => {
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ duration: 0.6 }}
                                         >
-                                            <h2 className="text-3xl font-bold rounded-md flex items-center justify-center">
+                                            <h2 className="text-3xl font-bold rounded-xl flex items-center justify-center">
                                                 {subject}
                                             </h2>
 
@@ -395,8 +395,8 @@ const Journey = () => {
                         </section>
 
                         {/* Retake Diagnostic / Reset Goals CTA */}
-                        <div className="flex flex-col items-center justify-center py-6 w-full gap-3 border-t border-[var(--secondary-color)]/20 mt-4">
-                            <p className="text-sm text-[var(--secondary-color)] text-center">
+                        <div className="flex flex-col items-center justify-center py-6 w-full gap-3 border-t border-(--secondary-color)/20 mt-4">
+                            <p className="text-sm text-(--secondary-color) text-center">
                                 Want to adjust your focus areas or reset your recommended skill level?
                             </p>
                             <button
@@ -409,7 +409,7 @@ const Journey = () => {
                                         // Handled in hook
                                     }
                                 }}
-                                className="py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white rounded-md transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full text-center max-w-fit px-6 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="py-2 md:py-3 bg-[linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))] font-bold !text-white rounded-xl transition-all duration-300 cursor-pointer active:scale-95 hover:!bg-[linear-gradient(360deg,var(--dark-accent-color),var(--dark-accent-color))] w-full text-center max-w-fit px-6 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isResetting ? 'Resetting...' : 'Retake Skill Assessment'}
                             </button>

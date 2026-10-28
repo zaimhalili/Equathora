@@ -1,10 +1,33 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import './GlobalLeaderboard.css';
 import { getTopSolvers, getCurrentUserRank, getRecentTopSolvers } from '../../lib/leaderboardService';
 import { supabase } from '../../lib/supabaseClient';
 import GuestAvatar from '../../assets/images/guestAvatar.png';
 import { FaBullseye, FaChartLine, FaCrown, FaFire, FaHashtag, FaMedal, FaSearch, FaSortAmountDown } from 'react-icons/fa';
+import {
+    getRankBadgeClass,
+    getRankToneClass,
+    leaderboardAvatarClass,
+    leaderboardAvatarWrapClass,
+    leaderboardEmptyClass,
+    leaderboardFilterClass,
+    leaderboardFilterIconClass,
+    leaderboardFilterInputClass,
+    leaderboardFilterSelectClass,
+    leaderboardListClass,
+    leaderboardPanelClass,
+    leaderboardPlayerInfoClass,
+    leaderboardPlayerNameClass,
+    leaderboardPlayerStatsClass,
+    leaderboardRowClass,
+    leaderboardStatClass,
+    leaderboardSubtitleClass,
+    leaderboardTitleClass,
+    leaderboardYouBadgeClass,
+    leaderboardXpClass,
+    leaderboardXpLabelClass,
+    leaderboardXpValueClass
+} from './leaderboardStyles';
 
 const TopSolversLeaderboard = () => {
     const [players, setPlayers] = useState([]);
@@ -29,7 +52,7 @@ const TopSolversLeaderboard = () => {
             // Fetch top solvers data
             const topSolversData = viewMode === 'weekly'
                 ? await getRecentTopSolvers(7)
-                : await getTopSolvers(viewMode);
+                : await getTopSolvers(metric === 'accuracy' || metric === 'streak' ? metric : 'overall');
             setPlayers(topSolversData);
 
             // Get current user's rank if logged in
@@ -54,7 +77,7 @@ const TopSolversLeaderboard = () => {
         } finally {
             setLoading(false);
         }
-    }, [viewMode]);
+    }, [viewMode, metric]);
 
     useEffect(() => {
         fetchTopSolvers();
@@ -102,23 +125,14 @@ const TopSolversLeaderboard = () => {
         }));
     }, [players, searchTerm, metric, minSolved, minAccuracy, minStreak, viewMode]);
 
-    const currentUserDisplayRank = useMemo(() => {
-        if (!currentUser?.id) return 0;
-        const index = filteredPlayers.findIndex(player => player.userId === currentUser.id);
-        return index >= 0 ? index + 1 : 0;
-    }, [filteredPlayers, currentUser]);
-
     const getRankBadge = (rank) => {
-        if (rank === 1) return <FaCrown className="rank-badge-icon" />;
-        if (rank === 2 || rank === 3) return <FaMedal className="rank-badge-icon" />;
-        return <FaHashtag className="rank-badge-icon" />;
+        if (rank === 1) return <FaCrown className="text-sm" />;
+        if (rank === 2 || rank === 3) return <FaMedal className="text-sm" />;
+        return <FaHashtag className="text-sm" />;
     };
 
     const getRankClass = (rank) => {
-        if (rank === 1) return 'rank-gold';
-        if (rank === 2) return 'rank-silver';
-        if (rank === 3) return 'rank-bronze';
-        return 'rank-default';
+        return getRankToneClass(rank);
     };
 
     const getPrimaryMetric = (player) => {
@@ -133,14 +147,14 @@ const TopSolversLeaderboard = () => {
             };
         }
 
-        if (metric === 'accuracy' || viewMode === 'accuracy') {
+        if (metric === 'accuracy') {
             return {
                 value: player.accuracy === null || player.accuracy === undefined ? 'N/A' : `${player.accuracy}%`,
                 label: 'Accuracy'
             };
         }
 
-        if (metric === 'streak' || viewMode === 'streak') {
+        if (metric === 'streak') {
             return {
                 value: `${player.currentStreak || 0}d`,
                 label: 'Streak'
@@ -155,12 +169,12 @@ const TopSolversLeaderboard = () => {
 
     if (loading) {
         return (
-            <article className="global-leaderboard">
-                <div className="leaderboard-header">
-                    <h2>Performance Board</h2>
-                    <p className="leaderboard-subtitle">Rank by weekly momentum, solved count, accuracy, streak, or XP</p>
+            <article className={leaderboardPanelClass}>
+                <div>
+                    <h2 className={leaderboardTitleClass}>Performance Board</h2>
+                    <p className={leaderboardSubtitleClass}>Rank by weekly momentum, solved count, accuracy, streak, or XP</p>
                 </div>
-                <div className="loading-container" style={{ textAlign: 'center', padding: '3rem', color: 'var(--secondary-color)' }}>
+                <div className="p-12 text-center text-(--secondary-color)">
                     <p>Loading performance board...</p>
                 </div>
             </article>
@@ -169,16 +183,16 @@ const TopSolversLeaderboard = () => {
 
     if (error) {
         return (
-            <article className="global-leaderboard">
-                <div className="leaderboard-header">
-                    <h2>Performance Board</h2>
-                    <p className="leaderboard-subtitle">Rank by weekly momentum, solved count, accuracy, streak, or XP</p>
+            <article className={leaderboardPanelClass}>
+                <div>
+                    <h2 className={leaderboardTitleClass}>Performance Board</h2>
+                    <p className={leaderboardSubtitleClass}>Rank by weekly momentum, solved count, accuracy, streak, or XP</p>
                 </div>
-                <div className="error-container" style={{ textAlign: 'center', padding: '3rem', color: '#ef4444' }}>
-                    <p>{error}</p>
+                <div className="p-12 text-center text-red-500">
+                    <p role="alert">{error}</p>
                     <button
                         onClick={fetchTopSolvers}
-                        style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--accent-color)', color: 'white', border: 'none', borderRadius: '0.5rem', cursor: 'pointer' }}
+                        className="mt-4 cursor-pointer rounded-lg bg-(--accent-color) px-4 py-2 text-white transition hover:opacity-90"
                     >
                         Retry
                     </button>
@@ -188,58 +202,55 @@ const TopSolversLeaderboard = () => {
     }
 
     return (
-        <article className="global-leaderboard">
-            <div className="leaderboard-header">
-                <h2>Performance Board</h2>
-                <p className="leaderboard-subtitle">Rank by weekly momentum, solved count, accuracy, streak, or XP</p>
+        <article className={leaderboardPanelClass}>
+            <div>
+                <h2 className={leaderboardTitleClass}>Performance Board</h2>
+                <p className={leaderboardSubtitleClass}>Rank by weekly momentum, solved count, accuracy, streak, or XP</p>
 
-                <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                    {['overall', 'weekly', 'accuracy', 'streak'].map(cat => (
-                        <button
-                            key={cat}
-                            onClick={() => setViewMode(cat)}
-                            style={{
-                                padding: '0.5rem 1rem',
-                                background: viewMode === cat ? 'linear-gradient(360deg,var(--accent-color),var(--dark-accent-color))' : 'var(--main-color)',
-                                color: viewMode === cat ? 'white' : 'var(--secondary-color)',
-                                border: viewMode === cat ? 'none' : '1px solid var(--french-gray)',
-                                borderRadius: '0.5rem',
-                                cursor: 'pointer',
-                                textTransform: 'capitalize',
-                                fontSize: '0.9rem'
-                            }}
-                            className='active:scale-95 hover:bg-black/15'
-                        >
-                            {cat === 'overall' ? 'Overall' : cat === 'weekly' ? 'Weekly Momentum' : cat === 'accuracy' ? 'Accuracy Focus' : 'Streak Focus'}
-                        </button>
-                    ))}
+                <div className="mt-4 inline-flex gap-1 rounded-[10px] border border-[color-mix(in_srgb,var(--secondary-color)_13%,transparent)] bg-[color-mix(in_srgb,var(--secondary-color)_4%,var(--main-color))] p-1" role="group" aria-label="Leaderboard period">
+                    <button
+                        type="button"
+                        onClick={() => setViewMode('overall')}
+                        className={`rounded-md px-3 py-2 text-xs font-semibold text-(--secondary-color) transition ${viewMode === 'overall' ? 'bg-[color-mix(in_srgb,var(--accent-color)_12%,var(--main-color))] opacity-100' : 'opacity-70 hover:opacity-100'}`}
+                        aria-pressed={viewMode === 'overall'}
+                    >
+                        Overall
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setViewMode('weekly')}
+                        className={`rounded-md px-3 py-2 text-xs font-semibold text-(--secondary-color) transition ${viewMode === 'weekly' ? 'bg-[color-mix(in_srgb,var(--accent-color)_12%,var(--main-color))] opacity-100' : 'opacity-70 hover:opacity-100'}`}
+                        aria-pressed={viewMode === 'weekly'}
+                    >
+                        Last 7 days
+                    </button>
                 </div>
 
-                <div className="leaderboard-filters">
-                    <label className="leaderboard-filter search-filter">
-                        <FaSearch className="filter-icon" />
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <label className={`${leaderboardFilterClass} min-w-[190px] max-[680px]:min-w-0 max-[680px]:flex-1 max-[420px]:basis-full`}>
+                        <FaSearch className={leaderboardFilterIconClass} />
                         <input
                             type="text"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Search player"
-                            className="leaderboard-filter-input"
+                            className={leaderboardFilterInputClass}
                         />
                     </label>
 
-                    <label className="leaderboard-filter">
-                        <FaSortAmountDown className="filter-icon" />
-                        <select value={metric} onChange={(e) => setMetric(e.target.value)} className="leaderboard-filter-select">
-                            <option value="solved">Sort by Solved</option>
-                            <option value="xp">Sort by XP</option>
-                            <option value="accuracy">Sort by Accuracy</option>
-                            <option value="streak">Sort by Streak</option>
+                    <label className={leaderboardFilterClass}>
+                        <FaSortAmountDown className={leaderboardFilterIconClass} />
+                        <select value={metric} onChange={(e) => setMetric(e.target.value)} className={leaderboardFilterSelectClass}>
+                            <option value="solved">Rank by solved</option>
+                            <option value="xp">Rank by XP</option>
+                            <option value="accuracy">Rank by accuracy</option>
+                            <option value="streak">Rank by streak</option>
                         </select>
                     </label>
 
-                    <label className="leaderboard-filter">
-                        <FaChartLine className="filter-icon" />
-                        <select value={solvedFilter} onChange={(e) => setSolvedFilter(e.target.value)} className="leaderboard-filter-select">
+                    <label className={leaderboardFilterClass}>
+                        <FaChartLine className={leaderboardFilterIconClass} />
+                        <select value={solvedFilter} onChange={(e) => setSolvedFilter(e.target.value)} className={leaderboardFilterSelectClass}>
                             <option value="all">Solved: Any</option>
                             <option value="10">Solved: 10+</option>
                             <option value="25">Solved: 25+</option>
@@ -248,9 +259,9 @@ const TopSolversLeaderboard = () => {
                         </select>
                     </label>
 
-                    <label className="leaderboard-filter">
-                        <FaBullseye className="filter-icon" />
-                        <select value={accuracyFilter} onChange={(e) => setAccuracyFilter(e.target.value)} className="leaderboard-filter-select">
+                    <label className={leaderboardFilterClass}>
+                        <FaBullseye className={leaderboardFilterIconClass} />
+                        <select value={accuracyFilter} onChange={(e) => setAccuracyFilter(e.target.value)} className={leaderboardFilterSelectClass}>
                             <option value="all">Accuracy: Any</option>
                             <option value="50">Accuracy: 50%+</option>
                             <option value="70">Accuracy: 70%+</option>
@@ -259,9 +270,9 @@ const TopSolversLeaderboard = () => {
                         </select>
                     </label>
 
-                    <label className="leaderboard-filter">
-                        <FaFire className="filter-icon" />
-                        <select value={streakFilter} onChange={(e) => setStreakFilter(e.target.value)} className="leaderboard-filter-select">
+                    <label className={leaderboardFilterClass}>
+                        <FaFire className={leaderboardFilterIconClass} />
+                        <select value={streakFilter} onChange={(e) => setStreakFilter(e.target.value)} className={leaderboardFilterSelectClass}>
                             <option value="all">Streak: Any</option>
                             <option value="3">Streak: 3+ days</option>
                             <option value="7">Streak: 7+ days</option>
@@ -272,7 +283,7 @@ const TopSolversLeaderboard = () => {
                 </div>
             </div>
 
-            <div className="leaderboard-list">
+            <div className={leaderboardListClass}>
                 {filteredPlayers.map((player) => (
                     (() => {
                         const primaryMetric = getPrimaryMetric(player);
@@ -280,49 +291,55 @@ const TopSolversLeaderboard = () => {
                             <Link
                                 key={player.userId}
                                 to={`/profile/${player.userId}`}
-                                className={`leaderboard-card ${getRankClass(player.displayRank)} ${currentUser && player.userId === currentUser.id ? 'current-user' : ''}`}
+                                className={`${leaderboardRowClass} ${getRankClass(player.displayRank)} ${currentUser && player.userId === currentUser.id ? 'bg-[color-mix(in_srgb,var(--accent-color)_7%,var(--main-color))] shadow-[inset_3px_0_0_var(--accent-color)]' : ''}`}
+                                aria-current={currentUser && player.userId === currentUser.id ? 'true' : undefined}
                             >
-                                <div className="rank-badge">
-                                    {getRankBadge(player.displayRank)}
-                                    <span className="rank-badge-number">{player.displayRank}</span>
+                                <div className={`flex h-10 w-[54px] min-w-[54px] items-center justify-center gap-1.5 rounded-[10px] bg-[color-mix(in_srgb,var(--secondary-color)_6%,var(--main-color))] text-base font-bold max-[680px]:h-9 max-[680px]:w-9 max-[680px]:min-w-9 max-[680px]:gap-0.5 ${getRankBadgeClass(player.displayRank)}`}>
+                                    <span className="max-[680px]:hidden">{getRankBadge(player.displayRank)}</span>
+                                    <span className="text-sm font-extrabold">{player.displayRank}</span>
                                 </div>
-                                <div className="player-avatar-wrapper">
+                                <div className={leaderboardAvatarWrapClass}>
                                     <img
                                         src={player.avatarUrl || GuestAvatar}
                                         alt={`${player.name} avatar`}
-                                        className="player-avatar"
+                                        className={leaderboardAvatarClass}
                                     />
                                 </div>
-                                <div className="player-info">
-                                    <div className="player-name">{player.name}</div>
-                                    <div className="player-stats">
-                                        <span className="stat-item">
-                                            <FaChartLine className="stat-icon" />
+                                <div className={leaderboardPlayerInfoClass}>
+                                    <div className={leaderboardPlayerNameClass}>
+                                        {player.name}
+                                        {currentUser && player.userId === currentUser.id && (
+                                            <span className={leaderboardYouBadgeClass}>You</span>
+                                        )}
+                                    </div>
+                                    <div className={leaderboardPlayerStatsClass}>
+                                        <span className={leaderboardStatClass}>
+                                            <FaChartLine className={leaderboardFilterIconClass} />
                                             {viewMode === 'weekly' ? player.recentSolved || player.problemsSolved : player.problemsSolved} solved
                                         </span>
-                                        {(viewMode === 'accuracy' || metric === 'accuracy') && player.accuracy !== null && player.accuracy !== undefined && (
-                                            <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                                <FaBullseye className="stat-icon" />
+                                        {metric === 'accuracy' && player.accuracy !== null && player.accuracy !== undefined && (
+                                            <span className={leaderboardStatClass}>
+                                                <FaBullseye className={leaderboardFilterIconClass} />
                                                 {player.accuracy}%
                                             </span>
                                         )}
-                                        {(viewMode === 'streak' || metric === 'streak') && (
-                                            <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                                <FaFire className="stat-icon" />
+                                        {metric === 'streak' && (
+                                            <span className={leaderboardStatClass}>
+                                                <FaFire className={leaderboardFilterIconClass} />
                                                 {player.currentStreak} days
                                             </span>
                                         )}
                                         {viewMode === 'weekly' && (
-                                            <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                                <FaChartLine className="stat-icon" />
+                                            <span className={leaderboardStatClass}>
+                                                <FaChartLine className={leaderboardFilterIconClass} />
                                                 last 7d
                                             </span>
                                         )}
                                     </div>
                                 </div>
-                                <div className="player-xp">
-                                    <span className="xp-value">{primaryMetric.value}</span>
-                                    <span className="xp-label">{primaryMetric.label}</span>
+                                <div className={leaderboardXpClass}>
+                                    <span className={leaderboardXpValueClass}>{primaryMetric.value}</span>
+                                    <span className={leaderboardXpLabelClass}>{primaryMetric.label}</span>
                                 </div>
                             </Link>
                         );
@@ -330,52 +347,59 @@ const TopSolversLeaderboard = () => {
                 ))}
             </div>
 
+            {filteredPlayers.length === 0 && (
+                <div className={leaderboardEmptyClass}>No players match these filters.</div>
+            )}
+
             {currentUser && (
-                <div className="user-rank-card">
-                    <div className="your-rank-label">Your Rank</div>
+                <div className="absolute inset-x-0 bottom-0 z-[3] border-t border-[color-mix(in_srgb,var(--accent-color)_30%,transparent)] bg-[color-mix(in_srgb,var(--main-color)_96%,transparent)] p-2 shadow-[0_-8px_22px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+                    <div className="mb-1 text-left text-xs font-bold uppercase tracking-wider">Your global rank</div>
                     <Link
                         to={`/profile/${currentUser.id}`}
-                        className={`leaderboard-card current-user-highlight ${getRankClass(currentUserDisplayRank || currentUser.rank)}`}
+                        className={`${leaderboardRowClass} rounded-lg bg-[color-mix(in_srgb,var(--accent-color)_7%,var(--main-color))] shadow-[inset_3px_0_0_var(--accent-color)] ${getRankClass(currentUser.rank)}`}
                     >
                         {(() => {
                             const primaryMetric = getPrimaryMetric(currentUser);
                             return (
                                 <>
-                                    <div className="rank-badge">
-                                        {getRankBadge(currentUserDisplayRank || currentUser.rank)}
-                                        <span className="rank-badge-number">{currentUserDisplayRank || currentUser.rank}</span>
+                                    <div className={`flex h-10 w-[54px] min-w-[54px] items-center justify-center gap-1.5 rounded-[10px] bg-[color-mix(in_srgb,var(--secondary-color)_6%,var(--main-color))] text-base font-bold max-[680px]:h-9 max-[680px]:w-9 max-[680px]:min-w-9 max-[680px]:gap-0.5 ${getRankBadgeClass(currentUser.rank)}`}>
+                                        <span className="max-[680px]:hidden">{getRankBadge(currentUser.rank)}</span>
+                                        <span className="text-sm font-extrabold">{currentUser.rank}</span>
                                     </div>
-                                    <div className="player-avatar-wrapper">
+                                    <div className={leaderboardAvatarWrapClass}>
                                         <img
                                             src={currentUser.avatarUrl || GuestAvatar}
                                             alt={`${currentUser.name} avatar`}
-                                            className="player-avatar"
+                                            className={leaderboardAvatarClass}
                                         />
                                     </div>
-                                    <div className="player-info">
-                                        <div className="player-name">{currentUser.name}</div>
-                                        <div className="player-stats">
-                                            <span className="stat-item">
-                                                <FaChartLine className="stat-icon" />
+                                    <div className={leaderboardPlayerInfoClass}>
+                                        <div className={leaderboardPlayerNameClass}>
+                                            {currentUser.name}
+                                            <span className={leaderboardYouBadgeClass}>You</span>
+                                        </div>
+                                        <div className={leaderboardPlayerStatsClass}>
+                                            <span className={leaderboardStatClass}>
+                                                <FaChartLine className={leaderboardFilterIconClass} />
                                                 {currentUser.problemsSolved} solved
                                             </span>
-                                            {(viewMode === 'accuracy' || metric === 'accuracy') && currentUser.accuracy !== null && currentUser.accuracy !== undefined && (
-                                                <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                                    <FaBullseye className="stat-icon" />
+                                            {metric === 'accuracy' && currentUser.accuracy !== null && currentUser.accuracy !== undefined && (
+                                                <span className={leaderboardStatClass}>
+                                                    <FaBullseye className={leaderboardFilterIconClass} />
                                                     {currentUser.accuracy}%
                                                 </span>
                                             )}
-                                            {(viewMode === 'streak' || metric === 'streak') && (
-                                                <span className="stat-item" style={{ marginLeft: '0.5rem', fontSize: '0.85rem' }}>
-                                                    <FaFire className="stat-icon" />
+                                            {metric === 'streak' && (
+                                                <span className={leaderboardStatClass}>
+                                                    <FaFire className={leaderboardFilterIconClass} />
                                                     {currentUser.currentStreak} days
                                                 </span>
                                             )}
                                         </div>
                                     </div>
-                                    <div className="player-xp">
-                                        <span className="xp-value">{primaryMetric.value}</span>
-                                        <span className="xp-label">{primaryMetric.label}</span>
+                                    <div className={leaderboardXpClass}>
+                                        <span className={leaderboardXpValueClass}>{primaryMetric.value}</span>
+                                        <span className={leaderboardXpLabelClass}>{primaryMetric.label}</span>
                                     </div>
                                 </>
                             );

@@ -29,7 +29,7 @@
     justify-content: center;
     width: 32px;
     height: 32px;
-    border-radius: 6px;
+    border-radius: 12px;
     transition: all 0.2s ease;
     background: transparent;
     border: none;
@@ -91,15 +91,13 @@
 
 .sidebar-profile-info h4 {
     margin: 0;
-    font-family: 'Sansation', sans-serif;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--secondary-color);
 }
 
 .sidebar-profile-info p {
     margin: 2px 0 0;
-    font-family: 'Sansation', sans-serif;
     font-size: 0.8rem;
     font-weight: 400;
     color: var(--mid-main-secondary);
@@ -131,15 +129,13 @@
 
 .sidebar-streak-text h4 {
     margin: 0;
-    font-family: 'Sansation', sans-serif;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--secondary-color);
 }
 
 .sidebar-streak-text p {
     margin: 2px 0 0;
-    font-family: 'Sansation', sans-serif;
     font-size: 0.8rem;
     font-weight: 400;
     color: var(--mid-main-secondary);
@@ -195,16 +191,14 @@
 
 .sidebar-item-text h4 {
     margin: 0;
-    font-family: 'Sansation', sans-serif;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--secondary-color);
     transition: color 0.2s ease;
 }
 
 .sidebar-item-text p {
     margin: 2px 0 0;
-    font-family: 'Sansation', sans-serif;
     font-size: 0.75rem;
     font-weight: 400;
     color: var(--mid-main-secondary);
@@ -339,7 +333,7 @@
 
 .sidebar-content::-webkit-scrollbar-thumb {
     background: var(--french-gray);
-    border-radius: 6px;
+    border-radius: 12px;
 }
 
 .sidebar-content::-webkit-scrollbar-thumb:hover {
@@ -356,7 +350,7 @@
 
 .sidebar-nav::-webkit-scrollbar-thumb {
     background: var(--french-gray);
-    border-radius: 6px;
+    border-radius: 12px;
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb:hover {
