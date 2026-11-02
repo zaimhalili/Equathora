@@ -9,7 +9,6 @@ import {
     FaLightbulb,
     FaCoffee,
     FaChartBar,
-    FaArrowLeft,
     FaRocket,
     FaTrophy,
     FaGraduationCap,
@@ -21,8 +20,12 @@ import { MdTimeline } from 'react-icons/md';
 import { BiMath } from 'react-icons/bi';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/hooks/useAuth';
-import WelcomeTeacher from '../assets/images/welcomeTeacher.svg';
+import Mascot from '../assets/images/mascotAnimated.webp';
+import WavingMascot from '../assets/images/mascotAnimatedwaving.webp';
+import MailIllustration from '../assets/images/Mail-amico.svg';
+import { subscribeToEquathoraBriefs } from '@/lib/equathoraBriefsService.js';
 import PrimaryButton from '../components/ui/Buttons/PrimaryButton';
+import SecondaryButton from '../components/ui/Buttons/SecondaryButton';
 
 const GetStarted = () => {
     const navigate = useNavigate();
@@ -30,6 +33,7 @@ const GetStarted = () => {
 
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedOptions, setSelectedOptions] = useState({});
+    const [wantsBriefs, setWantsBriefs] = useState(true);
     const [saving, setSaving] = useState(false);
     const [saveError, setSaveError] = useState('');
 
@@ -49,19 +53,16 @@ const GetStarted = () => {
                     id: 'student',
                     label: 'Student',
                     icon: <FaGraduationCap className='text-purple-700' />,
-                    description: 'Solve problems, improve your skills and track your progress.'
                 },
                 {
                     id: 'parent',
                     label: 'Parent',
                     icon: <FaHome className='text-pink-500' />,
-                    description: 'Support your learner and follow their progress.'
                 },
                 {
                     id: 'teacher',
                     label: 'Teacher',
                     icon: <FaChalkboardTeacher className='text-teal-700' />,
-                    description: 'Learn, explore mathematics, and get ready for upcoming teacher tools.'
                 }
             ]
         },
@@ -141,6 +142,11 @@ const GetStarted = () => {
                 { id: 'challenging', label: 'Challenge Me', icon: <FaChartLine />, description: 'Mostly difficult problems' },
                 { id: 'extreme', label: 'Push Me to My Limits', icon: <FaFire />, description: 'Give me the hardest problems' }
             ]
+        },
+        {
+            type: 'briefs',
+            title: 'Stay updated!',
+            subtitle: 'Get Equathora Briefs with new challenges, learning tips, and product updates.'
         },
         {
             type: 'final',
@@ -275,6 +281,19 @@ const GetStarted = () => {
                 if (topicsError) throw topicsError;
             }
 
+            if (wantsBriefs) {
+                const email = user.email?.trim().toLowerCase();
+                if (!email) throw new Error('Your account does not have an email address.');
+
+                await subscribeToEquathoraBriefs({
+                    name: user.user_metadata?.full_name
+                        || user.user_metadata?.name
+                        || email.split('@')[0],
+                    email,
+                    user_id: user.id
+                });
+            }
+
             return true;
         } catch (err) {
             console.error('Error saving onboarding:', err);
@@ -311,7 +330,7 @@ const GetStarted = () => {
     const canContinue = () => {
         const stepType = steps[currentStep].type;
 
-        if (stepType === 'welcome' || stepType === 'final') {
+        if (stepType === 'welcome' || stepType === 'final' || stepType === 'briefs') {
             return true;
         }
 
@@ -323,21 +342,17 @@ const GetStarted = () => {
     };
 
     const currentStepData = steps[currentStep];
-    const imageSrc = typeof WelcomeTeacher === 'string' ? WelcomeTeacher : WelcomeTeacher?.default || WelcomeTeacher;
+    const imageSrc = typeof Mascot === 'string' ? Mascot : Mascot?.default || Mascot;
+    const wavingImageSrc = typeof WavingMascot === 'string'
+        ? WavingMascot
+        : WavingMascot?.default || WavingMascot;
+    const mailImageSrc = typeof MailIllustration === 'string'
+        ? MailIllustration
+        : MailIllustration?.default || MailIllustration;
 
     return (
         <main className='flex min-h-screen w-full flex-col items-center overflow-y-auto bg-(--white) px-4 text-(--secondary-color) sm:px-6'>
             <header className='relative flex w-full max-w-3xl justify-center pt-9 sm:pt-10'>
-                {currentStep > 0 && (
-                    <button
-                        type='button'
-                        onClick={handleBack}
-                        className='absolute left-0 top-7 rounded-full p-2 text-(--secondary-color) transition-colors hover:bg-[#f4f4f4]'
-                        aria-label='Go back'
-                    >
-                        <FaArrowLeft className='text-lg' />
-                    </button>
-                )}
                 <div
                     className='h-2.5 w-full max-w-md overflow-hidden rounded-full bg-[#f2f2f2]'
                     role='progressbar'
@@ -347,13 +362,20 @@ const GetStarted = () => {
                     aria-valuenow={Math.round(percentage)}
                 >
                     <div
-                        className='h-full rounded-full bg-(--beginner) transition-all duration-500 ease-out'
+                        className='h-full rounded-full bg-(--accent-color) transition-all duration-500 ease-out'
                         style={{ width: `${percentage}%` }}
                     />
                 </div>
             </header>
 
             <section className='flex w-full max-w-2xl flex-1 flex-col justify-center gap-7 py-8 sm:gap-9 sm:py-10'>
+                {currentStepData.type === 'briefs' && (
+                    <img
+                        src={mailImageSrc}
+                        alt='An envelope with the Equathora mascot'
+                        className='mx-auto h-40 w-auto object-contain sm:h-48'
+                    />
+                )}
                 <div className={`flex w-full items-center justify-center ${currentStepData.type === 'selection' || currentStepData.type === 'multi-selection' ? 'gap-3 sm:gap-5' : 'flex-col text-center'}`}>
                     {(currentStepData.type === 'selection' || currentStepData.type === 'multi-selection') && (
                         <img
@@ -364,7 +386,7 @@ const GetStarted = () => {
                         />
                     )}
                     <div className={`max-w-xl ${currentStepData.type === 'selection' || currentStepData.type === 'multi-selection'
-                        ? 'rounded-3xl border-2 border-[#e7e7e7] bg-(--white) px-4 py-3 text-left sm:px-5 sm:py-4'
+                        ? 'relative rounded-3xl border-2 border-[#e7e7e7] bg-(--white) px-4 py-3 text-left before:absolute before:left-[-12px] before:top-1/2 before:-translate-y-1/2 before:border-y-[11px] before:border-y-transparent before:border-r-[12px] before:border-r-[#e7e7e7] after:absolute after:left-[-9px] after:top-1/2 after:-translate-y-1/2 after:border-y-[9px] after:border-y-transparent after:border-r-[10px] after:border-r-(--white) sm:px-5 sm:py-4'
                         : 'text-center'}`}>
                         <h1 className='text-xl font-semibold leading-tight sm:text-2xl'>
                             {currentStepData.title}
@@ -385,10 +407,24 @@ const GetStarted = () => {
                 {currentStepData.type === 'welcome' && (
                     <div className='flex w-full justify-center'>
                         <img
-                            src={imageSrc}
-                            alt='Welcome to Equathora'
-                            className='max-h-56 w-auto object-contain sm:max-h-64'
+                            src={wavingImageSrc}
+                            alt='Equathora mascot'
+                            className='h-40 w-40 object-contain sm:h-48 sm:w-48'
                         />
+                    </div>
+                )}
+
+                {currentStepData.type === 'briefs' && (
+                    <div className='flex w-full justify-center'>
+                        <label className='flex w-full max-w-md cursor-pointer items-center gap-3 rounded-2xl border-2 border-(--secondary-color) px-4 py-4 text-left text-base font-medium'>
+                            <input
+                                type='checkbox'
+                                checked={wantsBriefs}
+                                onChange={(event) => setWantsBriefs(event.target.checked)}
+                                className='h-5 w-5 accent-(--secondary-color)'
+                            />
+                            <span>Send me email updates</span>
+                        </label>
                     </div>
                 )}
 
@@ -409,10 +445,10 @@ const GetStarted = () => {
                                     type='button'
                                     onClick={() => handleSelection(option.id)}
                                     aria-pressed={isSelected}
-                                    className={`flex min-h-32 flex-col items-center justify-center rounded-2xl border-2 bg-[#f4f4f4] px-3 py-4 text-center transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm ${isCenteredLastOption ? 'col-span-2 w-1/2 justify-self-center' : ''
+                                    className={`flex min-h-32 flex-col items-center justify-center rounded-2xl border-2 bg-(--main-color) px-3 py-4 text-center text-(--secondary-color)/70 transition-colors duration-200 hover:brightness-95 hover:text-(--secondary-color) ${isCenteredLastOption ? 'col-span-2 w-1/2 justify-self-center' : ''
                                         } ${isSelected
-                                            ? 'border-(--accent-color) bg-[#fff4f5] shadow-sm'
-                                            : 'border-transparent hover:border-[#dedede]'
+                                            ? 'border-(--accent-color) text-(--secondary-color)'
+                                            : 'border-transparent'
                                         }`}
                                 >
                                     <span className='mb-2 text-3xl sm:text-4xl'>
@@ -448,7 +484,14 @@ const GetStarted = () => {
                         {saveError}
                     </p>
                 )}
-                <div className='flex w-full justify-end'>
+                <div className='flex w-full items-center justify-between'>
+                    {currentStep > 0 ? (
+                        <SecondaryButton
+                            text='Back'
+                            onClick={handleBack}
+                            className='min-w-16 rounded-full px-4 py-2'
+                        />
+                    ) : <span />}
                     <PrimaryButton
                         text={saving
                             ? 'Preparing your journey'
@@ -463,7 +506,7 @@ const GetStarted = () => {
                 </div>
                 <p className='text-center text-sm text-(--secondary-color) opacity-70 sm:text-base'>
                     Already have an account?{' '}
-                    <Link to='/login' className='underline underline-offset-2 hover:opacity-80'>
+                    <Link to='/login' className='underline! underline-offset-2 hover:opacity-80'>
                         Sign in
                     </Link>
                 </p>

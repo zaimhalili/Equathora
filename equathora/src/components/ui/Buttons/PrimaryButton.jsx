@@ -9,7 +9,7 @@ const PrimaryButton = ({
     link = false,
     title = null,
     to,
-    arrow,
+    arrow = false,
     disabled = false,
     type = 'button'
 }) => {
