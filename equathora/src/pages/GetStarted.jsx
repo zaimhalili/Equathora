@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     FaChartLine,
     FaFire,
@@ -14,13 +14,15 @@ import {
     FaTrophy,
     FaGraduationCap,
     FaBrain,
-    FaChalkboardTeacher
+    FaChalkboardTeacher,
+    FaHome
 } from 'react-icons/fa';
 import { MdTimeline } from 'react-icons/md';
 import { BiMath } from 'react-icons/bi';
 import { supabase } from '@/lib/supabaseClient';
 import { useAuth } from '@/hooks/useAuth';
 import WelcomeTeacher from '../assets/images/welcomeTeacher.svg';
+import PrimaryButton from '../components/ui/Buttons/PrimaryButton';
 
 const GetStarted = () => {
     const navigate = useNavigate();
@@ -46,13 +48,19 @@ const GetStarted = () => {
                 {
                     id: 'student',
                     label: 'Student',
-                    icon: <FaGraduationCap />,
+                    icon: <FaGraduationCap className='text-purple-700' />,
                     description: 'Solve problems, improve your skills and track your progress.'
+                },
+                {
+                    id: 'parent',
+                    label: 'Parent',
+                    icon: <FaHome className='text-pink-500' />,
+                    description: 'Support your learner and follow their progress.'
                 },
                 {
                     id: 'teacher',
                     label: 'Teacher',
-                    icon: <FaChalkboardTeacher />,
+                    icon: <FaChalkboardTeacher className='text-teal-700' />,
                     description: 'Learn, explore mathematics, and get ready for upcoming teacher tools.'
                 }
             ]
@@ -318,187 +326,148 @@ const GetStarted = () => {
     const imageSrc = typeof WelcomeTeacher === 'string' ? WelcomeTeacher : WelcomeTeacher?.default || WelcomeTeacher;
 
     return (
-        <main className='relative flex flex-col w-full bg-(--main-color) min-h-screen h-full overflow-y-auto items-center px-4 sm:px-6 '>
-
-            {/* Progress bar - sticky instead of absolute, so it always stays
-                pinned above the content instead of overlapping it when the
-                viewport is short. */}
-            <header className='sticky top-0 z-20 w-full max-w-xl px-4 pt-4 pb-2 flex flex-col gap-2 bg-(--main-color)'>
-                <div className='flex items-center gap-3 w-full'>
-                    <div className='w-8 flex justify-start shrink-0'>
-                        {currentStep > 0 && (
-                            <button
-                                onClick={handleBack}
-                                className='p-2 rounded-xl hover:bg-(--french-gray) transition-colors duration-200 text-(--secondary-color) cursor-pointer'
-                                aria-label='Go back'
-                            >
-                                <FaArrowLeft className='text-lg' />
-                            </button>
-                        )}
-                    </div>
-
-                    <div className='flex-1 h-1.5 bg-(--french-gray) rounded-full overflow-hidden'>
-                        <div
-                            className='h-full rounded-full bg-gradient-to-r from-(--accent-color) to-(--dark-accent-color) transition-all duration-500 ease-out'
-                            style={{ width: `${percentage}%` }}
-                        />
-                    </div>
-
-                    <span className='text-xs font-medium text-(--secondary-color) opacity-50 w-10 text-right shrink-0'>
-                        {currentStep + 1} / {totalSteps}
-                    </span>
-                </div>
-
-                <div className="text-center text-(--secondary-color) opacity-70 text-xs sm:text-sm px-2">
-                    Don't worry - you can change these answers whenever you like.
+        <main className='flex min-h-screen w-full flex-col items-center overflow-y-auto bg-(--white) px-4 text-(--secondary-color) sm:px-6'>
+            <header className='relative flex w-full max-w-3xl justify-center pt-9 sm:pt-10'>
+                {currentStep > 0 && (
+                    <button
+                        type='button'
+                        onClick={handleBack}
+                        className='absolute left-0 top-7 rounded-full p-2 text-(--secondary-color) transition-colors hover:bg-[#f4f4f4]'
+                        aria-label='Go back'
+                    >
+                        <FaArrowLeft className='text-lg' />
+                    </button>
+                )}
+                <div
+                    className='h-2.5 w-full max-w-md overflow-hidden rounded-full bg-[#f2f2f2]'
+                    role='progressbar'
+                    aria-label='Onboarding progress'
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={Math.round(percentage)}
+                >
+                    <div
+                        className='h-full rounded-full bg-(--beginner) transition-all duration-500 ease-out'
+                        style={{ width: `${percentage}%` }}
+                    />
                 </div>
             </header>
 
-            {/* Main content column. min-h instead of a fixed h so it can grow
-                on short/narrow viewports instead of clipping; content still
-                centers within it on tall viewports via justify-between +
-                flex-1 spacers. */}
-            <div className='w-full max-w-xl flex-1 flex flex-col justify-between items-center py-4 sm:py-6'>
-
-                <div className='flex flex-col items-center justify-center text-center w-full px-2 min-h-[64px] sm:min-h-[80px]'>
-                    <h1 className='text-xl sm:text-2xl md:text-3xl font-bold text-(--secondary-color)'>
-                        {currentStepData.title}
-                    </h1>
-
-                    <p className='text-xs sm:text-sm md:text-base text-(--secondary-color) pt-1'>
-                        {currentStepData.subtitle}
-                    </p>
-
-                    {currentStepData.description && (
-                        <p className='text-xs sm:text-sm text-(--secondary-color) opacity-80 pt-1 max-w-md'>
-                            {currentStepData.description}
-                        </p>
-                    )}
-                </div>
-
-                <div className='w-full flex-1 flex flex-col justify-center items-center py-4 min-h-0'>
-
-                    {currentStepData.type === 'welcome' && (
-                        <div className='h-full w-full flex items-center justify-center min-h-[160px]'>
-                            <img
-                                src={imageSrc}
-                                alt="Welcome to Equathora Illustration"
-                                className='max-h-100 w-auto object-contain mx-auto rounded-xl'
-                            />
-                        </div>
-                    )}
-
+            <section className='flex w-full max-w-2xl flex-1 flex-col justify-center gap-7 py-8 sm:gap-9 sm:py-10'>
+                <div className={`flex w-full items-center justify-center ${currentStepData.type === 'selection' || currentStepData.type === 'multi-selection' ? 'gap-3 sm:gap-5' : 'flex-col text-center'}`}>
                     {(currentStepData.type === 'selection' || currentStepData.type === 'multi-selection') && (
-                        <div className='w-full flex items-center justify-center'>
-                            {currentStepData.type === 'selection' && (
-                                <div className='flex flex-col gap-2.5 w-full justify-center'>
-                                    {currentStepData.options.map((option) => (
-                                        <button
-                                            key={option.id}
-                                            type='button'
-                                            onClick={() => handleSelection(option.id)}
-                                            className={`group flex items-center gap-3 p-3.5 rounded-lg border-2 transition-all duration-200 cursor-pointer text-left ${selectedOptions[currentStep] === option.id
-                                                ? 'border-(--accent-color) bg-(--accent-color) text-white shadow-sm'
-                                                : 'border-(--mid-main-secondary) bg-(--white) text-(--secondary-color) hover:border-(--accent-color)'
-                                                }`}
-                                        >
-                                            <div className='md:text-xl flex-shrink-0 text-lg'>
-                                                {option.icon}
-                                            </div>
-
-                                            <div className='flex-1 min-w-0'>
-                                                <div className='font-semibold text-sm md:text-base break-words'>
-                                                    {option.label}
-                                                </div>
-
-                                                {option.description && (
-                                                    <div
-                                                        className={`text-xs md:text-sm pt-0.5 leading-tight break-words ${selectedOptions[currentStep] === option.id
-                                                            ? 'opacity-90'
-                                                            : 'opacity-60'
-                                                            }`}
-                                                    >
-                                                        {option.description}
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            <div className='text-base w-5 flex-shrink-0 flex justify-center font-bold'>
-                                                {selectedOptions[currentStep] === option.id ? '✓' : ''}
-                                            </div>
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-
-                            {currentStepData.type === 'multi-selection' && (
-                                <div className='grid grid-cols-1 xs:grid-cols-2 gap-3 w-full justify-center'>
-                                    {currentStepData.options.map((option) => {
-                                        const isSelected = (
-                                            selectedOptions[currentStep] || []
-                                        ).includes(option.id);
-
-                                        return (
-                                            <button
-                                                key={option.id}
-                                                type='button'
-                                                onClick={() => handleSelection(option.id)}
-                                                className={`flex items-center justify-center gap-2.5 px-3.5 py-3 rounded-lg border-2 transition-all duration-200 cursor-pointer ${isSelected
-                                                    ? 'border-(--accent-color) bg-(--accent-color) text-white shadow-sm'
-                                                    : 'border-(--mid-main-secondary) bg-(--white) text-(--secondary-color) hover:border-(--accent-color)'
-                                                    }`}
-                                            >
-                                                <div className='text-lg flex-shrink-0'>
-                                                    {option.icon}
-                                                </div>
-
-                                                <div className='flex-1 min-w-0 text-left text-xs sm:text-sm font-semibold leading-tight break-words'>
-                                                    {option.label}
-                                                </div>
-
-                                                <div className='w-4 flex-shrink-0 flex justify-center font-bold'>
-                                                    {isSelected ? '✓' : ''}
-                                                </div>
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                        </div>
+                        <img
+                            src={imageSrc}
+                            alt=''
+                            aria-hidden='true'
+                            className='h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20'
+                        />
                     )}
-
-                    {currentStepData.type === 'final' && (
-                        <div className='h-full flex items-center justify-center w-full min-h-[100px]'>
-                            {currentStepData.icon}
-                        </div>
-                    )}
+                    <div className={`max-w-xl ${currentStepData.type === 'selection' || currentStepData.type === 'multi-selection'
+                        ? 'rounded-3xl border-2 border-[#e7e7e7] bg-(--white) px-4 py-3 text-left sm:px-5 sm:py-4'
+                        : 'text-center'}`}>
+                        <h1 className='text-xl font-semibold leading-tight sm:text-2xl'>
+                            {currentStepData.title}
+                        </h1>
+                        {currentStepData.subtitle && (
+                            <p className='pt-1 text-sm text-(--secondary-color) opacity-70 sm:text-base'>
+                                {currentStepData.subtitle}
+                            </p>
+                        )}
+                        {currentStepData.description && (
+                            <p className='mx-auto max-w-md pt-2 text-sm text-(--secondary-color) opacity-80 sm:text-base'>
+                                {currentStepData.description}
+                            </p>
+                        )}
+                    </div>
                 </div>
 
-                {saveError && (
-                    <div className='w-full px-2 pb-2'>
-                        <p className='text-xs sm:text-sm text-red-500 text-center break-words'>
-                            {saveError}
-                        </p>
+                {currentStepData.type === 'welcome' && (
+                    <div className='flex w-full justify-center'>
+                        <img
+                            src={imageSrc}
+                            alt='Welcome to Equathora'
+                            className='max-h-56 w-auto object-contain sm:max-h-64'
+                        />
                     </div>
                 )}
 
-                <div className='w-full flex justify-center items-center py-2'>
-                    <button
-                        onClick={handleContinue}
-                        disabled={!canContinue() || saving}
-                        className={`w-60 max-w-full px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm transition-all ${canContinue() && !saving
-                            ? 'bg-(--secondary-color) text-(--white) hover:bg-(--secondary-color)/90 shadow-[0px_4px_0px_rgb(43,45,66,0.6)] active:shadow-none active:translate-y-1 cursor-pointer'
-                            : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
-                            }`}
-                    >
-                        {saving
-                            ? 'Paving your journey'
+                {(currentStepData.type === 'selection' || currentStepData.type === 'multi-selection') && (
+                    <div className='grid w-full grid-cols-2 gap-3 sm:gap-4'>
+                        {currentStepData.options.map((option, index) => {
+                            const isMultiSelection = currentStepData.type === 'multi-selection';
+                            const isSelected = isMultiSelection
+                                ? (selectedOptions[currentStep] || []).includes(option.id)
+                                : selectedOptions[currentStep] === option.id;
+                            const isCenteredLastOption =
+                                currentStepData.options.length % 2 !== 0 &&
+                                index === currentStepData.options.length - 1;
+
+                            return (
+                                <button
+                                    key={option.id}
+                                    type='button'
+                                    onClick={() => handleSelection(option.id)}
+                                    aria-pressed={isSelected}
+                                    className={`flex min-h-32 flex-col items-center justify-center rounded-2xl border-2 bg-[#f4f4f4] px-3 py-4 text-center transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm ${isCenteredLastOption ? 'col-span-2 w-1/2 justify-self-center' : ''
+                                        } ${isSelected
+                                            ? 'border-(--accent-color) bg-[#fff4f5] shadow-sm'
+                                            : 'border-transparent hover:border-[#dedede]'
+                                        }`}
+                                >
+                                    <span className='mb-2 text-3xl sm:text-4xl'>
+                                        {option.icon}
+                                    </span>
+                                    <span className='text-sm font-semibold sm:text-base'>
+                                        {option.label}
+                                    </span>
+                                    {option.description && (
+                                        <span className='mt-1.5 max-w-xs text-xs leading-snug opacity-65 sm:text-sm'>
+                                            {option.description}
+                                        </span>
+                                    )}
+                                    {isSelected && (
+                                        <span className='sr-only'>Selected</span>
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
+
+                {currentStepData.type === 'final' && (
+                    <div className='flex justify-center py-2'>
+                        {currentStepData.icon}
+                    </div>
+                )}
+            </section>
+
+            <footer className='flex w-full max-w-2xl flex-col items-center gap-4 pb-8 sm:gap-5 sm:pb-10'>
+                {saveError && (
+                    <p className='w-full text-center text-sm text-red-500' role='alert'>
+                        {saveError}
+                    </p>
+                )}
+                <div className='flex w-full justify-end'>
+                    <PrimaryButton
+                        text={saving
+                            ? 'Preparing your journey'
                             : currentStep === totalSteps - 1
                                 ? 'Start Learning'
                                 : 'Continue'}
-                    </button>
+                        onClick={handleContinue}
+                        disabled={!canContinue() || saving}
+                        arrow
+                        className='min-w-32 rounded-full px-6 py-2.5 text-sm sm:px-8'
+                    />
                 </div>
-            </div>
+                <p className='text-center text-sm text-(--secondary-color) opacity-70 sm:text-base'>
+                    Already have an account?{' '}
+                    <Link to='/login' className='underline underline-offset-2 hover:opacity-80'>
+                        Sign in
+                    </Link>
+                </p>
+            </footer>
         </main>
     );
 };
