@@ -378,12 +378,20 @@ const Sidebar = ({ isOpen, onClose, dailyProblemTo, dailyProblemLoading }) => {
                         {openSections.more && (
                             <div className="pl-7 pr-5 pb-4 space-y-2">
                                 <Link
+                                    to="/teacher"
+                                    onClick={onClose}
+                                    className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
+                                >
+                                    <img src={Statistics} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
+                                    <span>Teacher Dashboard</span>
+                                </Link>
+                                <Link
                                     to="/applymentor"
                                     onClick={onClose}
                                     className="group flex items-center gap-4 py-3 text-lg opacity-90 hover:opacity-100 hover:text-(--accent-color) hover:translate-x-1.5 transition-all duration-200 ease-out"
                                 >
                                     <img src={Mentoring} alt="" className="w-7 h-7 object-contain transition-transform duration-200 group-hover:scale-110" />
-                                    <span>Teacher / Mentor</span>
+                                    <span>Join Teacher Network</span>
                                 </Link>
                                 <Link
                                     to="/helpCenter"

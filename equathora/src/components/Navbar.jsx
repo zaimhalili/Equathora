@@ -101,9 +101,15 @@ const Navbar = () => {
 
   const moreItems = [
     {
+      to: '/teacher',
+      text: "Teacher Dashboard",
+      description: "Manage classes, exercises, and student progress.",
+      image: Statistics
+    },
+    {
       to: '/applymentor',
-      text: "Teacher/Mentor Mode",
-      description: "Monitor students or children's progress.",
+      text: "Join Teacher Network",
+      description: "Help shape the future of Equathora teaching.",
       image: Mentoring
     },
     {

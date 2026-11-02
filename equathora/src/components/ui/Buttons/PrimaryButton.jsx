@@ -19,6 +19,7 @@ const PrimaryButton = ({
                 <Link
                     to={to}
                     title={title}
+                    aria-disabled={disabled || undefined}
                     className={`bg-(--secondary-color) rounded-xl py-2 text-center text-(--white)! hover:brightness-95 hover:bg-(--secondary-color)/95 transition-all text-md font-medium flex items-center justify-center px-4 active:scale-95 gap-1 ${className}`}
                 >
                     {text} {arrow && <FaAngleRight />}

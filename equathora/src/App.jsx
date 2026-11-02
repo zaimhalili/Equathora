@@ -68,6 +68,7 @@ const Feedback = lazy(() => import("./pages/Feedback"));
 const GetStarted = lazy(() => import("./pages/GetStarted"));
 const EquathoraBriefs = lazy(() => import("./pages/EquathoraBriefs"));
 const Comparison = lazy(() => import("./pages/Comparison"));
+const TeacherDashboard = lazy(() => import("./pages/TeacherDashboard"));
 
 function HomeRoute() {
     const { loading, isAuth, onboardingCompleted } = useAuth();
@@ -98,6 +99,7 @@ function PageMetadataUpdater() {
             '/systemupdates': 'System Updates - Equathora',
             '/feedback': 'Share Feedback - Equathora',
             '/applymentor': 'Become a Mentor - Equathora',
+            '/teacher': 'Teacher Dashboard - Equathora',
             '/leaderboards': 'Top Solvers - Equathora',
             '/journey': 'Your Journey - Equathora',
             '/notifications': 'Updates - Equathora',
@@ -312,6 +314,7 @@ export default function App() {
                         <Route path="/more" element={<ProtectedRoute><More /></ProtectedRoute>} />
                         <Route path="/learn" element={<Learn />} />
                         <Route path="/applymentor" element={<ProtectedRoute><ApplyMentor /></ProtectedRoute>} />
+                        <Route path="/teacher" element={<ProtectedRoute><TeacherDashboard /></ProtectedRoute>} />
                         <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
                         <Route path="/journey" element={<ProtectedRoute><Journey /></ProtectedRoute>} />
                         <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
