@@ -24,6 +24,7 @@ import Mascot from '../assets/images/mascotAnimated.webp';
 import WavingMascot from '../assets/images/mascotAnimatedwaving.webp';
 import MailIllustration from '../assets/images/Mail-amico.svg';
 import { subscribeToEquathoraBriefs } from '@/lib/equathoraBriefsService.js';
+import AnimatedIntro from '../components/GetStarted/AnimatedIntro';
 import PrimaryButton from '../components/ui/Buttons/PrimaryButton';
 import SecondaryButton from '../components/ui/Buttons/SecondaryButton';
 
@@ -152,7 +153,6 @@ const GetStarted = () => {
             type: 'final',
             title: "You're all set!",
             description: "We'll use your answers as a starting point and continuously adapt recommendations based on your progress.",
-            icon: <FaRocket className="text-5xl text-(--accent-color)" />
         }
     ];
 
@@ -373,44 +373,46 @@ const GetStarted = () => {
                     <img
                         src={mailImageSrc}
                         alt='An envelope with the Equathora mascot'
-                        className='mx-auto h-40 w-auto object-contain sm:h-48'
+                        draggable={false}
+                        className='mx-auto h-40 w-auto select-none object-contain sm:h-48'
                     />
                 )}
-                <div className={`flex w-full items-center justify-center ${currentStepData.type === 'selection' || currentStepData.type === 'multi-selection' ? 'gap-3 sm:gap-5' : 'flex-col text-center'}`}>
-                    {(currentStepData.type === 'selection' || currentStepData.type === 'multi-selection') && (
-                        <img
-                            src={imageSrc}
-                            alt=''
-                            aria-hidden='true'
-                            className='h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20'
-                        />
-                    )}
-                    <div className={`max-w-xl ${currentStepData.type === 'selection' || currentStepData.type === 'multi-selection'
-                        ? 'relative rounded-3xl border-2 border-[#e7e7e7] bg-(--white) px-4 py-3 text-left before:absolute before:left-[-12px] before:top-1/2 before:-translate-y-1/2 before:border-y-[11px] before:border-y-transparent before:border-r-[12px] before:border-r-[#e7e7e7] after:absolute after:left-[-9px] after:top-1/2 after:-translate-y-1/2 after:border-y-[9px] after:border-y-transparent after:border-r-[10px] after:border-r-(--white) sm:px-5 sm:py-4'
-                        : 'text-center'}`}>
-                        <h1 className='text-xl font-semibold leading-tight sm:text-2xl'>
-                            {currentStepData.title}
-                        </h1>
-                        {currentStepData.subtitle && (
-                            <p className='pt-1 text-sm text-(--secondary-color) opacity-70 sm:text-base'>
-                                {currentStepData.subtitle}
-                            </p>
+                {(currentStepData.type === 'welcome' || currentStepData.type === 'final') ? (
+                    <AnimatedIntro
+                        image={currentStepData.type === 'welcome' ? imageSrc : wavingImageSrc}
+                        title={currentStepData.title}
+                        subtitle={currentStepData.subtitle}
+                        description={currentStepData.description}
+                        flipImage={currentStepData.type === 'final'}
+                    />
+                ) : (
+                    <div className='flex w-full items-center justify-center gap-3 sm:gap-5'>
+                        {(currentStepData.type === 'selection' || currentStepData.type === 'multi-selection') && (
+                            <img
+                                src={imageSrc}
+                                alt=''
+                                aria-hidden='true'
+                                draggable={false}
+                                className='h-16 w-16 shrink-0 select-none object-contain sm:h-20 sm:w-20'
+                            />
                         )}
-                        {currentStepData.description && (
-                            <p className='mx-auto max-w-md pt-2 text-sm text-(--secondary-color) opacity-80 sm:text-base'>
-                                {currentStepData.description}
-                            </p>
-                        )}
-                    </div>
-                </div>
-
-                {currentStepData.type === 'welcome' && (
-                    <div className='flex w-full justify-center'>
-                        <img
-                            src={wavingImageSrc}
-                            alt='Equathora mascot'
-                            className='h-40 w-40 object-contain sm:h-48 sm:w-48'
-                        />
+                        <div className={`max-w-xl ${currentStepData.type === 'selection' || currentStepData.type === 'multi-selection'
+                            ? 'relative rounded-3xl border-2 border-[#e7e7e7] bg-(--white) px-4 py-3 text-left before:absolute before:left-[-12px] before:top-1/2 before:-translate-y-1/2 before:border-y-[11px] before:border-y-transparent before:border-r-[12px] before:border-r-[#e7e7e7] after:absolute after:left-[-9px] after:top-1/2 after:-translate-y-1/2 after:border-y-[9px] after:border-y-transparent after:border-r-[10px] after:border-r-(--white) sm:px-5 sm:py-4'
+                            : 'text-center'}`}>
+                            <h1 className='text-xl font-semibold leading-tight sm:text-2xl'>
+                                {currentStepData.title}
+                            </h1>
+                            {currentStepData.subtitle && (
+                                <p className='pt-1 text-sm text-(--secondary-color) opacity-70 sm:text-base'>
+                                    {currentStepData.subtitle}
+                                </p>
+                            )}
+                            {currentStepData.description && (
+                                <p className='mx-auto max-w-md pt-2 text-sm text-(--secondary-color) opacity-80 sm:text-base'>
+                                    {currentStepData.description}
+                                </p>
+                            )}
+                        </div>
                     </div>
                 )}
 
@@ -471,11 +473,6 @@ const GetStarted = () => {
                     </div>
                 )}
 
-                {currentStepData.type === 'final' && (
-                    <div className='flex justify-center py-2'>
-                        {currentStepData.icon}
-                    </div>
-                )}
             </section>
 
             <footer className='flex w-full max-w-2xl flex-col items-center gap-4 pb-8 sm:gap-5 sm:pb-10'>
