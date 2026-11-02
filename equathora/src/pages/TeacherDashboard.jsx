@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
     FaClipboardList,
     FaPlus,
@@ -9,6 +10,7 @@ import Navbar from '../components/Navbar';
 import PrimaryButton from '../components/ui/Buttons/PrimaryButton';
 import SecondaryButton from '../components/ui/Buttons/SecondaryButton';
 import TeacherDashboardSkeleton from '../components/TeacherDashboard/TeacherDashboardSkeleton';
+import AssignExercisesDialog from '../components/TeacherDashboard/AssignExercisesDialog';
 import {
     AnalyticsView,
     AssignmentsView,
@@ -20,6 +22,23 @@ import {
 } from '../components/TeacherDashboard/TeacherDashboardSections';
 import { dashboardSections, initialClasses } from '../components/TeacherDashboard/teacherDashboardData';
 
+const CLASS_STORAGE_KEY = 'equathora.teacher.classes.v1';
+
+function getStoredClasses() {
+    try {
+        const storedClasses = window.localStorage.getItem(CLASS_STORAGE_KEY);
+        if (!storedClasses) return initialClasses;
+        const parsedClasses = JSON.parse(storedClasses);
+        if (!Array.isArray(parsedClasses) || parsedClasses.some((item) => !item?.id || !Array.isArray(item.assignments))) {
+            throw new Error('Stored classroom data has an invalid format.');
+        }
+        return parsedClasses;
+    } catch (error) {
+        console.error('Unable to restore teacher classes from this browser:', error);
+        return initialClasses;
+    }
+}
+
 const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return 'Good morning';
@@ -28,28 +47,62 @@ const getGreeting = () => {
 };
 
 function TeacherDashboard() {
-    const [classes, setClasses] = useState(initialClasses);
-    const [activeClassId, setActiveClassId] = useState(initialClasses[0].id);
-    const [activeSection, setActiveSection] = useState('overview');
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [classes, setClasses] = useState(getStoredClasses);
+    const [activeClassId, setActiveClassId] = useState(() => searchParams.get('class') || getStoredClasses()[0].id);
     const [modal, setModal] = useState(null);
     const [className, setClassName] = useState('');
     const [classPeriod, setClassPeriod] = useState('');
-    const [assignmentTitle, setAssignmentTitle] = useState('');
-    const [assignmentTopic, setAssignmentTopic] = useState('');
-    const [assignmentDue, setAssignmentDue] = useState('');
     const [studentSearch, setStudentSearch] = useState('');
     const [mistakeFilter, setMistakeFilter] = useState('All');
     const [copyFeedback, setCopyFeedback] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const requestedSection = searchParams.get('section');
+    const activeSection = dashboardSections.some((section) => section.id === requestedSection)
+        ? requestedSection
+        : 'overview';
+
+    const changeSection = (sectionId) => {
+        setSearchParams((currentParams) => {
+            const nextParams = new URLSearchParams(currentParams);
+            if (sectionId === 'overview') nextParams.delete('section');
+            else nextParams.set('section', sectionId);
+            return nextParams;
+        }, { replace: true });
+    };
+
+    const updateSelectedClass = (classId, sectionId = null) => {
+        setActiveClassId(classId);
+        setSearchParams((currentParams) => {
+            const nextParams = new URLSearchParams(currentParams);
+            nextParams.set('class', classId);
+            if (sectionId === 'overview') nextParams.delete('section');
+            else if (sectionId) nextParams.set('section', sectionId);
+            return nextParams;
+        }, { replace: true });
+    };
 
     useEffect(() => {
         const timer = window.setTimeout(() => setIsLoading(false), 350);
         return () => window.clearTimeout(timer);
     }, []);
 
+    useEffect(() => {
+        try {
+            window.localStorage.setItem(CLASS_STORAGE_KEY, JSON.stringify(classes));
+        } catch (error) {
+            console.error('Unable to save teacher classes in this browser:', error);
+        }
+    }, [classes]);
+
     const activeClass = classes.find((item) => item.id === activeClassId) || classes[0];
     const studentCount = activeClass?.students.length ?? 0;
     const activeMistakes = activeClass?.mistakes.filter((mistake) => !mistake.resolved).length ?? 0;
+    const alreadyAssignedIds = useMemo(() => new Set(
+        (activeClass?.assignments ?? []).flatMap((assignment) => (
+            assignment.problems ?? []
+        )).map((problem) => String(problem.id))
+    ), [activeClass]);
     const averageAccuracy = studentCount
         ? Math.round(activeClass.students.reduce((total, student) => total + student.accuracy, 0) / studentCount)
         : 0;
@@ -80,35 +133,41 @@ function TeacherDashboard() {
             activity: []
         };
         setClasses((current) => [...current, newClass]);
-        setActiveClassId(newClass.id);
-        setActiveSection('overview');
+        updateSelectedClass(newClass.id, 'overview');
         setClassName('');
         setClassPeriod('');
         setCopyFeedback('');
         setModal(null);
     };
 
-    const addAssignment = (event) => {
-        event.preventDefault();
-        const title = assignmentTitle.trim();
-        if (!title || !activeClass) return;
-        const due = assignmentDue
-            ? new Date(`${assignmentDue}T12:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    const addAssignment = (selectedProblems, dueDate) => {
+        if (!selectedProblems.length || !activeClass) return;
+        const due = dueDate
+            ? new Date(`${dueDate}T12:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
             : 'No due date';
+        const assignedAt = new Date().toISOString();
+        const problems = selectedProblems.map(({ id, title, topic, difficulty, slug }) => ({ id, title, topic, difficulty, slug }));
         setClasses((current) => current.map((item) => item.id === activeClass.id
             ? {
                 ...item,
                 assignments: [
-                    { id: Date.now(), title, topic: assignmentTopic.trim() || 'General practice', due, submitted: 0, total: item.students.length, status: 'Active' },
+                    {
+                        id: `assignment-${Date.now()}`,
+                        title: `${problems.length} exercise${problems.length === 1 ? '' : 's'}`,
+                        topic: [...new Set(problems.map((problem) => problem.topic).filter(Boolean))].join(', ') || 'Practice',
+                        problems,
+                        assignedAt,
+                        due,
+                        submitted: 0,
+                        total: item.students.length,
+                        status: 'Active'
+                    },
                     ...item.assignments
                 ]
             }
             : item));
-        setAssignmentTitle('');
-        setAssignmentTopic('');
-        setAssignmentDue('');
         setModal(null);
-        setActiveSection('assignments');
+        changeSection('assignments');
     };
 
     const toggleMistakeResolved = (mistakeId) => {
@@ -126,7 +185,7 @@ function TeacherDashboard() {
         if (classes.length < 2) return;
         const nextClasses = classes.filter((item) => item.id !== activeClass.id);
         setClasses(nextClasses);
-        setActiveClassId(nextClasses[0].id);
+        updateSelectedClass(nextClasses[0].id);
         setCopyFeedback('');
     };
 
@@ -145,7 +204,7 @@ function TeacherDashboard() {
     };
 
     const selectClass = (classId) => {
-        setActiveClassId(classId);
+        updateSelectedClass(classId);
         setCopyFeedback('');
     };
 
@@ -159,7 +218,7 @@ function TeacherDashboard() {
                     <TeacherNavigation
                         sections={dashboardSections}
                         activeSection={activeSection}
-                        onSectionChange={setActiveSection}
+                        onSectionChange={changeSection}
                         activeMistakes={activeMistakes}
                         classes={classes}
                         activeClassId={activeClassId}
@@ -209,7 +268,7 @@ function TeacherDashboard() {
                                             averageAccuracy={averageAccuracy}
                                             studentCount={studentCount}
                                             activeMistakes={activeMistakes}
-                                            onSectionChange={setActiveSection}
+                                            onSectionChange={changeSection}
                                             onResolveMistake={toggleMistakeResolved}
                                             onCopyClassCode={copyClassCode}
                                         />
@@ -234,49 +293,36 @@ function TeacherDashboard() {
                 </div>
             </main>
             {modal && (
-                <TeacherModal
-                    type={modal}
-                    className={className}
-                    classPeriod={classPeriod}
-                    assignmentTitle={assignmentTitle}
-                    assignmentTopic={assignmentTopic}
-                    assignmentDue={assignmentDue}
-                    activeClass={activeClass}
-                    onClassNameChange={setClassName}
-                    onClassPeriodChange={setClassPeriod}
-                    onAssignmentTitleChange={setAssignmentTitle}
-                    onAssignmentTopicChange={setAssignmentTopic}
-                    onAssignmentDueChange={setAssignmentDue}
-                    onClose={() => setModal(null)}
-                    onCreateClass={addClass}
-                    onCreateAssignment={addAssignment}
-                />
+                modal === 'assignment' ? (
+                    <AssignExercisesDialog
+                        className={activeClass.name}
+                        alreadyAssignedIds={alreadyAssignedIds}
+                        onClose={() => setModal(null)}
+                        onAssign={addAssignment}
+                    />
+                ) : (
+                    <TeacherClassDialog
+                        className={className}
+                        classPeriod={classPeriod}
+                        onClassNameChange={setClassName}
+                        onClassPeriodChange={setClassPeriod}
+                        onClose={() => setModal(null)}
+                        onCreateClass={addClass}
+                    />
+                )
             )}
         </div>
     );
 }
 
-function TeacherModal({
-    type,
+function TeacherClassDialog({
     className,
     classPeriod,
-    assignmentTitle,
-    assignmentTopic,
-    assignmentDue,
-    activeClass,
     onClassNameChange,
     onClassPeriodChange,
-    onAssignmentTitleChange,
-    onAssignmentTopicChange,
-    onAssignmentDueChange,
     onClose,
-    onCreateClass,
-    onCreateAssignment
+    onCreateClass
 }) {
-    const isClass = type === 'class';
-    const today = new Date();
-    const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-
     return (
         <div
             className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
@@ -286,30 +332,17 @@ function TeacherModal({
         >
             <section className="relative flex w-full max-w-md flex-col gap-4 rounded-2xl border border-(--french-gray)/50 bg-(--white) p-6 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="teacher-modal-title">
                 <button type="button" className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-(--mid-main-secondary) hover:bg-(--main-color)" onClick={onClose} aria-label="Close dialog"><FaTimes /></button>
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-(--main-color) text-sm text-(--secondary-color)">{isClass ? <FaUsers /> : <FaClipboardList />}</span>
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-(--main-color) text-sm text-(--secondary-color)"><FaUsers /></span>
                 <div className="flex flex-col gap-1">
-                    <h2 id="teacher-modal-title" className="text-lg font-medium text-(--secondary-color)">{isClass ? 'Create a class' : 'Assign an exercise'}</h2>
-                    <p className="text-xs text-(--mid-main-secondary)">{isClass ? 'Set up a space for your students and their practice.' : `Give ${activeClass.name} a clear next step.`}</p>
+                    <h2 id="teacher-modal-title" className="text-lg font-medium text-(--secondary-color)">Create a class</h2>
+                    <p className="text-xs text-(--mid-main-secondary)">Set up a space for your students and their practice.</p>
                 </div>
-                <form className="flex flex-col gap-4" onSubmit={isClass ? onCreateClass : onCreateAssignment}>
-                    {isClass ? (
-                        <>
-                            <ModalField label="Class name" value={className} onChange={(event) => onClassNameChange(event.target.value)} placeholder="e.g. Geometry" required maxLength={50} />
-                            <ModalField label="Period or group (optional)" value={classPeriod} onChange={(event) => onClassPeriodChange(event.target.value)} placeholder="e.g. Period 3" maxLength={40} />
-                        </>
-                    ) : (
-                        <>
-                            <ModalField label="Exercise name" value={assignmentTitle} onChange={(event) => onAssignmentTitleChange(event.target.value)} placeholder="e.g. Linear functions practice" required maxLength={80} />
-                            <ModalField label="Topic (optional)" value={assignmentTopic} onChange={(event) => onAssignmentTopicChange(event.target.value)} placeholder="e.g. Slope and intercepts" maxLength={60} />
-                            <label className="flex flex-col gap-2 text-xs font-medium text-(--secondary-color)">
-                                Due date (optional)
-                                <input type="date" value={assignmentDue} onChange={(event) => onAssignmentDueChange(event.target.value)} min={localDate} className="rounded-xl border border-(--french-gray)/60 bg-(--white) px-3 py-2.5 text-xs text-(--secondary-color) outline-none focus:ring-2 focus:ring-(--secondary-color)/20" />
-                            </label>
-                        </>
-                    )}
+                <form className="flex flex-col gap-4" onSubmit={onCreateClass}>
+                    <ModalField label="Class name" value={className} onChange={(event) => onClassNameChange(event.target.value)} placeholder="e.g. Geometry" required maxLength={50} />
+                    <ModalField label="Period or group (optional)" value={classPeriod} onChange={(event) => onClassPeriodChange(event.target.value)} placeholder="e.g. Period 3" maxLength={40} />
                     <div className="flex justify-end gap-2 pt-2">
                         <SecondaryButton text="Cancel" onClick={onClose} className="rounded-xl px-4 py-2 text-xs" />
-                        <PrimaryButton text={<><FaPlus /> {isClass ? 'Create class' : 'Assign exercise'}</>} type="submit" className="rounded-xl px-4 py-2 text-xs" />
+                        <PrimaryButton text={<><FaPlus /> Create class</>} type="submit" className="rounded-xl px-4 py-2 text-xs" />
                     </div>
                 </form>
             </section>

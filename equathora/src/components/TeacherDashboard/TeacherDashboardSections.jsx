@@ -7,9 +7,7 @@ import {
     FaCheck,
     FaCheckCircle,
     FaChevronDown,
-    FaChevronRight,
     FaClipboardList,
-    FaEllipsisH,
     FaExclamationCircle,
     FaFilter,
     FaSearch,
@@ -26,6 +24,7 @@ import {
 } from 'recharts';
 import PrimaryButton from '../ui/Buttons/PrimaryButton';
 import SecondaryButton from '../ui/Buttons/SecondaryButton';
+import DismissiblePopover from './DismissiblePopover';
 
 const icons = {
     chart: FaChartLine,
@@ -109,15 +108,10 @@ export function ClassHeading({ activeClass, studentCount, classes, onClassChange
                 </select>
                 <FaChevronDown aria-hidden="true" className="pointer-events-none absolute right-2 text-[9px] text-(--mid-main-secondary)" />
             </label>
-            <details className="group relative shrink-0">
-                <summary aria-label="Class options" className="flex h-9 w-9 cursor-pointer list-none items-center justify-center rounded-xl text-(--mid-main-secondary) hover:bg-(--main-color) group-open:bg-(--main-color)">
-                    <FaEllipsisH aria-hidden="true" />
-                </summary>
-                <div className="absolute right-0 top-full z-20 flex min-w-40 flex-col gap-1 rounded-xl border border-(--french-gray)/60 bg-(--white) p-1 shadow-lg">
-                    <button type="button" onClick={onCopyClassCode} className="rounded-lg px-3 py-2 text-left text-xs text-(--secondary-color)/80 hover:bg-(--main-color)">Copy class code</button>
-                    <button type="button" disabled={classes.length < 2} onClick={onArchive} className="rounded-lg px-3 py-2 text-left text-xs text-(--secondary-color)/80 hover:bg-(--main-color) disabled:opacity-40">Archive class</button>
-                </div>
-            </details>
+            <DismissiblePopover label="Class options">
+                <button type="button" role="menuitem" onClick={onCopyClassCode} className="rounded-lg px-3 py-2 text-left text-xs text-(--secondary-color)/80 hover:bg-(--main-color)">Copy class code</button>
+                <button type="button" role="menuitem" disabled={classes.length < 2} onClick={onArchive} className="rounded-lg px-3 py-2 text-left text-xs text-(--secondary-color)/80 hover:bg-(--main-color) disabled:opacity-40">Archive class</button>
+            </DismissiblePopover>
         </section>
     );
 }
@@ -194,10 +188,10 @@ export function ActivityCard({ activity }) {
     const busiestDay = activity.reduce((best, day) => !best || day.correct + day.incorrect > best.correct + best.incorrect ? day : best, null);
     return (
         <section className={`${cardClass} min-h-72 flex-1 basis-96`}>
-            <PanelHeading title="Class activity" description="Questions answered this week" action={<details className="group relative"><summary aria-label="Chart options" className="flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-lg text-(--mid-main-secondary) hover:bg-(--main-color)"><FaEllipsisH /></summary><div className="absolute right-0 top-full z-10 flex min-w-36 flex-col rounded-xl border border-(--french-gray)/60 bg-(--white) p-2 text-xs text-(--secondary-color) shadow-lg"><span className="px-2 py-1">Last 7 days</span><span className="px-2 py-1">Correct and incorrect</span></div></details>} />
+            <PanelHeading title="Class activity" description="Questions answered this week" action={<DismissiblePopover label="Chart options" contentClassName="p-2 text-xs text-(--secondary-color)"><span className="px-2 py-1">Last 7 days</span><span className="px-2 py-1">Correct and incorrect</span></DismissiblePopover>} />
             <div className="flex items-center justify-end gap-4 text-[10px] text-(--mid-main-secondary)">
-                <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full bg-green-500" />{totalCorrect} correct</span>
-                <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full bg-red-400" />{totalIncorrect} incorrect</span>
+                <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--easy)' }} />{totalCorrect} correct</span>
+                <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--accent-color)' }} />{totalIncorrect} incorrect</span>
             </div>
             {activity.length ? (
                 <div className="h-44 w-full min-w-0" role="img" aria-label="Stacked bar chart of correct and incorrect answers for the last seven days">
@@ -210,8 +204,8 @@ export function ActivityCard({ activity }) {
                                 cursor={{ fill: 'var(--main-color)' }}
                                 contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }}
                             />
-                            <Bar dataKey="correct" name="Correct" stackId="answers" fill="#22a06b" radius={[3, 3, 0, 0]} />
-                            <Bar dataKey="incorrect" name="Incorrect" stackId="answers" fill="#e4776c" radius={[3, 3, 0, 0]} />
+                            <Bar dataKey="correct" name="Correct" stackId="answers" fill="var(--easy)" radius={0} />
+                            <Bar dataKey="incorrect" name="Incorrect" stackId="answers" fill="var(--accent-color)" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -259,14 +253,35 @@ function AssignmentsCard({ assignments, onViewAll }) {
 
 function AssignmentRow({ assignment, compact = false }) {
     return (
-        <div className={`flex min-w-0 items-center gap-3 border-t border-(--french-gray)/40 py-3 first:border-t-0 ${compact ? '' : 'sm:gap-4'}`}>
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-(--main-color) text-xs text-(--secondary-color)"><FaBookOpen /></span>
-            <div className="flex min-w-0 flex-1 flex-col gap-1">
-                <strong className="truncate text-[11px] font-medium text-(--secondary-color)">{assignment.title}</strong>
-                <span className="truncate text-[10px] text-(--mid-main-secondary)">{assignment.topic}{!compact && ` · Due ${assignment.due}`}</span>
+        <div className={`flex min-w-0 flex-col border-t border-(--french-gray)/40 py-3 first:border-t-0 ${compact ? '' : 'sm:gap-1'}`}>
+            <div className={`flex min-w-0 items-center gap-3 ${compact ? '' : 'sm:gap-4'}`}>
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-(--main-color) text-xs text-(--secondary-color)"><FaBookOpen /></span>
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
+                    <strong className="truncate text-[11px] font-medium text-(--secondary-color)">{assignment.title}</strong>
+                    <span className="truncate text-[10px] text-(--mid-main-secondary)">
+                        {assignment.topic}
+                        {assignment.problems?.length ? ` · ${assignment.problems.length} selected` : ''}
+                        {!compact && ` · Due ${assignment.due}`}
+                    </span>
+                </div>
+                <span className="shrink-0 text-[10px] text-(--secondary-color)">{assignment.submitted}<span className="text-(--mid-main-secondary)">/{assignment.total}</span></span>
+                <span className="hidden shrink-0 rounded-full bg-(--main-color) px-2 py-1 text-[9px] text-(--secondary-color)/80 sm:inline">{assignment.status}</span>
             </div>
-            <span className="shrink-0 text-[10px] text-(--secondary-color)">{assignment.submitted}<span className="text-(--mid-main-secondary)">/{assignment.total}</span></span>
-            <span className="hidden shrink-0 rounded-full bg-(--main-color) px-2 py-1 text-[9px] text-(--secondary-color)/80 sm:inline">{assignment.status}</span>
+            {assignment.problems?.length > 0 && (
+                <details className="flex flex-col pl-11">
+                    <summary className="w-fit cursor-pointer list-none py-2 text-[10px] text-(--secondary-color)/70 hover:text-(--secondary-color)">
+                        View assigned exercises
+                    </summary>
+                    <ul className="flex flex-col gap-2 border-l border-(--french-gray)/50 pl-3">
+                        {assignment.problems.map((problem) => (
+                            <li key={problem.id} className="flex min-w-0 flex-col gap-0.5">
+                                <span className="truncate text-[10px] text-(--secondary-color)">{problem.title}</span>
+                                <span className="text-[9px] text-(--mid-main-secondary)">{[problem.topic, problem.difficulty].filter(Boolean).join(' · ') || 'General'}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </details>
+            )}
         </div>
     );
 }
