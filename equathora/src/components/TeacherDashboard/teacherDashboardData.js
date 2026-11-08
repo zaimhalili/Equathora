@@ -46,6 +46,5 @@ export const dashboardSections = [
     { id: 'overview', label: 'Overview', icon: 'chart' },
     { id: 'students', label: 'Students', icon: 'users' },
     { id: 'assignments', label: 'Exercises', icon: 'assignments' },
-    { id: 'mistakes', label: 'Mistakes log', icon: 'mistakes' },
-    { id: 'analytics', label: 'Analytics', icon: 'analytics' }
+    { id: 'mistakes', label: 'Mistakes log', icon: 'mistakes' }
 ];

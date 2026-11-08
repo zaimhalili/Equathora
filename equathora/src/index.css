@@ -198,6 +198,12 @@ a {
     outline-offset: 2px;
 }
 
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline-color: var(--mid-main-secondary);
+}
+
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {

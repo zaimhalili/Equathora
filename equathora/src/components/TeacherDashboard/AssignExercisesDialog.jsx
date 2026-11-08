@@ -66,9 +66,9 @@ function AssignExercisesDialog({ className, alreadyAssignedIds, onClose, onAssig
                     <p className="text-xs text-(--mid-main-secondary)">Choose one or more exercises from the active problem library.</p>
                 </div>
 
-                <label className="flex h-10 shrink-0 items-center gap-2 rounded-xl bg-(--main-color) px-3 text-xs text-(--secondary-color)/70 focus-within:ring-2 focus-within:ring-(--secondary-color)/30">
+                <label className="flex h-10 shrink-0 items-center gap-2 rounded-xl border border-(--french-gray)/60 bg-(--white) px-3 text-xs text-(--mid-main-secondary) transition focus-within:border-(--mid-main-secondary) focus-within:ring-2 focus-within:ring-(--mid-main-secondary)/20">
                     <FaSearch aria-hidden="true" />
-                    <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search title, topic, or difficulty" aria-label="Search exercises" className="min-w-0 flex-1 bg-transparent text-xs text-(--secondary-color) outline-none placeholder:text-(--secondary-color)/50 focus:outline-none" />
+                    <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search title, topic, or difficulty" aria-label="Search exercises" className="min-w-0 flex-1 border-0 bg-transparent text-xs text-(--secondary-color) outline-none placeholder:text-(--mid-main-secondary) focus:outline-none focus-visible:outline-none" />
                 </label>
 
                 <div className="flex min-h-0 flex-1 flex-col overflow-y-auto rounded-xl border border-(--french-gray)/50" aria-busy={isLoading}>

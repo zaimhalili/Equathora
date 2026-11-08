@@ -12,7 +12,6 @@ import SecondaryButton from '../components/ui/Buttons/SecondaryButton';
 import TeacherDashboardSkeleton from '../components/TeacherDashboard/TeacherDashboardSkeleton';
 import AssignExercisesDialog from '../components/TeacherDashboard/AssignExercisesDialog';
 import {
-    AnalyticsView,
     AssignmentsView,
     ClassHeading,
     MistakesView,
@@ -49,10 +48,11 @@ const getGreeting = () => {
 function TeacherDashboard() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [classes, setClasses] = useState(getStoredClasses);
-    const [activeClassId, setActiveClassId] = useState(() => searchParams.get('class') || getStoredClasses()[0].id);
+    const [activeClassId, setActiveClassId] = useState(() => searchParams.get('class') || getStoredClasses()[0]?.id || '');
     const [modal, setModal] = useState(null);
     const [className, setClassName] = useState('');
     const [classPeriod, setClassPeriod] = useState('');
+    const [editingStudent, setEditingStudent] = useState(null);
     const [studentSearch, setStudentSearch] = useState('');
     const [mistakeFilter, setMistakeFilter] = useState('All');
     const [copyFeedback, setCopyFeedback] = useState('');
@@ -181,12 +181,63 @@ function TeacherDashboard() {
             : item));
     };
 
-    const archiveClass = () => {
-        if (classes.length < 2) return;
-        const nextClasses = classes.filter((item) => item.id !== activeClass.id);
-        setClasses(nextClasses);
-        updateSelectedClass(nextClasses[0].id);
+    const deleteActiveClass = () => {
+        if (!activeClass) return;
+        const remainingClasses = classes.filter((item) => item.id !== activeClass.id);
+        setClasses(remainingClasses);
+        if (remainingClasses.length) {
+            updateSelectedClass(remainingClasses[0].id);
+        } else {
+            setActiveClassId('');
+            setSearchParams((currentParams) => {
+                const nextParams = new URLSearchParams(currentParams);
+                nextParams.delete('class');
+                nextParams.delete('section');
+                return nextParams;
+            }, { replace: true });
+        }
         setCopyFeedback('');
+        setModal(null);
+    };
+
+    const updateStudentName = (studentId, nextName) => {
+        const name = nextName.trim();
+        if (!name || !activeClass) return;
+        const initials = name.split(/\s+/).slice(0, 2).map((part) => part[0].toUpperCase()).join('');
+        setClasses((current) => current.map((item) => item.id === activeClass.id
+            ? {
+                ...item,
+                students: item.students.map((student) => student.id === studentId
+                    ? { ...student, name, initials }
+                    : student),
+                mistakes: item.mistakes.map((mistake) => {
+                    const student = item.students.find((entry) => entry.id === studentId);
+                    return mistake.student === student?.name
+                        ? { ...mistake, student: name, initials }
+                        : mistake;
+                })
+            }
+            : item));
+        setModal(null);
+        setEditingStudent(null);
+    };
+
+    const removeStudent = (studentId) => {
+        if (!activeClass) return;
+        const student = activeClass.students.find((item) => item.id === studentId);
+        setClasses((current) => current.map((item) => item.id === activeClass.id
+            ? {
+                ...item,
+                students: item.students.filter((entry) => entry.id !== studentId),
+                assignments: item.assignments.map((assignment) => {
+                    const total = Math.max(0, assignment.total - 1);
+                    return { ...assignment, total, submitted: Math.min(assignment.submitted, total) };
+                }),
+                mistakes: item.mistakes.filter((mistake) => mistake.student !== student?.name)
+            }
+            : item));
+        setModal(null);
+        setEditingStudent(null);
     };
 
     const copyClassCode = async () => {
@@ -208,7 +259,31 @@ function TeacherDashboard() {
         setCopyFeedback('');
     };
 
-    if (!activeClass) return null;
+    if (!activeClass) {
+        return (
+            <div className="flex min-h-screen flex-col bg-(--white) text-(--secondary-color)">
+                <Navbar />
+                <main className="flex flex-1 items-center justify-center px-5 py-12">
+                    <section className="flex w-full max-w-lg flex-col items-center gap-4 rounded-2xl border border-(--french-gray)/50 bg-(--white) p-8 text-center shadow-sm">
+                        <FaUsers aria-hidden="true" className="text-3xl text-(--mid-main-secondary)" />
+                        <h1 className="text-xl font-semibold">No classes yet</h1>
+                        <p className="text-sm text-(--mid-main-secondary)">Create a class to start organizing student practice.</p>
+                        <PrimaryButton text={<><FaPlus aria-hidden="true" /> Create a class</>} onClick={() => setModal('class')} className="rounded-xl px-4 py-2 text-sm" />
+                    </section>
+                </main>
+                {modal === 'class' && (
+                    <TeacherClassDialog
+                        className={className}
+                        classPeriod={classPeriod}
+                        onClassNameChange={setClassName}
+                        onClassPeriodChange={setClassPeriod}
+                        onClose={() => setModal(null)}
+                        onCreateClass={addClass}
+                    />
+                )}
+            </div>
+        );
+    }
 
     return (
         <div className="flex min-h-screen flex-col bg-(--white) text-(--secondary-color)">
@@ -258,7 +333,7 @@ function TeacherDashboard() {
                                     onClassChange={selectClass}
                                     copyFeedback={copyFeedback}
                                     onCopyClassCode={copyClassCode}
-                                    onArchive={archiveClass}
+                                    onDeleteClass={() => setModal('delete-class')}
                                 />
 
                                 <section aria-label={`${activeSection} content`} className="flex min-w-0 flex-col">
@@ -271,7 +346,15 @@ function TeacherDashboard() {
                                         />
                                     )}
                                     {activeSection === 'students' && (
-                                        <StudentsView students={filteredStudents} query={studentSearch} onQueryChange={setStudentSearch} />
+                                        <StudentsView
+                                            students={filteredStudents}
+                                            query={studentSearch}
+                                            onQueryChange={setStudentSearch}
+                                            onEditStudent={(student) => {
+                                                setEditingStudent(student);
+                                                setModal('student');
+                                            }}
+                                        />
                                     )}
                                     {activeSection === 'assignments' && (
                                         <AssignmentsView assignments={activeClass.assignments} onCreate={() => setModal('assignment')} studentCount={studentCount} />
@@ -279,7 +362,6 @@ function TeacherDashboard() {
                                     {activeSection === 'mistakes' && (
                                         <MistakesView mistakes={filteredMistakes} filter={mistakeFilter} onFilterChange={setMistakeFilter} onResolve={toggleMistakeResolved} />
                                     )}
-                                    {activeSection === 'analytics' && <AnalyticsView activeClass={activeClass} />}
                                 </section>
                                 <footer className="flex items-center justify-center px-2 pt-2 text-center text-[10px] text-(--mid-main-secondary)">
                                     Preview workspace · Classroom changes are session-only until classroom data services are connected.
@@ -297,7 +379,7 @@ function TeacherDashboard() {
                         onClose={() => setModal(null)}
                         onAssign={addAssignment}
                     />
-                ) : (
+                ) : modal === 'class' ? (
                     <TeacherClassDialog
                         className={className}
                         classPeriod={classPeriod}
@@ -306,7 +388,24 @@ function TeacherDashboard() {
                         onClose={() => setModal(null)}
                         onCreateClass={addClass}
                     />
-                )
+                ) : modal === 'delete-class' ? (
+                    <DeleteClassDialog
+                        className={activeClass.name}
+                        onClose={() => setModal(null)}
+                        onConfirm={deleteActiveClass}
+                    />
+                ) : editingStudent ? (
+                    <TeacherStudentDialog
+                        key={editingStudent.id}
+                        student={editingStudent}
+                        onClose={() => {
+                            setModal(null);
+                            setEditingStudent(null);
+                        }}
+                        onSave={updateStudentName}
+                        onRemove={removeStudent}
+                    />
+                ) : null
             )}
         </div>
     );
@@ -342,6 +441,76 @@ function TeacherClassDialog({
                         <PrimaryButton text={<><FaPlus /> Create class</>} type="submit" className="rounded-xl px-4 py-2 text-xs" />
                     </div>
                 </form>
+            </section>
+        </div>
+    );
+}
+
+function DeleteClassDialog({ className, onClose, onConfirm }) {
+    return (
+        <div
+            className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+            onMouseDown={(event) => {
+                if (event.target === event.currentTarget) onClose();
+            }}
+        >
+            <section className="flex w-full max-w-md flex-col gap-5 rounded-2xl border-2 border-(--french-gray)/60 bg-(--white) p-6 shadow-2xl" role="alertdialog" aria-modal="true" aria-labelledby="delete-class-title" aria-describedby="delete-class-description">
+                <div className="flex flex-col gap-2">
+                    <h2 id="delete-class-title" className="text-lg font-semibold text-(--secondary-color)">Delete this class?</h2>
+                    <p id="delete-class-description" className="text-sm leading-5 text-(--mid-main-secondary)">
+                        <strong className="text-(--secondary-color)">{className}</strong> and its local student, exercise, and practice data will be removed from this browser. This can’t be undone.
+                    </p>
+                </div>
+                <div className="flex justify-end gap-2">
+                    <button type="button" onClick={onClose} className="rounded-xl bg-(--main-color) px-4 py-2 text-sm font-medium text-(--secondary-color) transition hover:brightness-95">Keep class</button>
+                    <button type="button" onClick={onConfirm} className="rounded-xl bg-(--accent-color) px-4 py-2 text-sm font-medium text-white transition hover:brightness-95">Delete class</button>
+                </div>
+            </section>
+        </div>
+    );
+}
+
+function TeacherStudentDialog({ student, onClose, onSave, onRemove }) {
+    const [name, setName] = useState(student.name);
+    const [confirmRemoval, setConfirmRemoval] = useState(false);
+
+    return (
+        <div
+            className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+            onMouseDown={(event) => {
+                if (event.target === event.currentTarget) onClose();
+            }}
+        >
+            <section className="relative flex w-full max-w-md flex-col gap-5 rounded-2xl border border-(--french-gray)/50 bg-(--white) p-6 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="edit-student-title">
+                <button type="button" className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-(--mid-main-secondary) hover:bg-(--main-color)" onClick={onClose} aria-label="Close dialog"><FaTimes /></button>
+                <div className="flex flex-col gap-1">
+                    <h2 id="edit-student-title" className="text-lg font-semibold text-(--secondary-color)">Edit student</h2>
+                    <p className="text-xs text-(--mid-main-secondary)">Update this student’s name or remove them from this class.</p>
+                </div>
+                <form className="flex flex-col gap-4" onSubmit={(event) => {
+                    event.preventDefault();
+                    onSave(student.id, name);
+                }}>
+                    <ModalField label="Student name" value={name} onChange={(event) => setName(event.target.value)} required maxLength={60} />
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-t border-(--french-gray)/40 pt-4">
+                        <button type="button" onClick={() => setConfirmRemoval(true)} className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-(--accent-color) hover:bg-(--main-color)">
+                            <FaTrash aria-hidden="true" /> Remove from class
+                        </button>
+                        <div className="flex gap-2">
+                            <SecondaryButton text="Cancel" onClick={onClose} className="rounded-xl px-4 py-2 text-xs" />
+                            <PrimaryButton text="Save changes" type="submit" disabled={!name.trim()} className="rounded-xl px-4 py-2 text-xs" />
+                        </div>
+                    </div>
+                </form>
+                {confirmRemoval && (
+                    <div className="flex flex-col gap-3 rounded-xl border border-(--accent-color)/30 bg-(--accent-color)/5 p-4">
+                        <p className="text-xs leading-5 text-(--secondary-color)">Remove <strong>{student.name}</strong> from this class? Their class mistakes and assignment counts will also be updated.</p>
+                        <div className="flex justify-end gap-2">
+                            <button type="button" onClick={() => setConfirmRemoval(false)} className="rounded-lg px-3 py-1.5 text-xs font-medium text-(--secondary-color) hover:bg-(--main-color)">Cancel</button>
+                            <button type="button" onClick={() => onRemove(student.id)} className="rounded-lg bg-(--accent-color) px-3 py-1.5 text-xs font-medium text-white hover:brightness-95">Remove student</button>
+                        </div>
+                    </div>
+                )}
             </section>
         </div>
     );

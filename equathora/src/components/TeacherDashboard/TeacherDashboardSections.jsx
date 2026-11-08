@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import { createElement, useState } from 'react';
 import {
     FaBookOpen,
     FaChartLine,
@@ -8,13 +8,20 @@ import {
     FaClipboardList,
     FaExclamationCircle,
     FaFilter,
+    FaPencilAlt,
     FaSearch,
+    FaTrash,
     FaUsers
 } from 'react-icons/fa';
 import {
     Bar,
     BarChart,
+    Cell,
     CartesianGrid,
+    Line,
+    LineChart,
+    Pie,
+    PieChart,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -30,8 +37,7 @@ const icons = {
     chart: FaChartLine,
     users: FaUsers,
     assignments: FaClipboardList,
-    mistakes: FaExclamationCircle,
-    analytics: FaBookOpen
+    mistakes: FaExclamationCircle
 };
 
 const cardClass = 'flex min-w-0 flex-col gap-4 rounded-xl border border-(--french-gray)/50 bg-(--white) p-4 sm:p-5';
@@ -72,7 +78,7 @@ export function TeacherNavigation({ sections, activeSection, onSectionChange, ac
                 <span className="px-1 text-[10px] font-semibold uppercase tracking-wide text-(--mid-main-secondary)">Your class</span>
                 <label className="relative flex items-center">
                     <span className="sr-only">Select a class</span>
-                    <select className="w-full appearance-none rounded-xl border border-(--french-gray)/60 bg-(--white) py-2 pl-3 pr-8 text-xs text-(--secondary-color)" value={activeClassId} onChange={(event) => onClassChange(event.target.value)}>
+                    <select className="w-full appearance-none rounded-xl border border-(--french-gray)/60 bg-(--white) py-2 pl-3 pr-8 text-xs text-(--secondary-color) focus-visible:outline-(--mid-main-secondary)" value={activeClassId} onChange={(event) => onClassChange(event.target.value)}>
                         {classes.map((item) => <option key={item.id} value={item.id}>{item.name} · {item.period}</option>)}
                     </select>
                     <FaChevronDown aria-hidden="true" className="pointer-events-none absolute right-3 text-[10px] text-(--mid-main-secondary)" />
@@ -83,10 +89,10 @@ export function TeacherNavigation({ sections, activeSection, onSectionChange, ac
     );
 }
 
-export function ClassHeading({ activeClass, studentCount, classes, onClassChange, copyFeedback, onCopyClassCode, onArchive }) {
+export function ClassHeading({ activeClass, studentCount, classes, onClassChange, copyFeedback, onCopyClassCode, onDeleteClass }) {
     return (
-        <section className="flex min-w-0 items-center justify-between gap-3 rounded-xl border border-(--french-gray)/50 bg-(--white) p-3 sm:p-4" aria-label="Selected class">
-            <div className="flex min-w-0 items-center gap-3">
+        <section className="flex min-w-0 flex-wrap items-center justify-between gap-3 rounded-xl border border-(--french-gray)/50 bg-(--white) p-3 sm:p-4" aria-label="Selected class">
+            <div className="flex min-w-0 flex-1 items-center gap-3">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-(--main-color) text-sm font-semibold text-(--secondary-color)">{activeClass.name.slice(0, 1)}</span>
                 <div className="flex min-w-0 flex-col gap-1">
                     <div className="flex flex-wrap items-center gap-2">
@@ -94,24 +100,29 @@ export function ClassHeading({ activeClass, studentCount, classes, onClassChange
                         <span className="rounded-full bg-(--main-color) px-2 py-1 text-[10px] text-(--secondary-color)/70">{activeClass.period}</span>
                         {activeClass.isSample && <span className="rounded-full border border-(--french-gray)/60 px-2 py-1 text-[9px] text-(--mid-main-secondary)">Preview data</span>}
                     </div>
-                    <p className="flex flex-wrap items-center gap-1.5 text-[10px] text-(--mid-main-secondary)">
-                        Class code <strong className="font-medium text-(--secondary-color)">{activeClass.code}</strong>
-                        <span aria-hidden="true">·</span>{studentCount} students
-                        <span aria-live="polite" className="text-(--secondary-color)">{copyFeedback}</span>
-                    </p>
+                    <span className="text-xs text-(--mid-main-secondary)">{studentCount} {studentCount === 1 ? 'student' : 'students'}</span>
                 </div>
             </div>
             <label className="relative flex shrink-0 items-center lg:hidden">
                 <span className="sr-only">Select a class</span>
-                <select className="max-w-28 appearance-none rounded-xl border border-(--french-gray)/60 bg-(--white) py-2 pl-2 pr-6 text-[10px] text-(--secondary-color)" value={activeClass.id} onChange={(event) => onClassChange(event.target.value)}>
+                <select className="max-w-36 appearance-none rounded-xl border border-(--french-gray)/60 bg-(--white) py-2 pl-2 pr-6 text-[10px] text-(--secondary-color) focus-visible:outline-(--mid-main-secondary)" value={activeClass.id} onChange={(event) => onClassChange(event.target.value)}>
                     {classes.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
                 </select>
                 <FaChevronDown aria-hidden="true" className="pointer-events-none absolute right-2 text-[9px] text-(--mid-main-secondary)" />
             </label>
             <DismissiblePopover label="Class options">
-                <button type="button" role="menuitem" onClick={onCopyClassCode} className="rounded-lg px-3 py-2 text-left text-xs text-(--secondary-color)/80 hover:bg-(--main-color)">Copy class code</button>
-                <button type="button" role="menuitem" disabled={classes.length < 2} onClick={onArchive} className="rounded-lg px-3 py-2 text-left text-xs text-(--secondary-color)/80 hover:bg-(--main-color) disabled:opacity-40">Archive class</button>
+                <button type="button" role="menuitem" onClick={onDeleteClass} className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-xs text-(--accent-color) hover:bg-(--main-color)"><FaTrash aria-hidden="true" />Delete class</button>
             </DismissiblePopover>
+            <div className="flex w-full items-center justify-between gap-3 rounded-xl bg-(--main-color)/70 px-3 py-2 sm:w-auto sm:min-w-52">
+                <div className="flex min-w-0 flex-col gap-0.5">
+                    <span className="text-[9px] font-semibold uppercase tracking-wide text-(--mid-main-secondary)">Class code</span>
+                    <strong className="text-lg font-semibold tracking-wider text-(--secondary-color)">{activeClass.code}</strong>
+                </div>
+                <div className="flex flex-col items-end gap-0.5">
+                    <button type="button" onClick={onCopyClassCode} className="rounded-lg px-2 py-1 text-xs font-medium text-(--secondary-color) hover:bg-(--white)">Copy</button>
+                    <span aria-live="polite" className="text-[9px] text-(--mid-main-secondary)">{copyFeedback}</span>
+                </div>
+            </div>
         </section>
     );
 }
@@ -126,16 +137,19 @@ export function Overview({ activeClass, averageAccuracy, studentCount, onCopyCla
                 <section className={`${cardClass} items-center px-6 py-12 text-center`}>
                     <FaUsers aria-hidden="true" className="text-2xl text-(--mid-main-secondary)" />
                     <h2 className="text-base font-medium text-(--secondary-color)">Your class is ready for its first students</h2>
-                    <p className="max-w-md text-xs leading-5 text-(--mid-main-secondary)">Share class code <strong className="text-(--secondary-color)">{activeClass.code}</strong> with your students. Progress will appear here as they practice.</p>
+                    <p className="max-w-md text-xs leading-5 text-(--mid-main-secondary)">Share the class code below with your students. Progress will appear here as they practice.</p>
+                    <strong className="rounded-xl bg-(--main-color) px-5 py-3 text-2xl font-semibold tracking-[0.2em] text-(--secondary-color)">{activeClass.code}</strong>
                     <SecondaryButton text="Copy class code" onClick={onCopyClassCode} className="rounded-xl px-4 py-2 text-xs" />
                 </section>
             ) : (
                 <>
                     <ClassBriefing activeClass={activeClass} currentAccuracy={currentAccuracy} />
-                    <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                    <div className="flex flex-col gap-4">
                         <ActivityCard activity={activeClass.activity} />
-                        <TopicsCard topics={activeClass.topics} />
-                        <StudentAccuracyCard students={activeClass.students} />
+                        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                            <TopicsCard topics={activeClass.topics} />
+                            <StudentAccuracyCard students={activeClass.students} />
+                        </div>
                     </div>
                 </>
             )}
@@ -186,33 +200,106 @@ function PanelHeading({ title, description, action }) {
 }
 
 export function ActivityCard({ activity }) {
+    const [range, setRange] = useState('7');
+    const [chartType, setChartType] = useState('bar');
+    const availableDays = Number(range);
+    const lastSunday = new Date();
+    lastSunday.setHours(0, 0, 0, 0);
+    lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
+    const lastMonday = new Date(lastSunday);
+    lastMonday.setDate(lastMonday.getDate() - 6);
+    const chartData = activity.slice(-availableDays).map((day, index, days) => {
+        const date = new Date(lastMonday);
+        date.setDate(date.getDate() + (activity.length - days.length) + index);
+        return { ...day, date, label: date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) };
+    });
+    const correctTotal = chartData.reduce((total, day) => total + day.correct, 0);
+    const incorrectTotal = chartData.reduce((total, day) => total + day.incorrect, 0);
+    const shownDateRange = chartData.length
+        ? `${chartData[0].label} – ${chartData.at(-1).label}`
+        : 'No dates available';
+
     return (
-        <section className={`${cardClass} min-h-72`}>
-            <PanelHeading title="Daily practice" description="Questions answered over the last 7 days" />
-            {activity.length ? (
+        <section className={`${cardClass} min-h-80 w-full`}>
+            <header className="flex flex-wrap items-start justify-between gap-3">
+                <PanelHeading title="Daily practice" description="Correct and incorrect answers over time" />
+                <div className="flex flex-wrap gap-2">
+                    <DashboardSelect label="Practice history range" value={range} onChange={(event) => setRange(event.target.value)}>
+                        <option value="7">Last 7 days</option>
+                        <option value="30">Last 30 days</option>
+                    </DashboardSelect>
+                    <DashboardSelect label="Practice chart type" value={chartType} onChange={(event) => setChartType(event.target.value)}>
+                        <option value="bar">Bar chart</option>
+                        <option value="line">Line chart</option>
+                        <option value="pie">Pie chart</option>
+                    </DashboardSelect>
+                </div>
+            </header>
+            {chartData.length ? (
                 <>
-                    <div className="flex items-center gap-4 text-[10px] text-(--mid-main-secondary)">
-                        <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--easy)' }} />Correct</span>
-                        <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--accent-color)' }} />Needs another try</span>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex items-center gap-4 text-[10px] font-medium text-(--secondary-color)">
+                            <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--easy)' }} />Correct <strong>{correctTotal.toLocaleString()}</strong></span>
+                            <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--accent-color)' }} />Incorrect <strong>{incorrectTotal.toLocaleString()}</strong></span>
+                        </div>
+                        <span className="text-[10px] text-(--mid-main-secondary)">
+                            {shownDateRange} · {chartData.length} available practice {chartData.length === 1 ? 'day' : 'days'}
+                        </span>
                     </div>
-                    <div className="h-48 w-full min-w-0" role="img" aria-label="Daily correct and incorrect practice questions for the last seven days">
+                    <div className="h-64 w-full min-w-0" role="img" aria-label={`${chartType} chart of correct and incorrect daily practice answers`}>
                         <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-                            <BarChart data={activity} barCategoryGap="35%">
-                                <CartesianGrid vertical={false} stroke="var(--french-gray)" strokeDasharray="3 4" />
-                                <XAxis dataKey="day" tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 10 }} />
-                                <YAxis allowDecimals={false} width={30} tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 9 }} />
-                                <Tooltip
-                                    cursor={{ fill: 'var(--main-color)' }}
-                                    contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }}
-                                />
-                                <Bar dataKey="correct" name="Correct" stackId="answers" fill="var(--easy)" radius={0} />
-                                <Bar dataKey="incorrect" name="Incorrect" stackId="answers" fill="var(--accent-color)" radius={[4, 4, 0, 0]} />
-                            </BarChart>
+                            {chartType === 'line' ? (
+                                <LineChart data={chartData}>
+                                    <CartesianGrid vertical={false} stroke="var(--french-gray)" strokeDasharray="3 4" />
+                                    <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 10 }} />
+                                    <YAxis allowDecimals={false} width={32} tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 9 }} />
+                                    <Tooltip contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }} />
+                                    <Line type="monotone" dataKey="correct" name="Correct" stroke="var(--easy)" strokeWidth={3} dot={{ r: 3 }} />
+                                    <Line type="monotone" dataKey="incorrect" name="Incorrect" stroke="var(--accent-color)" strokeWidth={3} dot={{ r: 3 }} />
+                                </LineChart>
+                            ) : chartType === 'pie' ? (
+                                <PieChart>
+                                    <Pie data={[{ name: 'Incorrect', value: incorrectTotal }, { name: 'Correct', value: correctTotal }]} dataKey="value" nameKey="name" innerRadius="58%" outerRadius="82%" paddingAngle={3}>
+                                        <Cell fill="var(--accent-color)" />
+                                        <Cell fill="var(--easy)" />
+                                    </Pie>
+                                    <Tooltip formatter={(value) => [Number(value).toLocaleString(), 'Answers']} contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }} />
+                                </PieChart>
+                            ) : (
+                                <BarChart data={chartData} barCategoryGap="35%">
+                                    <CartesianGrid vertical={false} stroke="var(--french-gray)" strokeDasharray="3 4" />
+                                    <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 10 }} />
+                                    <YAxis allowDecimals={false} width={32} tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 9 }} />
+                                    <Tooltip cursor={{ fill: 'var(--main-color)' }} contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }} />
+                                    <Bar dataKey="incorrect" name="Incorrect" stackId="answers" fill="var(--accent-color)" radius={0} />
+                                    <Bar dataKey="correct" name="Correct" stackId="answers" fill="var(--easy)" radius={[4, 4, 0, 0]} />
+                                </BarChart>
+                            )}
                         </ResponsiveContainer>
                     </div>
+                    {range === '30' && chartData.length < 30 && (
+                        <p className="text-[10px] text-(--mid-main-secondary)">Only {chartData.length} practice days are available in this class right now.</p>
+                    )}
                 </>
             ) : <EmptyInline text="Class activity will appear when students start practicing." />}
         </section>
+    );
+}
+
+function DashboardSelect({ label, value, onChange, children }) {
+    return (
+        <label className="relative flex items-center">
+            <span className="sr-only">{label}</span>
+            <select
+                aria-label={label}
+                value={value}
+                onChange={onChange}
+                className="appearance-none rounded-xl border border-(--french-gray)/60 bg-(--white) py-2 pl-3 pr-8 text-xs font-medium text-(--secondary-color) shadow-sm transition hover:border-(--mid-main-secondary) focus-visible:outline-(--mid-main-secondary)"
+            >
+                {children}
+            </select>
+            <FaChevronDown aria-hidden="true" className="pointer-events-none absolute right-3 text-[9px] text-(--mid-main-secondary)" />
+        </label>
     );
 }
 
@@ -307,25 +394,30 @@ function AssignmentRow({ assignment, compact = false }) {
     );
 }
 
-export function StudentsView({ students, query, onQueryChange }) {
+export function StudentsView({ students, query, onQueryChange, onEditStudent }) {
     return (
         <section className={cardClass}>
             <PanelHeading title="Your students" description="Individual progress and practice activity" />
-            <label className="flex h-10 items-center gap-2 rounded-xl bg-(--main-color) px-3 text-xs text-(--secondary-color)/70 focus-within:ring-2 focus-within:ring-(--secondary-color)">
+            <label className="flex h-10 items-center gap-2 rounded-xl border border-(--french-gray)/60 bg-(--white) px-3 text-xs text-(--mid-main-secondary) transition focus-within:border-(--mid-main-secondary) focus-within:ring-2 focus-within:ring-(--mid-main-secondary)/20">
                 <FaSearch aria-hidden="true" />
-                <input value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Find a student" aria-label="Find a student" className="min-w-0 flex-1 bg-transparent text-xs text-(--secondary-color) outline-none placeholder:text-(--secondary-color)/50" />
+                <input type="search" value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Find a student" aria-label="Find a student" className="min-w-0 flex-1 border-0 bg-transparent text-xs text-(--secondary-color) outline-none placeholder:text-(--mid-main-secondary) focus:outline-none focus-visible:outline-none" />
             </label>
             {students.length ? (
                 <div className="flex min-w-0 flex-col overflow-x-auto">
-                    <div className="flex min-w-[600px] items-center border-y border-(--french-gray)/50 py-2 text-[9px] font-semibold uppercase tracking-wide text-(--mid-main-secondary)">
-                        <span className="flex-1">Student</span><span className="w-28">Accuracy</span><span className="w-36">Questions solved</span><span className="w-32">Status</span>
+                    <div className="flex min-w-[660px] items-center border-y border-(--french-gray)/50 py-2 text-[9px] font-semibold uppercase tracking-wide text-(--mid-main-secondary)">
+                        <span className="flex-1">Student</span><span className="w-28">Accuracy</span><span className="w-36">Questions solved</span><span className="w-32">Status</span><span className="w-20 text-right">Actions</span>
                     </div>
                     {students.map((student) => (
-                        <div className="flex min-w-[600px] items-center border-b border-(--french-gray)/30 py-3 text-xs last:border-0" key={student.id}>
+                        <div className="flex min-w-[660px] items-center border-b border-(--french-gray)/30 py-3 text-xs last:border-0" key={student.id}>
                             <span className="flex flex-1 items-center gap-2.5 font-medium text-(--secondary-color)"><StudentAvatar initials={student.initials} />{student.name}</span>
                             <span className="w-28 text-(--secondary-color)">{student.accuracy}%</span>
                             <span className="w-36 text-(--secondary-color)">{student.solved} <span className="text-(--mid-main-secondary)">this week</span></span>
                             <span className="w-32 text-(--secondary-color)/70">{student.status}</span>
+                            <span className="flex w-20 justify-end">
+                                <button type="button" onClick={() => onEditStudent(student)} aria-label={`Edit ${student.name}`} className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-[10px] font-medium text-(--secondary-color) hover:bg-(--main-color)">
+                                    <FaPencilAlt aria-hidden="true" /> Edit
+                                </button>
+                            </span>
                         </div>
                     ))}
                 </div>
@@ -354,9 +446,9 @@ export function MistakesView({ mistakes, filter, onFilterChange, onResolve }) {
                 title="Mistakes log"
                 description="Repeated errors can point to a useful teaching moment."
                 action={
-                    <label className="flex h-9 items-center gap-2 rounded-xl bg-(--main-color) px-3 text-xs text-(--secondary-color)/70">
+                    <label className="relative flex h-9 items-center gap-2 rounded-xl border border-(--french-gray)/60 bg-(--white) px-3 text-xs text-(--secondary-color)/70 shadow-sm">
                         <FaFilter aria-hidden="true" />
-                        <select value={filter} onChange={(event) => onFilterChange(event.target.value)} aria-label="Filter mistakes" className="appearance-none bg-transparent text-xs text-(--secondary-color) outline-none">
+                        <select value={filter} onChange={(event) => onFilterChange(event.target.value)} aria-label="Filter mistakes" className="appearance-none bg-transparent pr-4 text-xs text-(--secondary-color) outline-none focus-visible:outline-(--mid-main-secondary)">
                             <option>All</option><option>Needs review</option><option>Resolved</option>
                         </select>
                         <FaChevronDown aria-hidden="true" className="text-[9px]" />
@@ -364,7 +456,6 @@ export function MistakesView({ mistakes, filter, onFilterChange, onResolve }) {
                 }
             />
             {mistakes.length ? <div className="flex flex-col">{mistakes.map((mistake) => <MistakeRow key={mistake.id} mistake={mistake} onResolve={onResolve} />)}</div> : <EmptyInline text="Nothing in this view yet." />}
-            <p className="flex items-start gap-2 rounded-xl bg-(--main-color) p-3 text-[10px] leading-4 text-(--mid-main-secondary)"><FaExclamationCircle className="shrink-0" /> Mistakes are learning signals, not grades. Review a pattern with the student before drawing conclusions.</p>
         </section>
     );
 }
@@ -386,23 +477,6 @@ function MistakeRow({ mistake, onResolve, compact = false }) {
                 className="shrink-0 rounded-lg px-2 py-1.5 text-[10px]"
             />
         </article>
-    );
-}
-
-export function AnalyticsView({ activeClass }) {
-    const averageAccuracy = activeClass.students.length
-        ? Math.round(activeClass.students.reduce((total, student) => total + student.accuracy, 0) / activeClass.students.length)
-        : 0;
-    const currentAccuracy = getCurrentAccuracy(activeClass, averageAccuracy);
-    return (
-        <div className="flex flex-col gap-4">
-            <TeacherDashboardStats activeClass={activeClass} currentAccuracy={currentAccuracy} />
-            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-                <ActivityCard activity={activeClass.activity} />
-                <TopicsCard topics={activeClass.topics} />
-                <StudentAccuracyCard students={activeClass.students} />
-            </div>
-        </div>
     );
 }
 
