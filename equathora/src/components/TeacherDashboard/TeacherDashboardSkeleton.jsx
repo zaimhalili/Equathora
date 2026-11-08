@@ -17,15 +17,11 @@ function TeacherDashboardSkeleton() {
                 </div>
             </div>
             <Ghost className="h-[72px] w-full" />
-            <div className="flex flex-wrap gap-3">
-                {['students', 'accuracy', 'exercises', 'review'].map((item) => (
-                    <div className="flex min-h-24 min-w-40 flex-1 items-start gap-3 rounded-xl border border-(--french-gray)/50 bg-(--white) p-4" key={item}>
-                        <Ghost className="h-8 w-8 shrink-0 rounded-xl" />
-                        <div className="flex flex-1 flex-col gap-2">
-                            <Ghost className="h-3 w-24" />
-                            <Ghost className="h-6 w-12" />
-                            <Ghost className="h-3 w-28" />
-                        </div>
+            <div className="grid min-h-[136px] grid-cols-2 overflow-hidden rounded-2xl border border-(--french-gray)/45 bg-(--white) lg:grid-cols-4">
+                {['questions', 'accuracy', 'reported-score', 'goal-score'].map((item) => (
+                    <div className="flex flex-col gap-2 border-b border-r border-(--french-gray)/40 p-5 last:border-r-0 [&:nth-last-child(-n+2)]:border-b-0 lg:border-b-0 lg:last:border-r-0" key={item}>
+                        <Ghost className="h-4 w-32 max-w-full" />
+                        <Ghost className="h-8 w-20" />
                     </div>
                 ))}
             </div>

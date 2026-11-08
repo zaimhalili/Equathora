@@ -267,9 +267,6 @@ function TeacherDashboard() {
                                             activeClass={activeClass}
                                             averageAccuracy={averageAccuracy}
                                             studentCount={studentCount}
-                                            activeMistakes={activeMistakes}
-                                            onSectionChange={changeSection}
-                                            onResolveMistake={toggleMistakeResolved}
                                             onCopyClassCode={copyClassCode}
                                         />
                                     )}

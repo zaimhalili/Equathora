@@ -1,7 +1,5 @@
 import { createElement } from 'react';
 import {
-    FaArrowRight,
-    FaArrowUp,
     FaBookOpen,
     FaChartLine,
     FaCheck,
@@ -25,6 +23,8 @@ import {
 import PrimaryButton from '../ui/Buttons/PrimaryButton';
 import SecondaryButton from '../ui/Buttons/SecondaryButton';
 import DismissiblePopover from './DismissiblePopover';
+import TeacherDashboardStats from './TeacherDashboardStats';
+import { getCurrentAccuracy } from './teacherDashboardMetrics';
 
 const icons = {
     chart: FaChartLine,
@@ -116,16 +116,12 @@ export function ClassHeading({ activeClass, studentCount, classes, onClassChange
     );
 }
 
-export function Overview({ activeClass, averageAccuracy, studentCount, activeMistakes, onSectionChange, onResolveMistake, onCopyClassCode }) {
-    const submissionCount = activeClass.assignments.reduce((total, assignment) => total + assignment.submitted, 0);
+export function Overview({ activeClass, averageAccuracy, studentCount, onCopyClassCode }) {
+    const currentAccuracy = getCurrentAccuracy(activeClass, averageAccuracy);
+
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap gap-3" aria-label="Class summary">
-                <Metric icon={FaUsers} label="Students" value={studentCount} note={studentCount ? 'In this class' : 'Invite students to begin'} />
-                <Metric icon={FaChartLine} label="Average accuracy" value={`${averageAccuracy}%`} note={studentCount ? 'Across all students' : 'No attempts yet'} />
-                <Metric icon={FaClipboardList} label="Exercises" value={activeClass.assignments.length} note={`${submissionCount} submissions`} />
-                <Metric icon={FaExclamationCircle} label="Mistakes to review" value={activeMistakes} note="Open review items" />
-            </div>
+            <TeacherDashboardStats activeClass={activeClass} currentAccuracy={currentAccuracy} />
             {studentCount === 0 ? (
                 <section className={`${cardClass} items-center px-6 py-12 text-center`}>
                     <FaUsers aria-hidden="true" className="text-2xl text-(--mid-main-secondary)" />
@@ -135,21 +131,11 @@ export function Overview({ activeClass, averageAccuracy, studentCount, activeMis
                 </section>
             ) : (
                 <>
-                    <section className="flex items-start gap-3 rounded-xl border border-(--french-gray)/50 bg-(--white) px-4 py-3">
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-(--main-color) text-sm text-(--secondary-color)">i</span>
-                        <div className="flex min-w-0 flex-1 flex-col gap-1">
-                            <h2 className="text-xs font-semibold text-(--secondary-color)">A quick read on your class <span className="font-normal text-(--mid-main-secondary)">· THIS WEEK</span></h2>
-                            <p className="text-[11px] leading-5 text-(--mid-main-secondary)">Students are strongest in <strong className="font-medium text-(--secondary-color)">{activeClass.topics[0]?.name ?? 'core skills'}</strong> and may benefit from extra practice with <strong className="font-medium text-(--secondary-color)">{activeClass.topics.at(-1)?.name ?? 'new topics'}</strong>.</p>
-                        </div>
-                        <button type="button" onClick={() => onSectionChange('analytics')} aria-label="View class analytics" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-(--mid-main-secondary) hover:bg-(--main-color)"><FaArrowRight /></button>
-                    </section>
-                    <div className="flex flex-wrap items-stretch gap-4">
+                    <ClassBriefing activeClass={activeClass} currentAccuracy={currentAccuracy} />
+                    <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
                         <ActivityCard activity={activeClass.activity} />
-                        <TopicsCard topics={activeClass.topics.slice(0, 4)} onViewAll={() => onSectionChange('analytics')} />
-                    </div>
-                    <div className="flex flex-wrap items-stretch gap-4">
-                        <AssignmentsCard assignments={activeClass.assignments.slice(0, 3)} onViewAll={() => onSectionChange('assignments')} />
-                        <MistakesCard mistakes={activeClass.mistakes.filter((mistake) => !mistake.resolved).slice(0, 3)} onViewAll={() => onSectionChange('mistakes')} onResolve={onResolveMistake} />
+                        <TopicsCard topics={activeClass.topics} />
+                        <StudentAccuracyCard students={activeClass.students} />
                     </div>
                 </>
             )}
@@ -157,16 +143,33 @@ export function Overview({ activeClass, averageAccuracy, studentCount, activeMis
     );
 }
 
-function Metric({ icon, label, value, note }) {
+function ClassBriefing({ activeClass, currentAccuracy }) {
+    const strongestTopic = [...activeClass.topics].sort((a, b) => b.accuracy - a.accuracy)[0];
+    const focusTopic = [...activeClass.topics].sort((a, b) => a.accuracy - b.accuracy)[0];
+    const studentsByAccuracy = [...activeClass.students].sort((a, b) => b.accuracy - a.accuracy);
+    const leadingStudent = studentsByAccuracy[0];
+    const studentToSupport = studentsByAccuracy.at(-1);
+    const hasDistinctStudents = leadingStudent.id !== studentToSupport.id;
+
     return (
-        <article className="flex min-h-24 min-w-40 flex-1 items-start gap-3 rounded-xl border border-(--french-gray)/50 bg-(--white) p-4">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-(--main-color) text-xs text-(--secondary-color)">{createElement(icon, { 'aria-hidden': true })}</span>
-            <div className="flex min-w-0 flex-col gap-1">
-                <span className="text-[11px] text-(--mid-main-secondary)">{label}</span>
-                <strong className="text-xl font-medium leading-6 text-(--secondary-color)">{value}</strong>
-                <small className="text-[10px] text-(--mid-main-secondary)">{note}</small>
-            </div>
-        </article>
+        <section className="rounded-2xl border-2 border-sky-200 bg-sky-50/20 p-5 sm:px-6 sm:py-5">
+            <header className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                <h2 className="flex items-center gap-2 text-base font-semibold text-(--secondary-color)">
+                    <FaChartLine aria-hidden="true" className="text-sky-500" />
+                    Class briefing
+                </h2>
+                <span className="text-xs text-(--mid-main-secondary)">Current class snapshot</span>
+            </header>
+            <p className="text-sm leading-6 text-(--secondary-color)/85">
+                Class accuracy is <strong>{currentAccuracy}%</strong>
+                {strongestTopic && <>. Strongest topic: <strong>{strongestTopic.name}</strong> at <strong>{strongestTopic.accuracy}%</strong></>}
+                {focusTopic && focusTopic !== strongestTopic && <>, with <strong>{focusTopic.name}</strong> as the clearest area to revisit at <strong>{focusTopic.accuracy}%</strong></>}
+                {leadingStudent && hasDistinctStudents && (
+                    <>. <span className="rounded bg-sky-100 px-1.5 py-0.5 font-medium text-sky-800">{leadingStudent.name}</span> currently leads at <strong>{leadingStudent.accuracy}%</strong>, while <span className="rounded bg-sky-100 px-1.5 py-0.5 font-medium text-sky-800">{studentToSupport.name}</span> may benefit from extra support at <strong>{studentToSupport.accuracy}%</strong>.</>
+                )}
+                {leadingStudent && !hasDistinctStudents && <>. Student accuracy is <strong>{leadingStudent.accuracy}%</strong>.</>}
+            </p>
+        </section>
     );
 }
 
@@ -183,70 +186,88 @@ function PanelHeading({ title, description, action }) {
 }
 
 export function ActivityCard({ activity }) {
-    const totalCorrect = activity.reduce((sum, day) => sum + day.correct, 0);
-    const totalIncorrect = activity.reduce((sum, day) => sum + day.incorrect, 0);
-    const busiestDay = activity.reduce((best, day) => !best || day.correct + day.incorrect > best.correct + best.incorrect ? day : best, null);
     return (
-        <section className={`${cardClass} min-h-72 flex-1 basis-96`}>
-            <PanelHeading title="Class activity" description="Questions answered this week" action={<DismissiblePopover label="Chart options" contentClassName="p-2 text-xs text-(--secondary-color)"><span className="px-2 py-1">Last 7 days</span><span className="px-2 py-1">Correct and incorrect</span></DismissiblePopover>} />
-            <div className="flex items-center justify-end gap-4 text-[10px] text-(--mid-main-secondary)">
-                <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--easy)' }} />{totalCorrect} correct</span>
-                <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--accent-color)' }} />{totalIncorrect} incorrect</span>
-            </div>
+        <section className={`${cardClass} min-h-72`}>
+            <PanelHeading title="Daily practice" description="Questions answered over the last 7 days" />
             {activity.length ? (
-                <div className="h-44 w-full min-w-0" role="img" aria-label="Stacked bar chart of correct and incorrect answers for the last seven days">
-                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-                        <BarChart data={activity} barCategoryGap="35%">
-                            <CartesianGrid vertical={false} stroke="var(--french-gray)" strokeDasharray="3 4" />
-                            <XAxis dataKey="day" tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 10 }} />
-                            <YAxis allowDecimals={false} width={34} tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 9 }} />
-                            <Tooltip
-                                cursor={{ fill: 'var(--main-color)' }}
-                                contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }}
-                            />
-                            <Bar dataKey="correct" name="Correct" stackId="answers" fill="var(--easy)" radius={0} />
-                            <Bar dataKey="incorrect" name="Incorrect" stackId="answers" fill="var(--accent-color)" radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
+                <>
+                    <div className="flex items-center gap-4 text-[10px] text-(--mid-main-secondary)">
+                        <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--easy)' }} />Correct</span>
+                        <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--accent-color)' }} />Needs another try</span>
+                    </div>
+                    <div className="h-48 w-full min-w-0" role="img" aria-label="Daily correct and incorrect practice questions for the last seven days">
+                        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+                            <BarChart data={activity} barCategoryGap="35%">
+                                <CartesianGrid vertical={false} stroke="var(--french-gray)" strokeDasharray="3 4" />
+                                <XAxis dataKey="day" tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 10 }} />
+                                <YAxis allowDecimals={false} width={30} tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 9 }} />
+                                <Tooltip
+                                    cursor={{ fill: 'var(--main-color)' }}
+                                    contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }}
+                                />
+                                <Bar dataKey="correct" name="Correct" stackId="answers" fill="var(--easy)" radius={0} />
+                                <Bar dataKey="incorrect" name="Incorrect" stackId="answers" fill="var(--accent-color)" radius={[4, 4, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </>
             ) : <EmptyInline text="Class activity will appear when students start practicing." />}
-            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-(--french-gray)/50 pt-3 text-[10px] text-(--mid-main-secondary)">
-                <span className="flex items-center gap-1.5"><FaArrowUp className="text-(--secondary-color)" />{busiestDay ? <>Most questions were solved on <strong className="font-medium text-(--secondary-color)">{busiestDay.day}</strong>.</> : 'No activity recorded yet.'}</span>
-                <span>{activity.length} days</span>
-            </div>
         </section>
     );
 }
 
-function TopicsCard({ topics, onViewAll }) {
+function TopicsCard({ topics }) {
+    const orderedTopics = [...topics].sort((a, b) => b.accuracy - a.accuracy);
     return (
-        <section className={`${cardClass} min-h-72 flex-1 basis-80`}>
-            <PanelHeading title="Accuracy by topic" description="Where the class feels confident" action={<TextAction onClick={onViewAll}>View all</TextAction>} />
-            {topics.length ? <div className="flex flex-col gap-5 pt-2">{topics.map((topic) => <TopicRow topic={topic} key={topic.name} />)}</div> : <EmptyInline text="Topic insights will appear when students start practicing." />}
+        <section className={`${cardClass} min-h-72`}>
+            <PanelHeading title="Accuracy by topic" description="Class accuracy across practiced topics" />
+            {orderedTopics.length ? (
+                <div className="flex flex-col gap-4 pt-1" role="img" aria-label="Class accuracy by practiced topic">
+                    {orderedTopics.map((topic) => <TopicRow topic={topic} key={topic.name} />)}
+                </div>
+            ) : <EmptyInline text="Topic insights will appear when students start practicing." />}
         </section>
     );
 }
 
 function TopicRow({ topic }) {
     return (
-        <div className="flex items-center gap-3">
-            <div className="flex min-w-28 flex-1 flex-col gap-1">
-                <span className="truncate text-[11px] text-(--secondary-color)">{topic.name}</span>
-                <small className="text-[10px] text-(--mid-main-secondary)">{topic.attempts} attempts</small>
+        <div className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between gap-3 text-xs">
+                <span className="truncate font-medium text-(--secondary-color)">{topic.name}</span>
+                <strong className="shrink-0 font-semibold text-(--secondary-color)">{topic.accuracy}%</strong>
             </div>
-            <div className="h-1.5 min-w-12 flex-[1.4] overflow-hidden rounded-full bg-(--main-color)">
-                <span className="block h-full rounded-full bg-(--secondary-color)" style={{ width: `${topic.accuracy}%` }} />
+            <div className="h-2 overflow-hidden rounded-full bg-(--main-color)">
+                <span className="block h-full rounded-full bg-sky-500" style={{ width: `${topic.accuracy}%` }} />
             </div>
-            <strong className="w-9 text-right text-xs font-medium text-(--secondary-color)">{topic.accuracy}%</strong>
         </div>
     );
 }
 
-function AssignmentsCard({ assignments, onViewAll }) {
+function StudentAccuracyCard({ students }) {
+    const chartData = [...students]
+        .sort((a, b) => a.accuracy - b.accuracy)
+        .map((student) => ({ name: student.name, accuracy: student.accuracy }));
+
     return (
-        <section className={`${cardClass} min-h-64 flex-1 basis-80`}>
-            <PanelHeading title="Recent exercises" description="What’s in progress" action={<TextAction onClick={onViewAll}>All exercises</TextAction>} />
-            {assignments.length ? <div className="flex flex-col">{assignments.map((assignment) => <AssignmentRow key={assignment.id} assignment={assignment} compact />)}</div> : <EmptyInline text="No exercises assigned yet." />}
+        <section className={`${cardClass} min-h-72`}>
+            <PanelHeading title="Student accuracy" description="Compare individual math practice accuracy" />
+            {chartData.length ? (
+                <div className="h-52 w-full min-w-0" role="img" aria-label="Horizontal bar chart comparing student practice accuracy">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+                        <BarChart data={chartData} layout="vertical" margin={{ left: 4, right: 12 }}>
+                            <CartesianGrid horizontal={false} stroke="var(--french-gray)" strokeDasharray="3 4" />
+                            <XAxis type="number" domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 9 }} />
+                            <YAxis type="category" dataKey="name" width={94} tickLine={false} axisLine={false} tick={{ fill: 'var(--secondary-color)', fontSize: 10 }} />
+                            <Tooltip
+                                formatter={(value) => [`${value}%`, 'Accuracy']}
+                                contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }}
+                            />
+                            <Bar dataKey="accuracy" name="Accuracy" fill="var(--secondary-color)" radius={[0, 5, 5, 0]} barSize={14} />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            ) : <EmptyInline text="Student accuracy will appear once students start practicing." />}
         </section>
     );
 }
@@ -283,15 +304,6 @@ function AssignmentRow({ assignment, compact = false }) {
                 </details>
             )}
         </div>
-    );
-}
-
-function MistakesCard({ mistakes, onViewAll, onResolve }) {
-    return (
-        <section className={`${cardClass} min-h-64 flex-1 basis-80`}>
-            <PanelHeading title="Mistakes to review" description="Patterns worth a second look" action={<TextAction onClick={onViewAll}>Open log</TextAction>} />
-            {mistakes.length ? <div className="flex flex-col">{mistakes.map((mistake) => <MistakeRow key={mistake.id} mistake={mistake} onResolve={onResolve} compact />)}</div> : <EmptyInline text="No mistakes to review." />}
-        </section>
     );
 }
 
@@ -378,30 +390,24 @@ function MistakeRow({ mistake, onResolve, compact = false }) {
 }
 
 export function AnalyticsView({ activeClass }) {
-    const correct = activeClass.activity.reduce((total, day) => total + day.correct, 0);
-    const incorrect = activeClass.activity.reduce((total, day) => total + day.incorrect, 0);
+    const averageAccuracy = activeClass.students.length
+        ? Math.round(activeClass.students.reduce((total, student) => total + student.accuracy, 0) / activeClass.students.length)
+        : 0;
+    const currentAccuracy = getCurrentAccuracy(activeClass, averageAccuracy);
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap gap-3">
-                <Metric icon={FaBookOpen} label="Questions attempted" value={correct + incorrect} note="Across the last 7 days" />
-                <Metric icon={FaCheckCircle} label="Answered correctly" value={correct} note="Practice activity" />
-                <Metric icon={FaExclamationCircle} label="Incorrect attempts" value={incorrect} note="Another look can help" />
+            <TeacherDashboardStats activeClass={activeClass} currentAccuracy={currentAccuracy} />
+            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                <ActivityCard activity={activeClass.activity} />
+                <TopicsCard topics={activeClass.topics} />
+                <StudentAccuracyCard students={activeClass.students} />
             </div>
-            <ActivityCard activity={activeClass.activity} />
-            <section className={cardClass}>
-                <PanelHeading title="Topic mastery" description="Accuracy across the topics students have practiced" />
-                {activeClass.topics.length ? <div className="flex flex-col gap-5 pt-2">{activeClass.topics.map((topic) => <TopicRow topic={topic} key={topic.name} />)}</div> : <EmptyInline text="Topic analytics will appear once your students start practicing." />}
-            </section>
         </div>
     );
 }
 
 function StudentAvatar({ initials }) {
     return <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-(--main-color) text-[10px] font-medium text-(--secondary-color)">{initials}</span>;
-}
-
-function TextAction({ children, onClick }) {
-    return <button type="button" onClick={onClick} className="flex shrink-0 items-center gap-1 rounded-lg px-2 py-1.5 text-[10px] font-medium text-(--secondary-color)/70 hover:bg-(--main-color) hover:text-(--secondary-color)">{children}<FaArrowRight aria-hidden="true" /></button>;
 }
 
 function EmptyInline({ text }) {
