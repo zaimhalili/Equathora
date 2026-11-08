@@ -50,7 +50,7 @@ const BlogList = () => {
                                         <img
                                             src={post.author.profilePic}
                                             alt={post.author.name}
-                                            className='w-8 h-8 rounded-full object-contain'
+                                            className='w-8 h-8 rounded-full object-cover'
                                         />
                                         <div className='text-sm'>
                                             <p className='font-medium text-gray-800'>{post.author.name}</p>

@@ -8,28 +8,21 @@ import {
     FaClipboardList,
     FaExclamationCircle,
     FaFilter,
-    FaPencilAlt,
     FaSearch,
     FaTrash,
     FaUsers
 } from 'react-icons/fa';
-import {
-    Bar,
-    BarChart,
-    Cell,
-    CartesianGrid,
-    Line,
-    LineChart,
-    Pie,
-    PieChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis
-} from 'recharts';
 import PrimaryButton from '../ui/Buttons/PrimaryButton';
 import SecondaryButton from '../ui/Buttons/SecondaryButton';
+import AccentButton from '../ui/Buttons/AccentButton';
 import DismissiblePopover from './DismissiblePopover';
+import {
+    AccuracyTrendChart,
+    AssignmentProgressChart,
+    MistakeTopicChart,
+    PracticeActivityChart,
+    StudentSupportChart
+} from './TeacherDashboardCharts';
 import TeacherDashboardStats from './TeacherDashboardStats';
 import { getCurrentAccuracy } from './teacherDashboardMetrics';
 
@@ -46,21 +39,16 @@ const mutedClass = 'text-xs text-(--mid-main-secondary)';
 
 export function TeacherNavigation({ sections, activeSection, onSectionChange, activeMistakes, classes, activeClassId, onClassChange, onCreateClass }) {
     return (
-        <aside className="flex min-w-0 flex-col gap-4 lg:w-52 lg:shrink-0 lg:gap-8">
-            <div className="hidden items-center gap-3 px-1 text-sm font-medium text-(--secondary-color) lg:flex">
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-(--main-color) text-(--secondary-color)">
-                    <FaUsers aria-hidden="true" />
-                </span>
-                Teaching space
-            </div>
-            <nav aria-label="Teacher dashboard sections" className="flex gap-1 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible">
+        <nav aria-label="Teacher dashboard sections" className="w-full shrink-0 lg:sticky lg:top-24 lg:w-44">
+            <h1 className="px-1 pb-4 text-3xl text-(--secondary-color)">Teaching</h1>
+            <div className="flex gap-1 overflow-x-auto pt-3 lg:flex-col lg:overflow-visible">
                 {sections.map((section) => (
                     <button
                         type="button"
                         key={section.id}
                         aria-current={activeSection === section.id ? 'page' : undefined}
                         onClick={() => onSectionChange(section.id)}
-                        className={`flex shrink-0 items-center gap-2 rounded-xl px-3 py-2 text-left text-xs font-medium transition-colors lg:w-full lg:py-2.5 ${
+                        className={`flex w-full shrink-0 items-center gap-3 rounded-xl px-2 py-1.5 text-left text-sm font-medium transition-colors ${
                             activeSection === section.id
                                 ? 'bg-(--main-color) text-(--secondary-color)'
                                 : 'text-(--secondary-color)/70 hover:bg-(--main-color) hover:text-(--secondary-color)'
@@ -73,9 +61,9 @@ export function TeacherNavigation({ sections, activeSection, onSectionChange, ac
                         )}
                     </button>
                 ))}
-            </nav>
-            <div className="hidden flex-col gap-3 border-t border-(--french-gray)/50 pt-4 lg:flex">
-                <span className="px-1 text-[10px] font-semibold uppercase tracking-wide text-(--mid-main-secondary)">Your class</span>
+            </div>
+            <div className="hidden flex-col gap-3 pt-6 lg:flex">
+                <span className="px-1 text-sm font-medium text-(--secondary-color)">Your class</span>
                 <label className="relative flex items-center">
                     <span className="sr-only">Select a class</span>
                     <select className="w-full appearance-none rounded-xl border border-(--french-gray)/60 bg-(--white) py-2 pl-3 pr-8 text-xs text-(--secondary-color) focus-visible:outline-(--mid-main-secondary)" value={activeClassId} onChange={(event) => onClassChange(event.target.value)}>
@@ -85,7 +73,7 @@ export function TeacherNavigation({ sections, activeSection, onSectionChange, ac
                 </label>
                 <SecondaryButton text="Create a class" onClick={onCreateClass} className="w-full justify-start rounded-xl px-3 py-2 text-xs" />
             </div>
-        </aside>
+        </nav>
     );
 }
 
@@ -111,7 +99,7 @@ export function ClassHeading({ activeClass, studentCount, classes, onClassChange
                 <FaChevronDown aria-hidden="true" className="pointer-events-none absolute right-2 text-[9px] text-(--mid-main-secondary)" />
             </label>
             <DismissiblePopover label="Class options">
-                <button type="button" role="menuitem" onClick={onDeleteClass} className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-xs text-(--accent-color) hover:bg-(--main-color)"><FaTrash aria-hidden="true" />Delete class</button>
+                <AccentButton text={<><FaTrash aria-hidden="true" />Delete class</>} role="menuitem" onClick={onDeleteClass} className="w-full justify-start rounded-lg px-3 py-2 text-left text-xs" />
             </DismissiblePopover>
             <div className="flex w-full items-center justify-between gap-3 rounded-xl bg-(--main-color)/70 px-3 py-2 sm:w-auto sm:min-w-52">
                 <div className="flex min-w-0 flex-col gap-0.5">
@@ -119,7 +107,7 @@ export function ClassHeading({ activeClass, studentCount, classes, onClassChange
                     <strong className="text-lg font-semibold tracking-wider text-(--secondary-color)">{activeClass.code}</strong>
                 </div>
                 <div className="flex flex-col items-end gap-0.5">
-                    <button type="button" onClick={onCopyClassCode} className="rounded-lg px-2 py-1 text-xs font-medium text-(--secondary-color) hover:bg-(--white)">Copy</button>
+                    <SecondaryButton type="button" text="Copy" onClick={onCopyClassCode} className="rounded-lg px-2 py-1 text-xs" />
                     <span aria-live="polite" className="text-[9px] text-(--mid-main-secondary)">{copyFeedback}</span>
                 </div>
             </div>
@@ -145,10 +133,10 @@ export function Overview({ activeClass, averageAccuracy, studentCount, onCopyCla
                 <>
                     <ClassBriefing activeClass={activeClass} currentAccuracy={currentAccuracy} />
                     <div className="flex flex-col gap-4">
-                        <ActivityCard activity={activeClass.activity} />
+                        <PracticeActivityChart activity={activeClass.activity} />
                         <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
                             <TopicsCard topics={activeClass.topics} />
-                            <StudentAccuracyCard students={activeClass.students} />
+                            <AccuracyTrendChart activity={activeClass.activity} />
                         </div>
                     </div>
                 </>
@@ -199,110 +187,6 @@ function PanelHeading({ title, description, action }) {
     );
 }
 
-export function ActivityCard({ activity }) {
-    const [range, setRange] = useState('7');
-    const [chartType, setChartType] = useState('bar');
-    const availableDays = Number(range);
-    const lastSunday = new Date();
-    lastSunday.setHours(0, 0, 0, 0);
-    lastSunday.setDate(lastSunday.getDate() - lastSunday.getDay());
-    const lastMonday = new Date(lastSunday);
-    lastMonday.setDate(lastMonday.getDate() - 6);
-    const chartData = activity.slice(-availableDays).map((day, index, days) => {
-        const date = new Date(lastMonday);
-        date.setDate(date.getDate() + (activity.length - days.length) + index);
-        return { ...day, date, label: date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) };
-    });
-    const correctTotal = chartData.reduce((total, day) => total + day.correct, 0);
-    const incorrectTotal = chartData.reduce((total, day) => total + day.incorrect, 0);
-    const shownDateRange = chartData.length
-        ? `${chartData[0].label} – ${chartData.at(-1).label}`
-        : 'No dates available';
-
-    return (
-        <section className={`${cardClass} min-h-80 w-full`}>
-            <header className="flex flex-wrap items-start justify-between gap-3">
-                <PanelHeading title="Daily practice" description="Correct and incorrect answers over time" />
-                <div className="flex flex-wrap gap-2">
-                    <DashboardSelect label="Practice history range" value={range} onChange={(event) => setRange(event.target.value)}>
-                        <option value="7">Last 7 days</option>
-                        <option value="30">Last 30 days</option>
-                    </DashboardSelect>
-                    <DashboardSelect label="Practice chart type" value={chartType} onChange={(event) => setChartType(event.target.value)}>
-                        <option value="bar">Bar chart</option>
-                        <option value="line">Line chart</option>
-                        <option value="pie">Pie chart</option>
-                    </DashboardSelect>
-                </div>
-            </header>
-            {chartData.length ? (
-                <>
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div className="flex items-center gap-4 text-[10px] font-medium text-(--secondary-color)">
-                            <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--easy)' }} />Correct <strong>{correctTotal.toLocaleString()}</strong></span>
-                            <span className="flex items-center gap-1.5"><i className="h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--accent-color)' }} />Incorrect <strong>{incorrectTotal.toLocaleString()}</strong></span>
-                        </div>
-                        <span className="text-[10px] text-(--mid-main-secondary)">
-                            {shownDateRange} · {chartData.length} available practice {chartData.length === 1 ? 'day' : 'days'}
-                        </span>
-                    </div>
-                    <div className="h-64 w-full min-w-0" role="img" aria-label={`${chartType} chart of correct and incorrect daily practice answers`}>
-                        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-                            {chartType === 'line' ? (
-                                <LineChart data={chartData}>
-                                    <CartesianGrid vertical={false} stroke="var(--french-gray)" strokeDasharray="3 4" />
-                                    <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 10 }} />
-                                    <YAxis allowDecimals={false} width={32} tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 9 }} />
-                                    <Tooltip contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }} />
-                                    <Line type="monotone" dataKey="correct" name="Correct" stroke="var(--easy)" strokeWidth={3} dot={{ r: 3 }} />
-                                    <Line type="monotone" dataKey="incorrect" name="Incorrect" stroke="var(--accent-color)" strokeWidth={3} dot={{ r: 3 }} />
-                                </LineChart>
-                            ) : chartType === 'pie' ? (
-                                <PieChart>
-                                    <Pie data={[{ name: 'Incorrect', value: incorrectTotal }, { name: 'Correct', value: correctTotal }]} dataKey="value" nameKey="name" innerRadius="58%" outerRadius="82%" paddingAngle={3}>
-                                        <Cell fill="var(--accent-color)" />
-                                        <Cell fill="var(--easy)" />
-                                    </Pie>
-                                    <Tooltip formatter={(value) => [Number(value).toLocaleString(), 'Answers']} contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }} />
-                                </PieChart>
-                            ) : (
-                                <BarChart data={chartData} barCategoryGap="35%">
-                                    <CartesianGrid vertical={false} stroke="var(--french-gray)" strokeDasharray="3 4" />
-                                    <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 10 }} />
-                                    <YAxis allowDecimals={false} width={32} tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 9 }} />
-                                    <Tooltip cursor={{ fill: 'var(--main-color)' }} contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }} />
-                                    <Bar dataKey="incorrect" name="Incorrect" stackId="answers" fill="var(--accent-color)" radius={0} />
-                                    <Bar dataKey="correct" name="Correct" stackId="answers" fill="var(--easy)" radius={[4, 4, 0, 0]} />
-                                </BarChart>
-                            )}
-                        </ResponsiveContainer>
-                    </div>
-                    {range === '30' && chartData.length < 30 && (
-                        <p className="text-[10px] text-(--mid-main-secondary)">Only {chartData.length} practice days are available in this class right now.</p>
-                    )}
-                </>
-            ) : <EmptyInline text="Class activity will appear when students start practicing." />}
-        </section>
-    );
-}
-
-function DashboardSelect({ label, value, onChange, children }) {
-    return (
-        <label className="relative flex items-center">
-            <span className="sr-only">{label}</span>
-            <select
-                aria-label={label}
-                value={value}
-                onChange={onChange}
-                className="appearance-none rounded-xl border border-(--french-gray)/60 bg-(--white) py-2 pl-3 pr-8 text-xs font-medium text-(--secondary-color) shadow-sm transition hover:border-(--mid-main-secondary) focus-visible:outline-(--mid-main-secondary)"
-            >
-                {children}
-            </select>
-            <FaChevronDown aria-hidden="true" className="pointer-events-none absolute right-3 text-[9px] text-(--mid-main-secondary)" />
-        </label>
-    );
-}
-
 function TopicsCard({ topics }) {
     const orderedTopics = [...topics].sort((a, b) => b.accuracy - a.accuracy);
     return (
@@ -331,34 +215,6 @@ function TopicRow({ topic }) {
     );
 }
 
-function StudentAccuracyCard({ students }) {
-    const chartData = [...students]
-        .sort((a, b) => a.accuracy - b.accuracy)
-        .map((student) => ({ name: student.name, accuracy: student.accuracy }));
-
-    return (
-        <section className={`${cardClass} min-h-72`}>
-            <PanelHeading title="Student accuracy" description="Compare individual math practice accuracy" />
-            {chartData.length ? (
-                <div className="h-52 w-full min-w-0" role="img" aria-label="Horizontal bar chart comparing student practice accuracy">
-                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
-                        <BarChart data={chartData} layout="vertical" margin={{ left: 4, right: 12 }}>
-                            <CartesianGrid horizontal={false} stroke="var(--french-gray)" strokeDasharray="3 4" />
-                            <XAxis type="number" domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} tick={{ fill: 'var(--mid-main-secondary)', fontSize: 9 }} />
-                            <YAxis type="category" dataKey="name" width={94} tickLine={false} axisLine={false} tick={{ fill: 'var(--secondary-color)', fontSize: 10 }} />
-                            <Tooltip
-                                formatter={(value) => [`${value}%`, 'Accuracy']}
-                                contentStyle={{ borderRadius: 10, borderColor: 'var(--french-gray)', background: 'var(--white)', color: 'var(--secondary-color)', fontSize: 11 }}
-                            />
-                            <Bar dataKey="accuracy" name="Accuracy" fill="var(--secondary-color)" radius={[0, 5, 5, 0]} barSize={14} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-            ) : <EmptyInline text="Student accuracy will appear once students start practicing." />}
-        </section>
-    );
-}
-
 function AssignmentRow({ assignment, compact = false }) {
     return (
         <div className={`flex min-w-0 flex-col border-t border-(--french-gray)/40 py-3 first:border-t-0 ${compact ? '' : 'sm:gap-1'}`}>
@@ -369,7 +225,8 @@ function AssignmentRow({ assignment, compact = false }) {
                     <span className="truncate text-[10px] text-(--mid-main-secondary)">
                         {assignment.topic}
                         {assignment.problems?.length ? ` · ${assignment.problems.length} selected` : ''}
-                        {!compact && ` · Due ${assignment.due}`}
+                        {!compact && assignment.assignedAt && ` · Assigned ${new Date(assignment.assignedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`}
+                        {!compact && assignment.due && ` · Due ${assignment.due}`}
                     </span>
                 </div>
                 <span className="shrink-0 text-[10px] text-(--secondary-color)">{assignment.submitted}<span className="text-(--mid-main-secondary)">/{assignment.total}</span></span>
@@ -394,30 +251,101 @@ function AssignmentRow({ assignment, compact = false }) {
     );
 }
 
-export function StudentsView({ students, query, onQueryChange, onEditStudent }) {
+export function StudentsView({
+    students,
+    allStudents,
+    query,
+    onQueryChange,
+    selectedStudentIds,
+    onToggleStudent,
+    onToggleAllStudents,
+    onClearSelectedStudents,
+    onEditStudent,
+    onRemoveSelectedStudents
+}) {
+    const [isManaging, setIsManaging] = useState(false);
+    const allVisibleSelected = students.length > 0 && students.every((student) => selectedStudentIds.includes(student.id));
+    const selectedStudents = students.filter((student) => selectedStudentIds.includes(student.id));
+
     return (
-        <section className={cardClass}>
-            <PanelHeading title="Your students" description="Individual progress and practice activity" />
+        <section className={`${cardClass} gap-5`}>
+            <PanelHeading
+                title="Your students"
+                description="Practice accuracy and student support needs"
+                action={
+                    <SecondaryButton
+                        type="button"
+                        onClick={() => {
+                            setIsManaging((current) => !current);
+                            onClearSelectedStudents();
+                        }}
+                        text={isManaging ? 'Done' : 'Manage students'}
+                        className="rounded-xl px-3 py-2 text-xs"
+                    />
+                }
+            />
+            <StudentSupportChart students={allStudents} />
             <label className="flex h-10 items-center gap-2 rounded-xl border border-(--french-gray)/60 bg-(--white) px-3 text-xs text-(--mid-main-secondary) transition focus-within:border-(--mid-main-secondary) focus-within:ring-2 focus-within:ring-(--mid-main-secondary)/20">
                 <FaSearch aria-hidden="true" />
-                <input type="search" value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Find a student" aria-label="Find a student" className="min-w-0 flex-1 border-0 bg-transparent text-xs text-(--secondary-color) outline-none placeholder:text-(--mid-main-secondary) focus:outline-none focus-visible:outline-none" />
+                <input
+                    type="search"
+                    value={query}
+                    onChange={(event) => onQueryChange(event.target.value)}
+                    placeholder="Find a student"
+                    aria-label="Find a student"
+                    className="teacher-dashboard-search min-w-0 flex-1 bg-transparent text-xs text-(--secondary-color) placeholder:text-(--mid-main-secondary)"
+                />
             </label>
+            {isManaging && students.length > 0 && (
+                <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-(--main-color)/70 p-3">
+                    <label className="flex items-center gap-2 text-xs font-medium text-(--secondary-color)">
+                        <input
+                            type="checkbox"
+                            checked={allVisibleSelected}
+                            onChange={() => onToggleAllStudents(students, allVisibleSelected)}
+                            className="h-4 w-4 accent-(--secondary-color)"
+                            aria-label="Select all visible students"
+                        />
+                        Select all {students.length} shown
+                    </label>
+                    <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs text-(--mid-main-secondary)">{selectedStudentIds.length} selected</span>
+                        {selectedStudentIds.length === 1 && selectedStudents[0] && (
+                            <SecondaryButton type="button" text="Edit selected" onClick={() => onEditStudent(selectedStudents[0])} className="rounded-lg px-3 py-2 text-xs" />
+                        )}
+                        <AccentButton
+                            type="button"
+                            disabled={selectedStudentIds.length === 0}
+                            onClick={onRemoveSelectedStudents}
+                            text="Remove selected"
+                            className="rounded-lg px-3 py-2 text-xs"
+                        />
+                    </div>
+                </div>
+            )}
             {students.length ? (
                 <div className="flex min-w-0 flex-col overflow-x-auto">
                     <div className="flex min-w-[660px] items-center border-y border-(--french-gray)/50 py-2 text-[9px] font-semibold uppercase tracking-wide text-(--mid-main-secondary)">
-                        <span className="flex-1">Student</span><span className="w-28">Accuracy</span><span className="w-36">Questions solved</span><span className="w-32">Status</span><span className="w-20 text-right">Actions</span>
+                        {isManaging && <span className="w-10" aria-hidden="true" />}
+                        <span className="flex-1">Student</span><span className="w-28">Accuracy</span><span className="w-36">Questions solved</span><span className="w-32">Status</span>
                     </div>
                     {students.map((student) => (
                         <div className="flex min-w-[660px] items-center border-b border-(--french-gray)/30 py-3 text-xs last:border-0" key={student.id}>
+                            {isManaging && (
+                                <span className="flex w-10 justify-start">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedStudentIds.includes(student.id)}
+                                        onChange={() => onToggleStudent(student.id)}
+                                        className="h-4 w-4 accent-(--secondary-color)"
+                                        aria-label={`Select ${student.name}`}
+                                    />
+                                </span>
+                            )}
                             <span className="flex flex-1 items-center gap-2.5 font-medium text-(--secondary-color)"><StudentAvatar initials={student.initials} />{student.name}</span>
                             <span className="w-28 text-(--secondary-color)">{student.accuracy}%</span>
                             <span className="w-36 text-(--secondary-color)">{student.solved} <span className="text-(--mid-main-secondary)">this week</span></span>
                             <span className="w-32 text-(--secondary-color)/70">{student.status}</span>
-                            <span className="flex w-20 justify-end">
-                                <button type="button" onClick={() => onEditStudent(student)} aria-label={`Edit ${student.name}`} className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-[10px] font-medium text-(--secondary-color) hover:bg-(--main-color)">
-                                    <FaPencilAlt aria-hidden="true" /> Edit
-                                </button>
-                            </span>
                         </div>
                     ))}
                 </div>
@@ -428,13 +356,19 @@ export function StudentsView({ students, query, onQueryChange, onEditStudent }) 
 
 export function AssignmentsView({ assignments, onCreate, studentCount }) {
     return (
-        <section className={cardClass}>
-            <PanelHeading
-                title="Exercises"
-                description="Assignments and class submission progress"
-                action={<PrimaryButton text="Assign exercise" onClick={onCreate} disabled={studentCount === 0} className="rounded-xl px-3 py-2 text-xs" />}
-            />
-            {assignments.length ? <div className="flex flex-col">{assignments.map((assignment) => <AssignmentRow assignment={assignment} key={assignment.id} />)}</div> : <EmptyInline text="Your class is ready for its first exercise. Assign one when students have joined." />}
+        <section className="flex flex-col gap-4">
+            <section className={cardClass}>
+                <PanelHeading
+                    title="Exercises"
+                    description="What’s assigned and how students are progressing"
+                    action={<PrimaryButton text="Assign exercise" onClick={onCreate} disabled={studentCount === 0} className="rounded-xl px-3 py-2 text-xs" />}
+                />
+                <AssignmentProgressChart assignments={assignments} />
+            </section>
+            <section className={cardClass}>
+                <h2 className="text-sm font-semibold text-(--secondary-color)">Assigned exercises</h2>
+                {assignments.length ? <div className="flex flex-col">{assignments.map((assignment) => <AssignmentRow assignment={assignment} key={assignment.id} />)}</div> : <EmptyInline text="Your class is ready for its first exercise. Assign one when students have joined." />}
+            </section>
         </section>
     );
 }
@@ -455,6 +389,7 @@ export function MistakesView({ mistakes, filter, onFilterChange, onResolve }) {
                     </label>
                 }
             />
+            <MistakeTopicChart mistakes={mistakes} />
             {mistakes.length ? <div className="flex flex-col">{mistakes.map((mistake) => <MistakeRow key={mistake.id} mistake={mistake} onResolve={onResolve} />)}</div> : <EmptyInline text="Nothing in this view yet." />}
         </section>
     );

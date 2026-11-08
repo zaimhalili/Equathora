@@ -11,7 +11,12 @@ const PrimaryButton = ({
     to,
     arrow = false,
     disabled = false,
-    type = 'button'
+    type = 'button',
+    ariaLabel,
+    ariaCurrent,
+    ariaHaspopup,
+    ariaExpanded,
+    role
 }) => {
     return (
         <>
@@ -19,6 +24,11 @@ const PrimaryButton = ({
                 <Link
                     to={to}
                     title={title}
+                    aria-label={ariaLabel}
+                    aria-current={ariaCurrent}
+                    aria-haspopup={ariaHaspopup}
+                    aria-expanded={ariaExpanded}
+                    role={role}
                     aria-disabled={disabled || undefined}
                     className={`bg-(--secondary-color) rounded-xl py-2 text-center text-(--white)! hover:brightness-95 hover:bg-(--secondary-color)/95 transition-all text-md font-medium flex items-center justify-center px-4 active:scale-95 gap-1 ${className}`}
                 >
@@ -28,6 +38,11 @@ const PrimaryButton = ({
                 <button
                     type={type}
                     title={title}
+                    aria-label={ariaLabel}
+                    aria-current={ariaCurrent}
+                    aria-haspopup={ariaHaspopup}
+                    aria-expanded={ariaExpanded}
+                    role={role}
                     onClick={onClick}
                     disabled={disabled}
                     className={`bg-(--secondary-color) rounded-xl py-2 text-center text-(--white)! hover:brightness-95 hover:bg-(--secondary-color)/95 transition-all text-md font-medium flex items-center justify-center px-4 active:scale-95 gap-1 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}

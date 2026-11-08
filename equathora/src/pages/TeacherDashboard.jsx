@@ -9,6 +9,7 @@ import {
 import Navbar from '../components/Navbar';
 import PrimaryButton from '../components/ui/Buttons/PrimaryButton';
 import SecondaryButton from '../components/ui/Buttons/SecondaryButton';
+import AccentButton from '../components/ui/Buttons/AccentButton';
 import TeacherDashboardSkeleton from '../components/TeacherDashboard/TeacherDashboardSkeleton';
 import AssignExercisesDialog from '../components/TeacherDashboard/AssignExercisesDialog';
 import {
@@ -20,6 +21,7 @@ import {
     TeacherNavigation
 } from '../components/TeacherDashboard/TeacherDashboardSections';
 import { dashboardSections, initialClasses } from '../components/TeacherDashboard/teacherDashboardData';
+import { useUserStats } from '../context/UserStatsContext';
 
 const CLASS_STORAGE_KEY = 'equathora.teacher.classes.v1';
 
@@ -46,6 +48,7 @@ const getGreeting = () => {
 };
 
 function TeacherDashboard() {
+    const { stats } = useUserStats();
     const [searchParams, setSearchParams] = useSearchParams();
     const [classes, setClasses] = useState(getStoredClasses);
     const [activeClassId, setActiveClassId] = useState(() => searchParams.get('class') || getStoredClasses()[0]?.id || '');
@@ -53,6 +56,7 @@ function TeacherDashboard() {
     const [className, setClassName] = useState('');
     const [classPeriod, setClassPeriod] = useState('');
     const [editingStudent, setEditingStudent] = useState(null);
+    const [selectedStudentIds, setSelectedStudentIds] = useState([]);
     const [studentSearch, setStudentSearch] = useState('');
     const [mistakeFilter, setMistakeFilter] = useState('All');
     const [copyFeedback, setCopyFeedback] = useState('');
@@ -61,6 +65,7 @@ function TeacherDashboard() {
     const activeSection = dashboardSections.some((section) => section.id === requestedSection)
         ? requestedSection
         : 'overview';
+    const displayName = stats.username?.trim().split(/\s+/)[0] || 'there';
 
     const changeSection = (sectionId) => {
         setSearchParams((currentParams) => {
@@ -240,6 +245,46 @@ function TeacherDashboard() {
         setEditingStudent(null);
     };
 
+    const removeSelectedStudents = () => {
+        if (!activeClass || selectedStudentIds.length === 0) return;
+        const selectedIds = new Set(selectedStudentIds);
+        const removedStudents = activeClass.students.filter((student) => selectedIds.has(student.id));
+        if (!removedStudents.length) {
+            setSelectedStudentIds([]);
+            setModal(null);
+            return;
+        }
+        const removedNames = new Set(removedStudents.map((student) => student.name));
+        setClasses((current) => current.map((item) => item.id === activeClass.id
+            ? {
+                ...item,
+                students: item.students.filter((student) => !selectedIds.has(student.id)),
+                assignments: item.assignments.map((assignment) => {
+                    const total = Math.max(0, assignment.total - removedStudents.length);
+                    return { ...assignment, total, submitted: Math.min(assignment.submitted, total) };
+                }),
+                mistakes: item.mistakes.filter((mistake) => !removedNames.has(mistake.student))
+            }
+            : item));
+        setSelectedStudentIds([]);
+        setModal(null);
+    };
+
+    const toggleStudentSelection = (studentId) => {
+        setSelectedStudentIds((current) => current.includes(studentId)
+            ? current.filter((id) => id !== studentId)
+            : [...current, studentId]);
+    };
+
+    const toggleAllVisibleStudents = (students, allVisibleSelected) => {
+        setSelectedStudentIds((current) => {
+            const visibleIds = new Set(students.map((student) => student.id));
+            return allVisibleSelected
+                ? current.filter((id) => !visibleIds.has(id))
+                : [...new Set([...current, ...visibleIds])];
+        });
+    };
+
     const copyClassCode = async () => {
         if (!navigator.clipboard?.writeText) {
             setCopyFeedback('Clipboard unavailable');
@@ -306,11 +351,7 @@ function TeacherDashboard() {
                         ) : (
                             <>
                                 <header className="flex flex-col gap-4 pb-1 sm:flex-row sm:items-end sm:justify-between">
-                                    <div className="flex flex-col gap-2">
-                                        <span className="text-xs text-(--mid-main-secondary)">{getGreeting()}</span>
-                                        <h1 className="text-2xl font-medium tracking-tight text-(--secondary-color) sm:text-3xl">Your classroom, at a glance.</h1>
-                                        <p className="text-sm text-(--mid-main-secondary)">See how your students are learning and where they need a hand.</p>
-                                    </div>
+                                    <h1 className="text-2xl font-semibold tracking-tight text-(--secondary-color) sm:text-3xl">{getGreeting()}, {displayName}</h1>
                                     <div className="flex gap-2">
                                         <SecondaryButton
                                             text={<><FaPlus aria-hidden="true" /> New class</>}
@@ -348,12 +389,21 @@ function TeacherDashboard() {
                                     {activeSection === 'students' && (
                                         <StudentsView
                                             students={filteredStudents}
+                                            allStudents={activeClass.students}
                                             query={studentSearch}
-                                            onQueryChange={setStudentSearch}
+                                            onQueryChange={(query) => {
+                                                setStudentSearch(query);
+                                                setSelectedStudentIds([]);
+                                            }}
+                                            selectedStudentIds={selectedStudentIds}
+                                            onToggleStudent={toggleStudentSelection}
+                                            onToggleAllStudents={toggleAllVisibleStudents}
+                                            onClearSelectedStudents={() => setSelectedStudentIds([])}
                                             onEditStudent={(student) => {
                                                 setEditingStudent(student);
                                                 setModal('student');
                                             }}
+                                            onRemoveSelectedStudents={() => setModal('delete-students')}
                                         />
                                     )}
                                     {activeSection === 'assignments' && (
@@ -394,6 +444,12 @@ function TeacherDashboard() {
                         onClose={() => setModal(null)}
                         onConfirm={deleteActiveClass}
                     />
+                ) : modal === 'delete-students' ? (
+                    <DeleteStudentsDialog
+                        count={selectedStudentIds.length}
+                        onClose={() => setModal(null)}
+                        onConfirm={removeSelectedStudents}
+                    />
                 ) : editingStudent ? (
                     <TeacherStudentDialog
                         key={editingStudent.id}
@@ -421,13 +477,13 @@ function TeacherClassDialog({
 }) {
     return (
         <div
-            className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-[2000] flex items-center justify-center bg-(--raisin-black)/40 p-4"
             onMouseDown={(event) => {
                 if (event.target === event.currentTarget) onClose();
             }}
         >
             <section className="relative flex w-full max-w-md flex-col gap-4 rounded-2xl border border-(--french-gray)/50 bg-(--white) p-6 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="teacher-modal-title">
-                <button type="button" className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-(--mid-main-secondary) hover:bg-(--main-color)" onClick={onClose} aria-label="Close dialog"><FaTimes /></button>
+                <SecondaryButton text={<FaTimes />} className="absolute right-4 top-4 h-8 w-8 rounded-lg p-0 text-(--mid-main-secondary)" onClick={onClose} ariaLabel="Close dialog" />
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-(--main-color) text-sm text-(--secondary-color)"><FaUsers /></span>
                 <div className="flex flex-col gap-1">
                     <h2 id="teacher-modal-title" className="text-lg font-medium text-(--secondary-color)">Create a class</h2>
@@ -449,7 +505,7 @@ function TeacherClassDialog({
 function DeleteClassDialog({ className, onClose, onConfirm }) {
     return (
         <div
-            className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-[2000] flex items-center justify-center bg-(--raisin-black)/40 p-4"
             onMouseDown={(event) => {
                 if (event.target === event.currentTarget) onClose();
             }}
@@ -462,8 +518,32 @@ function DeleteClassDialog({ className, onClose, onConfirm }) {
                     </p>
                 </div>
                 <div className="flex justify-end gap-2">
-                    <button type="button" onClick={onClose} className="rounded-xl bg-(--main-color) px-4 py-2 text-sm font-medium text-(--secondary-color) transition hover:brightness-95">Keep class</button>
-                    <button type="button" onClick={onConfirm} className="rounded-xl bg-(--accent-color) px-4 py-2 text-sm font-medium text-white transition hover:brightness-95">Delete class</button>
+                    <SecondaryButton type="button" text="Keep class" onClick={onClose} className="rounded-xl px-4 py-2 text-sm" />
+                    <AccentButton type="button" text="Delete class" onClick={onConfirm} className="rounded-xl px-4 py-2 text-sm" />
+                </div>
+            </section>
+        </div>
+    );
+}
+
+function DeleteStudentsDialog({ count, onClose, onConfirm }) {
+    return (
+        <div
+            className="fixed inset-0 z-2000 flex items-center justify-center bg-(--raisin-black)/40 p-4"
+            onMouseDown={(event) => {
+                if (event.target === event.currentTarget) onClose();
+            }}
+        >
+            <section className="flex w-full max-w-md flex-col gap-5 rounded-2xl border-2 border-(--french-gray)/60 bg-(--white) p-6 shadow-2xl" role="alertdialog" aria-modal="true" aria-labelledby="delete-students-title" aria-describedby="delete-students-description">
+                <div className="flex flex-col gap-2">
+                    <h2 id="delete-students-title" className="text-lg font-semibold text-(--secondary-color)">Remove selected students?</h2>
+                    <p id="delete-students-description" className="text-sm leading-5 text-(--mid-main-secondary)">
+                        {count} {count === 1 ? 'student' : 'students'} will be removed from this class. Their class mistake entries and assignment counts will also be updated.
+                    </p>
+                </div>
+                <div className="flex justify-end gap-2">
+                    <SecondaryButton type="button" text="Cancel" onClick={onClose} className="rounded-xl px-4 py-2 text-sm" />
+                    <AccentButton type="button" text="Remove students" onClick={onConfirm} className="rounded-xl px-4 py-2 text-sm" />
                 </div>
             </section>
         </div>
@@ -476,13 +556,13 @@ function TeacherStudentDialog({ student, onClose, onSave, onRemove }) {
 
     return (
         <div
-            className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-[2000] flex items-center justify-center bg-(--raisin-black)/40 p-4"
             onMouseDown={(event) => {
                 if (event.target === event.currentTarget) onClose();
             }}
         >
             <section className="relative flex w-full max-w-md flex-col gap-5 rounded-2xl border border-(--french-gray)/50 bg-(--white) p-6 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="edit-student-title">
-                <button type="button" className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-(--mid-main-secondary) hover:bg-(--main-color)" onClick={onClose} aria-label="Close dialog"><FaTimes /></button>
+                <SecondaryButton text={<FaTimes />} className="absolute right-4 top-4 h-8 w-8 rounded-lg p-0 text-(--mid-main-secondary)" onClick={onClose} ariaLabel="Close dialog" />
                 <div className="flex flex-col gap-1">
                     <h2 id="edit-student-title" className="text-lg font-semibold text-(--secondary-color)">Edit student</h2>
                     <p className="text-xs text-(--mid-main-secondary)">Update this student’s name or remove them from this class.</p>
@@ -493,9 +573,7 @@ function TeacherStudentDialog({ student, onClose, onSave, onRemove }) {
                 }}>
                     <ModalField label="Student name" value={name} onChange={(event) => setName(event.target.value)} required maxLength={60} />
                     <div className="flex flex-wrap items-center justify-between gap-2 border-t border-(--french-gray)/40 pt-4">
-                        <button type="button" onClick={() => setConfirmRemoval(true)} className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-(--accent-color) hover:bg-(--main-color)">
-                            <FaTrash aria-hidden="true" /> Remove from class
-                        </button>
+                        <AccentButton text={<><FaTrash aria-hidden="true" /> Remove from class</>} type="button" onClick={() => setConfirmRemoval(true)} className="rounded-xl px-3 py-2 text-xs" />
                         <div className="flex gap-2">
                             <SecondaryButton text="Cancel" onClick={onClose} className="rounded-xl px-4 py-2 text-xs" />
                             <PrimaryButton text="Save changes" type="submit" disabled={!name.trim()} className="rounded-xl px-4 py-2 text-xs" />
@@ -506,8 +584,8 @@ function TeacherStudentDialog({ student, onClose, onSave, onRemove }) {
                     <div className="flex flex-col gap-3 rounded-xl border border-(--accent-color)/30 bg-(--accent-color)/5 p-4">
                         <p className="text-xs leading-5 text-(--secondary-color)">Remove <strong>{student.name}</strong> from this class? Their class mistakes and assignment counts will also be updated.</p>
                         <div className="flex justify-end gap-2">
-                            <button type="button" onClick={() => setConfirmRemoval(false)} className="rounded-lg px-3 py-1.5 text-xs font-medium text-(--secondary-color) hover:bg-(--main-color)">Cancel</button>
-                            <button type="button" onClick={() => onRemove(student.id)} className="rounded-lg bg-(--accent-color) px-3 py-1.5 text-xs font-medium text-white hover:brightness-95">Remove student</button>
+                            <SecondaryButton type="button" text="Cancel" onClick={() => setConfirmRemoval(false)} className="rounded-lg px-3 py-1.5 text-xs" />
+                            <AccentButton type="button" text="Remove student" onClick={() => onRemove(student.id)} className="rounded-lg px-3 py-1.5 text-xs" />
                         </div>
                     </div>
                 )}

@@ -204,6 +204,15 @@ select:focus-visible {
     outline-color: var(--mid-main-secondary);
 }
 
+input.teacher-dashboard-search,
+input.teacher-dashboard-search:focus,
+input.teacher-dashboard-search:focus-visible {
+    appearance: none;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+}
+
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {

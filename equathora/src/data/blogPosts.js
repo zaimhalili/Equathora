@@ -3,7 +3,7 @@ import Journey from '../assets/images/journey.webp';
 import Me from '../assets/images/mePr.webp';
 import Sketch from '../assets/images/sketch.svg';
 import Math from '../assets/images/mathfix.webp';
-// Note: Add 'features.jpg' to src/assets/images/ or use a different image
+import Symbol from '../assets/logo/EquathoraSymbolIcon.svg';
 
 export const blogPosts = [
     {
@@ -13,7 +13,7 @@ export const blogPosts = [
         author: {
             name: "Equathora",
             username: "@Equathora",
-            profilePic: Me
+            profilePic: Symbol
         },
         date: "28th Oct 2026",
         publishedAt: "2026-10-28",

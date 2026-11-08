@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaEllipsisH } from 'react-icons/fa';
+import SecondaryButton from '../ui/Buttons/SecondaryButton';
 
 function DismissiblePopover({ label, children, className = '', contentClassName = '' }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -25,16 +26,14 @@ function DismissiblePopover({ label, children, className = '', contentClassName 
 
     return (
         <div ref={containerRef} className={`relative shrink-0 ${className}`}>
-            <button
-                type="button"
-                aria-label={label}
-                aria-haspopup="menu"
-                aria-expanded={isOpen}
+            <SecondaryButton
+                text={<FaEllipsisH aria-hidden="true" />}
+                ariaLabel={label}
+                ariaHaspopup="menu"
+                ariaExpanded={isOpen}
                 onClick={() => setIsOpen((open) => !open)}
-                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl text-(--mid-main-secondary) hover:bg-(--main-color)"
-            >
-                <FaEllipsisH aria-hidden="true" />
-            </button>
+                className="h-9 w-9 rounded-xl p-0 text-(--mid-main-secondary)"
+            />
             {isOpen && (
                 <div
                     role="menu"
