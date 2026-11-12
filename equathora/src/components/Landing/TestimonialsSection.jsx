@@ -1,49 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import Aashrun from "../../assets/images/aashrun.jpg";
-import Sanya from "../../assets/images/sanya.jpg";
-import Rudransh from "../../assets/images/rudransh.jpg";
-import { FaArrowLeft, FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
+import { FaArrowLeft, FaQuoteLeft } from 'react-icons/fa';
 import { FaArrowRight } from 'react-icons/fa';
+import { testimonials } from './testimonialsData';
 
-const testimonials = [
-    {
-        image: Aashrun,
-        name: "Aashrun Gautam",
-        role: "Founder of SleepLeads - Reddit \"High-Intent\" Lead SaaS",
-        text: (
-            <>
-                It’s actually <span className='font-bold'>well-designed</span>. <br />And it lets you practice math{" "}
-                <span className='font-bold'>chapter by chapter</span>, with a <span className=''>HUGE database of questions</span>{" "}
-                without wanting to throw your laptop out the window.{" "}<FaQuoteRight className='hidden md:inline w-3 h-3 -translate-y-3' />
-            </>
-        ),
-        link: "https://www.linkedin.com/posts/aashrun-gautam-72572a1a5_equathora-master-math-through-practice-activity-7423286785453174785-mgSJ?utm_source=share&utm_medium=member_desktop&rcm=ACoAADJeKOABNdzq_bUV8CWEUZirbIav6hZpjJk",
-    },
-    {
-        image: Sanya,
-        name: "Sanya Lumagbas",
-        role: "High School STEM Teacher",
-        text: (
-            <>
-                Equathora made <span className='font-bold'>teaching math</span><br /> so much easier. Students build <span className='font-bold'>confidence</span> through leveled questions from Easy all the way up to Hard and the clean, web-based workspace means I've cut down on printed worksheets significantly.{" "}<FaQuoteRight className='hidden md:inline w-3 h-3 -translate-y-3' />
-            </>
-        ),
-        link: "https://www.linkedin.com/in/snylumagbas/",
-    },
-    {
-        image: Rudransh,
-        name: "Rudransh Shukla",
-        role: "Co-Founder and CEO of OpennMind",
-        text: (
-            <>
-                Equathora is a very well-built platform that makes math practice feel simple, <span className='font-bold'>engaging</span>, and easy to follow. The experience feels clean and thoughtfully designed, and it has the <span className='font-bold'>potential</span> to genuinely <span className='font-bold'>help students</span> stay consistent and improve over time.{" "}<FaQuoteRight className='hidden md:inline w-3 h-3 -translate-y-3' />
-            </>
-        ),
-        link: "https://www.linkedin.com/in/rudransh-shukla-669865248/",
-    },
-];
-
+const MotionDiv = motion.div;
 
 const TestimonialsSection = () => {
     const [index, setIndex] = useState(0);
@@ -99,7 +60,7 @@ const TestimonialsSection = () => {
                     {/* Right Side - Testimonial Slider */}
                     <div className='w-full lg:w-1/2 flex relative min-h-80 md:min-h-60 lg:min-h-80'>
                         <AnimatePresence mode="wait">
-                            <motion.div
+                            <MotionDiv
                                 key={index}
                                 initial={{ x: 100, opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
@@ -147,7 +108,7 @@ const TestimonialsSection = () => {
                                     </a>
                                 )
                                 }
-                            </motion.div>
+                            </MotionDiv>
                         </AnimatePresence>
                     </div>
                 </div>
