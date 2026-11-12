@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth.jsx';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import PrimaryButton from '../components/ui/Buttons/PrimaryButton';
+import SecondaryButton from '../components/ui/Buttons/SecondaryButton';
 import { submitMentorApplication } from '../lib/mentorApplicationService';
 
 const roleOptions = ['Teacher', 'Tutor', 'School administrator', 'Parent or guardian', 'Learning supporter'];
@@ -19,7 +20,7 @@ const featureOptions = [
     'Other'
 ];
 
-const inputClasses = 'w-full rounded-md border border-[#d8d8d8] bg-white px-3 py-2 text-sm text-[#222] outline-none transition focus:border-(--accent-color) focus:ring-2 focus:ring-(--accent-color)/10';
+const inputClasses = 'w-full rounded-xl border border-(--mid-main-secondary) bg-(--white) px-4 py-3 text-sm text-(--secondary-color) outline-none transition-all placeholder:text-(--mid-main-secondary) focus:border-transparent focus:ring-2 focus:ring-(--accent-color)';
 
 function ChoiceList({ label, options, value, onChange, type = 'checkbox', required = false, name }) {
     const isSelected = (option) => type === 'radio' ? value === option : value.includes(option);
@@ -36,18 +37,21 @@ function ChoiceList({ label, options, value, onChange, type = 'checkbox', requir
     };
 
     return (
-        <fieldset className="flex flex-col items-start gap-1.5">
-            <legend className="mb-1 text-[13px] font-medium text-[#222]">
-                {label}{required && <span className="ml-1 text-(--dark-accent-color)" aria-hidden="true">*</span>}
+        <fieldset className="flex flex-col items-start gap-2">
+            <legend className="text-sm font-semibold text-(--secondary-color)">
+                <span className="inline-flex items-baseline gap-1">
+                    {label}
+                    {required && <span className="text-(--dark-accent-color)" aria-hidden="true">*</span>}
+                </span>
             </legend>
-            <div className="flex flex-col items-start gap-1.5">
+            <div className="flex flex-col items-start gap-2">
                 {options.map((option, index) => (
                     <label
                         key={option}
-                        className={`inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2 py-1 text-[11px] leading-4 transition-colors ${
+                        className={`inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm transition-colors focus-within:ring-2 focus-within:ring-(--accent-color)/30 ${
                             isSelected(option)
-                                ? 'border-(--accent-color)/40 bg-(--accent-color)/5 text-[#272727]'
-                                : 'border-[#dedede] bg-white text-[#444] hover:border-[#aaa]'
+                                ? 'border-(--accent-color) bg-(--accent-color)/5 text-(--secondary-color)'
+                                : 'border-(--mid-main-secondary) bg-(--white) text-(--secondary-color)/80 hover:border-(--accent-color)/60'
                         }`}
                     >
                         <input
@@ -59,8 +63,8 @@ function ChoiceList({ label, options, value, onChange, type = 'checkbox', requir
                             required={required && type === 'radio' && index === 0}
                             className="sr-only"
                         />
-                        <span aria-hidden="true" className={`flex h-3 w-3 items-center justify-center rounded-[2px] text-[8px] font-semibold text-white ${isSelected(option) ? 'bg-(--dark-accent-color)' : 'bg-[#777]'}`}>
-                            {String.fromCharCode(65 + index)}
+                        <span aria-hidden="true" className={`flex h-4 w-4 items-center justify-center border text-[10px] ${type === 'radio' ? 'rounded-full' : 'rounded'} ${isSelected(option) ? 'border-(--accent-color) bg-(--accent-color) text-white' : 'border-(--mid-main-secondary) bg-(--white) text-transparent'}`}>
+                            {type === 'radio' ? '•' : '✓'}
                         </span>
                         {option}
                     </label>
@@ -75,9 +79,8 @@ const MentorApplication = () => {
     const [formData, setFormData] = useState({
         fullName: user?.user_metadata?.full_name || '',
         email: user?.email || '',
-        role: '',
         phone: '',
-        hasWhatsapp: '',
+        role: '',
         subjects: [],
         experience: '',
         platforms: [],
@@ -118,38 +121,46 @@ const MentorApplication = () => {
     };
 
     return (
-        <div className="min-h-screen w-full bg-white text-[#222]">
+        <div className="flex min-h-screen w-full flex-col bg-(--white) text-(--secondary-color)">
             <header><Navbar /></header>
-            <main className="flex w-full justify-center px-5 py-9 sm:px-8 sm:py-12">
+            <main className="flex w-full flex-1 justify-center bg-(--white) px-4 pb-12 pt-8 text-(--secondary-color) sm:px-8 lg:px-16 xl:px-24">
                 <div className="flex w-full max-w-[1500px] justify-center">
-                    <section className="flex w-full max-w-[600px] flex-col gap-7">
-                        <div className="flex flex-col gap-2">
-                            <Link to="/applymentor" className="w-fit text-xs text-[#777] hover:text-(--dark-accent-color)">
-                                ← Back to the educator network
-                            </Link>
-                            <h1 className="pt-2 text-[23px] font-normal leading-tight text-[#222] sm:text-[26px]">
+                    <section className="flex h-fit w-full max-w-3xl flex-col gap-6 rounded-xl border border-(--main-color) bg-(--white) p-5 sm:gap-8 sm:p-8">
+                        <div className="flex flex-col gap-3 border-b border-(--main-color) pb-6">
+                            <SecondaryButton
+                                text="Back to educator network"
+                                link
+                                to="/applymentor"
+                                className="w-fit rounded-xl px-4 py-2 text-sm"
+                            />
+                            <h1 className="pt-2 text-2xl font-medium leading-tight text-(--secondary-color) sm:text-3xl">
                                 Equathora Educator Network Application
                             </h1>
-                            <p className="text-[12px] leading-5 text-[#666]">
+                            <p className="max-w-2xl text-sm leading-6 text-(--secondary-color)/70">
                                 Tell us a little about your teaching experience and how you would like to help shape Equathora.
                                 Required questions are marked with an asterisk.
                             </p>
                         </div>
 
                         {isSubmitted ? (
-                            <div role="status" className="flex flex-col gap-3 border-l-2 border-(--accent-color) bg-[#fafafa] p-5">
-                                <h2 className="text-lg font-medium text-[#222]">Application received</h2>
-                                <p className="text-sm leading-6 text-[#666]">
+                            <div role="status" className="flex flex-col items-start gap-4 rounded-xl border border-(--main-color) bg-(--white) p-5">
+                                <h2 className="text-xl font-medium text-(--secondary-color)">Application received</h2>
+                                <p className="text-sm leading-6 text-(--secondary-color)/70">
                                     Thank you for sharing your experience. We’ll review your application and reach out using the contact details you provided.
                                 </p>
-                                <Link to="/applymentor" className="mt-1 w-fit text-sm font-medium text-(--dark-accent-color) underline underline-offset-2">
-                                    Return to the educator network
-                                </Link>
+                                <SecondaryButton
+                                    text="Return to educator network"
+                                    link
+                                    to="/applymentor"
+                                    className="w-fit rounded-xl px-4 py-2 text-sm"
+                                />
                             </div>
                         ) : (
-                            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                                <label className="flex flex-col gap-1.5 text-[13px] font-medium text-[#222]">
-                                    Full name <span className="text-(--dark-accent-color)" aria-hidden="true">*</span>
+                            <form onSubmit={handleSubmit} className="flex flex-col gap-7 sm:gap-8">
+                                <label className="flex flex-col gap-2 text-sm font-semibold text-(--secondary-color)">
+                                    <span className="inline-flex items-baseline gap-1">
+                                        Full name <span className="text-(--dark-accent-color)" aria-hidden="true">*</span>
+                                    </span>
                                     <input
                                         autoComplete="name"
                                         className={inputClasses}
@@ -160,8 +171,10 @@ const MentorApplication = () => {
                                     />
                                 </label>
 
-                                <label className="flex flex-col gap-1.5 text-[13px] font-medium text-[#222]">
-                                    Email address <span className="text-(--dark-accent-color)" aria-hidden="true">*</span>
+                                <label className="flex flex-col gap-2 text-sm font-semibold text-(--secondary-color)">
+                                    <span className="inline-flex items-baseline gap-1">
+                                        Email address <span className="text-(--dark-accent-color)" aria-hidden="true">*</span>
+                                    </span>
                                     <input
                                         type="email"
                                         autoComplete="email"
@@ -169,6 +182,24 @@ const MentorApplication = () => {
                                         value={formData.email}
                                         onChange={(event) => updateField('email', event.target.value)}
                                         maxLength={255}
+                                        required
+                                    />
+                                </label>
+
+                                <label className="flex flex-col gap-2 text-sm font-semibold text-(--secondary-color)">
+                                    <span className="inline-flex items-baseline gap-1">
+                                        Phone number <span className="text-(--dark-accent-color)" aria-hidden="true">*</span>
+                                    </span>
+                                    <span className="text-xs font-normal text-(--secondary-color)/65">
+                                        Used for application follow-up and to help screen spam submissions.
+                                    </span>
+                                    <input
+                                        type="tel"
+                                        autoComplete="tel"
+                                        className={inputClasses}
+                                        value={formData.phone}
+                                        onChange={(event) => updateField('phone', event.target.value)}
+                                        maxLength={40}
                                         required
                                     />
                                 </label>
@@ -183,39 +214,17 @@ const MentorApplication = () => {
                                     required
                                 />
 
-                                <label className="flex flex-col gap-1.5 text-[13px] font-medium text-[#222]">
-                                    Phone number <span className="text-(--dark-accent-color)" aria-hidden="true">*</span>
-                                    <input
-                                        type="tel"
-                                        autoComplete="tel"
-                                        className={inputClasses}
-                                        value={formData.phone}
-                                        onChange={(event) => updateField('phone', event.target.value)}
-                                        maxLength={40}
-                                        required
-                                    />
-                                </label>
-
-                                <ChoiceList
-                                    label="Can we contact you on WhatsApp?"
-                                    options={['Yes', 'No']}
-                                    value={formData.hasWhatsapp}
-                                    onChange={(value) => updateField('hasWhatsapp', value)}
-                                    type="radio"
-                                    name="whatsapp"
-                                    required
-                                />
-
                                 <ChoiceList
                                     label="Which subjects do you teach or support? Select all that apply."
                                     options={subjectOptions}
                                     value={formData.subjects}
+                                    required
                                     onChange={(value) => {
                                         updateField('subjects', value);
                                         if (value.length > 0) setSubjectError('');
                                     }}
                                 />
-                                {subjectError && <p role="alert" className="-mt-5 text-xs text-(--dark-accent-color)">{subjectError}</p>}
+                                {subjectError && <p role="alert" className="text-xs text-(--dark-accent-color)">{subjectError}</p>}
 
                                 <ChoiceList
                                     label="How long have you been teaching or tutoring?"
@@ -248,27 +257,27 @@ const MentorApplication = () => {
                                     onChange={(value) => updateField('interestedFeatures', value)}
                                 />
 
-                                <label className="flex flex-col gap-2 text-[13px] font-medium text-[#222]">
-                                    Anything else you would like us to know? <span className="font-normal text-[#777]">(Optional)</span>
+                                <label className="flex flex-col gap-2 text-sm font-semibold text-(--secondary-color)">
+                                    Anything else you would like us to know? <span className="font-normal text-(--secondary-color)/65">(Optional)</span>
                                     <textarea
-                                        className={`${inputClasses} min-h-24 resize-y`}
+                                        className={`${inputClasses} min-h-28 resize-y`}
                                         value={formData.additionalNotes}
                                         onChange={(event) => updateField('additionalNotes', event.target.value)}
                                         maxLength={2000}
                                     />
                                 </label>
 
-                                {submitError && (
-                                    <p role="alert" className="text-sm text-(--dark-accent-color)">{submitError}</p>
-                                )}
+                                {submitError && <p role="alert" className="rounded-xl border border-(--accent-color)/30 bg-(--accent-color)/5 px-4 py-3 text-sm text-(--dark-accent-color)">{submitError}</p>}
 
-                                <button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className="w-fit rounded-md bg-[#171717] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-(--dark-accent-color) disabled:cursor-not-allowed disabled:opacity-60"
-                                >
-                                    {isSubmitting ? 'Submitting…' : 'Submit application'}
-                                </button>
+                                <div className="flex flex-wrap items-center justify-between gap-3 border-t border-(--main-color) pt-5">
+                                    <SecondaryButton text="Cancel" link to="/applymentor" className="rounded-xl px-5 py-2.5 text-sm" />
+                                    <PrimaryButton
+                                        text={isSubmitting ? 'Submitting…' : 'Submit application'}
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        className="rounded-xl px-5 py-2.5 text-sm"
+                                    />
+                                </div>
                             </form>
                         )}
                     </section>

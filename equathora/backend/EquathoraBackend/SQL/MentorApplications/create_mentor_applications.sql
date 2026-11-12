@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS public.mentor_applications (
         role IN ('Teacher', 'Tutor', 'School administrator', 'Parent or guardian', 'Learning supporter')
     ),
     phone text NOT NULL CHECK (CHAR_LENGTH(BTRIM(phone)) BETWEEN 5 AND 40),
-    has_whatsapp boolean NOT NULL,
     subjects text[] NOT NULL CHECK (
         CARDINALITY(subjects) > 0
         AND subjects <@ ARRAY[
