@@ -1,125 +1,36 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import mathTeacher from '../../assets/images/oldTeacher.png';
-import teacherSvg from '../../assets/images/teacher.svg';
-import GradientText from '../ui/GradientText';
-import { FaCheckCircle, FaArrowRight, FaUsers, FaHeart, FaStar } from 'react-icons/fa';
+import { FaArrowRight } from 'react-icons/fa';
 
-const Hero = ({ onOpenBriefsModal }) => {
-    return (
-        <section className='relative  bg-[linear-gradient(180deg,var(--secondary-color),var(--accent-color)130%)] text-white flex justify-center overflow-hidden theme-lock'>
-            {/* Decorative Elements */}
-            <div className='px-[4vw] xl:px-[6vw] max-w-[1500px] py-4 lg:py-6 gap-8'>
-                <div className='absolute top-0 right-0 w-72 h-72 bg-(--accent-color) rounded-full opacity-10 blur-3xl -translate-y-1/2 translate-x-1/2'></div>
-                <div className='absolute bottom-0 left-0 w-64 h-64 bg-(--accent-color) rounded-full opacity-10 blur-3xl translate-y-1/2 -translate-x-1/2'></div>
-                <div className='absolute top-1/2 left-1/4 w-48 h-48 bg-blue-400 rounded-full opacity-5 blur-3xl'></div>
+const MotionDiv = motion.div;
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className='relative z-10 w-full max-w-[1500px] flex justify-center'
-                >
-                    <div className='flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12 w-full '>
-                        {/* Left Content */}
-                        <div className='flex flex-col flex-1 text-center lg:text-left gap-4'>
-
-                            <motion.h1
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.15 }}
-                                className='text-3xl md:text-4xl font-bold leading-tight '
-                            >
-                                <span className='text-(--accent-color)'>Become a Mentor</span>
-                                <br />
-                                <span>Shape the Future</span>
-                            </motion.h1>
-
-                            <motion.p
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.2 }}
-                                className='text-base md:text-lg text-gray-300 leading-relaxed max-w-xl lg:max-w-none'
-                            >
-                                Guide students through math challenges, reinforce your expertise, and make a lasting impact.
-                            </motion.p>
-
-                            {/* Equathora Briefs CTA */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.25 }}
-                                className='flex flex-col gap-4 justify-center lg:justify-start pt-2'
-                            >
-                                <button
-                                    type='button'
-                                    onClick={onOpenBriefsModal}
-                                    className='group relative bg-(--main-color) hover:bg-gray-300 !text-(--accent-color) px-8 py-3 rounded-xl !font-bold text-sm md:text-base overflow-hidden transition-all flex items-center justify-center gap-2 no-underline shadow-lg hover:shadow-xl w-full sm:w-auto'
-                                >
-                                    <FaUsers />
-                                    <span className='relative z-10'>Join 50+ Educators</span>
-                                    <FaArrowRight className='relative z-10 text-xs' />
-                                </button>
-
-                                {/* Trust Indicators */}
-                                <div className='flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs text-gray-400'>
-                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-(--white)'>
-                                        <FaCheckCircle className='text-green-400 flex-shrink-0' />
-                                        <span>No commitment</span>
-                                    </div>
-                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-(--white)'>
-                                        <FaCheckCircle className='text-green-400 flex-shrink-0' />
-                                        <span>2 min signup</span>
-                                    </div>
-                                    <div className='flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded text-(--white)'>
-                                        <FaCheckCircle className='text-green-400 flex-shrink-0' />
-                                        <span>No credit card required</span>
-                                    </div>
-                                </div>
-                            </motion.div>                        {/* Social Proof - Commented for future use */}
-                            {/* <div className='flex flex-wrap items-center gap-6 justify-center lg:justify-start text-sm'>
-                            <div className='flex items-center gap-2'>
-                                <div className='flex -space-x-2'>
-                                    <div className='w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white'></div>
-                                    <div className='w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 border-2 border-white'></div>
-                                    <div className='w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 border-2 border-white'></div>
-                                </div>
-                                <span className='text-gray-300'>50+ Active Mentors</span>
-                            </div>
-                            <div className='flex items-center gap-1 text-yellow-400'>
-                                <FaStar />
-                                <FaStar />
-                                <FaStar />
-                                <FaStar />
-                                <FaStar />
-                                <span className='text-gray-300 ml-2'>4.9/5 Rating</span>
-                            </div>
-                        </div> */}
-                        </div>
-
-                        {/* Right Illustration */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                            className='flex flex-1 justify-center lg:justify-end'
-                        >
-                            <div className='relative flex items-center justify-center'>
-                                <div className='absolute inset-0 bg-gradient-to-br from-(--accent-color) to-blue-500 rounded-full blur-3xl opacity-20'></div>
-                                <img
-                                    src={teacherSvg}
-                                    alt="Mentor teaching"
-                                    className='relative w-64 md:w-80 lg:w-96 drop-shadow-2xl'
-                                />
-                            </div>
-                        </motion.div>
-                    </div>
-                </motion.div>
-            </div>
-
-        </section>
-    );
-};
+const Hero = ({ onOpenBriefsModal }) => (
+    <section className="flex w-full justify-center pb-8 pt-12 text-center sm:pb-10 sm:pt-16">
+        <MotionDiv
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="flex w-full max-w-[1500px] flex-col items-center gap-4 px-[4vw] xl:px-[6vw]"
+        >
+            <span className="rounded-full border border-(--accent-color)/20 bg-(--accent-color)/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-(--dark-accent-color)">
+                Equathora mentor network
+            </span>
+            <h1 className="max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-[#202231] sm:text-4xl md:text-5xl">
+                Make every learning moment count.
+            </h1>
+            <p className="max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
+                Help shape a more thoughtful way to learn math. Share your teaching perspective and help us build tools that make student progress easier to understand.
+            </p>
+            <button
+                type="button"
+                onClick={onOpenBriefsModal}
+                className="mt-1 inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-(--dark-accent-color) px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-(--accent-color) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-color)"
+            >
+                Join the conversation
+                <FaArrowRight aria-hidden="true" className="text-xs" />
+            </button>
+            <p className="text-xs text-slate-500">A quick, no-pressure way to stay in the loop.</p>
+        </MotionDiv>
+    </section>
+);
 
 export default Hero;
