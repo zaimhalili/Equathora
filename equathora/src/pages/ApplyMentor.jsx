@@ -8,7 +8,6 @@ import Hero from '../components/ApplyMentor/Hero';
 import WorkspacePreview from '../components/ApplyMentor/WorkspacePreview';
 import HowItWorks from '../components/ApplyMentor/HowItWorks';
 import FeatureShowcase from '../components/ApplyMentor/FeatureShowcase';
-import FinalCallToAction from '../components/ApplyMentor/FinalCallToAction';
 
 const ApplyMentor = () => {
     const [isBriefsModalOpen, setIsBriefsModalOpen] = useState(false);
@@ -34,7 +33,6 @@ const ApplyMentor = () => {
                 <WorkspacePreview />
                 <HowItWorks />
                 <FeatureShowcase />
-                <FinalCallToAction onOpenBriefsModal={() => setIsBriefsModalOpen(true)} />
             </main>
 
             <Footer />
