@@ -100,7 +100,7 @@ function PageMetadataUpdater() {
             '/systemupdates': 'System Updates - Equathora',
             '/feedback': 'Share Feedback - Equathora',
             '/applymentor': 'Become a Mentor - Equathora',
-            '/applymentor/apply': 'Educator Network Application - Equathora',
+            '/applymentor/apply': 'Apply to Equathora - Equathora',
             '/teacher': 'Teacher Dashboard - Equathora',
             '/leaderboards': 'Top Solvers - Equathora',
             '/journey': 'Your Journey - Equathora',

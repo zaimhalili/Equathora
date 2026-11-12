@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { FaArrowLeft, FaQuoteLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
 import { FaArrowRight } from 'react-icons/fa';
 import { testimonials } from './testimonialsData';
 
@@ -71,7 +71,8 @@ const TestimonialsSection = () => {
 
                                 <FaQuoteLeft className='text-(--secondary-color) absolute w-3 h-3 -left-5 hidden md:flex' />
                                 <p className='text-lg sm:text-xl md:text-2xl xl:text-3xl font-light'>
-                                    {testimonials[index].text}
+                                    {testimonials[index].text}{" "}
+                                    <FaQuoteRight className='hidden md:inline w-3 h-3 -translate-y-3' />
                                 </p>
                                 {testimonials[index].link.length === 0 ? (
                                     <div className='flex gap-3 items-center'>

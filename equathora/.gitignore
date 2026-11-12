@@ -74,8 +74,6 @@ backend/**/connection-strings.json
 !backend/EquathoraBackend/SQL/Fixes/fix_submit_answer_write_schema.sql
 !backend/EquathoraBackend/SQL/Schema/leaderboard_privacy_settings.sql
 !backend/EquathoraBackend/SQL/MentorApplications/create_mentor_applications.sql
-!backend/EquathoraBackend/SQL/MentorApplications/remove_mentor_application_phone_fields.sql
-!backend/EquathoraBackend/SQL/MentorApplications/restore_mentor_application_phone.sql
 
 # Secrets and API keys
 **/*secrets*.json
@@ -114,6 +112,7 @@ Program.cs
 *.txt
 !public/robots.txt
 *.md
+!MD/TEACHER-FEATURES-REMAINING.md
 !private/README.md
 *.drawio
 *.excalibur

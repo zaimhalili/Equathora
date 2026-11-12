@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaArrowLeft, FaCheck } from 'react-icons/fa';
 import { useAuth } from '@/hooks/useAuth.jsx';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -76,6 +78,7 @@ function ChoiceList({ label, options, value, onChange, type = 'checkbox', requir
 
 const MentorApplication = () => {
     const { user } = useAuth() || {};
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         fullName: user?.user_metadata?.full_name || '',
         email: user?.email || '',
@@ -92,10 +95,68 @@ const MentorApplication = () => {
     const [submitError, setSubmitError] = useState('');
     const [subjectError, setSubjectError] = useState('');
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
     const updateField = (field, value) => {
         setFormData((current) => ({ ...current, [field]: value }));
+        setHasUnsavedChanges(true);
     };
+
+    useEffect(() => {
+        if (!hasUnsavedChanges || isSubmitted) return undefined;
+
+        const warning = 'Are you sure you want to leave? Your application information will not be saved.';
+        const historyKey = window.history.state?.key;
+        const handleBeforeUnload = (event) => {
+            event.preventDefault();
+            event.returnValue = warning;
+        };
+        const handlePopState = (event) => {
+            if (event.state?.key === historyKey) return;
+            if (window.confirm(warning)) {
+                setHasUnsavedChanges(false);
+                return;
+            }
+            window.history.go(1);
+        };
+        const handleInternalLink = (event) => {
+            if (
+                event.defaultPrevented
+                || event.button !== 0
+                || event.metaKey
+                || event.ctrlKey
+                || event.shiftKey
+                || event.altKey
+            ) return;
+
+            const target = event.target instanceof Element ? event.target.closest('a[href]') : null;
+            if (!target || target.target || target.hasAttribute('download')) return;
+
+            const destination = new URL(target.href, window.location.href);
+            if (destination.origin !== window.location.origin) return;
+            if (
+                destination.pathname === window.location.pathname
+                && destination.search === window.location.search
+                && destination.hash === window.location.hash
+            ) return;
+
+            event.preventDefault();
+            event.stopPropagation();
+            if (window.confirm(warning)) {
+                setHasUnsavedChanges(false);
+                navigate(`${destination.pathname}${destination.search}${destination.hash}`);
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        window.addEventListener('popstate', handlePopState);
+        document.addEventListener('click', handleInternalLink, true);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('popstate', handlePopState);
+            document.removeEventListener('click', handleInternalLink, true);
+        };
+    }, [hasUnsavedChanges, isSubmitted, navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -112,6 +173,7 @@ const MentorApplication = () => {
                 ...formData,
                 userId: user.id
             });
+            setHasUnsavedChanges(false);
             setIsSubmitted(true);
         } catch (error) {
             setSubmitError(error.message || 'We could not submit your application right now. Please try again.');
@@ -128,13 +190,13 @@ const MentorApplication = () => {
                     <section className="flex h-fit w-full max-w-3xl flex-col gap-6 rounded-xl border border-(--main-color) bg-(--white) p-5 sm:gap-8 sm:p-8">
                         <div className="flex flex-col gap-3 border-b border-(--main-color) pb-6">
                             <SecondaryButton
-                                text="Back to educator network"
+                                text={<><FaArrowLeft aria-hidden="true" /> Back to Applymentor</>}
                                 link
                                 to="/applymentor"
                                 className="w-fit rounded-xl px-4 py-2 text-sm"
                             />
                             <h1 className="pt-2 text-2xl font-medium leading-tight text-(--secondary-color) sm:text-3xl">
-                                Equathora Educator Network Application
+                                Apply to Equathora
                             </h1>
                             <p className="max-w-2xl text-sm leading-6 text-(--secondary-color)/70">
                                 Tell us a little about your teaching experience and how you would like to help shape Equathora.
@@ -143,10 +205,13 @@ const MentorApplication = () => {
                         </div>
 
                         {isSubmitted ? (
-                            <div role="status" className="flex flex-col items-start gap-4 rounded-xl border border-(--main-color) bg-(--white) p-5">
-                                <h2 className="text-xl font-medium text-(--secondary-color)">Application received</h2>
+                            <div role="status" className="flex flex-col items-start gap-4 rounded-xl border border-(--main-color) bg-(--white) p-5 sm:p-6">
+                                <span aria-hidden="true" className="flex h-11 w-11 items-center justify-center rounded-full border border-green-600 text-green-700">
+                                    <FaCheck className="text-base" />
+                                </span>
+                                <h2 className="text-xl font-medium text-(--secondary-color)">Application submitted</h2>
                                 <p className="text-sm leading-6 text-(--secondary-color)/70">
-                                    Thank you for sharing your experience. We’ll review your application and reach out using the contact details you provided.
+                                    Thanks for applying. We’ll review your information and email you if you’re accepted, with the next steps for joining the teacher network.
                                 </p>
                                 <SecondaryButton
                                     text="Return to educator network"
